@@ -1,0 +1,227 @@
+/obj/item/weapon/baton
+	name = "stunbaton"
+	desc = "A stun baton for incapacitating people with."
+	icon_state = "stunbaton"
+	item_state = "baton"
+	flags_equip_slot = SLOT_WAIST
+	force = 15
+	sharp = 0
+	edge = 0
+	throwforce = 7
+	w_class = SIZE_MEDIUM
+
+	attack_verb = list("beaten")
+	req_one_access = list(ACCESS_MARINE_BRIG, ACCESS_MARINE_ARMORY, ACCESS_MARINE_SENIOR, ACCESS_WY_CORPORATE, ACCESS_WY_PMC_GREEN, ACCESS_CIVILIAN_BRIG)
+	var/stunforce = 50
+	var/status = 0 //whether the thing is on or not
+	var/obj/item/cell/bcell = null
+	var/hitcost = 1000 //oh god why do power cells carry so much charge? We probably need to make a distinction between "industrial" sized power cells for APCs and power cells for everything else.
+	var/has_user_lock = TRUE //whether the baton prevents people without correct access from using it.
+
+/obj/item/weapon/baton/suicide_act(mob/user)
+	user.visible_message(SPAN_SUICIDE("[user] is putting the live [name] in \his mouth! It looks like \he's trying to commit suicide."))
+	return (FIRELOSS)
+
+/obj/item/weapon/baton/Initialize(mapload, ...)
+	. = ..()
+	bcell = new/obj/item/cell/high(src) //Fuckit lets givem all the good cells
+	update_icon()
+
+/obj/item/weapon/baton/Destroy()
+	QDEL_NULL(bcell)
+	return ..()
+
+// legacy type, remove when able
+/obj/item/weapon/baton/loaded
+
+/obj/item/weapon/baton/proc/deductcharge(chrgdeductamt)
+	if(bcell)
+		if(bcell.use(chrgdeductamt))
+			return TRUE
+		else
+			status = 0
+			update_icon()
+			return FALSE
+
+/obj/item/weapon/baton/update_icon()
+	if(status)
+		icon_state = "[initial(icon_state)]_active"
+	else if(!bcell)
+		icon_state = "[initial(icon_state)]_nocell"
+	else
+		icon_state = "[initial(icon_state)]"
+
+/obj/item/weapon/baton/get_examine_text(mob/user)
+	. = ..()
+	if(bcell)
+		. += SPAN_NOTICE("The baton is [round(bcell.percent())]% charged.")
+	else
+		. += SPAN_WARNING("The baton does not have a power source installed.")
+
+/obj/item/weapon/baton/attack_hand(mob/user)
+	if(check_user_auth(user))
+		..()
+
+
+/obj/item/weapon/baton/equipped(mob/user, slot)
+	..()
+	check_user_auth(user)
+
+
+//checks if the mob touching the baton has proper access
+/obj/item/weapon/baton/proc/check_user_auth(mob/user)
+	if(!has_user_lock)
+		return TRUE
+	var/mob/living/carbon/human/H = user
+	if(istype(H))
+		var/obj/item/card/id/I = H.wear_id
+		if(!istype(I) || !check_access(I) && status)
+			var/datum/effect_system/spark_spread/s = new
+			s.set_up(5, 1, src.loc)
+			H.visible_message(SPAN_NOTICE("[src] beeps as [H] picks it up"), SPAN_DANGER("WARNING: Unauthorized user detected. Denying access..."))
+			H.visible_message(SPAN_WARNING("[src] beeps and sends a shock through [H]'s body!"))
+			H.emote("pain")
+			s.start()
+			deductcharge(hitcost)
+			add_fingerprint(user)
+			return FALSE
+	return TRUE
+/obj/item/weapon/baton/pull_response(mob/puller)
+	return check_user_auth(puller)
+
+/obj/item/weapon/baton/attackby(obj/item/W, mob/user)
+
+	if(istype(W, /obj/item/cell))
+		if(!bcell)
+			if(user.drop_held_item())
+				W.forceMove(src)
+				bcell = W
+				to_chat(user, SPAN_NOTICE("You install a cell in [src]."))
+				update_icon()
+		else
+			to_chat(user, SPAN_NOTICE("[src] already has a cell."))
+
+	else if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
+		if(bcell)
+			bcell.update_icon()
+			bcell.forceMove(get_turf(src.loc))
+			bcell = null
+			to_chat(user, SPAN_NOTICE("You remove the cell from the [src]."))
+			status = 0
+			update_icon()
+			return
+		..()
+
+/obj/item/weapon/baton/attack_self(mob/user)
+	..()
+
+	if(has_user_lock && !skillcheck(user, SKILL_POLICE, SKILL_POLICE_SKILLED))
+		to_chat(user, SPAN_WARNING("You don't seem to know how to use [src]..."))
+		return
+	if(bcell && bcell.charge > hitcost)
+		status = !status
+		to_chat(user, SPAN_NOTICE("[src] is now [status ? "on" : "off"]."))
+		playsound(loc, "sparks", 25, 1, 6)
+		update_icon()
+	else
+		status = 0
+		if(!bcell)
+			to_chat(user, SPAN_WARNING("[src] does not have a power source!"))
+		else
+			to_chat(user, SPAN_WARNING("[src] is out of charge."))
+	add_fingerprint(user)
+
+
+/obj/item/weapon/baton/attack(mob/M, mob/user)
+	if(has_user_lock && !skillcheck(user, SKILL_POLICE, SKILL_POLICE_SKILLED))
+		to_chat(user, SPAN_WARNING("You don't seem to know how to use [src]..."))
+		return
+
+	if(isrobot(M))
+		..()
+		return
+
+	var/stun = stunforce
+	var/mob/living/L = M
+
+	var/target_zone = check_zone(user.zone_selected)
+	if(user.a_intent == INTENT_HARM)
+		if (!..()) //item/attack() does it's own messaging and logs
+			return FALSE // item/attack() will return TRUE if they hit, 0 if they missed.
+
+		if(!status)
+			return TRUE
+
+	else
+		//copied from human_defense.dm - human defence code should really be refactored some time.
+		if (ishuman(L))
+
+			if(!target_zone) //shouldn't ever happen
+				L.visible_message(SPAN_DANGER("<B>[user] misses [L] with \the [src]!"))
+				return FALSE
+
+			var/mob/living/carbon/human/H = L
+			var/obj/limb/affecting = H.get_limb(target_zone)
+			if (affecting)
+				if(!status)
+					L.visible_message(SPAN_WARNING("[L] has been prodded in the [affecting.display_name] with [src] by [user]. Luckily it was off."))
+					return TRUE
+				else
+					H.visible_message(SPAN_DANGER("[L] has been prodded in the [affecting.display_name] with [src] by [user]!"))
+		else
+			if(!status)
+				L.visible_message(SPAN_WARNING("[L] has been prodded with [src] by [user]. Luckily it was off."))
+				return TRUE
+			else
+				L.visible_message(SPAN_DANGER("[L] has been prodded with [src] by [user]!"))
+
+	//stun effects
+
+	if(!isyautja(L) && !isxeno(L)) //Xenos and Predators are IMMUNE to all baton stuns.
+		L.emote("pain")
+		L.apply_stamina_damage(stun, target_zone, ARMOR_ENERGY)
+
+		// Logging
+		if(user == L)
+			user.attack_log += "\[[time_stamp()]\] <b>[key_name(user)]</b> stunned themselves with the [src] in [get_area(user)]"
+		else
+			msg_admin_attack("[key_name(user)] stunned [key_name(L)] with the [src] in [get_area(user)] ([user.loc.x],[user.loc.y],[user.loc.z]).", user.loc.x, user.loc.y, user.loc.z)
+			var/logentry = "\[[time_stamp()]\] <b>[key_name(user)]</b> stunned <b>[key_name(L)]</b> with the [src] in [get_area(user)]"
+			L.attack_log += logentry
+			user.attack_log += logentry
+
+	playsound(loc, 'sound/weapons/Egloves.ogg', 25, 1, 6)
+
+	deductcharge(hitcost)
+
+	return TRUE
+
+/obj/item/weapon/baton/emp_act(severity)
+	if(bcell)
+		bcell.emp_act(severity) //let's not duplicate code everywhere if we don't have to please.
+	..()
+
+//secborg stun baton module
+/obj/item/weapon/baton/robot/attack_self(mob/user)
+	//try to find our power cell
+	var/mob/living/silicon/robot/R = loc
+	if (istype(R))
+		bcell = R.cell
+	return ..()
+
+/obj/item/weapon/baton/robot/attackby(obj/item/W, mob/user)
+	return
+
+//Makeshift stun baton. Replacement for stun gloves.
+/obj/item/weapon/baton/cattleprod
+	name = "stunprod"
+	desc = "An improvised stun baton."
+	icon_state = "stunprod"
+	item_state = "prod"
+	force = 3
+	throwforce = 5
+	stunforce = 40
+	hitcost = 2500
+	attack_verb = list("poked")
+	flags_equip_slot = NO_FLAGS
+	has_user_lock = FALSE

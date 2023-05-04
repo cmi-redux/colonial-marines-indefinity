@@ -1,0 +1,15 @@
+name: 'Check for merge conflicts'
+on:
+  push:
+    branches:
+      - master
+  pull_request_target:
+    types: [ready_for_review, opened, synchronize, reopened]
+jobs:
+  triage:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: eps1lon/actions-label-merge-conflict@v2.1.0
+        with:
+          dirtyLabel: 'Merge Conflict'
+          repoToken: ${{ secrets.BOT_TOKEN_CM || secrets.GITHUB_TOKEN }}
