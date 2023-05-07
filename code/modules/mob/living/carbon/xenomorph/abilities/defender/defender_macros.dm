@@ -26,11 +26,3 @@
 	set hidden = TRUE
 	var/action_name = "Fortify"
 	handle_xeno_macro(src, action_name)
-
-/datum/action/xeno_action/verb/verb_soak()
-	set category = "Alien"
-	set name = "Soak"
-	set hidden = TRUE
-	var/action_name = "Soak"
-	handle_xeno_macro(src, action_name)
-

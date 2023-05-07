@@ -1,8 +1,8 @@
-/obj/item/weapon/energy
+/obj/item/weapon/melee/energy
 	var/active = 0
 	flags_atom = FPRINT|NOBLOODY
 
-/obj/item/weapon/energy/axe
+/obj/item/weapon/melee/energy/axe
 	name = "energy axe"
 	desc = "An energised battle axe."
 	icon_state = "axe0"
@@ -18,7 +18,7 @@
 	sharp = IS_SHARP_ITEM_BIG
 	edge = 1
 
-/obj/item/weapon/energy/axe/attack_self(mob/user)
+/obj/item/weapon/melee/energy/axe/attack_self(mob/user)
 	..()
 
 	active = !active
@@ -38,7 +38,7 @@
 
 
 
-/obj/item/weapon/energy/sword
+/obj/item/weapon/melee/energy/sword
 	name = "energy sword"
 	desc = "May the force be within you."
 	icon_state = "sword0"
@@ -56,16 +56,16 @@
 	var/base_sword_icon = "sword"
 	var/sword_color
 
-/obj/item/weapon/energy/sword/IsShield()
+/obj/item/weapon/melee/energy/sword/IsShield()
 	if(active)
 		return 1
 	return 0
 
-/obj/item/weapon/energy/sword/New()
+/obj/item/weapon/melee/energy/sword/New()
 	if(!sword_color)
 		sword_color = pick("red","blue","green","purple")
 
-/obj/item/weapon/energy/sword/attack_self(mob/living/user)
+/obj/item/weapon/melee/energy/sword/attack_self(mob/living/user)
 	..()
 
 	active = !active
@@ -97,19 +97,19 @@
 	return
 
 
-/obj/item/weapon/energy/sword/pirate
+/obj/item/weapon/melee/energy/sword/pirate
 	name = "energy cutlass"
 	desc = "Arrrr matey."
 	icon_state = "cutlass0"
 	base_sword_icon = "cutlass"
 
-/obj/item/weapon/energy/sword/green
+/obj/item/weapon/melee/energy/sword/green
 	sword_color = "green"
 
 
-/obj/item/weapon/energy/sword/green/attack_self()
+/obj/item/weapon/melee/energy/sword/green/attack_self()
 	..()
 	force = active ? 80 : 3
 
-/obj/item/weapon/energy/sword/red
+/obj/item/weapon/melee/energy/sword/red
 	sword_color = "red"

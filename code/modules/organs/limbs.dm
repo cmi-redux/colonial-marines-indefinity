@@ -352,19 +352,15 @@
 	//If limb was damaged before and took enough damage, try to cut or tear it off
 	var/no_perma_damage = owner.status_flags & NO_PERMANENT_DAMAGE
 	if(previous_brute > 0 && !is_ff && body_part != BODY_FLAG_CHEST && body_part != BODY_FLAG_GROIN && !no_limb_loss && !no_perma_damage)
-		if(CONFIG_GET(flag/limbs_can_break) && brute_dam >= max_damage * CONFIG_GET(number/organ_health_multiplier))
+		var/obj/item/clothing/head/helmet/H = owner.head
+		if(!(body_part == BODY_FLAG_HEAD && istype(H) && !issynth(owner))\
+			&& CONFIG_GET(flag/limbs_can_break)\
+			&& brute_dam >= max_damage * CONFIG_GET(number/organ_health_multiplier)\
+		)
 			var/cut_prob = brute/max_damage * 5
 			if(prob(cut_prob))
-				var/obj/item/clothing/head/helmet/owner_helmet = owner.head
-				if(istype(owner_helmet) && owner.allow_gun_usage)
-					if(!(owner_helmet.flags_inventory & FULL_DECAP_PROTECTION))
-						owner.visible_message("[owner]'s [owner_helmet] goes flying off from the impact!", SPAN_USERDANGER("Your [owner_helmet] goes flying off from the impact!"))
-						owner.drop_inv_item_on_ground(owner_helmet)
-						INVOKE_ASYNC(owner_helmet, TYPE_PROC_REF(/atom/movable, throw_atom), pick(range(get_turf(loc), 1)), 1, SPEED_FAST)
-						playsound(owner, 'sound/effects/helmet_noise.ogg', 100)
-				else
-					droplimb(0, 0, damage_source)
-					return
+				droplimb(0, 0, damage_source)
+				return
 
 	SEND_SIGNAL(src, COMSIG_LIMB_TAKEN_DAMAGE, is_ff, previous_brute, previous_burn)
 	owner.updatehealth()
@@ -1067,13 +1063,8 @@ treat_grafted var tells it to apply to grafted but unsalved wounds, for burn kit
 			SPAN_WARNING("Your [display_name] withstands the blow!"))
 		return
 
-	//stops division by zero
-	if(owner.chem_effect_flags & CHEM_EFFECT_RESIST_FRACTURE)
+	if((owner.chem_effect_flags & CHEM_EFFECT_RESIST_FRACTURE) || owner.species.flags & SPECIAL_BONEBREAK) //stops division by zero
 		bonebreak_probability = 0
-
-	//If you have this special flag you are exempt from the endurance bone break check
-	if(owner.species.flags & SPECIAL_BONEBREAK)
-		bonebreak_probability = 100
 
 	if(!owner.skills)
 		bonebreak_probability = null

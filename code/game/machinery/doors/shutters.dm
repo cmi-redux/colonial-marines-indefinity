@@ -1,8 +1,7 @@
 /obj/structure/machinery/door/poddoor/shutters
 	name = "\improper Shutters"
 	icon = 'icons/obj/structures/doors/rapid_pdoor.dmi'
-	icon_state = "shutter1"
-	base_icon_state = "shutter"
+	icon_state = "shutter"
 	power_channel = POWER_CHANNEL_ENVIRON
 
 /obj/structure/machinery/door/poddoor/shutters/opened
@@ -10,9 +9,9 @@
 
 /obj/structure/machinery/door/poddoor/shutters/update_icon()
 	if(density)
-		icon_state = "[base_icon_state]1"
+		icon_state = "shutter1"
 	else
-		icon_state = "[base_icon_state]0"
+		icon_state = "shutter0"
 	return
 
 /obj/structure/machinery/door/poddoor/shutters/attackby(obj/item/C as obj, mob/user as mob)
@@ -22,8 +21,8 @@
 	if(density && (stat & NOPOWER) && !operating && !unacidable)
 		operating = 1
 		spawn(-1)
-			flick("[base_icon_state]c0", src)
-			icon_state = "[base_icon_state]0"
+			flick("shutterc0", src)
+			icon_state = "shutter0"
 			sleep(15)
 			density = FALSE
 			SetOpacity(0)
@@ -36,8 +35,8 @@
 		return
 	if(!operating) //in case of emag
 		operating = 1
-	flick("[base_icon_state]c0", src)
-	icon_state = "[base_icon_state]0"
+	flick("shutterc0", src)
+	icon_state = "shutter0"
 	playsound(loc, 'sound/machines/blastdoor.ogg', 25)
 	sleep(10)
 	density = FALSE
@@ -54,8 +53,8 @@
 	if(operating)
 		return
 	operating = 1
-	flick("[base_icon_state]c1", src)
-	icon_state = "[base_icon_state]1"
+	flick("shutterc1", src)
+	icon_state = "shutter1"
 	layer = closed_layer
 	density = TRUE
 	if(visible)

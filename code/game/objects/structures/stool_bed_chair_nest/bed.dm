@@ -51,7 +51,7 @@
 
 /obj/structure/bed/deconstruct(disassembled = TRUE)
 	if(!disassembled)
-		if(!isnull(buildstacktype) && buildstackamount)
+		if(!isnull(buildstacktype))
 			new buildstacktype(get_turf(src), buildstackamount)
 	return ..()
 

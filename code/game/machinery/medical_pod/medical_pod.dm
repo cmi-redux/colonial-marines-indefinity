@@ -1,8 +1,7 @@
 /obj/structure/machinery/medical_pod
 	name = "generic medical pod"
 	icon = 'icons/obj/structures/machinery/cryogenics.dmi'
-	icon_state = "sleeper_open"
-	var/base_icon_state = "sleeper"
+	icon_state = "sleeper"
 
 	unslashable = TRUE
 	density = TRUE
@@ -33,9 +32,9 @@
 
 /obj/structure/machinery/medical_pod/update_icon()
 	if(occupant)
-		icon_state = "[base_icon_state]_closed"
+		icon_state = "[initial(icon_state)]_closed"
 	else
-		icon_state = "[base_icon_state]_open"
+		icon_state = "[initial(icon_state)]_open"
 
 /obj/structure/machinery/medical_pod/verb/move_inside(mob/target)
 	set src in oview(1)

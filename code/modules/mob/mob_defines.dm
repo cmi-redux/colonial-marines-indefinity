@@ -205,7 +205,7 @@
 
 	var/recently_pointed_to = 0 //used as cooldown for the pointing verb.
 
-	///Color matrices to be applied to the client window. Assoc. list.
+	///Colour matrices to be applied to the client window. Assoc. list.
 	var/list/client_color_matrices
 
 	var/list/image/hud_list //This mob's HUD (med/sec, etc) images. Associative list.

@@ -22,6 +22,14 @@
 "ah" = (
 /turf/closed/wall/wood,
 /area/lv624/ground/caves/north_central_caves)
+"ai" = (
+/obj/effect/landmark/survivor_spawner/lv624_skylight{
+	pixel_x = -1
+	},
+/turf/open/floor/wood{
+	icon_state = "wood-broken3"
+	},
+/area/lv624/ground/caves/north_central_caves)
 "aj" = (
 /obj/structure/largecrate/supply/explosives/mines{
 	unacidable = 1;
@@ -143,6 +151,12 @@
 /area/lv624/ground/caves/north_central_caves)
 "aG" = (
 /obj/structure/bed/chair/wood/normal,
+/turf/open/floor/wood,
+/area/lv624/ground/caves/north_central_caves)
+"aH" = (
+/obj/effect/landmark/survivor_spawner/lv624_skylight{
+	pixel_x = -1
+	},
 /turf/open/floor/wood,
 /area/lv624/ground/caves/north_central_caves)
 "aI" = (
@@ -380,7 +394,7 @@
 /obj/structure/surface/table/woodentable/poor,
 /obj/item/device/flashlight/lantern,
 /obj/structure/barricade/sandbags/wired,
-/obj/item/weapon/baseballbat/metal,
+/obj/item/weapon/melee/baseballbat/metal,
 /turf/open/floor/wood{
 	icon_state = "wood-broken6"
 	},
@@ -546,7 +560,7 @@ lJ
 "}
 (12,1,1) = {"
 ah
-bf
+aH
 bf
 bf
 aP
@@ -558,7 +572,7 @@ ah
 "}
 (13,1,1) = {"
 ah
-bf
+aH
 bf
 aG
 aQ
@@ -570,7 +584,7 @@ aZ
 "}
 (14,1,1) = {"
 ah
-bf
+aH
 ak
 aG
 aR
@@ -582,7 +596,7 @@ aZ
 "}
 (15,1,1) = {"
 ah
-aP
+ai
 bg
 aG
 aS
@@ -594,7 +608,7 @@ aZ
 "}
 (16,1,1) = {"
 ah
-bf
+aH
 bf
 aP
 bf
@@ -606,7 +620,7 @@ ah
 "}
 (17,1,1) = {"
 ah
-bf
+aH
 bf
 aV
 aU

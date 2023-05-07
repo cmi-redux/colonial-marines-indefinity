@@ -14,6 +14,7 @@
 		/obj/item/storage/pill_bottle/dexalin,
 		/obj/item/storage/pill_bottle/kelotane,
 		/obj/item/storage/pill_bottle/tramadol,
+		/obj/item/storage/pill_bottle/quickclot,
 		/obj/item/storage/pill_bottle/peridaxon,
 		/obj/item/storage/box/pillbottles,
 	)

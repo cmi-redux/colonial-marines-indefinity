@@ -29,7 +29,7 @@ var/bomb_set = FALSE
 	update_minimap_icon()
 
 /obj/structure/machinery/nuclearbomb/proc/update_minimap_icon()
-	if(!is_ground_level(z))
+	if(!z)
 		return
 
 	SSminimaps.remove_marker(src)

@@ -50,23 +50,21 @@
 
 
 
-/obj/structure/machinery/bot/medbot/Initialize(mapload, ...)
-	. = ..()
+/obj/structure/machinery/bot/medbot/New()
+	..()
 	src.icon_state = "medibot[src.on]"
 
-	addtimer(CALLBACK(src, PROC_REF(setup_bot)), 0.4 SECONDS)
+	spawn(4)
+		if(src.skin)
+			src.overlays += image('icons/obj/structures/machinery/aibots.dmi', "medskin_[src.skin]")
+
+		src.botcard = new /obj/item/card/id(src)
+		if(isnull(src.botcard_access) || (src.botcard_access.len < 1))
+			var/datum/job/J = RoleAuthority ? RoleAuthority.roles_by_path[/datum/job/civilian/doctor] : new /datum/job/civilian/doctor
+			botcard.access = J.get_access()
+		else
+			src.botcard.access = src.botcard_access
 	start_processing()
-
-/obj/structure/machinery/bot/medbot/proc/setup_bot()
-	if(src.skin)
-		src.overlays += image('icons/obj/structures/machinery/aibots.dmi', "medskin_[src.skin]")
-
-	src.botcard = new /obj/item/card/id(src)
-	if(isnull(src.botcard_access) || (src.botcard_access.len < 1))
-		var/datum/job/J = RoleAuthority ? RoleAuthority.roles_by_path[/datum/job/civilian/doctor] : new /datum/job/civilian/doctor
-		botcard.access = J.get_access()
-	else
-		src.botcard.access = src.botcard_access
 
 /obj/structure/machinery/bot/medbot/Destroy()
 	botcard_access = null

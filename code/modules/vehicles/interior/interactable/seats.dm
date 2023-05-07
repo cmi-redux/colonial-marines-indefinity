@@ -302,7 +302,7 @@
 	icon_state = "vehicle_seat"
 	var/image/chairbar = null
 	var/broken = FALSE
-	buildstackamount = 0
+	buildstacktype = 0
 	can_rotate = FALSE
 	picked_up_item = null
 

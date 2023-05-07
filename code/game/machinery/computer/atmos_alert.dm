@@ -21,7 +21,7 @@
 	SSradio.remove_object(src, receive_frequency)
 	QDEL_NULL_LIST(priority_alarms)
 	QDEL_NULL_LIST(minor_alarms)
-	radio_connection = null
+	QDEL_NULL(radio_connection)
 	. = ..()
 
 /obj/structure/machinery/computer/atmos_alert/receive_signal(datum/signal/signal)

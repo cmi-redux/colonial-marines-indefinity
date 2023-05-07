@@ -14,11 +14,11 @@
 		var/datum/reagent/re = reagent_list[i]
 		var/reagentweight = re.volume
 		if(istype(re, /datum/reagent/paint))
-			reagentweight *= 20 //Paint colors a mixture twenty times as much
+			reagentweight *= 20 //Paint colours a mixture twenty times as much
 		weight[i] = max(reagentweight,1)
 
 
-	//fill the lists of colors
+	//fill the lists of colours
 	for(i=1; i<=contents; i++)
 		var/datum/reagent/re = reagent_list[i]
 		var/hue = re.color
@@ -76,7 +76,7 @@
 		//fill the list of weights
 		var/datum/reagent/re = reagent_list[i]
 		weight[i] = max(re.volume,1) * re.burncolormod
-		//fill the lists of colors
+		//fill the lists of colours
 		var/hue = re.burncolor
 		if(length(hue) != 7)
 			return 0
@@ -92,4 +92,4 @@
 	//assemble all the pieces
 	var/finalcolor = rgb(red, green, blue)
 	return finalcolor
-
+	

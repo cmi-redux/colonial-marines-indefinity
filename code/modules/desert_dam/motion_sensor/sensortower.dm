@@ -14,7 +14,7 @@
 	density = TRUE
 	unslashable = TRUE
 	unacidable = TRUE   //NOPE.jpg
-	needs_power = FALSE
+	use_power = TRUE
 	idle_power_usage = 1000
 	var/buildstate = SENSORTOWER_BUILDSTATE_BLOWTORCH //What state of building it are we on, 0-3, 1 is "broken", the default
 	var/is_on = FALSE  //Is this damn thing on or what?

@@ -82,7 +82,7 @@
 	switch(dir)
 		if(NORTH)
 			pixel_y = 31
-			layer = WALL_LAYER
+			layer = INTERIOR_WALL_NORTH_LAYER
 		if(SOUTH)
 			layer = INTERIOR_WALL_SOUTH_LAYER
 

@@ -11,7 +11,6 @@
 
 /datum/cas_signal/Destroy()
 	QDEL_NULL(linked_cam)
-	signal_loc = null
 	. = ..()
 
 /datum/cas_signal/proc/get_name()

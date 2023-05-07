@@ -1,8 +1,10 @@
 // Holds props for helmet garb
 
 /obj/item/prop/helmetgarb
+	name = "Placeholder"
+	desc = "placeholder"
 	icon = 'icons/obj/items/helmet_garb.dmi'
-	icon_state = null
+	icon_state = "placeholder"
 	w_class = SIZE_TINY
 	garbage = TRUE
 

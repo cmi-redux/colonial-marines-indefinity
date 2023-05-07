@@ -554,6 +554,12 @@
 
 		printables += list(print_data)
 
+/obj/structure/machinery/autolathe/yautja
+	name = "yautja autolathe"
+	desc = "It produces items using metal and glass."
+	icon = 'icons/obj/structures/machinery/predautolathe.dmi'
+	stored_material =  list("metal" = 40000, "glass" = 20000)
+
 /obj/structure/machinery/autolathe/full
 	stored_material =  list("metal" = 40000, "glass" = 20000)
 
