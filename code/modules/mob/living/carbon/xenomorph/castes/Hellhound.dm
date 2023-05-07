@@ -26,8 +26,6 @@
 	heal_knocked_out = 1.25
 	innate_healing = TRUE
 
-	minimap_icon = "hellhound"
-
 /mob/living/carbon/xenomorph/hellhound
 	caste_type = XENO_CASTE_HELLHOUND
 	name = XENO_CASTE_HELLHOUND
@@ -67,8 +65,10 @@
 	icon_xeno = 'icons/mob/xenos/hellhound.dmi'
 	icon_xenonid = 'icons/mob/xenos/hellhound.dmi'
 
-/mob/living/carbon/xenomorph/hellhound/Initialize(mapload, mob/living/carbon/xenomorph/oldXeno, h_number)
-	. = ..(mapload, oldXeno, h_number || XENO_HIVE_YAUTJA)
+	balance_formulas = list(BALANCE_FORMULA_XENO_FIGHTER)
+
+/mob/living/carbon/xenomorph/hellhound/Initialize(mapload, mob/living/carbon/xenomorph/old_xeno, datum/faction/hive_to_set)
+	. = ..(mapload, old_xeno, faction || FACTION_XENOMORPH_YAUTJA)
 
 	set_languages(list(LANGUAGE_HELLHOUND, LANGUAGE_YAUTJA))
 
@@ -89,7 +89,7 @@
 
 /mob/living/carbon/xenomorph/hellhound/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_pass = PASS_FLAGS_CRAWLER
 
 /mob/living/carbon/xenomorph/hellhound/Login()

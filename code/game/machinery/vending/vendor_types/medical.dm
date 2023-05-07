@@ -63,13 +63,13 @@
 		. += SPAN_NOTICE("The [src.name] offers assisted medical scan, for ease of usage with minimal training. Present the target in front of the scanner to scan.")
 
 /obj/structure/machinery/cm_vending/sorted/medical/attackby(obj/item/I, mob/user)
-	if(stat == WORKING && LAZYLEN(chem_refill) && (istype(I, /obj/item/reagent_container/hypospray/autoinjector) || istype(I, /obj/item/reagent_container/glass/bottle))) // only if we are completely fine and working
+	if(stat == WORKING && length(chem_refill) && (istype(I, /obj/item/reagent_container/hypospray/autoinjector) || istype(I, /obj/item/reagent_container/glass/bottle))) // only if we are completely fine and working
 		if(!hacked)
 			if(!allowed(user))
 				to_chat(user, SPAN_WARNING("Access denied."))
 				return
 
-			if(LAZYLEN(vendor_role) && !vendor_role.Find(user.job))
+			if(length(vendor_role) && !vendor_role.Find(user.job))
 				to_chat(user, SPAN_WARNING("This machine isn't for you."))
 				return
 
@@ -87,13 +87,13 @@
 		var/obj/item/reagent_container/new_container = new C.type(src)
 		qdel(C)
 		user.put_in_hands(new_container)
-	else if(stat == WORKING && LAZYLEN(stack_refill) && (istype(I, /obj/item/stack)))
+	else if(stat == WORKING && length(stack_refill) && (istype(I, /obj/item/stack)))
 		if(!hacked)
 			if(!allowed(user))
 				to_chat(user, SPAN_WARNING("Access denied."))
 				return
 
-			if(LAZYLEN(vendor_role) && !vendor_role.Find(user.job))
+			if(length(vendor_role) && !vendor_role.Find(user.job))
 				to_chat(user, SPAN_WARNING("This machine isn't for you."))
 				return
 

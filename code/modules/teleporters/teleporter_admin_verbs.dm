@@ -19,10 +19,10 @@
 
 	var/dest_location = tgui_input_list(usr, "Which location do you want to teleport to?", "Select a location:", available_locations)
 
-	if(!teleporter.check_teleport_cooldown() && alert("Error: Teleporter is on cooldown. Proceed anyways?", , "Yes", "No") != "Yes")
+	if(!teleporter.check_teleport_cooldown() && alert("Error: Teleporter is on cooldown. Proceed anyways?", , usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 
-	if((!teleporter.safety_check_source(source_location) || !teleporter.safety_check_destination(dest_location)) && alert("Error: Destination or source is unsafe. Proceed anyways?", , "Yes", "No") != "Yes")
+	if((!teleporter.safety_check_source(source_location) || !teleporter.safety_check_destination(dest_location)) && alert("Error: Destination or source is unsafe. Proceed anyways?", , usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 
 	teleporter.teleport(source_location, dest_location)

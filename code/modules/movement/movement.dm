@@ -4,8 +4,36 @@
 /atom/Cross(atom/movable/AM)
 	return TRUE
 
-/atom/Exit(atom/movable/AM)
+/**
+ * An atom is attempting to exit this atom's contents
+ *
+ * Default behaviour is to send the [COMSIG_ATOM_EXIT]
+ */
+/atom/Exit(atom/movable/leaving, direction)
+	// Don't call `..()` here, otherwise `Uncross()` gets called.
+	// See the doc comment on `Uncross()` to learn why this is bad.
+
+	if(SEND_SIGNAL(src, COMSIG_ATOM_EXIT, leaving, direction) & COMPONENT_ATOM_BLOCK_EXIT)
+		return FALSE
+
 	return TRUE
+
+/**
+ * An atom has entered this atom's contents
+ *
+ * Default behaviour is to send the [COMSIG_ATOM_ENTERED]
+ */
+/atom/Entered(atom/movable/arrived, old_loc, list/old_locs)
+	SEND_SIGNAL(src, COMSIG_ATOM_ENTERED, arrived, old_loc, old_locs)
+	SEND_SIGNAL(arrived, COMSIG_ATOM_ENTERING, src, old_loc, old_locs)
+
+/**
+ * An atom has exited this atom's contents
+ *
+ * Default behaviour is to send the [COMSIG_ATOM_EXITED]
+ */
+/atom/Exited(atom/movable/gone, direction)
+	SEND_SIGNAL(src, COMSIG_ATOM_EXITED, gone, direction)
 
 /*
  * Checks whether an atom can pass through the calling atom into its target turf.
@@ -22,17 +50,17 @@
 
 	var/mover_flags_pass = mover.pass_flags.flags_pass|mover.flags_pass_temp
 
-	if (!density || (flags_can_pass & mover_flags_pass))
+	if(!density || (flags_can_pass & mover_flags_pass))
 		return NO_BLOCKED_MOVEMENT
 
-	if (flags_atom & ON_BORDER)
-		if (!(target_dir & reverse_dir))
+	if(flags_atom & ON_BORDER)
+		if(!(target_dir &  reverse_dir))
 			return NO_BLOCKED_MOVEMENT
 
 		// This is to properly handle diagonal movement (a cade to your NE facing west when you are trying to move NE should block for north instead of east)
-		if (target_dir & (NORTH|SOUTH) && target_dir & (EAST|WEST))
-			return target_dir - (target_dir & reverse_dir)
-		return target_dir & reverse_dir
+		if(target_dir & (NORTH|SOUTH) && target_dir & (EAST|WEST))
+			return target_dir - (target_dir &  reverse_dir)
+		return target_dir &  reverse_dir
 	else
 		return BLOCKED_MOVEMENT
 
@@ -55,31 +83,40 @@
 
 	return NO_BLOCKED_MOVEMENT
 
-/atom/movable/Move(NewLoc, direct)
+/atom/movable/Move(atom/NewLoc, direction)
 	// If Move is not valid, exit
-	if (SEND_SIGNAL(src, COMSIG_MOVABLE_PRE_MOVE, NewLoc) & COMPONENT_CANCEL_MOVE)
+	if(SEND_SIGNAL(src, COMSIG_MOVABLE_PRE_MOVE, NewLoc) & COMPONENT_CANCEL_MOVE)
 		return FALSE
 
-	var/atom/oldloc = loc
+	var/atom/old_loc = loc
 	var/old_dir = dir
-
+	if(!loc.Exit(src, direction))
+		return
 	. = ..()
-	if (flags_atom & DIRLOCK)
+	if(flags_atom & DIRLOCK)
 		setDir(old_dir)
-	else if(old_dir != direct)
-		setDir(direct)
+	else if(old_dir != direction)
+		setDir(direction)
 	l_move_time = world.time
-	if ((oldloc != loc && oldloc && oldloc.z == z))
-		last_move_dir = get_dir(oldloc, loc)
-	if (.)
-		Moved(oldloc, direct)
+	if((old_loc != loc && old_loc && old_loc.z == z))
+		last_move_dir = get_dir(old_loc, loc)
+	NewLoc.Entered(src, old_loc)
+	if(.)
+		Moved(old_loc, direction)
+
+	if(currently_z_moving)
+		if(. && loc == NewLoc)
+			var/turf/pitfall = get_turf(src)
+			pitfall.zFall(src, falling_from_move = TRUE)
+		else
+			set_currently_z_moving(FALSE, TRUE)
 
 /// Called when a movable atom has hit an atom via movement
 /atom/movable/proc/Collide(atom/A)
-	if (throwing)
+	if(throwing)
 		launch_impact(A)
 
-	if (A && !QDELETED(A))
+	if(A && !QDELETED(A))
 		A.last_bumped = world.time
 		A.Collided(src)
 
@@ -90,14 +127,11 @@
 		var/turf/target_turf = get_step(loc, target_dir)
 		Move(target_turf)
 
-/atom/movable/proc/Moved(atom/oldloc, direction, Forced = FALSE)
-	SEND_SIGNAL(src, COMSIG_MOVABLE_MOVED, oldloc, direction, Forced)
-	if (isturf(loc))
-		if (opacity)
-			oldloc.UpdateAffectingLights()
-		else
-			if (light)
-				light.changed()
+/atom/movable/proc/Moved(atom/old_loc, direction, Forced = FALSE,  list/old_locs)
+	SEND_SIGNAL(src, COMSIG_MOVABLE_MOVED, old_loc, direction, Forced)
+	//Cycle through the light sources on this atom and tell them to update.
+	if(client_mobs_in_contents)
+		update_parallax_contents()
 	return TRUE
 
 /atom/movable/proc/forceMove(atom/destination)
@@ -117,45 +151,45 @@
 	if(destination)
 		if(pulledby && (get_dist(pulledby, destination) > 1 || !isturf(destination) || !isturf(pulledby.loc)))
 			pulledby.stop_pulling()
-		var/atom/oldloc = loc
-		var/same_loc = oldloc == destination
-		var/area/old_area = get_area(oldloc)
+		var/atom/old_loc = loc
+		var/same_loc = old_loc == destination
+		var/area/old_area = get_area(old_loc)
 		var/area/destarea = get_area(destination)
 
 		loc = destination
 
 		if(!same_loc)
-			if(oldloc)
-				oldloc.Exited(src, destination)
+			if(old_loc)
+				old_loc.Exited(src, destination)
 				if(old_area && old_area != destarea)
 					old_area.Exited(src, destination)
-			for(var/atom/movable/AM in oldloc)
+			for(var/atom/movable/AM in old_loc)
 				AM.Uncrossed(src)
-			var/turf/oldturf = get_turf(oldloc)  // TODO: maploader
+			var/turf/oldturf = get_turf(old_loc)  // TODO: maploader
 			var/turf/destturf = get_turf(destination)
 			var/old_z = (oldturf ? oldturf.z : null)
 			var/dest_z = (destturf ? destturf.z : null)
 			if(old_z != dest_z)
 				onTransitZ(old_z, dest_z)
-			destination.Entered(src, oldloc)
+			destination.Entered(src, old_loc)
 			if(destarea && old_area != destarea)
-				destarea.Entered(src, oldloc)
+				destarea.Entered(src, old_loc)
 
 			for(var/atom/movable/AM in destination)
 				if(AM == src)
 					continue
-				AM.Crossed(src, oldloc)
+				AM.Crossed(src, old_loc)
 
-		Moved(oldloc, NONE, TRUE)
+		Moved(old_loc, NONE, TRUE)
 		. = TRUE
 
 	//If no destination, move the atom into nullspace (don't do this unless you know what you're doing)
 	else
 		. = TRUE
 		if (loc)
-			var/atom/oldloc = loc
-			var/area/old_area = get_area(oldloc)
-			oldloc.Exited(src, null)
+			var/atom/old_loc = loc
+			var/area/old_area = get_area(old_loc)
+			old_loc.Exited(src, null)
 			if(old_area)
 				old_area.Exited(src, null)
 		loc = null
@@ -164,3 +198,36 @@
 /mob/doMove(atom/destination)
 	. = ..()
 	langchat_image?.loc = src
+
+///Moves a mob upwards in z level
+/mob/verb/up()
+	set name = "Move Upwards"
+	set category = "IC"
+
+	var/turf/current_turf = get_turf(src)
+	var/turf/above_turf = SSmapping.get_turf_above(current_turf)
+
+	var/ventcrawling_flag = is_ventcrawling ? ZMOVE_VENTCRAWLING : 0
+	if(!above_turf)
+		to_chat(src, SPAN_WARNING("There's nowhere to go in that direction!"))
+		return
+
+	if(can_z_move(DOWN, above_turf, current_turf, ZMOVE_FALL_FLAGS|ventcrawling_flag)) //Will we fall down if we go up?
+		if(buckled)
+			to_chat(src, SPAN_WARNING("[buckled] is is not capable of flight."))
+		else
+			to_chat(src, SPAN_WARNING("You are not Superman."))
+		return
+
+	if(zMove(UP, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK|ventcrawling_flag))
+		to_chat(src, SPAN_NOTICE("You move upwards."))
+
+///Moves a mob down a z level
+/mob/verb/down()
+	set name = "Move Down"
+	set category = "IC"
+
+	var/ventcrawling_flag = is_ventcrawling ? ZMOVE_VENTCRAWLING : 0
+	if(zMove(DOWN, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK|ventcrawling_flag))
+		to_chat(src, SPAN_NOTICE("You move down."))
+	return FALSE

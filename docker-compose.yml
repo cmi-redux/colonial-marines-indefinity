@@ -9,10 +9,10 @@ services:
     ports:
       - 3306:3306
     environment:
-      MYSQL_DATABASE: cm13
-      MYSQL_USER: cm13
-      MYSQL_PASSWORD: cm13testing
-      MYSQL_ROOT_PASSWORD: cm13testingroot
+      MYSQL_DATABASE: cm
+      MYSQL_USER: cm
+      MYSQL_PASSWORD: cm
+      MYSQL_ROOT_PASSWORD: cm
     volumes:
       - cm13-mysql:/var/lib/mysql
     networks:

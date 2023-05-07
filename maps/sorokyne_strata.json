@@ -2,11 +2,12 @@
     "map_name": "Sorokyne Strata",
     "map_path": "map_files/Sorokyne_Strata",
     "map_file": "Sorokyne_Strata.dmm",
-    "webmap_url": "Sorokyne",
     "environment_traits": {
         "COLD": true
     },
-    "weather_holder": "/datum/weather_ss_map_holder/sorokyne",
+    "weather": [
+        "weather_snow"
+    ],
     "survivor_types": [
         "/datum/equipment_preset/survivor/scientist/soro",
         "/datum/equipment_preset/survivor/doctor/soro",
@@ -14,14 +15,6 @@
         "/datum/equipment_preset/survivor/security/soro",
         "/datum/equipment_preset/survivor/interstellar_human_rights_observer/soro"
     ],
-    "defcon_triggers": [
-        3750,
-        2600,
-        1450,
-        875,
-        0.0
-    ],
-    "map_item_type": "/obj/item/map/sorokyne_map",
     "announce_text": "An automated distress signal has been recieved from a mining colony on border world LV-976, \"Sorokyne Outpost\". A response team from the ###SHIPNAME### will be dispatched shortly to investigate.",
     "monkey_types": [
         "yiren"
@@ -29,9 +22,9 @@
     "traits": [{ "Ground": true }],
     "nightmare_path": "maps/Nightmare/maps/Sorokyne_Strata/",
     "xvx_hives": {
-        "xeno_hive_alpha": 0,
-        "xeno_hive_bravo": 0,
-        "xeno_hive_charlie": 70
+        "alpha_xenomorph": 0,
+        "bravo_xenomorph": 0,
+        "charlie_xenomorph": 70
     },
     "gamemodes": [
         "Distress Signal",
@@ -39,5 +32,18 @@
         "Hive Wars",
         "Faction Clash",
         "Infection"
-    ]
+    ],
+    "map_day_night_modificator": {
+        "Midnight": 864000,
+        "Night": 90000,
+        "Dawn": 198000,
+        "Sunrise": 288000,
+        "Sunrise-Morning": 320000,
+        "Morning": 360000,
+        "Daytime": 480000,
+        "Evening": 526000,
+        "Sunset": 624000,
+        "Dusk": 752000
+    },
+    "custom_time_rate_multiplier": 4
 }

@@ -5,17 +5,17 @@
 	set category = "Object"
 	set src = usr
 
-	if (usr.is_mob_incapacitated())
+	if(usr.is_mob_incapacitated())
 		return
 
 	if(hand)
 		var/obj/item/W = l_hand
-		if (W)
+		if(W)
 			W.attack_self(src)
 			update_inv_l_hand()
 	else
 		var/obj/item/W = r_hand
-		if (W)
+		if(W)
 			W.attack_self(src)
 			update_inv_r_hand()
 	if(next_move < world.time)
@@ -31,15 +31,95 @@
 	to_chat(usr, SPAN_DANGER("This mob type cannot throw items."))
 	return
 
-/mob/verb/view_stats()
+/mob/verb/view_playtime()
 	set category = "OOC"
 	set name = "View Playtimes"
 	set desc = "View your playtimes."
-	if(!SSentity_manager.ready)
-		to_chat(src, "DB is still starting up, please wait")
+
+	if(!SSentity_manager.initialized)
+		to_chat(src, client.auto_lang(LANGUAGE_LOBBY_WAIT_DB))
 		return
-	if(client && client.player_entity)
+
+	if(client && client.player_data)
 		client.player_data.tgui_interact(src)
+
+/mob/verb/view_discord()
+	set category = "OOC"
+	set name = "Discord Connect"
+	set desc = "View your discord info."
+	if(!SSentity_manager.initialized)
+		to_chat(src, client.auto_lang(LANGUAGE_LOBBY_WAIT_DB))
+		return
+
+	if(client.discord)
+		client.discord.ui_interact(src)
+	else
+		discord_create()
+
+/mob/proc/discord_create()
+	var/discord_id = tgui_input_text(usr, "Insert your DISCORD ID (18-19 NUMBERS):", "Discord Connect", 0, 19, FALSE, timeout = 10 SECONDS)
+	if(!isnull(discord_id))
+		if(!(length(discord_id) == 18 || length(discord_id) == 19))
+			to_chat(src, "<font color='red'>Inserted incurrect ID!</font>")
+			return
+		if(alert("Вы уверены, это нельзя будет изменить без помощи админа?",,"Да","Нет")=="Нет")
+			return
+		else
+			if(!discord_id)
+				to_chat(src, "<font color='red'>Произошла ошибка, повторите попытку!</font>")
+				return
+			var/list/datum/view_record/discord_view/strikes_discord = DB_VIEW(/datum/view_record/discord_view/, DB_COMP("discord_id", DB_EQUALS, discord_id))
+			if(length(strikes_discord))
+				to_chat(src, "<font color='red'>This is discord account already connected!</font>")
+				return
+			else
+				if(client.discord)
+					return
+				var/datum/entity/discord/PS = DB_ENTITY(/datum/entity/discord)
+				client.discord = PS
+				client.discord.discord_id = discord_id
+
+				var/discord_key = "[rand(0,9)][rand(0,9)][rand(0,9)][pick(alphabet_uppercase)][pick(alphabet_uppercase)][pick(alphabet_uppercase)]"
+				var/list/datum/view_record/discord_view/same_discord_keys = DB_VIEW(/datum/view_record/discord_view/, DB_COMP("discord_key", DB_EQUALS, discord_key))
+				var/list/discord_keys = list()
+				for(var/datum/view_record/discord_view/discord in same_discord_keys)
+					discord_keys += discord.discord_key
+				while(discord_key in discord_keys)
+					discord_key = "[rand(0,9)][rand(0,9)][rand(0,9)][pick(alphabet_uppercase)][pick(alphabet_uppercase)][pick(alphabet_uppercase)]"
+
+				to_chat(src, "<font color='red'>Generated DISCORD KEY - [discord_key].</font>")
+				client.discord.discord_key = discord_key
+				client.discord.save_discord(discord_id, discord_key, client.player_data.id)
+
+				var/datum/discord_embed/embed = new()
+				embed.title = "Верефикация аккаунта"
+				embed.description = "Верефикация с ключом **[discord_key]**, в раунде **[SSperf_logging.round?.id]** ожидает проверки"
+				embed.color = COLOR_WEBHOOK_DEFAULT
+				embed.content = "<@[discord_id]>"
+				send2verefy_webhook(embed)
+	else
+		return
+
+/proc/send2verefy_webhook(message_or_embed)
+	var/webhook = CONFIG_GET(string/verefy_webhook_url)
+	if(!webhook)
+		return
+
+	var/list/webhook_info = list()
+	if(istext(message_or_embed))
+		var/message_content = replacetext(replacetext(message_or_embed, "\proper", ""), "\improper", "")
+		message_content = GLOB.has_discord_embeddable_links.Replace(replacetext(message_content, "`", ""), " ```$1``` ")
+		webhook_info["content"] = message_content
+	else
+		var/datum/discord_embed/embed = message_or_embed
+		webhook_info["embeds"] = list(embed.convert_to_list())
+		if(embed.content)
+			webhook_info["content"] = embed.content
+	var/list/headers = list()
+	headers["Content-Type"] = "application/json"
+	var/datum/http_request/request = new()
+	request.prepare(RUSTG_HTTP_METHOD_POST, webhook, json_encode(webhook_info), headers, "tmp/response.json")
+	request.begin_async()
 
 /mob/verb/toggle_high_toss()
 	set name = "Toggle High Toss"
@@ -64,7 +144,7 @@
 		return 0
 
 	var/tile = get_turf(A)
-	if (!tile)
+	if(!tile)
 		return 0
 
 	if(recently_pointed_to > world.time)
@@ -103,6 +183,34 @@
 	else
 		to_chat(src, "The game appears to have misplaced your mind datum, so we can't show you your notes.")
 
+/mob/verb/view_objective_memory()
+	set name = "View objectives clues"
+	set category = "IC"
+
+	if(!mind)
+		to_chat(src, "The game appears to have misplaced your mind datum.")
+		return
+
+	mind.view_objective_memories(src)
+
+/mob/living/carbon/xenomorph/view_objective_memory()
+	set hidden = 1
+	return
+
+/mob/verb/view_faction_tasks()
+	set name = "View faction tasks"
+	set category = "IC"
+
+	if(!mind)
+		to_chat(src, "The game appears to have misplaced your mind datum.")
+		return
+
+	mind.view_task_interface(src)
+
+/mob/living/carbon/xenomorph/view_objective_memory()
+	set hidden = 1
+	return
+
 /mob/verb/abandon_mob()
 	set name = "Respawn"
 	set category = "OOC"
@@ -111,14 +219,14 @@
 	if(client.admin_holder && (client.admin_holder.rights & R_ADMIN))
 		is_admin = 1
 
-	if (!CONFIG_GET(flag/respawn) && !is_admin)
-		to_chat(usr, SPAN_NOTICE(" Respawn is disabled."))
+	if(!CONFIG_GET(flag/respawn) && !is_admin)
+		to_chat(usr, SPAN_NOTICE(" Возрождение отключено."))
 		return
-	if (stat != 2)
-		to_chat(usr, SPAN_NOTICE(" <B>You must be dead to use this!</B>"))
+	if(stat != 2)
+		to_chat(usr, SPAN_NOTICE(" <B>Вы должны умереть, чтобы использовать это!</B>"))
 		return
-	if (SSticker.mode && (SSticker.mode.name == "meteor" || SSticker.mode.name == "epidemic")) //BS12 EDIT
-		to_chat(usr, SPAN_NOTICE(" Respawn is disabled for this roundtype."))
+	if(SSticker.mode && (SSticker.mode.name == "meteor" || SSticker.mode.name == "epidemic")) //BS12 EDIT
+		to_chat(usr, SPAN_NOTICE(" Возрождение отключено в этом типе раунда."))
 		return
 	else
 		var/deathtime = world.time - src.timeofdeath
@@ -133,7 +241,7 @@
 		var/deathtimeseconds = round((deathtime - deathtimeminutes * 600) / 10,1)
 		to_chat(usr, "You have been dead for[pluralcheck] [deathtimeseconds] seconds.")
 
-	if(alert("Are you sure you want to respawn?",,"Yes","No") != "Yes")
+	if(alert("Are you sure you want to respawn?",,client.auto_lang(LANGUAGE_YES),client.auto_lang(LANGUAGE_NO)) != client.auto_lang(LANGUAGE_YES))
 		return
 
 	log_game("[usr.name]/[usr.key] used abandon mob.")
@@ -215,33 +323,50 @@
 	set_face_dir(WEST)
 
 
+/atom/movable/proc/stop_pulling()
+	if(!pulling)
+		return
+	var/mob/M = pulling
+	pulling.pulledby = null
+	pulling = null
 
-/mob/verb/stop_pulling()
+	if(istype(M))
+		if(M.client)
+			//resist_grab uses long movement cooldown durations to prevent message spam
+			//so we must undo it here so the victim can move right away
+			M.client.next_movement = world.time
+		M.update_transform(TRUE)
+		M.update_canmove()
 
+/mob/stop_pulling()
+	if(!pulling)
+		return
+	var/mob/M = pulling
+	pulling.pulledby = null
+	pulling = null
+	grab_level = 0
+
+	if(client)
+		client.recalculate_move_delay()
+		// When you stop pulling a mob after you move a tile with it your next movement will still include
+		// the grab delay so we have to fix it here (we love code)
+		client.next_movement = world.time + client.move_delay
+	if(hud_used && hud_used.pull_icon)
+		hud_used.pull_icon.icon_state = "pull0"
+	if(istype(r_hand, /obj/item/grab))
+		temp_drop_inv_item(r_hand)
+	else if(istype(l_hand, /obj/item/grab))
+		temp_drop_inv_item(l_hand)
+	if(istype(M))
+		if(M.client)
+			//resist_grab uses long movement cooldown durations to prevent message spam
+			//so we must undo it here so the victim can move right away
+			M.client.next_movement = world.time
+		M.update_transform(TRUE)
+		M.update_canmove()
+
+/mob/verb/stop_pulling1()
 	set name = "Stop Pulling"
 	set category = "IC"
 
-	if(pulling)
-		var/mob/M = pulling
-		pulling.pulledby = null
-		pulling = null
-
-		grab_level = 0
-		if(client)
-			client.recalculate_move_delay()
-			// When you stop pulling a mob after you move a tile with it your next movement will still include
-			// the grab delay so we have to fix it here (we love code)
-			client.next_movement = world.time + client.move_delay
-		if(hud_used && hud_used.pull_icon)
-			hud_used.pull_icon.icon_state = "pull0"
-		if(istype(r_hand, /obj/item/grab))
-			temp_drop_inv_item(r_hand)
-		else if(istype(l_hand, /obj/item/grab))
-			temp_drop_inv_item(l_hand)
-		if(istype(M))
-			if(M.client)
-				//resist_grab uses long movement cooldown durations to prevent message spam
-				//so we must undo it here so the victim can move right away
-				M.client.next_movement = world.time
-			M.update_transform(TRUE)
-			M.update_canmove()
+	stop_pulling()

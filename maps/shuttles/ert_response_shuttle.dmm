@@ -1,17 +1,20 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "a" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "leftengine_3";
 	opacity = 0
 	},
 /area/shuttle/ert)
 "b" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin3"
 	},
 /area/shuttle/ert)
 "c" = (
 /obj/docking_port/mobile/emergency_response/ert1,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "leftengine_1";
 	opacity = 0
@@ -21,21 +24,39 @@
 /obj/structure/machinery/door/airlock/almayer/generic{
 	dir = 2
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15"
+	},
+/area/shuttle/ert)
+"e" = (
+/obj/structure/bed/chair/dropship/passenger{
+	dir = 4
+	},
+/obj/effect/landmark/ert_spawns/distress,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/light{
+	dir = 8;
+	req_light_switch = 0
+	},
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
 /area/shuttle/ert)
 "f" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin8"
 	},
 /area/shuttle/ert)
 "h" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "rightengine_3"
 	},
 /area/shuttle/ert)
 "i" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "stan23"
 	},
@@ -43,84 +64,100 @@
 "k" = (
 /obj/structure/blocker/invisible_wall,
 /obj/structure/machinery/computer/shuttle/ert,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
 /area/shuttle/ert)
 "l" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "stan21"
 	},
 /area/shuttle/ert)
 "n" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "stan8"
 	},
 /area/shuttle/ert)
 "o" = (
 /obj/effect/landmark/ert_spawns/distress,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin3"
 	},
 /area/shuttle/ert)
 "r" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "floor8"
 	},
 /area/shuttle/ert)
 "s" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "stan_leftengine"
 	},
 /area/shuttle/ert)
 "t" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "rightengine_1"
 	},
 /area/shuttle/ert)
 "u" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "stan1"
 	},
 /area/shuttle/ert)
 "v" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
 /area/shuttle/ert)
 "x" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "stan9"
 	},
 /area/shuttle/ert)
 "y" = (
 /obj/structure/machinery/door/airlock/almayer/generic,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin3"
 	},
 /area/shuttle/ert)
 "z" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "stan20"
 	},
 /area/shuttle/ert)
 "B" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "stan_rightengine"
 	},
 /area/shuttle/ert)
 "C" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "leftengine_2";
 	opacity = 0
 	},
 /area/shuttle/ert)
 "E" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "stan22"
 	},
 /area/shuttle/ert)
 "G" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "stan3"
 	},
@@ -130,6 +167,7 @@
 	dir = 4
 	},
 /obj/effect/landmark/ert_spawns/distress,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
@@ -138,16 +176,19 @@
 /obj/structure/surface/rack,
 /obj/effect/landmark/ert_spawns/distress/item,
 /obj/item/storage/toolbox/syndicate,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
 /area/shuttle/ert)
 "J" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin6"
 	},
 /area/shuttle/ert)
 "K" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "stan2"
 	},
@@ -155,6 +196,7 @@
 "L" = (
 /obj/structure/bed/chair/dropship/passenger,
 /obj/effect/landmark/ert_spawns/distress,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
@@ -165,11 +207,13 @@
 /obj/item/storage/firstaid/regular,
 /obj/item/storage/belt/medical/full/with_defib_and_analyzer,
 /obj/item/device/healthanalyzer,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
 /area/shuttle/ert)
 "N" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin4"
 	},
@@ -181,13 +225,39 @@
 	pixel_x = 2;
 	pixel_y = -5
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
 /area/shuttle/ert)
 "P" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "rightengine_2"
+	},
+/area/shuttle/ert)
+"Q" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/light{
+	pixel_x = 0;
+	req_light_switch = 0
+	},
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin3"
+	},
+/area/shuttle/ert)
+"R" = (
+/obj/structure/bed/chair/dropship/passenger{
+	dir = 8
+	},
+/obj/effect/landmark/ert_spawns/distress,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/light{
+	dir = 4;
+	req_light_switch = 0
+	},
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15"
 	},
 /area/shuttle/ert)
 "S" = (
@@ -195,32 +265,38 @@
 	dir = 8
 	},
 /obj/effect/landmark/ert_spawns/distress,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
 /area/shuttle/ert)
 "T" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "stan5"
 	},
 /area/shuttle/ert)
 "V" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "stan27"
 	},
 /area/shuttle/ert)
 "W" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert{
 	icon_state = "stan25"
 	},
 /area/shuttle/ert)
 "X" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/ert,
 /area/shuttle/ert)
 "Y" = (
 /turf/template_noop,
 /area/template_noop)
 "Z" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin7"
 	},
@@ -247,7 +323,7 @@ l
 I
 v
 H
-H
+e
 H
 v
 M
@@ -283,7 +359,7 @@ L
 r
 b
 b
-b
+Q
 K
 "}
 (5,1,1) = {"
@@ -307,7 +383,7 @@ l
 O
 v
 S
-S
+R
 S
 v
 M

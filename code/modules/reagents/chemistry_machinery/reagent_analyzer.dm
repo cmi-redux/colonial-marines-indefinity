@@ -94,7 +94,7 @@
 			chemical_data.save_new_properties(S.properties)
 		if(S.chemclass >= CHEM_CLASS_SPECIAL && !chemical_data.chemical_identified_list[S.id])
 			if(last_used)
-				last_used.count_niche_stat(STATISTICS_NICHE_CHEMS)
+				last_used.count_statistic_stat(STATISTICS_CHEMS)
 			var/datum/chem_property/P = S.get_property(PROPERTY_DNA_DISINTEGRATING)
 			if(P)
 				if(chemical_data.clearance_level >= S.gen_tier)
@@ -108,7 +108,7 @@
 		report.info += "<center><img src = wylogo.png><HR><I><B>Official Weyland-Yutani Document</B><BR>Reagent Analysis Print</I><HR><H2>Analysis ERROR</H2></center>"
 		report.info += "<B>Result:</B><BR>Analysis failed for sample #[sample_number].<BR><BR>\n"
 		report.info += "<B>Reason for error:</B><BR><I>[reason]</I><BR>\n"
-	report.info += "<BR><HR><font size = \"1\"><I>This report was automatically printed by the A-XRF Scanner.<BR>The [MAIN_SHIP_NAME], [time2text(world.timeofday, "MM/DD")]/[game_year], [worldtime2text()]</I></font><BR>\n<span class=\"paper_field\"></span>"
+	report.info += "<BR><HR><font size = \"1\"><I>This report was automatically printed by the A-XRF Scanner.<BR>The [MAIN_SHIP_NAME], [time2text(world.timeofday, "MM/DD")]/[game_year], [game_time_timestamp()]</I></font><BR>\n<span class=\"paper_field\"></span>"
 
 /datum/reagent/proc/print_report(turf/loc, obj/item/paper/research_report/report, admin_spawned = FALSE, sample_number = 0)
 	if(!report)

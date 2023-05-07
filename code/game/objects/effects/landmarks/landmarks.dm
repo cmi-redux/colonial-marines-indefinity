@@ -4,26 +4,25 @@
 	icon_state = "x2"
 	anchored = TRUE
 	unacidable = TRUE
-
-	var/invisibility_value = INVISIBILITY_MAXIMUM
+	layer = TURF_LAYER
+	plane = GAME_PLANE
+	invisibility = INVISIBILITY_ABSTRACT
 
 /obj/effect/landmark/New()
 	..()
 	tag = "landmark*[name]"
-	invisibility = invisibility_value
 	return 1
 
 /obj/effect/landmark/Initialize(mapload, ...)
 	. = ..()
 	GLOB.landmarks_list += src
-	invisibility = invisibility_value
 
 /obj/effect/landmark/Destroy()
 	GLOB.landmarks_list -= src
 	return ..()
 
 /obj/effect/landmark/newplayer_start
-	name = "New player start"
+	name = "New Player Start"
 
 /obj/effect/landmark/newplayer_start/New() // this must be New()
 	. = ..()
@@ -92,17 +91,6 @@
 
 /obj/effect/landmark/monkey_spawn/Destroy()
 	GLOB.monkey_spawns -= src
-	return ..()
-
-/obj/effect/landmark/latewhiskey
-	name = "Whiskey Outpost Late join"
-
-/obj/effect/landmark/latewhiskey/Initialize(mapload, ...)
-	. = ..()
-	GLOB.latewhiskey += src
-
-/obj/effect/landmark/latewhiskey/Destroy()
-	GLOB.latewhiskey -= src
 	return ..()
 
 /obj/effect/landmark/thunderdome/one
@@ -240,7 +228,7 @@
 	name = "AI"
 
 
-//****************************************** MARINE ROLES ************************************************/
+//****************************************** MARINE ROLES ************************************************//
 /obj/effect/landmark/start/whiskey //category moment, indeed
 
 /obj/effect/landmark/start/whiskey/marine
@@ -271,8 +259,7 @@
 	icon_state = "engi_spawn"
 	job = /datum/job/marine/engineer/whiskey
 
-//****************************************** LOGISTICAL ROLES ************************************************/
-
+//****************************************** LOGISTICAL ROLES ************************************************//
 /obj/effect/landmark/start/whiskey/requisition
 	job = /datum/job/logistics/requisition/whiskey
 
@@ -283,12 +270,12 @@
 	job = /datum/job/logistics/engineering/whiskey
 
 /obj/effect/landmark/start/whiskey/maint
-	job = /datum/job/logistics/tech/maint/whiskey
+	job = /datum/job/logistics/otech/maint/whiskey
 
 /obj/effect/landmark/start/whiskey/tech
-	job = /datum/job/logistics/tech //Need to create a WO variant in the future
+	job = /datum/job/logistics/otech //Need to create a WO variant in the future
 
-//****************************************** MILITARY POLICE- HONOR-GUARD ************************************************/
+//****************************************** MILITARY POLICE- HONOR-GUARD ************************************************//
 /obj/effect/landmark/start/whiskey/warrant
 	job = /datum/job/command/warrant/whiskey
 
@@ -298,8 +285,7 @@
 /obj/effect/landmark/start/whiskey/warden
 	job = /datum/job/command/warden //Need to create a WO variant in the future
 
-//****************************************** CIC - COMMAND ************************************************/
-
+//****************************************** CIC - COMMAND ************************************************//
 /obj/effect/landmark/start/whiskey/commander
 	job = /datum/job/command/commander/whiskey
 
@@ -309,7 +295,7 @@
 /obj/effect/landmark/start/whiskey/bridge
 	job = /datum/job/command/bridge/whiskey
 
-//****************************************** AUXILIARY - SUPPORT ************************************************/
+//****************************************** AUXILIARY - SUPPORT ************************************************//
 /obj/effect/landmark/start/whiskey/synthetic
 	job = /datum/job/civilian/synthetic/whiskey
 
@@ -328,10 +314,9 @@
 /obj/effect/landmark/start/whiskey/chef
 	job = /datum/job/civilian/chef //Need to create a WO variant in the future
 
-//****************************************** CIVILLIANS & MEDBAY ************************************************/
-
+//****************************************** CIVILLIANS & MEDBAY ************************************************//
 /obj/effect/landmark/start/whiskey/liaison
-	job = /datum/job/civilian/liaison/whiskey
+	job = /datum/job/civilian/liaison/combat_reporter
 
 /obj/effect/landmark/start/whiskey/cmo
 	job = /datum/job/civilian/professor/whiskey
@@ -345,43 +330,121 @@
 /obj/effect/landmark/start/whiskey/nurse
 	job = /datum/job/civilian/nurse //Need to create a WO variant in the future
 
-//****************************************** LATE JOIN ************************************************/
-
+//****************************************** LATE JOIN ************************************************//
 /obj/effect/landmark/late_join
 	name = "late join"
 	icon_state = "x2"
-	var/squad
+	var/squad = "other"
 
-/obj/effect/landmark/late_join/alpha
-	name = "alpha late join"
+//MARINE
+/obj/effect/landmark/late_join/marine
+	name = "marine late join"
+	faction_to_get = FACTION_MARINE
+
+/obj/effect/landmark/late_join/marine/alpha
+	name = "marine alpha late join"
 	squad = SQUAD_MARINE_1
 
-/obj/effect/landmark/late_join/bravo
-	name = "bravo late join"
+/obj/effect/landmark/late_join/marine/bravo
+	name = "marine bravo late join"
 	squad = SQUAD_MARINE_2
 
-/obj/effect/landmark/late_join/charlie
-	name = "charlie late join"
+/obj/effect/landmark/late_join/marine/charlie
+	name = "marine charlie late join"
 	squad = SQUAD_MARINE_3
 
-/obj/effect/landmark/late_join/delta
-	name = "delta late join"
+/obj/effect/landmark/late_join/marine/delta
+	name = "marine delta late join"
 	squad = SQUAD_MARINE_4
 
+//UPP
+/obj/effect/landmark/late_join/upp
+	name = "upp late join"
+	faction_to_get = FACTION_UPP
 
-/obj/effect/landmark/late_join/Initialize(mapload, ...)
+/obj/effect/landmark/late_join/upp/red_daragon
+	name = "upp red dragon late join"
+	squad = SQUAD_UPP_1
+
+/obj/effect/landmark/late_join/upp/sun_rise
+	name = "upp sun rise late join"
+	squad = SQUAD_UPP_2
+
+/obj/effect/landmark/late_join/upp/veiled_threat
+	name = "upp veiled threat late join"
+	squad = SQUAD_UPP_3
+
+/obj/effect/landmark/late_join/upp/death_seekers
+	name = "upp death seekers late join"
+	squad = SQUAD_UPP_4
+
+//CLF
+/obj/effect/landmark/late_join/clf
+	name = "clf late join"
+	faction_to_get = FACTION_CLF
+
+/obj/effect/landmark/late_join/clf/python
+	name = "clf python late join"
+	squad = SQUAD_CLF_1
+
+/obj/effect/landmark/late_join/clf/viper
+	name = "clf viper late join"
+	squad = SQUAD_CLF_2
+
+/obj/effect/landmark/late_join/clf/cobra
+	name = "clf cobra late join"
+	squad = SQUAD_CLF_3
+
+/obj/effect/landmark/late_join/clf/boa
+	name = "clf boa late join"
+	squad = SQUAD_CLF_4
+
+/obj/effect/landmark/late_join/Initialize()
 	. = ..()
-	if(squad)
-		LAZYADD(GLOB.latejoin_by_squad[squad], src)
-	else
-		GLOB.latejoin += src
+	if(!faction.late_join_landmarks[squad])
+		faction.late_join_landmarks[squad] = list()
+	faction.late_join_landmarks[squad] += src
 
 /obj/effect/landmark/late_join/Destroy()
-	if(squad)
-		LAZYREMOVE(GLOB.latejoin_by_squad[squad], src)
-	else
-		GLOB.latejoin -= src
+	faction.late_join_landmarks[squad] -= src
 	return ..()
+
+/proc/get_latejoin_spawn(mob/living/carbon/human/human, assigned_squad = "other")
+	var/turf/selected_turf
+	if(human && human.faction && assigned_squad)
+		if(length(human.faction.late_join_landmarks[assigned_squad]))
+			selected_turf = get_turf(pick(human.faction.late_join_landmarks[assigned_squad]))
+		if(!selected_turf)
+			for(var/squad in human.faction.late_join_landmarks)
+				if(!length(human.faction.late_join_landmarks[assigned_squad]))
+					continue
+				selected_turf = get_turf(pick(human.faction.late_join_landmarks[assigned_squad]))
+	return selected_turf
+
+//****************************************** DEFCON ASSETS ************************************************//
+/obj/effect/landmark/asset_drop_point
+	name = "asset drop point"
+	icon_state = "x2"
+
+/obj/effect/landmark/asset_drop_point/Initialize()
+	. = ..()
+	if(!defcon_drop_point[faction_to_get])
+		defcon_drop_point[faction_to_get] = list()
+	defcon_drop_point[faction_to_get] += src
+
+/obj/effect/landmark/asset_drop_point/Destroy()
+	defcon_drop_point[faction_to_get] -= src
+	return ..()
+
+/obj/effect/landmark/asset_drop_point/marine
+	name = "marine asset drop point"
+	icon_state = "x2"
+	faction_to_get = FACTION_MARINE
+
+/obj/effect/landmark/asset_drop_point/upp
+	name = "upp asset drop point"
+	icon_state = "x2"
+	faction_to_get = FACTION_UPP
 
 //****************************************** STATIC COMMS ************************************************//
 /obj/effect/landmark/static_comms
@@ -424,12 +487,13 @@
 	name = "zombie spawnpoint"
 	desc = "The spot a zombie spawns in. Players in-game can't see this."
 	icon_state = "corpse_spawner"
-	invisibility_value = INVISIBILITY_OBSERVER
+	invisibility = INVISIBILITY_OBSERVER
 	var/spawns_left = 1
 	var/infinite_spawns = FALSE
 
 /obj/effect/landmark/zombie/Initialize(mapload, ...)
 	. = ..()
+	GLOB.faction_datum[FACTION_ZOMBIE].force_spawning = TRUE
 	GLOB.zombie_landmarks += src
 
 /obj/effect/landmark/zombie/Destroy()
@@ -439,8 +503,7 @@
 /obj/effect/landmark/zombie/proc/spawn_zombie(mob/dead/observer/observer)
 	if(!infinite_spawns)
 		spawns_left--
-	if(spawns_left <= 0)
-		GLOB.zombie_landmarks -= src
+
 	anim(loc, loc, 'icons/mob/mob.dmi', null, "zombie_rise", 12, SOUTH)
 	observer.see_invisible = SEE_INVISIBLE_LIVING
 	observer.client.eye = src // gives the player a second to orient themselves to the spawn zone
@@ -453,7 +516,9 @@
 	arm_equipment(zombie, /datum/equipment_preset/other/zombie, randomise = TRUE, count_participant = TRUE, mob_client = observer.client, show_job_gear = TRUE)
 	observer.client.eye = zombie
 	observer.mind.transfer_to(zombie)
+	SSautobalancer.balance_action(zombie, "add")
 	if(spawns_left <= 0)
+		GLOB.zombie_landmarks -= src
 		qdel(src)
 
 /obj/effect/landmark/zombie/three

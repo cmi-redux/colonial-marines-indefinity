@@ -1,9 +1,8 @@
-//Xenomorph Life - Colonial Marines - Apophis775 - Last Edit: 03JAN2015
+#define XENO_ARMOR_REGEN_DELAY 60 SECONDS
 
-#define XENO_ARMOR_REGEN_DELAY 30 SECONDS
 /mob/living/carbon/xenomorph/Life(delta_time)
 	set invisibility = 0
-	set background = 1
+	set background = TRUE
 
 	if(!loc)
 		return
@@ -16,6 +15,7 @@
 	if(stat != DEAD) //Stop if dead. Performance boost
 
 		update_progression()
+		update_points()
 
 		//Status updates, death etc.
 		handle_xeno_fire()
@@ -37,13 +37,14 @@
 			handle_regular_hud_updates()
 
 /mob/living/carbon/xenomorph/proc/update_progression()
-	if(isnull(hive))
+	if(isnull(faction))
 		return
 	var/progress_amount = 1
 	if(SSxevolution)
-		progress_amount = SSxevolution.get_evolution_boost_power(hive.hivenumber)
-	var/ovipositor_check = (hive.allow_no_queen_actions || hive.evolution_without_ovipositor || (hive.living_xeno_queen && hive.living_xeno_queen.ovipositor))
-	if(caste && caste.evolution_allowed && (ovipositor_check || caste?.evolve_without_queen))
+		progress_amount = SSxevolution.get_evolution_boost_power(faction)
+	var/ovipositor_check = (faction.allow_no_queen_actions || faction.evolution_without_ovipositor || (faction.living_xeno_queen && faction.living_xeno_queen.ovipositor) || caste?.evolve_without_queen || Check_Crash())
+	if(caste && caste.evolution_allowed && evolution_stored < evolution_threshold && ovipositor_check)
+		evolution_stored = min(evolution_stored + progress_amount, evolution_threshold)
 		if(evolution_stored >= evolution_threshold)
 			if(!got_evolution_message)
 				evolve_message()
@@ -56,9 +57,27 @@
 /mob/living/carbon/xenomorph/proc/evolve_message()
 	to_chat(src, SPAN_XENODANGER("Your carapace crackles and your tendons strengthen. You are ready to <a href='?src=\ref[src];evolve=1;'>evolve</a>!")) //Makes this bold so the Xeno doesn't miss it
 	playsound_client(client, sound('sound/effects/xeno_evolveready.ogg'))
-
 	var/datum/action/xeno_action/onclick/evolve/evolve_action = new()
 	evolve_action.give_to(src)
+
+#define MUTATOR_COEF 4
+
+/mob/living/carbon/xenomorph/proc/update_points()
+	if(isnull(faction))
+		return
+
+	var/ovipositor_check = (faction.allow_no_queen_actions || faction.evolution_without_ovipositor || (faction.living_xeno_queen && faction.living_xeno_queen.ovipositor) || caste?.evolve_without_queen || Check_Crash())
+	if(ovipositor_check)
+		if(GLOB.alive_human_list.len && GLOB.living_xeno_list.len)
+			point_gain += 0.003 * ((GLOB.alive_human_list.len / MUTATOR_COEF) / GLOB.living_xeno_list.len)
+		else
+			point_gain += 0.003
+		if(point_gain >= 1)
+			mutators.remaining_points++
+			mutator_taked_points++
+			if(isqueen(src))
+				faction.mutators.remaining_points++
+			point_gain--
 
 // Always deal 80% of damage and deal the other 20% depending on how many fire stacks mob has
 #define PASSIVE_BURN_DAM_CALC(intensity, duration, fire_stacks) intensity*(fire_stacks/duration*0.2 + 0.8)
@@ -67,14 +86,14 @@
 	if(!on_fire)
 		return
 
-	var/obj/item/clothing/mask/facehugger/F = get_active_hand()
-	var/obj/item/clothing/mask/facehugger/G = get_inactive_hand()
-	if(istype(F))
-		F.die()
-		drop_inv_item_on_ground(F)
-	if(istype(G))
-		G.die()
-		drop_inv_item_on_ground(G)
+	var/obj/item/clothing/mask/facehugger/facehugger_active = get_active_hand()
+	var/obj/item/clothing/mask/facehugger/facehugger_inactive = get_inactive_hand()
+	if(istype(facehugger_active))
+		facehugger_active.die()
+		drop_inv_item_on_ground(facehugger_active)
+	if(istype(facehugger_inactive))
+		facehugger_inactive.die()
+		drop_inv_item_on_ground(facehugger_inactive)
 	if(!caste || !(caste.fire_immunity & FIRE_IMMUNITY_NO_DAMAGE) || fire_reagent.fire_penetrating)
 		apply_damage(armor_damage_reduction(GLOB.xeno_fire, PASSIVE_BURN_DAM_CALC(fire_reagent.intensityfire, fire_reagent.durationfire, fire_stacks)), BURN)
 		INVOKE_ASYNC(src, TYPE_PROC_REF(/mob, emote), pick("roar", "needhelp"))
@@ -108,17 +127,17 @@
 				else
 					use_current_aura = TRUE
 
-		if(leader_current_aura && hive && hive.living_xeno_queen && hive.living_xeno_queen.loc.z == loc.z) //Same Z-level as the Queen!
+		if(leader_current_aura && faction && faction.living_xeno_queen && faction.living_xeno_queen.loc.z == loc.z) //Same Z-level as the Queen!
 			use_leader_aura = TRUE
 
 		if(use_current_aura || use_leader_aura)
-			for(var/mob/living/carbon/xenomorph/Z as anything in GLOB.living_xeno_list)
-				if(Z.ignores_pheromones || Z.ignore_aura == current_aura || Z.ignore_aura == leader_current_aura || Z.z != z || get_dist(aura_center, Z) > round(6 + aura_strength * 2) || !HIVE_ALLIED_TO_HIVE(Z.hivenumber, hivenumber))
+			for(var/mob/living/carbon/xenomorph/xeno as anything in GLOB.living_xeno_list)
+				if(xeno.ignores_pheromones || xeno.ignore_aura == current_aura || xeno.ignore_aura == leader_current_aura || xeno.z != z || get_dist(aura_center, xeno) > round(6 + aura_strength * 2) || !(xeno.faction == faction || xeno.faction.faction_is_ally(faction)))
 					continue
 				if(use_leader_aura)
-					Z.affected_by_pheromones(leader_current_aura, leader_aura_strength)
+					xeno.affected_by_pheromones(leader_current_aura, leader_aura_strength)
 				if(use_current_aura)
-					Z.affected_by_pheromones(current_aura, aura_strength)
+					xeno.affected_by_pheromones(current_aura, aura_strength)
 
 	if(frenzy_aura != frenzy_new || warding_aura != warding_new || recovery_aura != recovery_new)
 		frenzy_aura = frenzy_new
@@ -163,8 +182,8 @@
 
 /mob/living/carbon/xenomorph/handle_regular_status_updates(regular_update = TRUE)
 	if(regular_update && health <= 0 && (!caste || (caste.fire_immunity & FIRE_IMMUNITY_NO_IGNITE) || !on_fire)) //Sleeping Xenos are also unconscious, but all crit Xenos are under 0 HP. Go figure
-		var/turf/T = loc
-		if(istype(T))
+		var/turf/turf = loc
+		if(istype(turf))
 			if(!check_weeds_for_healing()) //In crit, damage is maximal if you're caught off weeds
 				apply_damage(2.5 - warding_aura*0.5, BRUTE) //Warding can heavily lower the impact of bleedout. Halved at 2.5 phero, stopped at 5 phero
 			else
@@ -313,7 +332,7 @@ Make sure their actual health updates immediately.*/
 
 
 /mob/living/carbon/xenomorph/proc/handle_environment()
-	var/turf/T = loc
+	var/turf/turf = loc
 	var/recoveryActual = (!caste || (caste.fire_immunity & FIRE_IMMUNITY_NO_IGNITE) || fire_stacks == 0) ? recovery_aura : 0
 	var/env_temperature = loc.return_temperature()
 	if(caste && !(caste.fire_immunity & FIRE_IMMUNITY_NO_DAMAGE))
@@ -323,7 +342,7 @@ Make sure their actual health updates immediately.*/
 			if(prob(20))
 				to_chat(src, SPAN_WARNING("You feel a searing heat!"))
 
-	if(!T || !istype(T))
+	if(!turf || !istype(turf))
 		return
 
 	var/is_runner_hiding
@@ -333,29 +352,39 @@ Make sure their actual health updates immediately.*/
 
 	if(caste)
 		if(caste.innate_healing || check_weeds_for_healing())
-			if(!hive) return // can't heal if you have no hive, sorry bud
-			plasma_stored += plasma_gain * plasma_max / 100
+			if(!faction)
+				return
+			var/additional_plasma = 0
+			if(mutators.regeneration)
+				additional_plasma = plasma_gain/2
+			plasma_stored += (plasma_gain + additional_plasma) * plasma_max / 100
 			if(recovery_aura)
 				plasma_stored += round(plasma_gain * plasma_max / 100 * recovery_aura/4) //Divided by four because it gets massive fast. 1 is equivalent to weed regen! Only the strongest pheromones should bypass weeds
-			if(health < maxHealth && !hardcore && is_hive_living(hive) && last_hit_time + caste.heal_delay_time <= world.time)
+			var/additional_health = 0
+			if(mutators.regeneration)
+				additional_health = regeneration_multiplier/2
+			if(health < maxHealth && !MODE_HAS_FLAG(MODE_HARDCORE) && last_hit_time + caste.heal_delay_time <= world.time)
 				if(lying || resting)
 					if(health < 0) //Unconscious
-						heal_wounds(caste.heal_knocked_out * regeneration_multiplier, recoveryActual) //Healing is much slower. Warding pheromones make up for the rest if you're curious
+						heal_wounds(caste.heal_knocked_out * (regeneration_multiplier + additional_health), recoveryActual) //Healing is much slower. Warding pheromones make up for the rest if you're curious
 					else
-						heal_wounds(caste.heal_resting * regeneration_multiplier, recoveryActual)
+						heal_wounds(caste.heal_resting * (regeneration_multiplier + additional_health), recoveryActual)
 				else
-					heal_wounds(caste.heal_standing * regeneration_multiplier, recoveryActual)
+					heal_wounds(caste.heal_standing * (regeneration_multiplier + additional_health), recoveryActual)
 				updatehealth()
 
-			if(armor_integrity < armor_integrity_max && armor_deflection > 0 && world.time > armor_integrity_last_damage_time + XENO_ARMOR_REGEN_DELAY)
+			var/xeno_armor_regen_bonus = 0
+			if(mutators.regeneration)
+				xeno_armor_regen_bonus = XENO_ARMOR_REGEN_DELAY/2
+
+			if(armor_integrity < armor_integrity_max && armor_deflection > 0 && (world.time > (armor_integrity_last_damage_time + XENO_ARMOR_REGEN_DELAY - xeno_armor_regen_bonus)))
 				var/curve_factor = armor_integrity/armor_integrity_max
-				curve_factor *= curve_factor
-				if(curve_factor < 0.5)
-					curve_factor = 0.5
+				if(curve_factor < 1)
+					curve_factor = 1
 				if(armor_integrity/armor_integrity_max < 0.3)
 					curve_factor /= 2
 
-				var/factor = ((armor_deflection / 60) * 3 MINUTES) // 60 armor is restored in 10 minutes in 2 seconds intervals
+				var/factor = ((armor_deflection / 100) * (15 SECONDS - xeno_armor_regen_bonus)) // 60 armor is restored in 10 minutes in 2 seconds intervals
 				armor_integrity += 100*curve_factor/factor
 
 			if(armor_integrity > armor_integrity_max)
@@ -380,93 +409,83 @@ Make sure their actual health updates immediately.*/
 			current_aura = null
 			to_chat(src, SPAN_WARNING("You have run out of pheromones and stopped emitting pheromones."))
 
-	for(var/X in actions)
-		var/datum/action/A = X
-		A.update_button_icon()
+	for(var/xenomorph in actions)
+		var/datum/action/action = xenomorph
+		action.update_button_icon()
 
+	med_hud_set_armor()
 	hud_set_plasma() //update plasma amount on the plasma mob_hud
 
 /mob/living/carbon/xenomorph/proc/queen_locator()
 	if(!hud_used || !hud_used.locate_leader)
 		return
 
-	var/atom/movable/screen/queen_locator/QL = hud_used.locate_leader
+	var/atom/movable/screen/queen_locator/queen_locator = hud_used.locate_leader
 	if(!loc)
-		QL.icon_state = "trackoff"
+		queen_locator.icon_state = "trackoff"
 		return
 
 	var/atom/tracking_atom
-	switch(QL.track_state)
+	switch(queen_locator.track_state)
 		if(TRACKER_QUEEN)
-			if(!hive || !hive.living_xeno_queen)
-				QL.icon_state = "trackoff"
+			if(!faction || !faction.living_xeno_queen)
+				queen_locator.icon_state = "trackoff"
 				return
-			tracking_atom = hive.living_xeno_queen
+			tracking_atom = faction.living_xeno_queen
 		if(TRACKER_HIVE)
-			if(!hive || !hive.hive_location)
-				QL.icon_state = "trackoff"
+			if(!faction || !faction.faction_location)
+				queen_locator.icon_state = "trackoff"
 				return
-			tracking_atom = hive.hive_location
+			tracking_atom = faction.faction_location
 		else
-			var/leader_tracker = text2num(QL.track_state)
-			if(!hive || !hive.xeno_leader_list)
-				QL.icon_state = "trackoff"
+			var/leader_tracker = text2num(queen_locator.track_state)
+			if(!faction || !faction.xeno_leader_list)
+				queen_locator.icon_state = "trackoff"
 				return
-			if(leader_tracker > hive.xeno_leader_list.len)
-				QL.icon_state = "trackoff"
+			if(leader_tracker > faction.xeno_leader_list.len)
+				queen_locator.icon_state = "trackoff"
 				return
-			if(!hive.xeno_leader_list[leader_tracker])
-				QL.icon_state = "trackoff"
+			if(!faction.xeno_leader_list[leader_tracker])
+				queen_locator.icon_state = "trackoff"
 				return
-			tracking_atom = hive.xeno_leader_list[leader_tracker]
+			tracking_atom = faction.xeno_leader_list[leader_tracker]
 
 	if(!tracking_atom)
-		QL.icon_state = "trackoff"
+		queen_locator.icon_state = "trackoff"
 		return
 
 	if(tracking_atom.loc.z != loc.z || get_dist(src, tracking_atom) < 1 || src == tracking_atom)
-		QL.icon_state = "trackondirect"
+		queen_locator.icon_state = "trackondirect"
 	else
-		var/area/A = get_area(loc)
-		var/area/QA = get_area(tracking_atom.loc)
-		if(A.fake_zlevel == QA.fake_zlevel)
-			QL.setDir(get_dir(src, tracking_atom))
-			QL.icon_state = "trackon"
-		else
-			QL.icon_state = "trackondirect"
+		queen_locator.setDir(get_dir(src, tracking_atom))
+		queen_locator.icon_state = "trackon"
 
 /mob/living/carbon/xenomorph/proc/mark_locator()
 	if(!hud_used || !hud_used.locate_marker || !tracked_marker.loc || !loc)
 		return
 
-	var/tracked_marker_z_level = tracked_marker.loc.z  //I was getting errors if the mark was deleted while this was operating,
-	var/tracked_marker_turf = get_turf(tracked_marker)  //so I made local variables to circumvent this
-	var/area/A = get_area(loc)
-	var/area/MA = get_area(tracked_marker_turf)
-	var/atom/movable/screen/mark_locator/ML = hud_used.locate_marker
-	ML.desc = client
+	var/tracked_marker_z_level = tracked_marker.loc.z 		 //I was getting errors if the mark was deleted while this was operating,
+	var/tracked_marker_turf = get_turf(tracked_marker)	 //so I made local variables to circumvent this
+	var/atom/movable/screen/mark_locator/mark_locator = hud_used.locate_marker
+	mark_locator.desc = client
 
-	ML.overlays.Cut()
+	mark_locator.overlays.Cut()
 
 	if(tracked_marker_z_level != loc.z) //different z levels
-		ML.overlays |= image(tracked_marker.seenMeaning, "pixel_y" = 0)
-		ML.overlays |= image('icons/mob/hud/xeno_markers.dmi', "center_glow")
-		ML.overlays |= image('icons/mob/hud/xeno_markers.dmi', "z_direction")
+		mark_locator.overlays |= image(tracked_marker.seenMeaning, "pixel_y" = 0)
+		mark_locator.overlays |= image('icons/mob/hud/xeno_markers.dmi', "center_glow")
+		mark_locator.overlays |= image('icons/mob/hud/xeno_markers.dmi', "z_direction")
 		return
 	else if(tracked_marker_turf == get_turf(src)) //right on top of the marker
-		ML.overlays |= image(tracked_marker.seenMeaning, "pixel_y" = 0)
-		ML.overlays |= image('icons/mob/hud/xeno_markers.dmi', "center_glow")
-		ML.overlays |= image('icons/mob/hud/xeno_markers.dmi', "all_direction")
+		mark_locator.overlays |= image(tracked_marker.seenMeaning, "pixel_y" = 0)
+		mark_locator.overlays |= image('icons/mob/hud/xeno_markers.dmi', "center_glow")
+		mark_locator.overlays |= image('icons/mob/hud/xeno_markers.dmi', "all_direction")
 		return
-	else if(A.fake_zlevel == MA.fake_zlevel) //normal tracking
-		ML.setDir(get_dir(src, tracked_marker_turf))
-		ML.overlays |= image(tracked_marker.seenMeaning, "pixel_y" = 0)
-		ML.overlays |= image('icons/mob/hud/xeno_markers.dmi', "center_glow")
-		ML.overlays |= image('icons/mob/hud/xeno_markers.dmi', "direction")
-	else //same z level, different fake z levels (decks of almayer)
-		ML.overlays |= image(tracked_marker.seenMeaning, "pixel_y" = 0)
-		ML.overlays |= image('icons/mob/hud/xeno_markers.dmi', "center_glow")
-		ML.overlays |= image('icons/mob/hud/xeno_markers.dmi', "no_direction")
+	else
+		mark_locator.setDir(get_dir(src, tracked_marker_turf))
+		mark_locator.overlays |= image(tracked_marker.seenMeaning, "pixel_y" = 0)
+		mark_locator.overlays |= image('icons/mob/hud/xeno_markers.dmi', "center_glow")
+		mark_locator.overlays |= image('icons/mob/hud/xeno_markers.dmi', "direction")
 
 /mob/living/carbon/xenomorph/updatehealth()
 	if(status_flags & GODMODE)
@@ -487,7 +506,7 @@ Make sure their actual health updates immediately.*/
 				death(last_damage_data)
 			return
 		else if(health <= 0) //in crit
-			if(hardcore)
+			if(MODE_HAS_FLAG(MODE_HARDCORE))
 				async_gib(last_damage_data)
 			else if(world.time > next_grace_time && stat == CONSCIOUS)
 				var/grace_time = crit_grace_time > 0 ? crit_grace_time + (1 SECONDS * max(round(warding_aura - 1), 0)) : 0
@@ -515,12 +534,15 @@ Make sure their actual health updates immediately.*/
 		update_canmove()
 
 /mob/living/carbon/xenomorph/proc/handle_luminosity()
-	var/new_luminosity = 0
+	var/new_light_intensity = 0
 	if(caste)
-		new_luminosity += caste.caste_luminosity
-	if(on_fire)
-		new_luminosity += min(fire_stacks, 5)
-	SetLuminosity(new_luminosity) // light up xenos
+		new_light_intensity += caste.caste_luminosity
+	if(new_light_intensity && !light_on)
+		set_light_on(TRUE)
+	else if(light_on)
+		set_light_on(FALSE)
+	set_light_range_power_color(new_light_intensity, 0.5, LIGHT_COLOR_GREEN)
+
 
 /mob/living/carbon/xenomorph/handle_stunned()
 	if(stunned)
@@ -568,15 +590,14 @@ Make sure their actual health updates immediately.*/
 //Returns TRUE if xeno is on weeds
 //Returns TRUE if xeno is off weeds AND doesn't need weeds for healing AND is not on Almayer UNLESS Queen is also on Almayer (aka - no solo Lurker Almayer hero)
 /mob/living/carbon/xenomorph/proc/check_weeds_for_healing()
-	var/turf/T = loc
+	var/turf/turf = loc
+	var/obj/effect/alien/weeds/weeds = locate(/obj/effect/alien/weeds) in turf
 
-	var/obj/effect/alien/weeds/W = locate(/obj/effect/alien/weeds) in T
-
-	if(W && W.linked_hive.is_ally(src))
+	if(weeds && ally(weeds.faction))
 		return TRUE //weeds, yes!
 	if(need_weeds)
 		return FALSE //needs weeds, doesn't have any
-	if(hive && hive.living_xeno_queen && !is_mainship_level(hive.living_xeno_queen.loc.z) && is_mainship_level(loc.z))
+	if(faction && faction.living_xeno_queen && !is_mainship_level(faction.living_xeno_queen.loc.z) && is_mainship_level(loc.z))
 		return FALSE //We are on the ship, but the Queen isn't
 	return TRUE //we have off-weed healing, and either we're on Almayer with the Queen, or we're on non-Almayer, or the Queen is dead, good enough!
 

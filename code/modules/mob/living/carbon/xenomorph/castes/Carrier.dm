@@ -38,8 +38,6 @@
 
 	minimum_evolve_time = 5 MINUTES
 
-	minimap_icon = "carrier"
-
 /mob/living/carbon/xenomorph/carrier
 	caste_type = XENO_CASTE_CARRIER
 	name = XENO_CASTE_CARRIER
@@ -81,6 +79,8 @@
 
 	var/list/hugger_image_index = list()
 	var/mutable_appearance/hugger_overlays_icon
+
+	balance_formulas = list(BALANCE_FORMULA_XENO_ABILITER, BALANCE_FORMULA_XENO_BUILDER)
 
 /mob/living/carbon/xenomorph/carrier/update_icons()
 	. = ..()
@@ -126,27 +126,27 @@
 						funny_list -= i
 				hugger_image_index += funny_list[rand(1,length(funny_list))]
 
-/mob/living/carbon/xenomorph/carrier/Initialize(mapload, mob/living/carbon/xenomorph/oldxeno, h_number)
+/mob/living/carbon/xenomorph/carrier/Initialize(mapload, mob/living/carbon/xenomorph/old_xeno, datum/faction/hive_to_set)
 	. = ..()
 	hugger_overlays_icon = mutable_appearance('icons/mob/xenos/overlay_effects64x64.dmi',"empty")
 
+	AddComponent(/datum/component/footstep, FOOTSTEP_XENO_MEDIUM)
 /mob/living/carbon/xenomorph/carrier/death(cause, gibbed)
 	. = ..(cause, gibbed)
 	if(.)
 		var/chance = 75
 
-		if (huggers_cur)
-			//Hugger explosion, like an egg morpher
-			var/obj/item/clothing/mask/facehugger/hugger
+		if(huggers_cur)
+			var/obj/item/clothing/mask/facehugger/facehugger
 			visible_message(SPAN_XENOWARNING("The chittering mass of tiny aliens is trying to escape [src]!"))
 			for(var/i in 1 to huggers_cur)
 				if(prob(chance))
-					hugger = new(loc, hivenumber)
-					step_away(hugger, src, 1)
+					facehugger = new(loc, faction)
+					step_away(facehugger, src, 1)
 
 		while (eggs_cur > 0)
 			if(prob(chance))
-				new /obj/item/xeno_egg(loc, hivenumber)
+				new /obj/item/xeno_egg(loc, faction)
 				eggs_cur--
 
 /mob/living/carbon/xenomorph/carrier/get_status_tab_items()
@@ -156,7 +156,7 @@
 	. += "Stored Eggs: [eggs_cur] / [eggs_max]"
 
 /mob/living/carbon/xenomorph/carrier/proc/store_hugger(obj/item/clothing/mask/facehugger/F)
-	if(F.hivenumber != hivenumber)
+	if(F.faction != faction)
 		to_chat(src, SPAN_WARNING("This hugger is tainted!"))
 		return
 
@@ -172,7 +172,7 @@
 		to_chat(src, SPAN_WARNING("You can't carry more facehuggers on you."))
 
 /mob/living/carbon/xenomorph/carrier/proc/store_huggers_from_egg_morpher(obj/effect/alien/resin/special/eggmorph/morpher)
-	if(morpher.linked_hive && (morpher.linked_hive.hivenumber != hivenumber))
+	if(morpher.faction != faction)
 		to_chat(src, SPAN_WARNING("That egg morpher is tainted!"))
 		return
 
@@ -193,32 +193,32 @@
 		to_chat(src, SPAN_WARNING("You can't carry more facehuggers on you."))
 
 
-/mob/living/carbon/xenomorph/carrier/proc/throw_hugger(atom/T)
-	if(!T)
+/mob/living/carbon/xenomorph/carrier/proc/throw_hugger(atom/target_atom)
+	if(!target_atom)
 		return
 
 	if(!check_state())
 		return
 
 	//target a hugger on the ground to store it directly
-	if(istype(T, /obj/item/clothing/mask/facehugger))
-		var/obj/item/clothing/mask/facehugger/F = T
-		if(isturf(F.loc) && Adjacent(F))
-			if(F.hivenumber != hivenumber)
+	if(istype(target_atom, /obj/item/clothing/mask/facehugger))
+		var/obj/item/clothing/mask/facehugger/facehugger = target_atom
+		if(isturf(facehugger.loc) && Adjacent(facehugger))
+			if(facehugger.faction != faction)
 				to_chat(src, SPAN_WARNING("That facehugger is tainted!"))
-				drop_inv_item_on_ground(F)
+				drop_inv_item_on_ground(facehugger)
 				return
 			if(on_fire)
-				to_chat(src, SPAN_WARNING("Touching \the [F] while you're on fire would burn it!"))
+				to_chat(src, SPAN_WARNING("Touching \the [facehugger] while you're on fire would burn it!"))
 				return
-			store_hugger(F)
+			store_hugger(facehugger)
 			return
 
 	//target an egg morpher to top up on huggers
-	if(istype(T, /obj/effect/alien/resin/special/eggmorph))
-		var/obj/effect/alien/resin/special/eggmorph/morpher = T
+	if(istype(target_atom, /obj/effect/alien/resin/special/eggmorph))
+		var/obj/effect/alien/resin/special/eggmorph/morpher = target_atom
 		if(Adjacent(morpher))
-			if(morpher.linked_hive && (morpher.linked_hive.hivenumber != hivenumber))
+			if(morpher.faction != faction)
 				to_chat(src, SPAN_WARNING("That egg morpher is tainted!"))
 				return
 			if(on_fire)
@@ -227,8 +227,8 @@
 			store_huggers_from_egg_morpher(morpher)
 			return
 
-	var/obj/item/clothing/mask/facehugger/F = get_active_hand()
-	if(!F) //empty active hand
+	var/obj/item/clothing/mask/facehugger/facehugger = get_active_hand()
+	if(!facehugger) //empty active hand
 		//if no hugger in active hand, we take one from our storage
 		if(huggers_cur <= 0)
 			to_chat(src, SPAN_WARNING("You don't have any facehuggers to use!"))
@@ -238,34 +238,34 @@
 			to_chat(src, SPAN_WARNING("Retrieving a stored facehugger while you're on fire would burn it!"))
 			return
 
-		F = new(src, hivenumber)
+		facehugger = new(src, faction)
 		huggers_cur--
-		put_in_active_hand(F)
+		put_in_active_hand(facehugger)
 		to_chat(src, SPAN_XENONOTICE("You grab one of the facehugger in your storage. Now sheltering: [huggers_cur] / [huggers_max]."))
 		update_icons()
 		return
 
-	if(!istype(F)) //something else in our hand
+	if(!istype(facehugger)) //something else in our hand
 		to_chat(src, SPAN_WARNING("You need a facehugger in your hand to throw one!"))
 		return
 
 	if(!threw_a_hugger)
 		threw_a_hugger = TRUE
 		for(var/X in actions)
-			var/datum/action/A = X
-			A.update_button_icon()
-		drop_inv_item_on_ground(F)
-		F.throw_atom(T, 4, caste.throwspeed)
-		visible_message(SPAN_XENOWARNING("\The [src] throws something towards \the [T]!"), \
-			SPAN_XENOWARNING("You throw a facehugger towards \the [T]!"))
+			var/datum/action/action = X
+			action.update_button_icon()
+		drop_inv_item_on_ground(facehugger)
+		facehugger.throw_atom(target_atom, 4, caste.throwspeed)
+		visible_message(SPAN_XENOWARNING("\The [src] throws something towards \the [target_atom]!"), \
+			SPAN_XENOWARNING("You throw a facehugger towards \the [target_atom]!"))
 		spawn(caste.hugger_delay)
 			threw_a_hugger = 0
 			for(var/X in actions)
-				var/datum/action/A = X
-				A.update_button_icon()
+				var/datum/action/action = X
+				action.update_button_icon()
 
 /mob/living/carbon/xenomorph/carrier/proc/store_egg(obj/item/xeno_egg/E)
-	if(E.hivenumber != hivenumber)
+	if(E.faction != faction)
 		to_chat(src, SPAN_WARNING("That egg is tainted!"))
 		return
 	if(eggs_cur < eggs_max)
@@ -303,7 +303,7 @@
 		if(eggs_cur <= 0)
 			to_chat(src, SPAN_WARNING("You don't have any egg to use!"))
 			return
-		E = new(src, hivenumber)
+		E = new(src, faction)
 		eggs_cur--
 		put_in_active_hand(E)
 		to_chat(src, SPAN_XENONOTICE("You grab one of the eggs in your storage. Now sheltering: [eggs_cur] / [eggs_max]."))
@@ -329,11 +329,11 @@
 	if(huggers_cur <= huggers_reserved)
 		to_chat(user, SPAN_WARNING("\The [src] has reserved the remaining facehuggers for themselves."))
 		return
-	if(!GLOB.hive_datum[hivenumber].can_spawn_as_hugger(user))
+	if(!faction.can_spawn_as_hugger(user))
 		return
 	//Need to check again because time passed due to the confirmation window
 	if(!huggers_cur)
 		to_chat(user, SPAN_WARNING("\The [src] doesn't have any facehuggers to inhabit."))
 		return
-	GLOB.hive_datum[hivenumber].spawn_as_hugger(user, src)
+	faction.spawn_as_hugger(user, src)
 	huggers_cur--

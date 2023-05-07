@@ -1,4 +1,3 @@
-
 /obj/item/weapon/gun/smg
 	reload_sound = 'sound/weapons/handling/smg_reload.ogg'
 	unload_sound = 'sound/weapons/handling/smg_unload.ogg'
@@ -19,15 +18,31 @@
 	)
 
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	max_durability = WEAPON_DURABILITY_MEDIUM
+	durability_tier = WEAPON_DAMAGE_BIG
 	gun_category = GUN_CATEGORY_SMG
 
 /obj/item/weapon/gun/smg/Initialize(mapload, spawn_empty)
 	. = ..()
-	if(current_mag && current_mag.current_rounds > 0)
+	if(current_mag && current_mag.ammo_position > 0)
 		load_into_chamber()
 
 /obj/item/weapon/gun/smg/unique_action(mob/user)
 	cock(user)
+
+/obj/item/weapon/gun/smg/get_ammo_type()
+	if(!ammo)
+		return list("smg", "smg_empty")
+	else if(!in_chamber)
+		return list(ammo.hud_state, ammo.hud_state_empty)
+	else
+		return list(in_chamber.ammo.hud_state, in_chamber.ammo.hud_state_empty)
+
+/obj/item/weapon/gun/smg/get_ammo_count()
+	if(!current_mag)
+		return in_chamber ? 1 : 0
+	else
+		return in_chamber ? (current_mag.ammo_position + 1) : current_mag.ammo_position
 
 /obj/item/weapon/gun/smg/set_gun_config_values()
 	..()
@@ -37,7 +52,7 @@
 //M39 SMG
 
 /obj/item/weapon/gun/smg/m39
-	name = "\improper M39 submachinegun"
+	name = "M39 submachinegun"
 	desc = "The Armat Battlefield Systems M-39 submachinegun. Occasionally carried by light-infantry, scouts, engineers and medics. A lightweight, lower caliber alternative to the various Pulse weapons used the USCM. Fires 10x20mm rounds out of 48 round magazines."
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/uscm.dmi'
 	icon_state = "m39"
@@ -66,7 +81,7 @@
 		/obj/item/attachable/stock/smg/collapsible/brace,
 	)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_HAS_FULL_AUTO
 	starting_attachment_types = list(/obj/item/attachable/stock/smg/collapsible)
 	map_specific_decoration = TRUE
 
@@ -93,12 +108,12 @@
 //-------------------------------------------------------
 
 /obj/item/weapon/gun/smg/m39/elite
-	name = "\improper M39B/2 submachinegun"
+	name = "M39B/2 submachinegun"
 	desc = "A modified version M-39 submachinegun, re-engineered for better weight, handling and accuracy. Given only to elite units."
 	icon_state = "m39b2"
 	item_state = "m39b2"
 	current_mag = /obj/item/ammo_magazine/smg/m39/ap
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_WY_RESTRICTED
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_WY_RESTRICTED|GUN_HAS_FULL_AUTO
 	map_specific_decoration = FALSE
 	starting_attachment_types = list(/obj/item/attachable/stock/smg)
 
@@ -141,7 +156,7 @@
 //M5, a classic SMG used in a lot of action movies.
 
 /obj/item/weapon/gun/smg/mp5
-	name = "\improper MP5 submachinegun"
+	name = "MP5 submachinegun"
 	desc = "A German design, this was one of the most widely used submachine guns in the world. It's still possible to find this firearm in the hands of collectors or gun fanatics."
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/colony.dmi'
 	icon_state = "mp5"
@@ -193,7 +208,7 @@
 //MP27, based on the MP27, based on the M7.
 
 /obj/item/weapon/gun/smg/mp27
-	name = "\improper MP27 submachinegun"
+	name = "MP27 submachinegun"
 	desc = "An archaic design going back almost a century, the MP27 was common in its day. Today it sees limited use as cheap computer-printed replicas or family heirlooms. An extremely ergonomic and lightweight design allows easy mass production and surpisingly good handling, but the cheap materials used hurt the weapon's scatter noticeably."
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/colony.dmi'
 	icon_state = "mp7"
@@ -245,7 +260,7 @@
 #define PPSH_UNJAM_CHANCE 25
 
 /obj/item/weapon/gun/smg/ppsh
-	name = "\improper PPSh-17b submachinegun"
+	name = "PPSh-17b submachinegun"
 	desc = "An unauthorized copy of a replica of a prototype submachinegun developed in a third world shit hole somewhere."
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/upp.dmi'
 	icon_state = "ppsh17b"
@@ -338,7 +353,7 @@
 //GENERIC UZI //Based on the uzi submachinegun, of course.
 
 /obj/item/weapon/gun/smg/mac15
-	name = "\improper MAC-15 submachinegun"
+	name = "MAC-15 submachinegun"
 	desc = "A cheap, reliable design and manufacture make this ubiquitous submachinegun useful despite the age." //Includes proprietary 'full-auto' mode, banned in several Geneva Suggestions rim-wide.
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/colony.dmi'
 	icon_state = "mac15"
@@ -476,7 +491,7 @@
 //FP9000 //Based on the FN P90
 
 /obj/item/weapon/gun/smg/fp9000
-	name = "\improper FN FP9000 Submachinegun"
+	name = "FN FP9000 Submachinegun"
 	desc = "An old design, but one that's stood the test of time. A leaked and unencrypted 3D-printing pattern alongside an extremely robust and reasonably cheap to manufacture frame have ensured this weapon be a mainstay of rim colonies and private security firms for over a century."
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/colony.dmi'
 	icon_state = "fp9000"
@@ -500,7 +515,7 @@
 		/obj/item/attachable/extended_barrel,
 	)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_HAS_FULL_AUTO
 
 /obj/item/weapon/gun/smg/fp9000/handle_starting_attachment()
 	..()
@@ -528,7 +543,7 @@
 	recoil_unwielded = RECOIL_AMOUNT_TIER_5
 
 /obj/item/weapon/gun/smg/fp9000/pmc
-	name = "\improper FN FP9000/2 Submachinegun"
+	name = "FN FP9000/2 Submachinegun"
 	desc = "Despite the rather ancient design, the FN FP9K sees frequent use in PMC teams due to its extreme reliability and versatility, allowing it to excel in any situation, especially due to the fact that they use the patented, official version of the gun, which has recieved several upgrades and tuning to its design over time."
 	icon_state = "fp9000_pmc"
 	item_state = "fp9000_pmc"

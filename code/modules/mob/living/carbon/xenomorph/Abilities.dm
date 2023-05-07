@@ -29,7 +29,7 @@
 		to_chat(X, SPAN_XENOWARNING("You can't do that from there."))
 		return
 
-	if(SSticker?.mode?.hardcore)
+	if(MODE_HAS_FLAG(MODE_HARDCORE))
 		to_chat(X, SPAN_XENOWARNING("A certain presence is preventing you from digging tunnels here."))
 		return
 
@@ -68,7 +68,7 @@
 	X.visible_message(SPAN_XENONOTICE("\The [X] digs out a tunnel entrance."), \
 	SPAN_XENONOTICE("You dig out an entrance to the tunnel network."), null, 5)
 
-	var/obj/structure/tunnel/tunnelobj = new(T, X.hivenumber)
+	var/obj/structure/tunnel/tunnelobj = new(T, X.faction)
 	X.tunnel_delay = 1
 	addtimer(CALLBACK(src, PROC_REF(cooldown_end)), 4 MINUTES)
 	var/msg = strip_html(input("Add a description to the tunnel:", "Tunnel Description") as text|null)
@@ -80,8 +80,8 @@
 		msg_admin_niche("[X]/([key_name(X)]) has named a new tunnel \"[msg]\".")
 		tunnelobj.tunnel_desc = "[msg]"
 
-	if(X.hive.living_xeno_queen || X.hive.allow_no_queen_actions)
-		for(var/mob/living/carbon/xenomorph/target_for_message as anything in X.hive.totalXenos)
+	if(X.faction.living_xeno_queen || X.faction.allow_no_queen_actions)
+		for(var/mob/living/carbon/xenomorph/target_for_message as anything in X.faction.totalMobs)
 			var/overwatch_target = XENO_OVERWATCH_TARGET_HREF
 			var/overwatch_src = XENO_OVERWATCH_SRC_HREF
 			to_chat(target_for_message, SPAN_XENOANNOUNCE("Hive: A new tunnel[description ? " ([description])" : ""] has been created by [X] (<a href='byond://?src=\ref[target_for_message];[overwatch_target]=\ref[X];[overwatch_src]=\ref[target_for_message]'>watch</a>) at <b>[get_area_name(tunnelobj)]</b>."))
@@ -95,14 +95,14 @@
 	to_chat(X, SPAN_NOTICE("You are ready to dig a tunnel again."))
 	X.tunnel_delay = 0
 
-//Queen Abilities
+//queen Abilities
 /datum/action/xeno_action/onclick/screech
 	name = "Screech (250)"
 	action_icon_state = "screech"
 	ability_name = "screech"
 	macro_path = /datum/action/xeno_action/verb/verb_screech
 	action_type = XENO_ACTION_CLICK
-	xeno_cooldown = 50 SECONDS
+	xeno_cooldown = 90 SECONDS
 	plasma_cost = 250
 	cooldown_message = "You feel your throat muscles vibrate. You are ready to screech again."
 	no_cooldown_msg = FALSE // Needed for onclick actions
@@ -111,39 +111,35 @@
 /datum/action/xeno_action/onclick/screech/use_ability(atom/target)
 	var/mob/living/carbon/xenomorph/queen/xeno = owner
 
-	if (!istype(xeno))
+	if(!istype(xeno))
 		return
 
-	if (!action_cooldown_check())
+	if(!action_cooldown_check())
 		return
 
-	if (!xeno.check_state())
+	if(!xeno.check_state())
 		return
 
-	if (!check_and_use_plasma_owner())
+	if(!check_and_use_plasma_owner())
 		return
 
 	//screech is so powerful it kills huggers in our hands
-	if(istype(xeno.r_hand, /obj/item/clothing/mask/facehugger))
-		var/obj/item/clothing/mask/facehugger/hugger = xeno.r_hand
-		if(hugger.stat != DEAD)
-			hugger.die()
-
-	if(istype(xeno.l_hand, /obj/item/clothing/mask/facehugger))
-		var/obj/item/clothing/mask/facehugger/hugger = xeno.l_hand
-		if(hugger.stat != DEAD)
-			hugger.die()
+	if(istype(xeno.l_hand, /obj/item/clothing/mask/facehugger) || istype(xeno.r_hand, /obj/item/clothing/mask/facehugger))
+		var/list/hands_times = list(xeno.r_hand, xeno.l_hand)
+		for(var/obj/item/clothing/mask/facehugger/hugger in hands_times)
+			if(hugger.stat != DEAD)
+				hugger.die()
 
 	playsound(xeno.loc, pick(xeno.screech_sound_effect_list), 75, 0, status = 0)
 	xeno.visible_message(SPAN_XENOHIGHDANGER("[xeno] emits an ear-splitting guttural roar!"))
 	xeno.create_shriekwave() //Adds the visual effect. Wom wom wom
 
-	for(var/mob/mob in view())
-		if(mob && mob.client)
-			if(isxeno(mob))
-				shake_camera(mob, 10, 1)
+	for(var/mob/M in view())
+		if(M && M.client)
+			if(isxeno(M))
+				shake_camera(M, 1 SECONDS, 1)
 			else
-				shake_camera(mob, 30, 1) //50 deciseconds, SORRY 5 seconds was way too long. 3 seconds now
+				shake_camera(M, 3 SECONDS, 1)
 
 	var/list/mobs_in_view = list()
 	for(var/mob/living/carbon/M in oview(7, xeno))
@@ -323,7 +319,7 @@
 		return
 	if(!xeno.check_plasma(plasma_cost))
 		return
-	if(give_jelly_award(xeno.hive))
+	if(give_jelly_award(xeno.faction))
 		xeno.use_plasma(plasma_cost)
 
 /datum/action/xeno_action/onclick/queen_word

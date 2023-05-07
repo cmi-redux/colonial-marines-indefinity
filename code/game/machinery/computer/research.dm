@@ -36,10 +36,10 @@
 	//Saving to database
 	if(istype(B, /obj/item/paper))
 		var/obj/item/paper/P = B
-		var/response = alert(usr,"Do you want to save [P.name] to the research database?","[src]","Yes","No")
-		if(response != "Yes")
+		var/response = alert(usr, "Do you want to save [P.name] to the research database?", "[src]", usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO))
+		if(response != usr.client.auto_lang(LANGUAGE_YES))
 			return
-		response = alert(usr,"Use existing or new category?","[src]","Existing","New")
+		response = alert(usr, "Use existing or new category?", "[src]", "Existing", "New")
 		if(response == "Existing")
 			var/list/pool = list()
 			for(var/category in chemical_data.research_documents)

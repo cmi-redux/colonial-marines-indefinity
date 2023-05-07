@@ -138,7 +138,9 @@
 		/obj/item/reagent_container/hypospray,
 		/obj/item/bodybag,
 		/obj/item/device/defibrillator,
+		/obj/item/tool/surgery/surgsynth_graftline,
 		/obj/item/tool/surgery/surgical_line,
+		/obj/item/tool/surgery/synthgraft,
 		/obj/item/device/reagent_scanner,
 		/obj/item/device/analyzer/plant_analyzer,
 		/obj/item/roller,
@@ -322,7 +324,7 @@
 	max_storage_space = 21
 
 
-/obj/item/storage/belt/security/MP
+/obj/item/storage/belt/security/mp
 	name = "\improper M276 pattern military police rig"
 	desc = "The M276 is the standard load-bearing equipment of the USCM. It consists of a modular belt with various clips. This version is filled with an array of small pouches, meant to carry non-lethal equipment and restraints."
 	storage_slots = 6
@@ -330,7 +332,7 @@
 	max_storage_space = 30
 
 
-/obj/item/storage/belt/security/MP/full/fill_preset_inventory()
+/obj/item/storage/belt/security/mp/full/fill_preset_inventory()
 	new /obj/item/weapon/gun/energy/taser(src)
 	new /obj/item/device/flash(src)
 	new /obj/item/weapon/melee/baton(src)
@@ -339,11 +341,11 @@
 	new /obj/item/device/clue_scanner(src)
 
 
-/obj/item/storage/belt/security/MP/UPP
+/obj/item/storage/belt/security/mp/upp
 	name = "\improper Type 43 military police rig"
 	desc = "The Type 43 is the standard load-bearing equipment of the UPP. It consists of a modular belt with various clips. This version is filled with an array of small pouches, meant to carry non-lethal equipment and restraints."
 
-/obj/item/storage/belt/security/MP/UPP/full/fill_preset_inventory()
+/obj/item/storage/belt/security/mp/upp/full/fill_preset_inventory()
 	new /obj/item/weapon/gun/energy/taser(src)
 	new /obj/item/device/flash(src)
 	new /obj/item/weapon/melee/baton(src)
@@ -521,7 +523,7 @@
 	new /obj/item/ammo_magazine/rifle/type71/ap(src)
 
 // M56E HMG gunner belt
-/obj/item/storage/belt/marine/m2c
+/obj/item/storage/belt/marine/mounted
 	name = "\improper M804 heavygunner storage rig"
 	desc = "The M804 heavygunner storage rig is an M276 pattern toolbelt rig modified to carry ammunition for heavy machinegun systems, and engineering tools for the gunner."
 	icon_state = "m2c_ammo_rig"
@@ -540,8 +542,6 @@
 		/obj/item/tool/extinguisher/mini,
 		/obj/item/explosive/plastic,
 		/obj/item/explosive/mine,
-		/obj/item/ammo_magazine/m2c,
-		/obj/item/tool/wirecutters,
 		/obj/item/ammo_magazine/m56d,
 	)
 	has_gamemode_skin = FALSE
@@ -655,24 +655,6 @@
 	else
 		return ..()
 
-/obj/item/storage/belt/shotgun/xm88
-	name = "\improper M300 pattern .458 SOCOM loading rig"
-	desc = "An ammunition belt designed to hold the large .458 SOCOM caliber bullets for the XM88 heavy rifle."
-	icon_state = "boomslang-belt"
-	item_state = "marinebelt"
-	w_class = SIZE_LARGE
-	storage_slots = 14
-	max_w_class = SIZE_SMALL
-	max_storage_space = 28
-	can_hold = list(/obj/item/ammo_magazine/handful)
-
-/obj/item/storage/belt/shotgun/xm88/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/ammo_magazine/lever_action/xm88))
-		var/obj/item/ammo_magazine/lever_action/xm88/B = W
-		dump_ammo_to(B, user, B.transfer_handful_amount)
-	else
-		return ..()
-
 /obj/item/storage/belt/shotgun/full/quackers
 	icon_state = "inflatable"
 	item_state = "inflatable"
@@ -783,8 +765,6 @@
 
 
 
-
-
 ////////////////////////////// GUN BELTS /////////////////////////////////////
 
 /obj/item/storage/belt/gun
@@ -812,7 +792,6 @@
 	var/sheatheSound = 'sound/weapons/gun_pistol_sheathe.ogg'
 	var/drawSound = 'sound/weapons/gun_pistol_draw.ogg'
 	///Used to get flap overlay states as inserting a gun changes icon state.
-	var/base_icon
 	can_hold = list(
 		/obj/item/weapon/gun/pistol,
 		/obj/item/ammo_magazine/pistol,
@@ -874,7 +853,7 @@
 		sure that we don't have to do any extra calculations.
 		*/
 		playsound(src, drawSound, 7, TRUE)
-		var/image/gun_underlay = image(icon, current_gun.base_gun_icon)
+		var/image/gun_underlay = image(icon, current_gun.base_icon)
 		gun_underlay.pixel_x = holster_slots[slot]["icon_x"]
 		gun_underlay.pixel_y = holster_slots[slot]["icon_y"]
 		gun_underlay.color = current_gun.color
@@ -952,17 +931,20 @@
 		return
 
 	if(ammo_dumping.flags_magazine & AMMUNITION_HANDFUL_BOX)
-		var/handfuls = round(ammo_dumping.current_rounds / amount_to_dump, 1) //The number of handfuls, we round up because we still want the last one that isn't full
-		if(ammo_dumping.current_rounds != 0)
+		var/handfuls = round(ammo_dumping.ammo_position / amount_to_dump, 1) //The number of handfuls, we round up because we still want the last one that isn't full
+		if(ammo_dumping.ammo_position != 0)
 			if(contents.len < storage_slots - 1) //this is because it's a gunbelt and the final slot is reserved for the gun
 				to_chat(user, SPAN_NOTICE("You start refilling [src] with [ammo_dumping]."))
 				if(!do_after(user, 1.5 SECONDS, INTERRUPT_ALL, BUSY_ICON_GENERIC)) return
 				for(var/i = 1 to handfuls)
 					if(contents.len < storage_slots - 1)
 						var/obj/item/ammo_magazine/handful/new_handful = new /obj/item/ammo_magazine/handful
-						var/transferred_handfuls = min(ammo_dumping.current_rounds, amount_to_dump)
-						new_handful.generate_handful(ammo_dumping.default_ammo, ammo_dumping.caliber, amount_to_dump, transferred_handfuls, ammo_dumping.gun_type)
-						ammo_dumping.current_rounds -= transferred_handfuls
+						var/transferred_handfuls = min(ammo_dumping.ammo_position, amount_to_dump)
+						new_handful.generate_handful(ammo_dumping.current_rounds[ammo_dumping.ammo_position].ammo, ammo_dumping.caliber, amount_to_dump, ammo_dumping.gun_type)
+						for(var/f=0;f<transferred_handfuls;f++)
+							var/obj/item/projectile/P = ammo_dumping.transfer_bullet_out()
+							P.forceMove(new_handful)
+							new_handful.transfer_bullet_in(P)
 						handle_item_insertion(new_handful, TRUE,user)
 						update_icon(-transferred_handfuls)
 					else
@@ -1325,12 +1307,12 @@
 	for(var/i = 1 to storage_slots - 1)
 		new /obj/item/ammo_magazine/pistol/c99/tranq(src)
 
-/obj/item/storage/belt/gun/type47/NY/fill_preset_inventory()
+/obj/item/storage/belt/gun/type47/ny/fill_preset_inventory()
 	handle_item_insertion(new /obj/item/weapon/gun/revolver/nagant())
 	for(var/total_storage_slots in 1 to storage_slots - 1)
 		new /obj/item/ammo_magazine/revolver/upp(src)
 
-/obj/item/storage/belt/gun/type47/NY/shrapnel/fill_preset_inventory()
+/obj/item/storage/belt/gun/type47/ny/shrapnel/fill_preset_inventory()
 	handle_item_insertion(new /obj/item/weapon/gun/revolver/nagant/shrapnel())
 	for(var/total_storage_slots in 1 to storage_slots - 1)
 		new /obj/item/ammo_magazine/revolver/upp/shrapnel(src)
@@ -1353,7 +1335,7 @@
 /obj/item/storage/belt/gun/type47/ivan/Initialize()
 	. = ..()
 	var/list/bad_mags = typesof(/obj/item/ammo_magazine/hardpoint) + /obj/item/ammo_magazine/handful + /obj/item/ammo_magazine/handful/shotgun/custom_color + /obj/item/ammo_magazine/flamer_tank/empty + /obj/item/ammo_magazine/flamer_tank/large/empty + /obj/item/ammo_magazine/flamer_tank/custom + /obj/item/ammo_magazine/rocket/custom + /obj/item/ammo_magazine/smg
-	var/list/sentry_mags = typesof(/obj/item/ammo_magazine/sentry) + typesof(/obj/item/ammo_magazine/sentry_flamer) + /obj/item/ammo_magazine/m56d + /obj/item/ammo_magazine/m2c
+	var/list/sentry_mags = typesof(/obj/item/ammo_magazine/sentry) + typesof(/obj/item/ammo_magazine/sentry_flamer) + /obj/item/ammo_magazine/m56d
 	var/list/internal_mags = (typesof(/obj/item/ammo_magazine/internal) + /obj/item/ammo_magazine/handful)
 	var/list/training_mags = list(
 		/obj/item/ammo_magazine/rifle/rubber,

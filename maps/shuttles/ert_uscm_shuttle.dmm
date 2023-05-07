@@ -1,0 +1,429 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/turf/template_noop,
+/area/template_noop)
+"b" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "stan20"
+	},
+/area/shuttle/ert)
+"c" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "stan27"
+	},
+/area/shuttle/ert)
+"d" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "stan25"
+	},
+/area/shuttle/ert)
+"e" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "stan21"
+	},
+/area/shuttle/ert)
+"f" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "stan22"
+	},
+/area/shuttle/ert)
+"h" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "stan23"
+	},
+/area/shuttle/ert)
+"i" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert,
+/area/shuttle/ert)
+"j" = (
+/obj/structure/surface/rack,
+/obj/item/storage/toolbox/mechanical,
+/obj/item/device/multitool,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/effect/landmark/ert_spawns/distress_uscm/item,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15";
+	tag = "icon-rasputin15"
+	},
+/area/shuttle/ert)
+"k" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin6";
+	tag = "icon-rasputin6"
+	},
+/area/shuttle/ert)
+"l" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/shuttle/dropship{
+	icon_state = "floor8";
+	tag = "icon-rasputin7"
+	},
+/area/shuttle/ert)
+"m" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin7";
+	tag = "icon-rasputin7"
+	},
+/area/shuttle/ert)
+"n" = (
+/obj/structure/surface/rack,
+/obj/item/storage/firstaid/adv{
+	pixel_x = 2;
+	pixel_y = -5
+	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/effect/landmark/ert_spawns/distress_uscm/item,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15";
+	tag = "icon-rasputin15"
+	},
+/area/shuttle/ert)
+"o" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "stan5"
+	},
+/area/shuttle/ert)
+"p" = (
+/obj/structure/machinery/door/airlock/almayer/generic,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin3";
+	tag = "icon-rasputin3"
+	},
+/area/shuttle/ert)
+"q" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15";
+	tag = "icon-rasputin15"
+	},
+/area/shuttle/ert)
+"s" = (
+/obj/structure/bed/chair/dropship/passenger,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/effect/landmark/ert_spawns/distress_uscm,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15";
+	tag = "icon-rasputin15"
+	},
+/area/shuttle/ert)
+"t" = (
+/obj/structure/bed/chair/dropship/passenger{
+	dir = 4
+	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/effect/landmark/ert_spawns/distress_uscm,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15";
+	tag = "icon-rasputin15"
+	},
+/area/shuttle/ert)
+"u" = (
+/obj/structure/bed/chair/dropship/passenger{
+	dir = 8
+	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/effect/landmark/ert_spawns/distress_uscm,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15";
+	tag = "icon-rasputin15"
+	},
+/area/shuttle/ert)
+"v" = (
+/obj/structure/surface/rack,
+/obj/item/storage/firstaid/regular,
+/obj/item/storage/belt/medical/lifesaver/full,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/effect/landmark/ert_spawns/distress_uscm/item,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15";
+	tag = "icon-rasputin15"
+	},
+/area/shuttle/ert)
+"w" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin4";
+	tag = "icon-rasputin7"
+	},
+/area/shuttle/ert)
+"x" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin8";
+	tag = "icon-rasputin7"
+	},
+/area/shuttle/ert)
+"y" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "stan_leftengine"
+	},
+/area/shuttle/ert)
+"z" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "stan8"
+	},
+/area/shuttle/ert)
+"A" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/effect/landmark/ert_spawns/distress_uscm,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin3";
+	tag = "icon-rasputin3"
+	},
+/area/shuttle/ert)
+"B" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "stan9"
+	},
+/area/shuttle/ert)
+"C" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "stan_rightengine"
+	},
+/area/shuttle/ert)
+"D" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "leftengine_3";
+	opacity = 0
+	},
+/area/shuttle/ert)
+"E" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "rightengine_3"
+	},
+/area/shuttle/ert)
+"F" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "leftengine_2";
+	opacity = 0
+	},
+/area/shuttle/ert)
+"G" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "rightengine_2"
+	},
+/area/shuttle/ert)
+"H" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/docking_port/mobile/emergency_response/ert4,
+/turf/closed/shuttle/ert{
+	icon_state = "leftengine_1";
+	opacity = 0
+	},
+/area/shuttle/ert)
+"I" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "stan1"
+	},
+/area/shuttle/ert)
+"J" = (
+/obj/structure/machinery/door/airlock/almayer/generic{
+	dir = 2
+	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15";
+	tag = "icon-rasputin15"
+	},
+/area/shuttle/ert)
+"K" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "stan2"
+	},
+/area/shuttle/ert)
+"L" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "stan3"
+	},
+/area/shuttle/ert)
+"M" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/closed/shuttle/ert{
+	icon_state = "rightengine_1"
+	},
+/area/shuttle/ert)
+"O" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/computer/shuttle/ert,
+/obj/structure/blocker/invisible_wall,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15";
+	tag = "icon-rasputin15"
+	},
+/area/shuttle/ert)
+"Q" = (
+/obj/structure/machinery/light{
+	pixel_x = 0;
+	req_light_switch = 0
+	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin3";
+	tag = "icon-rasputin3"
+	},
+/area/shuttle/ert)
+"R" = (
+/obj/structure/bed/chair/dropship/passenger{
+	dir = 8
+	},
+/obj/structure/machinery/light{
+	dir = 4;
+	req_light_switch = 0
+	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/effect/landmark/ert_spawns/distress_uscm,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15";
+	tag = "icon-rasputin15"
+	},
+/area/shuttle/ert)
+"S" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin3";
+	tag = "icon-rasputin3"
+	},
+/area/shuttle/ert)
+"T" = (
+/obj/structure/bed/chair/dropship/passenger{
+	dir = 4
+	},
+/obj/structure/machinery/light{
+	dir = 8;
+	req_light_switch = 0
+	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/effect/landmark/ert_spawns/distress_uscm,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15";
+	tag = "icon-rasputin15"
+	},
+/area/shuttle/ert)
+
+(1,1,1) = {"
+a
+b
+i
+p
+i
+i
+i
+p
+i
+y
+D
+F
+H
+"}
+(2,1,1) = {"
+a
+e
+j
+q
+t
+T
+t
+q
+v
+z
+i
+i
+I
+"}
+(3,1,1) = {"
+b
+f
+k
+A
+A
+A
+A
+A
+w
+q
+q
+q
+J
+"}
+(4,1,1) = {"
+c
+O
+l
+s
+s
+s
+s
+s
+l
+S
+S
+Q
+K
+"}
+(5,1,1) = {"
+d
+h
+m
+A
+A
+A
+A
+A
+x
+q
+q
+q
+J
+"}
+(6,1,1) = {"
+a
+e
+n
+q
+u
+R
+u
+q
+v
+B
+o
+o
+L
+"}
+(7,1,1) = {"
+a
+d
+o
+p
+o
+o
+o
+p
+o
+C
+E
+G
+M
+"}

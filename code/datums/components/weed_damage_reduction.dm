@@ -1,7 +1,6 @@
 /datum/component/weed_damage_mult
 	dupe_mode = COMPONENT_DUPE_HIGHLANDER
 
-	var/hivenumber = XENO_HIVE_NORMAL
 	var/damage_mult = 1
 	var/static/list/signal_damage_types = list(
 		COMSIG_MOB_TAKE_DAMAGE,
@@ -10,15 +9,17 @@
 	)
 	var/glow_color = "#ff14ff"
 	var/base_alpha = 110
+	var/datum/faction/faction
 
-/datum/component/weed_damage_mult/Initialize(hivenumber, damage_mult, glow_color = "#ff14ff")
+/datum/component/weed_damage_mult/Initialize(datum/faction/faction_to_set, damage_mult, glow_color = "#ff14ff")
 	if(!ismob(parent))
 		return COMPONENT_INCOMPATIBLE
 
 	. = ..()
-	src.hivenumber = hivenumber
-	src.damage_mult = damage_mult
-	src.glow_color = glow_color
+
+	faction = faction_to_set
+	damage_mult = damage_mult
+	glow_color = glow_color
 
 /datum/component/weed_damage_mult/RegisterWithParent()
 	RegisterSignal(parent, signal_damage_types, PROC_REF(set_incoming_damage))
@@ -39,7 +40,7 @@
 	if(!istype(T))
 		return
 
-	if(!T.weeds || T.weeds.hivenumber != hivenumber)
+	if(!T.weeds || T.weeds.faction != faction)
 		M.remove_filter("weed_damage_mult")
 		return
 
@@ -59,5 +60,5 @@
 	if(damages["damage"] <= 0)
 		return
 
-	if(T.weeds && T.weeds.hivenumber == hivenumber)
+	if(T.weeds && T.weeds.faction == faction)
 		damages["damage"] *= damage_mult

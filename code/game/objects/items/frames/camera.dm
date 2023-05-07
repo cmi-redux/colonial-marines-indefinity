@@ -116,8 +116,7 @@
 					if(direct != "LEAVE IT")
 						C.setDir(text2dir(direct))
 					if(i != 0)
-						var/confirm = alert(user, "Is this what you want? Chances Remaining: [i]", "Confirmation", "Yes", "No")
-						if(confirm == "Yes")
+						if(alert(user, "Is this what you want? Chances Remaining: [i]", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) == usr.client.auto_lang(LANGUAGE_YES))
 							break
 				return
 
@@ -174,5 +173,5 @@
 		if(!WT.isOn())
 			to_chat(user, SPAN_WARNING("\The [WT] needs to be on!"))
 			return 0
-		return 1
-	return 0
+		return TRUE
+	return FALSE

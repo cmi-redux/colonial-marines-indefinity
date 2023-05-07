@@ -15,14 +15,14 @@
 
 /obj/effect/alien/resin/special/nest/get_examine_text(mob/user)
 	. = ..()
-	if((isxeno(user) || isobserver(user)) && linked_hive)
+	if((isxeno(user) || isobserver(user)) && faction)
 		. += "Used to secure formidable hosts."
 
-/obj/effect/alien/resin/special/nest/Initialize(mapload, datum/hive_status/hive_ref)
+/obj/effect/alien/resin/special/nest/Initialize(mapload, datum/faction/xenomorph/hive_ref)
 	. = ..()
-	var/hive = 0
+	var/hive = null
 	if(hive_ref)
-		hive = hive_ref.hivenumber
+		hive = hive_ref
 
 	pred_nest = new /obj/structure/bed/nest/structure(loc, hive, src) // Nest cannot be destroyed unless the structure itself is destroyed
 

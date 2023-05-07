@@ -253,7 +253,7 @@
 		return
 	..()
 	if(prob(POTENCY_MULTIPLIER_VHIGH * potency))
-		var/datum/wound/internal_bleeding/I = new (0)
+		var/datum/wound/internal_bleeding/I = new(0)
 		L.add_bleeding(I, TRUE)
 		L.wounds += I
 	if(prob(POTENCY_MULTIPLIER_VHIGH * potency))
@@ -273,7 +273,7 @@
 	if(prob(10 * potency * delta_time) && ishuman(M))
 		var/mob/living/carbon/human/H = M
 		var/obj/limb/L = pick(H.limbs)
-		var/datum/wound/internal_bleeding/I = new (0)
+		var/datum/wound/internal_bleeding/I = new(0)
 		L.add_bleeding(I, TRUE)
 		L.wounds += I
 

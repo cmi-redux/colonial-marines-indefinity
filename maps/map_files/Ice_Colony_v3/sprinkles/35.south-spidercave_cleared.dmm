@@ -55,7 +55,7 @@
 /area/shiva/interior/caves/cp_camp)
 "gf" = (
 /obj/structure/ice/thin/single{
-	opacity = 1;
+	opacity = TRUE;
 	unacidable = 0
 	},
 /obj/structure/blocker/forcefield/multitile_vehicles,
@@ -264,7 +264,7 @@
 /area/shiva/interior/caves/left_spiders)
 "JM" = (
 /obj/structure/ice/thin/single{
-	opacity = 1;
+	opacity = TRUE;
 	unacidable = 0
 	},
 /turf/open/auto_turf/ice/layer2,
@@ -298,7 +298,7 @@
 /area/shiva/interior/caves/left_spiders)
 "NW" = (
 /obj/structure/ice/thin/single{
-	opacity = 1;
+	opacity = TRUE;
 	unacidable = 0
 	},
 /obj/structure/blocker/forcefield/multitile_vehicles,

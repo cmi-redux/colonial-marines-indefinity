@@ -11,7 +11,7 @@
 
 #if DEBUG_XENO
 /mob/verb/debug_xeno_mind()
-	set name =  "Debug Xeno Mind"
+	set name =  "Debug xenomorph Mind"
 	set category = "Debug"
 	set desc = "Shows whether or not a mine is contained within the xenomorph list."
 
@@ -47,7 +47,6 @@
 	hud_possible = list(HEALTH_HUD_XENO, PLASMA_HUD, PHEROMONE_HUD, QUEEN_OVERWATCH_HUD, ARMOR_HUD_XENO, XENO_STATUS_HUD, XENO_BANISHED_HUD, XENO_HOSTILE_ACID, XENO_HOSTILE_SLOW, XENO_HOSTILE_TAG, XENO_HOSTILE_FREEZE, HUNTER_HUD)
 	unacidable = TRUE
 	rebounds = TRUE
-	faction = FACTION_XENOMORPH
 	gender = NEUTER
 	icon_size = 48
 	black_market_value = KILL_MENDOZA
@@ -57,7 +56,6 @@
 	var/obj/item/r_store = null
 	var/obj/item/l_store = null
 
-	var/obj/item/iff_tag/iff_tag = null
 
 	var/static/list/walking_state_cache = list()
 	var/has_walking_icon_state = FALSE
@@ -69,12 +67,13 @@
 	// Self-Explanatory.
 	//
 	//////////////////////////////////////////////////////////////////
-	var/datum/caste_datum/caste // Used to extract determine ALL Xeno stats.
+	var/datum/caste_datum/caste // Used to extract determine ALL xenomorph stats.
 	var/speaking_key = "x"
 	var/speaking_noise = "alien_talk"
 	slash_verb = "slash"
 	slashes_verb = "slashes"
 	var/slash_sound = "alien_claw_flesh"
+	var/light_intensity = 0
 	health = 5
 	maxHealth = 5
 	var/crit_health = -100 // What negative healthy they die in.
@@ -91,6 +90,7 @@
 	var/plasma_max = 10
 	var/plasma_gain = 5
 	var/cooldown_reduction_percentage = 0 // By what % cooldown are reduced by. 1 => No cooldown. Should normally be clamped at 50%
+	var/point_gain = 0
 
 	var/death_fontsize = 3
 
@@ -131,16 +131,18 @@
 	var/aura_strength = 0 // Pheromone strength
 	var/weed_level = WEED_LEVEL_STANDARD
 	var/acid_level = 0
+	var/gas_level = 0
+	var/min_bombard_dist = 5
+	var/gas_life_multiplier = 1.0
 
 	// Mutator-related and other important vars
 	var/mutation_icon_state = null
 	var/mutation_type = null
-	var/datum/mutator_set/individual_mutators/mutators = new
+	var/datum/mutator_set/individual_mutations/mutators = new
 
 	// Hive-related vars
-	var/datum/hive_status/hive
-	hivenumber = XENO_HIVE_NORMAL
-	var/hive_pos = NORMAL_XENO // The position of the xeno in the hive (0 = normal xeno; 1 = queen; 2+ = hive leader)
+	faction_to_get = FACTION_XENOMORPH_NORMAL
+	var/hive_pos = NORMAL_XENO // The position of the xenomorph in the hive (0 = normal xenomorph; 1 = queen; 2+ = hive leader)
 
 	// Variables that can be mutated
 	var/ability_speed_modifier = 0 //Things that add on top of our base speed, based on what powers we are using
@@ -158,15 +160,13 @@
 
 	var/pslash_delay = 0
 
-	var/hardcore = 0 //Set to 1 in New() when Whiskey Outpost is active. Prevents healing and queen evolution, deactivates dchat death messages
-
 	//Naming variables
 	var/caste_type = "Drone"
 	var/nicknumber = 0 //The number after the name. Saved right here so it transfers between castes.
 	var/full_designation = ""
 
 	//This list of inherent verbs lets us take any proc basically anywhere and add them.
-	//If they're not a xeno subtype it might crash or do weird things, like using human verb procs
+	//If they're not a xenomorph subtype it might crash or do weird things, like using human verb procs
 	//It should add them properly on New() and should reset/readd them on evolves
 	var/list/inherent_verbs = list()
 
@@ -178,7 +178,7 @@
 	/// xenomorph type is given upon spawn
 	var/base_actions
 
-	/// this is the resin mark that is currently being tracked by the xeno
+	/// this is the resin mark that is currently being tracked by the xenomorph
 	var/obj/effect/alien/resin/marker/tracked_marker
 
 	//////////////////////////////////////////////////////////////////
@@ -196,7 +196,7 @@
 	var/health_modifier = 0
 	var/armor_modifier = 0
 	var/explosivearmor_modifier = 0
-	var/plasmapool_modifier = 1
+	var/plasmapool_modifier_mult = 1
 	var/plasmagain_modifier = 0
 	var/tackle_chance_modifier = 0
 	var/regeneration_multiplier = 1
@@ -208,6 +208,8 @@
 	var/evasion_modifier = 0
 	var/attack_speed_modifier = 0
 	var/armor_integrity_modifier = 0
+	var/special_structures_modifier = 1
+	var/damage_income_modifier = 1
 
 	var/list/modifier_sources
 
@@ -218,16 +220,20 @@
 	// State used by all Xeno mobs.
 	//
 	//////////////////////////////////////////////////////////////////
-	var/xeno_mobhud = FALSE //whether the xeno mobhud is activated or not.
+	var/map_to_view
+	var/minimap_name = "Hive Map"
+	var/list/datum/ui_minimap/minimap = list()
+
+	var/xeno_mobhud = FALSE //whether the xenomorph mobhud is activated or not.
 	var/xeno_hostile_hud = FALSE // 'Hostile' HUD - the verb Xenos use to see tags, etc on humans
 	var/list/plasma_types = list() //The types of plasma the caste contains
-	var/list/xeno_shields = list() // List of /datum/xeno_shield that holds all active shields on the Xeno.
+	var/list/xeno_shields = list() // List of /datum/xeno_shield that holds all active shields on the xenomorph.
 	var/acid_splash_cooldown = 5 SECONDS //Time it takes between acid splash retaliate procs
 	var/acid_splash_last //Last recorded time that an acid splash procced
 	var/interference = 0 // Stagger for predator weapons. Prevents hivemind usage, queen overwatching, etc.
-	var/mob/living/carbon/xenomorph/observed_xeno // Overwatched xeno for xeno hivemind vision
+	var/mob/living/carbon/xenomorph/observed_xeno // Overwatched xenomorph for xenomorph hivemind vision
 	var/need_weeds = TRUE // Do we need weeds to regen HP?
-	var/datum/behavior_delegate/behavior_delegate = null // Holds behavior delegate. Governs all 'unique' hooked behavior of the Xeno. Set by caste datums and strains.
+	var/datum/behavior_delegate/behavior_delegate = null // Holds behavior delegate. Governs all 'unique' hooked behavior of the xenomorph. Set by caste datums and strains.
 	var/datum/action/xeno_action/activable/selected_ability // Our currently selected ability
 	var/datum/action/xeno_action/activable/queued_action // Action to perform on the next click.
 	var/is_zoomed = FALSE
@@ -241,8 +247,8 @@
 	var/banished = FALSE // Banished xenos can be attacked by all other xenos
 	var/lock_evolve = FALSE //Prevents evolve/devolve (used when banished)
 	var/list/tackle_counter
-	var/evolving = FALSE // Whether the xeno is in the process of evolving
-	/// The damage dealt by a xeno whenever they take damage near someone
+	var/evolving = FALSE // Whether the xenomorph is in the process of evolving
+	/// The damage dealt by a xenomorph whenever they take damage near someone
 	var/acid_blood_damage = 12
 	var/nocrit = FALSE
 	var/deselect_timer = 0 // Much like Carbon.last_special is a short tick record to prevent accidental deselects of abilities
@@ -296,8 +302,9 @@
 
 	var/icon_xeno
 	var/icon_xenonid
-
 	bubble_icon = "alien"
+
+	var/mutator_taked_points = 0
 
 	/////////////////////////////////////////////////////////////////////
 	//
@@ -306,7 +313,7 @@
 	//////////////////////////////////////////////////////////////////
 	var/ignores_pheromones = FALSE // title, ignores ALL pheros
 	var/current_aura = null //"claw", "armor", "regen", "speed"
-	var/frenzy_new = 0 // Tally vars used in Xeno Life() for Pheromones
+	var/frenzy_new = 0 // Tally vars used in xenomorph Life() for Pheromones
 	var/warding_new = 0
 	var/recovery_new = 0
 	var/frenzy_aura = 0 //Strength of aura we are affected by. NOT THE ONE WE ARE EMITTING
@@ -339,13 +346,15 @@
 	var/eggs_max = 0
 	var/laid_egg = 0
 
-	//Taken from update_icon for all xeno's
+	//Taken from update_icon for all xenomorph's
 	var/list/overlays_standing[X_TOTAL_LAYERS]
 
 	var/atom/movable/vis_obj/xeno_wounds/wound_icon_carrier
 	var/atom/movable/vis_obj/xeno_pack/backpack_icon_carrier
 
-/mob/living/carbon/xenomorph/Initialize(mapload, mob/living/carbon/xenomorph/oldXeno, h_number)
+	sensor_radius = 14
+
+/mob/living/carbon/xenomorph/Initialize(mapload, mob/living/carbon/xenomorph/old_xeno, datum/faction/faction_to_set)
 	var/area/A = get_area(src)
 	if(A && A.statistic_exempt)
 		statistic_exempt = TRUE
@@ -353,35 +362,32 @@
 	wound_icon_carrier = new(null, src)
 	vis_contents += wound_icon_carrier
 
-	if(oldXeno)
-		set_movement_intent(oldXeno.m_intent)
-		hivenumber = oldXeno.hivenumber
-		nicknumber = oldXeno.nicknumber
-		life_kills_total = oldXeno.life_kills_total
-		life_damage_taken_total = oldXeno.life_damage_taken_total
-		evolution_stored = oldXeno.evolution_stored
-		if(oldXeno.iff_tag)
-			iff_tag = oldXeno.iff_tag
-			iff_tag.forceMove(src)
-			oldXeno.iff_tag = null
-	else if (h_number)
-		hivenumber = h_number
-
 	set_languages(list(LANGUAGE_XENOMORPH, LANGUAGE_HIVEMIND))
-	if(oldXeno)
-		for(var/datum/language/L in oldXeno.languages)
-			add_language(L.name)//Make sure to keep languages (mostly for event Queens that know English)
-
-	// Well, not yet, technically
-	var/datum/hive_status/in_hive = GLOB.hive_datum[hivenumber]
-	if(in_hive)
-		in_hive.add_xeno(src)
-		// But now we are!
-
-	for(var/T in in_hive.hive_inherant_traits)
-		ADD_TRAIT(src, T, TRAIT_SOURCE_HIVE)
-
 	mutators.xeno = src
+	if(old_xeno)
+		set_movement_intent(old_xeno.m_intent)
+		old_xeno.faction.add_mob(src)
+		faction.remove_mob(old_xeno)
+		nicknumber = old_xeno.nicknumber
+		if(old_xeno.organ_faction_tag)
+			organ_faction_tag = old_xeno.organ_faction_tag
+			organ_faction_tag.forceMove(src)
+			old_xeno.faction_tag = null
+
+		if(old_xeno.faction_tag)
+			faction_tag = old_xeno.faction_tag
+			faction_tag.forceMove(src)
+			old_xeno.faction_tag = null
+
+		for(var/datum/language/L in old_xeno.languages)
+			add_language(L.name)
+
+		mutator_taked_points = old_xeno.mutator_taked_points
+		point_gain = old_xeno.point_gain
+		mutators.remaining_points += mutator_taked_points
+
+	else if(faction_to_set)
+		faction_to_set.add_mob(src)
 
 	if(caste_type && GLOB.xeno_datum_list[caste_type])
 		caste = GLOB.xeno_datum_list[caste_type]
@@ -389,11 +395,9 @@
 		to_world("something went very wrong")
 		return
 
-	update_icon_source()
-
 	acid_splash_cooldown = caste.acid_splash_cooldown
 
-	if (caste.fire_immunity != FIRE_IMMUNITY_NONE)
+	if(caste.fire_immunity != FIRE_IMMUNITY_NONE)
 		if(caste.fire_immunity & FIRE_IMMUNITY_NO_IGNITE)
 			RegisterSignal(src, COMSIG_LIVING_PREIGNITION, PROC_REF(fire_immune))
 		RegisterSignal(src, list(
@@ -407,29 +411,24 @@
 			COMSIG_LIVING_FLAMER_FLAMED,
 		))
 
-	recalculate_everything()
-
 	if(mob_size < MOB_SIZE_BIG)
 		mob_flags |= SQUEEZE_UNDER_VEHICLES
 
-	generate_name()
-
-	if(isqueen(src))
-		SStracking.set_leader("hive_[hivenumber]", src)
-	SStracking.start_tracking("hive_[hivenumber]", src)
-
 	. = ..()
-	//WO GAMEMODE
-	if(SSticker?.mode?.hardcore)
-		hardcore = 1 //Prevents healing and queen evolution
+
+	if(faction)
+		faction.add_mob(src)
+
+	recalculate_everything()
+
+	for(var/T in faction.hive_inherant_traits)
+		ADD_TRAIT(src, T, TRAIT_SOURCE_HIVE)
+
 	time_of_birth = world.time
 
 	add_inherent_verbs()
 	add_abilities()
 	recalculate_actions()
-
-	if(z)
-		INVOKE_NEXT_TICK(src, PROC_REF(add_minimap_marker))
 
 	sight |= SEE_MOBS
 	see_invisible = SEE_INVISIBLE_LIVING
@@ -464,40 +463,46 @@
 	toggle_xeno_mobhud() //This is a verb, but fuck it, it just werks
 	toggle_xeno_hostilehud()
 
-	if(oldXeno)
-		a_intent_change(oldXeno.a_intent)//Keep intent
+	if(old_xeno)
+		a_intent_change(old_xeno.a_intent)//Keep intent
 
-		if(oldXeno.layer == XENO_HIDING_LAYER)
+		if(old_xeno.layer == XENO_HIDING_LAYER)
 			//We are hiding, let's keep hiding if we can!
 			for(var/datum/action/xeno_action/onclick/xenohide/hide in actions)
 				if(istype(hide))
 					layer = XENO_HIDING_LAYER
 					hide.button.icon_state = "template_active"
 
-		for(var/obj/item/W in oldXeno.contents) //Drop stuff
-			oldXeno.drop_inv_item_on_ground(W)
+		for(var/obj/item/W in old_xeno.contents) //Drop stuff
+			old_xeno.drop_inv_item_on_ground(W)
 
-		oldXeno.empty_gut()
+		old_xeno.empty_gut()
 
-		if(IS_XENO_LEADER(oldXeno))
-			hive.replace_hive_leader(oldXeno, src)
+		if(IS_XENO_LEADER(old_xeno))
+			faction.replace_hive_leader(old_xeno, src)
 
-	// Only handle free slots if the xeno is not in tdome
+	// Only handle free slots if the xenomorph is not in tdome
 	if(!is_admin_level(z))
 		var/selected_caste = GLOB.xeno_datum_list[caste_type]?.type
-		var/free_slots = LAZYACCESS(hive.free_slots, selected_caste)
+		var/free_slots = LAZYACCESS(faction.free_slots, selected_caste)
 		if(free_slots)
-			hive.free_slots[selected_caste]--
-			var/new_val = LAZYACCESS(hive.used_free_slots, selected_caste) + 1
-			LAZYSET(hive.used_free_slots, selected_caste, new_val)
+			faction.free_slots[selected_caste] -= 1
+			var/new_val = LAZYACCESS(faction.used_free_slots, selected_caste) + 1
+			LAZYSET(faction.used_free_slots, selected_caste, new_val)
 
-	if(round_statistics && !statistic_exempt)
-		round_statistics.track_new_participant(faction, 1)
+	link_minimap()
+
+	if(SSticker.mode.round_statistics && !statistic_exempt)
+		SSticker.mode.round_statistics.track_new_participant(faction, 1)
 	generate_name()
 
-	// This can happen if a xeno gets made before the game starts
-	if (hive && hive.hive_ui)
-		hive.hive_ui.update_all_xeno_data()
+	// This can happen if a xenomorph gets made before the game starts
+	if(faction && faction.faction_ui)
+		faction.faction_ui.update_all_xeno_data()
+
+	if(isqueen(src))
+		SStracking.set_leader("hive_[faction.faction_name]", src)
+	SStracking.start_tracking("hive_[faction.faction_name]", src)
 
 	job = caste.caste_type // Used for tracking the caste playtime
 	Decorate()
@@ -505,20 +510,21 @@
 	RegisterSignal(src, COMSIG_MOB_SCREECH_ACT, PROC_REF(handle_screech_act))
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_XENO_SPAWN, src)
 
+/mob/living/carbon/xenomorph/proc/link_minimap()
+	set waitfor = FALSE
+	WAIT_MAPVIEW_READY
+	for(var/i in ALL_MAPVIEW_MAPTYPES)
+		var/datum/ui_minimap/new_minimap = SSmapview.get_minimap_ui(faction, i, minimap_name)
+		minimap += list("[i]" = new_minimap)
+
 /mob/living/carbon/xenomorph/proc/handle_screech_act(mob/self, mob/living/carbon/xenomorph/queen/queen)
 	SIGNAL_HANDLER
 	if(queen.can_not_harm(src))
 		return COMPONENT_SCREECH_ACT_CANCEL
 
-/mob/living/carbon/xenomorph/proc/add_minimap_marker(flags = MINIMAP_FLAG_XENO)
-	if(IS_XENO_LEADER(src))
-		SSminimaps.add_marker(src, z, hud_flags = flags, given_image = caste.get_minimap_icon(), overlay_iconstates = list(caste.minimap_leadered_overlay))
-		return
-	SSminimaps.add_marker(src, z, hud_flags = flags, given_image = caste.get_minimap_icon())
-
 /mob/living/carbon/xenomorph/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_pass = PASS_MOB_IS_XENO
 		PF.flags_can_pass_all = PASS_MOB_THRU_XENO|PASS_AROUND|PASS_HIGH_OVER_ONLY
 
@@ -557,8 +563,8 @@
 	if(!nicknumber)
 		var/tempnumber = rand(1, 999)
 		var/list/numberlist = list()
-		for(var/mob/living/carbon/xenomorph/X in GLOB.xeno_mob_list)
-			numberlist += X.nicknumber
+		for(var/mob/living/carbon/xenomorph/xeno in GLOB.xeno_mob_list)
+			numberlist += xeno.nicknumber
 
 		while(tempnumber in numberlist)
 			tempnumber = rand(1, 999)
@@ -566,17 +572,13 @@
 		nicknumber = tempnumber
 
 	// Even if we don't have the hive datum we usually still have the hive number
-	var/datum/hive_status/in_hive = hive
-	if(!in_hive)
-		in_hive = GLOB.hive_datum[hivenumber]
-
-	//Im putting this in here, because this proc gets called when a player inhabits a SSD xeno and it needs to go somewhere (sorry)
+	//Im putting this in here, because this proc gets called when a player inhabits a SSD xenomorph and it needs to go somewhere (sorry)
 	hud_set_marks()
 
-	handle_name(in_hive)
+	handle_name()
 
-/mob/living/carbon/xenomorph/proc/handle_name(datum/hive_status/in_hive)
-	var/name_prefix = in_hive.prefix
+/mob/living/carbon/xenomorph/proc/handle_name()
+	var/name_prefix = faction.prefix
 	var/name_client_prefix = ""
 	var/name_client_postfix = ""
 	if(client)
@@ -585,7 +587,7 @@
 		age_xeno()
 	full_designation = "[name_client_prefix][nicknumber][name_client_postfix]"
 	if(!HAS_TRAIT(src, TRAIT_NO_COLOR))
-		color = in_hive.color
+		color = faction.color
 
 	var/age_display = show_age_prefix ? age_prefix : ""
 	var/name_display = ""
@@ -597,7 +599,7 @@
 	change_real_name(src, name)
 
 	// Since we updated our name we should update the info in the UI
-	in_hive.hive_ui.update_xeno_info()
+	faction.faction_ui.update_xeno_info()
 
 /mob/living/carbon/xenomorph/proc/set_lighting_alpha_from_prefs(client/xeno_client)
 	var/vision_level = xeno_client?.prefs?.xeno_vision_level_pref
@@ -668,14 +670,13 @@
 
 	if(isxeno(user))
 		var/mob/living/carbon/xenomorph/xeno = user
-		if(hivenumber != xeno.hivenumber)
-			. += "It appears to belong to [hive?.name ? "the [hive.name]" : "a different hive"]."
+		if(faction != xeno.faction)
+			. += "It appears to belong to [faction?.prefix ? "the [faction.prefix]" : "a different "]hive."
 
 	if(isxeno(user) || isobserver(user))
 		if(mutation_type != "Normal")
 			. += "It has specialized into a [mutation_type]."
-
-	if(iff_tag)
+	if(faction_tag)
 		. += SPAN_NOTICE("It has an IFF tag sticking out of its carapace.")
 
 /mob/living/carbon/xenomorph/Destroy()
@@ -687,21 +688,23 @@
 		tracked_marker = null
 
 	if(mind)
-		mind.name = name //Grabs the name when the xeno is getting deleted, to reference through hive status later.
-	if(IS_XENO_LEADER(src)) //Strip them from the Xeno leader list, if they are indexed in here
-		hive.remove_hive_leader(src, light_mode = TRUE)
-	SStracking.stop_tracking("hive_[hivenumber]", src)
+		mind.name = name //Grabs the name when the xenomorph is getting deleted, to reference through hive status later.
 
-	// Only handle free slots if the xeno is not in tdome
+	if(IS_XENO_LEADER(src)) //Strip them from the xenomorph leader list, if they are indexed in here
+		faction.remove_hive_leader(src, light_mode = TRUE)
+
+	SStracking.stop_tracking("hive_[faction.faction_name]", src)
+
+	// Only handle free slots if the xenomorph is not in tdome
 	if(!is_admin_level(z))
 		var/selected_caste = GLOB.xeno_datum_list[caste_type]?.type
-		var/used_slots = LAZYACCESS(hive.used_free_slots, selected_caste)
+		var/used_slots = LAZYACCESS(faction.used_free_slots, selected_caste)
 		if(used_slots)
-			hive.used_free_slots[selected_caste]--
-			var/new_val = LAZYACCESS(hive.free_slots, selected_caste) + 1
-			LAZYSET(hive.free_slots, selected_caste, new_val)
+			faction.used_free_slots[selected_caste] -= 1
+			var/new_val = LAZYACCESS(faction.free_slots, selected_caste) + 1
+			LAZYSET(faction.free_slots, selected_caste, new_val)
 
-	hive.remove_xeno(src)
+	faction.remove_mob(src)
 	remove_from_all_mob_huds()
 
 	observed_xeno = null
@@ -724,17 +727,13 @@
 		vis_contents -= backpack_icon_carrier
 		QDEL_NULL(backpack_icon_carrier)
 
-	QDEL_NULL(iff_tag)
+	faction = null
+	QDEL_NULL(faction_tag)
 
-	if(hardcore)
+	if(MODE_HAS_FLAG(MODE_HARDCORE))
 		attack_log?.Cut() // Completely clear out attack_log to limit mem usage if we fail to delete
 
 	. = ..()
-
-	// Everything below fits the "we have to clear by principle it but i dont wanna break stuff" bill
-	mutators = null
-
-
 
 /mob/living/carbon/xenomorph/slip(slip_source_name, stun_level, weaken_level, run_only, override_noslip, slide_steps)
 	return FALSE
@@ -751,7 +750,7 @@
 	if(issynth(L) && L.health < 0) // no pulling critted or dead synths
 		return FALSE
 	if(L.buckled)
-		return FALSE //to stop xeno from pulling marines on roller beds.
+		return FALSE //to stop xenomorph from pulling marines on roller beds.
 	if(!L.is_xeno_grabbable())
 		return FALSE
 	var/atom/A = AM.handle_barriers(src)
@@ -762,9 +761,9 @@
 	return ..()
 
 /mob/living/carbon/xenomorph/pull_response(mob/puller)
-	if(stat != DEAD && has_species(puller,"Human")) // If the Xeno is alive, fight back against a grab/pull
+	if(stat != DEAD && has_species(puller,"Human")) // If the xenomorph is alive, fight back against a grab/pull
 		var/mob/living/carbon/human/H = puller
-		if(H.ally_of_hivenumber(hivenumber))
+		if(H.ally(faction))
 			return TRUE
 		puller.apply_effect(rand(caste.tacklestrength_min,caste.tacklestrength_max), WEAKEN)
 		playsound(puller.loc, 'sound/weapons/pierce.ogg', 25, 1)
@@ -799,7 +798,7 @@
 
 
 /mob/living/carbon/xenomorph/check_improved_pointing()
-	//xeno leaders get a big arrow and less cooldown
+	//xenomorph leaders get a big arrow and less cooldown
 	if(hive_pos != NORMAL_XENO)
 		return TRUE
 
@@ -811,21 +810,17 @@
 /mob/living/carbon/xenomorph/get_pull_miltiplier()
 	return pull_multiplier
 
-/mob/living/carbon/xenomorph/proc/set_faction(new_faction = FACTION_XENOMORPH)
-	faction = new_faction
-
 //Call this function to set the hive and do other cleanup
-/mob/living/carbon/xenomorph/proc/set_hive_and_update(new_hivenumber = XENO_HIVE_NORMAL)
-	var/datum/hive_status/new_hive = GLOB.hive_datum[new_hivenumber]
-	if(!new_hive)
+/mob/living/carbon/xenomorph/proc/set_hive_and_update(datum/faction/faction_to_set)
+	if(!faction_to_set)
 		return
 
 	for(var/T in status_traits)
 		REMOVE_TRAIT(src, T, TRAIT_SOURCE_HIVE)
 
-	new_hive.add_xeno(src)
+	faction_to_set.add_mob(src)
 
-	for(var/T in new_hive.hive_inherant_traits)
+	for(var/T in faction_to_set.hive_inherant_traits)
 		ADD_TRAIT(src, T, TRAIT_SOURCE_HIVE)
 
 	if(istype(src, /mob/living/carbon/xenomorph/larva))
@@ -843,7 +838,7 @@
 	recalculate_everything()
 
 	// Update the hive status UI
-	new_hive.hive_ui.update_all_xeno_data()
+	faction_to_set.faction_ui.update_all_xeno_data()
 
 //*********************************************************//
 //********************Mutator functions********************//
@@ -856,8 +851,8 @@
 	recalculate_pheromones()
 	recalculate_maturation()
 	update_icon_source()
-	if(hive && hive.living_xeno_queen && hive.living_xeno_queen == src)
-		hive.recalculate_hive() //Recalculating stuff around Queen maturing
+	if(faction && faction.living_xeno_queen && faction.living_xeno_queen == src)
+		faction.recalculate_hive() //Recalculating stuff around Queen maturing
 
 
 /mob/living/carbon/xenomorph/proc/recalculate_stats()
@@ -869,17 +864,25 @@
 	recalculate_damage()
 	recalculate_evasion()
 	recalculate_tackle()
+	recalculate_cooldown()
+
+/mob/living/carbon/xenomorph/proc/recalculate_cooldown()
+	if(mutators.decrease_cooldown)
+		cooldown_reduction_percentage = 0.5
+	else
+		cooldown_reduction_percentage = 0
 
 /mob/living/carbon/xenomorph/proc/recalculate_tackle()
 	tackle_min = caste.tackle_min
 	tackle_max = caste.tackle_max
-	tackle_chance = caste.tackle_chance + tackle_chance_modifier
-	tacklestrength_min = caste.tacklestrength_min + mutators.tackle_strength_bonus + hive.mutators.tackle_strength_bonus
-	tacklestrength_max = caste.tacklestrength_max + mutators.tackle_strength_bonus + hive.mutators.tackle_strength_bonus
+	tackle_chance = caste.tackle_chance * (mutators.tackle_chance_multiplier * faction.mutators.tackle_chance_multiplier) + tackle_chance_modifier
+	tacklestrength_min = caste.tacklestrength_min + mutators.tackle_strength_bonus + faction.mutators.tackle_strength_bonus
+	tacklestrength_max = caste.tacklestrength_max + mutators.tackle_strength_bonus + faction.mutators.tackle_strength_bonus
 
 /mob/living/carbon/xenomorph/proc/recalculate_health()
 	var/new_max_health = nocrit ? health_modifier + maxHealth : health_modifier + caste.max_health
-	if (new_max_health == maxHealth)
+	new_max_health = round(new_max_health * mutators.health_multiplier * faction.mutators.health_multiplier + 0.5)
+	if(new_max_health == maxHealth)
 		return
 	var/currentHealthRatio = 1
 	if(health < maxHealth)
@@ -893,9 +896,11 @@
 	if(!plasma_max)
 		return
 
-	var/new_plasma_max = plasmapool_modifier * caste.plasma_max
-	plasma_gain = plasmagain_modifier + caste.plasma_gain
-	if (new_plasma_max == plasma_max)
+	var/new_plasma_max = round(plasmapool_modifier_mult * caste.plasma_max * mutators.plasma_multiplier * faction.mutators.plasma_multiplier + 0.5)
+	plasma_gain = plasmagain_modifier
+	plasma_gain += round(caste.plasma_gain * mutators.plasma_gain_multiplier * faction.mutators.plasma_gain_multiplier + 0.5) + plasmagain_modifier
+
+	if(new_plasma_max == plasma_max)
 		return
 	var/plasma_ratio = plasma_stored / plasma_max
 	plasma_max = new_plasma_max
@@ -912,22 +917,33 @@
 	recalculate_move_delay = TRUE
 	speed = speed_modifier
 	if(caste)
-		speed += caste.speed
+		speed = caste.speed + speed_modifier + mutators.speed_multiplier + faction.mutators.speed_multiplier
+
 	SEND_SIGNAL(src, COMSIG_XENO_RECALCULATE_SPEED)
 
 /mob/living/carbon/xenomorph/proc/recalculate_armor()
 	//We are calculating it in a roundabout way not to give anyone 100% armor deflection, so we're dividing the differences
-	armor_deflection = armor_modifier + round(100 - (100 - caste.armor_deflection))
+	armor_deflection = (caste.armor_deflection + armor_modifier + mutators.armor + faction.mutators.armor + armor_deflection_buff - armor_deflection_debuff) * (mutators.armor_multiplier * faction.mutators.armor_multiplier)
 	armor_explosive_buff = explosivearmor_modifier
+	damage_income_modifier = mutators.damage_income_modifier
 
 /mob/living/carbon/xenomorph/proc/recalculate_damage()
 	melee_damage_lower = damage_modifier
 	melee_damage_upper = damage_modifier
 	melee_vehicle_damage = damage_modifier
 	if(caste)
-		melee_damage_lower += caste.melee_damage_lower
-		melee_damage_upper += caste.melee_damage_upper
+		melee_damage_lower += round(caste.melee_damage_lower * mutators.damage_multiplier * faction.mutators.damage_multiplier + 0.5)
+		melee_damage_upper += round(caste.melee_damage_upper * mutators.damage_multiplier * faction.mutators.damage_multiplier + 0.5)
 		melee_vehicle_damage += caste.melee_vehicle_damage
+
+	if(mutators.acid_claws)
+		//Burn damage is equal to 12.5% of brute damage, multiplied by acid level (1-3)
+		burn_damage_lower = round(melee_damage_lower * acid_level * 0.125 + 0.5)
+		burn_damage_upper = round(melee_damage_upper * acid_level * 0.125 + 0.5)
+
+		//Brute damage is lowered by 12.5%. Overall damage will be greater than before if acid level is above 1
+		melee_damage_lower = round(melee_damage_lower * 0.875 + 0.5)
+		melee_damage_upper = round(melee_damage_upper * 0.875 + 0.5)
 
 /mob/living/carbon/xenomorph/proc/recalculate_evasion()
 	if(caste)
@@ -936,16 +952,18 @@
 /mob/living/carbon/xenomorph/proc/recalculate_actions()
 	recalculate_acid()
 	recalculate_weeds()
+	recalculate_gas()
 	pull_multiplier = mutators.pull_multiplier
 	if(isrunner(src))
-		//Xeno runners need a small nerf to dragging speed mutator
+		//xenomorph runners need a small nerf to dragging speed mutator
 		pull_multiplier = 1 - (1 - mutators.pull_multiplier) * 0.85
 		if(is_zoomed)
 			zoom_out()
 	if(iscarrier(src))
-		huggers_max = caste.huggers_max
-		eggs_max = caste.eggs_max
+		huggers_max = mutators.carry_boost_level + caste.huggers_max
+		eggs_max = mutators.carry_boost_level + caste.eggs_max
 	need_weeds = mutators.need_weeds
+	special_structures_modifier = mutators.special_structures_multiplier * caste.special_structures_multiplier
 
 
 /mob/living/carbon/xenomorph/proc/recalculate_acid()
@@ -955,7 +973,7 @@
 		return //Caste does not use acid
 	for(var/datum/action/xeno_action/activable/corrosive_acid/acid in actions)
 		if(istype(acid))
-			acid_level = caste.acid_level + acid_modifier
+			acid_level = caste.acid_level + acid_modifier + mutators.acid_boost_level + faction.mutators.acid_boost_level
 			if(acid_level > 3)
 				acid_level = 3
 			if(acid.level == acid_level)
@@ -968,13 +986,13 @@
 /mob/living/carbon/xenomorph/proc/recalculate_weeds()
 	if(!caste || caste.weed_level == 0)
 		return //Caste does not use weeds
-	weed_level = caste.weed_level + weed_modifier
+	weed_level = caste.weed_level + weed_modifier + mutators.weed_boost_level + faction.mutators.weed_boost_level
 	if(weed_level < WEED_LEVEL_STANDARD)
 		weed_level = WEED_LEVEL_STANDARD//need to maintain the minimum in case something goes really wrong
 
 /mob/living/carbon/xenomorph/proc/recalculate_pheromones()
 	if(caste.aura_strength > 0)
-		aura_strength = caste.aura_strength + phero_modifier
+		aura_strength = caste.aura_strength + phero_modifier + mutators.pheromones_boost_level + faction.mutators.pheromones_boost_level
 	else
 		caste.aura_strength = 0
 	if(aura_strength == 0 && current_aura)
@@ -991,16 +1009,20 @@
 			if("recovery")
 				recovery_new = min(recovery_new, received_phero_caps[capped_aura])
 
+/mob/living/carbon/xenomorph/proc/recalculate_gas()
+	gas_level = mutators.gas_boost_level
+	gas_life_multiplier = mutators.gas_life_multiplier
+
 /mob/living/carbon/xenomorph/proc/recalculate_maturation()
-	evolution_threshold =  caste.evolution_threshold
+	evolution_threshold =  round(caste.evolution_threshold * faction.mutators.maturation_multiplier)
 
 /mob/living/carbon/xenomorph/rejuvenate()
 	if(stat == DEAD && !QDELETED(src))
 		GLOB.living_xeno_list += src
 
-		if(hive)
-			hive.add_xeno(src)
-			hive.hive_ui.update_all_xeno_data()
+		if(faction)
+			faction.add_mob(src)
+			faction.faction_ui.update_all_xeno_data()
 
 	armor_integrity = 100
 	UnregisterSignal(src, COMSIG_XENO_PRE_HEAL)
@@ -1046,14 +1068,14 @@
 
 /mob/living/carbon/xenomorph/IgniteMob()
 	. = ..()
-	if (. & IGNITE_IGNITED)
+	if(. & IGNITE_IGNITED)
 		RegisterSignal(src, COMSIG_XENO_PRE_HEAL, PROC_REF(cancel_heal))
 		if(!caste || !(caste.fire_immunity & FIRE_IMMUNITY_NO_DAMAGE) || fire_reagent.fire_penetrating)
 			INVOKE_ASYNC(src, TYPE_PROC_REF(/mob, emote), "roar")
 
 /mob/living/carbon/xenomorph/ExtinguishMob()
 	. = ..()
-	if (.)
+	if(.)
 		UnregisterSignal(src, COMSIG_XENO_PRE_HEAL)
 
 /mob/living/carbon/xenomorph/proc/cancel_heal()

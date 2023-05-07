@@ -48,9 +48,14 @@
 	density = FALSE
 	anchored = TRUE
 	layer = TURF_LAYER
-	luminosity = 1
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "greenglow"
+
+	light_system = STATIC_LIGHT
+	light_range = 2
+	light_power = 0.2
+	light_color = COLOR_GRAY
+	light_on = TRUE
 
 /obj/effect/decal/cleanable/greenglow/Initialize(mapload, ...)
 	if(mapload)
@@ -59,7 +64,7 @@
 	QDEL_IN(WEAKREF(src), 2 MINUTES)
 
 /obj/effect/decal/cleanable/greenglow/Destroy()
-	SetLuminosity(0)
+	set_light_on(FALSE)
 	return ..()
 
 /obj/effect/decal/cleanable/cobweb

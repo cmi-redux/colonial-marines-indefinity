@@ -6,6 +6,7 @@
 	rechargeTime = SHUTTLE_RECHARGE
 	ignitionTime = DROPSHIP_WARMUP_TIME
 	prearrivalTime = DROPSHIP_WARMUP_TIME
+	faction_to_get = FACTION_MARINE
 	var/datum/door_controller/aggregate/door_control
 
 	// Door control has been overridden
@@ -108,7 +109,7 @@
 
 /obj/docking_port/mobile/marine_dropship/proc/automated_check()
 	var/obj/structure/machinery/computer/shuttle/dropship/flight/root_console = getControlConsole()
-	if(root_console.dropship_control_lost)
+	if(root_console.dropship_control_lost || root_console.escape_locked)
 		automated_hangar_id = null
 		automated_lz_id = null
 		automated_delay = null
@@ -123,7 +124,7 @@
 	if(!automated_hangar_id || !automated_lz_id || !automated_delay)
 		return
 	var/obj/structure/machinery/computer/shuttle/dropship/flight/root_console = getControlConsole()
-	if(root_console.dropship_control_lost)
+	if(root_console.dropship_control_lost || root_console.escape_locked)
 		return
 	if(mode != SHUTTLE_IDLE)
 		return
@@ -139,6 +140,7 @@
 	width = 11
 	height = 21
 	dwidth = 1
+	faction_to_get = FACTION_MARINE
 	var/list/landing_lights = list()
 	var/auto_open = FALSE
 	var/landing_lights_on = FALSE
@@ -184,9 +186,12 @@
 		dropship.in_flyby = FALSE
 		dropship.control_doors("unlock", "all", force=FALSE)
 		var/obj/structure/machinery/computer/shuttle/dropship/flight/console = dropship.getControlConsole()
-		console?.update_equipment()
-	if(is_ground_level(z) && !SSobjectives.first_drop_complete)
+		console?.update_equipment(dropship = dropship)
+
+	if(is_ground_level(z) && faction.objectives_controller && !faction.objectives_controller.first_drop_complete)
+		faction.objectives_controller.first_drop_complete = TRUE
 		SSticker.mode.ds_first_landed(src)
+
 	if(xeno_announce)
 		xeno_announcement(SPAN_XENOANNOUNCE("The dropship has landed."), "everything")
 		xeno_announce = FALSE

@@ -14,16 +14,16 @@
 	var/list/egg_triggers = list()
 	var/status = EGG_GROWING //can be EGG_GROWING, EGG_GROWN, EGG_BURST, EGG_BURSTING, or EGG_DESTROYED; all mutually exclusive
 	var/on_fire = FALSE
-	var/hivenumber = XENO_HIVE_NORMAL
 	var/flags_embryo = NO_FLAGS
 
-/obj/effect/alien/egg/Initialize(mapload, hive)
+/obj/effect/alien/egg/Initialize(mapload, datum/faction/faction_to_set)
 	. = ..()
-	create_egg_triggers()
-	if (hive)
-		hivenumber = hive
 
-	set_hive_data(src, hivenumber)
+	if(faction_to_set)
+		faction = faction_to_set
+
+	create_egg_triggers()
+	set_hive_data(src, faction)
 	update_icon()
 	INVOKE_ASYNC(src, PROC_REF(Grow))
 
@@ -39,33 +39,33 @@
 	if(isxeno(user) && status == EGG_GROWN)
 		. += "Ctrl + Click egg to retrieve child into your empty hand if you can carry it."
 
-/obj/effect/alien/egg/attack_alien(mob/living/carbon/xenomorph/M)
-	if(M.hivenumber != hivenumber)
-		M.animation_attack_on(src)
-		M.visible_message(SPAN_XENOWARNING("[M] crushes \the [src]"),
+/obj/effect/alien/egg/attack_alien(mob/living/carbon/xenomorph/xeno)
+	if(xeno.faction != faction)
+		xeno.animation_attack_on(src)
+		xeno.visible_message(SPAN_XENOWARNING("[xeno] crushes \the [src]"),
 			SPAN_XENOWARNING("You crush \the [src]"))
 		Burst(TRUE)
 		return XENO_ATTACK_ACTION
 
-	if(!istype(M))
-		return attack_hand(M)
+	if(!istype(xeno))
+		return attack_hand(xeno)
 
 	switch(status)
 		if(EGG_BURST, EGG_DESTROYED)
-			M.animation_attack_on(src)
-			M.visible_message(SPAN_XENONOTICE("\The [M] clears the hatched egg."), \
+			xeno.animation_attack_on(src)
+			xeno.visible_message(SPAN_XENONOTICE("\The [xeno] clears the hatched egg."), \
 			SPAN_XENONOTICE("You clear the hatched egg."))
 			playsound(src.loc, "alien_resin_break", 25)
 			qdel(src)
 			return XENO_NONCOMBAT_ACTION
 		if(EGG_GROWING)
-			to_chat(M, SPAN_XENOWARNING("The child is not developed yet."))
+			to_chat(xeno, SPAN_XENOWARNING("The child is not developed yet."))
 			return XENO_NO_DELAY_ACTION
 		if(EGG_GROWN)
-			if(islarva(M))
-				to_chat(M, SPAN_XENOWARNING("You nudge the egg, but nothing happens."))
+			if(islarva(xeno))
+				to_chat(xeno, SPAN_XENOWARNING("You nudge the egg, but nothing happens."))
 				return
-			to_chat(M, SPAN_XENONOTICE("You retrieve the child."))
+			to_chat(xeno, SPAN_XENONOTICE("You retrieve the child."))
 			Burst(FALSE)
 	return XENO_NONCOMBAT_ACTION
 
@@ -80,7 +80,7 @@
 	return ..()
 
 /obj/effect/alien/egg/proc/Grow()
-	set waitfor = 0
+	set waitfor = FALSE
 	update_icon()
 	sleep(rand(EGG_MIN_GROWTH_TIME, EGG_MAX_GROWTH_TIME))
 	if(status == EGG_GROWING)
@@ -132,7 +132,8 @@
 	status = EGG_BURST
 	if(is_hugger_player_controlled)
 		return //Don't need to spawn a hugger, a player controls it already!
-	var/obj/item/clothing/mask/facehugger/child = new(loc, hivenumber)
+
+	var/obj/item/clothing/mask/facehugger/child = new(loc, faction)
 
 	child.flags_embryo = flags_embryo
 	flags_embryo = NO_FLAGS // Lose the embryo flags when passed on
@@ -232,7 +233,7 @@
 
 /obj/effect/alien/egg/HasProximity(atom/movable/AM)
 	if(status == EGG_GROWN)
-		if(!can_hug(AM, hivenumber) || isyautja(AM) || issynth(AM)) //Predators are too stealthy to trigger eggs to burst. Maybe the huggers are afraid of them.
+		if(!can_hug(AM, faction) || isyautja(AM) || issynth(AM)) //Predators are too stealthy to trigger eggs to burst. Maybe the huggers are afraid of them.
 			return
 		Burst(FALSE, TRUE, null)
 
@@ -240,10 +241,10 @@
 	Burst(TRUE)
 
 /obj/effect/alien/egg/alpha
-	hivenumber = XENO_HIVE_ALPHA
+	faction_to_get = FACTION_XENOMORPH_ALPHA
 
 /obj/effect/alien/egg/forsaken
-	hivenumber = XENO_HIVE_FORSAKEN
+	faction_to_get = FACTION_XENOMORPH_FORSAKEN
 
 /obj/effect/alien/egg/attack_ghost(mob/dead/observer/user)
 	. = ..() //Do a view printout as needed just in case the observer doesn't want to join as a Hugger but wants info
@@ -257,13 +258,13 @@
 		to_chat(user, SPAN_WARNING("\The [src] doesn't have any facehuggers to inhabit."))
 		return
 
-	if(!GLOB.hive_datum[hivenumber].can_spawn_as_hugger(user))
+	if(!faction.can_spawn_as_hugger(user))
 		return
 	//Need to check again because time passed due to the confirmation window
 	if(status != EGG_GROWN)
 		to_chat(user, SPAN_WARNING("\The [src] doesn't have any facehuggers to inhabit."))
 		return
-	GLOB.hive_datum[hivenumber].spawn_as_hugger(user, src)
+	faction.spawn_as_hugger(user, src)
 	Burst(FALSE, FALSE, null, TRUE)
 
 //The invisible traps around the egg to tell it there's a mob right next to it.

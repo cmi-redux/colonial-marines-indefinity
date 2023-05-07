@@ -18,6 +18,7 @@
 	icon = 'icons/obj/structures/props/drill.dmi'
 	icon_state = "drill"
 	bound_height = 96
+	light_range = 3
 	var/on = FALSE//if this is set to on by default, the drill will start on, doi
 
 /obj/structure/prop/dam/drill/attackby(obj/item/W, mob/user)
@@ -25,19 +26,17 @@
 	if(isxeno(user))
 		return
 	else if (ishuman(user) && istype(W, /obj/item/tool/wrench))
-		on = !on
 		visible_message("You wrench the controls of \the [src]. The drill jumps to life." , "[user] wrenches the controls of \the [src]. The drill jumps to life.")
+		update(TRUE)
 
-		update()
-
-/obj/structure/prop/dam/drill/proc/update()
-	icon_state = "thumper[on ? "-on" : ""]"
-	if(on)
-		SetLuminosity(3)
+/obj/structure/prop/dam/drill/proc/update(update_light)
+	if(update_light)
+		set_light_on(!light_on)
+	if(!light_on)
 		playsound(src, 'sound/machines/turbine_on.ogg')
 	else
-		SetLuminosity(0)
 		playsound(src, 'sound/machines/turbine_off.ogg')
+	icon_state = "thumper[light_on ? "-on" : ""]"
 	return
 
 /obj/structure/prop/dam/drill/Initialize()
@@ -103,7 +102,11 @@
 	density = FALSE
 	pixel_x = -16
 	layer = MOB_LAYER+0.5
-	var/lit = 0
+
+	light_system = STATIC_LIGHT
+	light_range = 6
+	light_power = 0.5
+	light_color = LIGHT_COLOR_FIRE
 
 /obj/structure/prop/dam/torii/New()
 	..()
@@ -111,26 +114,21 @@
 
 /obj/structure/prop/dam/torii/proc/Update()
 	underlays.Cut()
-	underlays += "shadow[lit ? "-lit" : ""]"
-	icon_state = "torii[lit ? "-lit" : ""]"
-	if(lit)
-		SetLuminosity(6)
-	else
-		SetLuminosity(0)
+	underlays += "shadow[light_on ? "-lit" : ""]"
+	icon_state = "torii[light_on ? "-lit" : ""]"
 	return
 
 /obj/structure/prop/dam/torii/attack_hand(mob/user as mob)
 	..()
-	if(lit)
-		lit = !lit
+	if(light_on)
 		visible_message("[user] extinguishes the lanterns on [src].",
 			"You extinguish the fires on [src].")
-		Update()
+		Update(TRUE)
 	return
 
 /obj/structure/prop/dam/torii/attackby(obj/item/W, mob/user)
 	var/L
-	if(lit)
+	if(light_on)
 		return
 	if(iswelder(W))
 		var/obj/item/tool/weldingtool/WT = W
@@ -184,8 +182,7 @@
 			L = 1
 	if(L)
 		visible_message("[user] quietly goes from lantern to lantern on the torii, lighting the wicks in each one.")
-		lit = TRUE
-		Update()
+		Update(TRUE)
 
 /obj/structure/prop/dam/gravestone
 	name = "grave marker"
@@ -204,6 +201,7 @@
 	icon = 'icons/obj/structures/props/dam.dmi'
 	unslashable = TRUE
 	unacidable = TRUE
+
 /obj/structure/prop/dam/boulder/boulder1
 	icon_state = "boulder1"
 /obj/structure/prop/dam/boulder/boulder2
@@ -220,6 +218,7 @@
 	bound_width = 64
 	unslashable = TRUE
 	unacidable = TRUE
+
 /obj/structure/prop/dam/large_boulder/boulder1
 	icon_state = "boulder_large1"
 /obj/structure/prop/dam/large_boulder/boulder2
@@ -489,11 +488,16 @@
 	bound_width = 32
 	bound_height = 96
 
+	light_system = STATIC_LIGHT
+	light_range = 3
+	light_power = 0.5
+	light_color = COLOR_BLUE_LIGHT
+
 /obj/structure/prop/turbine/attackby(obj/item/W, mob/user)
 	. = ..()
 	if(isxeno(user))
 		return
-	else if (ishuman(user) && istype(W, /obj/item/tool/crowbar))
+	else if(ishuman(user) && istype(W, /obj/item/tool/crowbar))
 		on = !on
 		visible_message("You pry at the control valve on [src]. The machine shudders." , "[user] pries at the control valve on [src]. The entire machine shudders.")
 
@@ -501,11 +505,11 @@
 
 /obj/structure/prop/turbine/proc/Update()
 	icon_state = "biomass_turbine[on ? "-on" : ""]"
-	if (on)
-		SetLuminosity(3)
+	if(on)
+		set_light_on(TRUE)
 		playsound(src, 'sound/machines/turbine_on.ogg')
 	else
-		SetLuminosity(0)
+		set_light_on(FALSE)
 		playsound(src, 'sound/machines/turbine_off.ogg')
 	return
 
@@ -593,6 +597,7 @@
 	indestructible = TRUE
 	unslashable = TRUE
 	unacidable = TRUE
+	density = 1
 
 /obj/structure/prop/invuln/ex_act(severity, direction)
 	return
@@ -636,18 +641,18 @@
 	icon_state = "brazier"
 	density = TRUE
 	health = 150
-	luminosity = 6
 
-/obj/structure/prop/brazier/Initialize()
-	. = ..()
-	if(luminosity)
-		SetLuminosity(luminosity)
+	light_system = STATIC_LIGHT
+	light_range = 6
+	light_power = 0.75
+	light_color = COLOR_SOFT_RED
+	light_on = TRUE
 
 /obj/structure/prop/brazier/frame
 	name = "empty brazier"
 	desc = "An empty brazier."
 	icon_state = "brazier_frame"
-	luminosity = 0
+	light_on = FALSE
 
 /obj/structure/prop/brazier/frame/attackby(obj/item/hit_item, mob/user)
 	if(!istype(hit_item, /obj/item/stack/sheet/wood))
@@ -665,7 +670,7 @@
 	name = "empty full brazier"
 	desc = "An empty brazier. Yet it's also full. What???  Use something hot to ignite it, like a welding tool."
 	icon_state = "brazier_frame_filled"
-	luminosity = 0
+	light_on = FALSE
 
 /obj/structure/prop/brazier/frame_woodened/attackby(obj/item/hit_item, mob/user)
 	if(!hit_item.heat_source)
@@ -679,13 +684,18 @@
 	desc = "It's a torch."
 	icon_state = "torch"
 	density = FALSE
-	luminosity = 5
+
+	light_system = STATIC_LIGHT
+	light_range = 5
+	light_power = 0.4
+	light_color = COLOR_SOFT_RED
+	light_on = TRUE
 
 /obj/structure/prop/brazier/torch/frame
 	name = "unlit torch"
 	desc = "It's a torch, but it's not lit.  Use something hot to ignite it, like a welding tool."
 	icon_state = "torch_frame"
-	luminosity = 0
+	light_on = FALSE
 
 /obj/structure/prop/brazier/torch/frame/attackby(obj/item/hit_item, mob/user)
 	if(!hit_item.heat_source)
@@ -698,7 +708,7 @@
 	name = "unlit torch"
 	desc = "It's a torch, but it's not lit or placed down. Click on a wall to place it."
 	icon_state = "torch_frame"
-	luminosity = 0
+	light_on = FALSE
 
 //ICE COLONY PROPS
 //Thematically look to Blackmesa's Xen levels. Generic science-y props n' stuff.

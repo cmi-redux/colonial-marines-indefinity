@@ -53,7 +53,7 @@
 /obj/structure/machinery/door/airlock/centcom/colony
 	name = "\improper Airlock"
 	icon = 'icons/obj/structures/doors/comdoor.dmi'
-	opacity = 1
+	opacity = TRUE
 	req_one_access = list(ACCESS_CIVILIAN_PUBLIC)
 
 /obj/structure/machinery/door/airlock/vault/colony

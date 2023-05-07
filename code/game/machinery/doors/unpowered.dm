@@ -20,4 +20,3 @@
 	icon_state = "door1"
 	opacity = TRUE
 	density = TRUE
-

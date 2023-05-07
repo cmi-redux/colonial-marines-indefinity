@@ -14,6 +14,7 @@
 	icon_state = "W";
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "i" = (
@@ -29,7 +30,21 @@
 	icon_state = "S";
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
+/area/shuttle/ert)
+"j" = (
+/obj/structure/bed/chair/dropship/passenger{
+	dir = 1
+	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/light{
+	pixel_x = 0;
+	req_light_switch = 0
+	},
+/turf/open/floor/almayer{
+	icon_state = "plate"
+	},
 /area/shuttle/ert)
 "k" = (
 /obj/structure/surface/table/almayer,
@@ -37,11 +52,17 @@
 	network = list("Military","Almayer");
 	dir = 4
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/light{
+	dir = 8;
+	req_light_switch = 0
+	},
 /turf/open/floor/almayer{
 	icon_state = "tcomms"
 	},
 /area/shuttle/ert)
 "o" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/r_wall/biodome/biodome_unmeltable,
 /area/shuttle/ert)
 "q" = (
@@ -54,6 +75,7 @@
 	layer = 2.5;
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "s" = (
@@ -61,6 +83,7 @@
 	icon_state = "S";
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "t" = (
@@ -80,6 +103,7 @@
 	icon_state = "N";
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "tcomms"
 	},
@@ -97,12 +121,14 @@
 	icon_state = "N";
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "w" = (
 /obj/structure/window/framed/corsat/hull{
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating,
 /area/shuttle/ert)
 "x" = (
@@ -114,6 +140,7 @@
 	icon_state = "N";
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "A" = (
@@ -123,18 +150,25 @@
 /obj/structure/machinery/cm_vending/sorted/medical/wall_med/lifeboat{
 	pixel_x = 32
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/light{
+	pixel_x = 0;
+	req_light_switch = 0
+	},
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
 /area/shuttle/ert)
 "C" = (
 /obj/docking_port/mobile/emergency_response/small,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/r_wall/biodome/biodome_unmeltable,
 /area/shuttle/ert)
 "D" = (
 /obj/structure/bed/chair/dropship/passenger{
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -142,6 +176,7 @@
 "E" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/computer/shuttle/ert/small,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "tcomms"
 	},
@@ -151,6 +186,7 @@
 	dir = 1;
 	id = "port_door"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "H" = (
@@ -168,6 +204,7 @@
 	pixel_x = -1;
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "tcomms"
 	},
@@ -184,22 +221,30 @@
 	icon_state = "W";
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "K" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/computer/crew/alt,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "tcomms"
 	},
 /area/shuttle/ert)
 "O" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "Q" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/computer/station_alert{
 	dir = 8
+	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/light{
+	dir = 4;
+	req_light_switch = 0
 	},
 /turf/open/floor/almayer{
 	icon_state = "tcomms"
@@ -210,6 +255,7 @@
 	dir = 1;
 	id = "starboard_door"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "Z" = (
@@ -221,6 +267,7 @@
 	icon_state = "S";
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 
@@ -242,7 +289,7 @@ k
 o
 h
 i
-D
+j
 o
 a
 "}

@@ -81,7 +81,7 @@
 	src.message = message
 	src.multiline = multiline
 	src.title = title
-	if (timeout)
+	if(timeout)
 		src.timeout = timeout
 		start_time = world.time
 		QDEL_IN(src, timeout)

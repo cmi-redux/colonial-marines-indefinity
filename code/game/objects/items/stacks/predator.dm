@@ -35,12 +35,12 @@
 
 	to_chat(user, SPAN_NOTICE("You start securing the rope to the ceiling..."))
 	if(do_after(user, 4 SECONDS, INTERRUPT_NO_NEEDHAND, BUSY_ICON_HOSTILE, victim))
-		var/turf/rturf = get_turf(victim)
-		var/area/rarea = get_area(victim)
-		if(rturf.density)
+		var/turf/turf = get_turf(victim)
+		var/turf/turf_above = SSmapping.get_turf_above(turf)
+		if(turf.density)
 			to_chat(user, SPAN_WARNING("They're in a wall!"))
 			return
-		if(rarea.ceiling == CEILING_NONE)
+		if(!turf_above || istype(turf_above, /turf/open/openspace))
 			to_chat(user, SPAN_WARNING("There's no ceiling!"))
 			return
 		to_chat(user, SPAN_NOTICE("You secure the rope."))

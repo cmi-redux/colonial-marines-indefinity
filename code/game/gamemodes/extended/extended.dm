@@ -11,11 +11,6 @@
 /datum/game_mode/announce()
 	to_world("<B>The current game mode is - Extended!</B>")
 
-/datum/game_mode/extended/pre_setup()
-	roles_to_roll = RoleAuthority.roles_for_mode - (RoleAuthority.roles_for_mode & (ROLES_XENO|ROLES_WHITELISTED|ROLES_SPECIAL))
-
-	return ..()
-
 /datum/game_mode/extended/post_setup()
 	initialize_post_marine_gear_list()
 	for(var/mob/new_player/np in GLOB.new_player_list)
@@ -29,23 +24,33 @@
 		chemical_data.update_credits(chemical_data.research_allocation_amount)
 		next_research_allocation = world.time + research_allocation_interval
 
-/datum/game_mode/extended/check_finished()
-	if(round_finished)
-		return TRUE
-
+///////////////////////////
+//Checks to see who won///
+//////////////////////////
 /datum/game_mode/extended/check_win()
 	return
 
+///////////////////////////////
+//Checks if the round is over//
+///////////////////////////////
+/datum/game_mode/extended/check_finished()
+	if(round_finished)
+		return TRUE
+	return FALSE
+
+//////////////////////////////////////////////////////////////////////
+//Announces the end of the game with all relevant information stated//
+//////////////////////////////////////////////////////////////////////
 /datum/game_mode/extended/declare_completion()
 	announce_ending()
-	var/musical_track = pick('sound/theme/neutral_hopeful1.ogg','sound/theme/neutral_hopeful2.ogg')
+	var/musical_track = pick('sound/music/round_end/neutral_hopeful1.ogg','sound/music/round_end/neutral_hopeful2.ogg')
 	world << musical_track
 
-	if(round_statistics)
-		round_statistics.game_mode = name
-		round_statistics.round_length = world.time
-		round_statistics.end_round_player_population = GLOB.clients.len
-		round_statistics.log_round_statistics()
+	if(SSticker.mode.round_statistics)
+		SSticker.mode.round_statistics.game_mode = name
+		SSticker.mode.round_statistics.round_length = world.time
+		SSticker.mode.round_statistics.end_round_player_population = GLOB.clients.len
+		SSticker.mode.round_statistics.log_round_statistics()
 
 	calculate_end_statistics()
 	declare_completion_announce_predators()

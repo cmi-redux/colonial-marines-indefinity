@@ -1,0 +1,36 @@
+<fieldset class="fieldContainer">
+	<div itemLabel>
+		<div class="itemLabel">
+			Discord List:
+		</div>
+		<br>
+		{{for data.discord}}
+			<fieldset class="fieldContainerSpaced">
+				<div class="itemLabel">
+					Player ID:
+				</div>
+				<div class="itemContent">
+					{{:value.player_id}}
+				</div>
+				<div class="itemLabel">
+					Ckey:
+				</div>
+				<div class="itemContent">
+					{{:value.ckey}}
+				</div>
+				<div class="itemLabel">
+					Discord ID:
+				</div>
+				<div class="itemContent">
+					{{:value.discord_id}}
+				</div>
+				<div class="itemLabel">
+					Discord KEY:
+				</div>
+				<div class="itemContent">
+					{{:value.discord_key}}
+				</div>
+			</fieldset>
+		{{/for}}
+	</div>
+</fieldset>

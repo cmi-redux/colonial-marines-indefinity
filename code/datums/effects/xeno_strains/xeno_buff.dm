@@ -35,11 +35,11 @@
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(qdel), src), ttl)
 
 /datum/effects/xeno_buff/validate_atom(atom/A)
-	if (!isxeno(A))
+	if(!isxeno(A))
 		return FALSE
 
 	var/mob/M = A
-	if (M.stat == DEAD)
+	if(M.stat == DEAD)
 		return FALSE
 
 	. = ..()

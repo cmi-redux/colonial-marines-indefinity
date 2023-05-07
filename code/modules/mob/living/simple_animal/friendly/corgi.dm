@@ -66,13 +66,13 @@
 				step_to(src,movement_target,1)
 
 				if(movement_target) //Not redundant due to sleeps, Item can be gone in 6 decisecomds
-					if (movement_target.loc.x < src.x)
+					if(movement_target.loc.x < src.x)
 						setDir(WEST)
-					else if (movement_target.loc.x > src.x)
+					else if(movement_target.loc.x > src.x)
 						setDir(EAST)
-					else if (movement_target.loc.y < src.y)
+					else if(movement_target.loc.y < src.y)
 						setDir(SOUTH)
-					else if (movement_target.loc.y > src.y)
+					else if(movement_target.loc.y > src.y)
 						setDir(NORTH)
 					else
 						setDir(SOUTH)
@@ -96,7 +96,7 @@
 	if(last_damage_data)
 		var/mob/user = last_damage_data.resolve_mob()
 		if(user)
-			user.count_niche_stat(STATISTICS_NICHE_CORGI)
+			user.count_statistic_stat(STATISTICS_CORGI)
 
 /obj/item/reagent_container/food/snacks/meat/corgi
 	name = "Corgi meat"
@@ -107,7 +107,7 @@
 	if(istype(O, /obj/item/newspaper))
 		if(!stat)
 			for(var/mob/M as anything in viewers(user, null))
-				if ((M.client && !( M.blinded )))
+				if((M.client && !( M.blinded )))
 					M.show_message(SPAN_NOTICE("[user] baps [name] on the nose with the rolled-up [O]"), SHOW_MESSAGE_VISIBLE)
 			spawn(0)
 				for(var/i in list(1,2,4,8,4,2,1,2))

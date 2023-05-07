@@ -78,12 +78,12 @@
 		update_icon()
 		return 1
 
-	if (iswelder(O))
+	if(iswelder(O))
 		if(!HAS_TRAIT(O, TRAIT_TOOL_BLOWTORCH))
 			to_chat(user, SPAN_WARNING("You need a stronger blowtorch!"))
 			return
 		var/obj/item/tool/weldingtool/WT = O
-		if (WT.remove_fuel(0))
+		if(WT.remove_fuel(0))
 			if(health < maxHealth)
 				health += pick(1,1,1,2,2,3)
 				if(health > maxHealth)
@@ -97,7 +97,7 @@
 			to_chat(user, "Need more welding fuel!")
 			return
 	else if(istype(O, /obj/item/card/id))
-		if (!mmi)
+		if(!mmi)
 			to_chat(user, SPAN_DANGER("There's no reason to swipe your ID - the spiderbot has no brain to remove."))
 			return 0
 
@@ -121,7 +121,7 @@
 	else
 		if(O.force)
 			var/damage = O.force
-			if (O.damtype == HALLOSS)
+			if(O.damtype == HALLOSS)
 				damage = 0
 			apply_damage(damage, BRUTE)
 			for(var/mob/M as anything in viewers(src, null))

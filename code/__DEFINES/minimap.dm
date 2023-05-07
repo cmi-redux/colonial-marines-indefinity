@@ -1,21 +1,16 @@
-
-#define MINIMAP_FLAG_XENO (1<<0)
-#define MINIMAP_FLAG_USCM (1<<1)
-#define MINIMAP_FLAG_PMC (1<<2)
-#define MINIMAP_FLAG_UPP (1<<3)
-#define MINIMAP_FLAG_CLF (1<<4)
-#define MINIMAP_FLAG_ALL (1<<5) - 1
-
-///Converts the overworld x and y to minimap x and y values
-#define MINIMAP_SCALE 2
-#define MINIMAP_PIXEL_FROM_WORLD(val) (val * MINIMAP_SCALE - 3)
-
-//actual size of a users screen in pixels
+///////////////////////
+//BASED TACMAP VALUES//
+///////////////////////
+/// Converts the overworld x and y to minimap x and y values
+#define MINIMAP_PIXEL_FROM_WORLD(val) (val*2-3)
+/// actual size of a users screen in pixels
 #define SCREEN_PIXEL_SIZE 480
+/// tacmaps traits
+#define TCMP_MAPS_TRAITS list(ZTRAIT_MARINE_MAIN_SHIP, ZTRAIT_GROUND)
 
-GLOBAL_LIST_INIT(all_minimap_flags, bitfield2list(MINIMAP_FLAG_ALL))
-
-//Turf colours
+///////////////
+//TURF COLORS//
+///////////////
 #define MINIMAP_SOLID "#ebe5e5ee"
 #define MINIMAP_DOOR "#451e5eb8"
 #define MINIMAP_FENCE "#8d2294ad"
@@ -63,7 +58,6 @@ GLOBAL_LIST_INIT(all_minimap_flags, bitfield2list(MINIMAP_FLAG_ALL))
 
 #define MINIMAP_ICON_COLOR_DOCTOR "#b83737"
 
-
 //Prison
 #define MINIMAP_AREA_CELL_MAX "#570101ee"
 #define MINIMAP_AREA_CELL_HIGH "#a54b01ee"
@@ -72,11 +66,12 @@ GLOBAL_LIST_INIT(all_minimap_flags, bitfield2list(MINIMAP_FLAG_ALL))
 #define MINIMAP_AREA_CELL_VIP "#00857aee"
 #define MINIMAP_AREA_SHIP "#885a04e7"
 
-#define TACMAP_BASE_OCCLUDED "Occluded"
-#define TACMAP_BASE_OPEN "Open"
 
-#define TACMAP_DEFAULT "Default"
-#define TACMAP_XENO "Xeno"
-#define TACMAP_YAUTJA "Yautja"
-#define TACMAP_FACTION "Faction"
-
+///////////////////
+//MOB DATUM FLAGS//
+///////////////////
+#define TCMP_INVISIBLY_OV			(1<<0)
+#define TCMP_INTERACTIVE_MENU		(1<<1)
+#define TCMP_ADDITIONAL_OVERLAYS	(1<<2)
+#define TCMP_CUSTOM_COLOR			(1<<3)
+#define TCMP_VIBISLY_TO_EVRYONE		(1<<4)

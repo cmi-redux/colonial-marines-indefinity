@@ -27,15 +27,15 @@
 	return ..()
 
 /obj/item/toy/gun/attackby(obj/item/toy/gun_ammo/A as obj, mob/user as mob)
-	if (istype(A, /obj/item/toy/gun_ammo))
-		if (src.bullets >= 7)
+	if(istype(A, /obj/item/toy/gun_ammo))
+		if(bullets >= 7)
 			to_chat(user, SPAN_NOTICE(" It's already fully loaded!"))
 			return 1
-		if (A.amount_left <= 0)
+		if(A.amount_left <= 0)
 			to_chat(user, SPAN_DANGER("There is no more caps!"))
 			return 1
-		if (A.amount_left < (7 - bullets))
-			src.bullets += A.amount_left
+		if(A.amount_left < (7 - bullets))
+			bullets += A.amount_left
 			to_chat(user, SPAN_DANGER("You reload [A.amount_left] caps\s!"))
 			A.amount_left = 0
 		else
@@ -47,18 +47,18 @@
 		return 1
 
 /obj/item/toy/gun/afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
-	if (flag)
+	if(flag)
 		return
-	if (!(istype(usr, /mob/living/carbon/human) || SSticker) && SSticker.mode.name != "monkey")
+	if(!(istype(usr, /mob/living/carbon/human) || SSticker) && SSticker.mode.name != "monkey")
 		to_chat(usr, SPAN_DANGER("You don't have the dexterity to do this!"))
 		return
-	src.add_fingerprint(user)
-	if (src.bullets < 1)
+	add_fingerprint(user)
+	if(bullets < 1)
 		user.show_message(SPAN_DANGER("*click* *click*"), SHOW_MESSAGE_AUDIBLE)
 		playsound(user, 'sound/weapons/gun_empty.ogg', 15, 1)
 		return
 	playsound(user, 'sound/weapons/Gunshot.ogg', 15, 1)
-	src.bullets--
+	bullets--
 	for(var/mob/O in viewers(user, null))
 		O.show_message(SPAN_DANGER("<B>[user] fires a cap gun at [target]!</B>"), SHOW_MESSAGE_VISIBLE, SPAN_DANGER("You hear a gunshot"), SHOW_MESSAGE_AUDIBLE)
 
@@ -107,7 +107,6 @@
 		else
 			to_chat(usr, SPAN_DANGER("It's already fully loaded."))
 
-
 /obj/item/toy/crossbow/afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
 	if(!isturf(target.loc) || target == user) return
 	if(flag) return
@@ -155,12 +154,10 @@
 		for(var/mob/O in viewers(world_view_size, user))
 			O.show_message(SPAN_DANGER("[user] realized they were out of ammo and starting scrounging for some!"), SHOW_MESSAGE_VISIBLE)
 
-
 /obj/item/toy/crossbow/attack(mob/M as mob, mob/user as mob)
-	src.add_fingerprint(user)
+	add_fingerprint(user)
 
-	if (src.bullets > 0 && M.lying)
-
+	if(bullets > 0 && M.lying)
 		for(var/mob/O in viewers(M, null))
 			if(O.client)
 				O.show_message(SPAN_DANGER("<B>[user] casually lines up a shot with [M]'s head and pulls the trigger!</B>"), SHOW_MESSAGE_VISIBLE, SPAN_DANGER("You hear the sound of foam against skull!"), SHOW_MESSAGE_AUDIBLE)
@@ -168,8 +165,8 @@
 
 		playsound(user.loc, 'sound/items/syringeproj.ogg', 15, 1)
 		new /obj/item/toy/crossbow_ammo(M.loc)
-		src.bullets--
-	else if (M.lying && src.bullets == 0)
+		bullets--
+	else if (M.lying && bullets == 0)
 		for(var/mob/O in viewers(M, null))
 			if (O.client)
 				O.show_message(SPAN_DANGER("<B>[user] casually lines up a shot with [M]'s head, pulls the trigger, then realizes they are out of ammo and drops to the floor in search of some!</B>"), SHOW_MESSAGE_VISIBLE, SPAN_DANGER("You hear someone fall"), SHOW_MESSAGE_AUDIBLE)
@@ -210,7 +207,7 @@
 	..()
 
 	active = !active
-	if (active)
+	if(active)
 		to_chat(user, SPAN_NOTICE(" You extend the plastic blade with a quick flick of your wrist."))
 		playsound(user, 'sound/weapons/saberon.ogg', 15, 1)
 		icon_state = "swordblue"

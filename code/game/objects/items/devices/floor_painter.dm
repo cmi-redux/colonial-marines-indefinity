@@ -11,7 +11,7 @@
 	// mode 0  ignore direction; sets dir=0
 	// mode 1  all-direction
 	// mode 2  corner selecting the side CW from the selected corner
-	// mode 3  cardinal
+	// mode 3   GLOB.cardinals
 	// mode 4  warningcorner and warnwhitecorner direction fix
 	// mode 5  Opposite corner tiles where the second icon_state is "[mode]_inv"
 /obj/item/device/floor_painter/afterattack(atom/A, mob/user as mob, proximity)
@@ -43,7 +43,7 @@
 								D = NORTH
 						F.setDir(D)
 						F.icon_state = mode
-					if(3) // cardinal directions only. I've adjusted diagonals the same way the facing code does.
+					if(3) // cardinals directions only. I've adjusted diagonals the same way the facing code does.
 						switch(D)
 							if(NORTHEAST)
 								D = EAST
@@ -147,7 +147,7 @@
 				if(design == "white-warning")
 					mode_nice = design
 					design = "warnwhite"
-				var/s_corner = alert("Do you want to paint a single corner of the tile?", "Floor painter","Yes","No") == "Yes"
+				var/s_corner = alert("Do you want to paint a single corner of the tile?", "Floor painter", usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) == usr.client.auto_lang(LANGUAGE_YES)
 				if(s_corner)
 					mode_nice = "[design] corner"
 					mode = "[design]corner"

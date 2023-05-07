@@ -303,13 +303,12 @@ GLOBAL_LIST_EMPTY_TYPED(total_vending_machines, /obj/structure/machinery/vending
 		if(do_after(user, 20, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 			if(!src) return
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
-			switch (anchored)
-				if (0)
-					anchored = TRUE
-					user.visible_message("[user] tightens the bolts securing \the [src] to the floor.", "You tighten the bolts securing \the [src] to the floor.")
-				if (1)
-					user.visible_message("[user] unfastens the bolts securing \the [src] to the floor.", "You unfasten the bolts securing \the [src] to the floor.")
-					anchored = FALSE
+			if(!anchored)
+				anchored = TRUE
+				user.visible_message("[user] tightens the bolts securing \the [src] to the floor.", "You tighten the bolts securing \the [src] to the floor.")
+			else
+				user.visible_message("[user] unfastens the bolts securing \the [src] to the floor.", "You unfasten the bolts securing \the [src] to the floor.")
+				anchored = FALSE
 		return
 	else if(HAS_TRAIT(W, TRAIT_TOOL_MULTITOOL) || HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS))
 		if(src.panel_open)
@@ -329,11 +328,11 @@ GLOBAL_LIST_EMPTY_TYPED(total_vending_machines, /obj/structure/machinery/vending
 
 /obj/structure/machinery/vending/proc/scan_card(obj/item/card/I)
 	if(!currently_vending) return
-	if (istype(I, /obj/item/card/id))
+	if(istype(I, /obj/item/card/id))
 		var/obj/item/card/id/C = I
 		visible_message(SPAN_INFO("[usr] swipes a card through [src]."))
 		var/datum/money_account/CH = get_account(C.associated_account_number)
-		if (CH) // Only proceed if card contains proper account number.
+		if(CH) // Only proceed if card contains proper account number.
 			if(!CH.suspended)
 				if(CH.security_level != 0) //If card requires pin authentication (ie seclevel 1 or 2)
 					if(vendor_account)
@@ -369,7 +368,7 @@ GLOBAL_LIST_EMPTY_TYPED(total_vending_machines, /obj/structure/machinery/vending
 				T.amount = "[transaction_amount]"
 			T.source_terminal = src.name
 			T.date = current_date_string
-			T.time = worldtime2text()
+			T.time = game_time_timestamp()
 			acc.transaction_log.Add(T)
 							//
 			T = new()
@@ -378,7 +377,7 @@ GLOBAL_LIST_EMPTY_TYPED(total_vending_machines, /obj/structure/machinery/vending
 			T.amount = "[transaction_amount]"
 			T.source_terminal = src.name
 			T.date = current_date_string
-			T.time = worldtime2text()
+			T.time = game_time_timestamp()
 			vendor_account.transaction_log.Add(T)
 
 			// Vend the item
@@ -594,7 +593,7 @@ GLOBAL_LIST_EMPTY_TYPED(total_vending_machines, /obj/structure/machinery/vending
 		new_transaction.amount = "[transaction_amount]"
 	new_transaction.source_terminal = src.name
 	new_transaction.date = current_date_string
-	new_transaction.time = worldtime2text()
+	new_transaction.time = SSsunlighting.game_time_offseted()
 	user_account.transaction_log.Add(new_transaction)
 
 	new_transaction = new()
@@ -603,7 +602,7 @@ GLOBAL_LIST_EMPTY_TYPED(total_vending_machines, /obj/structure/machinery/vending
 	new_transaction.amount = "[transaction_amount]"
 	new_transaction.source_terminal = src.name
 	new_transaction.date = current_date_string
-	new_transaction.time = worldtime2text()
+	new_transaction.time = SSsunlighting.game_time_offseted()
 	vendor_account.transaction_log.Add(new_transaction)
 
 	return TRUE
@@ -699,21 +698,21 @@ GLOBAL_LIST_EMPTY_TYPED(total_vending_machines, /obj/structure/machinery/vending
 	return list(get_asset_datum(/datum/asset/spritesheet/vending))
 
 /obj/structure/machinery/vending/proc/release_item(datum/data/vending_product/R, delay_vending = 0, mob/living/carbon/human/user)
-	set waitfor = 0
+	set waitfor = FALSE
 
 	//We interact with the UI only if a user is present
 	//(This function can be called with no user if the machine gets blown up / malfunctions)
 	if(user)
 		ui_interact(user)
 
-	if (delay_vending)
-		use_power(vend_power_usage) //actuators and stuff
-		if (icon_vend)
+	if(delay_vending)
+		use_power(vend_power_usage)	//actuators and stuff
+		if(icon_vend)
 			flick(icon_vend,src) //Show the vending animation if needed
 		sleep(delay_vending)
-	if (vending_dir == VEND_HAND && istype(user) && Adjacent(user))
+	if(vending_dir == VEND_HAND && istype(user) && Adjacent(user))
 		user.put_in_hands(new R.product_path)
-	else if (ispath(R.product_path,/obj/item/weapon/gun))
+	else if(ispath(R.product_path,/obj/item/weapon/gun))
 		. = new R.product_path(get_turf(src), 1)
 	else
 		. = new R.product_path(get_turf(src))
@@ -741,7 +740,7 @@ GLOBAL_LIST_EMPTY_TYPED(total_vending_machines, /obj/structure/machinery/vending
 		if(item_to_stock.type == R.product_path && !istype(item_to_stock,/obj/item/storage)) //Nice try, specialists/engis
 			if(isgun(item_to_stock))
 				var/obj/item/weapon/gun/G = item_to_stock
-				if(G.in_chamber || (G.current_mag && !istype(G.current_mag, /obj/item/ammo_magazine/internal)) || (istype(G.current_mag, /obj/item/ammo_magazine/internal) && G.current_mag.current_rounds > 0) )
+				if(G.in_chamber || (G.current_mag && !istype(G.current_mag, /obj/item/ammo_magazine/internal)) || (istype(G.current_mag, /obj/item/ammo_magazine/internal) && G.current_mag.ammo_position > 0) )
 					to_chat(user, SPAN_WARNING("[G] is still loaded. Unload it before you can restock it."))
 					return
 				for(var/obj/item/attachable/A in G.contents) //Search for attachments on the gun. This is the easier method
@@ -751,7 +750,7 @@ GLOBAL_LIST_EMPTY_TYPED(total_vending_machines, /obj/structure/machinery/vending
 
 			if(istype(item_to_stock, /obj/item/ammo_magazine))
 				var/obj/item/ammo_magazine/A = item_to_stock
-				if(A.current_rounds < A.max_rounds)
+				if(A.ammo_position < A.max_rounds)
 					to_chat(user, SPAN_WARNING("[A] isn't full. Fill it before you can restock it."))
 					return
 			if(istype(item_to_stock,/obj/item/device/walkman))
@@ -815,7 +814,7 @@ GLOBAL_LIST_EMPTY_TYPED(total_vending_machines, /obj/structure/machinery/vending
 	if(stat & NOPOWER)
 		return
 
-	if (!message)
+	if(!message)
 		return
 
 	for(var/mob/O in hearers(src, null))
@@ -835,10 +834,10 @@ GLOBAL_LIST_EMPTY_TYPED(total_vending_machines, /obj/structure/machinery/vending
 		return
 	var/release_amt = rand(3,4)
 	for(var/datum/data/vending_product/R in src.product_records)
-		if (R.amount <= 0) //Try to use a record that actually has something to dump.
+		if(R.amount <= 0) //Try to use a record that actually has something to dump.
 			continue
 		var/dump_path = R.product_path
-		if (!dump_path)
+		if(!dump_path)
 			continue
 
 		while(R.amount > 0 && release_amt > 0)
@@ -858,16 +857,16 @@ GLOBAL_LIST_EMPTY_TYPED(total_vending_machines, /obj/structure/machinery/vending
 		return 0
 
 	for(var/datum/data/vending_product/R in product_records)
-		if (R.amount <= 0) //Try to use a record that actually has something to dump.
+		if(R.amount <= 0) //Try to use a record that actually has something to dump.
 			continue
 		var/dump_path = R.product_path
-		if (!dump_path)
+		if(!dump_path)
 			continue
 
 		R.amount--
 		throw_item = release_item(R, 0)
 		break
-	if (!throw_item)
+	if(!throw_item)
 		return 0
 	INVOKE_ASYNC(throw_item, /atom/movable/proc/throw_atom, target, 16, SPEED_AVERAGE, src)
 	src.visible_message(SPAN_WARNING("[src] launches [throw_item.name] at [target]!"))
@@ -894,7 +893,7 @@ GLOBAL_LIST_EMPTY_TYPED(total_vending_machines, /obj/structure/machinery/vending
 		if(VENDING_WIRE_SHOCK)
 			src.seconds_electrified = -1
 			visible_message(SPAN_DANGER("Electric arcs shoot off from \the [src]!"))
-		if (VENDING_WIRE_SHOOT_INV)
+		if(VENDING_WIRE_SHOOT_INV)
 			if(!src.shoot_inventory)
 				src.shoot_inventory = TRUE
 				visible_message(SPAN_WARNING("\The [src] begins whirring noisily."))
@@ -908,7 +907,7 @@ GLOBAL_LIST_EMPTY_TYPED(total_vending_machines, /obj/structure/machinery/vending
 			visible_message(SPAN_NOTICE("A weak yellow light turns on underneath \the [src]."))
 		if(VENDING_WIRE_SHOCK)
 			src.seconds_electrified = 0
-		if (VENDING_WIRE_SHOOT_INV)
+		if(VENDING_WIRE_SHOOT_INV)
 			src.shoot_inventory = FALSE
 			visible_message(SPAN_NOTICE("\The [src] stops whirring."))
 
@@ -917,10 +916,10 @@ GLOBAL_LIST_EMPTY_TYPED(total_vending_machines, /obj/structure/machinery/vending
 		if(VENDING_WIRE_EXTEND)
 			src.extended_inventory = !src.extended_inventory
 			visible_message(SPAN_NOTICE("A weak yellow light turns [extended_inventory ? "on" : "off"] underneath \the [src]."))
-		if (VENDING_WIRE_SHOCK)
+		if(VENDING_WIRE_SHOCK)
 			src.seconds_electrified = 30
 			visible_message(SPAN_DANGER("Electric arcs shoot off from \the [src]!"))
-		if (VENDING_WIRE_SHOOT_INV)
+		if(VENDING_WIRE_SHOOT_INV)
 			src.shoot_inventory = !src.shoot_inventory
 			if(shoot_inventory)
 				visible_message(SPAN_WARNING("\The [src] begins whirring noisily."))

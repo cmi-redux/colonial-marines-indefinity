@@ -218,7 +218,7 @@
 			deployed_turret.pixel_x = 0
 			deployed_turret.forceMove(src)
 			deployed_turret.setDir(dir)
-			deployed_turret.turned_on = 0
+			deployed_turret.set_light_on(FALSE)
 		else
 			icon_state = "sentry_system_destroyed"
 
@@ -228,7 +228,7 @@
 
 	playsound(loc, 'sound/machines/hydraulics_1.ogg', 40, 1)
 	deployment_cooldown = world.time + 50
-	deployed_turret.turned_on = TRUE
+	deployed_turret.set_light_on(TRUE)
 
 	if(ship_base.base_category == DROPSHIP_WEAPON)
 		deployed_turret.forceMove(get_step(src, dir))
@@ -253,7 +253,7 @@
 	playsound(loc, 'sound/machines/hydraulics_2.ogg', 40, 1)
 	deployment_cooldown = world.time + 50
 	deployed_turret.forceMove(src)
-	deployed_turret.turned_on = FALSE
+	deployed_turret.set_light_on(FALSE)
 	deployed_turret.stop_processing()
 	deployed_turret.unset_range()
 	icon_state = "sentry_system_installed"
@@ -270,7 +270,7 @@
 	icon_state = "mg_system"
 	point_cost = 300
 	var/deployment_cooldown
-	var/obj/structure/machinery/m56d_hmg/mg_turret/dropship/deployed_mg
+	var/obj/structure/machinery/mounted_defence/tripod/prebuild/mg_turret/dropship/deployed_mg
 	combat_equipment = FALSE
 
 /obj/structure/dropship_equipment/mg_holder/Initialize()
@@ -320,7 +320,7 @@
 					if(NORTH)
 						if( istype(get_step(src, WEST), /turf/open) )
 							deployed_mg.pixel_x = 5
-						else if ( istype(get_step(src, EAST), /turf/open) )
+						else if( istype(get_step(src, EAST), /turf/open) )
 							deployed_mg.pixel_x = -5
 					if(EAST)
 						deployed_mg.pixel_y = 9
@@ -349,7 +349,7 @@
 				if(NORTH)
 					if( istype(get_step(src, WEST), /turf/open) )
 						deployed_mg.forceMove(get_step(src, WEST))
-					else if ( istype(get_step(src, EAST), /turf/open) )
+					else if( istype(get_step(src, EAST), /turf/open) )
 						deployed_mg.forceMove(get_step(src, EAST))
 					else
 						deployed_mg.forceMove(get_step(src, NORTH))
@@ -420,9 +420,6 @@
 	icon_state = "chaff_launcher"
 	point_cost = 0
 
-
-#define LIGHTING_MAX_LUMINOSITY_SHIPLIGHTS 12
-
 /obj/structure/dropship_equipment/electronics/spotlights
 	name = "spotlight"
 	icon_state = "spotlights"
@@ -430,21 +427,18 @@
 	is_interactable = TRUE
 	point_cost = 300
 	var/spotlights_cooldown
-	var/brightness = 11
-
-/obj/structure/dropship_equipment/electronics/spotlights/get_light_range()
-	return min(luminosity, LIGHTING_MAX_LUMINOSITY_SHIPLIGHTS)
+	light_range = 11
 
 /obj/structure/dropship_equipment/electronics/spotlights/equipment_interact(mob/user)
 	if(spotlights_cooldown > world.time)
 		to_chat(user, SPAN_WARNING("[src] is busy."))
 		return //prevents spamming deployment/undeployment
-	if(luminosity != brightness)
-		SetLuminosity(brightness)
+	if(!light_on)
+		set_light_on(TRUE)
 		icon_state = "spotlights_on"
 		to_chat(user, SPAN_NOTICE("You turn on [src]."))
 	else
-		SetLuminosity(0)
+		set_light_on(FALSE)
 		icon_state = "spotlights_off"
 		to_chat(user, SPAN_NOTICE("You turn off [src]."))
 	spotlights_cooldown = world.time + 50
@@ -452,23 +446,20 @@
 /obj/structure/dropship_equipment/electronics/spotlights/update_equipment()
 	..()
 	if(ship_base)
-		if(luminosity != brightness)
-			icon_state = "spotlights_off"
-		else
+		if(light_on)
 			icon_state = "spotlights_on"
+		else
+			icon_state = "spotlights_off"
 	else
 		icon_state = "spotlights"
-		if(luminosity)
-			SetLuminosity(0)
+		if(light_on)
+			set_light_on(FALSE)
 
 /obj/structure/dropship_equipment/electronics/spotlights/on_launch()
-	SetLuminosity(0)
+	set_light_on(FALSE)
 
 /obj/structure/dropship_equipment/electronics/spotlights/on_arrival()
-	SetLuminosity(brightness)
-
-#undef LIGHTING_MAX_LUMINOSITY_SHIPLIGHTS
-
+	set_light_on(TRUE)
 
 
 /obj/structure/dropship_equipment/electronics/flare_launcher
@@ -601,7 +592,7 @@
 	update_icon()
 
 /obj/structure/dropship_equipment/weapon/proc/open_fire(obj/selected_target, mob/user = usr)
-	set waitfor = 0
+	set waitfor = FALSE
 	var/turf/target_turf = get_turf(selected_target)
 	if(firing_sound)
 		playsound(loc, firing_sound, 70, 1)
@@ -641,7 +632,7 @@
 	SA.detonate_on(impact)
 
 /obj/structure/dropship_equipment/weapon/proc/open_fire_firemission(obj/selected_target, mob/user = usr)
-	set waitfor = 0
+	set waitfor = FALSE
 	var/turf/target_turf = get_turf(selected_target)
 	if(firing_sound)
 		playsound(loc, firing_sound, 70, 1)
@@ -814,7 +805,7 @@
 		var/evaccee_triagecard_color
 		if(MS.buckled_mob)
 			evaccee_name = MS.buckled_mob.real_name
-			if (ishuman(MS.buckled_mob))
+			if(ishuman(MS.buckled_mob))
 				var/mob/living/carbon/human/H = MS.buckled_mob
 				evaccee_triagecard_color = H.holo_card_color
 		else if(MS.buckled_bodybag)
@@ -822,7 +813,7 @@
 				if(isliving(AM))
 					var/mob/living/L = AM
 					evaccee_name = "[MS.buckled_bodybag.name]: [L.real_name]"
-					if (ishuman(L))
+					if(ishuman(L))
 						var/mob/living/carbon/human/H = L
 						evaccee_triagecard_color = H.holo_card_color
 					break
@@ -831,7 +822,7 @@
 		else
 			evaccee_name = "Empty"
 
-		if (evaccee_triagecard_color && evaccee_triagecard_color == "none")
+		if(evaccee_triagecard_color && evaccee_triagecard_color == "none")
 			evaccee_triagecard_color = null
 
 		possible_stretchers["[evaccee_name] [evaccee_triagecard_color ? "\[" + uppertext(evaccee_triagecard_color) + "\]" : ""] ([AR.name])"] = MS
@@ -945,7 +936,7 @@
 
 
 /obj/structure/dropship_equipment/medevac_system/proc/activate_winch(mob/user)
-	set waitfor = 0
+	set waitfor = FALSE
 	var/old_stretcher = linked_stretcher
 	busy_winch = TRUE
 	playsound(loc, 'sound/machines/medevac_extend.ogg', 40, 1)
@@ -1082,7 +1073,7 @@
 	activate_winch(user, F)
 
 /obj/structure/dropship_equipment/fulton_system/proc/activate_winch(mob/user, obj/item/stack/fulton/linked_fulton)
-	set waitfor = 0
+	set waitfor = FALSE
 	busy_winch = TRUE
 	playsound(loc, 'sound/machines/medevac_extend.ogg', 40, 1)
 	flick("fulton_system_active", src)
@@ -1137,7 +1128,7 @@
 	var/datum/cas_iff_group/cas_group = cas_groups[FACTION_MARINE]
 	var/list/targets = cas_group.cas_signals
 
-	if(!LAZYLEN(targets))
+	if(!length(targets))
 		to_chat(user, SPAN_NOTICE("No CAS signals found."))
 		return
 
@@ -1156,28 +1147,22 @@
 		return
 
 	var/turf/location = get_turf(LT.signal_loc)
-	var/area/location_area = get_area(location)
-	if(CEILING_IS_PROTECTED(location_area.ceiling, CEILING_PROTECTION_TIER_1))
+	if(!(location.turf_flags & TURF_WEATHER))
 		to_chat(user, SPAN_WARNING("You cannot jump to the target. It is probably underground."))
 		return
 
 	var/list/valid_turfs = list()
-	for(var/turf/T as anything in RANGE_TURFS(2, location))
-		var/area/t_area = get_area(T)
-		if(!t_area || CEILING_IS_PROTECTED(t_area.ceiling, CEILING_PROTECTION_TIER_1))
-			continue
-		if(T.density)
+	for(var/turf/turf as anything in RANGE_TURFS(2, location))
+		if(!(location.turf_flags & TURF_WEATHER) || turf.density)
 			continue
 		var/found_dense = FALSE
-		for(var/atom/A in T)
+		for(var/atom/A in turf)
 			if(A.density && A.can_block_movement)
 				found_dense = TRUE
 				break
 		if(found_dense)
 			continue
-		if(protected_by_pylon(TURF_PROTECTION_MORTAR, T))
-			continue
-		valid_turfs += T
+		valid_turfs += turf
 
 	if(!length(valid_turfs))
 		to_chat(user, SPAN_WARNING("There's nowhere safe for you to land, the landing zone is too congested."))
@@ -1192,7 +1177,7 @@
 	user.client?.perspective = EYE_PERSPECTIVE
 	user.client?.eye = deploy_turf
 
-	if(!do_after(user, 4 SECONDS, INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY, user, INTERRUPT_MOVED) || !can_use(user) || protected_by_pylon(TURF_PROTECTION_MORTAR, deploy_turf))
+	if(!do_after(user, 4 SECONDS, INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY, user, INTERRUPT_MOVED) || !can_use(user) || !(location.turf_flags & TURF_WEATHER))
 		qdel(warning_zone)
 		flick("rappel_hatch_closing", src)
 		icon_state = "rappel_hatch_closed"

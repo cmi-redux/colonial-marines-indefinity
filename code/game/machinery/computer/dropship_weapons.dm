@@ -5,7 +5,7 @@
 	density = TRUE
 	icon = 'icons/obj/structures/machinery/shuttle-parts.dmi'
 	icon_state = "consoleright"
-	var/faction = FACTION_MARINE
+	faction_to_get = FACTION_MARINE
 	circuit = null
 	unslashable = TRUE
 	unacidable = TRUE
@@ -57,7 +57,7 @@
 /obj/structure/machinery/computer/dropship_weapons/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 0)
 	var/data[0]
 	var/obj/docking_port/mobile/marine_dropship/dropship = SSshuttle.getShuttle(shuttle_tag)
-	if (!istype(dropship))
+	if(!istype(dropship))
 		return
 
 	var/shuttle_state
@@ -85,7 +85,7 @@
 	if(!faction)
 		return //no faction, no weapons
 
-	var/datum/cas_iff_group/cas_group = cas_groups[faction]
+	var/datum/cas_iff_group/cas_group = cas_groups[faction.faction_name]
 
 	if(!cas_group)
 		return //broken group. No fighting
@@ -227,7 +227,7 @@
 
 	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
 
-	if (!ui)
+	if(!ui)
 		ui = new(user, src, ui_key, "dropship_weapons_console.tmpl", "Weapons Control", 800, 600)
 		ui.set_initial_data(data)
 		ui.open()
@@ -240,7 +240,7 @@
 	add_fingerprint(usr)
 
 	var/obj/docking_port/mobile/marine_dropship/dropship = SSshuttle.getShuttle(shuttle_tag)
-	if (!istype(dropship))
+	if(!istype(dropship))
 		return
 
 	if(href_list["equip_interact"])
@@ -268,7 +268,7 @@
 		if(!faction)
 			return //no faction, no weapons
 
-		var/datum/cas_iff_group/cas_group = cas_groups[faction]
+		var/datum/cas_iff_group/cas_group = cas_groups[faction.faction_name]
 
 		if(!cas_group)
 			return //broken group. No fighting
@@ -300,25 +300,15 @@
 					return
 				if(!LT.signal_loc)
 					return
-				var/turf/TU = get_turf(LT.signal_loc)
-				var/area/targ_area = get_area(LT.signal_loc)
-				var/is_outside = FALSE
-				if(is_ground_level(TU.z))
-					switch(targ_area.ceiling)
-						if(CEILING_NONE)
-							is_outside = TRUE
-						if(CEILING_GLASS)
-							is_outside = TRUE
-				if(!is_outside && !cavebreaker) //cavebreaker doesn't care
+
+				var/turf/signal_loc = get_turf(LT.signal_loc)
+				var/turf/target_turf = signal_loc.can_air_strike(10, signal_loc.get_real_roof())
+				if(!target_turf)
 					to_chat(usr, SPAN_WARNING("INVALID TARGET: target must be visible from high altitude."))
 					return
-				if (protected_by_pylon(TURF_PROTECTION_CAS, TU))
-					to_chat(usr, SPAN_WARNING("INVALID TARGET: biological-pattern interference with signal."))
+				if(!DEW.ammo_equipped.can_fire_at(target_turf, usr))
 					return
-				if(!DEW.ammo_equipped.can_fire_at(TU, usr))
-					return
-
-				DEW.open_fire(LT.signal_loc)
+				DEW.open_fire(target_turf.get_real_roof())
 				break
 
 	if(href_list["deselect"])
@@ -429,9 +419,9 @@
 			to_chat(usr, SPAN_WARNING("A screen with graphics and walls of physics and engineering values open, you immediately force it closed."))
 			return
 		var/list/directions = list(dir2text(NORTH), dir2text(SOUTH), dir2text(EAST), dir2text(WEST))
-		var/chosen = tgui_input_list(usr, "Select new Direction for the strafing run", "Select Direction", directions)
+		var/choice = tgui_input_list(usr, "Select new Direction for the strafing run", "Select Direction", directions)
 
-		var/chosen_dir = text2dir(chosen)
+		var/chosen_dir = text2dir(choice)
 		if(!chosen_dir)
 			to_chat(usr, SPAN_WARNING("Error with direction detected."))
 			return
@@ -444,8 +434,8 @@
 			to_chat(usr, SPAN_WARNING("A screen with graphics and walls of physics and engineering values open, you immediately force it closed."))
 			return
 
-		var/chosen = stripped_input(usr, "Select Fire Mission length, from 0 to [firemission_envelope.max_offset]", "Select Offset", "[firemission_envelope.recorded_offset]", 2)
-		var/chosen_offset = text2num(chosen)
+		var/choice = stripped_input(usr, "Select Fire Mission length, from 0 to [firemission_envelope.max_offset]", "Select Offset", "[firemission_envelope.recorded_offset]", 2)
+		var/chosen_offset = text2num(choice)
 
 		if(chosen_offset == null)
 			to_chat(usr, SPAN_WARNING("Error with offset detected."))
@@ -468,7 +458,7 @@
 		if(dropship.mode != SHUTTLE_CALL)
 			to_chat(usr, SPAN_WARNING("Shuttle has to be in orbit."))
 			return
-		var/datum/cas_iff_group/cas_group = cas_groups[faction]
+		var/datum/cas_iff_group/cas_group = cas_groups[faction.faction_name]
 		var/datum/cas_signal/cas_sig
 		for(var/X in cas_group.cas_signals)
 			var/datum/cas_signal/LT = X
@@ -566,7 +556,7 @@
 			to_chat(usr, SPAN_DANGER("Bug encountered, this console doesn't have a faction set, report this to a coder!"))
 			return
 
-		var/datum/cas_iff_group/cas_group = cas_groups[faction]
+		var/datum/cas_iff_group/cas_group = cas_groups[faction.faction_name]
 		if(!cas_group)
 			to_chat(usr, SPAN_DANGER("Bug encountered, no CAS group exists for this console, report this to a coder!"))
 			return
@@ -601,14 +591,14 @@
 	firemission_envelope.remove_upgrades(user)
 
 /obj/structure/machinery/computer/dropship_weapons/proc/initiate_firemission()
-	set waitfor = 0
+	set waitfor = FALSE
 	var/obj/docking_port/mobile/marine_dropship/dropship = SSshuttle.getShuttle(shuttle_tag)
-	if (!istype(dropship))
+	if(!istype(dropship))
 		return
-	if (dropship.timer && dropship.timeLeft(1) < firemission_envelope.get_total_duration())
+	if(dropship.timer && dropship.timeLeft(1) < firemission_envelope.get_total_duration())
 		to_chat(usr, "Not enough time to complete the Fire Mission")
 		return
-	if (!dropship.in_flyby || dropship.mode != SHUTTLE_CALL)
+	if(!dropship.in_flyby || dropship.mode != SHUTTLE_CALL)
 		to_chat(usr, "Has to be in Fly By mode")
 		return
 
@@ -680,8 +670,8 @@
 	var/turf/shootloc = locate(tt_turf.x + sx*firemission_envelope.recorded_offset, tt_turf.y + sy*firemission_envelope.recorded_offset,tt_turf.z)
 	if(!shootloc)
 		return
-	var/area/laser_area = get_area(shootloc)
-	if(!istype(laser_area) || CEILING_IS_PROTECTED(laser_area.ceiling, CEILING_PROTECTION_TIER_1))
+	var/turf/realshootloc = shootloc.get_real_roof()
+	if(realshootloc != shootloc)
 		if(firemission_envelope.user_is_guided(usr))
 			to_chat(usr, SPAN_WARNING("Vision Obstructed. You have to go in blind."))
 		firemission_envelope.change_current_loc()

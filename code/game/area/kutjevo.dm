@@ -6,38 +6,33 @@
 	icon = 'icons/turf/area_kutjevo.dmi'
 	//ambience = list('figuresomethingout.ogg')
 	icon_state = "kutjevo"
+	background_planet_sounds = TRUE
 	can_build_special = TRUE //T-Comms structure
 	temperature = 308.7 //kelvin, 35c, 95f
-	lighting_use_dynamic = 1
 	minimap_color = MINIMAP_AREA_ENGI
 
 /area/shuttle/drop1/kutjevo
 	name = "Kutjevo - Dropship Alamo Landing Zone"
 	icon_state = "shuttle"
 	icon = 'icons/turf/area_kutjevo.dmi'
-	lighting_use_dynamic = 1
 
 /area/shuttle/drop2/kutjevo
 	name = "Kutjevo - Dropship Normandy Landing Zone"
 	icon_state = "shuttle2"
 	icon = 'icons/turf/area_kutjevo.dmi'
-	lighting_use_dynamic = 1
 
 /area/kutjevo/exterior
 	name = "Kutjevo - Exterior"
-	ceiling = CEILING_NONE
 	icon_state = "ext"
 
 
 /area/kutjevo/interior
 	name = "Kutjevo - Interior"
-	ceiling = CEILING_UNDERGROUND_ALLOW_CAS
 	icon_state = "int"
 	requires_power = 1
 
 /area/kutjevo/interior/oob
 	name = "Kutjevo -  Out Of Bounds"
-	ceiling = CEILING_MAX
 	icon_state = "oob"
 	is_resin_allowed = FALSE
 	flags_area = AREA_NOTUNNEL
@@ -53,7 +48,6 @@
 /area/kutjevo/exterior/lz_pad
 	name = "Kutjevo Auxilliary Landing Zone"
 	icon_state = "lz_pad"
-	weather_enabled = FALSE
 	unlimited_power = 1//ds computer
 	is_resin_allowed = FALSE
 	is_landing_zone = TRUE
@@ -62,7 +56,6 @@
 	name = "Kutjevo - Landing Zone Dunes"
 	icon_state = "lz_dunes"
 	is_resin_allowed = FALSE
-	weather_enabled =  FALSE
 	unlimited_power = 1//DS Computer
 	is_landing_zone = TRUE
 
@@ -148,7 +141,6 @@
 //Primary Colony Buildings
 /area/kutjevo/interior/complex
 	name = "Kutjevo Complex"
-	ceiling = CEILING_METAL
 	icon_state = "kutjevo"
 
 /area/kutjevo/interior/complex/botany
@@ -200,92 +192,75 @@
 /area/kutjevo/interior/complex/Northwest_Dorms
 	name = "Kutjevo Complex - Northwest Colony Dorms"
 	icon_state = "Colony_int"
-	ceiling = CEILING_METAL
 	is_resin_allowed = FALSE
 
 /area/kutjevo/interior/complex/Northwest_Flight_Control
 	name =  "Kutjevo Complex - Northwest Flight Control Room"
 	icon_state = "Colony_int"
-	ceiling = CEILING_METAL
 	is_resin_allowed = FALSE
 
 /area/kutjevo/interior/complex/Northwest_Security_Checkpoint
 	name = "Kutjevo Complex - Northwest Security Checkpoint"
 	icon_state = "Colony_int"
-	ceiling = CEILING_METAL
 	is_resin_allowed = FALSE
 	minimap_color = MINIMAP_AREA_SEC
 
 //Out buildings + foremans
 /area/kutjevo/interior/power
 	name = "Kutjevo - Hydroelectric Dam Substation"
-	ceiling = CEILING_METAL
 	icon_state = "power"
 	minimap_color = MINIMAP_AREA_ENGI
 
 /area/kutjevo/interior/power/comms
 	name = "Kutjevo - Hydroelectric Dam Comms Relay"
-	ceiling = CEILING_METAL
 	icon_state = "power"
 
 /area/kutjevo/interior/construction
 	name = "Kutjevo - Abandoned Construction Interior"
-	ceiling = CEILING_METAL
 	icon_state = "construction_int"
 
 /area/kutjevo/interior/foremans_office
 	name = "Kutjevo - Foreman's Office"
-	ceiling = CEILING_METAL
 	icon_state = "foremans"
 
 /area/kutjevo/interior/botany_bay_int
 	name = "Kutjevo - Space Weed Farm Interior"
-	ceiling = CEILING_METAL
 	icon_state = "weed_int"
 
 /area/kutjevo/interior/power_pt2_electric_boogaloo
 	name = "Kutjevo - Power Plant"
-	ceiling = CEILING_METAL
 	icon_state = "power_2"
 
 /area/kutjevo/interior/colony
 	name = "Kutjevo - Colony Building Interior"
-	ceiling = CEILING_UNDERGROUND_METAL_ALLOW_CAS
 	icon_state = "colony_int"
 
 /area/kutjevo/interior/colony_central
 	name = "Kutjevo - Central Colony Caves"
-	ceiling = CEILING_UNDERGROUND_ALLOW_CAS
 	icon_state = "colony_caves_0"
 	minimap_color = MINIMAP_AREA_CAVES
 
 /area/kutjevo/interior/colony_central/mine_elevator
 	name = "Kutjevo - Central Colony Elevator"
-	ceiling = CEILING_UNDERGROUND_ALLOW_CAS
 	icon_state = "colony_caves_0"
 
 /area/kutjevo/interior/colony_north
 	name = "Kutjevo - North Colony Caves"
-	ceiling = CEILING_DEEP_UNDERGROUND
 	icon_state = "colony_caves_1"
 
 /area/kutjevo/interior/colony_S_East
 	name = "Kutjevo - North East Colony Caves"
-	ceiling = CEILING_DEEP_UNDERGROUND
 	icon_state = "colony_caves_2"
 
 /area/kutjevo/interior/colony_N_East
 	name = "Kutjevo - South East Colony Caves"
-	ceiling = CEILING_DEEP_UNDERGROUND
 	icon_state = "colony_caves_2"
 
 /area/kutjevo/interior/colony_South
 	name = "Kutjevo - South Colony Caves"
-	ceiling = CEILING_DEEP_UNDERGROUND
 	icon_state = "colony_caves_3"
 
 /area/kutjevo/interior/colony_South/power2
 	name = "Kutjevo - South Colony Treatment Plant"
-	ceiling = CEILING_DEEP_UNDERGROUND
 	icon_state = "colony_caves_3"
 	minimap_color = MINIMAP_AREA_ENGI_CAVE

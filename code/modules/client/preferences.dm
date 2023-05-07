@@ -26,7 +26,7 @@ var/const/MAX_SAVE_SLOTS = 10
 /datum/preferences
 	var/client/owner
 	var/atom/movable/screen/preview/preview_front
-	var/mob/living/carbon/human/dummy/preview_dummy
+	var/mob/living/carbon/human/dummy/ui/preview_dummy
 	var/atom/movable/screen/rotate/alt/rotate_left
 	var/atom/movable/screen/rotate/rotate_right
 
@@ -42,12 +42,13 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/warns = 0
 	var/muted = 0
 	var/last_ip
-	var/fps = 20
+	var/fps = 100
 	var/last_id
 	var/save_cooldown = 0 //5s cooldown between saving slots
 	var/reload_cooldown = 0 //5s cooldown between loading slots
 
 	//game-preferences
+	var/client_language = CLIENT_LANGUAGE_RUSSIAN
 	var/lastchangelog = "" // Saved changlog filesize to detect if there was a change
 	var/ooccolor
 	var/be_special = 0 // Special role selection
@@ -224,6 +225,8 @@ var/const/MAX_SAVE_SLOTS = 10
 
 	var/unlock_content = 0
 
+	var/datum/faction/observing_faction
+
 	var/current_menu = MENU_MARINE
 
 	/// if this client has custom cursors enabled
@@ -257,9 +260,9 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/client_qdeled = isnull(owner) || QDELETED(owner)
 	var/client_status = client_qdeled ? "client is null or disposed" : "client is OK"
 	var/client_mob_status
-	if (client_qdeled)
+	if(client_qdeled)
 		client_mob_status = "no client for mob"
-	else if (isnull(owner.mob) || QDELETED(owner.mob))
+	else if(isnull(owner.mob) || QDELETED(owner.mob))
 		client_mob_status = "client mob is null or disposed"
 	else
 		client_mob_status = "client mob is OK"
@@ -279,30 +282,30 @@ var/const/MAX_SAVE_SLOTS = 10
 	dat += "<body onselectstart='return false;'>"
 
 	if(!path)
-		dat += "Please create an account to save your preferences."
+		dat += user.client.auto_lang(LANGUAGE_PREF_GUEST)
 		return
 
 	dat += "<center>"
-	dat += "<a href=\"byond://?src=\ref[user];preference=open_load_dialog\"><b>Load Slot</b></a> - "
-	dat += "<a href=\"byond://?src=\ref[user];preference=save\"><b>Save Slot</b></a> - "
-	dat += "<a href=\"byond://?src=\ref[user];preference=reload\"><b>Reload Slot</b></a>"
+	dat += "<a href=\"byond://?src=\ref[user];preference=open_load_dialog\"><b>[user.client.auto_lang(LANGUAGE_PREF_SLOT_LOAD)]</b></a> - "
+	dat += "<a href=\"byond://?src=\ref[user];preference=save\"><b>[user.client.auto_lang(LANGUAGE_PREF_SLOT_SAVE)]</b></a> - "
+	dat += "<a href=\"byond://?src=\ref[user];preference=reload\"><b>[user.client.auto_lang(LANGUAGE_PREF_SLOT_RELOAD)]</b></a>"
 	dat += "</center>"
 
 	dat += "<hr>"
 
 	dat += "<center>"
-	dat += "<a[current_menu == MENU_MARINE ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_MARINE]\"><b>Human</b></a> - "
-	dat += "<a[current_menu == MENU_XENOMORPH ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_XENOMORPH]\"><b>Xenomorph</b></a> - "
-	if(RoleAuthority.roles_whitelist[user.ckey] & WHITELIST_COMMANDER)
-		dat += "<a[current_menu == MENU_CO ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_CO]\"><b>Commanding Officer</b></a> - "
-	if(RoleAuthority.roles_whitelist[user.ckey] & WHITELIST_SYNTHETIC)
-		dat += "<a[current_menu == MENU_SYNTHETIC ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_SYNTHETIC]\"><b>Synthetic</b></a> - "
-	if(RoleAuthority.roles_whitelist[user.ckey] & WHITELIST_PREDATOR)
-		dat += "<a[current_menu == MENU_YAUTJA ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_YAUTJA]\"><b>Yautja</b></a> - "
-	if(RoleAuthority.roles_whitelist[user.ckey] & WHITELIST_MENTOR)
-		dat += "<a[current_menu == MENU_MENTOR ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_MENTOR]\"><b>Mentor</b></a> - "
-	dat += "<a[current_menu == MENU_SETTINGS ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_SETTINGS]\"><b>Settings</b></a> - "
-	dat += "<a[current_menu == MENU_SPECIAL ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_SPECIAL]\"><b>Special Roles</b></a>"
+	dat += "<a[current_menu == MENU_MARINE ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_MARINE]\"><b>[user.client.auto_lang(LANGUAGE_PREF_SET_HUMAN)]</b></a> - "
+	dat += "<a[current_menu == MENU_XENOMORPH ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_XENOMORPH]\"><b>[user.client.auto_lang(LANGUAGE_PREF_SET_XENO)]</b></a> - "
+	if(SSticker.role_authority.roles_whitelist[user.ckey] & WHITELIST_COMMANDER)
+		dat += "<a[current_menu == MENU_CO ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_CO]\"><b>[user.client.auto_lang(LANGUAGE_PREF_SET_COM)]</b></a> - "
+	if(SSticker.role_authority.roles_whitelist[user.ckey] & WHITELIST_SYNTHETIC)
+		dat += "<a[current_menu == MENU_SYNTHETIC ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_SYNTHETIC]\"><b>[user.client.auto_lang(LANGUAGE_PREF_SET_SYNTH)]</b></a> - "
+	if(SSticker.role_authority.roles_whitelist[user.ckey] & WHITELIST_PREDATOR)
+		dat += "<a[current_menu == MENU_YAUTJA ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_YAUTJA]\"><b>[user.client.auto_lang(LANGUAGE_PREF_SET_YAUT)]</b></a> - "
+	if(SSticker.role_authority.roles_whitelist[user.ckey] & WHITELIST_MENTOR)
+		dat += "<a[current_menu == MENU_MENTOR ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_MENTOR]\"><b>[user.client.auto_lang(LANGUAGE_PREF_SET_MENTOR)]</b></a> - "
+	dat += "<a[current_menu == MENU_SETTINGS ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_SETTINGS]\"><b>[user.client.auto_lang(LANGUAGE_PREF_SETTINGS)]</b></a> - "
+	dat += "<a[current_menu == MENU_SPECIAL ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_SPECIAL]\"><b>[user.client.auto_lang(LANGUAGE_PREF_SET_SPECIAL)]</b></a>"
 	dat += "</center>"
 
 	dat += "<hr>"
@@ -310,33 +313,33 @@ var/const/MAX_SAVE_SLOTS = 10
 	switch(current_menu)
 		if(MENU_MARINE)
 			dat += "<div id='column1'>"
-			dat += "<h1><u><b>Name:</b></u> "
+			dat += "<h1><u><b>[user.client.auto_lang(LANGUAGE_PREF_HUMAN_NAME)]:</b></u> "
 			dat += "<a href='?_src_=prefs;preference=name;task=input'><b>[real_name]</b></a>"
 			dat += "<a href='?_src_=prefs;preference=name;task=random'>&reg</A></h1>"
-			dat += "<b>Always Pick Random Name:</b> <a href='?_src_=prefs;preference=rand_name'><b>[be_random_name ? "Yes" : "No"]</b></a><br>"
-			dat += "<b>Always Pick Random Appearance:</b> <a href='?_src_=prefs;preference=rand_body'><b>[be_random_body ? "Yes" : "No"]</b></a><br><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_HUMAN_RAND_NAME)]:</b> <a href='?_src_=prefs;preference=rand_name'><b>[be_random_name ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_HUMAN_RAND_APPER)]:</b> <a href='?_src_=prefs;preference=rand_body'><b>[be_random_body ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br><br>"
 
-			dat += "<h2><b><u>Physical Information:</u></b>"
+			dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_PHYS_INFO)]:</u></b>"
 			dat += "<a href='?_src_=prefs;preference=all;task=random'>&reg;</A></h2>"
-			dat += "<b>Age:</b> <a href='?_src_=prefs;preference=age;task=input'><b>[age]</b></a><br>"
-			dat += "<b>Gender:</b> <a href='?_src_=prefs;preference=gender'><b>[gender == MALE ? "Male" : "Female"]</b></a><br>"
-			dat += "<b>Ethnicity:</b> <a href='?_src_=prefs;preference=ethnicity;task=input'><b>[ethnicity]</b></a><br>"
-			dat += "<b>Body Type:</b> <a href='?_src_=prefs;preference=body_type;task=input'><b>[body_type]</b></a><br>"
-			dat += "<b>Traits:</b> <a href='byond://?src=\ref[user];preference=traits;task=open'><b>Character Traits</b></a>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_HUMAN_AGE)]:</b> <a href='?_src_=prefs;preference=age;task=input'><b>[age]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_HUMAN_GENDER)]:</b> <a href='?_src_=prefs;preference=gender'><b>[gender == MALE ? user.client.auto_lang(LANGUAGE_MALE) : user.client.auto_lang(LANGUAGE_FEMALE)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_HUMAN_ETHNIC)]:</b> <a href='?_src_=prefs;preference=ethnicity;task=input'><b>[ethnicity]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_HUMAN_BODY)]:</b> <a href='?_src_=prefs;preference=body_type;task=input'><b>[body_type]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_HUMAN_TRAITS)]:</b> <a href='byond://?src=\ref[user];preference=traits;task=open'><b>[user.client.auto_lang(LANGUAGE_PREF_HUMAN_CHAR_TRAITS)]</b></a>"
 			dat += "<br>"
 
-			dat += "<h2><b><u>Occupation Choices:</u></b></h2>"
+			dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_OCUP)]:</u></b></h2>"
 			dat += "<br>"
-			dat += "\t<a href='?_src_=prefs;preference=job;task=menu'><b>Set Role Preferences</b></a>"
+			dat += "\t<a href='?_src_=prefs;preference=job;task=menu'><b>[user.client.auto_lang(LANGUAGE_PREF_OCUP_CHOSE)]</b></a>"
 			dat += "</div>"
 
 			dat += "<div id='column2'>"
-			dat += "<h2><b><u>Hair and Eyes:</u></b></h2>"
-			dat += "<b>Hair:</b> "
+			dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_HUMAN_HAIR_EYES)]:</u></b></h2>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_HUMAN_HAIR)]:</b> "
 			dat += "<a href='?_src_=prefs;preference=h_style;task=input'><b>[h_style]</b></a>"
 			dat += " | "
 			dat += "<a href='?_src_=prefs;preference=hair;task=input'>"
-			dat += "<b>Color</b> <span class='square' style='background-color: #[num2hex(r_hair, 2)][num2hex(g_hair, 2)][num2hex(b_hair)];'></span>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_COLOR)]</b> <span class='square' style='background-color: #[num2hex(r_hair, 2)][num2hex(g_hair, 2)][num2hex(b_hair)];'></span>"
 			dat += "</a>"
 			dat += "<br>"
 
@@ -349,30 +352,30 @@ var/const/MAX_SAVE_SLOTS = 10
 				dat += "</a>"
 				dat += "<br>"
 
-			dat += "<b>Facial Hair:</b> "
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_HUMAN_FACIAL_HAIR)]:</b> "
 			dat += "<a href='?_src_=prefs;preference=f_style;task=input'><b>[f_style]</b></a>"
 			dat += " | "
 			dat += "<a href='?_src_=prefs;preference=facial;task=input'>"
-			dat += "<b>Color</b> <span class='square' style='background-color: #[num2hex(r_facial, 2)][num2hex(g_facial, 2)][num2hex(b_facial)];'></span>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_COLOR)]</b> <span class='square' style='background-color: #[num2hex(r_facial, 2)][num2hex(g_facial, 2)][num2hex(b_facial)];'></span>"
 			dat += "</a>"
 			dat += "<br>"
 
-			dat += "<b>Eye:</b> "
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_HUMAN_EYE)]:</b> "
 			dat += "<a href='?_src_=prefs;preference=eyes;task=input'>"
-			dat += "<b>Color</b> <span class='square' style='background-color: #[num2hex(r_eyes, 2)][num2hex(g_eyes, 2)][num2hex(b_eyes)];'></span>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_COLOR)]</b> <span class='square' style='background-color: #[num2hex(r_eyes, 2)][num2hex(g_eyes, 2)][num2hex(b_eyes)];'></span>"
 			dat += "</a>"
 			dat += "<br><br>"
 
-			dat += "<h2><b><u>Marine Gear:</u></b></h2>"
-			dat += "<b>Underwear:</b> <a href ='?_src_=prefs;preference=underwear;task=input'><b>[underwear]</b></a><br>"
-			dat += "<b>Undershirt:</b> <a href='?_src_=prefs;preference=undershirt;task=input'><b>[undershirt]</b></a><br>"
+			dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_HUMAN_MARINE_GEAR)]:</u></b></h2>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_HUMAN_UNDERWEAR)]:</b> <a href ='?_src_=prefs;preference=underwear;task=input'><b>[underwear]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_HUMAN_UNDERSHIRT)]:</b> <a href='?_src_=prefs;preference=undershirt;task=input'><b>[undershirt]</b></a><br>"
 
-			dat += "<b>Backpack Type:</b> <a href ='?_src_=prefs;preference=bag;task=input'><b>[backbaglist[backbag]]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_BACKPACK)]:</b> <a href ='?_src_=prefs;preference=bag;task=input'><b>[backbaglist[backbag]]</b></a><br>"
 
-			dat += "<b>Show Job Gear:</b> <a href ='?_src_=prefs;preference=toggle_job_gear'><b>[show_job_gear ? "True" : "False"]</b></a><br>"
-			dat += "<b>Background:</b> <a href ='?_src_=prefs;preference=cycle_bg'><b>Cycle Background</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_SHOW_GEAR)]:</b> <a href ='?_src_=prefs;preference=toggle_job_gear'><b>[show_job_gear ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_BACKGROUND)]:</b> <a href ='?_src_=prefs;preference=cycle_bg'><b>[user.client.auto_lang(LANGUAGE_PREF_CYCLE_BACK)]</b></a><br>"
 
-			dat += "<b>Custom Loadout:</b> "
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_CUSTOM_LO)]:</b> "
 			var/total_cost = 0
 
 			if(!islist(gear))
@@ -384,243 +387,245 @@ var/const/MAX_SAVE_SLOTS = 10
 					var/datum/gear/G = gear_datums[gear[i]]
 					if(G)
 						total_cost += G.cost
-						dat += "[gear[i]] ([G.cost] points) <a href='byond://?src=\ref[user];preference=loadout;task=remove;gear=[i]'><b>Remove</b></a><br>"
+						dat += "[gear[i]] ([G.cost]  [user.client.auto_lang(LANGUAGE_POINTS)]) <a href='byond://?src=\ref[user];preference=loadout;task=remove;gear=[i]'><b>[user.client.auto_lang(LANGUAGE_REMOVE)]</b></a><br>"
 
-				dat += "<b>Used:</b> [total_cost] points"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_USED)]:</b> [total_cost] [user.client.auto_lang(LANGUAGE_POINTS)]"
 			else
-				dat += "None"
+				dat += user.client.auto_lang(LANGUAGE_NONE)
 
 			if(total_cost < MAX_GEAR_COST)
-				dat += " <a href='byond://?src=\ref[user];preference=loadout;task=input'><b>Add</b></a>"
+				dat += " <a href='byond://?src=\ref[user];preference=loadout;task=input'><b>[user.client.auto_lang(LANGUAGE_ADD)]</b></a>"
 				if(gear && gear.len)
-					dat += " <a href='byond://?src=\ref[user];preference=loadout;task=clear'><b>Clear</b></a>"
+					dat += " <a href='byond://?src=\ref[user];preference=loadout;task=clear'><b>[user.client.auto_lang(LANGUAGE_CLEAR)]</b></a>"
 
 			dat += "</div>"
 
 			dat += "<div id='column3'>"
-			dat += "<h2><b><u>Background Information:</u></b></h2>"
-			dat += "<b>Origin:</b> <a href='?_src_=prefs;preference=origin;task=input'><b>[origin]</b></a><br/>"
-			dat += "<b>Religion:</b> <a href='?_src_=prefs;preference=religion;task=input'><b>[religion]</b></a><br/>"
+			dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_BG_INFO)]:</u></b></h2>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_CITIZEN)]:</b> <a href='?_src_=prefs;preference=origin;task=input'><b>[origin]</b></a><br/>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_RELIGION)]:</b> <a href='?_src_=prefs;preference=religion;task=input'><b>[religion]</b></a><br/>"
 
-			dat += "<b>Corporate Relation:</b> <a href ='?_src_=prefs;preference=nt_relation;task=input'><b>[nanotrasen_relation]</b></a><br>"
-			dat += "<b>Preferred Squad:</b> <a href ='?_src_=prefs;preference=prefsquad;task=input'><b>[preferred_squad]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_CORP_REL)]:</b> <a href ='?_src_=prefs;preference=nt_relation;task=input'><b>[nanotrasen_relation]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_SQUAD)]:</b> <a href ='?_src_=prefs;preference=prefsquad;task=input'><b>[preferred_squad]</b></a><br>"
 
-			dat += "<h2><b><u>Fluff Information:</u></b></h2>"
+			dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_FLUFF)]:</u></b></h2>"
 			if(jobban_isbanned(user, "Records"))
-				dat += "<b>You are banned from using character records.</b><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_FLUFF_BAN)]</b><br>"
 			else
-				dat += "<b>Records:</b> <a href=\"byond://?src=\ref[user];preference=records;record=1\"><b>Character Records</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_RECORDS)]:</b> <a href=\"byond://?src=\ref[user];preference=records;record=1\"><b>[user.client.auto_lang(LANGUAGE_PREF_CHAR_RECORDS)]</b></a><br>"
 
-			dat += "<b>Flavor Text:</b> <a href='byond://?src=\ref[user];preference=flavor_text;task=open'><b>[TextPreview(flavor_texts["general"], 15)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_FLUFF_TXT)]:</b> <a href='byond://?src=\ref[user];preference=flavor_text;task=open'><b>[TextPreview(flavor_texts["general"], 15)]</b></a><br>"
 			dat += "</div>"
 
 		if(MENU_XENOMORPH)
 			dat += "<div id='column1'>"
-			dat += "<h2><b><u>Xenomorph Information:</u></b></h2>"
+			dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_XEN_INFO)]:</u></b></h2>"
 			var/display_prefix = xeno_prefix ? xeno_prefix : "------"
 			var/display_postfix = xeno_postfix ? xeno_postfix : "------"
-			dat += "<b>Xeno prefix:</b> <a href='?_src_=prefs;preference=xeno_prefix;task=input'><b>[display_prefix]</b></a><br>"
-			dat += "<b>Xeno postfix:</b> <a href='?_src_=prefs;preference=xeno_postfix;task=input'><b>[display_postfix]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_PREFIX)]:</b> <a href='?_src_=prefs;preference=xeno_prefix;task=input'><b>[display_prefix]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_POSTFIX)]:</b> <a href='?_src_=prefs;preference=xeno_postfix;task=input'><b>[display_postfix]</b></a><br>"
 
-			dat += "<b>Enable Playtime Perks:</b> <a href='?_src_=prefs;preference=playtime_perks'><b>[playtime_perks? "Yes" : "No"]</b></a><br>"
-			dat += "<b>Default Xeno Night Vision Level:</b> <a href='?_src_=prefs;preference=xeno_vision_level_pref;task=input'><b>[xeno_vision_level_pref]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_TIME_PERKS)]:</b> <a href='?_src_=prefs;preference=playtime_perks'><b>[playtime_perks? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_DEF_NVIG)]:</b> <a href='?_src_=prefs;preference=xeno_vision_level_pref;task=input'><b>[xeno_vision_level_pref]</b></a><br>"
 
 			var/tempnumber = rand(1, 999)
 			var/postfix_text = xeno_postfix ? ("-"+xeno_postfix) : ""
 			var/prefix_text = xeno_prefix ? xeno_prefix : "XX"
 			var/xeno_text = "[prefix_text]-[tempnumber][postfix_text]"
 
-			dat += "<b>Xeno sample name:</b> [xeno_text]<br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_SAMPLE_NAME)]:</b> [xeno_text]<br>"
 			dat += "<br>"
 			dat += "</div>"
 
 			dat += "<div id='column2'>"
-			dat += "<h2><b><u>Occupation Choices:</u></b></h2>"
+			dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_OCUP_CHOICE)]:</u></b></h2>"
 			var/n = 0
 			var/list/special_roles = list(
-			"Xenomorph after<br>unrevivably dead" = 1,
-			"Agent" = 0,
+			user.client.auto_lang(LANGUAGE_PREF_BE_XENO) = 1,
+			user.client.auto_lang(LANGUAGE_PREF_BE_AGENT) = 0,
 			)
 
 			for(var/role_name in special_roles)
 				var/ban_check_name
 				var/list/missing_requirements = list()
 
-				switch(role_name)
-					if("Xenomorph after<br>unrevivably dead")
-						ban_check_name = JOB_XENOMORPH
+				if(role_name == user.client.auto_lang(LANGUAGE_PREF_BE_XENO))
+					ban_check_name = JOB_XENOMORPH
 
-					if("Agent")
-						ban_check_name = "Agent"
+				if(role_name == user.client.auto_lang(LANGUAGE_PREF_BE_AGENT))
+					ban_check_name = "Agent"
 
 				if(jobban_isbanned(user, ban_check_name))
-					dat += "<b>Be [role_name]:</b> <font color=red><b>\[BANNED]</b></font><br>"
+					dat += "<b>[user.client.auto_lang(LANGUAGE_BE)] [role_name]:</b> <font color=red><b>[user.client.auto_lang(LANGUAGE_BANNED)]</b></font><br>"
 				else if(!can_play_special_job(user.client, ban_check_name))
-					dat += "<b>Be [role_name]:</b> <font color=red><b>\[TIMELOCKED]</b></font><br>"
+					dat += "<b>[user.client.auto_lang(LANGUAGE_BE)] [role_name]:</b> <font color=red><b>[user.client.auto_lang(LANGUAGE_TIME_LOCKED)]</b></font><br>"
 					for(var/r in missing_requirements)
 						var/datum/timelock/T = r
 						dat += "\t[T.name] - [duration2text(missing_requirements[r])] Hours<br>"
 				else
-					dat += "<b>Be [role_name]:</b> <a href='?_src_=prefs;preference=be_special;num=[n]'><b>[be_special & (1<<n) ? "Yes" : "No"]</b></a><br>"
+					dat += "<b>[user.client.auto_lang(LANGUAGE_BE)] [role_name]:</b> <a href='?_src_=prefs;preference=be_special;num=[n]'><b>[be_special & (1<<n) ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
 
 				n++
 
 			dat += "<br>"
-			dat += "\t<a href='?_src_=prefs;preference=job;task=menu'><b>Set Role Preferences</b></a>"
+			dat += "\t<a href='?_src_=prefs;preference=job;task=menu'><b>[user.client.auto_lang(LANGUAGE_PREF_ROLE_PREFS)]</b></a>"
 			dat += "</div>"
 		if(MENU_CO)
-			if(RoleAuthority.roles_whitelist[user.ckey] & WHITELIST_COMMANDER)
+			if(SSticker.role_authority.roles_whitelist[user.ckey] & WHITELIST_COMMANDER)
 				dat += "<div id='column1'>"
-				dat += "<h2><b><u>Commander Settings:</u></b></h2>"
-				dat += "<b>Commander Whitelist Status:</b> <a href='?_src_=prefs;preference=commander_status;task=input'><b>[commander_status]</b></a><br>"
-				dat += "<b>Commander Sidearm:</b> <a href='?_src_=prefs;preference=co_sidearm;task=input'><b>[commander_sidearm]</b></a><br>"
+				dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_COM_SET)]:</u></b></h2>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_COM_WL)]:</b> <a href='?_src_=prefs;preference=commander_status;task=input'><b>[commander_status]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_COM_SIDE_ARM)]:</b> <a href='?_src_=prefs;preference=co_sidearm;task=input'><b>[commander_sidearm]</b></a><br>"
 				dat += "</div>"
 			else
-				dat += "<b>You do not have the whitelist for this role.</b>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_NO_WL)]</b>"
 		if(MENU_SYNTHETIC)
-			if(RoleAuthority.roles_whitelist[user.ckey] & WHITELIST_SYNTHETIC)
+			if(SSticker.role_authority.roles_whitelist[user.ckey] & WHITELIST_SYNTHETIC)
 				dat += "<div id='column1'>"
-				dat += "<h2><b><u>Synthetic Settings:</u></b></h2>"
-				dat += "<b>Synthetic Name:</b> <a href='?_src_=prefs;preference=synth_name;task=input'><b>[synthetic_name]</b></a><br>"
-				dat += "<b>Synthetic Type:</b> <a href='?_src_=prefs;preference=synth_type;task=input'><b>[synthetic_type]</b></a><br>"
-				dat += "<b>Synthetic Whitelist Status:</b> <a href='?_src_=prefs;preference=synth_status;task=input'><b>[synth_status]</b></a><br>"
+				dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_SYNTH_SET)]:</u></b></h2>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_SYNTH_NAME)]:</b> <a href='?_src_=prefs;preference=synth_name;task=input'><b>[synthetic_name]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_SYNTH_TYPE)]:</b> <a href='?_src_=prefs;preference=synth_type;task=input'><b>[synthetic_type]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_SYNTH_WL)]:</b> <a href='?_src_=prefs;preference=synth_status;task=input'><b>[synth_status]</b></a><br>"
 				dat += "</div>"
 			else
-				dat += "<b>You do not have the whitelist for this role.</b>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_NO_WL)]</b>"
 		if(MENU_YAUTJA)
-			if(RoleAuthority.roles_whitelist[user.ckey] & WHITELIST_PREDATOR)
+			if(SSticker.role_authority.roles_whitelist[user.ckey] & WHITELIST_PREDATOR)
 				dat += "<div id='column1'>"
-				dat += "<h2><b><u>Yautja Information:</u></b></h2>"
-				dat += "<b>Yautja Name:</b> <a href='?_src_=prefs;preference=pred_name;task=input'><b>[predator_name]</b></a><br>"
-				dat += "<b>Yautja Gender:</b> <a href='?_src_=prefs;preference=pred_gender;task=input'><b>[predator_gender == MALE ? "Male" : "Female"]</b></a><br>"
-				dat += "<b>Yautja Age:</b> <a href='?_src_=prefs;preference=pred_age;task=input'><b>[predator_age]</b></a><br>"
-				dat += "<b>Yautja Quill Style:</b> <a href='?_src_=prefs;preference=pred_hair;task=input'><b>[predator_h_style]</b></a><br>"
-				dat += "<b>Yautja Skin Color:</b> <a href='?_src_=prefs;preference=pred_skin;task=input'><b>[predator_skin_color]</b></a><br>"
-				dat += "<b>Yautja Flavor Text:</b> <a href='?_src_=prefs;preference=pred_flavor_text;task=input'><b>[TextPreview(predator_flavor_text, 15)]</b></a><br>"
-				dat += "<b>Yautja Whitelist Status:</b> <a href='?_src_=prefs;preference=yautja_status;task=input'><b>[yautja_status]</b></a>"
+				dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_YAUT_INFO)]:</u></b></h2>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_NAME)]:</b> <a href='?_src_=prefs;preference=pred_name;task=input'><b>[predator_name]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_GENDER)]:</b> <a href='?_src_=prefs;preference=pred_gender;task=input'><b>[predator_gender == MALE ? user.client.auto_lang(LANGUAGE_MALE) : user.client.auto_lang(LANGUAGE_FEMALE)]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_AGE)]:</b> <a href='?_src_=prefs;preference=pred_age;task=input'><b>[predator_age]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_QUILL)]:</b> <a href='?_src_=prefs;preference=pred_hair;task=input'><b>[predator_h_style]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_SC)]:</b> <a href='?_src_=prefs;preference=pred_skin;task=input'><b>[predator_skin_color]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_FLAVOR)]:</b> <a href='?_src_=prefs;preference=pred_flavor_text;task=input'><b>[TextPreview(predator_flavor_text, 15)]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_WL)]:</b> <a href='?_src_=prefs;preference=yautja_status;task=input'><b>[yautja_status]</b></a>"
 				dat += "</div>"
 
 				dat += "<div id='column2'>"
-				dat += "<h2><b><u>Equipment Setup:</u></b></h2>"
-				dat += "<b>Translator Type:</b> <a href='?_src_=prefs;preference=pred_trans_type;task=input'><b>[predator_translator_type]</b></a><br>"
-				dat += "<b>Mask Style:</b> <a href='?_src_=prefs;preference=pred_mask_type;task=input'><b>([predator_mask_type])</b></a><br>"
-				dat += "<b>Armor Style:</b> <a href='?_src_=prefs;preference=pred_armor_type;task=input'><b>([predator_armor_type])</b></a><br>"
-				dat += "<b>Greave Style:</b> <a href='?_src_=prefs;preference=pred_boot_type;task=input'><b>([predator_boot_type])</b></a><br>"
-				dat += "<b>Mask Material:</b> <a href='?_src_=prefs;preference=pred_mask_mat;task=input'><b>[predator_mask_material]</b></a><br>"
-				dat += "<b>Armor Material:</b> <a href='?_src_=prefs;preference=pred_armor_mat;task=input'><b>[predator_armor_material]</b></a><br>"
-				dat += "<b>Greave Material:</b> <a href='?_src_=prefs;preference=pred_greave_mat;task=input'><b>[predator_greave_material]</b></a><br>"
-				dat += "<b>Caster Material:</b> <a href='?_src_=prefs;preference=pred_caster_mat;task=input'><b>[predator_caster_material]</b></a>"
+				dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_YAUT_EQPMENT)]:</u></b></h2>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_TRANSLATOR)]:</b> <a href='?_src_=prefs;preference=pred_trans_type;task=input'><b>[predator_translator_type]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_MASK_S)]:</b> <a href='?_src_=prefs;preference=pred_mask_type;task=input'><b>([predator_mask_type])</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_ARMOR_S)]:</b> <a href='?_src_=prefs;preference=pred_armor_type;task=input'><b>([predator_armor_type])</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_GRAVE_S)]:</b> <a href='?_src_=prefs;preference=pred_boot_type;task=input'><b>([predator_boot_type])</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_MASK_M)]:</b> <a href='?_src_=prefs;preference=pred_mask_mat;task=input'><b>[predator_mask_material]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_ARMOR_M)]:</b> <a href='?_src_=prefs;preference=pred_armor_mat;task=input'><b>[predator_armor_material]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_GRAVE_M)]:</b> <a href='?_src_=prefs;preference=pred_greave_mat;task=input'><b>[predator_greave_material]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_CASTER_M)]:</b> <a href='?_src_=prefs;preference=pred_caster_mat;task=input'><b>[predator_caster_material]</b></a>"
 				dat += "</div>"
 
 				dat += "<div id='column3'>"
-				dat += "<h2><b><u>Clothing Setup:</u></b></h2>"
-				dat += "<b>Cape Type:</b> <a href='?_src_=prefs;preference=pred_cape_type;task=input'><b>[capitalize_first_letters(predator_cape_type)]</b></a><br>"
-				dat += "<b>Cape Color:</b> "
+				dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_YAUT_CLOTH_SETUP)]:</u></b></h2>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_CAPE_T)]:</b> <a href='?_src_=prefs;preference=pred_cape_type;task=input'><b>[capitalize_first_letters(predator_cape_type)]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_CAPE_C)]:</b> "
 				dat += "<a href='?_src_=prefs;preference=pred_cape_color;task=input'>"
-				dat += "<b>Color</b> <span class='square' style='background-color: [predator_cape_color];'></span>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_COLOR)]</b> <span class='square' style='background-color: [predator_cape_color];'></span>"
 				dat += "</a><br><br>"
-				dat += "<b>Background:</b> <a href ='?_src_=prefs;preference=cycle_bg'><b>Cycle Background</b></a>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_BACKGROUND)]:</b> <a href ='?_src_=prefs;preference=cycle_bg'><b>[user.client.auto_lang(LANGUAGE_PREF_CYCLE_BACK)]</b></a>"
 				dat += "</div>"
 			else
-				dat += "<b>You do not have the whitelist for this role.</b>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_NO_WL)]</b>"
 		if(MENU_MENTOR)
-			if(RoleAuthority.roles_whitelist[user.ckey] & WHITELIST_MENTOR)
+			if(SSticker.role_authority.roles_whitelist[user.ckey] & WHITELIST_MENTOR)
 				dat += "<div id='column1'>"
-				dat += "<h2><b><u>Mentor Settings:</u></b></h2>"
-				dat += "<b>SEA Grade Path:</b> <a href='?_src_=prefs;preference=grade_path;task=input'><b>[sea_path]</b></a><br>"
+				dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_MENTOR_SET)]:</u></b></h2>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_SEA)]:</b> <a href='?_src_=prefs;preference=grade_path;task=input'><b>[sea_path]</b></a><br>"
 				dat += "</div>"
 			else
-				dat += "<b>You do not have the whitelist for this role.</b>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_NO_WL)]</b>"
 		if(MENU_SETTINGS)
 			dat += "<div id='column1'>"
-			dat += "<h2><b><u>Input Settings:</u></b></h2>"
-			dat += "<b>Mode:</b> <a href='?_src_=prefs;preference=hotkeys'><b>[(hotkeys) ? "Hotkeys Mode" : "Send to Chat"]</b></a><br>"
-			dat += "<b>Keybinds:</b> <a href='?_src_=prefs;preference=viewmacros'><b>View Keybinds</b></a><br>"
-			dat += "<br><b>Say Input Style:</b> <a href='?_src_=prefs;preference=inputstyle'><b>[tgui_say ? "Modern (default)" : "Legacy"]</b></a><br>"
-			dat += "<b>Say Input Color:</b> <a href='?_src_=prefs;preference=inputcolor'><b>[tgui_say_light_mode ? "Lightmode" : "Darkmode (default)"]</b></a><br>"
+			dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_INPUT)]:</u></b></h2>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_HMODE)]:</b> <a href='?_src_=prefs;preference=hotkeys'><b>[(hotkeys) ? user.client.auto_lang(LANGUAGE_PREF_HKEY) : user.client.auto_lang(LANGUAGE_PREF_HCHAT)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_KEYBINDS)]:</b> <a href='?_src_=prefs;preference=viewmacros'><b>[user.client.auto_lang(LANGUAGE_PREF_VIEW_KB)]</b></a><br>"
 
-			dat += "<h2><b><u>UI Customization:</u></b></h2>"
-			dat += "<b>Style:</b> <a href='?_src_=prefs;preference=ui'><b>[UI_style]</b></a><br>"
-			dat += "<b>Color:</b> <a href='?_src_=prefs;preference=UIcolor'><b>[UI_style_color]</b> <table style='display:inline;' bgcolor='[UI_style_color]'><tr><td>__</td></tr></table></a><br>"
-			dat += "<b>Alpha:</b> <a href='?_src_=prefs;preference=UIalpha'><b>[UI_style_alpha]</b></a><br><br>"
-			dat += "<b>Stylesheet:</b> <a href='?_src_=prefs;preference=stylesheet'><b>[stylesheet]</b></a><br>"
-			dat += "<b>Hide Statusbar:</b> <a href='?_src_=prefs;preference=hide_statusbar'><b>[hide_statusbar ? "TRUE" : "FALSE"]</b></a><br>"
-			dat += "<b>Prefer input drop down menus to radial menus, where possible:</b> <a href='?_src_=prefs;preference=no_radials_preference'><b>[no_radials_preference ? "TRUE" : "FALSE"]</b></a><br>"
+			dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_UI_CUSTOM)]:</u></b></h2>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_STYLE)]:</b> <a href='?_src_=prefs;preference=ui'><b>[UI_style]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_COLOR)]:</b> <a href='?_src_=prefs;preference=UIcolor'><b>[UI_style_color]</b> <table style='display:inline;' bgcolor='[UI_style_color]'><tr><td>__</td></tr></table></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_ALPHA)]:</b> <a href='?_src_=prefs;preference=UIalpha'><b>[UI_style_alpha]</b></a><br><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_STYLESHEET)]:</b> <a href='?_src_=prefs;preference=stylesheet'><b>[stylesheet]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_STATUSBAR)]:</b> <a href='?_src_=prefs;preference=hide_statusbar'><b>[hide_statusbar ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_RAD_MENU)]:</b> <a href='?_src_=prefs;preference=no_radials_preference'><b>[no_radials_preference ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
 			if(!no_radials_preference)
-				dat += "<b>Hide Radial Menu Labels:</b> <a href='?_src_=prefs;preference=no_radial_labels_preference'><b>[no_radial_labels_preference ? "TRUE" : "FALSE"]</b></a><br>"
-			dat += "<b>Custom Cursors:</b> <a href='?_src_=prefs;preference=customcursors'><b>[custom_cursors ? "Enabled" : "Disabled"]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_HIDE_RM)]:</b> <a href='?_src_=prefs;preference=no_radial_labels_preference'><b>[no_radial_labels_preference ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_CURSORS)]:</b> <a href='?_src_=prefs;preference=customcursors'><b>[custom_cursors ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
 
-			dat += "<h2><b><u>Chat Settings:</u></b></h2>"
+			dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_CHAT_SET)]:</u></b></h2>"
 			if(CONFIG_GET(flag/ooc_country_flags))
-				dat += "<b>OOC Country Flag:</b> <a href='?_src_=prefs;preference=ooc_flag'><b>[(toggle_prefs & TOGGLE_OOC_FLAG) ? "Enabled" : "Disabled"]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_OOC_CF)]:</b> <a href='?_src_=prefs;preference=ooc_flag'><b>[(toggle_prefs & TOGGLE_OOC_FLAG) ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
 			if(user.client.admin_holder && user.client.admin_holder.rights & R_DEBUG)
-				dat += "<b>View Master Controller Tab:</b> <a href='?_src_=prefs;preference=ViewMC'><b>[View_MC ? "TRUE" : "FALSE"]</b></a>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_MS_TAB)]:</b> <a href='?_src_=prefs;preference=ViewMC'><b>[View_MC ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
 			if(unlock_content)
-				dat += "<b>BYOND Membership Publicity:</b> <a href='?_src_=prefs;preference=publicity'><b>[(toggle_prefs & TOGGLE_MEMBER_PUBLIC) ? "Public" : "Hidden"]</b></a><br>"
-			dat += "<b>Ghost Ears:</b> <a href='?_src_=prefs;preference=ghost_ears'><b>[(toggles_chat & CHAT_GHOSTEARS) ? "All Speech" : "Nearest Creatures"]</b></a><br>"
-			dat += "<b>Ghost Sight:</b> <a href='?_src_=prefs;preference=ghost_sight'><b>[(toggles_chat & CHAT_GHOSTSIGHT) ? "All Emotes" : "Nearest Creatures"]</b></a><br>"
-			dat += "<b>Ghost Radio:</b> <a href='?_src_=prefs;preference=ghost_radio'><b>[(toggles_chat & CHAT_GHOSTRADIO) ? "All Chatter" : "Nearest Speakers"]</b></a><br>"
-			dat += "<b>Ghost Hivemind:</b> <a href='?_src_=prefs;preference=ghost_hivemind'><b>[(toggles_chat & CHAT_GHOSTHIVEMIND) ? "Show Hivemind" : "Hide Hivemind"]</b></a><br>"
-			dat += "<b>Abovehead Chat:</b> <a href='?_src_=prefs;preference=lang_chat_disabled'><b>[lang_chat_disabled ? "Hide" : "Show"]</b></a><br>"
-			dat += "<b>Abovehead Emotes:</b> <a href='?_src_=prefs;preference=langchat_emotes'><b>[(toggles_langchat & LANGCHAT_SEE_EMOTES) ? "Show" : "Hide"]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_MEMBERSHIP)]:</b> <a href='?_src_=prefs;preference=publicity'><b>[(toggle_prefs & TOGGLE_MEMBER_PUBLIC) ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_EARS_G)]:</b> <a href='?_src_=prefs;preference=ghost_ears'><b>[(toggles_chat & CHAT_GHOSTEARS) ? user.client.auto_lang(LANGUAGE_PREF_ALL) : user.client.auto_lang(LANGUAGE_PREF_NEAREST)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_SIGHT_G)]:</b> <a href='?_src_=prefs;preference=ghost_sight'><b>[(toggles_chat & CHAT_GHOSTSIGHT) ? user.client.auto_lang(LANGUAGE_PREF_ALL) : user.client.auto_lang(LANGUAGE_PREF_NEAREST)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_RADIO_G)]:</b> <a href='?_src_=prefs;preference=ghost_radio'><b>[(toggles_chat & CHAT_GHOSTRADIO) ? user.client.auto_lang(LANGUAGE_PREF_ALL) : user.client.auto_lang(LANGUAGE_PREF_NEAREST)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_HIVEMIND_G)]:</b> <a href='?_src_=prefs;preference=ghost_hivemind'><b>[(toggles_chat & CHAT_GHOSTHIVEMIND) ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_AH_CHAT_G)]:</b> <a href='?_src_=prefs;preference=lang_chat_disabled'><b>[lang_chat_disabled ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_AH_EMOTES_G)]:</b> <a href='?_src_=prefs;preference=langchat_emotes'><b>[(toggles_langchat & LANGCHAT_SEE_EMOTES) ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
 			dat += "</div>"
 
 			dat += "<div id='column2'>"
-			dat += "<h2><b><u>Game Settings:</u></b></h2>"
-			dat += "<b>Ambient Occlusion:</b> <a href='?_src_=prefs;preference=ambientocclusion'><b>[toggle_prefs & TOGGLE_AMBIENT_OCCLUSION ? "Enabled" : "Disabled"]</b></a><br>"
-			dat += "<b>Fit Viewport:</b> <a href='?_src_=prefs;preference=auto_fit_viewport'>[auto_fit_viewport ? "Auto" : "Manual"]</a><br>"
-			dat += "<b>tgui Window Mode:</b> <a href='?_src_=prefs;preference=tgui_fancy'><b>[(tgui_fancy) ? "Fancy (default)" : "Compatible (slower)"]</b></a><br>"
-			dat += "<b>tgui Window Placement:</b> <a href='?_src_=prefs;preference=tgui_lock'><b>[(tgui_lock) ? "Primary monitor" : "Free (default)"]</b></a><br>"
-			dat += "<b>Play Admin Midis:</b> <a href='?_src_=prefs;preference=hear_midis'><b>[(toggles_sound & SOUND_MIDI) ? "Yes" : "No"]</b></a><br>"
-			dat += "<b>Play Admin Internet Sounds:</b> <a href='?_src_=prefs;preference=hear_internet'><b>[(toggles_sound & SOUND_INTERNET) ? "Yes" : "No"]</b></a><br>"
-			dat += "<b>Toggle Meme or Atmospheric Sounds:</b> <a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_admin_sound_types'>Toggle</a><br>"
-			dat += "<b>Set Eye Blur Type:</b> <a href='?src=\ref[src];action=proccall;procpath=/client/proc/set_eye_blur_type'>Set</a><br>"
-			dat += "<b>Play Lobby Music:</b> <a href='?_src_=prefs;preference=lobby_music'><b>[(toggles_sound & SOUND_LOBBY) ? "Yes" : "No"]</b></a><br>"
-			dat += "<b>Play VOX Announcements:</b> <a href='?_src_=prefs;preference=sound_vox'><b>[(hear_vox) ? "Yes" : "No"]</b></a><br>"
-			dat += "<b>Default Ghost Night Vision Level:</b> <a href='?_src_=prefs;preference=ghost_vision_pref;task=input'><b>[ghost_vision_pref]</b></a><br>"
-			dat += "<a href='?src=\ref[src];action=proccall;procpath=/client/proc/receive_random_tip'>Read Random Tip of the Round</a><br>"
+			dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_GAME_SET)]:</u></b></h2>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_AO)]:</b> <a href='?_src_=prefs;preference=ambientocclusion'><b>[toggle_prefs & TOGGLE_AMBIENT_OCCLUSION ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_FIT_VIEW)]:</b> <a href='?_src_=prefs;preference=auto_fit_viewport'>[auto_fit_viewport ? user.client.auto_lang(LANGUAGE_PREF_AUTO) : user.client.auto_lang(LANGUAGE_PREF_MANUAL)]</a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_WINDOW_MODE)]:</b> <a href='?_src_=prefs;preference=tgui_fancy'><b>[(tgui_fancy) ? user.client.auto_lang(LANGUAGE_PREF_FANCY) : user.client.auto_lang(LANGUAGE_PREF_COMPATIBLE)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_WINDOW_PLACE)]:</b> <a href='?_src_=prefs;preference=tgui_lock'><b>[(tgui_lock) ? user.client.auto_lang(LANGUAGE_PREF_PRIMARYM) : user.client.auto_lang(LANGUAGE_PREF_FREE_PLACE)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_MIDIS)]:</b> <a href='?_src_=prefs;preference=hear_midis'><b>[(toggles_sound & SOUND_MIDI) ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_INTERNET_M)]:</b> <a href='?_src_=prefs;preference=hear_internet'><b>[(toggles_sound & SOUND_INTERNET) ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_AST)]:</b> <a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_admin_sound_types'>[user.client.auto_lang(LANGUAGE_TOGGLE)]</a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_EYE_BLUR)]:</b> <a href='?src=\ref[src];action=proccall;procpath=/client/proc/set_eye_blur_type'>[user.client.auto_lang(LANGUAGE_SET)]</a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_LOBBY_M)]:</b> <a href='?_src_=prefs;preference=lobby_music'><b>[(toggles_sound & SOUND_LOBBY) ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_VOX)]:</b> <a href='?_src_=prefs;preference=sound_vox'><b>[(hear_vox) ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_GVISION)]:</b> <a href='?_src_=prefs;preference=ghost_vision_pref;task=input'><b>[ghost_vision_pref]</b></a><br>"
+			dat += "<a href='?src=\ref[src];action=proccall;procpath=/client/proc/receive_random_tip'>[user.client.auto_lang(LANGUAGE_PREF_RRTOTR)]</a><br>"
+
+
 			if(CONFIG_GET(flag/allow_Metadata))
-				dat += "<b>OOC Notes:</b> <a href='?_src_=prefs;preference=metadata;task=input'> Edit </a>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_NOTES)]:</b> <a href='?_src_=prefs;preference=metadata;task=input'> [user.client.auto_lang(LANGUAGE_EDIT)] </a>"
 			dat += "</div>"
 
 			dat += "<div id='column3'>"
-			dat += "<h2><b><u>Gameplay Toggles:</u></b></h2>"
-			dat += "<b>Toggle Being Able to Hurt Yourself: \
-					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_IGNORE_SELF]'><b>[toggle_prefs & TOGGLE_IGNORE_SELF ? "On" : "Off"]</b></a><br>"
-			dat += "<b>Toggle Help Intent Safety: \
-					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_HELP_INTENT_SAFETY]'><b>[toggle_prefs & TOGGLE_HELP_INTENT_SAFETY ? "On" : "Off"]</b></a><br>"
-			dat += "<b>Toggle Middle Mouse Ability Activation: \
-					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_MIDDLE_MOUSE_CLICK]'><b>[toggle_prefs & TOGGLE_MIDDLE_MOUSE_CLICK ? "On" : "Off"]</b></a><br>"
-			dat += "<b>Toggle Directional Assist: \
-					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_DIRECTIONAL_ATTACK]'><b>[toggle_prefs & TOGGLE_DIRECTIONAL_ATTACK ? "On" : "Off"]</b></a><br>"
-			dat += "<b>Toggle Magazine Auto-Ejection: \
-					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_AUTO_EJECT_MAGAZINE_OFF];flag_undo=[TOGGLE_AUTO_EJECT_MAGAZINE_TO_HAND]'><b>[!(toggle_prefs & TOGGLE_AUTO_EJECT_MAGAZINE_OFF) ? "On" : "Off"]</b></a><br>"
-			dat += "<b>Toggle Magazine Auto-Ejection to Offhand: \
-					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_AUTO_EJECT_MAGAZINE_TO_HAND];flag_undo=[TOGGLE_AUTO_EJECT_MAGAZINE_OFF]'><b>[toggle_prefs & TOGGLE_AUTO_EJECT_MAGAZINE_TO_HAND ? "On" : "Off"]</b></a><br>"
-			dat += "<b>Toggle Magazine Manual Ejection to Offhand: \
-					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_EJECT_MAGAZINE_TO_HAND]'><b>[toggle_prefs & TOGGLE_EJECT_MAGAZINE_TO_HAND ? "On" : "Off"]</b></a><br>"
-			dat += "<b>Toggle Automatic Punctuation: \
-					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_AUTOMATIC_PUNCTUATION]'><b>[toggle_prefs & TOGGLE_AUTOMATIC_PUNCTUATION ? "On" : "Off"]</b></a><br>"
-			dat += "<b>Toggle Combat Click-Drag Override: \
-					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_COMBAT_CLICKDRAG_OVERRIDE]'><b>[toggle_prefs & TOGGLE_COMBAT_CLICKDRAG_OVERRIDE ? "On" : "Off"]</b></a><br>"
-			dat += "<b>Toggle Alternate-Fire Dual Wielding: \
-					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_ALTERNATING_DUAL_WIELD]'><b>[toggle_prefs & TOGGLE_ALTERNATING_DUAL_WIELD ? "On" : "Off"]</b></a><br>"
-			dat += "<b>Toggle Middle-Click Swap Hands: \
-					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_MIDDLE_MOUSE_SWAP_HANDS]'><b>[toggle_prefs & TOGGLE_MIDDLE_MOUSE_SWAP_HANDS ? "On" : "Off"]</b></a><br>"
-			dat += "<b>Toggle Vendors Vending to Hands: \
-					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_VEND_ITEM_TO_HAND]'><b>[toggle_prefs & TOGGLE_VEND_ITEM_TO_HAND ? "On" : "Off"]</b></a><br>"
-			dat += "<a href='?src=\ref[src];action=proccall;procpath=/client/proc/switch_item_animations'>Toggle Item Animations Detail Level</a><br>"
-		if(MENU_SPECIAL) //wart
+			dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_GAME_TOGGLES)]:</u></b></h2>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_HURT_SELF)]: \
+					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_IGNORE_SELF]'><b>[toggle_prefs & TOGGLE_IGNORE_SELF ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_HELP_SAFE)]: \
+					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_HELP_INTENT_SAFETY]'><b>[toggle_prefs & TOGGLE_HELP_INTENT_SAFETY ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_MIDDLE)]: \
+					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_MIDDLE_MOUSE_CLICK]'><b>[toggle_prefs & TOGGLE_MIDDLE_MOUSE_CLICK ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_DIRECT_ASSIST)]: \
+					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_DIRECTIONAL_ATTACK]'><b>[toggle_prefs & TOGGLE_DIRECTIONAL_ATTACK ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_AUTO_E)]: \
+					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_AUTO_EJECT_MAGAZINE_OFF];flag_undo=[TOGGLE_AUTO_EJECT_MAGAZINE_TO_HAND]'><b>[!(toggle_prefs & TOGGLE_AUTO_EJECT_MAGAZINE_OFF) ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_AUTO_EOH)]: \
+					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_AUTO_EJECT_MAGAZINE_TO_HAND];flag_undo=[TOGGLE_AUTO_EJECT_MAGAZINE_OFF]'><b>[toggle_prefs & TOGGLE_AUTO_EJECT_MAGAZINE_TO_HAND ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_M_AUTO_EOH)]: \
+					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_EJECT_MAGAZINE_TO_HAND]'><b>[toggle_prefs & TOGGLE_EJECT_MAGAZINE_TO_HAND ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_PUNCTUATION)]: \
+					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_AUTOMATIC_PUNCTUATION]'><b>[toggle_prefs & TOGGLE_AUTOMATIC_PUNCTUATION ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_CD_OVERRIDE)]: \
+					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_COMBAT_CLICKDRAG_OVERRIDE]'><b>[toggle_prefs & TOGGLE_COMBAT_CLICKDRAG_OVERRIDE ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ALT_DW)]: \
+					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_ALTERNATING_DUAL_WIELD]'><b>[toggle_prefs & TOGGLE_ALTERNATING_DUAL_WIELD ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_AMMO_COUNTER)]: \
+					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_GUN_AMMO_COUNTER]'><b>[toggle_prefs & TOGGLE_GUN_AMMO_COUNTER ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_MC_SH)]: \
+					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_MIDDLE_MOUSE_SWAP_HANDS]'><b>[toggle_prefs & TOGGLE_MIDDLE_MOUSE_SWAP_HANDS ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_VVTH)]: \
+					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_VEND_ITEM_TO_HAND]'><b>[toggle_prefs & TOGGLE_VEND_ITEM_TO_HAND ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]]</b></a><br>"
+			dat += "<a href='?src=\ref[src];action=proccall;procpath=/client/proc/switch_item_animations'>[user.client.auto_lang(LANGUAGE_PREF_DETAIL_LVL)]</a><br>"
+			dat += "</div>"
+		if(MENU_SPECIAL)
 			dat += "<div id='column1'>"
-			dat += "<h2><b><u>ERT Settings:</u></b></h2>"
-			dat += "<b>Spawn as Leader:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_LEADER]'><b>[toggles_ert & PLAY_LEADER ? "Yes" : "No"]</b></a><br>"
-			dat += "<b>Spawn as Medic:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_MEDIC]'><b>[toggles_ert & PLAY_MEDIC ? "Yes" : "No"]</b></a><br>"
-			dat += "<b>Spawn as Engineer:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_ENGINEER]'><b>[toggles_ert & PLAY_ENGINEER ? "Yes" : "No"]</b></a><br>"
-			dat += "<b>Spawn as Specialist:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_HEAVY]'><b>[toggles_ert & PLAY_HEAVY ? "Yes" : "No"]</b></a><br>"
-			dat += "<b>Spawn as Smartgunner:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_SMARTGUNNER]'><b>[toggles_ert & PLAY_SMARTGUNNER ? "Yes" : "No"]</b></a><br>"
-			if(RoleAuthority.roles_whitelist[user.ckey] & WHITELIST_SYNTHETIC)
-				dat += "<b>Spawn as Synth:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_SYNTH]'><b>[toggles_ert & PLAY_SYNTH ? "Yes" : "No"]</b></a><br>"
-			dat += "<b>Spawn as Miscellaneous:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_MISC]'><b>[toggles_ert & PLAY_MISC ? "Yes" : "No"]</b></a><br>"
+			dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_ERT_SET)]:</u></b></h2>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ERT_LEADER)]:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_LEADER]'><b>[toggles_ert & PLAY_LEADER ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ERT_MEDIC)]:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_MEDIC]'><b>[toggles_ert & PLAY_MEDIC ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ERT_ENGI)]:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_ENGINEER]'><b>[toggles_ert & PLAY_ENGINEER ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ERT_SPEC)]:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_HEAVY]'><b>[toggles_ert & PLAY_HEAVY ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ERT_SMART)]:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_SMARTGUNNER]'><b>[toggles_ert & PLAY_SMARTGUNNER ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
+			if(SSticker.role_authority.roles_whitelist[user.ckey] & WHITELIST_SYNTHETIC)
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ERT_SYNTH)]:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_SYNTH]'><b>[toggles_ert & PLAY_SYNTH ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ERT_MISC)]:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_MISC]'><b>[toggles_ert & PLAY_MISC ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
 			dat += "</div>"
 
 			dat += "<div id='column2'>"
@@ -631,34 +636,36 @@ var/const/MAX_SAVE_SLOTS = 10
 	dat += "</div></body>"
 
 	winshow(user, "preferencewindow", TRUE)
-	show_browser(user, dat, "Preferences", "preferencebrowser")
+	show_browser(user, dat, user.client.auto_lang(LANGUAGE_PREF_PREFERENCES), "preferencebrowser")
 	onclose(user, "preferencewindow", src)
 
 //limit - The amount of jobs allowed per column. Defaults to 13 to make it look nice.
 //splitJobs - Allows you split the table by job. You can make different tables for each department by including their heads. Defaults to CE to make it look nice.
 //width - Screen' width. Defaults to 550 to make it look nice.
 //height - Screen's height. Defaults to 500 to make it look nice.
-/datum/preferences/proc/SetChoices(mob/user, limit = 19, list/splitJobs = list(), width = 950, height = 700)
-	if(!RoleAuthority)
+/datum/preferences/proc/SetChoices(mob/user, list/roles_pool, limit = 19, list/splitJobs = list(), width = 950, height = 700)
+	if(!SSticker.role_authority)
 		return
+
+	if(!observing_faction)
+		observing_faction = GLOB.faction_datum[SSticker.mode.factions_pool[pick(SSticker.mode.factions_pool)]]
+
+	roles_pool = observing_faction.roles_list[SSticker.mode.name]
 
 	var/HTML = "<body>"
 	HTML += "<tt><center>"
-	HTML += "<b>Choose occupation chances</b><br>Unavailable occupations are crossed out.<br><br>"
-	HTML += "<center><a href='?_src_=prefs;preference=job;task=close'>Done</a></center><br>" // Easier to press up here.
+	HTML += "<b>[user.client.auto_lang(LANGUAGE_PREF_ROLES)]<br><br>"
+	HTML += "<b>[user.client.auto_lang(LANGUAGE_PREF_ROLES_FACTION)]: [observing_faction]<br><br>"
+	HTML += "<center><a href='?_src_=prefs;preference=job;task=close'>[user.client.auto_lang(LANGUAGE_DONE)]</a></center><br>" // Easier to press up here.
 	HTML += "<table width='100%' cellpadding='1' cellspacing='0' style='color: black;'><tr><td valign='top' width='20%'>" // Table within a table for alignment, also allows you to easily add more colomns.
 	HTML += "<table width='100%' cellpadding='1' cellspacing='0'>"
 	var/index = -1
 
 	//The job before the current job. I only use this to get the previous jobs color when I'm filling in blank rows.
 
-	var/list/active_role_names = GLOB.gamemode_roles[GLOB.master_mode]
-	if(!active_role_names)
-		active_role_names = ROLES_REGULAR_ALL
-
 	var/datum/job/lastJob
-	for(var/role_name as anything in active_role_names)
-		var/datum/job/job = RoleAuthority.roles_by_name[role_name]
+	for(var/role_name in roles_pool)
+		var/datum/job/job = GET_MAPPED_ROLE(role_name)
 		if(!job)
 			debug_log("Missing job for prefs: [role_name]")
 			continue
@@ -676,14 +683,14 @@ var/const/MAX_SAVE_SLOTS = 10
 		lastJob = job
 
 		if(jobban_isbanned(user, job.title))
-			HTML += "<b><del>[job.disp_title]</del></b></td><td><b>BANNED</b></td></tr>"
+			HTML += "<b><del>[job.disp_title]</del></b></td><td><b>[user.client.auto_lang(LANGUAGE_BANNED)]</b></td></tr>"
 			continue
-		else if(job.flags_startup_parameters & ROLE_WHITELISTED && !(RoleAuthority.roles_whitelist[user.ckey] & job.flags_whitelist))
-			HTML += "<b><del>[job.disp_title]</del></b></td><td>WHITELISTED</td></tr>"
+		else if(job.flags_startup_parameters & ROLE_WHITELISTED && !(SSticker.role_authority.roles_whitelist[user.ckey] & job.flags_whitelist))
+			HTML += "<b><del>[job.disp_title]</del></b></td><td>[user.client.auto_lang(LANGUAGE_WHITELISTED)]</td></tr>"
 			continue
 		else if(!job.can_play_role(user.client))
 			var/list/missing_requirements = job.get_role_requirements(user.client)
-			HTML += "<b><del>[job.disp_title]</del></b></td><td>TIMELOCKED</td></tr>"
+			HTML += "<b><del>[job.disp_title]</del></b></td><td>[user.client.auto_lang(LANGUAGE_TIME_LOCKED)]</td></tr>"
 			for(var/r in missing_requirements)
 				var/datum/timelock/T = r
 				HTML += "<tr class='[job.selection_class]'><td width='40%' align='right'>[T.name]</td><td>[duration2text(missing_requirements[r])] Hours</td></tr>"
@@ -697,23 +704,23 @@ var/const/MAX_SAVE_SLOTS = 10
 
 		var/b_color
 		var/priority_text
-		for (var/j in NEVER_PRIORITY to LOW_PRIORITY)
-			switch (j)
+		for(var/j in NEVER_PRIORITY to LOW_PRIORITY)
+			switch(j)
 				if(NEVER_PRIORITY)
 					b_color = "red"
-					priority_text = "NEVER"
+					priority_text = user.client.auto_lang(LANGUAGE_JP_NEVER)
 				if(HIGH_PRIORITY)
 					b_color = "blue"
-					priority_text = "HIGH"
+					priority_text = user.client.auto_lang(LANGUAGE_JP_HIGH)
 				if(MED_PRIORITY)
 					b_color = "green"
-					priority_text = "MEDIUM"
+					priority_text = user.client.auto_lang(LANGUAGE_JP_MEDIUM)
 				if(LOW_PRIORITY)
 					b_color = "orange"
-					priority_text = "LOW"
+					priority_text = user.client.auto_lang(LANGUAGE_JP_LOW)
 
 			HTML += "<a class='[j == cur_priority ? b_color : "inactive"]' href='?_src_=prefs;preference=job;task=input;text=[job.title];target_priority=[j];'>[priority_text]</a>"
-			if (j < 4)
+			if(j < 4)
 				HTML += "&nbsp"
 
 		HTML += "</td></tr>"
@@ -721,27 +728,29 @@ var/const/MAX_SAVE_SLOTS = 10
 	HTML += "</td></tr></table>"
 	HTML += "</center></table>"
 
+	HTML += "<center><br><a class='green' href='?_src_=prefs;preference=job;task=faction'>Change faction</a></center><br>"
+
 	if(user.client?.prefs) //Just makin sure
 		var/b_color = "green"
-		var/msg = "Get random job if preferences unavailable"
+		var/msg = user.client.auto_lang(LANGUAGE_PREF_RANDOM_ROLE)
 
 		if(user.client.prefs.alternate_option == BE_MARINE)
 			b_color = "red"
-			msg = "Be marine if preference unavailable"
+			msg = user.client.auto_lang(LANGUAGE_PREF_MARINE_ROLE)
 		else if(user.client.prefs.alternate_option == RETURN_TO_LOBBY)
 			b_color = "purple"
-			msg = "Return to lobby if preference unavailable"
+			msg = user.client.auto_lang(LANGUAGE_PREF_LOBBY_ROLE)
 		else if(user.client.prefs.alternate_option == BE_XENOMORPH)
 			b_color = "orange"
-			msg = "Be Xenomorph if preference unavailable"
+			msg = user.client.auto_lang(LANGUAGE_PREF_XENO_ROLE)
 
 		HTML += "<center><br><a class='[b_color]' href='?_src_=prefs;preference=job;task=random'>[msg]</a></center><br>"
 
-	HTML += "<center><a href='?_src_=prefs;preference=job;task=reset'>Reset</a></center>"
+	HTML += "<center><a href='?_src_=prefs;preference=job;task=reset'>[user.client.auto_lang(LANGUAGE_RESET)]</a></center>"
 	HTML += "</tt></body>"
 
 	close_browser(user, "preferences")
-	show_browser(user, HTML, "Job Preferences", "mob_occupation", "size=[width]x[height]")
+	show_browser(user, HTML, user.client.auto_lang(LANGUAGE_PREF_JOB_PREFERENCES), "mob_occupation", "size=[width]x[height]")
 	onclose(user, "mob_occupation", user.client, list("_src_" = "prefs", "preference" = "job", "task" = "close"))
 	return
 
@@ -763,7 +772,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	HTML += TextPreview(sec_record,40)
 
 	HTML += "<br>"
-	HTML += "<a href=\"byond://?src=\ref[user];preference=records;records=-1\">Done</a>"
+	HTML += "<a href=\"byond://?src=\ref[user];preference=records;records=-1\">[user.client.auto_lang(LANGUAGE_DONE)]</a>"
 	HTML += "</center></tt>"
 
 	close_browser(user, "preferences")
@@ -777,14 +786,14 @@ var/const/MAX_SAVE_SLOTS = 10
 	HTML += TextPreview(flavor_texts["general"])
 	HTML += "<br>"
 	HTML += "<hr />"
-	HTML +="<a href='?src=\ref[user];preference=flavor_text;task=done'>Done</a>"
+	HTML +="<a href='?src=\ref[user];preference=flavor_text;task=done'>[user.client.auto_lang(LANGUAGE_DONE)]</a>"
 	HTML += "<tt>"
 	close_browser(user, "preferences")
 	show_browser(user, HTML, "Set Flavor Text", "flavor_text;size=430x300")
 	return
 
 /datum/preferences/proc/SetJob(mob/user, role, priority)
-	var/datum/job/job = RoleAuthority.roles_by_name[role]
+	var/datum/job/job = GET_MAPPED_ROLE(role)
 	if(!job)
 		close_browser(user, "mob_occupation")
 		ShowChoices(user)
@@ -793,7 +802,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	SetJobDepartment(job, priority)
 
 	SetChoices(user)
-	return 1
+	return TRUE
 
 /datum/preferences/proc/ResetJobs()
 	if(length(job_preference_list))
@@ -801,13 +810,13 @@ var/const/MAX_SAVE_SLOTS = 10
 			job_preference_list[job] = NEVER_PRIORITY
 		return
 
-	if(!RoleAuthority)
+	if(!SSticker.role_authority)
 		return
 
 	job_preference_list = list()
-	for(var/role in RoleAuthority.roles_by_path)
-		var/datum/job/J = RoleAuthority.roles_by_path[role]
-		job_preference_list[J.title] = NEVER_PRIORITY
+	for(var/role in SSticker.role_authority.roles_by_path)
+		var/datum/job/job = SSticker.role_authority.roles_by_path[role]
+		job_preference_list[job.title] = NEVER_PRIORITY
 
 /datum/preferences/proc/get_job_priority(J)
 	if(!J)
@@ -818,8 +827,8 @@ var/const/MAX_SAVE_SLOTS = 10
 
 	return job_preference_list[J]
 
-/datum/preferences/proc/SetJobDepartment(datum/job/J, priority)
-	if(!J || priority < 0 || priority > 4)
+/datum/preferences/proc/SetJobDepartment(datum/job/job, priority)
+	if(!job || priority < 0 || priority > 4)
 		return FALSE
 
 
@@ -828,15 +837,15 @@ var/const/MAX_SAVE_SLOTS = 10
 
 	// Need to set old HIGH priority to 2
 	if(priority == HIGH_PRIORITY)
-		for(var/job in job_preference_list)
-			if(job_preference_list[job] == HIGH_PRIORITY)
-				job_preference_list[job] = MED_PRIORITY
+		for(var/J in job_preference_list)
+			if(job_preference_list[J] == HIGH_PRIORITY)
+				job_preference_list[J] = MED_PRIORITY
 
-	job_preference_list[J.title] = priority
+	job_preference_list[job.title] = priority
 	return TRUE
 
 /datum/preferences/proc/process_link(mob/user, list/href_list)
-	var/whitelist_flags = RoleAuthority.roles_whitelist[user.ckey]
+	var/whitelist_flags = SSticker.role_authority.roles_whitelist[user.ckey]
 
 	switch(href_list["preference"])
 		if("job")
@@ -858,6 +867,13 @@ var/const/MAX_SAVE_SLOTS = 10
 				if("input")
 					var/priority = text2num(href_list["target_priority"])
 					SetJob(user, href_list["text"], priority)
+				if("faction")
+					var/choice = tgui_input_list(user, "Choose faction to observer roles:", "Factions", SSticker.mode.factions_pool)
+					if(!choice)
+						return
+
+					observing_faction = GLOB.faction_datum[SSticker.mode.factions_pool[choice]]
+					SetChoices(user)
 				else
 					SetChoices(user)
 			return 1
@@ -1016,48 +1032,48 @@ var/const/MAX_SAVE_SLOTS = 10
 			bg_state = next_in_list(bg_state, GLOB.bgstate_options)
 
 	switch (href_list["task"])
-		if ("random")
+		if("random")
 			switch (href_list["preference"])
-				if ("name")
+				if("name")
 					var/datum/origin/character_origin = GLOB.origins[origin]
 					real_name = character_origin.generate_human_name(gender)
-				if ("age")
+				if("age")
 					age = rand(AGE_MIN, AGE_MAX)
-				if ("ethnicity")
+				if("ethnicity")
 					ethnicity = random_ethnicity()
-				if ("body_type")
+				if("body_type")
 					body_type = random_body_type()
-				if ("hair")
+				if("hair")
 					r_hair = rand(0,255)
 					g_hair = rand(0,255)
 					b_hair = rand(0,255)
-				if ("h_style")
+				if("h_style")
 					h_style = random_hair_style(gender, species)
-				if ("facial")
+				if("facial")
 					r_facial = rand(0,255)
 					g_facial = rand(0,255)
 					b_facial = rand(0,255)
-				if ("f_style")
+				if("f_style")
 					f_style = random_facial_hair_style(gender, species)
-				if ("underwear")
+				if("underwear")
 					underwear = gender == MALE ? pick(GLOB.underwear_m) : pick(GLOB.underwear_f)
 					ShowChoices(user)
-				if ("undershirt")
+				if("undershirt")
 					undershirt = gender == MALE ? pick(GLOB.undershirt_m) : pick(GLOB.undershirt_f)
 					ShowChoices(user)
-				if ("eyes")
+				if("eyes")
 					r_eyes = rand(0,255)
 					g_eyes = rand(0,255)
 					b_eyes = rand(0,255)
 
-				if ("s_color")
+				if("s_color")
 					r_skin = rand(0,255)
 					g_skin = rand(0,255)
 					b_skin = rand(0,255)
-				if ("bag")
+				if("bag")
 					backbag = rand(1,2)
 
-				if ("all")
+				if("all")
 					randomize_appearance()
 		if("input")
 			switch(href_list["preference"])
@@ -1066,7 +1082,7 @@ var/const/MAX_SAVE_SLOTS = 10
 						to_chat(user, SPAN_NOTICE("You are banned from custom human names."))
 						return
 					var/raw_name = input(user, "Choose your character's name:", "Character Preference")  as text|null
-					if (!isnull(raw_name)) // Check to ensure that the user entered text (rather than cancel.)
+					if(!isnull(raw_name)) // Check to ensure that the user entered text (rather than cancel.)
 						var/new_name = reject_bad_name(raw_name)
 						if(new_name)
 							real_name = new_name
@@ -1141,8 +1157,8 @@ var/const/MAX_SAVE_SLOTS = 10
 						return
 					predator_caster_material = new_pred_caster_mat
 				if("pred_cape_type")
-					var/datum/job/J = RoleAuthority.roles_by_name[JOB_PREDATOR]
-					var/whitelist_status = clan_ranks_ordered[J.get_whitelist_status(RoleAuthority.roles_whitelist, owner)]
+					var/datum/job/job = GET_MAPPED_ROLE(JOB_PREDATOR)
+					var/whitelist_status = clan_ranks_ordered[job.get_whitelist_status(SSticker.role_authority.roles_whitelist, owner)]
 
 					var/list/options = list("None" = "None")
 					for(var/cape_name in GLOB.all_yautja_capes)
@@ -1252,20 +1268,26 @@ var/const/MAX_SAVE_SLOTS = 10
 
 					var/prefix_length = length(new_xeno_prefix)
 
-					if(prefix_length>3)
-						to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("Invalid Xeno Prefix. Your Prefix can only be up to 3 letters long.")))
+					if(prefix_length>4)
+						to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("Invalid Xeno Prefix. Your Prefix can only be up to 4 letters long.")))
 						return
 
 					if(prefix_length==3)
 						var/playtime = user.client.get_total_xeno_playtime()
-						if(playtime < 124 HOURS)
-							to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You need to play [time_left_until(124 HOURS, playtime, 1 HOURS)] more hours to unlock xeno three letter prefix.")))
-							return
-						if(xeno_postfix)
-							to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You can't use three letter prefix with any postfix.")))
+						if(xeno_postfix && playtime < 144 HOURS)
+							to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You need to play [time_left_until(144 HOURS, playtime, 1 HOURS)] more hours to unlock xeno three letter prefix with xeno postfix.")))
 							return
 
-					if(length(new_xeno_prefix)==0)
+					else if(prefix_length==4)
+						var/playtime = user.client.get_total_xeno_playtime()
+						if(playtime < 432 HOURS && !xeno_postfix)
+							to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You need to play [time_left_until(144 HOURS, playtime, 1 HOURS)] more hours to unlock xeno four letter prefix.")))
+							return
+						else if(xeno_postfix)
+							to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You can't use four letter prefix with any postfix.")))
+							return
+
+					if(!prefix_length)
 						xeno_prefix = "XX"
 					else
 						var/all_ok = TRUE
@@ -1291,36 +1313,39 @@ var/const/MAX_SAVE_SLOTS = 10
 						to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You need to play [time_left_until(24 HOURS, playtime, 1 HOURS)] more hours to unlock xeno postfix.")))
 						return
 
-					if(length(xeno_prefix)==3)
-						to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You can't use three letter prefix with any postfix.")))
+					if(length(xeno_prefix)==3 && playtime < 432 HOURS)
+						to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You need to play [time_left_until(432 HOURS, playtime, 1 HOURS)] more hours to use three letter prefix with postfix.")))
 						return
 
 					var/new_xeno_postfix = input(user, "Choose your xenomorph postfix. One capital letter with or without a digit at the end. Put empty text if you want to remove postfix", "Xenomorph Postfix") as text|null
 					new_xeno_postfix = uppertext(new_xeno_postfix)
-					if(length(new_xeno_postfix)>2)
-						to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("Invalid Xeno Postfix. Your Postfix can only be up to 2 letters long.")))
+					var/postfix_length = length(new_xeno_postfix)
+
+					if(postfix_length>2 && playtime < 432 HOURS)
+						to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You need to play [time_left_until(432 HOURS, playtime, 1 HOURS)] more hours to unlock 3 letters long postfix.")))
 						return
-					else if(length(new_xeno_postfix)==0)
+
+					if(postfix_length>3)
+						to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("Invalid Xeno Postfix. Your Postfix can only be up to 3 letters long.")))
+						return
+
+					else if(!postfix_length)
 						xeno_postfix = ""
 					else
 						var/all_ok = TRUE
 						var/first_char = TRUE
-						for(var/i=1, i<=length(new_xeno_postfix), i++)
+						for(var/i=1, i<=postfix_length, i++)
 							var/ascii_char = text2ascii(new_xeno_postfix,i)
 							switch(ascii_char)
 								// A  .. Z
-								if(65 to 90) //Uppercase Letters will work on first char
-
-									if(length(xeno_prefix)!=2)
-										to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You can't use three letter prefix with any postfix.")))
-										return
-
-									if(!first_char && playtime < 300 HOURS)
-										to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You need to play [time_left_until(300 HOURS, playtime, 1 HOURS)] more hours to unlock double letter xeno postfix.")))
+								if(65 to 90)			//Uppercase Letters will work on first char
+									if(!first_char && playtime < 432 HOURS)
+										to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You need to play [time_left_until(432 HOURS, playtime, 1 HOURS)] more hours to unlock triple letter xeno postfix.")))
 										all_ok = FALSE
 								// 0  .. 9
-								if(48 to 57) //Numbers will work if not the first char
-									if(first_char)
+								if(48 to 57)			//Numbers will work if not the first char
+									if(first_char && playtime < 432 HOURS)
+										to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You need to play [time_left_until(432 HOURS, playtime, 1 HOURS)] more hours to unlock triple number xeno postfix.")))
 										all_ok = FALSE
 								else
 									all_ok = FALSE //everything else - won't
@@ -1387,16 +1412,16 @@ var/const/MAX_SAVE_SLOTS = 10
 					if(new_h_gradient_style)
 						grad_style = new_h_gradient_style
 
-				if ("ethnicity")
+				if("ethnicity")
 					var/new_ethnicity = tgui_input_list(user, "Choose your character's ethnicity:", "Character Preferences", GLOB.ethnicities_list)
 
-					if (new_ethnicity)
+					if(new_ethnicity)
 						ethnicity = new_ethnicity
 
-				if ("body_type")
+				if("body_type")
 					var/new_body_type = tgui_input_list(user, "Choose your character's body type:", "Character Preferences", GLOB.body_types_list)
 
-					if (new_body_type)
+					if(new_body_type)
 						body_type = new_body_type
 
 				if("facial")
@@ -1470,7 +1495,7 @@ var/const/MAX_SAVE_SLOTS = 10
 						nanotrasen_relation = new_relation
 
 				if("prefsquad")
-					var/new_pref_squad = input(user, "Choose your preferred squad.", "Character Preference")  as null|anything in list("Alpha", "Bravo", "Charlie", "Delta", "None")
+					var/new_pref_squad = input(user, "Choose your preferred squad (WIP for factions, this is can be changed).", "Character Preference")  as null|anything in list("First", "Second", "Third", "Fourth", "None")
 					if(new_pref_squad)
 						preferred_squad = new_pref_squad
 
@@ -1684,7 +1709,7 @@ var/const/MAX_SAVE_SLOTS = 10
 					var/flag = text2num(href_list["flag"])
 					var/flag_undo = text2num(href_list["flag_undo"])
 					toggle_prefs ^= flag
-					if (toggle_prefs & flag && toggle_prefs & flag_undo)
+					if(toggle_prefs & flag && toggle_prefs & flag_undo)
 						toggle_prefs ^= flag_undo
 
 				if("switch_prefs") //wart
@@ -2043,10 +2068,10 @@ var/const/MAX_SAVE_SLOTS = 10
 	SIGNAL_HANDLER
 	key = uppertext(key)
 
-	if (key in key_mod_buf)
+	if(key in key_mod_buf)
 		return
 
-	if (key in key_mods)
+	if(key in key_mods)
 		key_mod_buf.Add(key)
 
 /datum/preferences/proc/set_key_buf(client/source, key)
@@ -2056,7 +2081,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/key_upper = uppertext(key)
 
 	for (var/mod in key_mod_buf)
-		if (mod == key_upper)
+		if(mod == key_upper)
 			continue
 		key_buf += "[mod]+"
 

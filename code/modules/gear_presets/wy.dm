@@ -5,7 +5,6 @@
 	faction = FACTION_WY
 	rank = FACTION_WY
 	idtype = /obj/item/card/id/silver
-	faction_group = FACTION_LIST_WY
 	access = list(
 		ACCESS_WY_CORPORATE,
 		ACCESS_ILLEGAL_PIRATE,
@@ -17,7 +16,7 @@
 	)
 	skills = /datum/skills/civilian
 	languages = list(LANGUAGE_ENGLISH, LANGUAGE_JAPANESE)
-	var/headset_type = /obj/item/device/radio/headset/distress/WY
+	var/headset_type = /obj/item/device/radio/headset/distress/wy
 
 /datum/equipment_preset/wy/New()
 	. = ..()

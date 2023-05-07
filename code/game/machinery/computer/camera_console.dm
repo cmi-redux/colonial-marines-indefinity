@@ -157,7 +157,7 @@
 
 	// Is this camera located in or attached to a living thing, Vehicle or helmet? If so, assume the camera's loc is the living (or non) thing.
 	var/cam_location = current
-	if(isliving(current.loc) || isVehicle(current.loc))
+	if(isliving(current.loc) || isvehicle(current.loc))
 		cam_location = current.loc
 	else if(istype(current.loc, /obj/item/clothing/head/helmet/marine))
 		var/obj/item/clothing/head/helmet/marine/helmet = current.loc
@@ -177,11 +177,9 @@
 
 	var/list/visible_turfs = list()
 	range_turfs.Cut()
-	var/area/A
 	for(var/turf/visible_turf in visible_things)
 		range_turfs += visible_turf
-		A = visible_turf.loc
-		if(!A.lighting_use_dynamic || visible_turf.lighting_lumcount >= 1)
+		if(visible_turf.always_lit || visible_turf.dynamic_lumcount >= 1)
 			visible_turfs += visible_turf
 
 	var/list/bbox = get_bbox_of_atoms(visible_turfs)
@@ -197,10 +195,8 @@
 /obj/structure/machinery/computer/cameras/process()
 	if(current)
 		var/list/visible_turfs = list()
-		var/area/A
 		for(var/turf/visible_turf as anything in range_turfs)
-			A = visible_turf.loc
-			if(!A.lighting_use_dynamic || visible_turf.lighting_lumcount >= 1)
+			if(visible_turf.always_lit || visible_turf.dynamic_lumcount >= 1)
 				visible_turfs += visible_turf
 		cam_screen.vis_contents = visible_turfs
 
@@ -373,5 +369,21 @@
 /obj/structure/machinery/computer/cameras/dropship/two
 	name = "\improper 'Normandy' camera controls"
 	network = list(CAMERA_NET_NORMANDY, CAMERA_NET_LASER_TARGETS)
+
+/obj/structure/machinery/computer/cameras/hq_uscm
+	name = "Система наблюдения"
+	desc = "Имеет доступ ко всем камерам кораблей USCM в секторе"
+	network = list("almayer","dropship1","dropship2","gold heart")
+	unslashable = TRUE
+	unacidable = TRUE
+	exproof = TRUE
+
+/obj/structure/machinery/computer/cameras/hq_pmc
+	name = "Система наблюдения"
+	desc = "Имеет доступ ко всем камерам кораблей USCM и W-Y в секторе"
+	network = list("almayer","dropship1","dropship2","gold heart")
+	unslashable = TRUE
+	unacidable = TRUE
+	exproof = TRUE
 
 #undef DEFAULT_MAP_SIZE

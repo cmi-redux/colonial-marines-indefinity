@@ -41,7 +41,7 @@
 //Full documentation 650-700 lines down by the copy for elevators
 /datum/shuttle/ferry/marine/preflight_checks()
 
-	if(!LAZYLEN(locs_land))
+	if(!length(locs_land))
 		return TRUE
 
 	if(!main_doors.len && !controls.len)
@@ -92,16 +92,16 @@
 			automated_launch_timer = TIMER_ID_NULL
 
 /datum/shuttle/ferry/marine/proc/prepare_automated_launch()
-	ai_silent_announcement("The [name] will automatically depart in [automated_launch_delay * 0.1] seconds")
+	ai_silent_announcement("[name] автоматически отправится через [automated_launch_delay * 0.1] секунд")
 	automated_launch_timer = addtimer(CALLBACK(src, PROC_REF(automated_launch)), automated_launch_delay, TIMER_UNIQUE | TIMER_OVERRIDE | TIMER_STOPPABLE)
 
 /datum/shuttle/ferry/marine/proc/automated_launch()
-	if(!queen_locked)
+	if(!queen_locked || !escape_locked)
 		launch()
 	else
 		automated_launch = FALSE
 	automated_launch_timer = TIMER_ID_NULL
-	ai_silent_announcement("Dropship '[name]' departing.")
+	ai_silent_announcement("Корабль '[name]' отправляется.")
 
 
 /*
@@ -112,42 +112,44 @@
 /datum/shuttle/ferry/marine/process()
 
 	switch(process_state)
-		if (WAIT_LAUNCH)
+		if(WAIT_LAUNCH)
 			if(!preflight_checks())
 				announce_preflight_failure()
 				if(automated_launch)
-					ai_silent_announcement("Automated launch of [name] failed. New launch in [DROPSHIP_AUTO_RETRY_COOLDOWN] SECONDS.")
+					ai_silent_announcement("Автоматический запуск [name] провален. Запуск через [DROPSHIP_AUTO_RETRY_COOLDOWN] СЕКУНД.")
 					automated_launch_timer = addtimer(CALLBACK(src, PROC_REF(automated_launch)), automated_launch_delay)
 
 				process_state = IDLE_STATE
 				in_use = null
 				locked = 0
 				return .
-			if (skip_docking_checks() || docking_controller.can_launch())
-				if (move_time) long_jump()
+			if(skip_docking_checks() || docking_controller.can_launch())
+				if(move_time) long_jump()
 				else short_jump()
 
 				process_state = WAIT_ARRIVE
 
-		if (FORCE_LAUNCH)
-			if (move_time) long_jump()
-			else short_jump()
+		if(FORCE_LAUNCH)
+			if(move_time)
+				long_jump()
+			else
+				short_jump()
 
 			process_state = WAIT_ARRIVE
 
-		if (WAIT_ARRIVE)
-			if (moving_status == SHUTTLE_IDLE)
+		if(WAIT_ARRIVE)
+			if(moving_status == SHUTTLE_IDLE)
 				dock()
 				in_use = null //release lock
 				process_state = WAIT_FINISH
 
-		if (WAIT_FINISH)
-			if (skip_docking_checks() || docking_controller.docked() || world.time > last_dock_attempt_time + DOCK_ATTEMPT_TIMEOUT)
+		if(WAIT_FINISH)
+			if(skip_docking_checks() || docking_controller.docked() || world.time > last_dock_attempt_time + DOCK_ATTEMPT_TIMEOUT)
 				process_state = IDLE_STATE
 				arrived()
 
 /datum/shuttle/ferry/marine/long_jump(area/departing, area/destination, area/interim, travel_time, direction)
-	set waitfor = 0
+	set waitfor = FALSE
 
 	if(moving_status != SHUTTLE_IDLE) return
 
@@ -191,7 +193,7 @@
 
 	//END: Heavy lifting backend
 
-	if (moving_status != SHUTTLE_WARMUP)
+	if(moving_status != SHUTTLE_WARMUP)
 		recharging = 0
 		return //someone cancelled the launch
 
@@ -256,7 +258,7 @@
 
 	close_doors(turfs_int) // adding this for safety.
 
-	if(SSticker?.mode && !(SSticker.mode.flags_round_type & MODE_DS_LANDED)) //Launching on first drop.
+	if(MODE_HAS_FLAG(MODE_DS_LANDED)) //Launching on first drop.
 		SSticker.mode.ds_first_drop()
 
 	in_transit_time_left = travel_time
@@ -266,7 +268,7 @@
 
 	in_transit_time_left = 0
 
-	if(EvacuationAuthority.dest_status >= NUKE_EXPLOSION_IN_PROGRESS)
+	if(SSevacuation.dest_status >= NUKE_EXPLOSION_IN_PROGRESS)
 		return FALSE //If a nuke is in progress, don't attempt a landing.
 
 	playsound_area(get_area(turfs_int[sound_target]), sound_landing, 100)
@@ -274,7 +276,7 @@
 	playsound_area(get_area(turfs_int[sound_target]), channel = SOUND_CHANNEL_AMBIENCE, status = SOUND_UPDATE)
 	sleep(100) //Wait for it to finish.
 
-	if(EvacuationAuthority.dest_status == NUKE_EXPLOSION_FINISHED)
+	if(SSevacuation.dest_status == NUKE_EXPLOSION_FINISHED)
 		return FALSE //If a nuke finished, don't land.
 
 	target_turf = T_trg
@@ -302,7 +304,7 @@
 
 	//END: Heavy lifting backend
 
-	if(SSticker?.mode && !(SSticker.mode.flags_round_type & MODE_DS_LANDED))
+	if(SSticker?.mode && !MODE_HAS_FLAG(MODE_DS_LANDED))
 		SSticker.mode.flags_round_type |= MODE_DS_LANDED
 		SSticker.mode.ds_first_landed(src)
 
@@ -331,7 +333,7 @@
 //Differs in the target selection and later things enough to merit it's own proc
 //The backend for landmarks should be in it's own proc, but I use too many vars resulting from the backend to save much space
 /datum/shuttle/ferry/marine/proc/long_jump_crash()
-	set waitfor = 0
+	set waitfor = FALSE
 
 	if(moving_status != SHUTTLE_IDLE) return
 	moving_status = SHUTTLE_WARMUP
@@ -372,7 +374,7 @@
 
 	//END: Heavy lifting backend
 
-	if (moving_status == SHUTTLE_IDLE)
+	if(moving_status == SHUTTLE_IDLE)
 		recharging = 0
 		return //someone canceled the launch
 
@@ -414,7 +416,7 @@
 		// At halftime, we announce whether or not the AA forced the dropship to divert
 		// The rounding is because transit time is decreased by 10 each loop. Travel time, however, might not be a multiple of 10
 		if(in_transit_time_left == round(travel_time / 2, 10) && true_crash_target_section != crash_target_section)
-			marine_announcement("A hostile aircraft on course for the [true_crash_target_section] has been successfully deterred.", "IX-50 MGAD System")
+			faction_announcement("A hostile aircraft on course for the [true_crash_target_section] has been successfully deterred.", "IX-50 MGAD System")
 
 			var/area/shuttle_area
 			for(var/turf/T in turfs_int)
@@ -433,12 +435,12 @@
 
 	in_transit_time_left = 0
 
-	if(EvacuationAuthority.dest_status >= NUKE_EXPLOSION_IN_PROGRESS)
+	if(SSevacuation.dest_status >= NUKE_EXPLOSION_IN_PROGRESS)
 		return FALSE //If a nuke is in progress, don't attempt a landing.
 
 	//This is where things change and shit gets real
 
-	marine_announcement("DROPSHIP ON COLLISION COURSE. CRASH IMMINENT." , "EMERGENCY", 'sound/AI/dropship_emergency.ogg')
+	faction_announcement("DROPSHIP ON COLLISION COURSE. CRASH IMMINENT." , "EMERGENCY", 'sound/AI/dropship_emergency.ogg')
 
 	for(var/mob/dead/observer/observer as anything in GLOB.observer_list)
 		to_chat(observer, SPAN_DEADSAY(FONT_SIZE_LARGE("The dropship is about to impact [get_area_name(T_trg)]" + " (<a href='?src=\ref[observer];jumptocoord=1;X=[T_trg.x];Y=[T_trg.y];Z=[T_trg.z]'>JMP</a>)")))
@@ -448,7 +450,7 @@
 
 	sleep(85)
 
-	if(EvacuationAuthority.dest_status == NUKE_EXPLOSION_FINISHED)
+	if(SSevacuation.dest_status == NUKE_EXPLOSION_FINISHED)
 		return FALSE //If a nuke finished, don't land.
 
 	if(security_level < SEC_LEVEL_RED) //automatically set security level to red.
@@ -467,7 +469,7 @@
 	for(var/j=0; j<explonum; j++)
 		sploded = locate(T_trg.x + rand(-5, 15), T_trg.y + rand(-5, 25), T_trg.z)
 		//Fucking. Kaboom.
-		cell_explosion(sploded, 250, 10, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("dropship crash")) //Clears out walls
+		cell_explosion(sploded, 200, 20, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, , , ,create_cause_data("крушения корабля")) //Clears out walls
 		sleep(3)
 
 	// Break the ultra-reinforced windows.
@@ -489,7 +491,7 @@
 	while(explosion_alive)
 		explosion_alive = FALSE
 		for(var/datum/automata_cell/explosion/E in cellauto_cells)
-			if(E.explosion_cause_data && E.explosion_cause_data.cause_name == "dropship crash")
+			if(E.explosion_cause_data && E.explosion_cause_data.cause_name == "крушения корабля")
 				explosion_alive = TRUE
 				break
 		sleep(1)
@@ -585,8 +587,8 @@
 
 	sleep(warmup_time)
 
-	if (moving_status == SHUTTLE_IDLE)
-		return //someone cancelled the launch
+	if(moving_status == SHUTTLE_IDLE)
+		return	//someone cancelled the launch
 
 	moving_status = SHUTTLE_INTRANSIT //shouldn't matter but just to be safe
 
@@ -642,7 +644,7 @@
 				INVOKE_ASYNC(P, TYPE_PROC_REF(/obj/structure/machinery/door, close))
 				//No break since transit shutters are the same parent type
 
-		if (iselevator)
+		if(iselevator)
 			for(var/obj/structure/machinery/door/airlock/A in T)
 				if(!istype(A)) continue
 				if(A.locked)

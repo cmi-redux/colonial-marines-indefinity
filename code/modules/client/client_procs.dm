@@ -41,13 +41,15 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	/client/proc/toggle_ignore_self,
 	/client/proc/toggle_help_intent_safety,
+	/client/proc/toggle_middle_mouse_click,
+	/client/proc/toggle_directional_assist,
 	/client/proc/toggle_auto_eject,
 	/client/proc/toggle_auto_eject_to_hand,
 	/client/proc/toggle_eject_to_hand,
 	/client/proc/toggle_automatic_punctuation,
-	/client/proc/toggle_middle_mouse_click,
 	/client/proc/toggle_clickdrag_override,
 	/client/proc/toggle_dualwield,
+	/client/proc/toggle_gun_ammo_counter,
 	/client/proc/toggle_middle_mouse_swap_hands,
 	/client/proc/toggle_vend_item_to_hand,
 	/client/proc/switch_item_animations,
@@ -64,22 +66,22 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	var/asset_cache_job
 	if(href_list["asset_cache_confirm_arrival"])
 		asset_cache_job = asset_cache_confirm_arrival(href_list["asset_cache_confirm_arrival"])
-		if (!asset_cache_job)
+		if(!asset_cache_job)
 			return
 
 	// Rate limiting
 	var/mtl = CONFIG_GET(number/minute_topic_limit)
-	if (!admin_holder && mtl)
+	if(!admin_holder && mtl)
 		var/minute = round(world.time, 600)
-		if (!topiclimiter)
+		if(!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
-		if (minute != topiclimiter[CURRENT_MINUTE])
+		if(minute != topiclimiter[CURRENT_MINUTE])
 			topiclimiter[CURRENT_MINUTE] = minute
 			topiclimiter[MINUTE_COUNT] = 0
 		topiclimiter[MINUTE_COUNT] += 1
-		if (topiclimiter[MINUTE_COUNT] > mtl)
+		if(topiclimiter[MINUTE_COUNT] > mtl)
 			var/msg = "Your previous action was ignored because you've done too many in a minute."
-			if (minute != topiclimiter[ADMINSWARNED_AT]) //only one admin message per-minute. (if they spam the admins can just boot/ban them)
+			if(minute != topiclimiter[ADMINSWARNED_AT]) //only one admin message per-minute. (if they spam the admins can just boot/ban them)
 				topiclimiter[ADMINSWARNED_AT] = minute
 				msg += " Administrators have been informed."
 				log_game("[key_name(src)] Has hit the per-minute topic limit of [mtl] topic calls in a given game minute")
@@ -90,13 +92,13 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	var/stl = CONFIG_GET(number/second_topic_limit)
 	if (!admin_holder && stl && href_list["window_id"] != "statbrowser")
 		var/second = round(world.time, 10)
-		if (!topiclimiter)
+		if(!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
-		if (second != topiclimiter[CURRENT_SECOND])
+		if(second != topiclimiter[CURRENT_SECOND])
 			topiclimiter[CURRENT_SECOND] = second
 			topiclimiter[SECOND_COUNT] = 0
 		topiclimiter[SECOND_COUNT] += 1
-		if (topiclimiter[SECOND_COUNT] > stl)
+		if(topiclimiter[SECOND_COUNT] > stl)
 			to_chat(src, SPAN_DANGER("Your previous action was ignored because you've done too many in a second"))
 			return
 
@@ -114,12 +116,12 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 		return
 
 	//byond bug ID:2256651
-	if (asset_cache_job && (asset_cache_job in completed_asset_jobs))
+	if(asset_cache_job && (asset_cache_job in completed_asset_jobs))
 		to_chat(src, SPAN_DANGER("An error has been detected in how your client is receiving resources. Attempting to correct.... (If you keep seeing these messages you might want to close byond and reconnect)"))
 		src << browse("...", "window=asset_cache_browser")
 		return
 
-	if (href_list["asset_cache_preload_data"])
+	if(href_list["asset_cache_preload_data"])
 		asset_cache_preload_data(href_list["asset_cache_preload_data"])
 		return
 
@@ -220,9 +222,9 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 			return SSvote.Topic(href, href_list)
 
 	switch(href_list["action"])
-		if ("openLink")
+		if("openLink")
 			src << link(href_list["link"])
-		if ("proccall")
+		if("proccall")
 			var/proc_to_call = text2path(href_list["procpath"])
 
 			if(proc_to_call in GLOB.whitelisted_client_procs)
@@ -292,6 +294,8 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	tgui_panel = new(src, "browseroutput")
 	tgui_say = new(src, "tgui_say")
 
+	load_player_data()
+
 	// Change the way they should download resources.
 	var/static/next_external_rsc = 0
 	var/list/external_rsc_urls = CONFIG_GET(keyed_list/external_rsc_urls)
@@ -299,14 +303,12 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 		next_external_rsc = WRAP(next_external_rsc+1, 1, external_rsc_urls.len+1)
 		preload_rsc = external_rsc_urls[next_external_rsc]
 
-	player_entity = setup_player_entity(ckey)
-
 	if(!CONFIG_GET(flag/no_localhost_rank))
 		var/static/list/localhost_addresses = list("127.0.0.1", "::1")
 		if(isnull(address) || (address in localhost_addresses))
 			var/datum/admins/admin = new("!localhost!", R_EVERYTHING, ckey)
 			admin.associate(src)
-			RoleAuthority.roles_whitelist[ckey] = WHITELIST_EVERYTHING
+			SSticker.role_authority.roles_whitelist[ckey] = WHITELIST_EVERYTHING
 
 	//Admin Authorisation
 	admin_holder = admin_datums[ckey]
@@ -324,6 +326,7 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	prefs.last_ip = address //these are gonna be used for banning
 	prefs.last_id = computer_id //these are gonna be used for banning
 	fps = prefs.fps
+	language = prefs.client_language
 	xeno_prefix = prefs.xeno_prefix
 	xeno_postfix = prefs.xeno_postfix
 	xeno_name_ban = prefs.xeno_name_ban
@@ -360,12 +363,12 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 		return*/
 	//hardcode for now
 
-	if (num2text(byond_build) in GLOB.blacklisted_builds)
+	if(num2text(byond_build) in GLOB.blacklisted_builds)
 		log_access("Failed login: [key] - blacklisted byond build ([byond_version].[byond_build])")
-		to_chat_immediate(src, SPAN_WARNING(FONT_SIZE_HUGE("Your version of byond is blacklisted.")))
-		to_chat_immediate(src, SPAN_WARNING(FONT_SIZE_LARGE("Byond build [byond_build] ([byond_version].[byond_build]) has been blacklisted for the following reason: [GLOB.blacklisted_builds[num2text(byond_build)]].")))
-		to_chat_immediate(src, SPAN_WARNING(FONT_SIZE_LARGE("Please download a new version of byond. If [byond_build] is the latest (which it shouldn't be), you can go to <a href=\"https://secure.byond.com/download/build\">BYOND's website</a> to download other versions.")))
-		to_chat_immediate(src, SPAN_NOTICE(FONT_SIZE_LARGE("You will now be automatically disconnected. Have a CM day.")))
+		to_chat(src, SPAN_WARNING(FONT_SIZE_HUGE("Your version of byond is blacklisted.")), immediate = TRUE)
+		to_chat(src, SPAN_WARNING(FONT_SIZE_LARGE("Byond build [byond_build] ([byond_version].[byond_build]) has been blacklisted for the following reason: [GLOB.blacklisted_builds[num2text(byond_build)]].")), immediate = TRUE)
+		to_chat(src, SPAN_WARNING(FONT_SIZE_LARGE("Please download a new version of byond. If [byond_build] is the latest (which it shouldn't be), you can go to <a href=\"https://secure.byond.com/download/build\">BYOND's website</a> to download other versions.")), immediate = TRUE)
+		to_chat(src, SPAN_NOTICE(FONT_SIZE_LARGE("You will now be automatically disconnected. Have a CM day.")), immediate = TRUE)
 		qdel(src)
 		return
 
@@ -384,21 +387,11 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	tgui_panel.initialize()
 	tgui_say.initialize()
 
-	var/datum/custom_event_info/CEI = GLOB.custom_event_info_list["Global"]
-	CEI.show_player_event_info(src)
+	check_event_info("Global", src)
+	if(mob && !isobserver(mob) && !isnewplayer(mob) && mob.faction)
+		check_event_info(mob.faction.name, src)
 
-	if(mob && !isobserver(mob) && !isnewplayer(mob))
-		if(isxeno(mob))
-			var/mob/living/carbon/xenomorph/X = mob
-			if(X.hive && GLOB.custom_event_info_list[X.hive])
-				CEI = GLOB.custom_event_info_list[X.hive]
-				CEI.show_player_event_info(src)
-
-		else if(mob.faction && GLOB.custom_event_info_list[mob.faction])
-			CEI = GLOB.custom_event_info_list[mob.faction]
-			CEI.show_player_event_info(src)
-
-	if( (world.address == address || !address) && !host )
+	if((world.address == address || !address) && !host)
 		host = key
 		world.update_status()
 
@@ -417,20 +410,6 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 		toggle_fullscreen(TRUE)
 	else
 		toggle_fullscreen(FALSE)
-
-
-	var/file = file2text("config/donators.txt")
-	var/lines = splittext(file, "\n")
-
-	for(var/line in lines)
-		if(src.ckey == line)
-			src.donator = 1
-			add_verb(src, /client/proc/set_ooc_color_self)
-
-	//if(prefs.window_skin & TOGGLE_WINDOW_SKIN)
-	// set_night_skin()
-
-	load_player_data()
 
 	view = world_view_size
 
@@ -460,9 +439,9 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	SSping.currentrun -= src
 
 	unansweredAhelps?.Remove(computer_id)
-	log_access("Logout: [key_name(src)]")
+	log_access("Вышел: [key_name(src)]")
 	if(CLIENT_IS_STAFF(src))
-		message_admins("Admin logout: [key_name(src)]")
+		message_admins("Админ Вышел: [key_name(src)]")
 
 	..()
 	return QDEL_HINT_HARDDEL_NOW
@@ -474,9 +453,9 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 
 /// Handles login-related logging and associated notifications
 /client/proc/notify_login()
-	log_access("Login: [key_name(src)] from [address ? address : "localhost"]-[computer_id] || BYOND v[byond_version].[byond_build]")
+	log_access("Вошел: [key_name(src)] с [address ? address : "localhost"]-[computer_id] || BYOND v[byond_version].[byond_build]")
 	if(CLIENT_IS_STAFF(src))
-		message_admins("Admin login: [key_name(src)]")
+		message_admins("Админ Вошел: [key_name(src)]")
 	if(CONFIG_GET(flag/log_access))
 		for(var/mob/M in GLOB.player_list)
 			if( M.key && (M.key != key) )
@@ -514,21 +493,13 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 /proc/setup_player_entity(ckey)
 	if(!ckey)
 		return
-	if(player_entities["[ckey]"])
-		return player_entities["[ckey]"]
-	var/datum/entity/player_entity/P = new()
+	if(GLOB.player_entities["[ckey]"])
+		return GLOB.player_entities["[ckey]"]
+	var/datum/player_entity/P = new()
 	P.ckey = ckey
-	P.name = ckey
-	player_entities["[ckey]"] = P
-	// P.setup_save(ckey)
+	P.entity_name = ckey
+	GLOB.player_entities["[ckey]"] = P
 	return P
-
-/proc/save_player_entities()
-	for(var/key_ref in player_entities)
-		// var/datum/entity/player_entity/P = player_entities["[key_ref]"]
-		// P.save_statistics()
-	log_debug("STATISTICS: Statistics saving complete.")
-	message_admins("STATISTICS: Statistics saving complete.")
 
 /client/proc/clear_chat_spam_mute(warn_level = 1, message = FALSE, increase_warn = FALSE)
 	if(talked > warn_level)
@@ -545,11 +516,11 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	add_verb(src, /client/proc/show_ghost_preferences)
 
 /client/proc/runtime_macro_insert(macro_button, parent, command)
-	if (!macro_button || !parent || !command)
+	if(!macro_button || !parent || !command)
 		return
 
 	var/list/macro_sets = params2list(winget(src, null, "macros"))
-	if (!(parent in macro_sets))
+	if(!(parent in macro_sets))
 		var/old = LAZYACCESS(params2list(winget(src, "mainwindow", "macro")), 1)
 		if(!old)
 			return
@@ -559,11 +530,11 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	winset(src, "[parent].[macro_button]", "parent=[parent];name=[macro_button];command=[command]")
 
 /client/proc/runtime_macro_remove(macro_button, parent)
-	if (!macro_button || !parent)
+	if(!macro_button || !parent)
 		return
 
 	var/list/macro_sets = params2list(winget(src, null, "macros"))
-	if (!(parent in macro_sets))
+	if(!(parent in macro_sets))
 		var/old = params2list(winget(src, "mainwindow", "macro"))[1]
 		winset(src, null, "mainwindow.macro=[parent]")
 		winset(src, null, "mainwindow.macro=[old]")
@@ -574,7 +545,7 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	set name = ".Read Key Down"
 	set hidden = TRUE
 
-	if (!key)
+	if(!key)
 		return
 
 	SEND_SIGNAL(src, COMSIG_CLIENT_KEY_DOWN, key)
@@ -583,7 +554,7 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	set name = ".Read Key Up"
 	set hidden = TRUE
 
-	if (!key)
+	if(!key)
 		return
 
 	SEND_SIGNAL(src, COMSIG_CLIENT_KEY_UP, key)
@@ -734,7 +705,7 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 /client/proc/admin_follow(atom/movable/target)
 	var/can_ghost = TRUE
 
-	if (!isobserver(mob))
+	if(!isobserver(mob))
 		can_ghost = admin_ghost()
 
 	if(!can_ghost)
@@ -756,7 +727,27 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	set name = "Fix Stat Panel"
 	set hidden = TRUE
 
+/client/verb/change_lang()
+	set name = "Change Language"
+	set category = "OOC"
+
+	language = language == CLIENT_LANGUAGE_RUSSIAN ? CLIENT_LANGUAGE_ENGLISH : CLIENT_LANGUAGE_RUSSIAN
+	prefs.client_language = language
+	prefs.save_preferences()
+	to_chat(src, SPAN_BOLDNOTICE(auto_lang(LANGUAGE_CHANGE_MESSAGE)))
 	init_verbs()
+	for(var/window_id in tgui_windows)
+		var/datum/tgui_window/window = tgui_windows[window_id]
+		window.reinitialize()
+
+/client/proc/auto_lang(language_choice)
+	return auto_language(language_choice, language)
+
+/proc/auto_language(language_choice, language)
+	if(language == CLIENT_LANGUAGE_ENGLISH)
+		return language_choice//GLOB.client_language_en[lang_version] huh, same
+	else if(language == CLIENT_LANGUAGE_RUSSIAN)
+		return GLOB.client_language_ru[language_choice]
 
 /client/proc/open_filter_editor(atom/in_atom)
 	if(admin_holder)

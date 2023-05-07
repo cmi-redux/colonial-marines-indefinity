@@ -13,7 +13,7 @@
 	max_engineers = 2
 	max_medics = 2
 
-/datum/emergency_call/wo/create_member(datum/mind/M, turf/override_spawn_loc)
+/datum/emergency_call/wo/create_member(datum/mind/mind, turf/override_spawn_loc)
 	set waitfor = 0
 	if(SSmapping.configs[GROUND_MAP].map_name == MAP_WHISKEY_OUTPOST)
 		name_of_spawn = /obj/effect/landmark/ert_spawns/distress_wo
@@ -22,7 +22,8 @@
 	if(!istype(spawn_loc)) return //Didn't find a useable spawn point.
 
 	var/mob/living/carbon/human/mob = new(spawn_loc)
-	M.transfer_to(mob, TRUE)
+	mind.transfer_to(mob, TRUE)
+	GLOB.ert_mobs += mob
 
 	sleep(5)
 	if(!leader && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(mob.client, JOB_SQUAD_LEADER, time_required_for_job))
@@ -51,7 +52,7 @@
 
 	sleep(10)
 	to_chat(mob, "<B>Objectives:</b> [objectives]")
-	RoleAuthority.randomize_squad(mob)
+	SSticker.role_authority.randomize_squad(mob)
 	mob.sec_hud_set_ID()
 	mob.hud_set_squad()
 

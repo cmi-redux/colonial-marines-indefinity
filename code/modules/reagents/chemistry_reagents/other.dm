@@ -1,7 +1,7 @@
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 //********************************************Blood****************************************************/
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/reagent/blood
 	name = "Blood"
@@ -9,7 +9,7 @@
 	description = "Blood is classified as a connective tissue and consists of two main components: Plasma, which is a clear extracellular fluid. Formed elements, which are made up of the blood cells and platelets."
 	reagent_state = LIQUID
 	color = "#A10808"
-	data_properties = new/list("blood_type"=null,"blood_colour"= "#A10808","viruses"=null,"resistances"=null)
+	data_properties = list("blood_type" = null, "blood_colour" = "#A10808", "viruses" = null, "resistances" = null)
 	chemclass = CHEM_CLASS_RARE
 
 
@@ -556,7 +556,7 @@
 	chemclass = CHEM_CLASS_UNCOMMON
 	properties = list(PROPERTY_NEUROTOXIC = 2, PROPERTY_RELAXING = 1)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/reagent/oxidizing_agent
 	name = "Oxidizing Agent"
@@ -719,6 +719,20 @@
 	)
 	fire_type = FIRE_VARIANT_TYPE_B //Armor Shredding Greenfire
 
+// This is the light blue flamer fuel for the pyro.
+/datum/reagent/napalm/light_blue
+	name = "Napalm G"
+	id = "napalmg"
+	description = "A phosphorus combustible gas chemical that burns extremely hot."
+	color = "#84e2ed"
+	burncolor = "#84e2ed"
+	burn_sprite = "blue"
+	properties = list(
+		PROPERTY_INTENSITY = BURN_LEVEL_TIER_7,
+		PROPERTY_DURATION = BURN_TIME_TIER_4,
+		PROPERTY_RADIUS = 6
+	)
+
 // This is the blue flamer fuel for the pyro.
 /datum/reagent/napalm/blue
 	name = "Napalm X"
@@ -810,9 +824,9 @@
 	chemclass = CHEM_CLASS_COMMON
 	properties = list(PROPERTY_TOXIC = 2, PROPERTY_FLOWING = 3, PROPERTY_VISCOUS = 3, PROPERTY_FUELING = 2)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 //*****************************************Explosives**************************************************/
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/reagent/potassium_hydroxide
 	name = "Potassium hydroxide"
@@ -881,9 +895,9 @@
 	chemfiresupp = TRUE
 	properties = list(PROPERTY_OXIDIZING = 2)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 //****************************************Blood plasmas************************************************/
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/reagent/plasma
 	name = "plasma"
@@ -952,9 +966,10 @@
 		volume = 0
 		var/obj/item/alien_embryo/embryo = new /obj/item/alien_embryo(H)
 		if(data_properties && data_properties["hive_number"])
-			embryo.hivenumber = data_properties["hive_number"]
+			embryo.faction = GLOB.faction_datum[data_properties["hive_number"]]
 		else
-			embryo.hivenumber = XENO_HIVE_NORMAL
+			embryo.faction = GLOB.faction_datum[FACTION_XENOMORPH_NORMAL]
+
 		to_chat(H, SPAN_WARNING("Your stomach cramps and you suddenly feel very sick!"))
 
 /datum/reagent/plasma/neurotoxin

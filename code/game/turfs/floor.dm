@@ -4,10 +4,14 @@
 	name = "floor"
 	icon = 'icons/turf/floors/floors.dmi'
 	icon_state = "floor"
+	turf_flags = TURF_MULTIZ
+	baseturfs = /turf/open/floor/plating
+	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_OPEN_FLOOR)
+	canSmoothWith = list(SMOOTH_GROUP_OPEN_FLOOR, SMOOTH_GROUP_TURF_OPEN)
 	var/broken = FALSE
 	var/burnt = FALSE
 	var/mineral = "metal"
-	var/breakable_tile = TRUE
+	breakable_tile = TRUE
 	var/burnable_tile = TRUE
 	var/hull_floor = FALSE //invincible floor, can't interact with it
 	var/image/wet_overlay
@@ -69,7 +73,7 @@
 	..()
 	if(is_grass_floor())
 		var/dir_sum = 0
-		for(var/direction in cardinal)
+		for(var/direction in  GLOB.cardinals)
 			var/turf/T = get_step(src,direction)
 			if(!(T.is_grass_floor()))
 				dir_sum += direction
@@ -84,11 +88,14 @@
 /turf/open/floor/proc/break_tile_to_plating()
 	if(!is_plating())
 		make_plating()
-	break_tile()
+	else if(prob(50))
+		break_tile()
 
 /turf/open/floor/proc/break_tile()
-	if(!breakable_tile || hull_floor) return
-	if(broken) return
+	if(broken && prob(85))
+		ScrapeAway()
+	if(!breakable_tile || hull_floor)
+		return
 	broken = TRUE
 	if(is_plasteel_floor())
 		icon_state = "damaged[pick(1, 2, 3, 4, 5)]"
@@ -96,7 +103,7 @@
 	else if(is_light_floor())
 		icon_state = "light_broken"
 		broken = 1
-		SetLuminosity(0)
+		set_light_on(FALSE)
 	else if(is_plating())
 		icon_state = "platingdmg[pick(1, 2, 3)]"
 		broken = 1
@@ -135,7 +142,7 @@
 
 //This proc auto corrects the grass tiles' siding.
 /turf/open/floor/proc/make_plating()
-	SetLuminosity(0)
+	set_light(0)
 	intact_tile = FALSE
 	broken = FALSE
 	burnt = FALSE

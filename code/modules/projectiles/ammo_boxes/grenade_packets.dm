@@ -8,7 +8,7 @@
 	var/content_type
 
 /obj/item/storage/box/packet/update_icon()
-	if(LAZYLEN(contents))
+	if(length(contents))
 		icon_state = initial(icon_state)
 	else
 		icon_state = initial(icon_state) + "_e"
@@ -40,54 +40,54 @@ var/list/grenade_packets = list(
 	)
 
 /obj/item/storage/box/packet/high_explosive
-	name = "\improper HEDP grenade packet"
+	name = "HEDP grenade packet"
 	desc = "It contains three HEDP high explosive grenades."
 	icon_state = "hedp_packet"
 	content_type = /obj/item/explosive/grenade/high_explosive
 
 /obj/item/storage/box/packet/baton_slug
-	name = "\improper HIRR baton slug packet"
+	name = "HIRR baton slug packet"
 	desc = "It contains three HIRR (High Impact Rubber Rounds) Baton Slugs."
 	icon_state = "baton_packet"
 	content_type = /obj/item/explosive/grenade/slug/baton
 
 /obj/item/storage/box/packet/flare
-	name = "\improper M74 AGM-S star shell packet"
+	name = "M74 AGM-S star shell packet"
 	desc = "It contains three M40-F Star Shell Grenades. 40mm grenades that explode into burning ash. Great for temporarily lighting an area."
 	icon_state = "starshell_packet"
 	content_type = /obj/item/explosive/grenade/high_explosive/airburst/starshell
 
 /obj/item/storage/box/packet/hornet
-	name = "\improper M74 AGM-H hornet shell packet"
+	name = "M74 AGM-H hornet shell packet"
 	desc = "It contains three M74 AGM-H Hornet shells. 40mm grenades that explode into a cluster of .22lr bullets at range, dealing massive damage to anything caught in the way."
 	icon_state = "hornet_packet"
 	content_type = /obj/item/explosive/grenade/high_explosive/airburst/hornet_shell
 
 /obj/item/storage/box/packet/incendiary
-	name = "\improper HIDP grenade packet"
+	name = "HIDP grenade packet"
 	desc = "It contains three HIDP incendiary grenades."
 	icon_state = "hidp_packet"
 	content_type = /obj/item/explosive/grenade/incendiary
 
 /obj/item/storage/box/packet/smoke
-	name = "\improper HSDP grenade packet"
+	name = "HSDP grenade packet"
 	desc = "It contains three HSDP smoke grenades."
 	icon_state = "hsdp_packet"
 	content_type = /obj/item/explosive/grenade/smokebomb
 
 /obj/item/storage/box/packet/phosphorus
-	name = "\improper HPDP grenade packet"
+	name = "HPDP grenade packet"
 	desc = "It contains three HPDP white phosphorus grenades."
 	icon_state = "hpdp_packet"
 	content_type = /obj/item/explosive/grenade/phosphorus/weak
 
 /obj/item/storage/box/packet/phosphorus/upp
-	name = "\improper Type 8 WP grenade packet"
+	name = "Type 8 WP grenade packet"
 	desc = "It contains three type 8 white phosphorus grenades."
 	content_type = /obj/item/explosive/grenade/phosphorus/upp
 
 /obj/item/storage/box/packet/hefa
-	name = "\improper HEFA grenade packet"
+	name = "HEFA grenade packet"
 	desc = "It contains three HEFA grenades. Don't tell the HEFA order."
 	icon_state = "hefa_packet"
 	content_type = /obj/item/explosive/grenade/high_explosive/frag
@@ -98,7 +98,7 @@ var/list/grenade_packets = list(
 	content_type = /obj/item/explosive/grenade/high_explosive/frag/toy
 
 /obj/item/storage/box/packet/m15
-	name = "\improper M15 fragmentation grenade packet"
+	name = "M15 fragmentation grenade packet"
 	desc = "It contains three M15 fragmentation grenades. Handle with care."
 	icon_state = "general_packet"
 	content_type = /obj/item/explosive/grenade/high_explosive/m15
@@ -110,19 +110,19 @@ var/list/grenade_packets = list(
 	content_type = /obj/item/explosive/grenade/high_explosive/m15/rubber
 
 /obj/item/storage/box/packet/airburst_he
-	name = "\improper M74 airbust grenade packet"
+	name = "M74 airbust grenade packet"
 	desc = "It contains three M74 airburst fragmentation grenades. This end towards the enemy."
 	icon_state = "agmf_packet"
 	content_type = /obj/item/explosive/grenade/high_explosive/airburst
 
 /obj/item/storage/box/packet/airburst_incen
-	name = "\improper M74 airbust incendiary grenade packet"
+	name = "M74 airbust incendiary grenade packet"
 	desc = "It contains three M74 airburst incendiary grenades. This end towards the enemy."
 	icon_state = "agmi_packet"
 	content_type = /obj/item/explosive/grenade/incendiary/airburst
 
 /obj/item/storage/box/packet/airburst_smoke
-	name = "\improper M74 airbust smoke grenade packet"
+	name = "M74 airbust smoke grenade packet"
 	desc = "It contains three M74 airburst smoke grenades. This end towards the enemy."
 	icon_state = "agms_packet"
 	content_type = /obj/item/explosive/grenade/smokebomb/airburst

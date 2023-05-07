@@ -1,12 +1,11 @@
-/datum/xeno_mutator/praetorian_oppressor
-	// Dread it, run from it, destiny still arrives... or should I say, I do
-	name = "STRAIN: Praetorian - Oppressor"
-	description = "You abandon all of your acid-based abilities, your dash, some speed, and a bit of your slash damage for some resistance against small explosives, slashes that deal extra damage to prone targets, and a powerful hook ability that pulls up to three talls towards you, slows them, and has varying effects depending on how many talls you pull. You also gain a powerful punch that reduces your other abilities' cooldowns, pierces through armor, and does double damage in addition to rooting slowed targets. You can also knock talls back and slow them with your new Tail Lash and quickly grab a tall, slow it, and pull it towards you with your unique Tail Stab."
-	flavor_description = "Dread it. Run from it. The Hive arrives all the same, or, more accurately, you do."
-	cost = MUTATOR_COST_EXPENSIVE
-	individual_only = TRUE
+/datum/xeno_mutation/strain/praetorian_oppressor
+	// Dread it, run from it, destiny still arrives.. or should I say, I do
+	name = LANGUAGE_STRAIN_OPRSR
+	description = LANGUAGE_STRAIN_DESC_OPRSR
+	flavor_description = LANGUAGE_STRAIN_FLAV_DESC_OPRSR
+	cost = MUTATOR_COST_MODERATE
 	caste_whitelist = list(XENO_CASTE_PRAETORIAN)
-	mutator_actions_to_remove = list(
+	mutation_actions_to_remove = list(
 		/datum/action/xeno_action/activable/tail_stab,
 		/datum/action/xeno_action/activable/xeno_spit,
 		/datum/action/xeno_action/activable/pounce/base_prae_dash,
@@ -14,7 +13,7 @@
 		/datum/action/xeno_action/activable/spray_acid/base_prae_spray_acid,
 		/datum/action/xeno_action/activable/corrosive_acid,
 	)
-	mutator_actions_to_add = list(
+	mutation_actions_to_add = list(
 		/datum/action/xeno_action/activable/tail_stab/tail_seize,
 		/datum/action/xeno_action/activable/prae_abduct,
 		/datum/action/xeno_action/activable/oppressor_punch,
@@ -23,14 +22,14 @@
 	behavior_delegate_type = /datum/behavior_delegate/oppressor_praetorian
 	keystone = TRUE
 
-/datum/xeno_mutator/praetorian_oppressor/apply_mutator(datum/mutator_set/individual_mutators/mutator_set)
+/datum/xeno_mutation/strain/praetorian_oppressor/apply_mutator(datum/mutator_set/individual_mutations/mutator_set)
 	. = ..()
-	if (. == 0)
+	if(. == 0)
 		return
 
 	var/mob/living/carbon/xenomorph/praetorian/praetorian = mutator_set.xeno
 
-	praetorian.damage_modifier -= XENO_DAMAGE_MOD_SMALL
+	praetorian.damage_modifier += XENO_DAMAGE_MOD_SMALL
 	praetorian.explosivearmor_modifier += XENO_EXPOSIVEARMOR_MOD_SMALL
 	praetorian.small_explosives_stun = FALSE
 	praetorian.speed_modifier += XENO_SPEED_SLOWMOD_TIER_5

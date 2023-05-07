@@ -13,9 +13,6 @@
 	var/throwforce = 1
 	/// If we have a user using us, this will be set on. We will check if the user has stopped using us, and thus stop updating and LAGGING EVERYTHING!
 	var/in_use = FALSE
-	var/mob/living/buckled_mob
-	var/buckle_lying = FALSE //Is the mob buckled in a lying position
-	var/can_buckle = FALSE
 	/**Applied to surgery times for mobs buckled prone to it or lying on the same tile, if the surgery
 	cares about surface conditions. The lowest multiplier of objects on the tile is used.**/
 	var/surgery_duration_multiplier = SURGERY_SURFACE_MULT_AWFUL
@@ -30,10 +27,11 @@
 	var/req_access_txt = null
 	var/req_one_access_txt = null
 
+	vis_flags = VIS_INHERIT_PLANE //when this be added to vis_contents of something it inherit something.plane, important for visualisation of obj in openspace.
+
 	var/flags_obj = NO_FLAGS
 	/// set when a player uses a pen on a renamable object
 	var/renamedByPlayer = FALSE
-
 
 /obj/Initialize(mapload, ...)
 	. = ..()
@@ -61,7 +59,7 @@
 		if(!check_rights(R_DEBUG|R_ADMIN|R_VAREDIT))
 			return
 
-		if(!LAZYLEN(usr.client.stored_matrices))
+		if(!length(usr.client.stored_matrices))
 			to_chat(usr, "You don't have any matrices stored!")
 			return
 
@@ -95,6 +93,9 @@
 /obj/process()
 	STOP_PROCESSING(SSobj, src)
 	return 0
+
+/obj/proc/skin(S)
+	return
 
 /obj/proc/set_pixel_location()
 	return
@@ -144,12 +145,12 @@
 		var/is_in_use = 0
 		var/list/nearby = viewers(1, src)
 		for(var/mob/M in nearby)
-			if ((M.client && M.interactee == src))
+			if((M.client && M.interactee == src))
 				is_in_use = 1
 				attack_hand(M)
-		if (ishighersilicon(usr))
-			if (!(usr in nearby))
-				if (usr.client && usr.interactee==src) // && M.interactee == src is omitted because if we triggered this by using the dialog, it doesn't matter if our machine changed in between triggering it and this - the dialog is probably still supposed to refresh.
+		if(ishighersilicon(usr))
+			if(!(usr in nearby))
+				if(usr.client && usr.interactee==src) // && M.interactee == src is omitted because if we triggered this by using the dialog, it doesn't matter if our machine changed in between triggering it and this - the dialog is probably still supposed to refresh.
 					is_in_use = 1
 					attack_remote(usr)
 		in_use = is_in_use
@@ -160,7 +161,7 @@
 		var/list/nearby = viewers(1, src)
 		var/is_in_use = 0
 		for(var/mob/M in nearby)
-			if ((M.client && M.interactee == src))
+			if((M.client && M.interactee == src))
 				is_in_use = 1
 				src.interact(M)
 		var/ai_in_use = AutoUpdateAI(src)
@@ -208,9 +209,6 @@
 	if(can_buckle) manual_unbuckle(user)
 	else . = ..()
 
-/obj/proc/handle_rotation()
-	return
-
 /obj/MouseDrop(atom/over_object)
 	if(!can_buckle)
 		. = ..()
@@ -220,21 +218,6 @@
 		if(!istype(M)) return
 		buckle_mob(M, user)
 	else . = ..()
-
-/obj/proc/afterbuckle(mob/M as mob) // Called after somebody buckled / unbuckled
-	handle_rotation()
-	return buckled_mob
-
-/obj/proc/unbuckle()
-	if(buckled_mob && buckled_mob.buckled == src)
-		buckled_mob.buckled = null
-		buckled_mob.anchored = initial(buckled_mob.anchored)
-		buckled_mob.update_canmove()
-
-		var/M = buckled_mob
-		buckled_mob = null
-
-		afterbuckle(M)
 
 
 /obj/proc/manual_unbuckle(mob/user as mob)
@@ -259,13 +242,13 @@
 
 //trying to buckle a mob
 /obj/proc/buckle_mob(mob/M, mob/user)
-	if (!ismob(M) || (get_dist(src, user) > 1) || user.is_mob_restrained() || user.lying || user.stat || buckled_mob || M.buckled || !isturf(user.loc))
+	if(!ismob(M) || (get_dist(src, user) > 1) || user.is_mob_restrained() || user.lying || user.stat || buckled_mob || M.buckled || !isturf(user.loc))
 		return
 
-	if (isxeno(user))
+	if(isxeno(user))
 		to_chat(user, SPAN_WARNING("You don't have the dexterity to do that, try a nest."))
 		return
-	if (iszombie(user))
+	if(iszombie(user))
 		return
 
 	if(density)
@@ -280,10 +263,10 @@
 			if(M.loc != src.loc)
 				return
 			. = buckle_mob(M)
-	if (M.mob_size <= MOB_SIZE_XENO && M.stat == DEAD && istype(src, /obj/structure/bed/roller))
+	if(M.mob_size <= MOB_SIZE_XENO && M.stat == DEAD && istype(src, /obj/structure/bed/roller))
 		do_buckle(M, user)
 		return
-	if (M.mob_size > MOB_SIZE_HUMAN)
+	if(M.mob_size > MOB_SIZE_HUMAN)
 		to_chat(user, SPAN_WARNING("[M] is too big to buckle in."))
 		return
 	do_buckle(M, user)
@@ -292,7 +275,7 @@
 // Yes I know this is not style but its unreadable otherwise
 /obj/proc/do_buckle(mob/target, mob/user)
 	send_buckling_message(target, user)
-	if (src && src.loc)
+	if(src && src.loc)
 		target.buckled = src
 		target.forceMove(src.loc)
 		target.setDir(dir)
@@ -309,7 +292,7 @@
 		return TRUE
 
 /obj/proc/send_buckling_message(mob/M, mob/user)
-	if (M == user)
+	if(M == user)
 		M.visible_message(\
 			SPAN_NOTICE("[M] buckles in!"),\
 			SPAN_NOTICE("You buckle yourself to [src]."),\
@@ -320,10 +303,10 @@
 			SPAN_NOTICE("You are buckled in to [src] by [user]."),\
 			SPAN_NOTICE("You hear metal clanking"))
 
-/obj/Move(NewLoc, direct)
+/obj/Move(atom/NewLoc, direction)
 	. = ..()
 	handle_rotation()
-	if(. && buckled_mob && !handle_buckled_mob_movement(loc,direct)) //movement fails if buckled mob's move fails.
+	if(. && buckled_mob && !handle_buckled_mob_movement(loc,direction)) //movement fails if buckled mob's move fails.
 		. = FALSE
 
 /obj/forceMove(atom/dest)

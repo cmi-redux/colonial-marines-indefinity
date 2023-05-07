@@ -127,7 +127,7 @@
 		to_chat(src, SPAN_WARNING("How did you get this verb?"))
 		return
 
-	if (alert(usr, "Are you sure you want to abandon this prey?", "Remove from Hunt:", "Yes", "No") != "Yes")
+	if(alert(usr, "Are you sure you want to abandon this prey?", "Remove from Hunt:", client.auto_lang(LANGUAGE_YES), client.auto_lang(LANGUAGE_NO)) != client.auto_lang(LANGUAGE_YES))
 		return
 	var/mob/living/carbon/prey = hunter_data.prey
 	to_chat(src, SPAN_YAUTJABOLD("You have removed [prey] from your hunt."))

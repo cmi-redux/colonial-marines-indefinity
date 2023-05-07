@@ -30,7 +30,7 @@
 
 /obj/structure/bed/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_OVER|PASS_AROUND|PASS_UNDER
 
 /obj/structure/bed/update_icon()
@@ -115,7 +115,7 @@
 		return 0
 
 /obj/structure/bed/proc/handle_buckled_bodybag_movement(NewLoc, direct)
-	if(!(direct & (direct - 1))) //Not diagonal move. the obj's diagonal move is split into two cardinal moves and those moves will handle the buckled bodybag's movement.
+	if(!(direct & (direct - 1))) //Not diagonal move. the obj's diagonal move is split into two cardinals moves and those moves will handle the buckled bodybag's movement.
 		if(!buckled_bodybag.Move(NewLoc, direct))
 			forceMove(buckled_bodybag.loc)
 			last_move_dir = buckled_bodybag.last_move_dir
@@ -139,9 +139,9 @@
 /obj/structure/bed/MouseDrop(atom/over_object)
 	. = ..()
 	if(foldabletype && !buckled_mob && !buckled_bodybag)
-		if (istype(over_object, /mob/living/carbon/human))
+		if(istype(over_object, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = over_object
-			if (H==usr && !H.is_mob_incapacitated() && Adjacent(H) && in_range(src, over_object))
+			if(H==usr && !H.is_mob_incapacitated() && Adjacent(H) && in_range(src, over_object))
 				var/obj/item/I = new foldabletype(get_turf(src))
 				H.put_in_hands(I)
 				H.visible_message(SPAN_WARNING("[H] grabs [src] from the floor!"),
@@ -325,10 +325,10 @@ var/global/list/activated_medevac_stretchers = list()
 	..()
 	overlays.Cut()
 	if(stretcher_activated)
-		overlays += image("beacon_active_[density ? "up":"down"]")
+		overlays += image("beacon_active_[density ? "up" : "down"]")
 
 	if(buckled_mob || buckled_bodybag)
-		overlays += image("icon_state"="stretcher_box","layer"=LYING_LIVING_MOB_LAYER + 0.1)
+		overlays += image("icon_state" = "stretcher_box","layer" = LYING_LIVING_MOB_LAYER + 0.1)
 
 
 /obj/structure/bed/medevac_stretcher/verb/activate_medevac_beacon()
@@ -365,9 +365,9 @@ var/global/list/activated_medevac_stretchers = list()
 			to_chat(user, SPAN_WARNING("You can't activate [src]'s beacon here."))
 			return
 
-		var/area/AR = get_area(src)
-		if(CEILING_IS_PROTECTED(AR.ceiling, CEILING_PROTECTION_TIER_1))
-			to_chat(user, SPAN_WARNING("[src] must be in the open or under a glass roof."))
+		var/turf/turf = get_turf(src)
+		if(turf && !(turf & TURF_WEATHER))
+			to_chat(user, SPAN_WARNING("[src] must be in the open ceiling."))
 			return
 
 		if(buckled_mob || buckled_bodybag)

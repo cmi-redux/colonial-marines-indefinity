@@ -28,7 +28,7 @@
 
 		var/module_string = ""
 
-		if (!O)
+		if(!O)
 			module_string += text("<B>Resource depleted</B><BR>")
 		else if(activated(O))
 			module_string += text("[O]: <B>Activated</B><BR>")

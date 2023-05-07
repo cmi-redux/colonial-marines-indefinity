@@ -6,7 +6,7 @@
 	idtype = /obj/item/card/id/dogtag
 	role_comm_title = "FORECON"
 	rank = JOB_SURVIVOR
-	faction_group = list(FACTION_USCM, FACTION_SURVIVOR)
+	faction = FACTION_COLONIST
 	flags = EQUIPMENT_PRESET_START_OF_ROUND
 	access = list(
 		ACCESS_CIVILIAN_PUBLIC,
@@ -80,7 +80,7 @@
 	switch(random_equipment)
 		if(1)
 			H.equip_to_slot_or_del(new /obj/item/device/walkman(H), WEAR_IN_BACK)
-			H.equip_to_slot_or_del(new /obj/item/device/cassette_tape/indie(H), WEAR_IN_BACK)
+			H.equip_to_slot_or_del(new /obj/item/device/cassette_tape/sad(H), WEAR_IN_BACK)
 		if(2)
 			H.equip_to_slot_or_del(new /obj/item/toy/deck(H), WEAR_IN_ACCESSORY)
 		if(3)
@@ -249,7 +249,7 @@
 /datum/equipment_preset/synth/survivor/forecon
 	name = "Survivor - USCM Synthetic"
 	assignment = "Reconnaissance Synthetic"
-	faction_group = list(FACTION_MARINE, FACTION_SURVIVOR)
+	faction = FACTION_COLONIST
 	idtype = /obj/item/card/id/gold
 
 /datum/equipment_preset/synth/survivor/forecon/load_gear(mob/living/carbon/human/preset_human) //Bishop from Aliens

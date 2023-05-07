@@ -13,7 +13,7 @@ GLOBAL_LIST_INIT(damage_boost_breaching, typecacheof(list(
 
 GLOBAL_LIST_INIT(damage_boost_pylons, typecacheof(list(
 	/obj/effect/alien/resin/special/pylon,
-	/obj/effect/alien/resin/special/cluster,
+	/obj/effect/alien/resin/special/pylon/cluster,
 )))
 
 GLOBAL_LIST_INIT(damage_boost_vehicles, typecacheof(/obj/vehicle/multitile))

@@ -1,25 +1,24 @@
-/datum/xeno_mutator/acider
-	name = "STRAIN: Runner - Acider"
-	description = "At the cost of a little bit of your speed and all of your current abilities, you gain a considerable amount of health, some armor, and a new organ that fills with volatile acid over time. Your Tail Stab and slashes apply acid to living lifeforms that slowly burns them, and slashes against targets with acid stacks fill your acid glands. You also gain Corrosive Acid equivalent to that of a Praetorian that you can deploy more quickly than any other caste, at the cost of a chunk of your acid reserves with each use. Finally, after a twenty second windup, you can force your body to explode, covering everything near you with acid. The more acid you have stored, the more devastating the explosion will be, but during those twenty seconds before detonation you are slowed and give off several warning signals which give talls an opportunity to end you before you can detonate. If you successfully explode, you will reincarnate as a larva again!"
-	flavor_description = "Burn their walls, maim their faces! Your life, for The Hive!"
-	cost = MUTATOR_COST_EXPENSIVE
-	individual_only = TRUE
+/datum/xeno_mutation/strain/acider
+	name = LANGUAGE_STRAIN_ACID
+	description = LANGUAGE_STRAIN_DESC_ACID
+	flavor_description = LANGUAGE_STRAIN_FLAV_DESC_ACID
+	cost = MUTATOR_COST_CHEAP
 	caste_whitelist = list(XENO_CASTE_RUNNER)
 	keystone = TRUE
 	behavior_delegate_type = /datum/behavior_delegate/runner_acider
-	mutator_actions_to_remove = list(
+	mutation_actions_to_remove = list(
 		/datum/action/xeno_action/activable/pounce/runner,
 		/datum/action/xeno_action/activable/runner_skillshot,
 		/datum/action/xeno_action/onclick/toggle_long_range/runner,
 	)
-	mutator_actions_to_add = list(
+	mutation_actions_to_add = list(
 		/datum/action/xeno_action/activable/acider_acid,
 		/datum/action/xeno_action/activable/acider_for_the_hive,
 	)
 
-/datum/xeno_mutator/acider/apply_mutator(datum/mutator_set/individual_mutators/mutator_set)
+/datum/xeno_mutation/strain/acider/apply_mutator(datum/mutator_set/individual_mutations/mutator_set)
 	. = ..()
-	if (. == 0)
+	if(. == 0)
 		return
 
 	var/mob/living/carbon/xenomorph/runner/runner = mutator_set.xeno
@@ -148,8 +147,8 @@
 
 		target_living.apply_damage(damage, BURN)
 	playsound(bound_xeno, 'sound/effects/blobattack.ogg', 75)
-	if(bound_xeno.client && bound_xeno.hive)
-		addtimer(CALLBACK(bound_xeno.hive, TYPE_PROC_REF(/datum/hive_status, free_respawn), bound_xeno.client), 5 SECONDS)
+	if(bound_xeno.client && bound_xeno.faction)
+		addtimer(CALLBACK(bound_xeno.faction, TYPE_PROC_REF(/datum/faction/xenomorph, free_respawn), bound_xeno.client), 5 SECONDS)
 	bound_xeno.gib()
 
 /mob/living/carbon/xenomorph/runner/ventcrawl_carry()

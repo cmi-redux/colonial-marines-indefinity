@@ -29,7 +29,7 @@
 	return XENO_ATTACK_ACTION
 
 /obj/structure/curtain/proc/toggle()
-	opacity = !opacity
+	set_opacity(!opacity)
 	if(opacity)
 		icon_state = "[initial(icon_state)]"
 		layer = ABOVE_MOB_LAYER

@@ -26,22 +26,20 @@
 	if(mob_standing_on_turf && isturf(mob_standing_on_turf.loc))
 		source = mob_standing_on_turf//we designate any mob standing on the turf as the "source" so that they don't simply get hit by every projectile
 
-
+	var/mob/source_mob = cause_data?.resolve_mob()
 	for(var/i=0;i<shrapnel_number;i++)
-
-		var/obj/item/projectile/S = new(epicenter, cause_data)
-		S.generate_bullet(new shrapnel_type)
-
-		var/mob/source_mob = cause_data?.resolve_mob()
+		var/obj/item/projectile/projectile = new(epicenter)
+		projectile.weapon_cause_data = cause_data
+		projectile.firer = cause_data?.resolve_mob()
+		projectile.generate_bullet(new shrapnel_type, source_mob)
 		if(!(ignore_source_mob && mob_standing_on_turf == source_mob) && mob_standing_on_turf && prob(100*on_hit_coefficient)) //if a non-prone mob is on the same turf as the shrapnel explosion, some of the shrapnel hits him
-			S.ammo.on_hit_mob(mob_standing_on_turf, S)
-			S.handle_mob(mob_standing_on_turf)
+			projectile.ammo.on_hit_mob(mob_standing_on_turf, projectile)
+			projectile.handle_mob(mob_standing_on_turf)
 		else if (!(ignore_source_mob && mob_lying_on_turf == source_mob) && mob_lying_on_turf && prob(100*on_hit_coefficient))
-			S.ammo.on_hit_mob(mob_lying_on_turf, S)
-			S.handle_mob(mob_lying_on_turf)
-
+			projectile.ammo.on_hit_mob(mob_lying_on_turf, projectile)
+			projectile.handle_mob(mob_lying_on_turf)
 		else
 			var/angle = initial_angle + i*angle_increment + rand(-angle_randomization,angle_randomization)
 			var/atom/target = get_angle_target_turf(epicenter, angle, 20)
-			S.projectile_flags |= PROJECTILE_SHRAPNEL
-			S.fire_at(target, source_mob, source, S.ammo.max_range, S.ammo.shell_speed, null)
+			projectile.projectile_flags |= PROJECTILE_SHRAPNEL
+			projectile.fire_at(target, source_mob, source, projectile.ammo.max_range, projectile.ammo.shell_speed, null)

@@ -24,59 +24,59 @@
 
 /obj/structure/machinery/flasher/power_change()
 	..()
-	if ( !(stat & NOPOWER) )
+	if(!(stat & NOPOWER))
 		icon_state = "[base_state]1"
-// src.sd_SetLuminosity(2)
+//		sd_set_light(2)
 	else
 		icon_state = "[base_state]1-p"
-// src.sd_SetLuminosity(0)
+//		sd_set_light(0)
 
 //Don't want to render prison breaks impossible
 /obj/structure/machinery/flasher/attackby(obj/item/W as obj, mob/user as mob)
-	if (HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS))
+	if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS))
 		add_fingerprint(user)
-		src.disable = !src.disable
-		if (src.disable)
+		disable = !disable
+		if(disable)
 			user.visible_message(SPAN_DANGER("[user] has disconnected the [src]'s flashbulb!"), SPAN_DANGER("You disconnect the [src]'s flashbulb!"))
-		if (!src.disable)
+		if(!disable)
 			user.visible_message(SPAN_DANGER("[user] has connected the [src]'s flashbulb!"), SPAN_DANGER("You connect the [src]'s flashbulb!"))
 
 //Let the AI trigger them directly.
 /obj/structure/machinery/flasher/attack_remote()
-	if (src.anchored)
-		return src.flash()
+	if(anchored)
+		return flash()
 	else
 		return
 
 /obj/structure/machinery/flasher/proc/flash()
-	if (!(powered()))
+	if(!(powered()))
 		return
 
-	if ((src.disable) || (src.last_flash && world.time < src.last_flash + 150))
+	if((disable) || (last_flash && world.time < last_flash + 150))
 		return
 
-	playsound(src.loc, 'sound/weapons/flash.ogg', 25, 1)
+	playsound(loc, 'sound/weapons/flash.ogg', 25, 1)
 	flick("[base_state]_flash", src)
-	src.last_flash = world.time
+	last_flash = world.time
 	use_power(1500)
 
-	for (var/mob/O in viewers(src, null))
-		if (get_dist(src, O) > src.range)
+	for(var/mob/O in viewers(src, null))
+		if(get_dist(src, O) > range)
 			continue
 
-		if (istype(O, /mob/living/carbon/human))
+		if(istype(O, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = O
 			if(H.get_eye_protection() > 0)
 				continue
 
-		if (istype(O, /mob/living/carbon/xenomorph))//So aliens don't get flashed (they have no external eyes)/N
+		if(istype(O, /mob/living/carbon/xenomorph))//So aliens don't get flashed (they have no external eyes)/N
 			continue
 
 		O.apply_effect(strength, WEAKEN)
 		if (istype(O, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = O
 			var/datum/internal_organ/eyes/E = H.internal_organs_by_name["eyes"]
-			if (E && (E.damage > E.min_bruised_damage && prob(E.damage + 50)))
+			if(E && (E.damage > E.min_bruised_damage && prob(E.damage + 50)))
 				H.flash_eyes()
 				E.take_damage(rand(1, 5))
 		else
@@ -92,31 +92,31 @@
 	..(severity)
 
 /obj/structure/machinery/flasher/portable/HasProximity(atom/movable/AM as mob|obj)
-	if ((src.disable) || (src.last_flash && world.time < src.last_flash + 150))
+	if((disable) || (last_flash && world.time < last_flash + 150))
 		return
 
 	if(istype(AM, /mob/living/carbon))
-		if (src.anchored)
-			src.flash()
+		if(anchored)
+			flash()
 
 /obj/structure/machinery/flasher/portable/attackby(obj/item/W as obj, mob/user as mob)
-	if (HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
+	if(HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
 		add_fingerprint(user)
-		src.anchored = !src.anchored
+		anchored = !anchored
 
-		if (!src.anchored)
+		if(!anchored)
 			user.show_message(text(SPAN_DANGER("[src] can now be moved.")), SHOW_MESSAGE_VISIBLE)
-			src.overlays.Cut()
+			overlays.Cut()
 
-		else if (src.anchored)
+		else if(anchored)
 			user.show_message(text(SPAN_DANGER("[src] is now secured.")), SHOW_MESSAGE_VISIBLE)
-			src.overlays += "[base_state]-s"
+			overlays += "[base_state]-s"
 
 /obj/structure/machinery/flasher_button/attack_remote(mob/user as mob)
-	return src.attack_hand(user)
+	return attack_hand(user)
 
 /obj/structure/machinery/flasher_button/attackby(obj/item/W, mob/user as mob)
-	return src.attack_hand(user)
+	return attack_hand(user)
 
 /obj/structure/machinery/flasher_button/attack_hand(mob/user as mob)
 
@@ -131,18 +131,18 @@
 
 	use_power(5)
 
-	active = 1
+	active = TRUE
 	icon_state = "launcheract"
 
 	for(var/obj/structure/machinery/flasher/M in machines)
-		if(M.id == src.id)
+		if(M.id == id)
 			INVOKE_ASYNC(M, TYPE_PROC_REF(/obj/structure/machinery/flasher, flash))
 
 	sleep(50)
 
 	icon_state = "launcherbtt"
-	active = 0
+	active = FALSE
 
-	msg_admin_attack("[key_name(user)] used the [src.name] to flash everyone in [get_area(src)] ([src.loc.x],[src.loc.y],[src.loc.z]).", src.loc.x, src.loc.y, src.loc.z)
+	msg_admin_attack("[key_name(user)] used the [name] to flash everyone in [get_area(src)] ([loc.x],[loc.y],[loc.z]).", loc.x, loc.y, loc.z)
 
 	return

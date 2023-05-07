@@ -141,7 +141,7 @@ done < <(find . -type f -name '*.dm')
 section "common mistakes"
 
 part "var in proc args"
-if grep -P '^/[\w/]\S+\(.*(var/|, ?var/.*).*\)' $code_files; then
+if grep -P '^/[\w/]\S+\(.*(|, ?var/.*).*\)' $code_files; then
 	echo
 	echo -e "${RED}ERROR: changed files contains proc argument starting with 'var'.${NC}"
 	st=1

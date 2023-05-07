@@ -188,7 +188,7 @@
 		offset_x = -7
 		offset_y = -10
 
-	if (color)
+	if(color)
 		screech_image = image("icon"='icons/mob/xenos/overlay_effects64x64.dmi', "icon_state" = "shriek_waves_greyscale") // For Praetorian screech
 		screech_image.color = color
 	else
@@ -307,6 +307,7 @@
 
 /atom/movable/vis_obj/xeno_wounds
 	icon = 'icons/mob/xenos/wounds.dmi'
+
 
 /atom/movable/vis_obj/xeno_pack/Initialize(mapload, mob/living/carbon/source)
 	. = ..()

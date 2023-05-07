@@ -14,7 +14,7 @@
 /mob/living/carbon/xenomorph/proc/do_evolve()
 	var/potential_queens = 0
 
-	if (!evolve_checks())
+	if(!evolve_checks())
 		return
 
 	var/castes_available = caste.evolves_to.Copy()
@@ -39,18 +39,18 @@
 	if(!evolve_checks())
 		return
 
-	if((!hive.living_xeno_queen) && castepick != XENO_CASTE_QUEEN && !islarva(src) && !hive.allow_no_queen_actions)
+	if((!faction.living_xeno_queen) && castepick != XENO_CASTE_QUEEN && !islarva(src) && !faction.allow_no_queen_actions && !Check_Crash())
 		to_chat(src, SPAN_WARNING("The Hive is shaken by the death of the last Queen. You can't find the strength to evolve."))
 		return
 
 	if(castepick == XENO_CASTE_QUEEN) //Special case for dealing with queenae
-		if(!hardcore)
-			if(SSticker.mode && hive.xeno_queen_timer > world.time)
-				to_chat(src, SPAN_WARNING("You must wait about [DisplayTimeText(hive.xeno_queen_timer - world.time, 1)] for the hive to recover from the previous Queen's death."))
+		if(!MODE_HAS_FLAG(MODE_HARDCORE))
+			if(SSticker.mode && faction.xeno_queen_timer > world.time)
+				to_chat(src, SPAN_WARNING("You must wait about [DisplayTimeText(faction.xeno_queen_timer - world.time, 1, language = CLIENT_LANGUAGE_RUSSIAN)] for the hive to recover from the previous Queen's death."))
 				return
 
 			if(plasma_stored >= 500)
-				if(hive.living_xeno_queen)
+				if(faction.living_xeno_queen)
 					to_chat(src, SPAN_WARNING("There already is a living Queen."))
 					return
 			else
@@ -65,26 +65,26 @@
 			return
 
 	// Used for restricting benos to evolve to drone/queen when they're the only potential queen
-	for(var/mob/living/carbon/xenomorph/M in GLOB.living_xeno_list)
-		if(hivenumber != M.hivenumber)
+	for(var/mob/living/carbon/xenomorph/xeno in GLOB.living_xeno_list)
+		if(faction != xeno.faction)
 			continue
 
-		switch(M.tier)
+		switch(xeno.tier)
 			if(0)
-				if(islarva(M) && !ispredalienlarva(M))
-					if(M.client && M.ckey)
+				if(islarva(xeno) && !ispredalienlarva(xeno))
+					if(xeno.client && xeno.ckey)
 						potential_queens++
 				continue
 			if(1)
-				if(isdrone(M))
-					if(M.client && M.ckey)
+				if(isdrone(xeno))
+					if(xeno.client && xeno.ckey)
 						potential_queens++
 
-	var/mob/living/carbon/xenomorph/M = null
+	var/mob/living/carbon/xenomorph/xeno = null
 
-	M = RoleAuthority.get_caste_by_text(castepick)
+	xeno = SSticker.role_authority.get_caste_by_text(castepick)
 
-	if(isnull(M))
+	if(isnull(xeno))
 		to_chat(usr, SPAN_WARNING("[castepick] is not a valid caste! If you're seeing this message, tell a coder!"))
 		return
 
@@ -111,10 +111,10 @@
 		if(jobban_isbanned(src, XENO_CASTE_QUEEN))
 			to_chat(src, SPAN_WARNING("You are jobbanned from the Queen role."))
 			return
-		if(hive.living_xeno_queen)
+		if(faction.living_xeno_queen)
 			to_chat(src, SPAN_WARNING("There already is a Queen."))
 			return
-		if(!hive.allow_queen_evolve)
+		if(!faction.allow_queen_evolve)
 			to_chat(src, SPAN_WARNING("You can't find the strength to evolve into a Queen"))
 			return
 	else if(!can_evolve(castepick, potential_queens))
@@ -124,7 +124,7 @@
 	evolution_stored -= evolution_threshold
 
 	//From there, the new xeno exists, hopefully
-	var/mob/living/carbon/xenomorph/new_xeno = new M(get_turf(src), src)
+	var/mob/living/carbon/xenomorph/new_xeno = new xeno(get_turf(src), src)
 
 	if(!istype(new_xeno))
 		//Something went horribly wrong!
@@ -136,9 +136,9 @@
 
 	switch(new_xeno.tier) //They have evolved, add them to the slot count
 		if(2)
-			hive.tier_2_xenos |= new_xeno
+			faction.tier_2_xenos |= new_xeno
 		if(3)
-			hive.tier_3_xenos |= new_xeno
+			faction.tier_3_xenos |= new_xeno
 
 	if(mind)
 		mind.transfer_to(new_xeno)
@@ -166,68 +166,63 @@
 	built_structures = null
 
 	new_xeno.visible_message(SPAN_XENODANGER("A [new_xeno.caste.caste_type] emerges from the husk of \the [src]."), \
-	SPAN_XENODANGER("You emerge in a greater form from the husk of your old body. For the hive!"))
+	SPAN_XENODANGER(new_xeno.client.auto_lang(LANGUAGE_XENO_EVOLVED)))
 
-	if(hive.living_xeno_queen && hive.living_xeno_queen.observed_xeno == src)
-		hive.living_xeno_queen.overwatch(new_xeno)
+	if(faction.living_xeno_queen && faction.living_xeno_queen.observed_xeno == src)
+		faction.living_xeno_queen.overwatch(new_xeno)
 
 	src.transfer_observers_to(new_xeno)
 
 	qdel(src)
 	new_xeno.xeno_jitter(25)
 
-	if (new_xeno.client)
+	if(new_xeno.client)
 		new_xeno.client.mouse_pointer_icon = initial(new_xeno.client.mouse_pointer_icon)
 
-	if(new_xeno.mind && round_statistics)
-		round_statistics.track_new_participant(new_xeno.faction, -1) //so an evolved xeno doesn't count as two.
+	if(new_xeno.mind && SSticker.mode.round_statistics)
+		SSticker.mode.round_statistics.track_new_participant(new_xeno.faction, -1) //so an evolved xeno doesn't count as two.
 	SSround_recording.recorder.track_player(new_xeno)
 
 /mob/living/carbon/xenomorph/proc/evolve_checks()
 	if(!check_state(TRUE))
 		return FALSE
 
-	if(is_ventcrawling)
-		to_chat(src, SPAN_WARNING("This place is too constraining to evolve."))
+	if(is_ventcrawling || !isturf(loc))
+		to_chat(src, SPAN_WARNING(client.auto_lang(LANGUAGE_XENO_CANT_EVOLVED_BP)))
 		return FALSE
 
-	if(!isturf(loc))
-		to_chat(src, SPAN_WARNING("You can't evolve here."))
-		return FALSE
-
-	if(hardcore)
-		to_chat(src, SPAN_WARNING("Nuh-uh."))
+	if(MODE_HAS_FLAG(MODE_HARDCORE))
 		return FALSE
 
 	if(lock_evolve)
-		to_chat(src, SPAN_WARNING("You are banished and cannot reach the hivemind."))
+		to_chat(src, SPAN_WARNING(client.auto_lang(LANGUAGE_XENO_BANISHED)))
 		return FALSE
 
 	if(jobban_isbanned(src, JOB_XENOMORPH))//~who so genius to do this is?
-		to_chat(src, SPAN_WARNING("You are jobbanned from aliens and cannot evolve. How did you even become an alien?"))
+		to_chat(src, SPAN_WARNING(client.auto_lang(LANGUAGE_XENO_CANT_EVOLVED_JB)))
 		return FALSE
 
 	if(handcuffed || legcuffed)
-		to_chat(src, SPAN_WARNING("The restraints are too restricting to allow you to evolve."))
+		to_chat(src, SPAN_WARNING(client.auto_lang(LANGUAGE_XENO_CANT_EVOLVED_CUF)))
 		return FALSE
 
 	if(isnull(caste.evolves_to))
-		to_chat(src, SPAN_WARNING("You are already the apex of form and function. Go forth and spread the hive!"))
+		to_chat(src, SPAN_WARNING(client.auto_lang(LANGUAGE_XENO_EVOLVED_MAX)))
 		return FALSE
 
 	if(health < maxHealth)
-		to_chat(src, SPAN_WARNING("You must be at full health to evolve."))
+		to_chat(src, SPAN_WARNING(client.auto_lang(LANGUAGE_XENO_CANT_EVOLVED_HEALTH)))
 		return FALSE
 
 	if(agility || fortify || crest_defense)
-		to_chat(src, SPAN_WARNING("You cannot evolve while in this stance."))
+		to_chat(src, SPAN_WARNING(client.auto_lang(LANGUAGE_XENO_CANT_EVOLVED_POS)))
 		return FALSE
 
 	if(world.time < (SSticker.mode.round_time_lobby + XENO_ROUNDSTART_PROGRESS_TIME_2))
 		if(caste_type == XENO_CASTE_LARVA || caste_type == XENO_CASTE_PREDALIEN_LARVA)
 			var/turf/evoturf = get_turf(src)
 			if(!locate(/obj/effect/alien/weeds) in evoturf)
-				to_chat(src, SPAN_WARNING("The hive hasn't developed enough yet for you to evolve off weeds!"))
+				to_chat(src, SPAN_WARNING(client.auto_lang(LANGUAGE_XENO_CANT_EVOLVED_OFFWED)))
 				return FALSE
 
 	return TRUE
@@ -241,24 +236,20 @@
 	if(!check_state())
 		return
 
-	if(is_ventcrawling)
-		to_chat(src, SPAN_XENOWARNING("You can't deevolve here."))
-		return
-
-	if(!isturf(loc))
-		to_chat(src, SPAN_XENOWARNING("You can't deevolve here."))
+	if(is_ventcrawling || !isturf(loc))
+		to_chat(src, SPAN_XENOWARNING(client.auto_lang(LANGUAGE_XENO_CANT_DEEVO)))
 		return
 
 	if(health < maxHealth)
-		to_chat(src, SPAN_XENOWARNING("You are too weak to deevolve, regain your health first."))
+		to_chat(src, SPAN_XENOWARNING(client.auto_lang(LANGUAGE_XENO_CANT_DEEVO_TO_WEAK)))
 		return
 
 	if(length(caste.deevolves_to) < 1)
-		to_chat(src, SPAN_XENOWARNING("You can't deevolve any further."))
+		to_chat(src, SPAN_XENOWARNING(client.auto_lang(LANGUAGE_XENO_CANT_DEEVO_TO_LIMIT)))
 		return
 
 	if(lock_evolve)
-		to_chat(src, SPAN_WARNING("You are banished and cannot reach the hivemind."))
+		to_chat(src, SPAN_WARNING(client.auto_lang(LANGUAGE_XENO_BANISHED)))
 		return FALSE
 
 
@@ -267,13 +258,12 @@
 	if(length(caste.deevolves_to) == 1)
 		newcaste = caste.deevolves_to[1]
 	else if(length(caste.deevolves_to) > 1)
-		newcaste = tgui_input_list(src, "Choose a caste you want to de-evolve to.", "De-evolve", caste.deevolves_to, theme="hive_status")
+		newcaste = tgui_input_list(src, client.auto_lang(LANGUAGE_XENO_DEEVOLVE_ASK), client.auto_lang(LANGUAGE_XENO_DEEVO), caste.deevolves_to, theme="hive_status")
 
 	if(!newcaste)
 		return
-
-	var/confirm = tgui_alert(src, "Are you sure you want to de-evolve from [caste.caste_type] to [newcaste]?", "Deevolution", list("Yes", "No"))
-	if(confirm != "Yes")
+	var/alert_msg = replacetext(replacetext(client.auto_lang(LANGUAGE_XENO_DEEVOLVE), "###CASTE_TYPE###", "[caste.caste_type]"), "###NEW_CASTE_TYPE###", "[newcaste]")
+	if(alert(src, alert_msg, client.auto_lang(LANGUAGE_CONFIRM), client.auto_lang(LANGUAGE_YES), client.auto_lang(LANGUAGE_NO)) != client.auto_lang(LANGUAGE_YES))
 		return
 
 	if(!check_state())
@@ -289,7 +279,7 @@
 		return
 
 	if(lock_evolve)
-		to_chat(src, SPAN_WARNING("You are banished and cannot reach the hivemind."))
+		to_chat(src, SPAN_WARNING(client.auto_lang(LANGUAGE_XENO_BANISHED)))
 		return FALSE
 
 	var/xeno_type
@@ -343,8 +333,8 @@
 	new_xeno.visible_message(SPAN_XENODANGER("A [new_xeno.caste.caste_type] emerges from the husk of \the [src]."), \
 	SPAN_XENODANGER("You regress into your previous form."))
 
-	if(round_statistics && !new_xeno.statistic_exempt)
-		round_statistics.track_new_participant(faction, -1) //so an evolved xeno doesn't count as two.
+	if(SSticker.mode.round_statistics && !new_xeno.statistic_exempt)
+		SSticker.mode.round_statistics.track_new_participant(faction, -1) //so an evolved xeno doesn't count as two.
 	SSround_recording.recorder.track_player(new_xeno)
 
 	src.transfer_observers_to(new_xeno)
@@ -353,35 +343,37 @@
 
 /mob/living/carbon/xenomorph/proc/can_evolve(castepick, potential_queens)
 	var/selected_caste = GLOB.xeno_datum_list[castepick]?.type
-	var/free_slots = LAZYACCESS(hive.free_slots, selected_caste)
+	var/free_slots = LAZYACCESS(faction.free_slots, selected_caste)
 	if(free_slots)
 		return TRUE
 
-	var/burrowed_factor = min(hive.stored_larva, sqrt(4*hive.stored_larva))
+	var/burrowed_factor = min(faction.stored_larva, sqrt(4*faction.stored_larva))
 	burrowed_factor = round(burrowed_factor)
 
-	var/used_tier_2_slots = length(hive.tier_2_xenos)
-	var/used_tier_3_slots = length(hive.tier_3_xenos)
-	for(var/caste_path in hive.used_free_slots)
-		if(!hive.used_free_slots[caste_path])
+	var/used_tier_2_slots = length(faction.tier_2_xenos)
+	var/used_tier_3_slots = length(faction.tier_3_xenos)
+	for(var/caste_path in faction.used_free_slots)
+		if(!faction.used_free_slots[caste_path])
 			continue
 		var/datum/caste_datum/C = caste_path
 		switch(initial(C.tier))
-			if(2) used_tier_2_slots--
-			if(3) used_tier_3_slots--
+			if(2)
+				used_tier_2_slots--
+			if(3)
+				used_tier_3_slots--
 
 	var/totalXenos = burrowed_factor
-	for(var/mob/living/carbon/xenomorph/xeno as anything in hive.totalXenos)
+	for(var/mob/living/carbon/xenomorph/xeno as anything in faction.totalMobs)
 		if(xeno.counts_for_slots)
 			totalXenos++
 
-	if(tier == 1 && (((used_tier_2_slots + used_tier_3_slots) / totalXenos) * hive.tier_slot_multiplier) >= 0.5 && castepick != XENO_CASTE_QUEEN)
+	if(tier == 1 && (((used_tier_2_slots + used_tier_3_slots) / totalXenos) * faction.tier_slot_multiplier) >= 0.5 && castepick != XENO_CASTE_QUEEN)
 		to_chat(src, SPAN_WARNING("The hive cannot support another Tier 2, wait for either more aliens to be born or someone to die."))
 		return FALSE
-	else if(tier == 2 && ((used_tier_3_slots / totalXenos) * hive.tier_slot_multiplier) >= 0.20 && castepick != XENO_CASTE_QUEEN)
+	else if(tier == 2 && ((used_tier_3_slots / length(faction.totalMobs)) * faction.tier_slot_multiplier) >= 0.20 && castepick != XENO_CASTE_QUEEN)
 		to_chat(src, SPAN_WARNING("The hive cannot support another Tier 3, wait for either more aliens to be born or someone to die."))
 		return FALSE
-	else if(hive.allow_queen_evolve && !hive.living_xeno_queen && potential_queens == 1 && islarva(src) && castepick != XENO_CASTE_DRONE)
+	else if(faction.allow_queen_evolve && !faction.living_xeno_queen && potential_queens == 1 && islarva(src) && !Check_Crash() && castepick != XENO_CASTE_DRONE)
 		to_chat(src, SPAN_XENONOTICE("The hive currently has no sister able to become Queen! The survival of the hive requires you to be a Drone!"))
 		return FALSE
 

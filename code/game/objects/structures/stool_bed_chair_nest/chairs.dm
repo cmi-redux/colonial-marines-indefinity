@@ -7,6 +7,8 @@
 	desc = "A rectangular metallic frame sitting on four legs with a back panel. Designed to fit the sitting position, more or less comfortably."
 	icon_state = "chair"
 	buckle_lying = FALSE
+	layer = OBJ_LAYER
+	plane = GAME_PLANE
 	var/propelled = FALSE //Check for fire-extinguisher-driven chairs
 	var/can_rotate = TRUE
 	var/picked_up_item = /obj/item/weapon/melee/twohanded/folded_metal_chair
@@ -20,17 +22,20 @@
 
 /obj/structure/bed/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_AROUND|PASS_UNDER
 	flags_can_pass_all_temp = PASS_OVER
 
-/obj/structure/bed/chair/handle_rotation() //Making this into a separate proc so office chairs can call it on Move()
-	if(src.dir == NORTH)
-		src.layer = FLY_LAYER
-	else
-		src.layer = OBJ_LAYER
+/obj/structure/bed/chair/handle_rotation() //Making this into a seperate proc so office chairs can call it on Move()
+	handle_layer()
 	if(buckled_mob)
 		buckled_mob.setDir(dir)
+
+/obj/structure/bed/chair/proc/handle_layer()
+	if((buckled_mob || buckled_bodybag) && dir == NORTH)
+		layer = ABOVE_MOB_LAYER
+	else
+		layer = OBJ_LAYER
 
 /obj/structure/bed/chair/MouseDrop(atom/over)
 	. = ..()
@@ -160,7 +165,8 @@
 	I.throw_atom(starting_turf, rand(2, 5), SPEED_FAST, null, TRUE)
 	qdel(src)
 
-/obj/structure/bed/chair/proc/update_overlays()
+/obj/structure/bed/chair/update_overlays()
+	. = ..()
 	overlays.Cut()
 	if(!stacked_size)
 		name = initial(name)
@@ -375,12 +381,7 @@
 	. = ..()
 	chairbar = image("icons/obj/objects.dmi", "hotseat_bars")
 	chairbar.layer = ABOVE_MOB_LAYER
-
-/obj/structure/bed/chair/dropship/passenger/shuttle_chair/Initialize()
-	. = ..()
-	chairbar = image("icons/obj/objects.dmi", "hotseat_bars")
-	chairbar.layer = ABOVE_MOB_LAYER
-
+	chairbar.plane = GAME_PLANE
 
 /obj/structure/bed/chair/dropship/passenger/afterbuckle()
 	if(buckled_mob)

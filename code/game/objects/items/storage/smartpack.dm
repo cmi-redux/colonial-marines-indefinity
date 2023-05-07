@@ -1,7 +1,8 @@
-#define BACKPACK_LIGHT_LEVEL 6
-#define PROTECTIVE_COST 50
-#define REPAIR_COST 100
-#define IMMOBILE_COST 20
+#define BACKPACK_LIGHT_POWER	0.5
+#define BACKPACK_LIGHT_RANGE	6
+#define PROTECTIVE_COST			50
+#define REPAIR_COST				100
+#define IMMOBILE_COST			20
 
 #define EXOSKELETON_ON_FILTER_SIZE 0.5
 #define EXOSKELETON_OFF_FILTER_SIZE 1
@@ -22,8 +23,12 @@
 
 	var/show_exoskeleton = TRUE
 
-	var/flashlight_cooldown = 0 //Cooldown for toggling the light
-	var/light_state = FALSE //Is the light on or off
+	var/flashlight_cooldown = 0 			//Cooldown for toggling the light
+
+	light_range = BACKPACK_LIGHT_RANGE
+	light_power = BACKPACK_LIGHT_POWER
+	light_system = MOVABLE_LIGHT
+	light_color = COLOR_WHITE
 
 	var/battery_charge = SMARTPACK_MAX_POWER_STORED //How much power are we storing
 	var/activated_form = FALSE
@@ -83,7 +88,7 @@
 	else
 		LAZYSET(item_state_slots, WEAR_BACK, initial(item_state))
 
-	if(light_state)
+	if(light_on)
 		overlays += "+lamp_on"
 	else
 		overlays += "+lamp_off"
@@ -91,13 +96,13 @@
 	if(user)
 		user.update_inv_back()
 
-	for(var/datum/action/A in actions)
-		A.update_button_icon()
+	for(var/datum/action/action in actions)
+		action.update_button_icon()
 
 	if(issynth(user))
-		var/mob/living/M = user
-		for(var/datum/action/A in M.actions)
-			A.update_button_icon()
+		var/mob/living/mob = user
+		for(var/datum/action/action in mob.actions)
+			action.update_button_icon()
 
 	if(content_watchers) //If someone's looking inside it, don't close the flap.
 		return
@@ -116,7 +121,7 @@
 	var/image/ret = ..()
 
 	var/light = "+lamp_on"
-	if(!light_state)
+	if(!light_on)
 		light = "+lamp_off"
 
 	var/image/lamp = overlay_image('icons/mob/humans/onmob/back.dmi', light, color, RESET_COLOR)
@@ -133,18 +138,14 @@
 			give_action(M, action_type)
 	else
 		to_chat(M, SPAN_DANGER("[name] beeps, \"Unathorized user!\""))
-
-	if(light_state && loc != M)
-		M.SetLuminosity(BACKPACK_LIGHT_LEVEL, FALSE, src)
-		SetLuminosity(0)
+	RegisterSignal(M, COMSIG_ATOM_OFF_LIGHT, PROC_REF(toggle_light), FALSE, override = TRUE)
 	..()
 
 /obj/item/storage/backpack/marine/smartpack/dropped(mob/living/M)
 	for(var/datum/action/human_action/smartpack/S in M.actions)
 		S.remove_from(M)
 
-	if(light_state && loc != M)
-		toggle_light(M)
+	UnregisterSignal(M, COMSIG_ATOM_OFF_LIGHT)
 
 	if(immobile_form)
 		immobile_form = FALSE
@@ -152,13 +153,6 @@
 		M.anchored = FALSE
 		M.unfreeze()
 	..()
-
-/obj/item/storage/backpack/marine/smartpack/Destroy()
-	if(ismob(loc))
-		loc.SetLuminosity(0, FALSE, src)
-	else
-		SetLuminosity(0)
-	. = ..()
 
 /obj/item/storage/backpack/marine/smartpack/attack_self(mob/user)
 	..()
@@ -169,30 +163,32 @@
 	var/mob/living/carbon/human/H = user
 	if(H.back != src)
 		return
-
-	toggle_light(user)
+	toggle_light(user, !light_on)
 	return TRUE
 
-/obj/item/storage/backpack/marine/smartpack/proc/toggle_light(mob/user)
+/obj/item/storage/backpack/marine/smartpack/proc/toggle_light(mob/user, toggle_on)
+	SIGNAL_HANDLER
 	flashlight_cooldown = world.time + 20 //2 seconds cooldown every time the light is toggled
-	if(light_state) //Turn it off.
-		if(user)
-			user.SetLuminosity(0, FALSE, src)
-		else
-			SetLuminosity(0)
+	if(!toggle_on)
+		turn_light(user, toggle_on)
 		playsound(src, 'sound/handling/click_2.ogg', 50, TRUE)
-	else //Turn it on.
-		if(user)
-			user.SetLuminosity(BACKPACK_LIGHT_LEVEL, FALSE, src)
-		else
-			SetLuminosity(BACKPACK_LIGHT_LEVEL)
-
-	light_state = !light_state
-
-	playsound(src, 'sound/handling/light_on_1.ogg', 50, TRUE)
+	else
+		turn_light(user, toggle_on)
+		playsound(src, 'sound/handling/light_on_1.ogg', 50, TRUE)
 
 	update_icon(user)
 
+/obj/item/storage/backpack/marine/smartpack/unequipped(mob/user)
+	toggle_light(user, FALSE)
+	..()
+
+/obj/item/storage/backpack/marine/smartpack/turn_light(mob/user, toggle_on, sparks = FALSE, forced = FALSE)
+	. = ..()
+	if(. != CHECKS_PASSED)
+		return
+	if(!user && ismob(loc))
+		user = loc
+	set_light_on(toggle_on)
 
 /obj/item/storage/backpack/marine/smartpack/proc/protective_form(mob/living/carbon/human/user)
 	if(!istype(user) || activated_form || immobile_form)
@@ -312,6 +308,7 @@
 	playsound(loc, 'sound/items/Welder2.ogg', 25, TRUE)
 	battery_charge -= REPAIR_COST
 	H.heal_overall_damage(50, 50, TRUE)
+	H.track_heal_damage(initial(name), H, 100)
 	H.pain.recalculate_pain()
 	repair_form = FALSE
 	update_icon(user)
@@ -341,8 +338,6 @@
 	item_state = "w_smartpack"
 	icon_state = "w_smartpack"
 
-
-#undef BACKPACK_LIGHT_LEVEL
 #undef PROTECTIVE_COST
 #undef REPAIR_COST
 #undef IMMOBILE_COST

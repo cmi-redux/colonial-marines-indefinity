@@ -236,9 +236,9 @@
 		var/area/place = get_area(src)
 		area_type = place?.type // We might be created in nullspace
 
-// if(mapload)
-// for(var/turf/T in return_turfs())
-// T.flags_1 |= NO_RUINS_1
+//	if(mapload)
+//		for(turf/T in return_turfs())
+//			T.flags_atom |= NO_RUINS_1
 
 	#ifdef DOCKING_PORT_HIGHLIGHT
 	highlight("#f00")
@@ -373,6 +373,8 @@
 	var/initial_engines = 0 //initial engine power
 	var/can_move_docking_ports = FALSE //if this shuttle can move docking ports other than the one it is docked at
 	var/list/hidden_turfs = list()
+
+	var/custom_ceiling = /turf/open/floor/roof/ship_hull
 
 	var/crashing = FALSE
 
@@ -611,7 +613,7 @@
 		var/turf/oldT = old_turfs[i]
 		if(!oldT || !istype(oldT.loc, area_type))
 			continue
-// var/area/old_area = oldT.loc
+//		var/area/old_area = oldT.loc
 		underlying_area.contents += oldT
 		//oldT.change_area(old_area, underlying_area) //lighting
 		oldT.empty(FALSE)
@@ -623,7 +625,7 @@
 				oldT.ScrapeAway(baseturf_cache.len - k + 1)
 				break
 
-	qdel(src, force=TRUE)
+	qdel(src, force = TRUE)
 
 /obj/docking_port/mobile/proc/intoTheSunset()
 	// Loop over mobs
@@ -733,28 +735,27 @@
 			if(tl <= SHUTTLE_RIPPLE_TIME)
 				create_ripples(destination, tl)
 
-	//var/obj/docking_port/stationary/S0 = get_docked()
-	//if(istype(S0, /obj/docking_port/stationary/transit) && timeLeft(1) <= PARALLAX_LOOP_TIME)
-		//for(var/place in shuttle_areas)
-			//var/area/shuttle/shuttle_area = place
-			//if(shuttle_area.parallax_movedir)
-			// parallax_slowdown()
+	var/obj/docking_port/stationary/S0 = get_docked()
+	if(istype(S0, /obj/docking_port/stationary/transit) && timeLeft(1) <= PARALLAX_LOOP_TIME)
+		for(var/place in shuttle_areas)
+			var/area/shuttle/shuttle_area = place
+			if(shuttle_area.parallax_movedir)
+				parallax_slowdown()
 
 /obj/docking_port/mobile/proc/parallax_slowdown()
-	//for(var/place in shuttle_areas)
-	// var/area/shuttle/shuttle_area = place
-	// shuttle_area.parallax_movedir = FALSE
-	//if(assigned_transit && assigned_transit.assigned_area)
-	// assigned_transit.assigned_area.parallax_movedir = FALSE
-// var/list/L0 = return_ordered_turfs(x, y, z, dir)
-// for (var/thing in L0)
-// var/turf/T = thing
-// if(!T || !istype(T.loc, area_type))
-// continue
-// for (var/thing2 in T)
-// var/atom/movable/AM = thing2
-// if (length(AM.client_mobs_in_contents))
-// AM.update_parallax_contents()
+	for(var/place in shuttle_areas)
+		var/area/shuttle/shuttle_area = place
+		shuttle_area.parallax_movedir = FALSE
+	if(assigned_transit?.assigned_area)
+		assigned_transit.assigned_area.parallax_movedir = FALSE
+	var/list/L0 = return_ordered_turfs(x, y, z, dir)
+	for (var/thing in L0)
+		var/turf/T = thing
+		if(!T || !istype(T.loc, area_type))
+			continue
+		for (var/atom/movable/movable as anything in T)
+			if(movable.client_mobs_in_contents)
+				movable.update_parallax_contents()
 
 /obj/docking_port/mobile/proc/check_transit_zone()
 	if(assigned_transit)
@@ -833,7 +834,7 @@
 		return "recharging, [timeLeft()] seconds remaining"
 
 	if(istype(dockedAt, /obj/docking_port/stationary/transit))
-		if (timeLeft() > 1 HOURS)
+		if(timeLeft() > 1 HOURS)
 			return "hyperspace"
 		else
 			var/obj/docking_port/stationary/dst
@@ -903,9 +904,9 @@
 
 /obj/docking_port/mobile/proc/count_engines()
 	. = 0
-// for(var/thing in shuttle_areas)
+// for(thing in shuttle_areas)
 // var/area/shuttle/areaInstance = thing
-// for(var/obj/structure/shuttle/engine/E in areaInstance.contents)
+// for(obj/structure/shuttle/engine/E in areaInstance.contents)
 // if(!QDELETED(E))
 // . += E.engine_power
 
@@ -948,7 +949,7 @@
 	switch(mode)
 		if(SHUTTLE_ESCAPE)
 			return TRUE
-		if(SHUTTLE_STRANDED,SHUTTLE_ENDGAME)
+		if(SHUTTLE_STRANDED, SHUTTLE_ENDGAME)
 			return FALSE
 		else
 			return ..()
@@ -993,3 +994,6 @@
 		to_chat(user, SPAN_WARNING("Shuttle already in transit."))
 		return FALSE
 	return TRUE
+
+/obj/docking_port/mobile/proc/auto_launch()
+	return

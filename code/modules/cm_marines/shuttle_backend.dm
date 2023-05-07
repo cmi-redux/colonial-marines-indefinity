@@ -143,7 +143,7 @@ var/global/list/s_info = null
 	var/area/departure_area = get_area(source[shuttle.sound_target])
 	var/area/landing_area
 	departure_area.base_muffle = 0
-	if (deg)
+	if(deg)
 		source = rotate_shuttle_turfs(source, deg)
 
 	var/list/mob/living/knocked_down_mobs = list()
@@ -159,13 +159,13 @@ var/global/list/s_info = null
 
 		// Delete objects and gib living things in the destination
 		for (var/atom/A in target)
-			if (isobj(A) && A.loc == target)
+			if(isobj(A) && A.loc == target)
 				qdel(A)
 				continue
 
-			if (isliving(A))
+			if(isliving(A))
 				var/mob/living/L = A
-				L.last_damage_data = create_cause_data("dropship flattening")
+				L.last_damage_data = create_cause_data("преземления корабля")
 				L.gib()
 
 		target = target.ChangeTurf(/turf/open/gm/empty)
@@ -197,10 +197,10 @@ var/global/list/s_info = null
 			if(A.loc != T)
 				continue
 
-			if (isobj(A))
+			if(isobj(A))
 				A.forceMove(target)
 
-			if (ismob(A))
+			if(ismob(A))
 				A.forceMove(target)
 				if(iscarbon(A))
 					var/mob/living/carbon/M = A
@@ -208,7 +208,7 @@ var/global/list/s_info = null
 						if(M.buckled && !iselevator)
 							to_chat(M, SPAN_WARNING("Sudden acceleration presses you into [M.buckled]!"))
 							shake_camera(M, 3, 1)
-						else if (!M.buckled)
+						else if(!M.buckled)
 							to_chat(M, SPAN_WARNING("The floor lurches beneath you!"))
 							shake_camera(M, iselevator ? 2 : 10, 1)
 

@@ -5,8 +5,6 @@
 	skills = /datum/skills/synthetic
 	paygrade = "SYN"
 
-	minimap_icon = "synth"
-
 /datum/equipment_preset/synth/New()
 	. = ..()
 	access = get_all_accesses()
@@ -32,7 +30,7 @@
 
 	H.allow_gun_usage = FALSE
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/synth/uscm
 	name = "USCM Synthetic"
@@ -46,7 +44,7 @@
 
 /datum/equipment_preset/synth/uscm/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/industrial
 
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mcom/synth(H), WEAR_L_EAR)
@@ -56,7 +54,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/yellow(H), WEAR_HANDS)
 	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/synth/uscm/councillor
 	name = "USCM Synthetic Councillor"
@@ -70,7 +68,7 @@
 
 /datum/equipment_preset/synth/uscm/councillor/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/satchel
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/industrial
 
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mcom/synth(H), WEAR_L_EAR)
@@ -80,7 +78,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/yellow(H), WEAR_HANDS)
 	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/synth/uscm/wo
 	name = "WO Support Synthetic"
@@ -100,13 +98,32 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/construction/full(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/medium(H), WEAR_L_STORE)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
+
+/datum/equipment_preset/synth/uscm/crash
+	name = "WO Support Synthetic"
+	flags = EQUIPMENT_PRESET_START_OF_ROUND_CRASH
+
+/datum/equipment_preset/synth/uscm/crash/load_gear(mob/living/carbon/human/H)
+
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/beret/cm(H), WEAR_HEAD)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mcom/synth(H), WEAR_L_EAR)
+	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/synthetic(H), WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/RO(H), WEAR_JACKET)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/brown(H), WEAR_FEET)
+	H.equip_to_slot_or_del(new /obj/item/storage/belt/utility/full(H), WEAR_WAIST)
+	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/yellow(H), WEAR_HANDS)
+	H.equip_to_slot_or_del(new /obj/item/clothing/accessory/storage/black_vest/brown_vest(H), WEAR_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/smartpack/tan(H), WEAR_BACK)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/construction/full(H), WEAR_R_STORE)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/medium(H), WEAR_L_STORE)
+
+//*****************************************************************************************************//
 
 /datum/equipment_preset/synth/survivor
 	name = "Survivor - Synthetic - Classic Joe"
 	flags = EQUIPMENT_PRESET_EXTRA
-	faction = FACTION_SURVIVOR
-	faction_group = list(FACTION_SURVIVOR)
+	faction = FACTION_COLONIST
 	idtype = /obj/item/card/id/lanyard
 	assignment = JOB_SYNTH
 	rank = JOB_SYNTH_SURVIVOR
@@ -220,7 +237,7 @@
 		WEAR_BODY = /obj/item/clothing/under/rank/security2,
 		WEAR_BACK = /obj/item/storage/backpack/satchel/sec,
 		WEAR_IN_BACK = /obj/item/weapon/melee/telebaton,
-		WEAR_WAIST = /obj/item/storage/belt/security/MP/full,
+		WEAR_WAIST = /obj/item/storage/belt/security/mp/full,
 		WEAR_HANDS = /obj/item/clothing/gloves/black,
 		WEAR_R_STORE = /obj/item/storage/pouch/tools/full,
 		WEAR_FEET = /obj/item/clothing/shoes/marine/knife
@@ -308,7 +325,7 @@
 		WEAR_IN_BACK = /obj/item/device/taperecorder,
 		WEAR_IN_BACK = /obj/item/device/camera,
 		WEAR_JACKET = /obj/item/clothing/suit/storage/det_suit/black,
-		WEAR_WAIST = /obj/item/storage/belt/security/MP/full,
+		WEAR_WAIST = /obj/item/storage/belt/security/mp/full,
 		WEAR_HANDS = /obj/item/clothing/gloves/black,
 		WEAR_FEET = /obj/item/clothing/shoes/marine/knife
 	)
@@ -331,13 +348,12 @@
 
 	survivor_variant = ENGINEERING_SURVIVOR
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/synth/working_joe
 	name = "Working Joe"
 	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 	faction = FACTION_MARINE
-	faction_group = list(FACTION_MARINE)
 	assignment = JOB_WORKING_JOE
 	rank = JOB_WORKING_JOE
 	skills = /datum/skills/working_joe
@@ -390,11 +406,11 @@
 /datum/equipment_preset/synth/working_joe/load_name(mob/living/carbon/human/H, randomise)
 	H.change_real_name(H, "Working Joe #[rand(100)][rand(100)]")
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/synth/survivor/cultist_synth
 	name = "Cultist - Xeno Cultist Synthetic"
-	faction = FACTION_XENOMORPH
+	faction = FACTION_XENOMORPH_NORMAL
 
 /datum/equipment_preset/synth/survivor/cultist_synth/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel/medic
@@ -422,11 +438,11 @@
 
 /datum/equipment_preset/synth/survivor/midwife
 	name = "Fun - Xeno Cultist Midwife (Synthetic)"
-	faction = FACTION_XENOMORPH
+	faction = FACTION_XENOMORPH_NORMAL
 
 /datum/equipment_preset/synth/survivor/midwife/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel/medic
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine/medic
 
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/synthetic/joe(H), WEAR_BODY)
@@ -455,7 +471,7 @@
 			final_name = "Midwife [H.real_name]"
 	H.change_real_name(H, final_name)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/synth/infiltrator
 	name = "Infiltrator Synthetic"
@@ -523,4 +539,4 @@
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/weapon/melee/chloroform(H), WEAR_IN_L_STORE)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//

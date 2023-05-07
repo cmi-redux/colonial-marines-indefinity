@@ -2,18 +2,19 @@
 	title = JOB_SQUAD_MEDIC
 	total_positions = 16
 	spawn_positions = 16
-	allow_additional = 1
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT|ROLE_ADD_TO_SQUAD
+	allow_additional = TRUE
+	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = /datum/equipment_preset/uscm/medic
 	entry_message_body = "<a href='"+URL_WIKI_MEDIC_GUIDE+"'>You tend the wounds of your squad mates</a> and make sure they are healthy and active. You may not be a fully-fledged doctor, but you stand between life and death when it matters."
+	balance_formulas = list("misc", BALANCE_FORMULA_MEDIC, BALANCE_FORMULA_FIELD)
 
 /datum/job/marine/medic/set_spawn_positions(count)
-	for(var/datum/squad/sq in RoleAuthority.squads)
+	for(var/datum/squad/sq in SSticker.role_authority.squads)
 		if(sq)
 			sq.max_medics = medic_slot_formula(count)
 
-/datum/job/marine/medic/get_total_positions(latejoin=0)
-	var/slots = medic_slot_formula(get_total_marines())
+/datum/job/marine/medic/get_total_positions(latejoin = FALSE)
+	var/slots = medic_slot_formula(get_total_population(FACTION_MARINE))
 
 	if(slots <= total_positions_so_far)
 		slots = total_positions_so_far
@@ -21,7 +22,7 @@
 		total_positions_so_far = slots
 
 	if(latejoin)
-		for(var/datum/squad/sq in RoleAuthority.squads)
+		for(var/datum/squad/sq in SSticker.role_authority.squads)
 			if(sq)
 				sq.max_medics = slots
 
@@ -31,6 +32,11 @@
 	title = JOB_WO_SQUAD_MEDIC
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = /datum/equipment_preset/wo/marine/medic
+
+/datum/job/marine/medic/crash
+	title = JOB_CRASH_SQUAD_MEDIC
+	flags_startup_parameters = ROLE_ADD_TO_SQUAD
+	gear_preset = /datum/equipment_preset/crash/marine/medic
 
 AddTimelock(/datum/job/marine/medic, list(
 	JOB_MEDIC_ROLES = 1 HOURS,

@@ -3,6 +3,7 @@
 // subtypes as a basis for non-common-speaking alien foreigners. ~ Z
 
 /mob/living/carbon/human/dummy
+	faction_to_get = null
 	var/in_use = FALSE
 
 /mob/living/carbon/human/dummy/proc/wipe_state()
@@ -73,3 +74,7 @@ GLOBAL_LIST_EMPTY(dummy_mob_list)
 
 /mob/living/carbon/human/dummy/add_to_all_mob_huds()
 	return
+
+/mob/living/carbon/human/dummy/ui
+	vis_flags = NO_FLAGS
+	plane = GAME_PLANE

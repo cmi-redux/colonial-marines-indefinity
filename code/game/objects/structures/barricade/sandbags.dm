@@ -15,6 +15,7 @@
 	stack_amount = 1
 	var/build_stage = BARRICADE_SANDBAG_1
 	metallic = FALSE
+	tcmp_color = COLOR_BARRICADE_SA_TCMP
 
 /obj/structure/barricade/sandbags/New(loc, mob/user, direction, amount = 1)
 	if(direction)

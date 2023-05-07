@@ -19,11 +19,11 @@
 	var/locked = 1
 
 /obj/item/circuitboard/computer/cameras/construct(obj/structure/machinery/computer/cameras/C)
-	if (..(C))
+	if(..(C))
 		C.network = network
 
 /obj/item/circuitboard/computer/cameras/disassemble(obj/structure/machinery/computer/cameras/C)
-	if (..(C))
+	if(..(C))
 		network = C.network
 
 /obj/item/circuitboard/computer/cameras/engineering
@@ -161,11 +161,11 @@
 	var/contraband_enabled = 0
 
 /obj/item/circuitboard/computer/supplycomp/construct(obj/structure/machinery/computer/supplycomp/SC)
-	if (..(SC))
+	if(..(SC))
 		SC.toggle_contraband(contraband_enabled)
 
 /obj/item/circuitboard/computer/supplycomp/disassemble(obj/structure/machinery/computer/supplycomp/SC)
-	if (..(SC))
+	if(..(SC))
 		SC.toggle_contraband(contraband_enabled)
 
 /obj/item/circuitboard/computer/supplycomp/attackby(obj/item/multitool, mob/user)
@@ -189,15 +189,15 @@
 	name = "Circuit board (vehicle ASRS console)"
 	build_path = /obj/structure/machinery/computer/supplycomp/vehicle
 	var/spent = FALSE //so that they can't just reconstruct the console to get another APC
-	var/tank_unlocked = FALSE
+	var/tank_unlocked = TRUE
 
 /obj/item/circuitboard/computer/supplycomp/vehicle/construct(obj/structure/machinery/computer/supplycomp/vehicle/SCV)
-	if (..(SCV))
+	if(..(SCV))
 		SCV.spent = spent
 		SCV.tank_unlocked = tank_unlocked
 
 /obj/item/circuitboard/computer/supplycomp/vehicle/disassemble(obj/structure/machinery/computer/supplycomp/vehicle/SCV)
-	if (..(SCV))
+	if(..(SCV))
 		spent = SCV.spent
 		tank_unlocked = SCV.tank_unlocked
 
@@ -266,5 +266,3 @@
 			src.name = "Circuit Board (RD Console)"
 			src.build_path = /obj/structure/machinery/computer/rdconsole/core
 			to_chat(user, SPAN_NOTICE(" Access protocols set to default."))
-
-

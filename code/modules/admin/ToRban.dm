@@ -8,8 +8,8 @@
 	var/savefile/F = new(TORFILE)
 	if(F)
 		if( ip_address in F.dir )
-			return 1
-	return 0
+			return TRUE
+	return FALSE
 
 /proc/ToRban_autoupdate()
 	var/savefile/F = new(TORFILE)

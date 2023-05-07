@@ -33,7 +33,7 @@
 
 /obj/effect/plantsegment/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_pass = PASS_OVER|PASS_AROUND|PASS_UNDER|PASS_THROUGH
 
 /obj/effect/plantsegment/attackby(obj/item/W as obj, mob/user as mob)
@@ -167,10 +167,13 @@
 
 	// Update bioluminescence.
 	if(seed.biolum)
-		SetLuminosity(1+round(seed.potency/10))
+		if(seed.biolum_colour)
+			set_light(1 + round(seed.potency / 10), l_color = seed.biolum_colour)
+		else
+			set_light(1 + round(seed.potency / 10))
 		return
 	else
-		SetLuminosity(0)
+		set_light(0)
 
 	// Update flower/product overlay.
 	overlays.Cut()
@@ -192,7 +195,7 @@
 			overlays += flower_overlay
 
 /obj/effect/plantsegment/proc/spread()
-	var/direction = pick(cardinal)
+	var/direction = pick( GLOB.cardinals)
 	var/step = get_step(src,direction)
 	if(istype(step,/turf/open/floor))
 		var/turf/open/floor/F = step
@@ -205,11 +208,11 @@
 /obj/effect/plantsegment/ex_act(severity)
 	switch(severity)
 		if(0 to EXPLOSION_THRESHOLD_LOW)
-			if (prob(50))
+			if(prob(50))
 				die()
 				return
 		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
-			if (prob(90))
+			if(prob(90))
 				die()
 				return
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
@@ -234,12 +237,12 @@
 	if(prob(30))
 		age++
 
-	var/turf/T = loc
+	var/turf/turf = loc
 	if(!loc)
 		return
 
-	var/pressure = T.return_pressure()
-	var/temperature = T.return_temperature()
+	var/pressure = turf.return_pressure()
+	var/temperature = turf.return_temperature()
 
 	if(pressure < seed.lowkpa_tolerance || pressure > seed.highkpa_tolerance)
 		die()
@@ -249,13 +252,9 @@
 		die()
 		return
 
-	var/area/A = T.loc
-	if(A)
-		var/light_available
-		if(A.lighting_use_dynamic)
-			light_available = max(0,min(10,T.lighting_lumcount)-5)
-		else
-			light_available =  5
+	var/area/area = turf.loc
+	if(area?.static_lighting)
+		var/light_available = max(0, min(10, turf.dynamic_lumcount) - 5)
 		if(abs(light_available - seed.ideal_light) > seed.light_tolerance)
 			die()
 			return

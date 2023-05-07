@@ -5,6 +5,7 @@
 	icon_state = "closed"
 	density = TRUE
 	layer = BELOW_OBJ_LAYER
+	plane = GAME_PLANE
 	var/icon_closed = "closed"
 	var/icon_opened = "open"
 	var/opened = 0
@@ -28,9 +29,24 @@
 
 	var/mob_size = 15
 
+	var/objective_spawn = TRUE
+
 /obj/structure/closet/Initialize()
 	. = ..()
-	if(!opened && fill_from_loc) // if closed, any item at the crate's loc is put in the contents
+	//make sure to load landmarks for defcons
+	var/turf/T = get_turf(src)
+	if(objective_spawn && is_ground_level(T.z))
+		var/chance = rand(1,100)
+		if(chance < CLUE_CLOSE)
+			new /obj/effect/landmark/objective_landmark/close(loc)
+		else if(chance < CLUE_MEDIUM)
+			new /obj/effect/landmark/objective_landmark/medium(loc)
+		else if(chance < CLUE_FAR)
+			new /obj/effect/landmark/objective_landmark/far(loc)
+		else if(chance < CLUE_SCIENCE)
+			new /obj/effect/landmark/objective_landmark/science(loc)
+
+	if(!opened && fill_from_loc)		// if closed, any item at the crate's loc is put in the contents
 		for(var/obj/item/I in src.loc)
 			if(I.density || I.anchored || I == src)
 				continue
@@ -45,7 +61,7 @@
 
 /obj/structure/closet/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_HIGH_OVER_ONLY|PASS_AROUND
 
 /obj/structure/closet/alter_health()
@@ -83,7 +99,7 @@
 		if(exit_stun)
 			M.apply_effect(exit_stun, STUN) //Action delay when going out of a closet
 		M.update_canmove() //Force the delay to go in action immediately
-		if(!M.lying)
+		if(M.canmove)
 			M.visible_message(SPAN_WARNING("[M] suddenly gets out of [src]!"),
 			SPAN_WARNING("You get out of [src] and get your bearings!"))
 
@@ -155,7 +171,6 @@
 	if(!(src.opened ? src.close() : src.open()))
 		to_chat(user, SPAN_NOTICE("It won't budge!"))
 	return
-
 
 /obj/structure/closet/proc/take_damage(damage)
 	health = max(health - damage, 0)
@@ -331,7 +346,7 @@
 	set category = "Object"
 	set name = "Toggle Open"
 
-	if(!usr.canmove || usr.stat || usr.is_mob_restrained())
+	if(!usr.can_action || usr.is_mob_restrained())
 		return
 
 	if(usr.loc == src)

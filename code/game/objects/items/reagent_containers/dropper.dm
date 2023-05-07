@@ -41,14 +41,14 @@
 				var/mob/living/carbon/human/victim = target
 
 				var/obj/item/safe_thing = null
-				if( victim.wear_mask )
-					if ( victim.wear_mask.flags_inventory & COVEREYES )
+				if(victim.wear_mask)
+					if(victim.wear_mask.flags_inventory & COVEREYES)
 						safe_thing = victim.wear_mask
-				if( victim.head )
-					if ( victim.head.flags_inventory & COVEREYES )
+				if(victim.head)
+					if(victim.head.flags_inventory & COVEREYES)
 						safe_thing = victim.head
 				if(victim.glasses)
-					if ( !safe_thing )
+					if (!safe_thing)
 						safe_thing = victim.glasses
 
 				if(safe_thing)

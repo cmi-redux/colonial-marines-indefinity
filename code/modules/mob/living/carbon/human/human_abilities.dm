@@ -172,112 +172,6 @@ CULT
 
 	addtimer(CALLBACK(src, PROC_REF(update_button_icon)), amount)
 
-/datum/action/human_action/activable/droppod
-	name = "Call Droppod"
-	action_icon_state = "techpod_deploy"
-
-	var/obj/structure/droppod/tech/assigned_droppod
-
-/datum/action/human_action/activable/droppod/proc/can_deploy_droppod(turf/T)
-	var/mob/living/carbon/human/H = owner
-	if(assigned_droppod)
-		return
-
-	if(!(T in view(H)))
-		to_chat(H, SPAN_WARNING("This target can't be seen!"))
-		return
-
-	if(get_dist(T, H) > 5)
-		to_chat(H, SPAN_WARNING("This target is too far away!"))
-		return
-
-	if(!(is_ground_level(T.z)))
-		to_chat(H, SPAN_WARNING("The droppod cannot land here!"))
-		return
-
-	if(protected_by_pylon(TURF_PROTECTION_CAS, T))
-		to_chat(H, SPAN_WARNING("The droppod cannot punch through an organic ceiling!"))
-		return
-
-	return TRUE
-
-
-/datum/action/human_action/activable/droppod/use_ability(atom/A)
-	. = ..()
-	if(!can_use_action())
-		return
-
-	var/mob/living/carbon/human/H = owner
-
-	var/turf/T = get_turf(A)
-
-	if(!T)
-		return
-
-	if(assigned_droppod)
-		if(tgui_alert(H, "Do you want to recall the current pod?",\
-			"Recall Droppod", list("No", "Yes")) == "Yes")
-			if(!assigned_droppod)
-				return
-
-			if(!(assigned_droppod.droppod_flags & (DROPPOD_DROPPING|DROPPOD_RETURNING)))
-				message_admins("[key_name_admin(H)] recalled a tech droppod at [get_area(assigned_droppod)].")
-				assigned_droppod.recall()
-			else
-				to_chat(H, SPAN_WARNING("It's too late to recall the droppod now!"))
-		return
-
-	if(!can_deploy_droppod(T))
-		return
-
-	to_chat(H, SPAN_WARNING("No droppods currently available."))
-	return
-
-/* // FULL IMPLEM OF DROPPODS FOR REUSE
-	var/list/list_of_techs = list()
-	if(!can_deploy_droppod(T))
-		return
-	var/area/turf_area = get_area(T)
-	if(!turf_area)
-		return
-	var/land_time = max(turf_area.ceiling, 1) * (20 SECONDS)
-	playsound(T, 'sound/effects/alert.ogg', 75)
-	assigned_droppod = new(T, tech_to_deploy)
-	assigned_droppod.drop_time = land_time
-	assigned_droppod.launch(T)
-	var/list/to_send_to = H.assigned_squad?.marines_list
-	if(!to_send_to)
-		to_send_to = list(H)
-	message_admins("[key_name_admin(H)] called a tech droppod down at [get_area(assigned_droppod)].", T.x, T.y, T.z)
-	for(var/M in to_send_to)
-		to_chat(M, SPAN_BLUE("<b>SUPPLY DROP REQUEST:</b> Droppod requested at LONGITUDE: [obfuscate_x(T.x)], LATITUDE: [obfuscate_y(T.y)]. ETA [Floor(land_time*0.1)] seconds."))
-	RegisterSignal(assigned_droppod, COMSIG_PARENT_QDELETING, PROC_REF(handle_droppod_deleted))
-*/
-
-/datum/action/human_action/activable/droppod/proc/handle_droppod_deleted(obj/structure/droppod/tech/T)
-	SIGNAL_HANDLER
-	if(T != assigned_droppod)
-		return
-	assigned_droppod = null
-
-/datum/action/human_action/activable/droppod/Destroy()
-	if(assigned_droppod)
-		handle_droppod_deleted(assigned_droppod)
-
-	return ..()
-
-
-/datum/action/human_action/activable/droppod/give_to(user)
-	if(!ishuman(user))
-		return FALSE
-
-	var/mob/living/carbon/human/H = user
-
-	if(H.job != JOB_SQUAD_RTO)
-		return FALSE
-
-	return ..()
-
 /datum/action/human_action/activable/cult
 	name = "Activable Cult Ability"
 
@@ -304,11 +198,10 @@ CULT
 	if(!(copytext(message, -1) in ENDING_PUNCT))
 		message += "."
 
-	var/datum/hive_status/hive = GLOB.hive_datum[H.hivenumber]
-	if(!istype(hive))
+	if(istype(H.faction))
 		return
 
-	H.hivemind_broadcast(message, hive)
+	H.hivemind_broadcast(message, H.faction)
 
 /datum/action/human_action/activable/cult/obtain_equipment
 	name = "Obtain Equipment"
@@ -321,9 +214,7 @@ CULT
 
 	var/mob/living/carbon/human/H = owner
 
-	var/input = tgui_alert(H, "Once obtained, you'll be unable to take it off. Confirm selection.", "Obtain Equipment", list("Yes","No"))
-
-	if(input != "Yes")
+	if(tgui_alert(H, "Once obtained, you'll be unable to take it off. Confirm selection.", "Obtain Equipment", H.client.auto_lang(LANGUAGE_YES), H.client.auto_lang(LANGUAGE_NO)) != H.client.auto_lang(LANGUAGE_YES))
 		to_chat(H, SPAN_WARNING("You have decided not to obtain your equipment."))
 		return
 
@@ -369,29 +260,25 @@ CULT
 		to_chat(Hu, SPAN_WARNING("This target is too far away!"))
 		return
 
-	return H.stat != DEAD && istype(H) && ishuman_strict(H) && H.hivenumber != Hu.hivenumber && !isnull(get_hive())
+	return H.stat != DEAD && istype(H) && ishuman_strict(H) && H.faction != Hu.faction && !isnull(get_hive())
 
 /datum/action/human_action/activable/cult_leader/proc/get_hive()
 	if(!ishuman(owner))
 		return
 	var/mob/living/carbon/human/H = owner
-	var/datum/hive_status/hive = GLOB.hive_datum[H.hivenumber]
-	if(!hive)
-		return
 
-	if(!hive.living_xeno_queen && !hive.allow_no_queen_actions)
+	if(!H.faction.living_xeno_queen && !H.faction.allow_no_queen_actions)
 		return
-
-	return hive
+	return H.faction
 
 /datum/action/human_action/activable/cult_leader/convert
 	name = "Convert"
 	action_icon_state = "cultist_channel_convert"
 
 /datum/action/human_action/activable/cult_leader/convert/use_ability(mob/M)
-	var/datum/hive_status/hive = get_hive()
+	var/datum/faction/faction = get_hive()
 
-	if(!istype(hive))
+	if(!istype(faction))
 		to_chat(owner, SPAN_DANGER("There is no Queen. You are alone."))
 		return
 
@@ -400,33 +287,33 @@ CULT
 
 	var/mob/living/carbon/human/H = owner
 
-	var/mob/living/carbon/human/chosen = M
+	var/mob/living/carbon/human/choice = M
 
-	if(!can_target(chosen))
+	if(!can_target(choice))
 		return
 
-	if(chosen.stat != CONSCIOUS)
-		to_chat(H, SPAN_XENOMINORWARNING("[chosen] must be conscious for the conversion to work!"))
+	if(choice.stat != CONSCIOUS)
+		to_chat(H, SPAN_XENOMINORWARNING("[choice] must be conscious for the conversion to work!"))
 		return
 
-	if(!do_after(H, 10 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE, chosen, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
-		to_chat(H, SPAN_XENOMINORWARNING("You decide not to convert [chosen]."))
+	if(!do_after(H, 10 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE, choice, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
+		to_chat(H, SPAN_XENOMINORWARNING("You decide not to convert [choice]."))
 		return
 
 	var/datum/equipment_preset/preset = GLOB.gear_path_presets_list[/datum/equipment_preset/other/xeno_cultist]
-	preset.load_race(chosen, H.hivenumber)
-	preset.load_status(chosen)
+	preset.load_race(choice, H.faction)
+	preset.load_status(choice)
 
-	to_chat(chosen, SPAN_ROLE_HEADER("You are now a Xeno Cultist!"))
-	to_chat(chosen, SPAN_ROLE_BODY("Worship the Xenomorphs and listen to the Cult Leader for orders. The Cult Leader is typically the person who transformed you. Do not kill anyone unless you are wearing your black robes, you may defend yourself."))
+	to_chat(choice, SPAN_ROLE_HEADER("You are now a Xeno Cultist!"))
+	to_chat(choice, SPAN_ROLE_BODY("Worship the Xenomorphs and listen to the Cult Leader for orders. The Cult Leader is typically the person who transformed you. Do not kill anyone unless you are wearing your black robes, you may defend yourself."))
 
-	xeno_message("[chosen] has been converted into a cultist!", 2, hive.hivenumber)
+	xeno_message("[choice] has been converted into a cultist!", 2, faction)
 
-	chosen.apply_effect(5, PARALYZE)
-	chosen.make_jittery(105)
+	choice.apply_effect(5, PARALYZE)
+	choice.make_jittery(105)
 
-	if(chosen.client)
-		playsound_client(chosen.client, 'sound/effects/xeno_newlarva.ogg', null, 25)
+	if(choice.client)
+		playsound_client(choice.client, 'sound/effects/xeno_newlarva.ogg', null, 25)
 
 /datum/action/human_action/activable/cult_leader/stun
 	name = "Psychic Stun"
@@ -438,9 +325,9 @@ CULT
 	if(!action_cooldown_check())
 		return
 
-	var/datum/hive_status/hive = get_hive()
+	var/datum/faction/faction = get_hive()
 
-	if(!istype(hive))
+	if(!istype(faction))
 		to_chat(owner, SPAN_DANGER("There is no Queen. You are alone."))
 		return
 
@@ -449,35 +336,35 @@ CULT
 
 	var/mob/living/carbon/human/H = owner
 
-	var/mob/living/carbon/human/chosen = M
+	var/mob/living/carbon/human/choice = M
 
-	if(!can_target(chosen))
+	if(!can_target(choice))
 		return
 
-	to_chat(chosen, SPAN_HIGHDANGER("You feel a dangerous presence in the back of your head. You find yourself unable to move!"))
+	to_chat(choice, SPAN_HIGHDANGER("You feel a dangerous presence in the back of your head. You find yourself unable to move!"))
 
-	chosen.frozen = TRUE
-	chosen.update_canmove()
+	choice.frozen = TRUE
+	choice.update_canmove()
 
-	chosen.update_xeno_hostile_hud()
+	choice.update_xeno_hostile_hud()
 
-	if(!do_after(H, 2 SECONDS, INTERRUPT_ALL | BEHAVIOR_IMMOBILE, BUSY_ICON_HOSTILE, chosen, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
-		to_chat(H, SPAN_XENOMINORWARNING("You decide not to stun [chosen]."))
-		unroot_human(chosen)
+	if(!do_after(H, 2 SECONDS, INTERRUPT_ALL | BEHAVIOR_IMMOBILE, BUSY_ICON_HOSTILE, choice, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
+		to_chat(H, SPAN_XENOMINORWARNING("You decide not to stun [choice]."))
+		unroot_human(choice)
 
 		enter_cooldown(5 SECONDS)
 		return
 
 	enter_cooldown()
 
-	unroot_human(chosen)
+	unroot_human(choice)
 
-	chosen.apply_effect(10, PARALYZE)
-	chosen.make_jittery(105)
+	choice.apply_effect(10, PARALYZE)
+	choice.make_jittery(105)
 
-	to_chat(chosen, SPAN_HIGHDANGER("An immense psychic wave passes through you, causing you to pass out!"))
+	to_chat(choice, SPAN_HIGHDANGER("An immense psychic wave passes through you, causing you to pass out!"))
 
-	playsound(get_turf(chosen), 'sound/scp/scare1.ogg', 25)
+	playsound(get_turf(choice), 'sound/scp/scare1.ogg', 25)
 
 /datum/action/human_action/activable/mutineer
 	name = "Mutiny abilities"
@@ -493,24 +380,24 @@ CULT
 		return
 
 	var/mob/living/carbon/human/H = owner
-	var/mob/living/carbon/human/chosen = M
+	var/mob/living/carbon/human/choice = M
 
-	if(!istype(chosen))
+	if(!istype(choice))
 		return
 
-	if(skillcheck(chosen, SKILL_POLICE, SKILL_POLICE_MAX) || (chosen in converted))
-		to_chat(H, SPAN_WARNING("You can't convert [chosen]!"))
+	if(choice.faction != GLOB.faction_datum[FACTION_MARINE] || (choice.skills && skillcheck(choice, SKILL_POLICE, 2)) || (choice in converted))
+		to_chat(H, SPAN_WARNING("You can't convert [choice]!"))
 		return
 
-	to_chat(H, SPAN_NOTICE("Mutiny join request sent to [chosen]!"))
+	to_chat(H, SPAN_NOTICE("Mutiny join request sent to [choice]!"))
 
-	if(tgui_alert(chosen, "Do you want to be a mutineer?", "Become Mutineer", list("Yes", "No")) != "Yes")
+	if(tgui_alert(choice, "Do you want to be a mutineer?", "Become Mutineer", list(choice.client.auto_lang(LANGUAGE_YES), choice.client.auto_lang(LANGUAGE_NO))) != choice.client.auto_lang(LANGUAGE_YES))
 		return
 
-	converted += chosen
-	to_chat(chosen, SPAN_WARNING("You'll become a mutineer when the mutiny begins. Prepare yourself and do not cause any harm until you've been made into a mutineer."))
+	converted += choice
+	to_chat(choice, SPAN_WARNING("You'll become a mutineer when the mutiny begins. Prepare yourself and do not cause any harm until you've been made into a mutineer."))
 
-	message_admins("[key_name_admin(chosen)] has been converted into a mutineer by [key_name_admin(H)].")
+	message_admins("[key_name_admin(choice)] has been converted into a mutineer by [key_name_admin(H)].")
 
 /datum/action/human_action/activable/mutineer/mutineer_begin
 	name = "Begin Mutiny"
@@ -522,7 +409,7 @@ CULT
 
 	var/mob/living/carbon/human/H = owner
 
-	if(tgui_alert(H, "Are you sure you want to begin the mutiny?", "Begin Mutiny?", list("Yes", "No")) != "Yes")
+	if(tgui_alert(H, "Are you sure you want to begin the mutiny?", "Begin Mutiny?", list(owner.client.auto_lang(LANGUAGE_YES), owner.client.auto_lang(LANGUAGE_NO))) != owner.client.auto_lang(LANGUAGE_YES))
 		return
 
 	shipwide_ai_announcement("DANGER: Communications received; a mutiny is in progress. Code: Detain, Arrest, Defend.")
@@ -530,8 +417,8 @@ CULT
 
 	XC.load_status(H)
 	for(var/datum/action/human_action/activable/mutineer/mutineer_convert/converted in H.actions)
-		for(var/mob/living/carbon/human/chosen in converted.converted)
-			XC.load_status(chosen)
+		for(var/mob/living/carbon/human/choice in converted.converted)
+			XC.load_status(choice)
 		converted.remove_from(H)
 
 	message_admins("[key_name_admin(H)] has begun the mutiny.")
@@ -584,9 +471,9 @@ CULT
 	if(H.buckled)
 		if(istype(H.buckled, /obj/structure/bed/chair/comfy/vehicle))
 			H.buckled.unbuckle()
-		else if(!isVehicleMultitile(H.interactee))
+		else if(!isvehiclemultitile(H.interactee))
 			remove_from(H)
-	else if(!isVehicleMultitile(H.interactee))
+	else if(!isvehiclemultitile(H.interactee))
 		remove_from(H)
 
 	H.unset_interaction()

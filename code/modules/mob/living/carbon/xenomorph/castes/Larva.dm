@@ -15,13 +15,10 @@
 	evolve_without_queen = TRUE
 	can_be_revived = FALSE
 
-	minimap_icon = "larva"
-
 /datum/caste_datum/larva/predalien
 	caste_type = XENO_CASTE_PREDALIEN_LARVA
 	evolves_to = list(XENO_CASTE_PREDALIEN)
 
-	minimap_icon = "predalien_larva"
 	minimum_evolve_time = 0
 
 /mob/living/carbon/xenomorph/larva
@@ -32,7 +29,7 @@
 	icon_size = 32
 	layer = MOB_LAYER
 	see_in_dark = 8
-	tier = 0  //Larva's don't count towards Pop limits
+	tier = 0  //larva's don't count towards Pop limits
 	age = XENO_NO_AGE
 	crit_health = -25
 	gib_chance = 25
@@ -53,6 +50,8 @@
 	icon_xeno = 'icons/mob/xenos/larva.dmi'
 	icon_xenonid = 'icons/mob/xenonids/larva.dmi'
 
+	balance_formulas = list(BALANCE_FORMULA_XENO_ABILITER, BALANCE_FORMULA_XENO_FIGHTER, BALANCE_FORMULA_XENO_HEALER, BALANCE_FORMULA_XENO_BUILDER)
+
 /mob/living/carbon/xenomorph/larva/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
 	if (PF)
@@ -60,31 +59,31 @@
 		PF.flags_can_pass_all = PASS_ALL^PASS_OVER_THROW_ITEM
 
 /mob/living/carbon/xenomorph/larva/corrupted
-	hivenumber = XENO_HIVE_CORRUPTED
+	faction_to_get = FACTION_XENOMORPH_CORRUPTED
 
 /mob/living/carbon/xenomorph/larva/alpha
-	hivenumber = XENO_HIVE_ALPHA
+	faction_to_get = FACTION_XENOMORPH_ALPHA
 
 /mob/living/carbon/xenomorph/larva/bravo
-	hivenumber = XENO_HIVE_BRAVO
+	faction_to_get = FACTION_XENOMORPH_BRAVO
 
-/mob/living/carbon/xenomorph/larva/charlie
-	hivenumber = XENO_HIVE_CHARLIE
+/mob/living/carbon/xenomorph/larva/gamma
+	faction_to_get = FACTION_XENOMORPH_CHARLIE
 
 /mob/living/carbon/xenomorph/larva/delta
-	hivenumber = XENO_HIVE_DELTA
+	faction_to_get = FACTION_XENOMORPH_DELTA
 
 /mob/living/carbon/xenomorph/larva/mutated
-	hivenumber = XENO_HIVE_MUTATED
+	faction_to_get = FACTION_XENOMORPH_MUTATED
 
 /mob/living/carbon/xenomorph/larva/predalien
 	icon_xeno = 'icons/mob/xenos/predalien_larva.dmi'
 	icon_state = "Predalien Larva"
 	caste_type = XENO_CASTE_PREDALIEN_LARVA
-	burrowable = FALSE //Not interchangeable with regular larvas in the hive core.
-	state_override = "Predalien "
+	burrowable = FALSE //Not interchangeable with regular larvas in the pool.
+	icon_state = "Predalien Larva"
 
-/mob/living/carbon/xenomorph/larva/predalien/Initialize(mapload, mob/living/carbon/xenomorph/oldxeno, h_number)
+/mob/living/carbon/xenomorph/larva/predalien/Initialize(mapload, mob/living/carbon/xenomorph/old_xeno, datum/faction/hive_to_set)
 	. = ..()
 	hunter_data.dishonored = TRUE
 	hunter_data.dishonored_reason = "An abomination upon the honor of us all!"
@@ -98,16 +97,16 @@
 	var/datum/action/xeno_action/onclick/evolve/evolve_action = new()
 	evolve_action.give_to(src)
 
-//Larva code is just a mess, so let's get it over with
+//larva code is just a mess, so let's get it over with
 /mob/living/carbon/xenomorph/larva/update_icons()
 	var/progress = "" //Naming convention, three different names
 	var/state = "" //Icon convention, two different sprite sets
 
 	var/name_prefix = ""
 
-	if(hive)
-		name_prefix = hive.prefix
-		color = hive.color
+	if(faction)
+		name_prefix = faction.prefix
+		color = faction.color
 
 	if(evolution_stored >= evolution_threshold)
 		progress = "Mature "
@@ -157,13 +156,13 @@
 	A.attack_larva(src)
 	xeno_attack_delay(src) //Adds some lag to the 'attack'
 
-/proc/spawn_hivenumber_larva(atom/A, hivenumber)
-	if(!GLOB.hive_datum[hivenumber] || isnull(A))
+/proc/spawn_faction_larva(atom/A, datum/faction/faction)
+	if(!faction || isnull(A))
 		return
 
 	var/mob/living/carbon/xenomorph/larva/L = new /mob/living/carbon/xenomorph/larva(A)
 
-	L.set_hive_and_update(hivenumber)
+	L.set_hive_and_update(faction)
 
 	return L
 

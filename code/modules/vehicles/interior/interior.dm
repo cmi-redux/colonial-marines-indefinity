@@ -106,7 +106,7 @@
 //setup forbidden atoms list
 /datum/interior/proc/update_forbidden_atoms()
 	forbidden_atoms = list()
-	if(isVehicleMultitile(exterior))
+	if(isvehiclemultitile(exterior))
 		var/obj/vehicle/multitile/V = exterior
 		if(length(V.forbidden_atoms))
 			forbidden_atoms = V.forbidden_atoms

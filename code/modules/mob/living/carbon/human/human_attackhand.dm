@@ -128,25 +128,25 @@
 
 			//Accidental gun discharge
 			if(!skillcheck(M, SKILL_CQC, SKILL_CQC_SKILLED))
-				if (isgun(r_hand) || isgun(l_hand))
+				if(isgun(r_hand) || isgun(l_hand))
 					var/obj/item/weapon/gun/W = null
 					var/chance = 0
 
-					if (isgun(l_hand))
+					if(isgun(l_hand))
 						W = l_hand
 						chance = hand ? 40 : 20
 
-					if (isgun(r_hand))
+					if(isgun(r_hand))
 						W = r_hand
 						chance = !hand ? 40 : 20
 
-					if (prob(chance))
+					if(prob(chance))
 						visible_message(SPAN_DANGER("[M] accidentally makes [src]'s [W.name] go off during the struggle!"), SPAN_DANGER("You accidentally make [src]'s [W.name] go off during the struggle!"), null, 5)
 						var/list/turfs = list()
 						for(var/turf/T in view())
 							turfs += T
 						var/turf/target = pick(turfs)
-						count_niche_stat(STATISTICS_NICHE_DISCHARGE)
+						count_statistic_stat(STATISTICS_DISCHARGE)
 
 						attack_log += "\[[time_stamp()]\] <b>[key_name(src)]</b> accidentally fired <b>[W.name]</b> in [get_area(src)] triggered by <b>[key_name(M)]</b>."
 						M.attack_log += "\[[time_stamp()]\] <b>[key_name(src)]</b> accidentally fired <b>[W.name]</b> in [get_area(src)] triggered by <b>[key_name(M)]</b>."
@@ -162,7 +162,7 @@
 			if(skills)
 				randn += 5 * skill_level //defender's martial arts training
 
-			if (randn <= 25)
+			if(randn <= 25)
 				apply_effect(2 + skill_level, WEAKEN)
 				playsound(loc, 'sound/weapons/thudswoosh.ogg', 25, 1, 7)
 				var/shovetext = skill_level > 1 ? "tackled" : pick("pushed", "shoved")
@@ -202,11 +202,11 @@
 
 	//Target is not us
 	var/t_him = "it"
-	if (gender == MALE)
+	if(gender == MALE)
 		t_him = "him"
-	else if (gender == FEMALE)
+	else if(gender == FEMALE)
 		t_him = "her"
-	if (w_uniform)
+	if(w_uniform)
 		w_uniform.add_fingerprint(M)
 
 

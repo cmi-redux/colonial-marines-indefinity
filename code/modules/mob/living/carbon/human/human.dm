@@ -4,6 +4,8 @@
 	GLOB.alive_human_list += src
 	SShuman.processable_human_list += src
 
+	AddComponent(/datum/component/footstep, FOOTSTEP_MOB_HUMAN)
+
 	if(!species)
 		if(new_species)
 			set_species(new_species)
@@ -18,12 +20,13 @@
 
 	prev_gender = gender // Debug for plural genders
 
-	if(SSticker?.mode?.hardcore)
-		hardcore = TRUE //For WO disposing of corpses
+	vendor_datum = new(src)
+
+//	update_fov()
 
 /mob/living/carbon/human/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_pass = PASS_MOB_IS_HUMAN
 		PF.flags_can_pass_all = PASS_MOB_THRU_HUMAN|PASS_AROUND|PASS_HIGH_OVER_ONLY
 
@@ -63,6 +66,9 @@
 	QDEL_LIST_ASSOC_VAL(internal_organs_by_name)
 	QDEL_NULL_LIST(limbs)
 	remove_from_all_mob_huds()
+
+	faction.remove_mob(src)
+
 	. = ..()
 
 	species = null
@@ -91,6 +97,7 @@
 	l_store = null
 	s_store = null
 
+	faction = null
 	species = null
 	limbs_to_process = null
 	brute_mod_override = null
@@ -104,44 +111,50 @@
 	. = ..()
 
 	. += ""
-	. += "Security Level: [uppertext(get_security_level())]"
+
+	var/players = length(GLOB.clients)
+	. += "Игроки: [players]"
+
+	. += ""
 
 	if(species?.has_species_tab_items)
 		var/list/species_tab_items = species.get_status_tab_items(src)
 		for(var/tab_item in species_tab_items)
 			. += tab_item
 
-	if(faction == FACTION_MARINE & !isnull(SSticker) && !isnull(SSticker.mode) && !isnull(SSticker.mode.active_lz) && !isnull(SSticker.mode.active_lz.loc) && !isnull(SSticker.mode.active_lz.loc.loc))
+	. += ""
+
+	. += "Уровень Тревоги: [uppertext(get_security_level())]"
+
+	if(faction == GLOB.faction_datum[FACTION_MARINE] & !isnull(SSticker) && !isnull(SSticker.mode) && !isnull(SSticker.mode.active_lz) && !isnull(SSticker.mode.active_lz.loc) && !isnull(SSticker.mode.active_lz.loc.loc))
 		. += "Primary LZ: [SSticker.mode.active_lz.loc.loc.name]"
 
 	if(faction == FACTION_MARINE & !isnull(SSticker) && !isnull(SSticker.mode))
-		. += "Operation Name: [round_statistics.round_name]"
+		. += "Operation Name: [SSticker.mode.round_statistics.round_name]"
 
 	if(assigned_squad)
 		if(assigned_squad.overwatch_officer)
-			. += "Overwatch Officer: [assigned_squad.overwatch_officer.get_paygrade()][assigned_squad.overwatch_officer.name]"
+			. += "Контролирующий Офицер: [assigned_squad.overwatch_officer.get_paygrade()][assigned_squad.overwatch_officer.name]"
 		if(assigned_squad.primary_objective)
-			. += "Primary Objective: [html_decode(assigned_squad.primary_objective)]"
+			. += "Главная Задача: [html_decode(assigned_squad.primary_objective)]"
 		if(assigned_squad.secondary_objective)
-			. += "Secondary Objective: [html_decode(assigned_squad.secondary_objective)]"
+			. += "Вторичная Задача: [html_decode(assigned_squad.secondary_objective)]"
 
 	if(mobility_aura)
-		. += "Active Order: MOVE"
+		. += "Активные Ордеры: ДВИЖЕНИЕ"
 	if(protection_aura)
-		. += "Active Order: HOLD"
+		. += "Активные Ордеры: УДЕРЖАНИЕ"
 	if(marksman_aura)
-		. += "Active Order: FOCUS"
+		. += "Активные Ордеры: ТОЧНОСТЬ"
 
-	if(EvacuationAuthority)
-		var/eta_status = EvacuationAuthority.get_status_panel_eta()
-		if(eta_status)
-			. += "Evacuation: [eta_status]"
+	. += "Статус Эвакуации: [SSevacuation.get_evac_status_panel_eta()]"
+	. += "Стадия Операции: [SSevacuation.get_ship_operation_stage_status_panel_eta()]"
 
 /mob/living/carbon/human/ex_act(severity, direction, datum/cause_data/cause_data)
 	if(lying)
 		severity *= EXPLOSION_PRONE_MULTIPLIER
-
-
+	if(istype(get_turf(src), /turf/open/trench))
+		severity *= EXPLOSION_PRONE_MULTIPLIER
 
 	var/b_loss = 0
 	var/f_loss = 0
@@ -307,7 +320,7 @@
 	<BR>
 	[handcuffed ? "<BR><A href='?src=\ref[src];item=[WEAR_HANDCUFFS]'>Handcuffed</A>" : ""]
 	[legcuffed ? "<BR><A href='?src=\ref[src];item=[WEAR_LEGCUFFS]'>Legcuffed</A>" : ""]
-	[suit && LAZYLEN(suit.accessories) ? "<BR><A href='?src=\ref[src];tie=1'>Remove Accessory</A>" : ""]
+	[suit && length(suit.accessories) ? "<BR><A href='?src=\ref[src];tie=1'>Remove Accessory</A>" : ""]
 	[internal ? "<BR><A href='?src=\ref[src];internal=1'>Remove Internal</A>" : ""]
 	[istype(wear_id, /obj/item/card/id/dogtag) ? "<BR><A href='?src=\ref[src];item=id'>Retrieve Info Tag</A>" : ""]
 	<BR><A href='?src=\ref[src];splints=1'>Remove Splints</A>
@@ -422,7 +435,7 @@
 	if(href_list["item"])
 		if(!usr.is_mob_incapacitated() && Adjacent(usr))
 			if(href_list["item"] == "id")
-				if(MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_STRIPDRAG_ENEMY) && (stat == DEAD || health < HEALTH_THRESHOLD_CRIT) && !get_target_lock(usr.faction_group))
+				if(MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_STRIPDRAG_ENEMY) && (stat == DEAD || health < HEALTH_THRESHOLD_CRIT) && !ally(usr.faction))
 					to_chat(usr, SPAN_WARNING("You can't strip a crit or dead member of another faction!"))
 					return
 				if(istype(wear_id, /obj/item/card/id/dogtag) && (undefibbable || !skillcheck(usr, SKILL_POLICE, SKILL_POLICE_SKILLED)))
@@ -446,7 +459,7 @@
 			if(!usr.action_busy || skillcheck(usr, SKILL_POLICE, SKILL_POLICE_SKILLED))
 				var/slot = href_list["item"]
 				var/obj/item/what = get_item_by_slot(slot)
-				if(MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_STRIPDRAG_ENEMY) && (stat == DEAD || health < HEALTH_THRESHOLD_CRIT) && !get_target_lock(usr.faction_group))
+				if(MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_STRIPDRAG_ENEMY) && (stat == DEAD || health < HEALTH_THRESHOLD_CRIT) && !ally(usr.faction))
 					if(!MODE_HAS_TOGGLEABLE_FLAG(MODE_STRIP_NONUNIFORM_ENEMY) || (what in list(head, wear_suit, w_uniform, shoes)))
 						to_chat(usr, SPAN_WARNING("You can't strip a crit or dead member of another faction!"))
 						return
@@ -490,7 +503,7 @@
 
 	if(href_list["splints"])
 		if(!usr.action_busy && !usr.is_mob_incapacitated() && Adjacent(usr))
-			if(MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_STRIPDRAG_ENEMY) && (stat == DEAD || health < HEALTH_THRESHOLD_CRIT) && !get_target_lock(usr.faction_group))
+			if(MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_STRIPDRAG_ENEMY) && (stat == DEAD || health < HEALTH_THRESHOLD_CRIT) && !ally(usr.faction))
 				to_chat(usr, SPAN_WARNING("You can't strip a crit or dead member of another faction!"))
 				return
 			attack_log += text("\[[time_stamp()]\] <font color='orange'>Has had their splints removed by [key_name(usr)]</font>")
@@ -499,15 +512,15 @@
 
 	if(href_list["tie"])
 		if(!usr.action_busy && !usr.is_mob_incapacitated() && Adjacent(usr))
-			if(MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_STRIPDRAG_ENEMY) && (stat == DEAD || health < HEALTH_THRESHOLD_CRIT) && !get_target_lock(usr.faction_group))
+			if(MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_STRIPDRAG_ENEMY) && (stat == DEAD || health < HEALTH_THRESHOLD_CRIT) && !ally(usr.faction))
 				to_chat(usr, SPAN_WARNING("You can't strip a crit or dead member of another faction!"))
 				return
 			if(w_uniform && istype(w_uniform, /obj/item/clothing))
 				var/obj/item/clothing/under/U = w_uniform
-				if(!LAZYLEN(U.accessories))
+				if(!length(U.accessories))
 					return FALSE
 				var/obj/item/clothing/accessory/A = LAZYACCESS(U.accessories, 1)
-				if(LAZYLEN(U.accessories) > 1)
+				if(length(U.accessories) > 1)
 					A = tgui_input_list(usr, "Select an accessory to remove from [U]", "Remove accessory", U.accessories)
 				if(!istype(A))
 					return
@@ -525,7 +538,7 @@
 
 	if(href_list["sensor"])
 		if(!usr.action_busy && !usr.is_mob_incapacitated() && Adjacent(usr))
-			if(MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_STRIPDRAG_ENEMY) && (stat == DEAD || health < HEALTH_THRESHOLD_CRIT) && !get_target_lock(usr.faction_group))
+			if(MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_STRIPDRAG_ENEMY) && (stat == DEAD || health < HEALTH_THRESHOLD_CRIT) && !ally(usr.faction))
 				to_chat(usr, SPAN_WARNING("You can't tweak the sensors of a crit or dead member of another faction!"))
 				return
 			attack_log += text("\[[time_stamp()]\] <font color='orange'>Has had their sensors toggled by [key_name(usr)]</font>")
@@ -545,7 +558,7 @@
 						else if(U.has_sensor == oldsens)
 							U.set_sensors(usr)
 
-	if (href_list["squadfireteam"])
+	if(href_list["squadfireteam"])
 
 		var/mob/living/carbon/human/target
 		var/mob/living/carbon/human/sl
@@ -571,7 +584,7 @@
 
 		target.assigned_squad.manage_fireteams(target)
 
-	if (href_list["squad_status"])
+	if(href_list["squad_status"])
 		var/mob/living/carbon/human/target
 		for(var/mob/living/carbon/human/mar in assigned_squad.marines_list)
 			if(href_list["squad_status_target"] == "\ref[mar]")
@@ -661,7 +674,7 @@
 					for(var/com_i in R.fields["comments"])
 						var/comment = R.fields["comments"][com_i]
 						comment_markup += text("<br /><b>[] / [] ([])</b><br />", comment["created_at"], comment["created_by"]["name"], comment["created_by"]["rank"])
-						if (isnull(comment["deleted_by"]))
+						if(isnull(comment["deleted_by"]))
 							comment_markup += text("[]<br />", comment["entry"])
 							continue
 						comment_markup += text("<i>Comment deleted by [] at []</i><br />", comment["deleted_by"], comment["deleted_at"])
@@ -688,7 +701,7 @@
 					var/t1 = copytext(trim(strip_html(input("Your name and time will be added to this new comment.", "Add a comment", null, null)  as message)), 1, MAX_MESSAGE_LEN)
 					if(!(t1) || usr.stat || usr.is_mob_restrained())
 						return
-					var/created_at = text("[]&nbsp;&nbsp;[]&nbsp;&nbsp;[]", time2text(world.realtime, "MMM DD"), time2text(world.time, "[worldtime2text()]:ss"), game_year)
+					var/created_at = text("[]&nbsp;&nbsp;[]&nbsp;&nbsp;[]", time2text(world.realtime, "MMM DD"), time2text(world.time, "[game_time_timestamp()]:ss"), game_year)
 					var/new_comment = list("entry" = t1, "created_by" = list("name" = "", "rank" = ""), "deleted_by" = null, "deleted_at" = null, "created_at" = created_at)
 					if(istype(usr,/mob/living/carbon/human))
 						var/mob/living/carbon/human/U = usr
@@ -1003,15 +1016,15 @@
 	//try to find the brain player in the decapitated head and put them back in control of the human
 	if(!client && !mind) //if another player took control of the human, we don't want to kick them out.
 		for(var/i in GLOB.head_limb_list)
-			var/obj/item/limb/head/H = i
-			if(!H.brainmob)
+			var/obj/item/limb/head/human = i
+			if(!human.brainmob)
 				continue
-			if(H.brainmob.real_name != src.real_name)
+			if(human.brainmob.real_name != src.real_name)
 				continue
-			if(!H.brainmob.mind)
+			if(!human.brainmob.mind)
 				continue
-			H.brainmob.mind.transfer_to(src)
-			qdel(H)
+			human.brainmob.mind.transfer_to(src)
+			qdel(human)
 
 	if(!keep_viruses)
 		for(var/datum/disease/virus in viruses)
@@ -1114,23 +1127,21 @@
 	set name = "View Crew Manifest"
 	set category = "IC"
 
-	if(faction != FACTION_MARINE && !(faction in FACTION_LIST_WY))
-		to_chat(usr, SPAN_WARNING("You have no access to [MAIN_SHIP_NAME] crew manifest."))
+	if(!faction)
 		return
-	var/dat = GLOB.data_core.get_manifest()
 
-	show_browser(src, dat, "Crew Manifest", "manifest", "size=400x750")
+	faction.get_faction_info(src)
 
-/mob/living/carbon/human/verb/view_objective_memory()
-	set name = "View objectives"
+/mob/living/carbon/human/view_objective_memory()
+	set name = "View objectives clues"
 	set category = "IC"
 
 	if(!mind)
 		to_chat(src, "The game appears to have misplaced your mind datum.")
 		return
 
-	if(!skillcheck(usr, SKILL_INTEL, SKILL_INTEL_TRAINED) || faction != FACTION_MARINE && !(faction in FACTION_LIST_WY))
-		to_chat(usr, SPAN_WARNING("You have no access to the [MAIN_SHIP_NAME] intel network."))
+	if(!skillcheck(usr, SKILL_INTEL, SKILL_INTEL_TRAINED))
+		to_chat(usr, SPAN_WARNING("You have no access to the [faction] intel network."))
 		return
 
 	mind.view_objective_memories(src)
@@ -1157,14 +1168,14 @@
 		to_chat(src, "The game appears to have misplaced your mind datum.")
 		return
 
-	if(tgui_alert(src, "Remove the faulty entry?", "Confirm", list("Yes", "No"), 10 SECONDS) == "Yes")
+	if(tgui_alert(src, "Remove the faulty entry?", "Confirm", list(client.auto_lang(LANGUAGE_YES), client.auto_lang(LANGUAGE_NO)), 10 SECONDS) == client.auto_lang(LANGUAGE_YES))
 		for(var/datum/cm_objective/retrieve_data/disk/Objective in src.mind.objective_memory.disks)
 			if(!Objective.disk.disk_color || !Objective.disk.display_color)
 				src.mind.objective_memory.disks -= Objective
 	else
 		return
 
-	if(tgui_alert(src, "Did it work?", "Confirm", list("Yes", "No"), 10 SECONDS) == "No")
+	if(tgui_alert(src, "Did it work?", "Confirm", list(client.auto_lang(LANGUAGE_YES), client.auto_lang(LANGUAGE_NO)), 10 SECONDS) != client.auto_lang(LANGUAGE_YES))
 		for(var/datum/cm_objective/Objective in src.mind.objective_memory.disks)
 			src.mind.objective_memory.disks -= Objective
 
@@ -1184,7 +1195,7 @@
 	species = GLOB.all_species[new_species]
 
 	// If an invalid new_species value is passed, just default to human
-	if (!istype(species))
+	if(!istype(species))
 		species = GLOB.all_species["Human"]
 
 	if(oldspecies)
@@ -1299,25 +1310,28 @@
 
 //very similar to xeno's queen_locator() but this is for locating squad leader.
 /mob/living/carbon/human/proc/locate_squad_leader(tracker_setting = TRACKER_SL)
-	if(!hud_used)
+	if(!hud_used || !SSticker.role_authority || !SSticker.mode || !faction)
 		return
 
-	var/mob/living/carbon/human/H
+	var/mob/living/carbon/human/human
 	var/tracking_suffix = ""
 
 	hud_used.locate_leader.icon_state = "trackoff"
 
-	var/static/list/squad_leader_trackers = list(
-		TRACKER_ASL = /datum/squad/marine/alpha,
-		TRACKER_BSL = /datum/squad/marine/bravo,
-		TRACKER_CSL = /datum/squad/marine/charlie,
-		TRACKER_DSL = /datum/squad/marine/delta,
-		TRACKER_ESL = /datum/squad/marine/echo
-	)
+	var/list/squad_leader_trackers = list()
+
+	if(length(SQUAD_BY_FACTION[faction.faction_name]))
+		squad_leader_trackers = list(
+			TRACKER_ASL = SQUAD_BY_FACTION[faction.faction_name][1],
+			TRACKER_BSL = SQUAD_BY_FACTION[faction.faction_name][2],
+			TRACKER_CSL = SQUAD_BY_FACTION[faction.faction_name][3],
+			TRACKER_DSL = SQUAD_BY_FACTION[faction.faction_name][4],
+			TRACKER_ESL = SQUAD_BY_FACTION[faction.faction_name][5]
+		)
 	switch(tracker_setting)
 		if(TRACKER_SL)
 			if(assigned_squad)
-				H = assigned_squad.squad_leader
+				human = assigned_squad.squad_leader
 		if(TRACKER_LZ)
 			var/obj/structure/machinery/computer/shuttle_control/C = SSticker.mode.active_lz
 			if(!C) //no LZ selected
@@ -1331,31 +1345,31 @@
 		if(TRACKER_FTL)
 			if(assigned_squad)
 				if(assigned_fireteam)
-					H = assigned_squad.fireteam_leaders[assigned_fireteam]
+					human = assigned_squad.fireteam_leaders[assigned_fireteam]
 					tracking_suffix = "_tl"
-		if(TRACKER_CO)
-			H = GLOB.marine_leaders[JOB_CO]
+		if(TRACKER_COMMANDER)
+			human = faction.faction_leaders["commander"]
 			tracking_suffix = "_co"
-		if(TRACKER_XO)
-			H = GLOB.marine_leaders[JOB_XO]
+		if(TRACKER_OFFICER)
+			human = faction.faction_leaders["officer"]
 			tracking_suffix = "_xo"
 		if(TRACKER_CL)
-			var/datum/job/civilian/liaison/liaison_job = RoleAuthority.roles_for_mode[JOB_CORPORATE_LIAISON]
+			var/datum/job/civilian/liaison/liaison_job = GET_MAPPED_ROLE(JOB_CORPORATE_LIAISON)
 			if(liaison_job?.active_liaison)
-				H = liaison_job.active_liaison
+				human = liaison_job.active_liaison
 			tracking_suffix = "_cl"
 		else
 			if(tracker_setting in squad_leader_trackers)
-				var/datum/squad/S = RoleAuthority.squads_by_type[squad_leader_trackers[tracker_setting]]
-				H = S.squad_leader
+				var/datum/squad/S = SSticker.role_authority.squads_by_type[squad_leader_trackers[tracker_setting]]
+				human = S.squad_leader
 				tracking_suffix = tracker_setting
 
-	if(!H || H.w_uniform?.sensor_mode != SENSOR_MODE_LOCATION)
+	if(!human || human.w_uniform?.sensor_mode != SENSOR_MODE_LOCATION)
 		return
-	if(H.z != src.z || get_dist(src,H) < 1 || src == H)
+	if(human.z != src.z || get_dist(src,human) < 1 || src == human)
 		hud_used.locate_leader.icon_state = "trackondirect[tracking_suffix]"
 	else
-		hud_used.locate_leader.setDir(get_dir(src,H))
+		hud_used.locate_leader.setDir(get_dir(src,human))
 		hud_used.locate_leader.icon_state = "trackon[tracking_suffix]"
 
 /mob/living/carbon/proc/locate_nearest_nuke()
@@ -1671,6 +1685,11 @@
 	if(species)
 		slot_equipment_priority = species.slot_equipment_priority
 	return ..(W,ignore_delay,slot_equipment_priority)
+
+/mob/living/carbon/human/ZImpactDamage(turf/T, levels)
+	if(stat != CONSCIOUS || levels > 1) // you're not The One
+		return ..()
+	return ..()
 
 /mob/living/carbon/human/verb/pose()
 	set name = "Set Pose"

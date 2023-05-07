@@ -18,14 +18,14 @@
 	process_decay()
 
 /obj/ovipositor/proc/process_decay()
-	set background = 1
+	set background = TRUE
 
 	spawn while (!decayed && !destroyed)
-		if (world.timeofday > begin_decay_time)
+		if(world.timeofday > begin_decay_time)
 			decayed = 1
 			do_decay()
 
-		if (health < 0)
+		if(health < 0)
 			destroyed = 1
 			explode()
 
@@ -37,7 +37,7 @@
 	sleep(15)
 
 	var/turf/T = get_turf(src)
-	if (T)
+	if(T)
 		T.overlays += image('icons/mob/xenos/ovipositor.dmi', "ovipositor_molted", ATMOS_DEVICE_LAYER) //ATMOS_DEVICE_LAYER so that the ovi is above weeds, blood, and resin weed nodes.
 
 	qdel(src)
@@ -48,7 +48,7 @@
 	sleep(15)
 
 	var/turf/T = get_turf(src)
-	if (T)
+	if(T)
 		T.overlays += image('icons/mob/xenos/ovipositor.dmi', "ovipositor_gibbed", ATMOS_DEVICE_LAYER)
 
 	qdel(src)

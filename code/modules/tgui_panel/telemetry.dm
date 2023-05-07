@@ -65,16 +65,14 @@
 	if (!ckey)
 		return
 
-/*
-	var/list/all_known_alts = GLOB.known_alts.load_known_alts()
+//	var/list/all_known_alts = GLOB.known_alts.load_known_alts()
 	var/list/our_known_alts = list()
 
-	for (var/known_alt in all_known_alts)
-		if (known_alt[1] == ckey)
-			our_known_alts += known_alt[2]
-		else if (known_alt[2] == ckey)
-			our_known_alts += known_alt[1]
-*/
+//	for(known_alt in all_known_alts)
+//		if(known_alt[1] == ckey)
+//			our_known_alts += known_alt[2]
+//		else if(known_alt[2] == ckey)
+//			our_known_alts += known_alt[1]
 
 	var/list/found
 
@@ -85,14 +83,11 @@
 		var/list/row = telemetry_connections[i]
 
 		// Check for a malformed history object
-		if (!row || row.len < 3 || (!row["ckey"] || !row["address"] || !row["computer_id"]))
+		if(!row || row.len < 3 || (!row["ckey"] || !row["address"] || !row["computer_id"]))
 			return
 
-		/* TODO - Reintroduce this when we get a proper round ID tracking,
-			and we want to log it to database
-
 		var/list/query_data = list()
-		if (!isnull(GLOB.round_id))
+		if(!isnull(SSperf_logging.round?.id))
 			query_data += list(list(
 				"telemetry_ckey" = row["ckey"],
 				"address" = row["address"],
@@ -101,7 +96,6 @@
 
 		if (row["ckey"] in our_known_alts)
 			continue
-		*/
 
 		if (world.IsBanned(row["ckey"], row["address"], row["computer_id"], real_bans_only = TRUE))
 			found = row

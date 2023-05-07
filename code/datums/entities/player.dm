@@ -42,7 +42,9 @@
 	var/list/datum/entity/player_note/notes
 	var/list/datum/entity/player_job_ban/job_bans
 	var/list/datum/entity/player_time/playtimes
-	var/list/datum/entity/player_stat/stats
+	var/datum/player_entity/player_entity
+	var/datum/entity/discord/discord
+	var/datum/donator_info/donator_info
 	var/list/playtime_data // For the NanoUI menu
 	var/client/owning_client
 
@@ -80,7 +82,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	if(!admin || !admin.player_data)
 		return FALSE
 	if(note_category == NOTE_ADMIN || is_confidential)
-		if (!AHOLD_IS_MOD(admin.admin_holder))
+		if(!AHOLD_IS_MOD(admin.admin_holder))
 			return FALSE
 
 	// this is here for a short transition period when we still are testing DB notes and constantly deleting the file
@@ -91,10 +93,10 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		// notes_add already sends a message
 		message_admins("[key_name_admin(admin.mob)] has edited [ckey]'s [note_categories[note_category]] notes: [sanitize(note_text)]")
 	if(!is_confidential && note_category == NOTE_ADMIN && owning_client)
-		to_chat_immediate(owning_client, SPAN_WARNING(FONT_SIZE_LARGE("You have been noted by [key_name_admin(admin.mob, FALSE)].")))
-		to_chat_immediate(owning_client, SPAN_WARNING(FONT_SIZE_BIG("The note is : [sanitize(note_text)]")))
-		to_chat_immediate(owning_client, SPAN_WARNING(FONT_SIZE_BIG("If you believe this was filed in error or misplaced, make a staff report at <a href='[URL_FORUM_STAFF_REPORT]'><b>The CM Forums</b></a>")))
-		to_chat_immediate(owning_client, SPAN_WARNING(FONT_SIZE_BIG("You can also click the name of the staff member noting you to PM them.")))
+		to_chat(owning_client, SPAN_WARNING(FONT_SIZE_LARGE("You have been noted by [key_name_admin(admin.mob, FALSE)].")), immediate = TRUE)
+		to_chat(owning_client, SPAN_WARNING(FONT_SIZE_BIG("The note is : [sanitize(note_text)]")), immediate = TRUE)
+		to_chat(owning_client, SPAN_WARNING(FONT_SIZE_BIG("If you believe this was filed in error or misplaced, make a staff report at <a href='[URL_FORUM_STAFF_REPORT]'><b>The CM Forums</b></a>")), immediate = TRUE)
+		to_chat(owning_client, SPAN_WARNING(FONT_SIZE_BIG("You can also click the name of the staff member noting you to PM them.")), immediate = TRUE)
 	// create new instance of player_note entity
 	var/datum/entity/player_note/note = DB_ENTITY(/datum/entity/player_note)
 	// set its related data
@@ -126,7 +128,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	if(!admin || !admin.player_data)
 		return FALSE
 
-	if (!AHOLD_IS_MOD(admin.admin_holder))
+	if(!AHOLD_IS_MOD(admin.admin_holder))
 		return FALSE
 
 	// this is here for a short transition period when we still are testing DB notes and constantly deleting the file
@@ -144,7 +146,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	if(!admin || !admin.player_data)
 		return FALSE
 
-	if (!AHOLD_IS_MOD(admin.admin_holder))
+	if(!AHOLD_IS_MOD(admin.admin_holder))
 		return FALSE
 
 	if(owning_client && owning_client.admin_holder && (owning_client.admin_holder.rights & R_MOD))
@@ -183,7 +185,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	if(!admin || !admin.player_data)
 		return FALSE
 
-	if (!AHOLD_IS_MOD(admin.admin_holder))
+	if(!AHOLD_IS_MOD(admin.admin_holder))
 		return FALSE
 
 	if(!is_time_banned)
@@ -212,7 +214,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	if(!admin || !admin.player_data)
 		return FALSE
 
-	if (!AHOLD_IS_MOD(admin.admin_holder))
+	if(!AHOLD_IS_MOD(admin.admin_holder))
 		return FALSE
 
 	if(owning_client && owning_client.admin_holder && (owning_client.admin_holder.rights & R_MOD))
@@ -274,7 +276,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	if(!admin || !admin.player_data)
 		return FALSE
 
-	if (!AHOLD_IS_MOD(admin.admin_holder))
+	if(!AHOLD_IS_MOD(admin.admin_holder))
 		return FALSE
 
 	var/safe_rank = ckey(rank)
@@ -318,8 +320,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 /datum/entity/player/proc/load_refs()
 	if(refs_loaded)
 		return
-	while(!notes_loaded || !jobbans_loaded)
-		stoplag()
+	UNTIL(!notes_loaded || !jobbans_loaded)
 	for(var/key in job_bans)
 		var/datum/entity/player_job_ban/value = job_bans[key]
 		if(istype(value))
@@ -372,7 +373,6 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		INVOKE_ASYNC(src, TYPE_PROC_REF(/datum/entity/player, migrate_jobbans))
 
 	DB_FILTER(/datum/entity/player_time, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, on_read_timestat)))
-	DB_FILTER(/datum/entity/player_stat, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, on_read_stats)))
 
 	if(!migrated_bans && !migrating_bans)
 		migrating_bans = TRUE
@@ -383,7 +383,27 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	if(time_ban_admin_id)
 		time_ban_admin = DB_ENTITY(/datum/entity/player, time_ban_admin_id)
 
+	setup_statistics()
 
+	if(GLOB.donators_info["[ckey]"])
+		donator_info = GLOB.donators_info["[ckey]"]
+	else
+		donator_info = new(src)
+		GLOB.donators_info["[ckey]"] = donator_info
+
+	if(donator_info.patreon_function_available("ooc_color"))
+		GLOB.donaters |= owning_client
+		add_verb(owning_client, /client/proc/set_ooc_color_self)
+
+	DB_FILTER(/datum/entity/discord, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, load_discord)))
+
+/datum/entity/player/proc/setup_statistics()
+	if(!player_entity)
+		player_entity = setup_player_entity(ckey)
+		player_entity.player = src
+		if(owning_client)
+			owning_client.player_entity = player_entity
+	player_entity.setup_entity()
 
 /datum/entity/player/proc/on_read_notes(list/datum/entity/player_note/_notes)
 	notes_loaded = TRUE
@@ -402,7 +422,6 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 /datum/entity/player/proc/on_read_timestat(list/datum/entity/player_time/_stat)
 	playtime_loaded = TRUE
 	if(_stat) // Viewable playtime statistics are only loaded when the player connects, as they do not need constant updates since playtime is a statistic that is recorded over a long period of time
-		LAZYSET(playtime_data, "category", 0)
 		LAZYSET(playtime_data, "loaded", FALSE) // The jobs themselves can be loaded whenever a player opens their statistic menu
 		LAZYSET(playtime_data, "stored_human_playtime", list())
 		LAZYSET(playtime_data, "stored_xeno_playtime", list())
@@ -411,26 +430,36 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		for(var/datum/entity/player_time/S in _stat)
 			LAZYSET(playtimes, S.role_id, S)
 
-/datum/entity/player/proc/on_read_stats(list/datum/entity/player_stat/_stat)
-	if(_stat)
-		for(var/datum/entity/player_stat/S as anything in _stat)
-			LAZYSET(stats, S.stat_id, S)
+//DISCORD//
+/datum/entity/player/proc/load_discord(list/datum/entity/discord/discord_entities)
+	var/datum/entity/discord/discord_entity
+	if(length(discord_entities))
+		discord_entity = pick(discord_entities)
+		discord_entity.sync()
+		discord = discord_entity
 
 /proc/get_player_from_key(key)
 	var/safe_key = ckey(key)
 	if(!safe_key)
+		error("ALARM: MISMATCH. Not able to recover safe key from [key]")
 		return null
 	var/datum/entity/player/P = DB_EKEY(/datum/entity/player, safe_key)
+	if(!P)
+		error("ALARM: MISMATCH. Loading playerd entity error")
+		return null
 	P.save()
 	P.sync()
 	return P
 
-/client/var/datum/entity/player/player_data
-
 /client/proc/load_player_data()
-	set waitfor=0
+	set waitfor = FALSE
 	WAIT_DB_READY
-	load_player_data_info(get_player_from_key(ckey))
+	var/datum/entity/player/loading_player
+	while(!loading_player)
+		loading_player = get_player_from_key(ckey)
+		if(loading_player)
+			load_player_data_info(loading_player)
+		stoplag()
 
 /client/proc/load_player_data_info(datum/entity/player/player)
 	if(ckey != player.ckey)
@@ -440,6 +469,9 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	player_data.last_login = "[time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")]"
 	player_data.last_known_ip = address
 	player_data.last_known_cid = computer_id
+	player_entity = player_data.player_entity
+	donator_info = player_data.donator_info
+	discord = player_data.discord
 	player_data.save()
 	record_login_triplet(player.ckey, address, computer_id)
 	player_data.sync()
@@ -500,9 +532,9 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 			return FALSE
 		time_ban_admin.sync()
 		var/timeleftstring
-		if (time_left >= 1440) //1440 = 1 day in minutes
+		if(time_left >= 1440) //1440 = 1 day in minutes
 			timeleftstring = "[round(time_left / 1440, 0.1)] Days"
-		else if (time_left >= 60) //60 = 1 hour in minutes
+		else if(time_left >= 60) //60 = 1 hour in minutes
 			timeleftstring = "[round(time_left / 60, 0.1)] Hours"
 		else
 			timeleftstring = "[time_left] Minutes"
@@ -513,7 +545,6 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		return .
 	// shouldn't be here
 	return FALSE
-
 
 /datum/entity/player/proc/migrate_notes()
 	var/savefile/info = new("data/player_saves/[copytext(ckey, 1, 2)]/[ckey]/info.sav")
@@ -573,14 +604,14 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 
 	Banlist.cd = "/base"
 
-	for (var/A in Banlist.dir)
+	for(var/A in Banlist.dir)
 		Banlist.cd = "/base/[A]"
 
 		if(ckey != Banlist["key"])
 			continue
 
 		if(Banlist["temp"])
-			if (!GetExp(Banlist["minutes"]))
+			if(!GetExp(Banlist["minutes"]))
 				return
 
 		if(expiration > Banlist["minutes"])
@@ -611,7 +642,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 /datum/entity/player/proc/migrate_jobbans()
 	if(!job_bans)
 		job_bans = list()
-	for(var/name in RoleAuthority.roles_for_mode)
+	for(var/name in SSticker.role_authority.roles_by_name)
 		var/safe_job_name = ckey(name)
 		if(!jobban_keylist[safe_job_name])
 			continue
@@ -634,20 +665,6 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	jobbans_loaded = TRUE
 	migrated_jobbans = TRUE
 	save()
-
-/datum/entity/player/proc/adjust_stat(stat_id, stat_category, num, set_to_num = FALSE)
-	var/datum/entity/player_stat/stat = LAZYACCESS(stats, stat_id)
-	if(!stat)
-		stat = DB_ENTITY(/datum/entity/player_stat)
-		stat.player_id = id
-		stat.stat_id = stat_id
-		stat.stat_category = stat_category
-		LAZYSET(stats, stat_id, stat)
-	if(set_to_num)
-		stat.stat_number = num
-	else
-		stat.stat_number += num
-	stat.save()
 
 /datum/entity_link/player_to_banning_admin
 	parent_entity = /datum/entity/player

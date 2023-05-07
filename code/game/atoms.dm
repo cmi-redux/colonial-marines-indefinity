@@ -1,6 +1,7 @@
 
 /atom
 	var/desc_lore = null
+	var/base_icon = null
 
 	plane = GAME_PLANE
 	layer = TURF_LAYER
@@ -28,6 +29,13 @@
 	var/flags_barrier = NO_FLAGS
 	var/throwpass = 0
 
+	/**
+	 * used to store the different colors on an atom
+	 *
+	 * its inherent color, the colored paint applied on it, special color effect etc...
+	 */
+	var/list/atom_colours
+
 	//Effects
 	var/list/effects_list
 
@@ -39,9 +47,6 @@
 	///Chemistry.
 	var/datum/reagents/reagents = null
 
-	//Z-Level Transitions
-	var/atom/movable/clone/clone = null
-
 	// Bitflag of which test cases this atom is exempt from
 	// See #define/tests.dm
 	var/test_exemptions = 0
@@ -49,10 +54,51 @@
 	// Whether the atom is an obstacle that should be considered for passing
 	var/can_block_movement = FALSE
 
+	///Icon-smoothing behavior.
+	var/smoothing_flags = NONE
+	///What directions this is currently smoothing with. IMPORTANT: This uses the smoothing direction flags as defined in icon_smoothing.dm, instead of the BYOND flags.
+	var/smoothing_junction = null //This starts as null for us to know when it's first set, but after that it will hold a 8-bit mask ranging from 0 to 255.
+	///Smoothing variable
+	var/top_left_corner
+	///Smoothing variable
+	var/top_right_corner
+	///Smoothing variable
+	var/bottom_left_corner
+	///Smoothing variable
+	var/bottom_right_corner
+	///What smoothing groups does this atom belongs to, to match canSmoothWith. If null, nobody can smooth with it.
+	var/list/smoothing_groups = null
+	///List of smoothing groups this atom can smooth with. If this is null and atom is smooth, it smooths only with itself.
+	var/list/canSmoothWith = null
+
 	var/datum/component/orbiter/orbiters
 
 	///Reference to atom being orbited
 	var/atom/orbit_target
+
+	///overlays that should remain on top and not normally removed when using cut_overlay functions, like c4.
+	var/list/priority_overlays
+	///a very temporary list of overlays to remove
+	var/list/remove_overlays
+	///a very temporary list of overlays to add
+	var/list/add_overlays
+
+	///Light systems, both shouldn't be active at the same time.
+	var/light_system = STATIC_LIGHT
+	///Range of the light in tiles. Zero means no light.
+	var/light_range = 0
+	///Intensity of the light. The stronger, the less shadows you will see on the lit area.
+	var/light_power = 1
+	///Hexadecimal RGB string representing the colour of the light. White by default.
+	var/light_color = COLOR_WHITE
+	///Boolean variable for toggleable lights. Has no effect without the proper light_system, light_range and light_power values.
+	var/light_on = FALSE
+	///Bitflags to determine lighting-related atom properties.
+	var/light_flags = NONE
+	///Our light source. Don't fuck with this directly unless you have a good reason!
+	var/tmp/datum/light_source/light
+	///Any light sources that are "inside" of us, for example, if src here was a mob that's carrying a flashlight, that flashlight's light source would be part of this list.
+	var/tmp/list/light_sources
 
 	///Default pixel x shifting for the atom's icon.
 	var/base_pixel_x = 0
@@ -80,10 +126,13 @@ directive is properly returned.
 /atom/Destroy()
 	orbiters = null // The component is attached to us normally and will be deleted elsewhere
 	QDEL_NULL(reagents)
+
+	LAZYCLEARLIST(overlays)
+	LAZYCLEARLIST(priority_overlays)
+
 	QDEL_NULL(light)
 	fingerprintshidden = null
 	. = ..()
-
 //===========================================================================
 
 
@@ -204,6 +253,54 @@ directive is properly returned.
 	if(desc_lore)
 		. += SPAN_NOTICE("This has an <a href='byond://?src=\ref[src];desc_lore=1'>extended lore description</a>.")
 
+/*
+	Atom Colour Priority System
+	A System that gives finer control over which atom colour to colour the atom with.
+	The "highest priority" one is always displayed as opposed to the default of
+	"whichever was set last is displayed"
+*/
+
+
+///Adds an instance of colour_type to the atom's atom_colours list
+/atom/proc/add_atom_colour(coloration, colour_priority)
+	if(!atom_colours || !atom_colours.len)
+		atom_colours = list()
+		atom_colours.len = COLOR_PRIORITY_AMOUNT //four priority levels currently.
+	if(!coloration)
+		return
+	if(colour_priority > atom_colours.len)
+		return
+	atom_colours[colour_priority] = coloration
+	update_atom_colour()
+
+
+///Removes an instance of colour_type from the atom's atom_colours list
+/atom/proc/remove_atom_colour(colour_priority, coloration)
+	if(!atom_colours)
+		return
+	if(colour_priority > atom_colours.len)
+		return
+	if(coloration && atom_colours[colour_priority] != coloration)
+		return //if we don't have the expected color (for a specific priority) to remove, do nothing
+	atom_colours[colour_priority] = null
+	update_atom_colour()
+
+
+///Resets the atom's color to null, and then sets it to the highest priority colour available
+/atom/proc/update_atom_colour()
+	color = null
+	if(!atom_colours)
+		return
+	for(var/checked_color in atom_colours)
+		if(islist(checked_color))
+			var/list/color_list = checked_color
+			if(color_list.len)
+				color = color_list
+				return
+		else if(checked_color)
+			color = checked_color
+			return
+
 // called by mobs when e.g. having the atom as their machine, pulledby, loc (AKA mob being inside the atom) or buckled var set.
 // see code/modules/mob/mob_movement.dm for more.
 /atom/proc/relaymove()
@@ -226,9 +323,9 @@ directive is properly returned.
 /atom/proc/add_hiddenprint(mob/living/M)
 	if(!M || QDELETED(M) || !M.key || !(flags_atom  & FPRINT) || fingerprintslast == M.key)
 		return
-	if (ishuman(M))
+	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		if (H.gloves)
+		if(H.gloves)
 			fingerprintshidden += "\[[time_stamp()]\] (Wearing gloves). Real name: [H.real_name], Key: [H.key]"
 		else
 			fingerprintshidden += "\[[time_stamp()]\] Real name: [H.real_name], Key: [H.key]"
@@ -244,7 +341,7 @@ directive is properly returned.
 		fingerprintshidden = list()
 	fingerprintslast = M.key
 
-	if (ishuman(M))
+	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 
 		//Fibers~
@@ -253,7 +350,7 @@ directive is properly returned.
 		fingerprintslast = M.key
 
 		//Now, deal with gloves.
-		if (H.gloves && H.gloves != src)
+		if(H.gloves && H.gloves != src)
 			fingerprintshidden += "\[[time_stamp()]\](Wearing gloves). Real name: [H.real_name], Key: [H.key]"
 		else
 			fingerprintshidden += "\[[time_stamp()]\]Real name: [H.real_name], Key: [H.key]"
@@ -327,14 +424,34 @@ Parameters are passed from New.
 		CRASH("Warning: [src]([type]) initialized multiple times!")
 	flags_atom |= INITIALIZED
 
+	if(loc)
+		SEND_SIGNAL(loc, COMSIG_ATOM_INITIALIZED_ON, src) /// Sends a signal that the new atom `src`, has been created at `loc`
 	pass_flags = pass_flags_cache[type]
-	if (isnull(pass_flags))
+	if(isnull(pass_flags))
 		pass_flags = new()
 		initialize_pass_flags(pass_flags)
 		pass_flags_cache[type] = pass_flags
 	else
 		initialize_pass_flags()
 	Decorate(mapload)
+
+	if(length(smoothing_groups))
+		sortTim(smoothing_groups) //In case it's not properly ordered, let's avoid duplicate entries with the same values.
+		SET_BITFLAG_LIST(smoothing_groups)
+	if(length(canSmoothWith))
+		sortTim(canSmoothWith)
+		if(canSmoothWith[length(canSmoothWith)] > MAX_S_TURF) //If the last element is higher than the maximum turf-only value, then it must scan turf contents for smoothing targets.
+			smoothing_flags |= SMOOTH_OBJ
+		SET_BITFLAG_LIST(canSmoothWith)
+
+	if(light_system == STATIC_LIGHT && light_power && light_range)
+		update_light()
+
+	if(loc)
+		if(isturf(loc))
+			if(opacity)
+				var/turf/T = loc
+				T.directional_opacity = ALL_CARDINALS // No need to recalculate it in this case, it's guaranteed to be on afterwards anyways.
 
 	return INITIALIZE_HINT_NORMAL
 
@@ -345,21 +462,8 @@ Parameters are passed from New.
 /atom/process()
 	return
 
-//---CLONE---//
-
-/atom/clone
-	var/proj_x = 0
-	var/proj_y = 0
-
-/atom/proc/create_clone(shift_x, shift_y) //NOTE: Use only for turfs, otherwise use create_clone_movable
-	var/turf/T = null
-	T = locate(src.x + shift_x, src.y + shift_y, src.z)
-
-	T.appearance = src.appearance
-	T.setDir(src.dir)
-
-	clones_t.Add(src)
-	src.clone = T
+/atom/proc/handle_fall()
+	return
 
 // EFFECTS
 /atom/proc/extinguish_acid()
@@ -371,30 +475,30 @@ Parameters are passed from New.
 
 // Movement
 /atom/proc/add_temp_pass_flags(flags_to_add)
-	if (isnull(temp_flag_counter))
+	if(isnull(temp_flag_counter))
 		temp_flag_counter = list()
 
 	for (var/flag in GLOB.bitflags)
 		if(!(flags_to_add & flag))
 			continue
 		var/flag_str = "[flag]"
-		if (temp_flag_counter[flag_str])
+		if(temp_flag_counter[flag_str])
 			temp_flag_counter[flag_str]++
 		else
 			temp_flag_counter[flag_str] = 1
 			flags_pass_temp |= flag
 
 /atom/proc/remove_temp_pass_flags(flags_to_remove)
-	if (isnull(temp_flag_counter))
+	if(isnull(temp_flag_counter))
 		return
 
 	for (var/flag in GLOB.bitflags)
 		if(!(flags_to_remove & flag))
 			continue
 		var/flag_str = "[flag]"
-		if (temp_flag_counter[flag_str])
+		if(temp_flag_counter[flag_str])
 			temp_flag_counter[flag_str]--
-			if (temp_flag_counter[flag_str] == 0)
+			if(temp_flag_counter[flag_str] == 0)
 				temp_flag_counter -= flag_str
 				flags_pass_temp &= ~flag
 
@@ -447,6 +551,32 @@ Parameters are passed from New.
 	return
 
 /**
+ * If this object has lights, turn it on/off.
+ * user: the mob actioning this
+ * toggle_on: if TRUE, will try to turn ON the light. Opposite if FALSE
+ * cooldown: how long until you can toggle the light on/off again
+ * sparks: if a spark effect will be generated
+ * forced: if TRUE and toggle_on = FALSE, will cause the light to turn on in cooldown second
+ * originated_turf: if not null, will check if the obj_turf is closer than distance_max to originated_turf, and the proc will return if not
+ * distance_max: used to check if originated_turf is close to obj.loc
+*/
+/atom/proc/turn_light(mob/user = null, toggle_on, sparks = FALSE, forced = FALSE, light_again = FALSE)
+	if(toggle_on == light_on)
+		return NO_LIGHT_STATE_CHANGE
+	if(light_again && !toggle_on) //Is true when turn light is called by nightfall and the light is already on
+		addtimer(CALLBACK(src, PROC_REF(reset_light)), 2)
+	if(sparks && light_on)
+		var/datum/effect_system/spark_spread/spark_system = new
+		spark_system.set_up(5, 0, src)
+		spark_system.attach(src)
+		spark_system.start(src)
+	return CHECKS_PASSED
+
+///Turn on the light, should be called by a timer
+/atom/proc/reset_light()
+	turn_light(null, TRUE, 1 SECONDS, FALSE, TRUE)
+
+/**
  * Hook for running code when a dir change occurs
  *
  * Not recommended to override, listen for the [COMSIG_ATOM_DIR_CHANGE] signal instead (sent by this proc)
@@ -455,7 +585,6 @@ Parameters are passed from New.
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ATOM_DIR_CHANGE, dir, newdir)
 	dir = newdir
-
 
 /atom/proc/add_filter(name,priority,list/params)
 	LAZYINITLIST(filter_data)
@@ -499,8 +628,8 @@ Parameters are passed from New.
 /*/obj/item/update_filters()
 	. = ..()
 	for(var/X in actions)
-		var/datum/action/A = X
-		A.UpdateButtonIcon()*/
+		var/datum/action/action = X
+		action.UpdateButtonIcon()*/
 
 /atom/proc/get_filter(name)
 	if(filter_data && filter_data[name])
@@ -543,16 +672,20 @@ Parameters are passed from New.
  */
 /atom/proc/get_all_orbiters(list/processed, source = TRUE)
 	var/list/output = list()
-	if (!processed)
+	if(!processed)
 		processed = list()
-	if (src in processed)
+	if(src in processed)
 		return output
-	if (!source)
+	if(!source)
 		output += src
 	processed += src
 	for(var/atom/atom_orbiter as anything in orbiters?.orbiters)
 		output += atom_orbiter.get_all_orbiters(processed, source = FALSE)
 	return output
+
+/atom/proc/intercept_zImpact(list/falling_movables, levels = 1)
+	SHOULD_CALL_PARENT(TRUE)
+	. |= SEND_SIGNAL(src, COMSIG_ATOM_INTERCEPT_Z_FALL, falling_movables, levels)
 
 // returns a modifier for how much the tail stab should be cooldowned by
 // returning a 0 makes it do nothing
@@ -568,6 +701,12 @@ Parameters are passed from New.
 /atom/proc/get_orbit_size()
 	var/icon/I = icon(icon, icon_state, dir)
 	return (I.Width() + I.Height()) * 0.5
+
+/// Updates the overlays of the atom
+/atom/proc/update_overlays()
+	SHOULD_CALL_PARENT(TRUE)
+	. = list()
+	SEND_SIGNAL(src, COMSIG_ATOM_UPDATE_OVERLAYS, .)
 
 /**
  * Return the markup to for the dropdown list for the VV panel for this atom

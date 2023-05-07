@@ -27,10 +27,8 @@
 	var/center_x  = boundaries[MAP_MINX] + round(dim_x / 2) // Technically off by 0.5 due to above +1. Whatever
 	var/center_y  = boundaries[MAP_MINY] + round(dim_y / 2)
 
-	var/prompt = alert(C, "Are you SURE you want to load this template as level ? This is SLOW and can freeze server for a bit. Dimensions are: [dim_x] x [dim_y]", "Template Confirm" ,"Yes","Nope!")
-	if(prompt != "Yes")
+	if(alert(C, "Are you SURE you want to load this template as level ? This is SLOW and can freeze server for a bit. Dimensions are: [dim_x] x [dim_y]", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
-
 	// Extra debug in case of in-load crashes
 	log_debug("Attempting load of template [template.name] as new event Z-Level as requested by [logckey]")
 

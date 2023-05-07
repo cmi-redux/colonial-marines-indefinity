@@ -28,13 +28,13 @@
 		list("<h2>TRANSFER POINTS</h2>", -1, null, null, "A method of transferring points between agents."),
 		list("1 point", 1, /obj/item/stack/points/p1, "white", null),
 		list("5 points", 5, /obj/item/stack/points/p5, "white", null),
-		list("20 points", 20, /obj/item/stack/points/p20, "white", null),
+		list("20 points", 20, /obj/item/stack/points/p20, "white", null)
 	)
 
 	points = 40
 	max_points = 100
 
-	var/faction_belonging = "WY"
+	faction_to_get = FACTION_WY
 
 	var/list/types_to_convert = list(
 		/obj/item/ammo_magazine/smg/m39 = /obj/item/ammo_magazine/smg/m39/rubber,
@@ -63,7 +63,7 @@
 	if(target.type in types_to_convert)
 		var/type_to_set = types_to_convert[target.type]
 
-		if(target_mag.current_rounds < target_mag.max_rounds)
+		if(target_mag.ammo_position < target_mag.max_rounds)
 			to_chat(H, SPAN_WARNING("[target_mag] needs to be full to convert these into rubber rounds!"))
 			return .
 

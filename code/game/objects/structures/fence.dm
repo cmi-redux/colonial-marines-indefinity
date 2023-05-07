@@ -16,7 +16,7 @@
 
 /obj/structure/fence/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_THROUGH|PASS_HIGH_OVER_ONLY
 
 //create_debris creates debris like shards and rods. This also includes the window frame for explosions
@@ -209,7 +209,7 @@
 //This proc is used to update the icons of nearby windows.
 /obj/structure/fence/proc/update_nearby_icons()
 	update_icon()
-	for(var/direction in cardinal)
+	for(var/direction in  GLOB.cardinals)
 		for(var/obj/structure/fence/W in get_step(src, direction))
 			W.update_icon()
 

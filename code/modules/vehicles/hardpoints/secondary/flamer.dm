@@ -29,7 +29,7 @@
 	)
 
 /obj/item/hardpoint/secondary/small_flamer/fire_projectile(mob/user, atom/A)
-	set waitfor = 0
+	set waitfor = FALSE
 
 	var/turf/origin_turf = get_turf(src)
 	origin_turf = locate(origin_turf.x + origins[1], origin_turf.y + origins[2], origin_turf.z)
@@ -41,11 +41,14 @@
 		if(T == loc)
 			prev_T = T
 			continue
-		if(!ammo.current_rounds) break
-		if(distance >= max_range) break
+		if(!ammo.ammo_position)
+			break
+		if(distance >= max_range)
+			break
 		if(prev_T && LinkBlocked(prev_T, T))
 			break
-		ammo.current_rounds--
+		var/obj/item/projectile/P = ammo.transfer_bullet_out()
+		qdel(P)
 		flame_turf(T, user)
 		distance++
 		prev_T = T

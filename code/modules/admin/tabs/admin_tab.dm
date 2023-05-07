@@ -5,7 +5,7 @@
 	if(!admin_holder)
 		return
 
-	if(alert("Confirm deadmin? This procedure can be reverted at any time and will not carry over to next round, but you will lose all your admin powers in the meantime.", , "Yes", "No") != "Yes")
+	if(alert("Confirm deadmin? This procedure can be reverted at any time and will not carry over to next round, but you will lose all your admin powers in the meantime.", , usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 
 	message_admins("[src] de-admined themselves.")
@@ -103,6 +103,24 @@
 	if(new_STUI)
 		GLOB.STUI.tgui_interact(mob)
 
+
+/client/proc/run_particle_weather()
+	set name = "Run Particle Weather"
+	set desc = "Triggers a particle weather"
+	set category = "Admin.Events"
+
+	if(!check_rights(R_ADMIN))
+		return
+
+	var/weather_type = input("Choose a weather", "Weather")  as null|anything in sort_list(subtypesof(/datum/particle_weather), GLOBAL_PROC_REF(cmp_typepaths_asc))
+	if(!weather_type)
+		return
+
+	SSparticle_weather.run_weather(new weather_type(), TRUE)
+
+	message_admins("[key_name_admin(usr)] started weather of type [weather_type]. What a cunt.")
+	log_admin("[key_name(usr)] started weather of type [weather_type]. What a cunt.")
+
 /client/proc/invismin()
 	set name = "Invismin"
 	set category = "Admin.Game"
@@ -139,15 +157,16 @@
 	if(message)
 		if(!check_rights(R_SERVER,0))
 			message = adminscrub(message,500)
+		message = emoji_parse(src, message)
 		to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ANNOUNCEMENT_HEADER_ADMIN(" <b>[usr.client.admin_holder.fakekey ? "Administrator" : usr.key] Announces:</b>\n \t [message]"))
 		log_admin("Announce: [key_name(usr)] : [message]")
 
 /datum/admins/proc/player_notes_show(key as text)
 	set name = "Player Notes Show"
 	set category = "Admin"
-	if (!istype(src,/datum/admins))
+	if(!istype(src,/datum/admins))
 		src = usr.client.admin_holder
-	if (!istype(src,/datum/admins) || !(src.rights & R_MOD))
+	if(!istype(src,/datum/admins) || !(src.rights & R_MOD))
 		to_chat(usr, "Error: you are not an admin!")
 		return
 
@@ -193,7 +212,7 @@
 	if(!check_rights(0))
 		return
 
-	if(alert("This will sleep ALL mobs within your view range (for Administration purposes). Are you sure?",,"Yes","Cancel") == "Cancel")
+	if(alert("This will sleep ALL mobs within your view range (for Administration purposes). Are you sure?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 	for(var/mob/living/M in view(usr.client))
 		M.apply_effect(3, PARALYZE) // prevents them from exiting the screen range
@@ -210,7 +229,7 @@
 	if(!check_rights(0))
 		return
 
-	if(alert("This wake ALL mobs within your view range (for Administration purposes). Are you sure?",,"Yes","Cancel") == "Cancel")
+	if(alert("This wake ALL mobs within your view range (for Administration purposes). Are you sure?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 	for(var/mob/living/M in view(usr.client))
 		M.sleeping = 0 //set their sleep to zero and remove their icon
@@ -229,6 +248,8 @@
 	msg = copytext(sanitize(msg), 1, MAX_MESSAGE_LEN)
 	if(!msg)
 		return
+
+	msg = emoji_parse(src, msg)
 
 	log_adminpm("ADMIN : [key_name(src)] : [msg]")
 
@@ -337,8 +358,10 @@
 
 	msg = copytext(sanitize(msg), 1, MAX_MESSAGE_LEN)
 
-	if (!msg)
+	if(!msg)
 		return
+
+	msg = emoji_parse(src, msg)
 
 	if(findtext(msg, "@") || findtext(msg, "#"))
 		var/list/link_results = check_asay_links(msg)
@@ -356,7 +379,7 @@
 	log_adminpm("MOD: [key_name(src)] : [msg]")
 
 	var/color = "mod"
-	if (check_rights(R_ADMIN,0))
+	if(check_rights(R_ADMIN,0))
 		color = "adminmod"
 
 	var/channel = "MOD:"
@@ -379,8 +402,10 @@
 
 	msg = copytext(sanitize(msg), 1, MAX_MESSAGE_LEN)
 
-	if (!msg)
+	if(!msg)
 		return
+
+	msg = emoji_parse(src, msg)
 
 	log_adminpm("MENTOR: [key_name(src)] : [msg]")
 
@@ -427,7 +452,7 @@
 		to_chat(src, "Only administrators may use this command.")
 		return
 
-	if(alert("This will rejuvenate ALL mobs within your view range. Are you sure?",,"Yes","Cancel") == "Cancel")
+	if(alert("This will rejuvenate ALL mobs within your view range. Are you sure?", , usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 
 	for(var/mob/living/M in view())
@@ -445,7 +470,7 @@
 		to_chat(src, "Only administrators may use this command.")
 		return
 
-	if(alert("This will rejuvenate ALL humans within your view range. Are you sure?",,"Yes","Cancel") == "Cancel")
+	if(alert("This will rejuvenate ALL humans within your view range. Are you sure?", , usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 
 	for(var/mob/living/carbon/human/M in view())
@@ -462,7 +487,7 @@
 		to_chat(src, "Only administrators may use this command.")
 		return
 
-	if(alert("This will rejuvenate ALL revivable humans within your view range. Are you sure?",,"Yes","Cancel") == "Cancel")
+	if(alert("This will rejuvenate ALL revivable humans within your view range. Are you sure?", , usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 
 	for(var/mob/living/carbon/human/M in view())
@@ -488,7 +513,7 @@
 		to_chat(src, "Only administrators may use this command.")
 		return
 
-	if(alert("This will rejuvenate ALL xenos within your view range. Are you sure?",,"Yes","Cancel") == "Cancel")
+	if(alert("This will rejuvenate ALL xenos within your view range. Are you sure?", , usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 
 	for(var/mob/living/carbon/xenomorph/X in view())

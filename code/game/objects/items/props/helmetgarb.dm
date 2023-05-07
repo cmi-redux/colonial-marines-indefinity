@@ -17,6 +17,18 @@
 	name = "gun oil"
 	desc = "It is a bottle of oil, for your gun. Don't fall for the rumors, the M41A is NOT a self-cleaning firearm."
 	icon_state = "gunoil"
+	var/oil_max = 10
+	var/oil = 10
+
+/obj/item/prop/helmetgarb/gunoil/proc/remove_oil(remove_oil)
+	if(!oil || oil < remove_oil)
+		return FALSE
+	oil -= remove_oil
+	return TRUE
+
+/obj/item/prop/helmetgarb/gunoil/examine(mob/user as mob) //Let us see how much ammo we got in this thing.
+	..()
+	to_chat(usr, "Смазки осталось [oil]/[oil_max].")
 
 /obj/item/prop/helmetgarb/netting
 	name = "combat netting"
@@ -114,15 +126,15 @@
 	var/mob/living/attached_mob
 	var/lighting_alpha = 100
 
-/obj/item/prop/helmetgarb/helmet_nvg/on_enter_storage(obj/item/storage/internal/S)
+/obj/item/prop/helmetgarb/helmet_nvg/on_enter_storage(obj/item/storage/internal/storage)
 	..()
 
-	if(!istype(S))
+	if(!istype(storage))
 		return
 
 	remove_attached_item()
 
-	var/obj/item/MO = S.master_object
+	var/obj/item/MO = storage.master_object
 	if(!istype(MO, /obj/item/clothing/head/helmet/marine) && !istype(MO, /obj/item/clothing/head/cmcap)) // Do not bother if it's not a helmet or at least a hat
 		return
 
@@ -241,10 +253,10 @@
 		else if(nvg_health_procent >= 0)
 			. += "They are falling apart."
 
-	if (get_dist(user, src) <= 1 && (shape == NVG_SHAPE_FINE || shape == NVG_SHAPE_PATCHED))
+	if(get_dist(user, src) <= 1 && (shape == NVG_SHAPE_FINE || shape == NVG_SHAPE_PATCHED))
 		. += "A small gauge in the corner reads: Power: [round(100.0*nvg_charge/nvg_maxcharge) ]%."
 
-/obj/item/prop/helmetgarb/helmet_nvg/on_exit_storage(obj/item/storage/S)
+/obj/item/prop/helmetgarb/helmet_nvg/on_exit_storage(obj/item/storage/storage)
 	remove_attached_item()
 	return ..()
 
@@ -447,8 +459,8 @@
 		src.color = "#4e4e4e"
 		if(shape != NVG_SHAPE_COSMETIC)
 			shape = NVG_SHAPE_BROKEN
-		var/obj/item/clothing/head/helmet/marine/H = attached_item
-		H.pockets.remove_from_storage(src, get_turf(H))
+		var/obj/item/clothing/head/helmet/marine/HM = attached_item
+		HM.pockets.remove_from_storage(src, get_turf(user))
 
 /obj/item/prop/helmetgarb/helmet_nvg/cosmetic //for "custom loadout", purely cosmetic
 	name = "old M2 night vision goggles"

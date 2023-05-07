@@ -36,8 +36,6 @@
 
 	minimum_evolve_time = 7 MINUTES
 
-	minimap_icon = "burrower"
-
 /mob/living/carbon/xenomorph/burrower
 	caste_type = XENO_CASTE_BURROWER
 	name = XENO_CASTE_BURROWER
@@ -79,15 +77,20 @@
 	icon_xeno = 'icons/mob/xenos/burrower.dmi'
 	icon_xenonid = 'icons/mob/xenonids/burrower.dmi'
 
-/mob/living/carbon/xenomorph/burrower/Initialize(mapload, mob/living/carbon/xenomorph/oldxeno, h_number)
+	balance_formulas = list(BALANCE_FORMULA_XENO_ABILITER, BALANCE_FORMULA_XENO_FIGHTER)
+
+/mob/living/carbon/xenomorph/burrower/Initialize(mapload, mob/living/carbon/xenomorph/old_xeno, datum/faction/hive_to_set)
 	. = ..()
 	sight |= SEE_TURFS
+
+	AddComponent(/datum/component/footstep, FOOTSTEP_XENO_MEDIUM)
 
 /mob/living/carbon/xenomorph/burrower/update_canmove()
 	. = ..()
 	if(burrow)
 		density = FALSE
 		canmove = FALSE
+		can_action = FALSE
 		return canmove
 
 /mob/living/carbon/xenomorph/burrower/ex_act(severity)

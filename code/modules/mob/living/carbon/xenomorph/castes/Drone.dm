@@ -33,8 +33,6 @@
 
 	minimum_evolve_time = 1 MINUTES
 
-	minimap_icon = "drone"
-
 /datum/caste_datum/drone/New()
 	. = ..()
 
@@ -73,3 +71,10 @@
 
 	icon_xeno = 'icons/mob/xenos/drone.dmi'
 	icon_xenonid = 'icons/mob/xenonids/drone.dmi'
+
+	balance_formulas = list(BALANCE_FORMULA_XENO_HEALER, BALANCE_FORMULA_XENO_BUILDER)
+
+/mob/living/carbon/xenomorph/drone/Initialize(mapload, mob/living/carbon/xenomorph/old_xeno, datum/faction/hive_to_set)
+	. = ..()
+
+	AddComponent(/datum/component/footstep, FOOTSTEP_MOB_BAREFOOT)

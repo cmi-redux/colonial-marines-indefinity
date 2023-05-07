@@ -57,7 +57,7 @@
 					var/word = pick("dizzy","woozy","faint")
 					to_chat(src, SPAN_DANGER("You feel extremely [word]."))
 			if(0 to BLOOD_VOLUME_SURVIVE)
-				death(create_cause_data("blood loss"))
+				death(create_cause_data("потери крови"))
 
 		// Without enough blood you slowly go hungry.
 		if(blood_volume < BLOOD_VOLUME_SAFE)
@@ -181,7 +181,7 @@
 		//An even amount of each plasma and blood type
 		if(plasma == PLASMA_EGG)
 			//Preserve hive_number for the possible larva
-			O.reagents.add_reagent(plasma, amount / plasmas.len, list("hive_number" = hivenumber))
+			O.reagents.add_reagent(plasma, amount / plasmas.len, list("hive_number" = faction))
 		else
 			O.reagents.add_reagent(plasma, amount / plasmas.len)
 

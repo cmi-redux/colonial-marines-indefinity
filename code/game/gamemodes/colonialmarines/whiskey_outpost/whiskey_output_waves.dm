@@ -7,16 +7,16 @@
 	if(!istype(wave_data))
 		return
 
-	var/datum/hive_status/hive = GLOB.hive_datum[XENO_HIVE_NORMAL]
-	if(hive.slashing_allowed != XENO_SLASH_ALLOWED)
-		hive.slashing_allowed = XENO_SLASH_ALLOWED //Allows harm intent for aliens
+	var/datum/faction/faction = GLOB.faction_datum[FACTION_XENOMORPH_NORMAL]
+	if(faction.slashing_allowed != XENO_SLASH_ALLOWED)
+		faction.slashing_allowed = XENO_SLASH_ALLOWED //Allows harm intent for aliens
 	var/xenos_to_spawn
 	if(wave_data.wave_type == WO_SCALED_WAVE)
 		xenos_to_spawn = max(count_marines(SSmapping.levels_by_trait(ZTRAIT_GROUND)),5) * wave_data.scaling_factor * WO_SPAWN_MULTIPLIER
 	else
 		xenos_to_spawn = wave_data.number_of_xenos * WO_SPAWN_MULTIPLIER
 
-	spawn_next_wave = wave_data.wave_delay
+	spawn_next_wave_time = wave_data.wave_delay
 
 	if(wave_data.wave_number == 1)
 		call(/datum/game_mode/whiskey_outpost/proc/disablejoining)()
@@ -52,21 +52,21 @@
 	if(!xeno_candidate)
 		return FALSE
 
-	if(RoleAuthority.castes_by_name[userInput])
+	if(SSticker.role_authority.castes_by_name[userInput])
 		if(!(userInput in xeno_pool))
 			to_chat(xeno_candidate, SPAN_WARNING("The caste type you chose was occupied by someone else."))
 			return FALSE
 		var/spawn_loc = pick(xeno_spawns)
-		var/xeno_type = RoleAuthority.get_caste_by_text(userInput)
+		var/xeno_type = SSticker.role_authority.get_caste_by_text(userInput)
 		var/mob/living/carbon/xenomorph/new_xeno = new xeno_type(spawn_loc)
-		if(new_xeno.hive.construction_allowed == NORMAL_XENO)
-			new_xeno.hive.construction_allowed = XENO_QUEEN
+		if(new_xeno.faction.construction_allowed == NORMAL_XENO)
+			new_xeno.faction.construction_allowed = XENO_QUEEN
 		new_xeno.nocrit(xeno_wave)
 		xeno_pool -= userInput
 		if(isnewplayer(xeno_candidate))
 			var/mob/new_player/N = xeno_candidate
 			N.close_spawn_windows()
-		if(transfer_xeno(xeno_candidate, new_xeno))
+		if(transfer_xenomorph(xeno_candidate, new_xeno))
 			return TRUE
 	else
 		if(!isxeno(userInput))
@@ -89,7 +89,7 @@
 				to_chat(xeno_candidate, SPAN_WARNING("That player hasn't been away long enough. Please wait [to_wait] second\s longer."))
 				return FALSE
 
-		if(alert(xeno_candidate, "Everything checks out. Are you sure you want to transfer yourself into [new_xeno]?", "Confirm Transfer", "Yes", "No") == "Yes")
+		if(alert(xeno_candidate, "Everything checks out. Are you sure you want to transfer yourself into [new_xeno]?", "Confirm Transfer", xeno_candidate.client.auto_lang(LANGUAGE_YES), xeno_candidate.client.auto_lang(LANGUAGE_NO)) == xeno_candidate.client.auto_lang(LANGUAGE_YES))
 			if(new_xeno.client || !(new_xeno in GLOB.living_xeno_list) || new_xeno.stat == DEAD || !xeno_candidate) // Do it again, just in case
 				to_chat(xeno_candidate, SPAN_WARNING("That xenomorph can no longer be controlled. Please try another."))
 				return FALSE
@@ -99,7 +99,7 @@
 			if(isnewplayer(xeno_candidate))
 				var/mob/new_player/N = xeno_candidate
 				N.close_spawn_windows()
-			if(transfer_xeno(xeno_candidate, new_xeno))
+			if(transfer_xenomorph(xeno_candidate, new_xeno))
 				return TRUE
 	to_chat(xeno_candidate, "JAS01: Something went wrong, tell a coder.")
 
@@ -382,6 +382,7 @@
 	wave_type = WO_STATIC_WAVE
 	wave_number = 15
 	number_of_xenos = 50
+	wave_delay = 15 MINUTES
 
 /datum/whiskey_outpost_wave/random/wave1 //Runner madness
 	wave_castes = list(
@@ -401,7 +402,7 @@
 		XENO_CASTE_RAVAGER,
 	)
 
-/datum/whiskey_outpost_wave/random/wave2 //Spitter madness
+/datum/whiskey_outpost_wave/random/wave2 //spitter madness
 	wave_castes = list(
 		XENO_CASTE_SPITTER,
 		XENO_CASTE_SPITTER,

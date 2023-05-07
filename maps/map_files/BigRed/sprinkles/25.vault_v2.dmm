@@ -4,23 +4,27 @@
 /area/bigredv2/outside/c)
 "ab" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_8"
+	icon_state = "mars_dirt_8";
+	tag = "icon-mars_dirt_8"
 	},
 /area/bigredv2/outside/c)
 "ac" = (
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_4"
+	icon_state = "mars_dirt_4";
+	tag = "icon-mars_dirt_4"
 	},
 /area/bigredv2/outside/c)
 "ad" = (
 /obj/effect/decal/cleanable/blood,
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_4"
+	icon_state = "mars_dirt_4";
+	tag = "icon-mars_dirt_4"
 	},
 /area/bigredv2/outside/c)
 "ae" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_3"
+	icon_state = "mars_dirt_3";
+	tag = "icon-mars_dirt_3"
 	},
 /area/bigredv2/outside/c)
 "af" = (
@@ -29,49 +33,54 @@
 /area/bigredv2/outside/c)
 "ag" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_9"
+	icon_state = "mars_dirt_9";
+	tag = "icon-mars_dirt_9"
 	},
 /area/bigredv2/outside/c)
 "ah" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_13"
+	icon_state = "mars_dirt_13";
+	tag = "icon-mars_dirt_13"
 	},
 /area/bigredv2/outside/c)
 "ai" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_10"
+	icon_state = "mars_dirt_10";
+	tag = "icon-mars_dirt_10"
 	},
 /area/bigredv2/outside/c)
 "aj" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_14"
+	icon_state = "mars_dirt_14";
+	tag = "icon-mars_dirt_14"
 	},
 /area/bigredv2/outside/c)
 "ak" = (
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (NORTH)"
 	},
 /area/bigredv2/outside/c)
 "al" = (
 /turf/closed/wall/solaris/reinforced,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "am" = (
 /obj/structure/largecrate/hunter_games_guns/mediocre,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "an" = (
 /obj/structure/largecrate/supply/floodlights,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "ao" = (
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "ap" = (
 /obj/structure/surface/table,
 /obj/effect/spawner/random/technology_scanner,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "aq" = (
 /obj/structure/surface/table,
 /obj/structure/machinery/power/apc{
@@ -80,7 +89,7 @@
 /obj/effect/spawner/random/powercell,
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "ar" = (
 /obj/structure/surface/table,
 /obj/structure/machinery/light{
@@ -89,88 +98,89 @@
 /obj/effect/spawner/random/tech_supply,
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "as" = (
 /obj/structure/surface/table,
 /obj/effect/spawner/random/tool,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "at" = (
 /obj/structure/surface/table,
 /obj/effect/spawner/random/tech_supply,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "au" = (
 /obj/structure/surface/table,
 /obj/effect/spawner/random/toolbox,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "av" = (
 /obj/structure/surface/table,
 /obj/item/tool/extinguisher,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "aw" = (
 /obj/structure/largecrate/supply/generator,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "ax" = (
 /obj/structure/largecrate/random/secure,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "aA" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 6
 	},
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "aB" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4;
 	layer = 2.4
 	},
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "aC" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4;
 	layer = 2.4
 	},
-/obj/structure/machinery/door/airlock/almayer/secure/colony{
+/obj/structure/machinery/door/airlock/almayer/secure{
 	icon_state = "door_locked";
-	locked = 0;
-	name = "\improper Emergency Vault"
+	locked = 1;
+	name = "\improper Emergency Vault";
+	req_access = null
 	},
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "aD" = (
 /obj/structure/largecrate/supply/supplies/water,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "aE" = (
 /obj/structure/largecrate/random,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "aF" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "aG" = (
 /obj/structure/largecrate/supply/medicine/medkits,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "aH" = (
 /obj/structure/largecrate/supply/medicine/blood,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "aI" = (
 /obj/structure/largecrate/supply/medicine/iv,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "aJ" = (
 /obj/structure/machinery/light,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "aK" = (
 /obj/structure/pipes/vents/pump{
 	dir = 1
@@ -178,20 +188,21 @@
 /obj/structure/surface/table,
 /obj/effect/spawner/random/toolbox,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "aL" = (
 /obj/structure/surface/table,
 /obj/structure/machinery/light,
 /obj/effect/spawner/random/powercell,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 "aM" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4;
 	layer = 2.4
 	},
 /turf/open/floor{
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning"
 	},
 /area/bigredv2/outside/s)
 "aN" = (
@@ -201,7 +212,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/bigredv2/outside/s)
 "aO" = (
@@ -210,30 +222,35 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/bigredv2/outside/s)
 "aP" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_3"
+	icon_state = "mars_dirt_3";
+	tag = "icon-mars_dirt_3"
 	},
 /area/bigredv2/outside/s)
 "aQ" = (
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_4"
+	icon_state = "mars_dirt_4";
+	tag = "icon-mars_dirt_4"
 	},
 /area/bigredv2/outside/s)
 "aR" = (
 /turf/open/floor{
 	dir = 8;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (WEST)"
 	},
 /area/bigredv2/outside/s)
 "aS" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor{
 	dir = 4;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (EAST)"
 	},
 /area/bigredv2/outside/s)
 "aT" = (
@@ -241,34 +258,40 @@
 /area/bigredv2/outside/s)
 "aU" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_11"
+	icon_state = "mars_dirt_11";
+	tag = "icon-mars_dirt_11"
 	},
 /area/bigredv2/outside/s)
 "aV" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_9"
+	icon_state = "mars_dirt_9";
+	tag = "icon-mars_dirt_9"
 	},
 /area/bigredv2/outside/s)
 "aW" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_8"
+	icon_state = "mars_dirt_8";
+	tag = "icon-mars_dirt_8"
 	},
 /area/bigredv2/outside/s)
 "aX" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_10"
+	icon_state = "mars_dirt_10";
+	tag = "icon-mars_dirt_10"
 	},
 /area/bigredv2/outside/s)
 "aY" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
 	dir = 8;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (WEST)"
 	},
 /area/bigredv2/outside/s)
 "aZ" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_12"
+	icon_state = "mars_dirt_12";
+	tag = "icon-mars_dirt_12"
 	},
 /area/bigredv2/outside/s)
 "ba" = (
@@ -280,7 +303,7 @@
 /obj/effect/spawner/random/technology_scanner,
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
 /turf/open/floor,
-/area/bigredv2/outside/storage)
+/area/bigredv2/outside/building/storage)
 
 (1,1,1) = {"
 aa

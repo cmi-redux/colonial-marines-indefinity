@@ -57,29 +57,29 @@
 /obj/item/tool/screwdriver/Initialize()
 	. = ..()
 	switch(pick("red","blue","purple","brown","green","cyan","yellow"))
-		if ("red")
+		if("red")
 			icon_state = "screwdriver2"
 			item_state = "screwdriver"
-		if ("blue")
+		if("blue")
 			icon_state = "screwdriver"
 			item_state = "screwdriver_blue"
-		if ("purple")
+		if("purple")
 			icon_state = "screwdriver3"
 			item_state = "screwdriver_purple"
-		if ("brown")
+		if("brown")
 			icon_state = "screwdriver4"
 			item_state = "screwdriver_brown"
-		if ("green")
+		if("green")
 			icon_state = "screwdriver5"
 			item_state = "screwdriver_green"
-		if ("cyan")
+		if("cyan")
 			icon_state = "screwdriver6"
 			item_state = "screwdriver_cyan"
-		if ("yellow")
+		if("yellow")
 			icon_state = "screwdriver7"
 			item_state = "screwdriver_yellow"
 
-	if (prob(75))
+	if(prob(75))
 		src.pixel_y = rand(0, 16)
 	return
 
@@ -185,6 +185,11 @@
 	var/weld_tick = 0
 	var/has_welding_screen = FALSE
 
+	light_system = MOVABLE_LIGHT
+	light_range = 2
+	light_power = 0.2
+	light_color = LIGHT_COLOR_FIRE
+
 /obj/item/tool/weldingtool/Initialize()
 	. = ..()
 	create_reagents(max_fuel)
@@ -194,10 +199,6 @@
 
 /obj/item/tool/weldingtool/Destroy()
 	if(welding)
-		if(ismob(loc))
-			loc.SetLuminosity(0, FALSE, src)
-		else
-			SetLuminosity(0)
 		STOP_PROCESSING(SSobj, src)
 	. = ..()
 
@@ -225,7 +226,7 @@
 		var/mob/living/carbon/human/H = M
 		var/obj/limb/S = H.get_limb(user.zone_selected)
 
-		if (!S) return
+		if(!S) return
 		if(!(S.status & (LIMB_ROBOT|LIMB_SYNTHSKIN)) || user.a_intent != INTENT_HELP)
 			return ..()
 
@@ -245,6 +246,7 @@
 					return
 
 			S.heal_damage(15, 0, TRUE)
+			user.track_heal_damage(initial(name), H, 15)
 			H.pain.recalculate_pain()
 			H.UpdateDamageIcon()
 			user.visible_message(SPAN_WARNING("\The [user] patches some dents on \the [H]'s [S.display_name] with \the [src]."), \
@@ -259,7 +261,7 @@
 /obj/item/tool/weldingtool/afterattack(obj/O as obj, mob/user as mob, proximity)
 	if(!proximity)
 		return
-	if (istype(O, /obj/structure/reagent_dispensers/fueltank) && get_dist(src,O) <= 1)
+	if(istype(O, /obj/structure/reagent_dispensers/fueltank) && get_dist(src,O) <= 1)
 		if(!welding)
 			O.reagents.trans_to(src, max_fuel)
 			weld_tick = 0
@@ -273,7 +275,7 @@
 			var/obj/structure/reagent_dispensers/fueltank/tank = O
 			tank.explode()
 		return
-	if (welding)
+	if(welding)
 		remove_fuel(1)
 
 		if(isliving(O))
@@ -330,9 +332,7 @@
 			welding = 1
 			if(M)
 				to_chat(M, SPAN_NOTICE("You switch [src] on."))
-				M.SetLuminosity(2, FALSE, src)
-			else
-				SetLuminosity(2)
+			set_light_on(TRUE)
 			weld_tick += 8 //turning the tool on does not consume fuel directly, but it advances the process that regularly consumes fuel.
 			force = 15
 			damtype = "fire"
@@ -357,13 +357,11 @@
 				to_chat(M, SPAN_NOTICE("You switch [src] off."))
 			else
 				to_chat(M, SPAN_WARNING("[src] shuts off!"))
-			M.SetLuminosity(0, FALSE, src)
 			if(M.r_hand == src)
 				M.update_inv_r_hand()
 			if(M.l_hand == src)
 				M.update_inv_l_hand()
-		else
-			SetLuminosity(0)
+		set_light_on(FALSE)
 		STOP_PROCESSING(SSobj, src)
 
 //Decides whether or not to damage a player's eyes based on what they're wearing as protection
@@ -409,14 +407,12 @@
 /obj/item/tool/weldingtool/pickup(mob/user)
 	. = ..()
 	if(welding)
-		SetLuminosity(0)
-		user.SetLuminosity(2, FALSE, src)
+		set_light_on(FALSE)
 
 
 /obj/item/tool/weldingtool/dropped(mob/user)
 	if(welding && loc != user)
-		user.SetLuminosity(0, FALSE, src)
-		SetLuminosity(2)
+		set_light_on(TRUE)
 	return ..()
 
 
@@ -571,12 +567,12 @@ Welding backpack
 /obj/item/tool/weldpack/afterattack(obj/O as obj, mob/user as mob, proximity)
 	if(!proximity) // this replaces and improves the get_dist(src,O) <= 1 checks used previously
 		return
-	if (istype(O, /obj/structure/reagent_dispensers/fueltank) && src.reagents.total_volume < max_fuel)
+	if(istype(O, /obj/structure/reagent_dispensers/fueltank) && src.reagents.total_volume < max_fuel)
 		O.reagents.trans_to(src, max_fuel)
 		to_chat(user, SPAN_NOTICE(" You crack the cap off the top of \the [src] and fill it back up again from the tank."))
 		playsound(src.loc, 'sound/effects/refill.ogg', 25, 1, 3)
 		return
-	else if (istype(O, /obj/structure/reagent_dispensers/fueltank) && src.reagents.total_volume == max_fuel)
+	else if(istype(O, /obj/structure/reagent_dispensers/fueltank) && src.reagents.total_volume == max_fuel)
 		to_chat(user, SPAN_NOTICE(" \The [src] is already full!"))
 		return
 

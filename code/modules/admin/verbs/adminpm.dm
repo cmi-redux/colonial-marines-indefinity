@@ -73,7 +73,7 @@
 
 	if(AH)
 		LAZYREMOVE(AH.opening_responders, src)
-		if (!msg)
+		if(!msg)
 			message_admins("[key_name_admin(src)] has cancelled their reply to [key_name_admin(C, 0, 0)]'s admin help.")
 			return
 
@@ -91,7 +91,7 @@
 				confidential = TRUE)
 			AH.AddInteraction("<b>No client found, message not sent:</b><br>[msg]")
 			return
-	cmd_admin_pm(whom, msg)
+	return cmd_admin_pm(whom, msg)
 
 //takes input from cmd_admin_pm_context, cmd_admin_pm_panel or /client/Topic and sends them a PM.
 //Fetching a message if needed. src is the sender and C is the target client
@@ -168,7 +168,7 @@
 			confidential = TRUE)
 		return
 
-	if (src.handle_spam_prevention(msg,MUTE_ADMINHELP))
+	if(src.handle_spam_prevention(msg,MUTE_ADMINHELP))
 		return
 
 	if(external) //no sending html to the poor bots - but preserve any html tags with encoded entities
@@ -181,8 +181,7 @@
 
 	var/rawmsg = msg
 
-	if(CLIENT_IS_STAFF(src))
-		msg = emoji_parse(msg)
+	msg = emoji_parse(src, msg)
 
 	var/badmin = FALSE //Lets figure out if an admin is getting bwoinked.
 	if(CLIENT_IS_STAFF(src) && CLIENT_IS_STAFF(recipient) && !current_ticket) //Both are admins, and this is not a reply to our own ticket.
@@ -204,7 +203,7 @@
 			admin_ticket_log(src, interaction_message, log_in_blackbox = FALSE, player_message = player_interaction_message)
 			if(recipient != src) //reeee
 				admin_ticket_log(recipient, interaction_message, log_in_blackbox = FALSE, player_message = player_interaction_message)
-			log_ahelp(current_ticket.id, "Reply", msg, recipient.ckey, src.ckey)
+			log_ahelp(current_ticket.id, "Ответ", msg, recipient.ckey, src.ckey)
 		else //recipient is an admin but sender is not
 			current_ticket.player_replied = TRUE
 			SEND_SIGNAL(current_ticket, COMSIG_ADMIN_HELP_REPLIED)
@@ -219,7 +218,7 @@
 				type = MESSAGE_TYPE_ADMINPM,
 				html = SPAN_NOTICE("PM to-<b>Admins</b>: <span class='linkify'>[msg]</span>"),
 				confidential = TRUE)
-			log_ahelp(current_ticket.id, "Reply", msg, recipient.ckey, src.ckey)
+			log_ahelp(current_ticket.id, "Ответ", msg, recipient.ckey, src.ckey)
 
 		//play the receiving admin the adminhelp sound (if they have them enabled)
 		if(recipient.prefs.toggles_sound & SOUND_ADMINHELP)
@@ -230,7 +229,7 @@
 			if(!recipient.current_ticket)
 				new /datum/admin_help(msg, recipient, TRUE)
 				already_logged = TRUE
-				log_ahelp(recipient.current_ticket.id, "Ticket Opened", msg, recipient.ckey, src.ckey)
+				log_ahelp(recipient.current_ticket.id, "Тикет Открыт", msg, recipient.ckey, src.ckey)
 
 			SEND_SIGNAL(src, COMSIG_ADMIN_HELP_RECEIVED, msg)
 			to_chat(recipient,
@@ -253,7 +252,7 @@
 			admin_ticket_log(recipient, "<font color='green'>PM From [key_name_admin(src)]: [msg]</font>", log_in_blackbox = FALSE, player_message = "<font color='green'>PM From [key_name_admin(src, include_name = FALSE)]: [msg]</font>")
 
 			if(!already_logged) //Reply to an existing ticket
-				log_ahelp(recipient.current_ticket.id, "Reply", msg, recipient.ckey, src.ckey)
+				log_ahelp(recipient.current_ticket.id, "Ответ", msg, recipient.ckey, src.ckey)
 
 			//always play non-admin recipients the adminhelp sound
 			SEND_SOUND(recipient, sound('sound/effects/adminhelp_new.ogg'))
@@ -282,3 +281,4 @@
 				type = MESSAGE_TYPE_ADMINPM,
 				html = SPAN_NOTICE("<B>PM: [key_name(src, X, 0)]-&gt;[key_name(recipient, X, 0)]:</B> [msg]") ,
 				confidential = TRUE)
+	return rawmsg

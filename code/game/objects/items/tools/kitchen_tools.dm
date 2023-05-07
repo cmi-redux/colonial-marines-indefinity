@@ -31,7 +31,7 @@
 
 /obj/item/tool/kitchen/utensil/Initialize()
 	. = ..()
-	if (prob(60))
+	if(prob(60))
 		src.pixel_y = rand(0, 4)
 
 	create_reagents(5)
@@ -44,7 +44,7 @@
 	if(user.a_intent != INTENT_HELP)
 		return ..()
 
-	if (reagents.total_volume > 0)
+	if(reagents.total_volume > 0)
 		reagents.set_source_mob(user)
 		reagents.trans_to_ingest(M, reagents.total_volume)
 		if(M == user)
@@ -185,7 +185,10 @@
 		if(drowsy_threshold > 0)
 			M.apply_effect(min(drowsy_threshold, 10) , DROWSY)
 
-		M.apply_damage(force, BRUTE, affecting, sharp=0) //log and damage the custom hit
+		M.apply_damage(force, BRUTE, affecting, sharp = 0) //log and damage the custom hit
+		user.track_damage(initial(name), M, force)
+		if(user.faction == M.faction)
+			user.track_friendly_damage(initial(name), M, force)
 		user.attack_log += "\[[time_stamp()]\]<font color='red'> Attacked [key_name(M)] with [name] (INTENT: [uppertext(intent_text(user.a_intent))]) (DAMTYE: [uppertext(damtype)])</font>"
 		M.attack_log += "\[[time_stamp()]\]<font color='orange'> Attacked by  [key_name(user)] with [name] (INTENT: [uppertext(intent_text(user.a_intent))]) (DAMTYE: [uppertext(damtype)])</font>"
 		msg_admin_attack("[key_name(user)] attacked [key_name(M)] with [name] (INTENT: [uppertext(intent_text(user.a_intent))]) (DAMTYE: [uppertext(damtype)]) in [get_area(src)] ([src.loc.x],[src.loc.y],[src.loc.z]).", src.loc.x, src.loc.y, src.loc.z)

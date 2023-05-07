@@ -30,9 +30,9 @@
 	min_n2 = 0
 	max_n2 = 0
 	unsuitable_atoms_damage = 15
-	faction = FACTION_UPP
 	status_flags = CANPUSH
 
+	faction_to_get = FACTION_UPP
 
 /mob/living/simple_animal/hostile/russian/ranged
 	icon_state = "russianranged"
@@ -45,7 +45,7 @@
 	casingtype = null
 
 
-/mob/living/simple_animal/hostile/UPP
+/mob/living/simple_animal/hostile/upp
 	name = "UPP Soldier"
 	desc = "A soldier in the service of the UPP Navy."
 	icon_state = "uppmarine"
@@ -77,11 +77,11 @@
 	min_n2 = 0
 	max_n2 = 0
 	unsuitable_atoms_damage = 15
-	faction = FACTION_UPP
 	status_flags = CANPUSH
 
+	faction_to_get = FACTION_UPP
 
-/mob/living/simple_animal/hostile/UPP/ranged
+/mob/living/simple_animal/hostile/upp/ranged
 	//weapon1 = /obj/item/weapon/gun/projectile/mateba
 	ranged = 1
 	projectiletype = /obj/item/projectile
@@ -98,7 +98,7 @@
 	qdel(src)
 	return
 /*
-/mob/living/simple_animal/hostile/russian/UPP
+/mob/living/simple_animal/hostile/russian/upp
 	name = "UPP Soldier"
 	icon_state = "uppmarine"
 	icon_living = "uppmarine"

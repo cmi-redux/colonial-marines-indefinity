@@ -29,8 +29,6 @@
 
 	minimum_evolve_time = 9 MINUTES
 
-	minimap_icon = "spitter"
-
 /mob/living/carbon/xenomorph/spitter
 	caste_type = XENO_CASTE_SPITTER
 	name = XENO_CASTE_SPITTER
@@ -59,3 +57,10 @@
 
 	icon_xeno = 'icons/mob/xenos/spitter.dmi'
 	icon_xenonid = 'icons/mob/xenonids/spitter.dmi'
+
+	balance_formulas = list(BALANCE_FORMULA_XENO_ABILITER, BALANCE_FORMULA_XENO_FIGHTER)
+
+/mob/living/carbon/xenomorph/spitter/Initialize(mapload, mob/living/carbon/xenomorph/old_xeno, datum/faction/hive_to_set)
+	. = ..()
+
+	AddComponent(/datum/component/footstep, FOOTSTEP_MOB_BAREFOOT)

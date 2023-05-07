@@ -7,6 +7,7 @@
 	density = TRUE
 	throwpass = TRUE //You can throw objects over this, despite its density.
 	layer = BELOW_OBJ_LAYER
+	plane = GAME_PLANE
 	flags_atom = ON_BORDER
 	var/stack_type //The type of stack the barricade dropped when disassembled if any.
 	var/stack_amount = 5 //The amount of stack dropped when disassembled at full health
@@ -32,17 +33,21 @@
 	var/explosive_multiplier = 1
 	var/repair_materials = list()
 	var/metallic = TRUE
+	faction_to_get = FACTION_MARINE
+	var/tcmp_color = COLOR_BARRICADE_TCMP
 
 /obj/structure/barricade/Initialize(mapload, mob/user)
 	. = ..()
 	if(user)
-		user.count_niche_stat(STATISTICS_NICHE_CADES)
+		user.count_statistic_stat(STATISTICS_CADES)
+		faction = user.faction
 	addtimer(CALLBACK(src, PROC_REF(update_icon)), 0)
 	starting_maxhealth = maxhealth
+	SSmapview.add_marker(src, "object_cade", rotating = TRUE, custom_color = tcmp_color)
 
 /obj/structure/barricade/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = NONE
 		PF.flags_can_pass_front = NONE
 		PF.flags_can_pass_behind = PASS_OVER^(PASS_OVER_ACID_SPRAY|PASS_OVER_THROW_MOB)
@@ -122,7 +127,7 @@
 	if(istype(AM, /mob/living/carbon/xenomorph/crusher))
 		var/mob/living/carbon/xenomorph/crusher/C = AM
 
-		if (!C.throwing)
+		if(!C.throwing)
 			return
 
 		if(crusher_resistant)
@@ -307,7 +312,7 @@
 // However, will look into fixing bugs w/diagonal movement different if this is
 // to hacky.
 /obj/structure/barricade/handle_rotation()
-	if (dir & EAST)
+	if(dir & EAST)
 		setDir(EAST)
 	else if(dir & WEST)
 		setDir(WEST)
@@ -373,7 +378,7 @@
 
 	user.visible_message(SPAN_NOTICE("[user] repairs some damage on [src]."),
 	SPAN_NOTICE("You repair [src]."))
-	user.count_niche_stat(STATISTICS_NICHE_REPAIR_CADES)
+	user.count_statistic_stat(STATISTICS_REPAIR_CADES)
 	update_health(-200)
 	playsound(src.loc, 'sound/items/Welder2.ogg', 25, TRUE)
 	return TRUE
@@ -417,7 +422,7 @@
 
 	var/obj/item/weapon/gun/smg/nailgun/NG = W
 
-	if(!NG.in_chamber || !NG.current_mag || NG.current_mag.current_rounds < 3)
+	if(!NG.in_chamber || !NG.current_mag || NG.current_mag.ammo_position < 3)
 		to_chat(user, SPAN_WARNING("You require at least 4 nails to complete this task!"))
 		return FALSE
 
@@ -452,7 +457,7 @@
 		to_chat(user, SPAN_WARNING("You seems to have misplaced the repair material!"))
 		return FALSE
 
-	if(!NG.in_chamber || !NG.current_mag || NG.current_mag.current_rounds < 3)
+	if(!NG.in_chamber || !NG.current_mag || NG.current_mag.ammo_position < 3)
 		to_chat(user, SPAN_WARNING("You require at least 4 nails to complete this task!"))
 		return FALSE
 
@@ -460,7 +465,9 @@
 	to_chat(user, SPAN_WARNING("You nail [material] to [src], restoring some of its integrity!"))
 	update_damage_state()
 	material.use(1)
-	NG.current_mag.current_rounds -= 3
+	for(var/i=0;i<3;i++)
+		var/obj/item/projectile/P = NG.current_mag.transfer_bullet_out()
+		qdel(P)
 	NG.in_chamber = null
 	NG.load_into_chamber()
 	return TRUE

@@ -51,11 +51,11 @@
 
 	return ..()
 
-/datum/element/bloody_feet/proc/on_moved(mob/living/carbon/human/target, oldLoc, direction)
+/datum/element/bloody_feet/proc/on_moved(mob/living/carbon/human/target, old_loc, direction)
 	SIGNAL_HANDLER
-	INVOKE_ASYNC(src, PROC_REF(add_tracks), target, oldLoc, direction)
+	INVOKE_ASYNC(src, PROC_REF(add_tracks), target, old_loc, direction)
 
-/datum/element/bloody_feet/proc/add_tracks(mob/living/carbon/human/target, oldLoc, direction)
+/datum/element/bloody_feet/proc/add_tracks(mob/living/carbon/human/target, old_loc, direction)
 	if(GLOB.perf_flags & PERF_TOGGLE_NOBLOODPRINTS)
 		Detach(target)
 		return
@@ -65,35 +65,39 @@
 		LAZYREMOVE(entered_bloody_turf, target)
 		return
 
-	var/turf/T_in = target.loc
-	var/turf/T_out = oldLoc
+	var/turf/old_loc_turf = old_loc
+	var/obj/effect/decal/cleanable/blood/footprints/old_loc_FP = find_pool_by_blood_state(old_loc_turf, /obj/effect/decal/cleanable/blood/footprints)
+	if(old_loc_FP)
+		add_parent_to_footprint(old_loc_FP)
+		if (!(old_loc_FP.exited_dirs & direction))
+			old_loc_FP.exited_dirs |= direction
 
-	if(istype(T_in))
-		var/obj/effect/decal/cleanable/blood/tracks/footprints/FP = LAZYACCESS(T_in.cleanables, CLEANABLE_TRACKS)
-		if(FP)
-			var/image/I = LAZYACCESS(FP.steps_in, "[direction]")
-			if(!I)
-				FP.add_tracks(direction, color, FALSE)
-		else
-			FP = new(T_in)
-			FP.add_tracks(direction, color, FALSE)
+	else if(find_pool_by_blood_state(old_loc_turf))
+		old_loc_FP = new(old_loc_turf, color)
+		if(!QDELETED(old_loc_FP)) ///prints merged
+			old_loc_FP.exited_dirs |= direction
+			add_parent_to_footprint(old_loc_FP)
 
-	if(istype(T_out))
-		var/obj/effect/decal/cleanable/blood/tracks/footprints/FP = LAZYACCESS(T_out.cleanables, CLEANABLE_TRACKS)
-		if(FP)
-			var/image/I = LAZYACCESS(FP.steps_out, "[direction]")
-			if(!I)
-				FP.add_tracks(direction, color, TRUE)
-		else
-			FP = new(T_out)
-			FP.add_tracks(direction, color, TRUE)
+	var/obj/effect/decal/cleanable/blood/footprints/FP = new(target.loc, color)
+	if(!QDELETED(FP)) ///prints merged
+		FP.entered_dirs |= direction
+		add_parent_to_footprint(FP)
 
 	if(--target.bloody_footsteps <= 0)
 		Detach(target)
 
+/datum/element/bloody_feet/proc/find_pool_by_blood_state(turf/turfLoc, typeFilter = null)
+	for(var/obj/effect/decal/cleanable/blood/pool in turfLoc)
+		if(!typeFilter || istype(pool, typeFilter))
+			return pool
+
 /datum/element/bloody_feet/proc/on_shoes_removed(datum/target)
 	SIGNAL_HANDLER
 	Detach(target)
+
+/datum/element/bloody_feet/proc/add_parent_to_footprint(obj/effect/decal/cleanable/blood/footprints/FP)
+	if(target_shoes)
+		FP.shoe_types |= target_shoes.type
 
 /datum/element/bloody_feet/proc/blood_crossed(mob/living/carbon/human/target, amount, bcolor, dry_time_left)
 	SIGNAL_HANDLER

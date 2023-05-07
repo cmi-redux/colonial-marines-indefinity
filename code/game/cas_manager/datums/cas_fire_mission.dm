@@ -106,7 +106,7 @@
 			relative_dir = get_dir(M, initial_turf)
 
 		var/ds_identifier = "LARGE BIRD"
-		if (M.mob_flags & KNOWS_TECHNOLOGY)
+		if(M.mob_flags & KNOWS_TECHNOLOGY)
 			ds_identifier = "DROPSHIP"
 
 		M.show_message( \
@@ -124,7 +124,7 @@
 			relative_dir = get_dir(M, initial_turf)
 
 		var/ds_identifier = "LARGE BIRD"
-		if (M.mob_flags & KNOWS_TECHNOLOGY)
+		if(M.mob_flags & KNOWS_TECHNOLOGY)
 			ds_identifier = "DROPSHIP"
 
 		M.show_message( \
@@ -163,12 +163,12 @@
 			if(item.offsets.len < step || item.offsets[step] == null || item.offsets[step]=="-")
 				continue
 			var/offset = item.offsets[step]
-			if (current_turf == null)
+			if(current_turf == null)
 				return -1
-			var/turf/shootloc = locate(current_turf.x + sx*offset, current_turf.y + sy*offset, current_turf.z)
-			var/area/A = get_area(shootloc)
-			if(shootloc && !CEILING_IS_PROTECTED(A?.ceiling, CEILING_PROTECTION_TIER_3) && !protected_by_pylon(TURF_PROTECTION_CAS, shootloc))
-				item.weapon.open_fire_firemission(shootloc)
+			var/turf/target_turf = locate(current_turf.x + sx*offset, current_turf.y + sy*offset, current_turf.z)
+			var/turf/real_target_turf = target_turf.can_air_strike(10, target_turf.get_real_roof())
+			if(real_target_turf)
+				item.weapon.open_fire_firemission(real_target_turf)
 		sleep(step_delay)
 	if(envelope)
 		envelope.change_current_loc(null)

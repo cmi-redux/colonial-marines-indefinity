@@ -5,6 +5,7 @@
 	name = "desert dirt"
 	icon = 'icons/turf/floors/desert.dmi'
 	icon_state = "desert1"
+	weedable = FULLY_WEEDABLE
 	is_groundmap_turf = TRUE
 
 /turf/open/desert/ex_act(severity) //Should make it indestructible
@@ -23,9 +24,6 @@
 /turf/open/desert/dirt
 	name = "desert"
 	icon_state = "desert1"
-
-/turf/open/desert/dirt/is_weedable()
-	return FULLY_WEEDABLE
 
 /turf/open/desert/dirt/dirt_transition_edge1
 	name = "desert"
@@ -55,9 +53,6 @@
 /turf/open/desert/rock
 	name = "rock"
 	icon_state = "rock1"
-
-/turf/open/desert/rock/is_weedable()
-	return FULLY_WEEDABLE
 
 /turf/open/desert/rock/edge1
 	name = "desert"
@@ -107,21 +102,25 @@
 	var/toxic = 0
 	supports_surgery = FALSE
 
+	layer = UNDER_TURF_LAYER -0.03
+
+/turf/open/desert/desert_shore/Entered(atom/movable/arrived)
+	. = ..()
+	if(isliving(arrived))
+		arrived.AddComponent(/datum/component/mob_overlay_effect, type, -2)
+
 /turf/open/desert/desert_shore/update_icon()
 	..()
 	switch(toxic)
 		if(1)
-			SetLuminosity(2)
+			set_light(2)
 			icon = 'icons/turf/floors/desert_water_toxic.dmi'
 		if(0)
-			SetLuminosity(1)
+			set_light(1)
 			icon = 'icons/turf/floors/desert_water.dmi'
 		if(-1)
-			SetLuminosity(1)
+			set_light(1)
 			icon = 'icons/turf/floors/desert_water_transition.dmi'
-
-/turf/open/desert/desert_shore/is_weedable()
-	return NOT_WEEDABLE
 
 /turf/open/desert/desert_shore/desert_shore1
 	name = "shore"
@@ -196,13 +195,13 @@
 	..()
 	switch(toxic)
 		if(1)
-			SetLuminosity(2)
+			set_light(2)
 			icon = 'icons/turf/floors/desert_water_toxic.dmi'
 		if(0)
-			SetLuminosity(1)
+			set_light(1)
 			icon = 'icons/turf/floors/desert_water.dmi'
 		if(-1)
-			SetLuminosity(1)
+			set_light(1)
 			icon = 'icons/turf/floors/desert_water_transition.dmi'
 
 //Desert River Toxic
@@ -214,20 +213,19 @@
 	var/toxic = 0
 	default_name = "water"
 
-/turf/open/gm/river/desert/is_weedable()
-	return NOT_WEEDABLE
+	layer = UNDER_TURF_LAYER -0.03
 
 /turf/open/gm/river/desert/update_icon()
 	..()
 	switch(toxic)
 		if(1)
-			SetLuminosity(2)
+			set_light(2)
 			icon = 'icons/turf/floors/desert_water_toxic.dmi'
 		if(0)
-			SetLuminosity(1)
+			set_light(1)
 			icon = 'icons/turf/floors/desert_water.dmi'
 		if(-1)
-			SetLuminosity(1)
+			set_light(1)
 			icon = 'icons/turf/floors/desert_water_transition.dmi'
 	update_overlays()
 
@@ -236,6 +234,12 @@
 /turf/open/gm/river/desert/shallow
 	icon_state = "shallow"
 	icon_overlay = "_shallow"
+
+/turf/open/gm/river/desert/shallow/Entered(atom/movable/arrived)
+	. = ..()
+	if(!covered)
+		if(isliving(arrived))
+			arrived.AddComponent(/datum/component/mob_overlay_effect, type, -8)
 
 /turf/open/gm/river/desert/shallow/covered
 	covered = 1
@@ -246,6 +250,12 @@
 	icon_state = "shallow_edge"
 	icon_overlay = "shallow_edge_overlay"
 
+/turf/open/gm/river/desert/shallow_edge/Entered(atom/movable/arrived)
+	. = ..()
+	if(!covered)
+		if(isliving(arrived))
+			arrived.AddComponent(/datum/component/mob_overlay_effect, type, -12)
+
 /turf/open/gm/river/desert/shallow_edge/covered
 	covered = 1
 	icon = 'icons/turf/floors/desert_water_covered.dmi'
@@ -254,6 +264,12 @@
 /turf/open/gm/river/desert/shallow_corner
 	icon_state = "shallow_c"
 	icon_overlay = "shallow_c_overlay"
+
+/turf/open/gm/river/desert/shallow_corner/Entered(atom/movable/arrived)
+	. = ..()
+	if(!covered)
+		if(isliving(arrived))
+			arrived.AddComponent(/datum/component/mob_overlay_effect, type, -12)
 
 /turf/open/gm/river/desert/shallow_corner/covered
 	covered = 1
@@ -264,6 +280,12 @@
 /turf/open/gm/river/desert/deep
 	icon_state = "deep"
 	icon_overlay = "_deep"
+
+/turf/open/gm/river/desert/deep/Entered(atom/movable/arrived)
+	. = ..()
+	if(!covered)
+		if(isliving(arrived))
+			arrived.AddComponent(/datum/component/mob_overlay_effect, type, -16)
 
 /turf/open/gm/river/desert/deep/covered
 	covered = 1

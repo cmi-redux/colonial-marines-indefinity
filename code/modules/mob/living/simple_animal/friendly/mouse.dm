@@ -46,7 +46,7 @@
 			set_stat(CONSCIOUS)
 			icon_state = "mouse_[body_color]"
 			wander = 1
-			canmove = 1
+			canmove = TRUE
 		else if(prob(5))
 			INVOKE_ASYNC(src, PROC_REF(emote), "snuffles")
 
@@ -69,7 +69,7 @@
 
 /mob/living/simple_animal/mouse/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_pass = PASS_FLAGS_CRAWLER
 
 /mob/living/simple_animal/mouse/splat(mob/killer)
@@ -116,7 +116,7 @@
 		return ..()
 
 /mob/living/simple_animal/mouse/get_scooped(mob/living/carbon/grabber)
-	if (stat >= DEAD)
+	if(stat >= DEAD)
 		return
 	..()
 

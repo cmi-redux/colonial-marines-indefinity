@@ -181,11 +181,10 @@ GLOBAL_LIST_INIT(pp_transformables, list(
 	target.mind.transfer_to(M, TRUE)
 
 	if(isxeno(M))
-		var/mob/living/carbon/xenomorph/newXeno = M
+		var/mob/living/carbon/xenomorph/new_xeno = M
 		if(isxeno(target))
-			var/mob/living/carbon/xenomorph/X = target
-			newXeno.set_hive_and_update(X.hivenumber)
-
+			var/mob/living/carbon/xenomorph/xeno = target
+			new_xeno.set_hive_and_update(xeno.faction)
 
 	QDEL_IN(target, 0.3 SECONDS)
 	addtimer(CALLBACK(M.mob_panel, TYPE_PROC_REF(/datum, tgui_interact), user.mob), 1 SECONDS)

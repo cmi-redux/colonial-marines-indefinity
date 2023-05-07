@@ -13,6 +13,7 @@
 	max_heavies = 1
 	var/max_synths = 1
 	var/synths = 0
+	assigned_squad = SQUAD_WY_6
 
 
 /datum/emergency_call/pmc/New()
@@ -21,20 +22,21 @@
 	objectives = "Secure the Corporate Liaison and the [MAIN_SHIP_NAME]'s Commanding Officer, and eliminate any hostile threats. Do not damage Wey-Yu property."
 
 
-/datum/emergency_call/pmc/create_member(datum/mind/M, turf/override_spawn_loc)
+/datum/emergency_call/pmc/create_member(datum/mind/mind, turf/override_spawn_loc)
 	var/turf/spawn_loc = override_spawn_loc ? override_spawn_loc : get_spawn_point()
 
 	if(!istype(spawn_loc))
 		return //Didn't find a useable spawn point.
 
 	var/mob/living/carbon/human/mob = new(spawn_loc)
-	M.transfer_to(mob, TRUE)
+	mind.transfer_to(mob, TRUE)
+	GLOB.ert_mobs += mob
 
 	if(!leader && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(mob.client, JOB_SQUAD_LEADER, time_required_for_job))
 		leader = mob
 		to_chat(mob, SPAN_ROLE_HEADER("You are a Weyland-Yutani PMC Squad Leader!"))
 		arm_equipment(mob, /datum/equipment_preset/pmc/pmc_leader, TRUE, TRUE)
-	else if(synths < max_synths && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_SYNTH) && RoleAuthority.roles_whitelist[mob.ckey] & WHITELIST_SYNTHETIC)
+	else if(synths < max_synths && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_SYNTH) && SSticker.role_authority.roles_whitelist[mob.ckey] & WHITELIST_SYNTHETIC)
 		synths++
 		to_chat(mob, SPAN_ROLE_HEADER("You are a Weyland-Yutani PMC Support Synthetic!"))
 		arm_equipment(mob, /datum/equipment_preset/pmc/synth, TRUE, TRUE)
@@ -55,6 +57,7 @@
 		arm_equipment(mob, /datum/equipment_preset/pmc/pmc_standard, TRUE, TRUE)
 
 	print_backstory(mob)
+	assigned_to_squads(mob)
 
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), mob, SPAN_BOLD("Objectives:</b> [objectives]")), 1 SECONDS)
 
@@ -82,7 +85,7 @@
 	name = "Weyland-Yutani PMC (Platoon)"
 	mob_min = 8
 	mob_max = 25
-	probability = 0
+	probability = 1
 	max_medics = 2
 	max_heavies = 2
 	max_smartgunners = 2
@@ -92,7 +95,7 @@
 	name = "Weyland-Yutani PMC (Chemical Investigation Squad)"
 	mob_max = 6
 	mob_min = 2
-	probability = 0
+	probability = 1
 	max_medics = 2
 	max_smartgunners = 1
 	var/checked_objective = FALSE
@@ -108,7 +111,7 @@
 	objectives += "Assume at least 30 units are located within the department. If they can not make more that should be all. Cooperate with the onboard CL to ensure all who know the complete recipe are kept silenced with a contract of confidentiality. All humans who have ingested the chemical must be brought back dead or alive. Viral scan is required for any humans who is suspected of ingestion. Full termination of the department is authorized if they do not cooperate, but this should be avoided UNLESS ABSOLUTELY NECESSARY. Assisting with [MAIN_SHIP_NAME] current operation is only allowed after successful retrieval and with a signed contract between the CL and acting commander of [MAIN_SHIP_NAME]."
 	checked_objective = TRUE
 
-/datum/emergency_call/pmc/chem_retrieval/create_member(datum/mind/M, turf/override_spawn_loc)
+/datum/emergency_call/pmc/chem_retrieval/create_member(datum/mind/mind, turf/override_spawn_loc)
 	var/turf/spawn_loc = override_spawn_loc ? override_spawn_loc : get_spawn_point()
 
 	if(!istype(spawn_loc))
@@ -117,30 +120,32 @@
 	if(!checked_objective)
 		check_objective_info()
 
-	var/mob/living/carbon/human/H = new(spawn_loc)
-	H.key = M.key
-	if(H.client)
-		H.client.change_view(world_view_size)
+	var/mob/living/carbon/human/mob = new(spawn_loc)
+	mob.key = mind.key
+	if(mob.client)
+		mob.client.change_view(world_view_size)
+	GLOB.ert_mobs += mob
 
-	if(!leader && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(H.client, JOB_SQUAD_LEADER, time_required_for_job))    //First one spawned is always the leader.
-		leader = H
-		to_chat(H, SPAN_ROLE_HEADER("You are a Weyland-Yutani PMC Squad Leader!"))
-		arm_equipment(H, /datum/equipment_preset/pmc/pmc_lead_investigator, TRUE, TRUE)
-	else if(medics < max_medics && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_MEDIC) && check_timelock(H.client, JOB_SQUAD_MEDIC, time_required_for_job))
+	if(!leader && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(mob.client, JOB_SQUAD_LEADER, time_required_for_job))    //First one spawned is always the leader.
+		leader = mob
+		to_chat(mob, SPAN_ROLE_HEADER("You are a Weyland-Yutani PMC Squad Leader!"))
+		arm_equipment(mob, /datum/equipment_preset/pmc/pmc_lead_investigator, TRUE, TRUE)
+	else if(medics < max_medics && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_MEDIC) && check_timelock(mob.client, JOB_SQUAD_MEDIC, time_required_for_job))
 		medics++
-		to_chat(H, SPAN_ROLE_HEADER("You are a Weyland-Yutani PMC Medical Investigator!"))
-		arm_equipment(H, /datum/equipment_preset/pmc/pmc_med_investigator, TRUE, TRUE)
-	else if(heavies < max_heavies && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_SMARTGUNNER) && check_timelock(H.client, JOB_SQUAD_SMARTGUN, time_required_for_job))
+		to_chat(mob, SPAN_ROLE_HEADER("You are a Weyland-Yutani PMC Medical Investigator!"))
+		arm_equipment(mob, /datum/equipment_preset/pmc/pmc_med_investigator, TRUE, TRUE)
+	else if(heavies < max_heavies && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_SMARTGUNNER) && check_timelock(mob.client, JOB_SQUAD_SMARTGUN, time_required_for_job))
 		heavies++
-		to_chat(H, SPAN_ROLE_HEADER("You are a Weyland-Yutani PMC Heavy Gunner!"))
-		arm_equipment(H, /datum/equipment_preset/pmc/pmc_gunner, TRUE, TRUE)
+		to_chat(mob, SPAN_ROLE_HEADER("You are a Weyland-Yutani PMC Heavy Gunner!"))
+		arm_equipment(mob, /datum/equipment_preset/pmc/pmc_gunner, TRUE, TRUE)
 	else
-		to_chat(H, SPAN_ROLE_HEADER("You are a Weyland-Yutani PMC Detainer!"))
-		arm_equipment(H, /datum/equipment_preset/pmc/pmc_detainer, TRUE, TRUE)
+		to_chat(mob, SPAN_ROLE_HEADER("You are a Weyland-Yutani PMC Detainer!"))
+		arm_equipment(mob, /datum/equipment_preset/pmc/pmc_detainer, TRUE, TRUE)
 
-	print_backstory(H)
+	print_backstory(mob)
+	assigned_to_squads(mob)
 
-	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), H, SPAN_BOLD("Objectives:</b> [objectives]")), 1 SECONDS)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), mob, SPAN_BOLD("Objectives:</b> [objectives]")), 1 SECONDS)
 /obj/effect/landmark/ert_spawns/distress_pmc
 	name = "Distress_PMC"
 

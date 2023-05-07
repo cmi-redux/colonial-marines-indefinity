@@ -222,10 +222,10 @@ Gunshots/explosions/opening doors/less rare audio (done)
 	return start_txt + mocktxt + end_txt + "</TT></BODY></HTML>"
 
 /proc/check_panel(mob/M)
-	if (istype(M, /mob/living/carbon/human) || isRemoteControlling(M))
+	if(istype(M, /mob/living/carbon/human) || isRemoteControlling(M))
 		if(M.hallucination < 15)
-			return 1
-	return 0*/
+			return TRUE
+	return FALSE*/
 
 /obj/effect/fake_attacker
 	icon = null
@@ -345,13 +345,14 @@ var/list/non_fakeattack_weapons = list(/obj/item/device/aicard,\
 	/obj/item/clothing/suit/space/uscm, /obj/item/tank)
 
 /proc/fake_attack(mob/living/target)
-// var/list/possible_clones = new/list()
+// var/list/possible_clones = list()
 	var/mob/living/carbon/human/clone = null
 	var/clone_weapon = null
 
 	for(var/mob/living/carbon/human/H in GLOB.alive_mob_list)
-		if(H.stat || H.lying) continue
-// possible_clones += H
+		if(H.stat || H.lying)
+			continue
+//		possible_clones += H
 		clone = H
 		break //changed the code a bit. Less randomised, but less work to do. Should be ok, world.contents aren't stored in any particular order.
 
@@ -365,7 +366,7 @@ var/list/non_fakeattack_weapons = list(/obj/item/device/aicard,\
 		if(!(locate(clone.l_hand) in non_fakeattack_weapons))
 			clone_weapon = clone.l_hand.name
 			F.weap = clone.l_hand
-	else if (clone.r_hand)
+	else if(clone.r_hand)
 		if(!(locate(clone.r_hand) in non_fakeattack_weapons))
 			clone_weapon = clone.r_hand.name
 			F.weap = clone.r_hand

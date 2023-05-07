@@ -26,10 +26,6 @@
 								locate(bounds[MAP_MAXX], bounds[MAP_MAXY], bounds[MAP_MAXZ]))
 		tainted |= TT
 
-	for(var/turf/T as anything in tainted)
-		var/area/A = T.loc
-		if(!A?.lighting_use_dynamic)
-			continue
-		T.cached_lumcount = -1 // Invalidate lumcount to force update here
-		T.lighting_changed = TRUE
-		SSlighting.changed_turfs += T
+	for(var/turf/turf as anything in tainted)
+		turf.reconsider_lights()
+		turf.reconsider_sunlight()

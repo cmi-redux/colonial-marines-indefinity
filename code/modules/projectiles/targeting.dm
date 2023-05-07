@@ -15,10 +15,11 @@
 		target = null
 
 //Compute how to fire.....
-/obj/item/weapon/gun/proc/PreFire(atom/A as mob|obj|turf|area, mob/living/user as mob|obj, params)
+/obj/item/weapon/gun/proc/PreFire(atom/A as mob|obj|turf|area, mob/living/user as mob|obj, params, atom/operator)
 	//Lets not spam it.
-	if(lock_time > world.time - 2) return
-	.
+	if(lock_time > world.time - 2)
+		return
+
 	if(ismob(A) && isliving(A) && !(A in target))
 		Aim(A) //Clicked a mob, aim at them
 	else //Didn't click someone, check if there is anyone along that guntrace
@@ -26,7 +27,7 @@
 		if(M && isliving(M) && (M in view(user)) && !(M in target))
 			Aim(M) //Aha!  Aim at them!
 		else if(!ismob(M) || (ismob(M) && !(M in view(user)))) //Nope!  They weren't there!
-			Fire(A,user,params)  //Fire like normal, then.
+			Fire(A, user, params, operator)  //Fire like normal, then.
 	user.setDir(get_cardinal_dir(src, A))
 
 //Aiming at the target mob.
@@ -53,7 +54,7 @@
 		return
 	M.last_move_intent = world.time
 	if(src.in_chamber && (T in view(5,M)))
-		Fire(T,usr,reflex = 1)
+		Fire(T, usr, reflex = 1)
 	else
 		click_empty(M)
 

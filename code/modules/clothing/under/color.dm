@@ -1,6 +1,6 @@
 
 /obj/item/clothing/under/color
-	flags_jumpsuit = FALSE
+	flags_jumpsuit = NO_FLAGS
 
 /obj/item/clothing/under/color/black
 	name = "black jumpsuit"

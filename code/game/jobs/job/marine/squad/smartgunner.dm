@@ -2,9 +2,9 @@
 	title = JOB_SQUAD_SMARTGUN
 	total_positions = 4
 	spawn_positions = 4
-	allow_additional = 1
-	scaled = 1
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT|ROLE_ADD_TO_SQUAD
+	allow_additional = TRUE
+	scaled = TRUE
+	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = /datum/equipment_preset/uscm/sg
 	entry_message_body = "<a href='"+URL_WIKI_SG_GUIDE+"'>You are the smartgunner.</a> Your task is to provide heavy weapons support."
 
@@ -14,7 +14,7 @@
 /datum/job/marine/smartgunner/get_total_positions(latejoin = 0)
 	var/positions = spawn_positions
 	if(latejoin)
-		positions = sg_slot_formula(get_total_marines())
+		positions = sg_slot_formula(get_total_population(FACTION_MARINE))
 		if(positions <= total_positions_so_far)
 			positions = total_positions_so_far
 		else
@@ -27,6 +27,11 @@
 	title = JOB_WO_SQUAD_SMARTGUNNER
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = /datum/equipment_preset/wo/marine/sg
+
+/datum/job/marine/smartgunner/crash
+	title = JOB_CRASH_SQUAD_SMARTGUNNER
+	flags_startup_parameters = ROLE_ADD_TO_SQUAD
+	gear_preset = /datum/equipment_preset/crash/marine/sg
 
 AddTimelock(/datum/job/marine/smartgunner, list(
 	JOB_SQUAD_ROLES = 5 HOURS

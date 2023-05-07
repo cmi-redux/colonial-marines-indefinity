@@ -589,12 +589,12 @@ GLOBAL_LIST_INIT(known_implants, subtypesof(/obj/item/implant))
 				dat += "\n"
 
 	// Show red messages - broken bokes, etc
-	if (src.getCloneLoss())
+	if(src.getCloneLoss())
 		dat += "\t<span class='scanner'> *Subject appears to have been imperfectly cloned.</span>\n"
 	for(var/datum/disease/D in src.viruses)
 		if(!D.hidden[SCANNER])
 			dat += "\t<span class='scannerb'> *Warning: [D.form] Detected</span><span class='scanner'>\nName: [D.name].\nType: [D.spread].\nStage: [D.stage]/[D.max_stages].\nPossible Cure: [D.cure]</span>\n"
-	if (src.getBrainLoss() >= 100 || !src.has_brain())
+	if(src.getBrainLoss() >= 100 || !src.has_brain())
 		dat += "\t<span class='scanner'> *Subject is <b>brain dead</b></span>.\n"
 
 	if(src.has_brain() && src.stat != DEAD && ishuman(src))
@@ -650,7 +650,7 @@ GLOBAL_LIST_INIT(known_implants, subtypesof(/obj/item/implant))
 	// Show body temp
 	dat += "\n\tBody Temperature: [src.bodytemperature-T0C]&deg;C ([src.bodytemperature*1.8-459.67]&deg;F)\n"
 
-	if (ishuman(src))
+	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
 		// Show blood level
 		var/blood_volume = BLOOD_VOLUME_NORMAL

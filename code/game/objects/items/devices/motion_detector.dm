@@ -31,7 +31,7 @@
 	var/recycletime = 120
 	var/long_range_cooldown = 2
 	var/blip_type = "detector"
-	var/iff_signal = FACTION_MARINE
+	faction_to_get = FACTION_MARINE
 	actions_types = list(/datum/action/item_action)
 	var/scanning = FALSE // controls if MD is in process of scan
 	var/datum/shape/rectangle/range_bounds
@@ -101,9 +101,10 @@
 	playsound(usr,'sound/machines/click.ogg', 15, TRUE)
 
 /obj/item/device/motiondetector/clicked(mob/user, list/mods)
-	if (isobserver(user) || isxeno(user)) return
+	if(isobserver(user) || isxeno(user))
+		return
 
-	if (mods["alt"])
+	if(mods["alt"])
 		if(!CAN_PICKUP(user, src))
 			return ..()
 		if(!long_range_locked)
@@ -194,7 +195,7 @@
 	return
 
 /obj/item/device/motiondetector/proc/scan()
-	set waitfor = 0
+	set waitfor = FALSE
 	if(scanning)
 		return
 	scanning = TRUE
@@ -216,11 +217,14 @@
 	var/list/ping_candidates = SSquadtree.players_in_range(range_bounds, cur_turf.z, QTREE_EXCLUDE_OBSERVER | QTREE_SCAN_MOBS)
 
 	for(var/A in ping_candidates)
-		var/mob/living/M = A //do this to skip the unnecessary istype() check; everything in ping_candidate is a mob already
-		if(M == loc) continue //device user isn't detected
-		if(world.time > M.l_move_time + 20) continue //hasn't moved recently
-		if(isrobot(M)) continue
-		if(M.get_target_lock(iff_signal))
+		var/mob/living/carbon/M = A	//do this to skip the unnecessary istype() check; everything in ping_candidate is a mob already
+		if(M == loc)
+			continue //device user isn't detected
+		if(world.time > M.l_move_time + 20)
+			continue //hasn't moved recently
+		if(isrobot(M))
+			continue
+		if(M.ally(faction))
 			continue
 
 		apply_debuff(M)
@@ -245,7 +249,7 @@
 	return ping_count
 
 /obj/item/device/motiondetector/proc/show_blip(mob/user, atom/target, blip_icon)
-	set waitfor = 0
+	set waitfor = FALSE
 	if(user && user.client)
 
 		blip_icon = blip_icon ? blip_icon : blip_type
@@ -298,22 +302,22 @@
 /obj/item/device/motiondetector/m717/hacked/contractor
 	name = "modified M717 pocket motion detector"
 	desc = "This prototype motion detector sacrifices versatility, having only the long-range mode, for size, being so small it can even fit in pockets. This one has been modified with an after-market IFF sensor to filter out Vanguard's Arrow Incorporated signals instead of USCM ones. Fight fire with fire!"
-	iff_signal = FACTION_CONTRACTOR
+	faction_to_get = FACTION_CONTRACTOR
 
 /obj/item/device/motiondetector/hacked
 	name = "hacked motion detector"
 	desc = "A device that usually picks up non-USCM signals, but this one's been hacked to detect all non-UPP movement instead. Fight fire with fire!"
-	iff_signal = FACTION_UPP
+	faction_to_get = FACTION_UPP
 
 /obj/item/device/motiondetector/hacked/elite_merc
 	name = "hacked motion detector"
 	desc = "A device that usually picks up non-USCM signals, but this one's been hacked to detect all non-freelancer movement instead. Fight fire with fire!"
-	iff_signal = FACTION_MERCENARY
+	faction_to_get = FACTION_MERCENARY
 
 /obj/item/device/motiondetector/hacked/contractor
 	name = "modified motion detector"
 	desc = "A device that usually picks up non-USCM signals, but this one's been modified with after-market IFF sensors to detect all non-Vanguard's Arrow Incorporated movement instead. Fight fire with fire!"
-	iff_signal = FACTION_CONTRACTOR
+	faction_to_get = FACTION_CONTRACTOR
 
 #undef MOTION_DETECTOR_RANGE_LONG
 #undef MOTION_DETECTOR_RANGE_SHORT

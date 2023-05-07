@@ -1,17 +1,46 @@
 #define get_job_playtime(client, job) (client.player_data? LAZYACCESS(client.player_data.playtimes, job)? client.player_data.playtimes[job].total_minutes MINUTES_TO_DECISECOND : 0 : 0)
-#define GET_MAPPED_ROLE(title) (RoleAuthority?.role_mappings[title] ? RoleAuthority.role_mappings[title] : RoleAuthority.roles_by_name[title])
-#define GET_DEFAULT_ROLE(title) (RoleAuthority?.default_roles[title] ? RoleAuthority.default_roles[title] : title)
+#define GET_MAPPED_ROLE(title) (SSticker.role_authority?.role_mappings?[title] ? SSticker.role_authority.role_mappings[title] : SSticker.role_authority?.roles_by_name?[title] ? SSticker.role_authority.roles_by_name[title] : GET_DEFAULT_ROLE(title))
+#define GET_DEFAULT_ROLE(title) (SSticker.role_authority?.default_roles?[title] ? SSticker.role_authority.default_roles[title] : title)
 
-// Squad name defines
+///////////////////////////////////////////
+//----------SQUAD NAMES DEFINES----------//
+///////////////////////////////////////////
+
+//------------Marine squad---------------//
 #define SQUAD_MARINE_1 "Alpha"
 #define SQUAD_MARINE_2 "Bravo"
 #define SQUAD_MARINE_3 "Charlie"
 #define SQUAD_MARINE_4 "Delta"
 #define SQUAD_MARINE_5 "Echo"
 #define SQUAD_MARINE_CRYO "Foxtrot"
-#define SQUAD_SOF "SOF"
+#define SQUAD_MARINE_SOF "SOF"
 
-// Job name defines
+//------------UPP squad------------------//
+#define SQUAD_UPP_1 "Red Dragon"
+#define SQUAD_UPP_2 "Sun Rise"
+#define SQUAD_UPP_3 "Veiled Threat"
+#define SQUAD_UPP_4 "Death Seekers"
+#define SQUAD_UPP_5 "Echo"
+#define SQUAD_UPP_SOZ "SOZ"
+
+//------------CLF squad------------------//
+#define SQUAD_CLF_1 "Python"
+#define SQUAD_CLF_2 "Viper"
+#define SQUAD_CLF_3 "Cobra"
+#define SQUAD_CLF_4 "Boa"
+#define SQUAD_CLF_5 "Engagers"
+
+//------------WY squad-------------------//
+#define SQUAD_WY_6 "PMC"
+#define SQUAD_WY_7 "W-Y DS"
+
+#define SQUADS_SETUP list("First" = list(SQUAD_MARINE_1, SQUAD_UPP_1, SQUAD_CLF_1), "Second" = list(SQUAD_MARINE_2, SQUAD_UPP_2, SQUAD_CLF_2), "Third" = list(SQUAD_MARINE_3, SQUAD_UPP_3, SQUAD_CLF_3), "Fourth" = list(SQUAD_MARINE_4, SQUAD_UPP_4, SQUAD_CLF_4))
+
+///////////////////////////////////////////
+//-----------JOB NAMES DEFINES-----------//
+///////////////////////////////////////////
+
+//------------Squad roles----------------//
 #define JOB_SQUAD_MARINE "Squad Rifleman"
 #define JOB_SQUAD_LEADER "Squad Leader"
 #define JOB_SQUAD_ENGI "Squad Combat Technician"
@@ -19,11 +48,8 @@
 #define JOB_SQUAD_SPECIALIST "Squad Weapons Specialist"
 #define JOB_SQUAD_RTO "Squad Radio Telephone Operator"
 #define JOB_SQUAD_SMARTGUN "Squad Smartgunner"
-#define JOB_SQUAD_ROLES /datum/timelock/squad
-#define JOB_SQUAD_ROLES_LIST list(JOB_SQUAD_MARINE, JOB_SQUAD_LEADER, JOB_SQUAD_ENGI, JOB_SQUAD_MEDIC, JOB_SQUAD_SPECIALIST, JOB_SQUAD_SMARTGUN, JOB_SQUAD_RTO)
 
-var/global/list/job_squad_roles = JOB_SQUAD_ROLES_LIST
-
+//------------Colonist roles-------------//
 #define JOB_COLONIST "Colonist"
 #define JOB_PASSENGER "Passenger"
 #define JOB_SURVIVOR "Survivor"
@@ -50,84 +76,76 @@ var/global/list/job_squad_roles = JOB_SQUAD_ROLES_LIST
 #define SPAWN_PRIORITY_VERY_LOW 5
 #define LOWEST_SPAWN_PRIORITY 5
 
+//------------Medic roles----------------//
 #define JOB_CMO "Chief Medical Officer"
 #define JOB_DOCTOR "Doctor"
 #define JOB_NURSE "Nurse"
 #define JOB_RESEARCHER "Researcher"
-#define JOB_MEDIC_ROLES  /datum/timelock/medic
-#define JOB_MEDIC_ROLES_LIST list(JOB_SQUAD_MEDIC, JOB_CMO, JOB_DOCTOR, JOB_NURSE, JOB_RESEARCHER)
 
+//------------Assist roles---------------//
 #define JOB_CORPORATE_LIAISON "Corporate Liaison"
 #define JOB_MESS_SERGEANT "Mess Technician"
 #define JOB_SYNTH "Synthetic"
 #define JOB_WORKING_JOE "Working Joe"
+#define JOB_COMBAT_REPORTER_CORPORATE_LIAISON "Combat Reporter"
 
+//------------Command roles--------------//
 #define JOB_CO "Commanding Officer"
 #define JOB_XO "Executive Officer"
 #define JOB_SO "Staff Officer"
-#define JOB_COMMAND_ROLES /datum/timelock/command
-#define JOB_COMMAND_ROLES_LIST   list(JOB_CO, JOB_XO, JOB_SO)
-var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 
+//------------Auxiliaru roles------------//
 #define JOB_PILOT "Pilot Officer"
 #define JOB_DROPSHIP_CREW_CHIEF "Dropship Crew Chief"
 #define JOB_CREWMAN "Vehicle Crewman"
 #define JOB_INTEL "Intelligence Officer"
 
+//------------Police roles---------------//
 #define JOB_POLICE "Military Police"
 #define JOB_WARDEN "Military Warden"
 #define JOB_CHIEF_POLICE "Chief MP"
-#define JOB_POLICE_ROLES /datum/timelock/mp
-#define JOB_POLICE_ROLES_LIST    list(JOB_POLICE, JOB_WARDEN, JOB_CHIEF_POLICE)
 
+
+//------------SEA role-------------------//
 #define JOB_SEA "Senior Enlisted Advisor"
 
+//------------Engi roles-----------------//
 #define JOB_CHIEF_ENGINEER "Chief Engineer"
 #define JOB_MAINT_TECH "Maintenance Technician"
 #define JOB_ORDNANCE_TECH "Ordnance Technician"
-#define JOB_ENGINEER_ROLES   /datum/timelock/engineer
-#define JOB_ENGINEER_ROLES_LIST  list(JOB_SQUAD_ENGI, JOB_MAINT_TECH, JOB_ORDNANCE_TECH, JOB_CHIEF_ENGINEER)
 
+//------------Cargo roles----------------//
 #define JOB_CHIEF_REQUISITION "Requisitions Officer"
 #define JOB_CARGO_TECH "Cargo Technician"
-#define JOB_REQUISITION_ROLES    /datum/timelock/requisition
-#define JOB_REQUISITION_ROLES_LIST   list(JOB_CHIEF_REQUISITION, JOB_CARGO_TECH)
 
+//------------Raiders roles--------------//
 #define JOB_MARINE_RAIDER "Marine Raider"
 #define JOB_MARINE_RAIDER_SL "Marine Raider Team Lead"
 #define JOB_MARINE_RAIDER_CMD "Marine Raider Platoon Lead"
 #define JOB_MARINE_RAIDER_ROLES_LIST list(JOB_MARINE_RAIDER, JOB_MARINE_RAIDER_SL, JOB_MARINE_RAIDER_CMD)
 
-#define JOB_HUMAN_ROLES  /datum/timelock/human
-
-#define JOB_XENO_ROLES   /datum/timelock/xeno
-#define JOB_DRONE_ROLES /datum/timelock/drone
-#define JOB_T3_ROLES /datum/timelock/tier3
-
+//------------Generit mar roles----------//
 #define JOB_STOWAWAY "Stowaway"
 
-#define JOB_MARINE "USCM Marine" //generic marine
+#define JOB_MARINE "USCM Marine"
 #define JOB_COLONEL "USCM Colonel"
 #define JOB_GENERAL "USCM General"
 #define JOB_ACMC "Assistant Commandant of the Marine Corps"
 #define JOB_CMC "Commandant of the Marine Corps"
 
-// Used to add a timelock to a job. Will be passed onto derivatives
-#define AddTimelock(Path, timelockList) \
-##Path/setup_requirements(list/L){\
-	L += timelockList;\
-	. = ..(L);\
-}
+//------------Crash roles----------------//
+#define JOB_CRASH_CO "Special Commander"
+#define JOB_CRASH_CHIEF_ENGINEER "Emergency Ship Crew Master"
+#define JOB_CRASH_CMO "Head Surgeon"
+#define JOB_CRASH_SYNTH "Ship Support Synthetic"
+#define JOB_CRASH_SQUAD_MARINE "Ash Squad Marine"
+#define JOB_CRASH_SQUAD_LEADER "Ash Squad Leader"
+#define JOB_CRASH_SQUAD_ENGINEER "Ash Squad Engineer"
+#define JOB_CRASH_SQUAD_MEDIC "Ash Squad Medic"
+#define JOB_CRASH_SQUAD_SPECIALIST "Ash Squad Specialist"
+#define JOB_CRASH_SQUAD_SMARTGUNNER "Ash Squad Smartgunner"
 
-// Used to add a timelock to a job. Will be passed onto derivates. Will not include the parent's timelocks.
-#define OverrideTimelock(Path, timelockList) \
-##Path/setup_requirements(list/L){\
-	L = timelockList;\
-	. = ..(L);\
-}
-
-//-------------WO roles---------------
-
+//-------------WO roles------------------//
 #define JOB_WO_CO "Ground Commander"
 #define JOB_WO_XO "Lieutenant Commander"
 #define JOB_WO_CHIEF_POLICE "Honor Guard Squad Leader"
@@ -147,7 +165,6 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 #define JOB_WO_DOCTOR "Field Doctor"
 #define JOB_WO_RESEARCHER "Chemist"
 
-#define JOB_WO_CORPORATE_LIAISON "Combat Reporter"
 #define JOB_WO_SYNTH "Support Synthetic"
 
 #define JOB_WO_SQUAD_MARINE "Dust Raider Squad Rifleman"
@@ -157,7 +174,7 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 #define JOB_WO_SQUAD_SPECIALIST "Dust Raider Squad Weapons Specialist"
 #define JOB_WO_SQUAD_LEADER "Dust Raider Squad Leader"
 
-//------------------------------------
+//---------------------------------------//
 
 //-------- PMC --------//
 #define JOB_PMC "PMC Standard"
@@ -218,16 +235,16 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 #define JOB_UPP_SPECIALIST "UPP Serzhant"
 #define JOB_UPP_LEADER "UPP Master Serzhant"
 #define JOB_UPP_POLICE "UPP Politsiya"
+#define JOB_UPP_INTEL "UPP Reconnaissance Officer"
 #define JOB_UPP_LT_OFFICER "UPP Leytenant"
 #define JOB_UPP_LT_DOKTOR "UPP Leytenant Doktor"
 #define JOB_UPP_SRLT_OFFICER "UPP Senior Leytenant"
-#define JOB_UPP_KPT_OFFICER "UPP Kapitan"
 #define JOB_UPP_MAY_OFFICER "UPP Mayjor"
 #define JOB_UPP_KOL_OFFICER "UPP Kolonel"
 
+#define JOB_UPP_CREWMAN "UPP Tank Crewman"
+#define JOB_UPP_CORPORATE_LIAISON "UPP Corporate Liason"
 #define JOB_UPP_COMBAT_SYNTH "UPP Combat Synthetic"
-
-#define UPP_JOB_LIST list(JOB_UPP, JOB_UPP_ENGI, JOB_UPP_MEDIC, JOB_UPP_SPECIALIST, JOB_UPP_LEADER, JOB_UPP_POLICE, JOB_UPP_LT_OFFICER, JOB_UPP_LT_DOKTOR, JOB_UPP_SRLT_OFFICER, JOB_UPP_KPT_OFFICER, JOB_UPP_KOL_OFFICER, JOB_UPP_COMBAT_SYNTH)
 
 #define JOB_UPP_COMMANDO "UPP Junior Kommando"
 #define JOB_UPP_COMMANDO_MEDIC "UPP 2nd Kommando"
@@ -237,7 +254,7 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 
 #define JOB_UPP_REPRESENTATIVE "UPP Representative"
 
-#define JOB_UPP_CREWMAN "UPP Tank Crewman"
+#define UPP_JOB_LIST list(JOB_UPP_KOL_OFFICER, JOB_UPP_MAY_OFFICER, JOB_UPP_SRLT_OFFICER, JOB_UPP_LT_OFFICER, JOB_UPP_INTEL, JOB_UPP_CREWMAN, JOB_UPP_LT_DOKTOR, JOB_UPP_COMBAT_SYNTH, JOB_UPP_CORPORATE_LIAISON, JOB_UPP_POLICE, JOB_UPP_LEADER, JOB_UPP_SPECIALIST, JOB_UPP_MEDIC, JOB_UPP_ENGI, JOB_UPP)
 
 //-------- CLF --------//
 #define JOB_CLF "CLF Guerilla"
@@ -300,15 +317,15 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 
 #define DUTCH_JOB_LIST list(JOB_DUTCH_ARNOLD, JOB_DUTCH_RIFLEMAN, JOB_DUTCH_MINIGUNNER, JOB_DUTCH_FLAMETHROWER, JOB_DUTCH_MEDIC)
 
-#define JOB_PREDATOR "Predator"
-#define JOB_XENOMORPH    "Xenomorph"
-#define JOB_XENOMORPH_QUEEN  "Queen"
+#define JOB_PREDATOR			"Predator"
+#define JOB_XENOMORPH			"Xenomorph"
+#define JOB_XENOMORPH_QUEEN		"Queen"
 
 // For colouring the ranks in the statistics menu
-#define JOB_PLAYTIME_TIER_1  (10 HOURS)
-#define JOB_PLAYTIME_TIER_2  (25 HOURS)
-#define JOB_PLAYTIME_TIER_3  (70 HOURS)
-#define JOB_PLAYTIME_TIER_4  (175 HOURS)
+#define JOB_PLAYTIME_TIER_1         (25 HOURS)
+#define JOB_PLAYTIME_TIER_2         (75 HOURS)
+#define JOB_PLAYTIME_TIER_3         (150 HOURS)
+#define JOB_PLAYTIME_TIER_4         (300 HOURS)
 
 #define XENO_NO_AGE  -1
 #define XENO_NORMAL 0
@@ -316,10 +333,6 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 #define XENO_ELDER 2
 #define XENO_ANCIENT 3
 #define XENO_PRIME 4
-
-/// For monthly time tracking
-#define JOB_OBSERVER "Observer"
-#define TIMELOCK_JOB(role_id, hours) new/datum/timelock(role_id, hours, role_id)
 
 //For displaying groups of jobs. Used by new player's latejoin menu and by crew manifest.
 #define FLAG_SHOW_CIC 1
@@ -331,3 +344,73 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 #define FLAG_SHOW_MEDICAL 64
 #define FLAG_SHOW_MARINES 128
 #define FLAG_SHOW_ALL_JOBS FLAG_SHOW_CIC|FLAG_SHOW_AUXIL_SUPPORT|FLAG_SHOW_MISC|FLAG_SHOW_POLICE|FLAG_SHOW_ENGINEERING|FLAG_SHOW_REQUISITION|FLAG_SHOW_MEDICAL|FLAG_SHOW_MARINES
+
+//Timelock things
+
+//SQUAD
+#define JOB_SQUAD_ROLES /datum/timelock/squad
+#define JOB_SQUAD_ROLES_LIST list(JOB_SQUAD_MARINE, JOB_SQUAD_LEADER, JOB_SQUAD_ENGI, JOB_SQUAD_MEDIC, JOB_SQUAD_SPECIALIST, JOB_SQUAD_SMARTGUN, JOB_SQUAD_RTO, JOB_UPP, JOB_UPP_CONSCRIPT, JOB_UPP_LEADER, JOB_UPP_ENGI, JOB_UPP_MEDIC, JOB_UPP_SPECIALIST)
+
+//MEDIC
+#define JOB_MEDIC_ROLES /datum/timelock/medic
+#define JOB_MEDIC_ROLES_LIST list(JOB_SQUAD_MEDIC, JOB_CMO, JOB_DOCTOR, JOB_NURSE, JOB_RESEARCHER, JOB_UPP_LT_DOKTOR)
+
+//COMMAND
+#define JOB_COMMAND_ROLES /datum/timelock/command
+#define JOB_COMMAND_ROLES_LIST list(JOB_CO, JOB_XO, JOB_SO, JOB_UPP_LT_OFFICER, JOB_UPP_SRLT_OFFICER, JOB_UPP_KOL_OFFICER)
+
+//POLICE
+#define JOB_POLICE_ROLES /datum/timelock/mp
+#define JOB_POLICE_ROLES_LIST list(JOB_POLICE, JOB_WARDEN, JOB_CHIEF_POLICE, JOB_UPP_POLICE)
+
+//ENGINEER
+#define JOB_ENGINEER_ROLES /datum/timelock/engineer
+#define JOB_ENGINEER_ROLES_LIST list(JOB_SQUAD_ENGI, JOB_MAINT_TECH, JOB_ORDNANCE_TECH, JOB_CHIEF_ENGINEER)
+
+//REQUISTION
+#define JOB_REQUISITION_ROLES /datum/timelock/requisition
+#define JOB_REQUISITION_ROLES_LIST list(JOB_CHIEF_REQUISITION, JOB_CARGO_TECH)
+
+/// For monthly time tracking
+#define JOB_OBSERVER "Observer"
+
+//HUMAN
+#define JOB_HUMAN_ROLES /datum/timelock/human
+
+//XENO
+#define JOB_XENO_ROLES /datum/timelock/xeno
+#define JOB_DRONE_ROLES /datum/timelock/drone
+#define JOB_T3_ROLES /datum/timelock/tier3
+
+// Used to add a timelock to a job. Will be passed onto derivatives
+#define AddTimelock(Path, timelockList) \
+##Path/setup_requirements(list/L){\
+	L += timelockList;\
+	. = ..(L);\
+}
+
+// Used to add a timelock to a job. Will be passed onto derivates. Will not include the parent's timelocks.
+#define OverrideTimelock(Path, timelockList) \
+##Path/setup_requirements(list/L){\
+	L = timelockList;\
+	. = ..(L);\
+}
+
+#define TIMELOCK_JOB(role_id, hours) new/datum/timelock(role_id, hours, role_id)
+
+//SQUAD THINGS
+#define JOB_SQUAD_NORMAL_LIST list(JOB_SQUAD_MARINE, JOB_WO_SQUAD_MARINE, JOB_MARINE_RAIDER, JOB_UPP)
+#define JOB_SQUAD_MEDIC_LIST list(JOB_SQUAD_MEDIC, JOB_WO_SQUAD_MEDIC, JOB_UPP_MEDIC)
+#define JOB_SQUAD_ENGI_LIST list(JOB_SQUAD_ENGI, JOB_WO_SQUAD_ENGINEER, JOB_UPP_ENGI)
+#define JOB_SQUAD_SUP_LIST list(JOB_SQUAD_RTO, JOB_UPP_CONSCRIPT)
+#define JOB_SQUAD_SPEC_LIST list(JOB_SQUAD_SPECIALIST, JOB_WO_SQUAD_SPECIALIST, JOB_UPP_SPECIALIST)
+#define JOB_SQUAD_MAIN_SUP_LIST list(JOB_SQUAD_SMARTGUN, JOB_WO_SQUAD_SMARTGUNNER)
+#define JOB_SQUAD_LEADER_LIST list(JOB_SQUAD_LEADER, JOB_WO_SQUAD_LEADER, JOB_MARINE_RAIDER_SL, JOB_UPP_LEADER)
+
+#define SQUAD_SELECTOR list("First" = 1, "Second" = 2, "Third" = 3, "Fourth" = 4)
+
+#define SQUAD_BY_FACTION list(\
+	FACTION_MARINE = list(/datum/squad/marine/alpha, /datum/squad/marine/bravo, /datum/squad/marine/charlie, /datum/squad/marine/delta, /datum/squad/marine/echo),\
+	FACTION_UPP = list(/datum/squad/upp/red_daragon, /datum/squad/upp/sun_rise, /datum/squad/upp/veiled_threat, /datum/squad/upp/death_seekers, /datum/squad/upp/echo),\
+	FACTION_CLF = list(/datum/squad/clf/python, /datum/squad/clf/viper, /datum/squad/clf/cobra, /datum/squad/clf/boa, /datum/squad/clf/engagers),\
+)

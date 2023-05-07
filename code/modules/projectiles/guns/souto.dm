@@ -1,5 +1,5 @@
 /obj/item/weapon/gun/souto
-	name = "\improper Souto Slinger Supremo"
+	name = "Souto Slinger Supremo"
 	desc = "This appears to be a T-shirt cannon modified to fire cans of Souto at speeds fast enough to get them up into the top stands of a stadium. This can't be safe. Cobbled together in Havana."
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/event.dmi'
 	icon_state = "supremo_w"
@@ -14,6 +14,7 @@
 	var/obj/item/storage/backpack/souto/soutopack
 	current_mag = null
 	auto_retrieval_slot = WEAR_IN_BACK
+	can_jammed = FALSE
 
 /obj/item/weapon/gun/souto/set_gun_config_values()
 	. = ..()
@@ -47,7 +48,7 @@
 /obj/item/weapon/gun/souto/able_to_fire(mob/user)
 	. = ..()
 	if(.)
-		if(!current_mag || !current_mag.current_rounds)
+		if(!current_mag || !current_mag.ammo_position)
 			return
 		if(!skillcheck(user, SKILL_SPEC_WEAPONS,  SKILL_SPEC_ALL))
 			to_chat(user, SPAN_WARNING("You don't seem to know how to use [src]..."))
@@ -86,8 +87,8 @@
 	return ..()
 
 /obj/item/ammo_magazine/internal/souto
-	name = "\improper Souto Slinger Supremo internal magazine"
+	name = "Souto Slinger Supremo internal magazine"
 	caliber = "Cans"
 	max_rounds = 100
-	default_ammo = /datum/ammo/souto
+	ammo_preset = list(/datum/ammo/souto)
 	gun_type = /obj/item/weapon/gun/souto

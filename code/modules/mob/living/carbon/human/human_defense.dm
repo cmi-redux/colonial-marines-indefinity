@@ -13,7 +13,7 @@ Contains most of the procs that are called when a mob is attacked by something
 			agony_amount *= 1.50
 		if("l_hand", "r_hand")
 			var/c_hand
-			if (def_zone == "l_hand")
+			if(def_zone == "l_hand")
 				c_hand = l_hand
 			else
 				c_hand = r_hand
@@ -22,7 +22,7 @@ Contains most of the procs that are called when a mob is attacked by something
 				msg_admin_attack("[key_name(src)] was disarmed by a stun effect in [get_area(src)] ([src.loc.x],[src.loc.y],[src.loc.z]).", src.loc.x, src.loc.y, src.loc.z)
 
 				drop_inv_item_on_ground(c_hand)
-				if (affected.status & (LIMB_ROBOT|LIMB_SYNTHSKIN))
+				if(affected.status & (LIMB_ROBOT|LIMB_SYNTHSKIN))
 					emote("me", 1, "drops what they were holding, their [affected.display_name] malfunctioning!")
 				else
 					var/emote_scream = pick("screams in pain and", "lets out a sharp cry and", "cries out and")
@@ -51,7 +51,7 @@ Contains most of the procs that are called when a mob is attacked by something
 
 //this proc returns the Siemens coefficient of electrical resistivity for a particular external organ.
 /mob/living/carbon/human/proc/get_siemens_coefficient_organ(obj/limb/def_zone)
-	if (!def_zone)
+	if(!def_zone)
 		return 1
 
 	var/siemens_coefficient = 1
@@ -179,7 +179,7 @@ Contains most of the procs that are called when a mob is attacked by something
 		return FALSE
 
 	var/obj/limb/affecting = get_limb(target_zone)
-	if (!affecting)
+	if(!affecting)
 		return FALSE
 	if(affecting.status & LIMB_DESTROYED)
 		to_chat(user, "What [affecting.display_name]?")
@@ -198,7 +198,7 @@ Contains most of the procs that are called when a mob is attacked by something
 
 	var/weapon_sharp = is_sharp(I)
 	var/weapon_edge = has_edge(I)
-	if ((weapon_sharp || weapon_edge) && prob(getarmor(target_zone, ARMOR_MELEE)))
+	if((weapon_sharp || weapon_edge) && prob(getarmor(target_zone, ARMOR_MELEE)))
 		weapon_sharp = FALSE
 		weapon_edge = FALSE
 
@@ -210,7 +210,10 @@ Contains most of the procs that are called when a mob is attacked by something
 		user.flick_attack_overlay(src, "punch")
 
 	var/damage = armor_damage_reduction(GLOB.marine_melee, I.force, armor, (weapon_sharp?30:0) + (weapon_edge?10:0)) // no penetration frm punches
-	apply_damage(damage, I.damtype, affecting, sharp=weapon_sharp, edge=weapon_edge, used_weapon=I)
+	apply_damage(damage, I.damtype, affecting, sharp = weapon_sharp, edge = weapon_edge, used_weapon = I)
+	user.track_damage(initial(I.name), src, damage)
+	if(user.faction == src.faction)
+		user.track_friendly_damage(initial(I.name), src, damage)
 
 	if(damage > 5)
 		last_damage_data = create_cause_data(initial(I.name), user)
@@ -251,17 +254,18 @@ Contains most of the procs that are called when a mob is attacked by something
 					add_blood(get_blood_color(), BLOOD_BODY)
 
 	//Melee weapon embedded object code.
-	if (I.damtype == BRUTE && !I.is_robot_module() && !(I.flags_item & (NODROP|DELONDROP)))
+	if(I.damtype == BRUTE && !I.is_robot_module() && !(I.flags_item & (NODROP|DELONDROP)))
 		damage = I.force
-		if(damage > 40) damage = 40  //Some sanity, mostly for yautja weapons. CONSTANT STICKY ICKY
-		if (weapon_sharp && prob(3) && !isyautja(user)) // make yautja less likely to get their weapon stuck
+		if(damage > 40)
+			damage = 40  //Some sanity, mostly for yautja weapons. CONSTANT STICKY ICKY
+		if(weapon_sharp && prob(3) && !isyautja(user)) // make yautja less likely to get their weapon stuck
 			affecting.embed(I)
 
 	return TRUE
 
 //this proc handles being hit by a thrown atom
 /mob/living/carbon/human/hitby(atom/movable/AM)
-	if (!isobj(AM))
+	if(!isobj(AM))
 		return
 
 	var/obj/O = AM
@@ -277,24 +281,28 @@ Contains most of the procs that are called when a mob is attacked by something
 		return
 
 	var/dtype = BRUTE
-	if (istype(O, /obj/item/weapon))
+	if(istype(O, /obj/item/weapon))
 		var/obj/item/weapon/W = O
 		dtype = W.damtype
 	var/impact_damage = (1 + O.throwforce*THROWFORCE_COEFF)*O.throwforce*THROW_SPEED_IMPACT_COEFF*O.cur_speed
 
 	var/zone
-	if (istype(LM.thrower, /mob/living))
-		var/mob/living/L = LM.thrower
-		zone = check_zone(L.zone_selected)
+	var/atom/thrower
+	if(LM)
+		thrower = LM.thrower
+
+	if(istype(thrower, /mob/living))
+		var/mob/living/mob = thrower
+		zone = check_zone(mob.zone_selected)
 	else
 		zone = rand_zone("chest", 75) //Hits a random part of the body, geared towards the chest
 
-	if (!zone)
+	if(!zone)
 		visible_message(SPAN_NOTICE("\The [O] misses [src] narrowly!"), null, null, 5)
 		return
 	O.throwing = FALSE //it hit, so stop moving
 
-	if ((LM.thrower != src) && check_shields(impact_damage, "[O]"))
+	if(thrower != src && check_shields(impact_damage, "[O]"))
 		return
 
 	var/obj/limb/affecting = get_limb(zone)
@@ -312,7 +320,7 @@ Contains most of the procs that are called when a mob is attacked by something
 
 	var/last_damage_source = null
 	var/last_damage_mob = null
-	if (damage > 5)
+	if(damage > 5)
 		last_damage_source = initial(AM.name)
 		animation_flash_color(src)
 		var/obj/item/I = O
@@ -321,27 +329,27 @@ Contains most of the procs that are called when a mob is attacked by something
 		else
 			playsound(loc, 'sound/effects/thud.ogg', 25, TRUE, 5, falloff = 2)
 
-	if (ismob(LM.thrower))
-		var/mob/M = LM.thrower
-		var/client/assailant = M.client
-		if (damage > 5)
-			last_damage_mob = M
-			M.track_hit(initial(O.name))
-			if (M.faction == faction)
-				M.track_friendly_fire(initial(O.name))
-		if (assailant)
-			src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been hit with a [O], thrown by [key_name(M)]</font>")
-			M.attack_log += text("\[[time_stamp()]\] <font color='red'>Hit [key_name(src)] with a thrown [O]</font>")
+	if(ismob(thrower))
+		var/mob/mob = thrower
+		var/client/assailant = mob.client
+		if(damage > 5)
+			last_damage_mob = mob
+			mob.track_hit(initial(O.name))
+			if(mob.faction == faction)
+				mob.track_friendly_fire(initial(O.name))
+		if(assailant)
+			src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been hit with a [O], thrown by [key_name(mob)]</font>")
+			mob.attack_log += text("\[[time_stamp()]\] <font color='red'>Hit [key_name(src)] with a thrown [O]</font>")
 			if(!istype(src,/mob/living/simple_animal/mouse))
-				msg_admin_attack("[key_name(src)] was hit by a [O], thrown by [key_name(M)] in [get_area(src)] ([src.loc.x],[src.loc.y],[src.loc.z]).", src.loc.x, src.loc.y, src.loc.z)
+				msg_admin_attack("[key_name(src)] was hit by a [O], thrown by [key_name(mob)] in [get_area(src)] ([src.loc.x],[src.loc.y],[src.loc.z]).", src.loc.x, src.loc.y, src.loc.z)
 
 	if(last_damage_source)
 		last_damage_data = create_cause_data(last_damage_source, last_damage_mob)
 
 	//thrown weapon embedded object code.
-	if (dtype == BRUTE && istype(O,/obj/item))
+	if(dtype == BRUTE && istype(O, /obj/item))
 		var/obj/item/I = O
-		if (!I.is_robot_module())
+		if(!I.is_robot_module())
 			var/sharp = is_sharp(I)
 			//blunt objects should really not be embedding in things unless a huge amount of force is involved
 			var/embed_chance = sharp? damage/I.w_class : damage/(I.w_class*3)
@@ -349,29 +357,8 @@ Contains most of the procs that are called when a mob is attacked by something
 
 			//Sharp objects will always embed if they do enough damage.
 			//Thrown sharp objects have some momentum already and have a small chance to embed even if the damage is below the threshold
-			if (!isyautja(src) && ((sharp && prob(damage/(10*I.w_class)*100)) || (damage > embed_threshold && prob(embed_chance))))
+			if(!isyautja(src) && ((sharp && prob(damage/(10*I.w_class)*100)) || (damage > embed_threshold && prob(embed_chance))))
 				affecting.embed(I)
-
-/mob/living/carbon/human/proc/get_id_faction_group()
-	var/obj/item/card/id/C = wear_id
-	if(!istype(C))
-		C = get_active_hand()
-	if(!istype(C))
-		return null
-
-	return C.faction_group
-
-/mob/living/proc/get_target_lock(access_to_check)
-	if(isnull(access_to_check))
-		return
-
-	var/compare_group = faction_group
-
-	if(!islist(access_to_check))
-		return access_to_check in compare_group
-
-	var/list/overlap = compare_group & access_to_check
-	return length(overlap)
 
 /mob/living/carbon/human/freeze()
 	. = ..()
@@ -382,20 +369,6 @@ Contains most of the procs that are called when a mob is attacked by something
 	. = ..()
 	if(.)
 		update_xeno_hostile_hud()
-
-/mob/living/carbon/human/get_target_lock(access_to_check)
-	if(isnull(access_to_check))
-		return
-
-	var/id_group = get_id_faction_group()
-	if(!id_group)
-		return ..()
-
-	if(!islist(access_to_check))
-		return access_to_check in id_group
-
-	var/list/overlap = id_group & access_to_check
-	return length(overlap)
 
 /mob/living/carbon/human/handle_flamer_fire_crossed(obj/flamer_fire/fire)
 	. = ..()

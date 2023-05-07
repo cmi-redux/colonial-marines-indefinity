@@ -83,9 +83,9 @@
 					REMOVE_TRAIT(H, trait, TRAIT_SOURCE_EQUIPMENT(flags_equip_slot))
 
 	for(var/X in actions)
-		var/datum/action/A = X
-		if(istype(A, /datum/action/item_action/toggle))
-			A.update_button_icon()
+		var/datum/action/action = X
+		if(istype(action, /datum/action/item_action/toggle))
+			action.update_button_icon()
 
 /obj/item/clothing/glasses/equipped(mob/user, slot)
 	if(active && slot == WEAR_EYES)
@@ -406,23 +406,23 @@
 	active_icon_state = "mgogglesorg_down"
 	inactive_icon_state = "mgogglesorg"
 
-/obj/item/clothing/glasses/mgoggles/on_enter_storage(obj/item/storage/internal/S)
+/obj/item/clothing/glasses/mgoggles/on_enter_storage(obj/item/storage/internal/storage)
 	..()
 
-	if(!istype(S))
+	if(!istype(storage))
 		return
 
 	remove_attached_item()
 
-	attached_item = S.master_object
+	attached_item = storage.master_object
 	RegisterSignal(attached_item, COMSIG_PARENT_QDELETING, PROC_REF(remove_attached_item))
 	RegisterSignal(attached_item, COMSIG_ITEM_EQUIPPED, PROC_REF(wear_check))
-	activation = new /datum/action/item_action/toggle(src, S.master_object)
+	activation = new /datum/action/item_action/toggle(src, storage.master_object)
 
-	if(ismob(S.master_object.loc))
-		activation.give_to(S.master_object.loc)
+	if(ismob(storage.master_object.loc))
+		activation.give_to(storage.master_object.loc)
 
-/obj/item/clothing/glasses/mgoggles/on_exit_storage(obj/item/storage/S)
+/obj/item/clothing/glasses/mgoggles/on_exit_storage(obj/item/storage/storage)
 	remove_attached_item()
 	return ..()
 
@@ -495,7 +495,7 @@
 	set name = "Adjust welding goggles"
 	set src in usr
 
-	if(usr.canmove && !usr.stat && !usr.is_mob_restrained())
+	if(usr.can_action && !usr.is_mob_restrained())
 		if(active)
 			active = 0
 			vision_impair = vision_impair_off
@@ -524,9 +524,9 @@
 		update_clothing_icon()
 
 		for(var/X in actions)
-			var/datum/action/A = X
-			if(istype(A, /datum/action/item_action/toggle))
-				A.update_button_icon()
+			var/datum/action/action = X
+			if(istype(action, /datum/action/item_action/toggle))
+				action.update_button_icon()
 
 /obj/item/clothing/glasses/welding/superior
 	name = "superior welding goggles"

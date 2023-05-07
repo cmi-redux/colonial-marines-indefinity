@@ -3,59 +3,48 @@
 	set name = "wiki"
 	set desc = "Visit the wiki."
 	set hidden = TRUE
-	if( CONFIG_GET(string/wikiurl) )
-		if(tgui_alert(src, "This will open the wiki in your browser. Are you sure?", "Confirm", list("Yes", "No")) != "Yes")
+	if(CONFIG_GET(string/wikiurl))
+		if(alert(auto_lang(LANGUAGE_BROWSER_URL), , auto_lang(LANGUAGE_YES), auto_lang(LANGUAGE_NO)) == auto_lang(LANGUAGE_NO))
 			return
 		src << link(CONFIG_GET(string/wikiurl))
 	else
-		to_chat(src, SPAN_DANGER("The wiki URL is not set in the server configuration."))
+		to_chat(src, SPAN_DANGER(auto_lang(LANGUAGE_BROWSER_NO_URL)))
 	return
 
 /client/verb/forum()
 	set name = "forum"
 	set desc = "Visit the forum."
 	set hidden = TRUE
-	if( CONFIG_GET(string/forumurl) )
-		if(tgui_alert(src, "This will open the forum in your browser. Are you sure?", "Confirm", list("Yes", "No")) != "Yes")
+	if(CONFIG_GET(string/forumurl))
+		if(alert(auto_lang(LANGUAGE_BROWSER_URL), , auto_lang(LANGUAGE_YES), auto_lang(LANGUAGE_NO)) == auto_lang(LANGUAGE_NO))
 			return
 		src << link(CONFIG_GET(string/forumurl))
 	else
-		to_chat(src, SPAN_DANGER("The forum URL is not set in the server configuration."))
+		to_chat(src, SPAN_DANGER(auto_lang(LANGUAGE_BROWSER_NO_URL)))
 	return
 
 /client/verb/rules()
 	set name = "rules"
 	set desc = "Read our rules."
 	set hidden = TRUE
-	if( CONFIG_GET(string/rulesurl) )
-		if(tgui_alert(src, "This will open the rules in your browser. Are you sure?", "Confirm", list("Yes", "No")) != "Yes")
+	if(CONFIG_GET(string/rulesurl))
+		if(alert(auto_lang(LANGUAGE_BROWSER_URL), , auto_lang(LANGUAGE_YES), auto_lang(LANGUAGE_NO)) == auto_lang(LANGUAGE_NO))
 			return
 		src << link(CONFIG_GET(string/rulesurl))
 	else
-		to_chat(src, SPAN_DANGER("The rules URL is not set in the server configuration."))
+		to_chat(src, SPAN_DANGER(auto_lang(LANGUAGE_BROWSER_NO_URL)))
 	return
-
-/client/verb/changelog()
-	set name = "Changelog"
-	set category = "OOC"
-	if(!GLOB.changelog_tgui)
-		GLOB.changelog_tgui = new /datum/changelog()
-
-	GLOB.changelog_tgui.tgui_interact(mob)
-	if(prefs.lastchangelog != GLOB.changelog_hash)
-		prefs.lastchangelog = GLOB.changelog_hash
-		prefs.save_preferences()
-		winset(src, "infowindow.changelog", "font-style=;")
 
 /client/verb/discord()
 	set name = "Discord"
 	set desc = "Join our Discord! Meet and talk with other players in the server."
 	set hidden = TRUE
-
-	if(tgui_alert(src, "This will open the discord in your browser. Are you sure?", "Confirm", list("Yes", "No")) != "Yes")
-		return
-
-	src << link("https://discord.gg/cmss13")
+	if(CONFIG_GET(string/discordurl))
+		if(alert(auto_lang(LANGUAGE_BROWSER_URL), , auto_lang(LANGUAGE_YES), auto_lang(LANGUAGE_NO)) == auto_lang(LANGUAGE_NO))
+			return
+		src << link(CONFIG_GET(string/discordurl))
+	else
+		to_chat(src, SPAN_DANGER(auto_lang(LANGUAGE_BROWSER_NO_URL)))
 	return
 
 /client/verb/submitbug()
@@ -76,7 +65,7 @@
 	set name = "Set FPS"
 	set desc = "Set client FPS. 20 is the default"
 	set category = "Preferences"
-	var/fps = tgui_input_number(usr,"New FPS Value. 0 is server-sync. Higher values cause more desync. Values over 30 not recommended.","Set FPS", 0, MAX_FPS, MIN_FPS)
+	var/fps = tgui_input_number(usr, "New FPS Value. 0 is server-sync. Higher values cause more desync. Values over 30 not recommended.", "Set FPS", 0, MAX_FPS, MIN_FPS)
 	if(world.byond_version >= 511 && byond_version >= 511 && fps >= MIN_FPS && fps <= MAX_FPS)
 		vars["fps"] = fps
 		prefs.fps = fps

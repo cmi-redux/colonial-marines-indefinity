@@ -57,19 +57,19 @@
 	next_use = world.time + cooldown * owner.misc_multipliers["cooldown"]
 
 	//how many rounds we will shoot in this burst
-	if(chained_shots > LAZYLEN(chain_bursts)) //5 shots at maximum rotation
+	if(chained_shots > length(chain_bursts))	//5 shots at maximum rotation
 		t = 5
 	else
 		t = LAZYACCESS(chain_bursts, chained_shots)
 	for(var/i = 1; i <= t; i++)
 		var/atom/T = A
 		if(!prob((accuracy * 100) / owner.misc_multipliers["accuracy"]))
-			T = get_step(get_turf(T), pick(cardinal))
+			T = get_step(get_turf(T), pick( GLOB.cardinals))
 		fire_projectile(user, T)
-		if(ammo.current_rounds <= 0)
+		if(ammo.ammo_position <= 0)
 			break
 		sleep(2)
-	to_chat(user, SPAN_WARNING("[src] Ammo: <b>[SPAN_HELPFUL(ammo ? ammo.current_rounds : 0)]/[SPAN_HELPFUL(ammo ? ammo.max_rounds : 0)]</b> | Mags: <b>[SPAN_HELPFUL(LAZYLEN(backup_clips))]/[SPAN_HELPFUL(max_clips)]</b>"))
+	to_chat(user, SPAN_WARNING("[src] Ammo: <b>[SPAN_HELPFUL(ammo ? ammo.ammo_position : 0)]/[SPAN_HELPFUL(ammo ? ammo.max_rounds : 0)]</b> | Mags: <b>[SPAN_HELPFUL(length(backup_clips))]/[SPAN_HELPFUL(max_clips)]</b>"))
 
 	playsound(get_turf(src), S, 40, 1)
 	last_shot_time = world.time

@@ -1,3 +1,10 @@
+/datum/action/xeno_action/verb/verb_toggle_bomb()
+	set category = "Alien"
+	set name = "Toggle Bombard Type"
+	set hidden = 1
+	var/action_name = "Toggle Bombard Type"
+	handle_xeno_macro(src, action_name)
+
 /datum/action/xeno_action/verb/verb_bombard()
 	set category = "Alien"
 	set name = "Bombard"
@@ -12,7 +19,6 @@
 	set hidden = TRUE
 	/// Name of the action to appear on the ability icon
 	var/action_name = "Bombard"
-
 	handle_xeno_macro(src, action_name)
 
 /datum/action/xeno_action/verb/verb_acid_lance()
@@ -20,7 +26,6 @@
 	set name = "Acid Lance"
 	set hidden = TRUE
 	var/action_name = "Acid Lance"
-
 	handle_xeno_macro(src, action_name)
 
 /datum/action/xeno_action/verb/verb_dump_acid()
@@ -54,7 +59,6 @@
 	set name = "Acid Shotgun"
 	set hidden = TRUE
 	var/action_name = "Acid Shotgun"
-
 	handle_xeno_macro(src, action_name)
 
 /datum/action/xeno_action/verb/verb_boiler_trap()
@@ -62,5 +66,4 @@
 	set name = "Boiler Trap"
 	set hidden = TRUE
 	var/action_name = "Boiler Trap"
-
 	handle_xeno_macro(src, action_name)

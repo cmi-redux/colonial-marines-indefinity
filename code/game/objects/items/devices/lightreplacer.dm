@@ -128,7 +128,7 @@
 				var/obj/item/light_bulb/L1 = new target.light_type(target.loc)
 				L1.status = target.status
 				L1.rigged = target.rigged
-				L1.brightness = target.brightness
+				L1.light_range = target.light_range
 				L1.switchcount = target.switchcount
 				target.switchcount = 0
 				L1.update()
@@ -141,12 +141,12 @@
 			target.status = L2.status
 			target.switchcount = L2.switchcount
 			target.rigged = FALSE
-			target.brightness = L2.brightness
-			target.on = target.has_power()
+			target.light_range = L2.light_range
+			target.light_on = target.has_power()
 			target.update()
 			qdel(L2)
 
-			if(target.on && target.rigged)
+			if(target.light_on && target.rigged)
 				target.explode()
 			return
 

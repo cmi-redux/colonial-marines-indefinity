@@ -109,19 +109,7 @@ explosion resistance exactly as much as their health
 	for(var/atom/A in src)  //add resistance
 		resistance += max(0, A.get_explosion_resistance(direction) )
 
-		//check for stair-teleporters. If there is a stair teleporter, switch to the teleported-to tile instead
-		if(istype(A, /obj/effect/step_trigger/teleporter_vector))
-			var/obj/effect/step_trigger/teleporter_vector/V = A
-			var/turf/T = locate(V.x + V.vector_x, V.y + V.vector_y, V.z)
-			if(T)
-				spawn(0)
-					T.explosion_spread(Controller, power, direction)
-					Controller.active_spread_num--
-					if(Controller.active_spread_num <= 0 && Controller.explosion_in_progress)
-						Controller.explosion_damage()
-				return
-
-		else if (istype(A, /obj/structure/ladder)) //check for ladders
+		if(istype(A, /obj/structure/ladder)) //check for ladders
 			L = A
 
 	Controller.explosion_turfs[src] = power  //recording the power applied
@@ -139,7 +127,7 @@ explosion resistance exactly as much as their health
 
 		//spread in each ordinal direction
 		var/direction_angle = dir2angle(direction)
-		for(var/spread_direction in alldirs)
+		for(var/spread_direction in GLOB.alldirs)
 			var/spread_power = power
 
 			if(direction) //false if, for example, this turf was the explosion source
@@ -148,14 +136,14 @@ explosion resistance exactly as much as their health
 				var/angle = 180 - abs( abs( direction_angle - spread_direction_angle ) - 180 ) // the angle difference between the spread direction and initial direction
 
 				switch(angle) //this reduces power when the explosion is going around corners
-					if (0)
+					if(0)
 						//no change
-					if (45)
+					if(45)
 						if(spread_power >= 0)
 							spread_power *= 0.75
 						else
 							spread_power *= 1.25
-					if (90)
+					if(90)
 						if(spread_power >= 0)
 							spread_power *= 0.50
 						else
@@ -169,7 +157,7 @@ explosion resistance exactly as much as their health
 				else
 					spread_power -= Controller.falloff * 1.414 //diagonal spreading
 
-			if (spread_power <= Controller.minimum_spread_power)
+			if(spread_power <= Controller.minimum_spread_power)
 				continue
 
 			var/turf/T = get_step(src, spread_direction)
@@ -195,7 +183,7 @@ explosion resistance exactly as much as their health
 				else
 					ladder_spread_power = power*1.5 - Controller.falloff
 
-			if (ladder_spread_power > Controller.minimum_spread_power)
+			if(ladder_spread_power > Controller.minimum_spread_power)
 				if(L.up)
 					var/turf/T_up = get_turf(L.up)
 					if(T_up)
@@ -219,7 +207,8 @@ explosion resistance exactly as much as their health
 	var/num_tiles_affected = 0
 
 	for(var/turf/T in explosion_turfs)
-		if(!T) continue
+		if(!T)
+			continue
 		if(explosion_turfs[T] >= 0)
 			num_tiles_affected++
 
@@ -234,7 +223,7 @@ explosion resistance exactly as much as their health
 		if(!T) continue
 
 		var/severity = explosion_turfs[T] + damage_addon
-		if (severity <= 0)
+		if(severity <= 0)
 			continue
 		var/direction = explosion_turf_directions[T]
 
@@ -266,11 +255,12 @@ explosion resistance exactly as much as their health
 						else if(ishuman(firingMob) && ishuman(M) && M.faction == firingMob.faction && !thearea?.statistic_exempt) //One human blew up another, be worried about it but do everything basically the same //special_role should be null or an empty string if done correctly
 							M.attack_log += "\[[time_stamp()]\] <b>[firingMob]/[firingMob.ckey]</b> blew up <b>[M]/[M.ckey]</b> with \a <b>[explosion_source]</b> in [get_area(firingMob)]."
 							firingMob:attack_log += "\[[time_stamp()]\] <b>[firingMob]/[firingMob.ckey]</b> blew up <b>[M]/[M.ckey]</b> with \a <b>[explosion_source]</b> in [get_area(firingMob)]."
-							var/ff_msg = "[firingMob] ([firingMob.ckey]) blew up [M] ([M.ckey]) with \a [explosion_source] in [get_area(firingMob)] (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[location_of_mob.x];Y=[location_of_mob.y];Z=[location_of_mob.z]'>JMP</a>) ([firingMob.client ? "<a href='?priv_msg=[firingMob.client.ckey]'>PM</a>" : "NO CLIENT"])"
+							var/ff_msg = "[firingMob] ([firingMob.ckey]) blew up [M] ([M.ckey]) with \a [explosion_source] in [get_area(firingMob)]"
+							var/ffl = "(<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[location_of_mob.x];Y=[location_of_mob.y];Z=[location_of_mob.z]'>JMP</a>) ([firingMob.client ? "<a href='?priv_msg=[firingMob.client.ckey]'>PM</a>" : "NO CLIENT"])"
 							var/ff_living = TRUE
 							if(M.stat == DEAD)
 								ff_living = FALSE
-							msg_admin_ff(ff_msg, ff_living)
+							msg_admin_ff("[ff_msg] [ffl]", ff_msg, ff_living)
 							if(ishuman(firingMob))
 								var/mob/living/carbon/human/H = firingMob
 								H.track_friendly_fire(explosion_source)
@@ -281,9 +271,11 @@ explosion resistance exactly as much as their health
 					else if(explosion_source_mob)
 						var/mob/firingMob = explosion_source_mob
 						var/turf/location_of_mob = get_turf(firingMob)
-						if(ishuman(firingMob))
-							var/mob/living/carbon/human/H = firingMob
-							H.track_shot_hit(initial(name), M)
+						firingMob.track_shot_hit(initial(name), M)
+						firingMob.track_damage(initial(name), M, severity)
+						if(firingMob.faction == M.faction)
+							firingMob.track_friendly_fire(initial(name))
+							firingMob.track_friendly_damage(initial(name), M, severity)
 						M.attack_log += "\[[time_stamp()]\] <b>[firingMob]</b> blew up <b>[M]/[M.ckey]</b> with a <b>[explosion_source]</b> in [get_area(firingMob)]."
 						msg_admin_attack("[firingMob] ([firingMob.ckey]) blew up [M] ([M.ckey]) with \a [explosion_source] in [get_area(firingMob)] ([location_of_mob.z],[location_of_mob.y],[location_of_mob.z])", location_of_mob.x, location_of_mob.y, location_of_mob.z)
 					else if(explosion_source)
@@ -325,7 +317,7 @@ explosion resistance exactly as much as their health
 		return
 
 	if(!direction)
-		direction = pick(alldirs)
+		direction = pick(GLOB.alldirs)
 	var/range = min(round(severity/src.w_class * 0.2, 1), 14)
 	if(!direction)
 		range = round( range/2 ,1)
@@ -368,7 +360,7 @@ explosion resistance exactly as much as their health
 	var/range = round( severity/weight * 0.02 ,1)
 	if(!direction)
 		range = round( 2*range/3 ,1)
-		direction = pick(NORTH,SOUTH,EAST,WEST,NORTHEAST,NORTHWEST,SOUTHEAST,SOUTHWEST)
+		direction = pick(GLOB.alldirs)
 
 	if(range <= 0)
 		return

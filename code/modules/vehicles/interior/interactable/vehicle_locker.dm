@@ -44,7 +44,7 @@
 	set src in range(0)
 
 	var/mob/living/carbon/human/H = usr
-	if (!ishuman(H) || H.is_mob_restrained())
+	if(!ishuman(H) || H.is_mob_restrained())
 		return
 
 	if(!role_restriction.Find(H.job))
@@ -101,7 +101,7 @@
 	if(!role_restriction.Find(user.job))
 		to_chat(user, SPAN_WARNING("You cannot access \the [name]."))
 		return
-	if (container.handle_mousedrop(user, over_object))
+	if(container.handle_mousedrop(user, over_object))
 		..(over_object)
 
 /obj/structure/vehicle_locker/attackby(obj/item/W, mob/living/carbon/human/user)
@@ -239,7 +239,7 @@
 	if(!has_tray)
 		to_chat(user, SPAN_WARNING("\The [name] doesn't have a surgical tray installed!"))
 		return
-	if (container.handle_mousedrop(user, over_object))
+	if(container.handle_mousedrop(user, over_object))
 		..(over_object)
 
 

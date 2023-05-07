@@ -13,7 +13,7 @@
 	icon = 'icons/obj/items/harvest.dmi'
 
 /obj/item/reagent_container/food/snacks/grown/New(newloc,newpotency)
-	if (!isnull(newpotency))
+	if(!isnull(newpotency))
 		potency = newpotency
 	..()
 	src.pixel_x = rand(-5.0, 5)
@@ -189,26 +189,11 @@
 /obj/item/reagent_container/food/snacks/grown/glowberries
 	name = "bunch of glow-berries"
 	desc = "Nutritious!"
-	var/light_on = 1
-	var/brightness_on = 2 //luminosity when on
+	light_on = TRUE
+	var/brightness_on = 2
 	filling_color = "#D3FF9E"
 	icon_state = "glowberrypile"
 	plantname = "glowberries"
-
-/obj/item/reagent_container/food/snacks/grown/glowberries/Destroy()
-	if(istype(loc,/mob))
-		loc.SetLuminosity(0, FALSE, src)
-	. = ..()
-
-/obj/item/reagent_container/food/snacks/grown/glowberries/pickup(mob/user)
-	. = ..()
-	src.SetLuminosity(0)
-	user.SetLuminosity(round((potency/5),1), FALSE, src)
-
-/obj/item/reagent_container/food/snacks/grown/glowberries/dropped(mob/user)
-	user.SetLuminosity(0, FALSE, src)
-	src.SetLuminosity(round(potency/5,1))
-	..()
 
 /obj/item/reagent_container/food/snacks/grown/cocoapod
 	name = "cocoa pod"
@@ -456,7 +441,7 @@
 	return
 
 /obj/item/reagent_container/food/snacks/grown/bluetomato/Crossed(AM as mob|obj)
-	if (iscarbon(AM))
+	if(iscarbon(AM))
 		var/mob/living/carbon/C = AM
 		C.slip(name, 8, 5)
 
@@ -568,21 +553,6 @@
 
 	to_chat(user, SPAN_NOTICE("You plant the glowshroom."))
 
-/obj/item/reagent_container/food/snacks/grown/mushroom/glowshroom/Destroy()
-	if(istype(loc,/mob))
-		loc.SetLuminosity(0, FALSE, src)
-	. = ..()
-
-/obj/item/reagent_container/food/snacks/grown/mushroom/glowshroom/pickup(mob/user)
-	. = ..()
-	SetLuminosity(0)
-	user.SetLuminosity(round((potency/10),1), FALSE, src)
-
-/obj/item/reagent_container/food/snacks/grown/mushroom/glowshroom/dropped(mob/user)
-	user.SetLuminosity(0, FALSE, src)
-	SetLuminosity(round(potency/10,1))
-	..()
-
 
 // *************************************
 // Complex Grown Object Defines -
@@ -603,7 +573,7 @@
 	var/mob/M = usr
 	var/outer_teleport_radius = potency/10 //Plant potency determines radius of teleport.
 	var/inner_teleport_radius = potency/15
-	var/list/turfs = new/list()
+	var/list/turfs = list()
 	var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
 	if(inner_teleport_radius < 1) //Wasn't potent enough, it just splats.
 		new/obj/effect/decal/cleanable/blood/oil(src.loc)

@@ -11,15 +11,18 @@
  *
  */
 
-var/global/datum/entity/statistic/round/round_statistics
-var/global/list/datum/entity/player_entity/player_entities = list()
 var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracking_ids to tacbinos and signal flares
+
 /datum/game_mode
 	var/name = "invalid"
 	var/config_tag = null
 	var/votable = TRUE
 	var/vote_cycle = null
 	var/probability = 0
+	var/end_game_announce = "Так заканчивается история бравых мужчин и женщин экипажа ###SHIPNAME### и их борьба на"
+	var/list/round_end_states = list()
+	var/list/faction_round_end_state = list()
+	var/list/faction_result_end_state = list()
 	var/list/datum/mind/modePlayer = new
 	var/required_players = 0
 	var/required_players_secret = 0 //Minimum number of players for that game mode to be chose in Secret
@@ -32,18 +35,29 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 	var/static_comms_amount = 0
 	var/obj/structure/machinery/computer/shuttle/dropship/flight/active_lz = null
 
-	var/datum/entity/statistic/round/round_stats = null
+	var/datum/faction/faction_won = null
 
-	var/list/roles_to_roll
+	var/datum/entity/statistic_round/round_statistics = null
 
+	var/list/active_roles_mappings_pool = list()
+	var/list/active_roles_pool = list()
+	var/list/factions_pool = list()
+
+	var/planet_nuked = NUKE_NONE
 	var/corpses_to_spawn = 0
-
-	var/hardcore = FALSE
 
 /datum/game_mode/New()
 	..()
 	if(taskbar_icon)
 		GLOB.available_taskbar_icons |= taskbar_icon
+
+	for(var/faction_to_get in FACTION_LIST_ALL)
+		var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
+		if(length(faction.roles_list[name]))
+			factions_pool[faction.name] = faction.faction_name
+			active_roles_mappings_pool += faction.role_mappings[name]
+			for(var/i in faction.roles_list[name])
+				active_roles_pool += i
 
 /datum/game_mode/proc/announce() //to be calles when round starts
 	to_world("<B>Notice</B>: [src] did not define announce()")
@@ -56,13 +70,13 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 		if((player.client)&&(player.ready))
 			playerC++
 
-	if(master_mode=="secret")
+	if(GLOB.master_mode == "secret")
 		if(playerC >= required_players_secret)
 			return 1
 	else
 		if(playerC >= required_players)
-			return 1
-	return 0
+			return TRUE
+	return FALSE
 
 
 ///pre_setup()
@@ -117,22 +131,27 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 
 
 /datum/game_mode/proc/check_finished() //to be called by ticker
-	if(EvacuationAuthority.dest_status == NUKE_EXPLOSION_FINISHED || EvacuationAuthority.dest_status == NUKE_EXPLOSION_GROUND_FINISHED )
+	if(SSevacuation.dest_status == NUKE_EXPLOSION_FINISHED || SSevacuation.dest_status == NUKE_EXPLOSION_GROUND_FINISHED)
 		return TRUE
 
 /datum/game_mode/proc/cleanup() //This is called when the round has ended but not the game, if any cleanup would be necessary in that case.
 	return
 
 /datum/game_mode/proc/announce_ending()
-	if(round_statistics)
-		round_statistics.track_round_end()
-	log_game("Round end result: [round_finished]")
-	to_chat_spaced(world, margin_top = 2, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDHEADER("|Round Complete|"))
-	to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDBODY("Thus ends the story of the brave men and women of the [MAIN_SHIP_NAME] and their struggle on [SSmapping.configs[GROUND_MAP].map_name].\nThe game-mode was: [master_mode]!\nEnd of Round Grief (EORG) is an IMMEDIATE 3 hour ban with no warnings, see rule #3 for more details."))
+	log_game("Результат раунда: [round_finished]")
+	to_chat_spaced(world, margin_top = 2, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDHEADER("|Раунд Закончен|"))
+	var/rendered_announce_text = replacetext(end_game_announce, "###SHIPNAME###", MAIN_SHIP_NAME)
+	to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDBODY("[rendered_announce_text] [SSmapping.configs[GROUND_MAP].map_name].\nИгровой режим был: [GLOB.master_mode]!\nEnd of Round Grief (EORG) это мгновенный 3-х часовой бан без предупреждений."))
 
+	var/current_real_hour = text2num(time2text(world.timeofday, "hh"))
+	if(current_real_hour < 12 && world.port == 1400)
+		SSticker.graceful = TRUE
+		to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDBODY("<h1>Это последний раунд.</h1>"))
+
+//////////////////////////////////////////////////////////////////////
+//Announces the end of the game with all relevant information stated//
+//////////////////////////////////////////////////////////////////////
 /datum/game_mode/proc/declare_completion()
-	if(round_statistics)
-		round_statistics.track_round_end()
 	var/clients = 0
 	var/surviving_humans = 0
 	var/surviving_total = 0
@@ -144,6 +163,7 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 			if(ishuman(M))
 				if(!M.stat)
 					surviving_humans++
+
 			if(!M.stat)
 				surviving_total++
 
@@ -151,15 +171,64 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 				ghosts++
 
 	if(clients > 0)
-		log_game("Round end - clients: [clients]")
-	if(ghosts > 0)
-		log_game("Round end - ghosts: [ghosts]")
-	if(surviving_humans > 0)
-		log_game("Round end - humans: [surviving_humans]")
-	if(surviving_total > 0)
-		log_game("Round end - total: [surviving_total]")
+		log_game("Конец раунда - клиенты: [clients]")
 
-	return 0
+	if(ghosts > 0)
+		log_game("Конец раунда - наблюдатели: [ghosts]")
+
+	if(surviving_humans > 0)
+		log_game("Конец раунда - люди: [surviving_humans]")
+
+	if(surviving_total > 0)
+		log_game("Конец раунда - всего: [surviving_total]")
+
+	announce_ending()
+
+	var/list/winners_info = get_winners_states()
+
+	log_game("Round end result - [round_finished]")
+	if(round_statistics)
+		round_statistics.game_mode = name
+		round_statistics.round_length = world.time
+		round_statistics.round_result = round_finished
+		if(!length(round_statistics.current_map.victories))
+			round_statistics.current_map.victories = list()
+		round_statistics.current_map.victories[round_finished] +=  1
+		round_statistics.end_round_player_population = length(GLOB.clients)
+
+		round_statistics.log_round_statistics()
+		round_statistics.track_round_end()
+
+	calculate_end_statistics()
+	show_end_statistics(winners_info[1], winners_info[2], winners_info[3])
+	return TRUE
+
+/datum/game_mode/proc/get_winners_states()
+	var/list/icon_states = list()
+	var/list/musical_tracks = list()
+	var/list/standart_payload = list()
+	standart_payload += "draw"
+	var/sound/sound = sound(pick('sound/music/round_end/sad_loss1.ogg', 'sound/music/round_end/sad_loss2.ogg', 'sound/music/round_end/neutral_melancholy1.ogg', 'sound/music/round_end/neutral_melancholy2.ogg'), channel = SOUND_CHANNEL_LOBBY)
+	sound.status = SOUND_STREAM
+	standart_payload += sound
+	sound = sound(pick('sound/music/round_end/end.ogg'), channel = SOUND_CHANNEL_LOBBY)
+	sound.status = SOUND_STREAM
+	standart_payload += sound
+	for(var/faction_name in factions_pool)
+		if(faction_result_end_state[faction_name])
+			icon_states[faction_name] = faction_result_end_state[faction_name][round_finished][1]
+			sound = sound(pick(faction_result_end_state[faction_name][round_finished][2]), channel = SOUND_CHANNEL_LOBBY)
+			sound.status = SOUND_STREAM
+			musical_tracks[faction_name] = list(sound)
+			sound = sound(pick(faction_result_end_state[faction_name][round_finished][3]), channel = SOUND_CHANNEL_LOBBY)
+			sound.status = SOUND_STREAM
+			musical_tracks[faction_name] += sound
+		else
+			icon_states[faction_name] = standart_payload[1]
+			musical_tracks[faction_name] = list(standart_payload[2], standart_payload[3])
+
+
+	return list(icon_states, musical_tracks, standart_payload)
 
 /datum/game_mode/proc/calculate_end_statistics()
 	for(var/i in GLOB.alive_mob_list)
@@ -174,14 +243,30 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 			else
 				record_playtime(M.client.player_data, M.job, type)
 
-/datum/game_mode/proc/show_end_statistics(icon_state)
-	round_statistics.update_panel_data()
-	for(var/mob/M in GLOB.player_list)
-		if(M.client)
-			give_action(M, /datum/action/show_round_statistics, null, icon_state)
+/datum/game_mode/proc/show_end_statistics(icon_states, musical_tracks, standart_payload)
+	var/list/mobs = list()
+	for(var/faction_name in factions_pool)
+		var/faction_to_get = factions_pool[faction_name]
+		var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
+		for(var/mob/mob in faction.totalMobs)
+			if(mob.client)
+				mobs += mob
+				give_action(mob, /datum/action/show_round_statistics, null, icon_states[faction_to_get])
+				sound_to(mob, musical_tracks[faction_to_get][1])
+				if(length(musical_tracks[faction_to_get]) > 1)
+					spawn(20 SECONDS)
+						sound_to(mob, musical_tracks[faction_to_get][2])
+
+	for(var/mob/mob in GLOB.player_list - mobs)
+		if(mob.client)
+			give_action(mob, /datum/action/show_round_statistics, null, standart_payload[1])
+			sound_to(mob, standart_payload[2])
+			if(length(standart_payload) > 2)
+				spawn(20 SECONDS)
+					sound_to(mob, standart_payload[3])
 
 /datum/game_mode/proc/check_win() //universal trigger to be called at mob death, nuke explosion, etc. To be called from everywhere.
-	return 0
+	return FALSE
 
 /datum/game_mode/proc/get_players_for_role(role, override_jobbans = 0)
 	var/list/players = list()
@@ -220,7 +305,7 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 	var/list/heads = list()
 	for(var/i in GLOB.alive_human_list)
 		var/mob/living/carbon/human/player = i
-		if(player.stat!=2 && player.mind && (player.job in ROLES_COMMAND ))
+		if(player.stat!=2 && player.mind && (player.job in ROLES_COMMAND))
 			heads += player.mind
 	return heads
 
@@ -231,7 +316,7 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 /datum/game_mode/proc/get_all_heads()
 	var/list/heads = list()
 	for(var/mob/player in GLOB.mob_list)
-		if(player.mind && (player.job in ROLES_COMMAND ))
+		if(player.mind && (player.job in ROLES_COMMAND))
 			heads += player.mind
 	return heads
 
@@ -253,20 +338,19 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 	for(var/i = 1 to static_comms_amount)
 		var/obj/effect/landmark/static_comms/SCO = pick_n_take(GLOB.comm_tower_landmarks_net_one)
 		var/obj/effect/landmark/static_comms/SCT = pick_n_take(GLOB.comm_tower_landmarks_net_two)
-		if(!SCO)
-			break
-		SCO.spawn_tower()
-		if(!SCT)
-			break
-		SCT.spawn_tower()
+		if(SCO)
+			SCO.spawn_tower()
+		if(SCT)
+			SCT.spawn_tower()
 	QDEL_NULL_LIST(GLOB.comm_tower_landmarks_net_one)
 	QDEL_NULL_LIST(GLOB.comm_tower_landmarks_net_two)
+
 
 //////////////////////////
 //Reports player logouts//
 //////////////////////////
 /proc/display_roundstart_logout_report()
-	var/msg = FONT_SIZE_LARGE("<b>Roundstart logout report\n\n")
+	var/msg = FONT_SIZE_LARGE("<b>Отчет о покидание игры\n\n")
 	for(var/i in GLOB.living_mob_list)
 		var/mob/living/L = i
 
@@ -277,33 +361,33 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 					found = 1
 					break
 			if(!found)
-				msg += "<b>[key_name(L)]</b>, the [L.job] (<font color='#ffcc00'><b>Disconnected</b></font>)\n"
+				msg += "<b>[key_name(L)]</b>, the [L.job] (<font color='#ffcc00'><b>Отключен</b></font>)\n"
 
 
 		if(L.ckey && L.client)
 			if(L.client.inactivity >= (ROUNDSTART_LOGOUT_REPORT_TIME * 0.5)) //Connected, but inactive (alt+tabbed or something)
-				msg += "<b>[key_name(L)]</b>, the [L.job] (<font color='#ffcc00'><b>Connected, Inactive</b></font>)\n"
+				msg += "<b>[key_name(L)]</b>, the [L.job] (<font color='#ffcc00'><b>Подключен, Неактивный</b></font>)\n"
 				continue //AFK client
 			if(L.stat)
 				if(L.stat == UNCONSCIOUS)
-					msg += "<b>[key_name(L)]</b>, the [L.job] (Dying)\n"
+					msg += "<b>[key_name(L)]</b>, на [L.job] (Умирает)\n"
 					continue //Unconscious
 				if(L.stat == DEAD)
-					msg += "<b>[key_name(L)]</b>, the [L.job] (Dead)\n"
+					msg += "<b>[key_name(L)]</b>, на [L.job] (Умер)\n"
 					continue //Dead
 
 			continue //Happy connected client
 		for(var/mob/dead/observer/D in GLOB.observer_list)
 			if(D.mind && (D.mind.original == L || D.mind.current == L))
 				if(L.stat == DEAD)
-					msg += "<b>[L.name]</b> ([ckey(D.mind.key)]), the [L.job] (Dead)\n"
+					msg += "<b>[L.name]</b> ([ckey(D.mind.key)]), на [L.job] (Умер)\n"
 					continue //Dead mob, ghost abandoned
 				else
 					if(D.can_reenter_corpse)
-						msg += "<b>[L.name]</b> ([ckey(D.mind.key)]), the [L.job] (<font color='red'><b>This shouldn't appear.</b></font>)\n"
+						msg += "<b>[L.name]</b> ([ckey(D.mind.key)]), на [L.job] (<font color='red'><b>Невозможно определить.</b></font>)\n"
 						continue //Lolwhat
 					else
-						msg += "<b>[L.name]</b> ([ckey(D.mind.key)]), the [L.job] (<font color='red'><b>Ghosted</b></font>)\n"
+						msg += "<b>[L.name]</b> ([ckey(D.mind.key)]), на [L.job] (<font color='red'><b>Покинул тело</b></font>)\n"
 						continue //Ghosted while alive
 
 	for(var/mob/M in GLOB.player_list)
@@ -320,3 +404,58 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 		and before taking extreme actions, please try to also contact the administration! \
 		Think through your actions and make the roleplay immersive! <b>Please remember all \
 		rules aside from those without explicit exceptions apply to antagonists.</b>"
+
+
+/////////////////
+//Defcon events//
+/////////////////
+/datum/game_mode/proc/defcon_event(datum/faction/faction, defcon)
+	return FALSE
+
+/datum/game_mode/proc/on_nuclear_diffuse(obj/structure/machinery/nuclearbomb/bomb, mob/living/carbon/xenomorph/xenomorph)
+	return FALSE
+
+/datum/game_mode/proc/on_nuclear_explosion(datum/source, list/z_levels = SSmapping.levels_by_trait(ZTRAIT_GROUND))
+	planet_nuked = NUKE_INPROGRESS
+	INVOKE_ASYNC(src, PROC_REF(play_cinematic), z_levels)
+
+/datum/game_mode/proc/play_cinematic(list/z_levels = SSmapping.levels_by_trait(ZTRAIT_GROUND))
+	faction_announcement("DANGER. DANGER. Planetary Nuke Activated. DANGER. DANGER. Self destruct in progress. DANGER. DANGER.", "Priority Alert", sound('sound/effects/explosionfar.ogg', 'sound/music/round_end/nuclear_detonation1.ogg', 'sound/music/round_end/nuclear_detonation2.ogg'), "Everyone (-Yautja)")
+	var/L1[] = new //Everyone who will be destroyed on the zlevel(s).
+	var/L2[] = new //Everyone who only needs to see the cinematic.
+	var/mob/M
+	var/turf/T
+	var/play_anim = 1
+	var/ground_status = 0
+	var/override = 0
+	for(M in GLOB.player_list) //This only does something cool for the people about to die, but should prove pretty interesting.
+		if(!M || !M.loc) continue //In case something changes when we sleep().
+		if(M.stat == DEAD)
+			L2 |= M
+		else if(M.z in z_levels)
+			L1 |= M
+			shake_camera(M, 110, 2)
+		var/atom/movable/screen/cinematic/ground/C = new
+		if(play_anim)
+			for(M in L1 + L2)
+				if(M && M.client)
+					M.client.screen |= C //They may have disconnected in the mean time.
+
+			sleep(15) //Extra 1.5 seconds to look at the planet.
+			flick(override ? "intro_planet" : "intro_planet", C)
+		sleep(35)
+		for(M in L1)
+			if(M && M.loc) //Who knows, maybe they escaped, or don't exist anymore.
+				T = get_turf(M)
+				if(T.z in z_levels)
+					if(istype(M.loc, /obj/structure/closet/secure_closet/freezer/fridge))
+						continue
+					M.death("Nuclear Explosion")
+				else
+					if(play_anim)
+						M.client.screen -= C //those who managed to escape the z level at last second shouldn't have their view obstructed.
+		if(play_anim)
+			flick(ground_status ? "planet_nuke" : "planet_nuke", C)
+			C.icon_state = ground_status ? "planet_end" : "planet_end"
+
+	addtimer(VARSET_CALLBACK(src, planet_nuked, NUKE_COMPLETED), 1 SECONDS)

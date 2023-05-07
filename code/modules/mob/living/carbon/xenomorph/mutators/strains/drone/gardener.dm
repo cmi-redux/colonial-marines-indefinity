@@ -1,17 +1,15 @@
-/datum/xeno_mutator/gardener
-	name = "STRAIN: Drone - Gardener"
-	description = "You trade your choice of resin secretions, your corrosive acid, and your ability to transfer plasma for a tiny bit of extra health regeneration on weeds and several new abilities, including the ability to plant hardier weeds, temporarily reinforce structures with your plasma, and to plant up to six potent resin fruits for your sisters by secreting your vital fluids at the cost of a bit of your health for each fruit you shape."
-	flavor_description = "The glory of gardening: hands in the weeds, head in the dark, heart with resin."
+/datum/xeno_mutation/strain/gardener
+	name = LANGUAGE_STRAIN_GARDENER
+	description = LANGUAGE_STRAIN_DESC_GARDENER
 	cost = MUTATOR_COST_EXPENSIVE
-	individual_only = TRUE
 	caste_whitelist = list(XENO_CASTE_DRONE) //Only drone.
-	mutator_actions_to_remove = list(
+	mutation_actions_to_remove = list(
 		/datum/action/xeno_action/activable/secrete_resin,
 		/datum/action/xeno_action/onclick/choose_resin,
 		/datum/action/xeno_action/activable/corrosive_acid/weak,
 		/datum/action/xeno_action/activable/transfer_plasma,
 	)
-	mutator_actions_to_add = list(
+	mutation_actions_to_add = list(
 		/datum/action/xeno_action/onclick/plant_weeds/gardener, // second macro
 		/datum/action/xeno_action/activable/resin_surge, // third macro
 		/datum/action/xeno_action/onclick/plant_resin_fruit/greater, // fourth macro
@@ -20,9 +18,9 @@
 	keystone = TRUE
 	behavior_delegate_type = /datum/behavior_delegate/drone_gardener
 
-/datum/xeno_mutator/gardener/apply_mutator(datum/mutator_set/individual_mutators/mutator_set)
+/datum/xeno_mutation/strain/gardener/apply_mutator(datum/mutator_set/individual_mutations/mutator_set)
 	. = ..()
-	if (. == 0)
+	if(. == 0)
 		return
 
 	var/mob/living/carbon/xenomorph/drone/drone = mutator_set.xeno
@@ -84,7 +82,7 @@
 		to_chat(xeno, SPAN_WARNING("The are no weeds to plant a fruit within!"))
 		return
 
-	if(target_weeds.hivenumber != xeno.hivenumber)
+	if(target_weeds.faction != xeno.faction)
 		to_chat(xeno, SPAN_WARNING("These weeds do not belong to your hive; they reject your fruit."))
 		return
 
@@ -96,7 +94,7 @@
 		to_chat(xeno, SPAN_XENOWARNING("This location is too close to another fruit!"))
 		return
 
-	if (check_and_use_plasma_owner())
+	if(check_and_use_plasma_owner())
 		if(length(xeno.current_fruits) >= xeno.max_placeable)
 			to_chat(xeno, SPAN_XENOWARNING("You cannot sustain another fruit, one will wither away to allow this one to live!"))
 			var/obj/effect/alien/resin/fruit/old_fruit = xeno.current_fruits[1]
@@ -242,10 +240,10 @@
 	if (!istype(xeno))
 		return
 
-	if (!action_cooldown_check())
+	if(!action_cooldown_check())
 		return
 
-	if (!xeno.check_state(TRUE))
+	if(!xeno.check_state(TRUE))
 		return
 
 	if(mods["click_catcher"])
@@ -260,18 +258,18 @@
 			to_chat(xeno, SPAN_WARNING("That's too far away!"))
 			return
 
-	if (!check_and_use_plasma_owner())
+	if(!check_and_use_plasma_owner())
 		return
 
 	var/turf/target_turf = get_turf(target_atom)
 
 	var/obj/effect/alien/weeds/target_weeds = locate(/obj/effect/alien/weeds) in target_turf
-	var/obj/effect/alien/resin/fruit/F = locate(/obj/effect/alien/resin/fruit) in target_turf
+	var/obj/effect/alien/resin/fruit/fruit = locate(/obj/effect/alien/resin/fruit) in target_turf
 	var/obj/structure/mineral_door/resin/door = target_atom
 	var/turf/closed/wall/resin/wall = target_turf
 
-	var/wall_present = istype(wall) && wall.hivenumber == xeno.hivenumber
-	var/door_present = istype(door) && door.hivenumber == xeno.hivenumber
+	var/wall_present = istype(wall) && wall.faction == xeno.faction
+	var/door_present = istype(door) && door.faction == xeno.faction
 	// Is my tile either a wall or a door
 	if(door_present || wall_present)
 		var/structure_to_buff = door || wall
@@ -293,21 +291,21 @@
 			to_chat(xeno, SPAN_XENONOTICE("You haplessly try to surge resin around [structure_to_buff], but it's already reinforced. It'll take a moment for you to recover."))
 			xeno_cooldown = xeno_cooldown * 0.5
 
-	else if(F && F.hivenumber == xeno.hivenumber)
-		if(F.mature)
-			to_chat(xeno, SPAN_XENONOTICE("The [F] is already mature. The [src.name] does nothing."))
+	else if(fruit && fruit.faction == xeno.faction)
+		if(fruit.mature)
+			to_chat(xeno, SPAN_XENONOTICE("The [fruit] is already mature. The [src.name] does nothing."))
 			xeno_cooldown = xeno_cooldown * 0.5
 		else
-			to_chat(xeno, SPAN_XENONOTICE("You surge the resin around the [F], speeding its growth somewhat!"))
-			F.reduce_timer(5 SECONDS)
+			to_chat(xeno, SPAN_XENONOTICE("You surge the resin around the [fruit], speeding its growth somewhat!"))
+			fruit.reduce_timer(5 SECONDS)
 
-	else if(target_weeds && istype(target_turf, /turf/open) && target_weeds.hivenumber == xeno.hivenumber)
+	else if(target_weeds && istype(target_turf, /turf/open) && target_weeds.faction == xeno.faction)
 		xeno.visible_message(SPAN_XENODANGER("\The [xeno] surges the resin, creating an unstable wall!"), \
 		SPAN_XENONOTICE("You surge the resin, creating an unstable wall!"), null, 5)
 		target_turf.PlaceOnTop(/turf/closed/wall/resin/weak)
 		var/turf/closed/wall/resin/weak_wall = target_turf
-		weak_wall.hivenumber = xeno.hivenumber
-		set_hive_data(weak_wall, xeno.hivenumber)
+		weak_wall.faction = xeno.faction
+		set_hive_data(weak_wall, xeno.faction)
 
 	else if(target_turf)
 		if(channel_in_progress)
@@ -319,11 +317,11 @@
 		channel_in_progress = FALSE
 		xeno.visible_message(SPAN_XENODANGER("\The [xeno] surges deep resin, creating an unstable sticky resin patch!"), \
 		SPAN_XENONOTICE("You surge the deep resin, creating an unstable sticky resin patch!"), null, 5)
-		for (var/turf/targetTurf in orange(1, target_turf))
-			if(!locate(/obj/effect/alien/resin/sticky) in targetTurf)
-				new /obj/effect/alien/resin/sticky/thin/weak(targetTurf, xeno.hivenumber)
+		for (var/turf/target_turf_ranged in orange(1, target_turf))
+			if(!locate(/obj/effect/alien/resin/sticky) in target_turf_ranged)
+				new /obj/effect/alien/resin/sticky/thin/weak(target_turf_ranged, xeno)
 		if(!locate(/obj/effect/alien/resin/sticky) in target_turf)
-			new /obj/effect/alien/resin/sticky/thin/weak(target_turf, xeno.hivenumber)
+			new /obj/effect/alien/resin/sticky/thin/weak(target_turf, xeno)
 
 	else
 		xeno_cooldown = xeno_cooldown * 0.5

@@ -4,13 +4,14 @@
 	title = JOB_RESEARCHER
 	total_positions = 2
 	spawn_positions = 2
-	allow_additional = 1
-	scaled = 1
+	allow_additional = TRUE
+	scaled = TRUE
 	supervisors = "chief medical officer"
 	selection_class = "job_researcher"
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT
+	flags_startup_parameters = NO_FLAGS
 	gear_preset = /datum/equipment_preset/uscm_ship/uscm_medical/researcher
 	entry_message_body = "You're a commissioned officer of the USCM, though you are not in the ship's chain of command. You are tasked with <a href='"+URL_WIKI_RSR_GUIDE+"'>researching</a> and developing new medical treatments, helping your fellow doctors, and generally learning new things. Your role involves a lot of roleplaying, but you can perform the function of a regular doctor. Do not hand out things to Marines without getting permission from your supervisor."
+	balance_formulas = list("misc", BALANCE_FORMULA_SUPPORT, BALANCE_FORMULA_OPERATIONS, BALANCE_FORMULA_MEDIC)
 
 /datum/job/civilian/researcher/set_spawn_positions(count)
 	spawn_positions = rsc_slot_formula(count)
@@ -18,7 +19,7 @@
 /datum/job/civilian/researcher/get_total_positions(latejoin = 0)
 	var/positions = spawn_positions
 	if(latejoin)
-		positions = rsc_slot_formula(get_total_marines())
+		positions = rsc_slot_formula(get_total_population(FACTION_MARINE))
 		if(positions <= total_positions_so_far)
 			positions = total_positions_so_far
 		else

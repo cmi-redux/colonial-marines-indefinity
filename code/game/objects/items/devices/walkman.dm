@@ -1,5 +1,3 @@
-
-
 /obj/item/device/walkman
 	name = "walkman"
 	desc = "A cassette player that first hit the market over 200 years ago. Crazy how these never went out of style."
@@ -17,6 +15,7 @@
 	var/pl_index = 1
 	var/volume = 25
 	var/design = 1 // What kind of walkman design style to use
+	var/time_to_next_song = 0
 	item_icons = list(
 		WEAR_L_EAR = 'icons/mob/humans/onmob/ears.dmi',
 		WEAR_R_EAR = 'icons/mob/humans/onmob/ears.dmi',
@@ -146,7 +145,8 @@
 
 /obj/item/device/walkman/proc/next_song(mob/user)
 
-	if(user.is_mob_incapacitated() || current_playlist.len == 0) return
+	if(user.is_mob_incapacitated() || current_playlist.len == 0)
+		return
 
 	break_sound()
 
@@ -193,6 +193,14 @@
 		STOP_PROCESSING(SSobj, src)
 		return
 
+	if(current_listener)
+		for(var/sound/S in current_listener.client.SoundQuery())
+			if(S.file == current_song.file)
+				var/sound/CS = S
+				time_to_next_song = (CS.len * 10 - CS.offset * 10) + world.time
+	if(world.time > time_to_next_song)
+		next_song(current_listener)
+
 	if(current_listener.ear_deaf > 0 && current_song && !(current_song.status & SOUND_MUTE))
 		update_song(current_song, current_listener)
 	if(current_listener.ear_deaf == 0 && current_song && current_song.status & SOUND_MUTE)
@@ -203,7 +211,8 @@
 	set category = "Object"
 	set src in usr
 
-	if(usr.is_mob_incapacitated()) return
+	if(usr.is_mob_incapacitated())
+		return
 
 	attack_self(usr)
 
@@ -271,7 +280,7 @@
 /datum/action/item_action/walkman/play_pause/action_activate()
 	if(target)
 		var/obj/item/device/walkman/WM = target
-		WM.attack_self(owner)
+		WM.play_pause()
 
 /datum/action/item_action/walkman/next_song
 	action_icon_state = "walkman_next"
@@ -284,7 +293,7 @@
 /datum/action/item_action/walkman/next_song/action_activate()
 	if(target)
 		var/obj/item/device/walkman/WM = target
-		WM.next_song(owner)
+		WM.next_pl_song()
 
 /datum/action/item_action/walkman/restart_song
 	action_icon_state = "walkman_restart"
@@ -297,7 +306,7 @@
 /datum/action/item_action/walkman/restart_song/action_activate()
 	if(target)
 		var/obj/item/device/walkman/WM = target
-		WM.restart_song(owner)
+		WM.restart_current_song()
 
 /*
 	TAPES
@@ -332,187 +341,42 @@
 
 	attack_self()
 
-/obj/item/device/cassette_tape/pop1
-	name = "blue cassette"
+/obj/item/device/cassette_tape/lybe
+	name = "old cassette"
 	id = 2
-	desc = "A plastic cassette tape with a blue sticker."
+	desc = "A plastic cassette tape with lybe named sticker."
 	icon_state = "cassette_blue"
 	side1_icon = "cassette_blue"
-	songs = list("side1" = list("sound/music/walkman/pop1/1-1-1.ogg",\
-								"sound/music/walkman/pop1/1-1-2.ogg",\
-								"sound/music/walkman/pop1/1-1-3.ogg"),\
-				"side2" = list("sound/music/walkman/pop1/1-2-1.ogg",\
-								"sound/music/walkman/pop1/1-2-2.ogg",\
-								"sound/music/walkman/pop1/1-2-3.ogg"))
+	songs = list("side1" = list("sound/music/walkman/lybe/1-1-1.ogg",\
+								"sound/music/walkman/lybe/1-1-2.ogg",\
+								"sound/music/walkman/lybe/1-1-3.ogg"),\
+				 "side2" = list("sound/music/walkman/lybe/1-2-1.ogg",\
+								"sound/music/walkman/lybe/1-2-2.ogg",\
+								"sound/music/walkman/lybe/1-2-3.ogg"))
 
-/obj/item/device/cassette_tape/pop2
-	name = "rainbow cassette"
+/obj/item/device/cassette_tape/sad
+	name = "black cassette"
 	id = 3
 	desc = "A plastic cassette tape with a rainbow-colored sticker."
+	desc = "A plastic cassette tape with a sad sticker."
 	icon_state = "cassette_rainbow"
 	side1_icon = "cassette_rainbow"
-	songs = list("side1" = list("sound/music/walkman/pop2/2-1-1.ogg",\
-								"sound/music/walkman/pop2/2-1-2.ogg",\
-								"sound/music/walkman/pop2/2-1-3.ogg"),\
-				"side2" = list("sound/music/walkman/pop2/2-2-1.ogg",\
-								"sound/music/walkman/pop2/2-2-2.ogg",\
-								"sound/music/walkman/pop2/2-2-3.ogg"))
+	songs = list("side1" = list("sound/music/walkman/sad/2-1-1.ogg",\
+								"sound/music/walkman/sad/2-1-2.ogg",\
+								"sound/music/walkman/sad/2-1-3.ogg"),\
+				 "side2" = list("sound/music/walkman/sad/2-2-1.ogg",\
+								"sound/music/walkman/sad/2-2-2.ogg",\
+								"sound/music/walkman/sad/2-2-3.ogg"))
 
-/obj/item/device/cassette_tape/pop3
-	name = "orange cassette"
+/obj/item/device/cassette_tape/sovietwave
+	name = "red cassette"
 	id = 4
-	desc = "A plastic cassette tape with an orange sticker."
-	icon_state = "cassette_orange"
-	side1_icon = "cassette_orange"
-	songs = list("side1" = list("sound/music/walkman/pop3/3-1-1.ogg",\
-								"sound/music/walkman/pop3/3-1-2.ogg",\
-								"sound/music/walkman/pop3/3-1-3.ogg"),\
-				"side2" = list("sound/music/walkman/pop3/3-2-1.ogg",\
-								"sound/music/walkman/pop3/3-2-2.ogg",\
-								"sound/music/walkman/pop3/3-2-3.ogg"))
-
-/obj/item/device/cassette_tape/pop4
-	name = "pink cassette"
-	id = 5
-	desc = "A plastic cassette tape with a pink striped sticker."
-	icon_state = "cassette_pink_stripe"
-	side1_icon = "cassette_pink_stripe"
-	songs = list("side1" = list("sound/music/walkman/pop4/4-1-1.ogg",\
-								"sound/music/walkman/pop4/4-1-2.ogg",\
-								"sound/music/walkman/pop4/4-1-3.ogg"),\
-				"side2" = list("sound/music/walkman/pop4/4-2-1.ogg",\
-								"sound/music/walkman/pop4/4-2-2.ogg",\
-								"sound/music/walkman/pop4/4-2-3.ogg"))
-
-/obj/item/device/cassette_tape/heavymetal
-	name = "red-black cassette"
-	id = 6
-	desc = "A plastic cassette tape with a red and black sticker."
+	desc = "A plastic cassette tape with a red star."
 	icon_state = "cassette_red_black"
 	side1_icon = "cassette_red_black"
-	songs = list("side1" = list("sound/music/walkman/heavymetal/5-1-1.ogg",\
-								"sound/music/walkman/heavymetal/5-1-2.ogg",\
-								"sound/music/walkman/heavymetal/5-1-3.ogg"),\
-				"side2" = list("sound/music/walkman/heavymetal/5-2-1.ogg",\
-								"sound/music/walkman/heavymetal/5-2-2.ogg",\
-								"sound/music/walkman/heavymetal/5-2-3.ogg"))
-
-/obj/item/device/cassette_tape/hairmetal
-	name = "red striped cassette"
-	id = 7
-	desc = "A plastic cassette tape with a gray sticker with red stripes."
-	icon_state = "cassette_red_stripe"
-	side1_icon = "cassette_red_stripe"
-	songs = list("side1" = list("sound/music/walkman/hairmetal/6-1-1.ogg",\
-								"sound/music/walkman/hairmetal/6-1-2.ogg",\
-								"sound/music/walkman/hairmetal/6-1-3.ogg"),\
-				"side2" = list("sound/music/walkman/hairmetal/6-2-1.ogg",\
-								"sound/music/walkman/hairmetal/6-2-2.ogg",\
-								"sound/music/walkman/hairmetal/6-2-3.ogg"))
-
-/obj/item/device/cassette_tape/indie
-	name = "rising sun cassette"
-	id = 8
-	desc = "A plastic cassette tape with the Japanese Rising Sun."
-	icon_state = "cassette_rising_sun"
-	side1_icon = "cassette_rising_sun"
-	songs = list("side1" = list("sound/music/walkman/indie/7-1-1.ogg",\
-								"sound/music/walkman/indie/7-1-2.ogg",\
-								"sound/music/walkman/indie/7-1-3.ogg"),\
-				"side2" = list("sound/music/walkman/indie/7-2-1.ogg",\
-								"sound/music/walkman/indie/7-2-2.ogg",\
-								"sound/music/walkman/indie/7-2-3.ogg"))
-
-/obj/item/device/cassette_tape/hiphop
-	name = "blue stripe cassette"
-	id = 9
-	desc = "An orange plastic cassette tape with a blue stripe."
-	icon_state = "cassette_orange_blue"
-	side1_icon = "cassette_orange_blue"
-	songs = list("side1" = list("sound/music/walkman/hiphop/8-1-1.ogg",\
-								"sound/music/walkman/hiphop/8-1-2.ogg",\
-								"sound/music/walkman/hiphop/8-1-3.ogg"),\
-				"side2" = list("sound/music/walkman/hiphop/8-2-1.ogg",\
-								"sound/music/walkman/hiphop/8-2-2.ogg",\
-								"sound/music/walkman/hiphop/8-2-3.ogg"))
-
-/obj/item/device/cassette_tape/nam
-	name = "green cassette"
-	id = 10
-	desc = "A green plastic cassette tape."
-	icon_state = "cassette_green"
-	side1_icon = "cassette_green"
-	songs = list("side1" = list("sound/music/walkman/nam/9-1-1.ogg",\
-								"sound/music/walkman/nam/9-1-2.ogg",\
-								"sound/music/walkman/nam/9-1-3.ogg"),\
-				"side2" = list("sound/music/walkman/nam/9-2-1.ogg",\
-								"sound/music/walkman/nam/9-2-2.ogg",\
-								"sound/music/walkman/nam/9-2-3.ogg"))
-
-/obj/item/device/cassette_tape/ocean
-	name = "ocean cassette"
-	id = 11
-	desc = "A blue and white plastic cassette tape."
-	icon_state = "cassette_ocean"
-	side1_icon = "cassette_ocean"
-	songs = list("side1" = list("sound/music/walkman/surf/10-1-1.ogg",\
-								"sound/music/walkman/surf/10-1-2.ogg",\
-								"sound/music/walkman/surf/10-1-3.ogg",\
-								"sound/music/walkman/surf/10-1-4.ogg"),\
-				"side2" = list("sound/music/walkman/surf/10-2-1.ogg",\
-								"sound/music/walkman/surf/10-2-2.ogg",\
-								"sound/music/walkman/surf/10-2-3.ogg",\
-								"sound/music/walkman/surf/10-2-4.ogg"))
-
-// hotline reference
-/obj/item/device/cassette_tape/aesthetic
-	name = "aesthetic cassette"
-	id = 12
-	desc = "An aesthetic looking cassette tape. 'Jacket' is written on the front."
-	icon_state = "cassette_aesthetic"
-	side1_icon = "cassette_aesthetic"
-
-//cassette tape that I thought was a good idea but doesnt fit for new maps.
-/obj/item/device/cassette_tape/cargocrate
-	name = "weyland yutani cassette"
-	id = 13
-	desc = "A blue metallic cassette with a weyland yutani logo."
-	icon_state = "cassette_wy"
-	side1_icon = "cassette_wy"
-
-// cassette tapes for map lore
-/obj/item/device/cassette_tape/solaris
-	name = "red UCP cassette"
-	id = 14
-	desc = "A cassette with a red UCP camo design."
-	icon_state = "cassette_solaris"
-	side1_icon = "cassette_solaris"
-
-
-/obj/item/device/cassette_tape/icecolony
-	name = "frozen cassette"
-	id = 15
-	desc = "A cassette. It's covered in ice and snow."
-	icon_state = "cassette_ice"
-	side1_icon = "cassette_ice"
-
-/obj/item/device/cassette_tape/lz
-	name = "nostalgic cassette"
-	id = 16
-	desc = "There's a cut up postcard taped to this cassette. You know this place."
-	icon_state = "cassette_lz"
-	side1_icon = "cassette_lz"
-
-/obj/item/device/cassette_tape/desertdam
-	name = "dam cassette"
-	id = 17
-	desc = "Attached to this cassette is a picture of a dam."
-	icon_state = "cassette_dam"
-	side1_icon = "cassette_dam"
-
-/obj/item/device/cassette_tape/prison
-	name = "broken cassette"
-	id = 18
-	desc = "The shell on this cassette is broken, it still looks like it'll work, though!"
-	icon_state = "cassette_worstmap"
-	side1_icon = "cassette_worstmap"
+	songs = list("side1" = list("sound/music/walkman/sovietwave/3-1-1.ogg",\
+								"sound/music/walkman/sovietwave/3-1-2.ogg",\
+								"sound/music/walkman/sovietwave/3-1-3.ogg"),\
+				 "side2" = list("sound/music/walkman/sovietwave/3-2-1.ogg",\
+								"sound/music/walkman/sovietwave/3-2-2.ogg",\
+								"sound/music/walkman/sovietwave/3-2-3.ogg"))

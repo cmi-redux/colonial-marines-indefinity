@@ -11,16 +11,17 @@
 
 	arrival_message = "Intercepted Transmission: 'We're here to kick ass and kill Yautja. Mainly kill Yautja."
 	objectives = "Hunt down and kill all Yautja without mercy. Retrieve the gear and leave."
-	probability = 0
+	probability = 1
 
-/datum/emergency_call/dutch/create_member(datum/mind/M, turf/override_spawn_loc)
+/datum/emergency_call/dutch/create_member(datum/mind/mind, turf/override_spawn_loc)
 	var/turf/spawn_loc = override_spawn_loc ? override_spawn_loc : get_spawn_point()
 
 	if(!istype(spawn_loc))
 		return //Didn't find a useable spawn point.
 
 	var/mob/living/carbon/human/H = new(spawn_loc)
-	M.transfer_to(H, TRUE)
+	mind.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 
 	if(!leader && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(H.client, JOB_SQUAD_LEADER, time_required_for_job))
 		leader = H
@@ -46,4 +47,4 @@
 	max_medics = 2
 	arrival_message = "Intercepted Transmission: 'We're here to kick ass and kill Yautja. Mainly kill Yautja."
 	objectives = "Hunt down and kill all Yautja without mercy. Retrieve the gear and leave."
-	probability = 0
+	probability = 1

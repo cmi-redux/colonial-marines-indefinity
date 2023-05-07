@@ -62,12 +62,12 @@
 	if(!istype(R))
 		return
 	var/N = tgui_input_list(usr, "Amount per transfer from this:","[R]", possible_transfer_amounts)
-	if (N)
+	if(N)
 		R.amount_per_transfer_from_this = N
 
 /obj/item/reagent_container/Initialize()
 	. = ..()
-	if (!possible_transfer_amounts)
+	if(!possible_transfer_amounts)
 		verbs -= /obj/item/reagent_container/verb/set_APTFT //which objects actually uses it?
 	create_reagents(volume)
 

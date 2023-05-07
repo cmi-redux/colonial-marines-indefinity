@@ -38,6 +38,8 @@
 	new /obj/effect/overlay/temp/dust_animation(loc, src, "dust-h")
 
 /mob/living/carbon/human/death(cause, gibbed)
+	set_light_on(FALSE)
+	tacmap_visibly = FALSE
 	if(stat == DEAD)
 		species?.handle_dead_death(src, gibbed)
 		return
@@ -75,24 +77,10 @@
 				return
 			last_qm_callout = world.time
 			// Tell the xenos where the human is.
-			xeno_announcement("I sense the last tallhost hiding in [get_area(last_living_human)].", XENO_HIVE_NORMAL, SPAN_ANNOUNCEMENT_HEADER_BLUE("[QUEEN_MOTHER_ANNOUNCE]"))
+			xeno_announcement("Я чувствую последнего носителя в [get_area(last_living_human)].", GLOB.faction_datum[FACTION_XENOMORPH_NORMAL], SPAN_ANNOUNCEMENT_HEADER_BLUE("[QUEEN_MOTHER_ANNOUNCE]"))
 			// Tell the human he is the last guy.
 			if(last_living_human.client)
-				to_chat(last_living_human, SPAN_ANNOUNCEMENT_HEADER_BLUE("Panic creeps up your spine. You realize that you are the last survivor."))
-			//disable delaycloaks
-			var/mob/living/carbon/human/delayer = last_living_human
-			if(istype(delayer.back, /obj/item/storage/backpack/marine/satchel/scout_cloak))
-				var/obj/item/storage/backpack/marine/satchel/scout_cloak/delayer_cloak = delayer.back
-				if(delayer_cloak.camo_active)
-					delayer_cloak.deactivate_camouflage(delayer)
-				delayer_cloak.cloak_cooldown = world.time + 1 HOURS //fuck you
-				to_chat(delayer, SPAN_WARNING("Your [delayer_cloak] fizzles out and breaks!"))
-			if(istype(delayer.wear_suit, /obj/item/clothing/suit/storage/marine/ghillie))
-				var/obj/item/clothing/suit/storage/marine/ghillie/delayer_armour = delayer.wear_suit
-				if(delayer_armour.camo_active)
-					delayer_armour.deactivate_camouflage(delayer)
-				delayer_armour.can_camo = FALSE //fuck you
-				to_chat(delayer, SPAN_WARNING("Your [delayer_armour]'s camo system breaks!"))
-			//tell the ghosts
-			announce_dchat("There is only one person left: [last_living_human.real_name].", last_living_human)
+				to_chat(last_living_human, SPAN_ANNOUNCEMENT_HEADER_BLUE("По телу проходят муражки. Вы понимаете, что вы - последний выживший."))
+			announce_dchat("Остался только один выживший: [last_living_human.real_name].", last_living_human)
+
 	return ..(cause, gibbed, species.death_message)

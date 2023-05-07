@@ -9,7 +9,7 @@
 	throw_range = 7
 	layer = LOWER_ITEM_LAYER
 	var/amount = 30 //How much paper is in the bin.
-	var/list/papers = new/list() //List of papers put in the bin for reference.
+	var/list/papers = list() //List of papers put in the bin for reference.
 	var/list/paper_types = list("Carbon-Copy", "Company Document")
 	var/sec_paper_type = "Carbon-Copy"
 
@@ -31,7 +31,7 @@
 	var/response = ""
 	if(!papers.len > 0)
 		response = alert(user, "What kind of paper?", "Paper type request", "Regular", sec_paper_type, "Cancel")
-		if (response != "Regular" && response != "Carbon-Copy" && response != "Company Document" && response != "USCM Document")
+		if(response != "Regular" && response != "Carbon-Copy" && response != "Company Document" && response != "USCM Document")
 			add_fingerprint(user)
 			return
 	if(amount >= 1)
@@ -44,13 +44,13 @@
 			P = papers[papers.len]
 			papers.Remove(P)
 		else
-			if (response == "Regular")
+			if(response == "Regular")
 				P = new /obj/item/paper
-			else if (response == "Carbon-Copy")
+			else if(response == "Carbon-Copy")
 				P = new /obj/item/paper/carbon
-			else if (response == "Company Document")
+			else if(response == "Company Document")
 				P = new /obj/item/paper/wy
-			else if (response == "USCM Document")
+			else if(response == "USCM Document")
 				P = new /obj/item/paper/uscm
 
 
@@ -94,6 +94,6 @@
 	set src in view(1)
 	var/response = ""
 	response = alert(usr, "What kind of paper?", "Paper type request", paper_types[1], paper_types[2], "Cancel")
-	if (response != "Carbon-Copy" && response != "Company Document" && response != "USCM Document")
+	if(response != "Carbon-Copy" && response != "Company Document" && response != "USCM Document")
 		return
 	sec_paper_type = response

@@ -40,8 +40,7 @@
 		if(possible_sea?.client.prefs?.toggles_sound & SOUND_ADMINHELP && !nosound)
 			sound_to(possible_sea, 'sound/effects/mhelp.ogg')
 
-
-/proc/msg_admin_ff(text, alive = TRUE)
+/proc/msg_admin_ff(text, hook_text, alive = TRUE)
 	var/rendered
 	if(alive)
 		rendered = SPAN_COMBAT("<span class=\"prefix\">ATTACK:</span> <font color=#00FF00><b>[text]</b></font>") //I used <font> because I never learned html correctly, fix this if you want
@@ -54,6 +53,13 @@
 			if(C.prefs.toggles_chat & CHAT_FFATTACKLOGS)
 				var/msg = rendered
 				to_chat(C, msg)
+
+	var/datum/discord_embed/embed = new()
+	embed.title = "ДО лог"
+	embed.description = hook_text
+	embed.color = COLOR_WEBHOOK_DEFAULT
+	send2adminchat_webhook(embed)
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////Panels
 
@@ -73,9 +79,9 @@
 /datum/admins/proc/player_notes_all(key as text)
 	set category = null
 	set name = "Player Record"
-	if (!istype(src,/datum/admins))
+	if(!istype(src,/datum/admins))
 		src = usr.client.admin_holder
-	if (!istype(src,/datum/admins) || !(src.rights & R_MOD))
+	if(!istype(src,/datum/admins) || !(src.rights & R_MOD))
 		to_chat(usr, "Error: you are not an admin!")
 		return
 
@@ -138,7 +144,7 @@
 	var/dat = {"
 		<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];c_mode=1'>Change Game Mode</A><br>
 		"}
-	if(master_mode == "secret")
+	if(GLOB.master_mode == "secret")
 		dat += "<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];f_secret=1'>(Force Secret Mode)</A><br>"
 
 	dat += {"
@@ -161,7 +167,7 @@
 	set desc = "Respawn basically"
 	set name = "Toggle Respawn"
 	CONFIG_SET(flag/respawn, !CONFIG_GET(flag/respawn))
-	if (CONFIG_GET(flag/respawn))
+	if(CONFIG_GET(flag/respawn))
 		to_world("<B>You may now respawn.</B>")
 	else
 		to_world("<B>You may no longer respawn :(</B>")
@@ -188,21 +194,21 @@
 	if(matches.len==0)
 		return
 
-	var/chosen
+	var/choice
 	if(matches.len==1)
-		chosen = matches[1]
+		choice = matches[1]
 	else
-		chosen = tgui_input_list(usr, "Select an atom type", "Spawn Atom", matches)
-		if(!chosen)
+		choice = tgui_input_list(usr, "Select an atom type", "Spawn Atom", matches)
+		if(!choice)
 			return
 
-	if(ispath(chosen,/turf))
+	if(ispath(choice, /turf))
 		var/turf/T = get_turf(usr.loc)
-		T.ChangeTurf(chosen)
+		T.ChangeTurf(choice)
 	else
-		new chosen(usr.loc)
+		new choice(usr.loc)
 
-	log_admin("[key_name(usr)] spawned [chosen] at ([usr.x],[usr.y],[usr.z])")
+	log_admin("[key_name(usr)] spawned [choice] at ([usr.x],[usr.y],[usr.z])")
 
 
 /client/proc/update_mob_sprite(mob/living/carbon/human/H as mob)
@@ -210,7 +216,7 @@
 	set name = "Update Mob Sprite"
 	set desc = "Should fix any mob sprite update errors."
 
-	if (!admin_holder || !(admin_holder.rights & R_MOD))
+	if(!admin_holder || !(admin_holder.rights & R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
 

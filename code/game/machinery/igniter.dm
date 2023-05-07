@@ -12,7 +12,7 @@
 	active_power_usage = 4
 
 /obj/structure/machinery/igniter/attack_remote(mob/user as mob)
-	return src.attack_hand(user)
+	return attack_hand(user)
 
 /obj/structure/machinery/igniter/attack_hand(mob/user as mob)
 	if(..())
@@ -20,16 +20,16 @@
 	add_fingerprint(user)
 
 	use_power(50)
-	src.on = !( src.on )
-	src.icon_state = text("igniter[]", src.on)
+	on = !on
+	icon_state = text("igniter[]", on)
 	return
 
 /obj/structure/machinery/igniter/process() //ugh why is this even in process()?
-// if (src.on && !(stat & NOPOWER) )
-// var/turf/location = src.loc
-// if (isturf(location))
-// location.hotspot_expose(1000,500,1)
-	return 1
+//	if(src.on && !(stat & NOPOWER) )
+//		var/turf/location = src.loc
+//		if(isturf(location))
+//			location.hotspot_expose(1000,500,1)
+	return FALSE
 
 /obj/structure/machinery/igniter/Initialize(mapload, ...)
 	. = ..()
@@ -37,8 +37,8 @@
 
 /obj/structure/machinery/igniter/power_change()
 	..()
-	if(!( stat & NOPOWER) )
-		icon_state = "igniter[src.on]"
+	if(!(stat & NOPOWER))
+		icon_state = "igniter[on]"
 	else
 		icon_state = "igniter0"
 
@@ -50,46 +50,46 @@
 	icon = 'icons/obj/structures/props/stationobjs.dmi'
 	icon_state = "migniter"
 	var/id = null
-	var/disable = 0
+	var/disable = FALSE
 	var/last_spark = 0
 	var/base_state = "migniter"
 	anchored = TRUE
 
 /obj/structure/machinery/sparker/power_change()
 	..()
-	if ( !(stat & NOPOWER) && disable == 0 )
+	if(!(stat & NOPOWER) && !disable)
 
 		icon_state = "[base_state]"
-// src.sd_SetLuminosity(2)
+//		sd_set_light(2)
 	else
 		icon_state = "[base_state]-p"
-// src.sd_SetLuminosity(0)
+//		sd_set_light(0)
 
 /obj/structure/machinery/sparker/attackby(obj/item/W as obj, mob/user as mob)
-	if (HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
+	if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 		add_fingerprint(user)
-		src.disable = !src.disable
-		if (src.disable)
+		disable = !disable
+		if(disable)
 			user.visible_message(SPAN_DANGER("[user] has disabled the [src]!"), SPAN_DANGER("You disable the connection to the [src]."))
 			icon_state = "[base_state]-d"
-		if (!src.disable)
+		if(!disable)
 			user.visible_message(SPAN_DANGER("[user] has reconnected the [src]!"), SPAN_DANGER("You fix the connection to the [src]."))
-			if(src.powered())
+			if(powered())
 				icon_state = "[base_state]"
 			else
 				icon_state = "[base_state]-p"
 
 /obj/structure/machinery/sparker/attack_remote()
-	if (src.anchored)
-		return src.ignite()
+	if(anchored)
+		return ignite()
 	else
 		return
 
 /obj/structure/machinery/sparker/proc/ignite()
-	if (!(powered()))
+	if(!(powered()))
 		return
 
-	if ((src.disable) || (src.last_spark && world.time < src.last_spark + 50))
+	if((disable) || (last_spark && world.time < last_spark + 50))
 		return
 
 
@@ -97,11 +97,11 @@
 	var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
 	s.set_up(2, 1, src)
 	s.start()
-	src.last_spark = world.time
+	last_spark = world.time
 	use_power(1000)
-// var/turf/location = src.loc
-// if (isturf(location))
-// location.hotspot_expose(1000,500,1)
+//	var/turf/location = loc
+//	if(isturf(location))
+//		location.hotspot_expose(1000,500,1)
 	return 1
 
 /obj/structure/machinery/sparker/emp_act(severity)
@@ -126,11 +126,11 @@
 	icon_state = "launcheract"
 
 	for(var/obj/structure/machinery/sparker/M in machines)
-		if (M.id == src.id)
+		if(M.id == id)
 			INVOKE_ASYNC(M, TYPE_PROC_REF(/obj/structure/machinery/sparker, ignite))
 
 	for(var/obj/structure/machinery/igniter/M in machines)
-		if(M.id == src.id)
+		if(M.id == id)
 			use_power(50)
 			M.on = !( M.on )
 			M.icon_state = text("igniter[]", M.on)

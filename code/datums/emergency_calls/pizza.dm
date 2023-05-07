@@ -8,16 +8,17 @@
 	objectives = "Make sure you get a tip!"
 	shuttle_id = "Distress_Small"
 	name_of_spawn = /obj/effect/landmark/ert_spawns/distress_pizza
-	probability = 5
+	probability = 1
 
-/datum/emergency_call/pizza/create_member(datum/mind/M, turf/override_spawn_loc)
+/datum/emergency_call/pizza/create_member(datum/mind/mind, turf/override_spawn_loc)
 	var/turf/spawn_loc = override_spawn_loc ? override_spawn_loc : get_spawn_point()
 
 	if(!istype(spawn_loc))
 		return //Didn't find a useable spawn point.
 
 	var/mob/living/carbon/human/H = new(spawn_loc)
-	M.transfer_to(H, TRUE)
+	mind.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 
 	arm_equipment(H, /datum/equipment_preset/other/pizza, TRUE, TRUE)
 

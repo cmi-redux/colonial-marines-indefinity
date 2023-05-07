@@ -39,14 +39,14 @@
 
 /mob/proc/AdjustStun(amount)
 	if(status_flags & CANSTUN)
-		stunned = max(stunned + amount,0)
+		stunned = max(stunned + amount, 0)
 		stun_callback_check()
 		update_canmove()
 	return
 
 /mob/proc/Daze(amount)
 	if(status_flags & CANDAZE)
-		dazed = max(max(dazed,amount),0)
+		dazed = max(max(dazed,amount), 0)
 	return
 
 /mob/proc/SetDaze(amount)
@@ -56,7 +56,7 @@
 
 /mob/proc/AdjustDaze(amount)
 	if(status_flags & CANDAZE)
-		dazed = max(dazed + amount,0)
+		dazed = max(dazed + amount, 0)
 	return
 
 /mob/proc/Slow(amount)

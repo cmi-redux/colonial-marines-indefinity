@@ -70,9 +70,10 @@
 /obj/structure/machinery/bot/mulebot/Initialize(mapload, ...)
 	. = ..()
 	botcard = new(src)
-	if(RoleAuthority)
-		var/datum/job/ctequiv = RoleAuthority.roles_by_name[JOB_CARGO_TECH]
-		if(ctequiv) botcard.access = ctequiv.get_access()
+	if(SSticker.role_authority)
+		var/datum/job/ctequiv = GET_MAPPED_ROLE(JOB_CARGO_TECH)
+		if(ctequiv)
+			botcard.access = ctequiv.get_access()
 
 	cell = new(src)
 	cell.charge = 2000
@@ -141,8 +142,8 @@
 			icon_state = "mulebot0"
 
 		updateDialog()
-	else if (HAS_TRAIT(I, TRAIT_TOOL_WRENCH))
-		if (src.health < maxhealth)
+	else if(HAS_TRAIT(I, TRAIT_TOOL_WRENCH))
+		if(src.health < maxhealth)
 			src.health = min(maxhealth, src.health+25)
 			user.visible_message(
 				SPAN_DANGER("[user] repairs [src]!"),
@@ -193,7 +194,7 @@
 
 /obj/structure/machinery/bot/mulebot/attack_hand(mob/user)
 	. = ..()
-	if (.)
+	if(.)
 		return
 	user.set_interaction(src)
 	interact(user, 0)
@@ -282,9 +283,9 @@
 /obj/structure/machinery/bot/mulebot/Topic(href, href_list)
 	if(..())
 		return
-	if (usr.stat)
+	if(usr.stat)
 		return
-	if ((in_range(src, usr) && istype(src.loc, /turf)) || (ishighersilicon(usr)))
+	if((in_range(src, usr) && istype(src.loc, /turf)) || (ishighersilicon(usr)))
 		usr.set_interaction(src)
 
 		switch(href_list["op"])
@@ -296,10 +297,10 @@
 					to_chat(usr, SPAN_DANGER("Access denied."))
 					return
 			if("power")
-				if (src.on)
+				if(src.on)
 					turn_off()
-				else if (cell && !open)
-					if (!turn_on())
+				else if(cell && !open)
+					if(!turn_on())
 						to_chat(usr, SPAN_DANGER("You can't switch on [src]."))
 						return
 				else
@@ -391,14 +392,14 @@
 
 			if("wirecut")
 				var/obj/item/held_item = usr.get_held_item()
-				if (held_item && HAS_TRAIT(held_item, TRAIT_TOOL_WIRECUTTERS))
+				if(held_item && HAS_TRAIT(held_item, TRAIT_TOOL_WIRECUTTERS))
 					var/wirebit = text2num(href_list["wire"])
 					wires &= ~wirebit
 				else
 					to_chat(usr, SPAN_NOTICE(" You need wirecutters!"))
 			if("wiremend")
 				var/obj/item/held_item = usr.get_held_item()
-				if (held_item && HAS_TRAIT(held_item, TRAIT_TOOL_WIRECUTTERS))
+				if(held_item && HAS_TRAIT(held_item, TRAIT_TOOL_WIRECUTTERS))
 					var/wirebit = text2num(href_list["wire"])
 					wires |= wirebit
 				else
@@ -406,7 +407,7 @@
 
 			if("wirepulse")
 				var/obj/item/held_item = usr.get_held_item()
-				if (held_item && HAS_TRAIT(held_item, TRAIT_TOOL_MULTITOOL))
+				if(held_item && HAS_TRAIT(held_item, TRAIT_TOOL_MULTITOOL))
 					switch(href_list["wire"])
 						if("1","2")
 							to_chat(usr, SPAN_NOTICE(" [icon2html(src, usr)] The charge light flickers."))
@@ -441,7 +442,7 @@
 /obj/structure/machinery/bot/mulebot/MouseDrop_T(atom/movable/C, mob/user)
 	if(user.stat)
 		return
-	if (!on || !istype(C)|| C.anchored || get_dist(user, src) > 1 || get_dist(src,C) > 1 )
+	if(!on || !istype(C)|| C.anchored || get_dist(user, src) > 1 || get_dist(src,C) > 1 )
 		return
 	if(load)
 		return
@@ -889,12 +890,12 @@
 	var/datum/signal/signal = new()
 	signal.source = src
 	signal.transmission_method = 1
-	//for(var/key in keyval)
+	//for(key in keyval)
 	// signal.data[key] = keyval[key]
 	signal.data = keyval
-	if (signal.data["findbeacon"])
+	if(signal.data["findbeacon"])
 		frequency.post_signal(src, signal, filter = RADIO_NAVBEACONS)
-	else if (signal.data["type"] == "mulebot")
+	else if(signal.data["type"] == "mulebot")
 		frequency.post_signal(src, signal, filter = RADIO_MULEBOT)
 	else
 		frequency.post_signal(src, signal)
@@ -916,7 +917,7 @@
 	post_signal_multiple(control_freq, kv)
 
 /obj/structure/machinery/bot/mulebot/emp_act(severity)
-	if (cell)
+	if(cell)
 		cell.emp_act(severity)
 	if(load)
 		load.emp_act(severity)
@@ -931,7 +932,7 @@
 	new /obj/item/stack/rods(Tsec)
 	new /obj/item/stack/rods(Tsec)
 	new /obj/item/stack/cable_coil/cut(Tsec)
-	if (cell)
+	if(cell)
 		cell.forceMove(Tsec)
 		cell.update_icon()
 		cell = null

@@ -13,7 +13,7 @@
 
 	var/data = "<h2>Stored matrices</h2>"
 
-	if(LAZYLEN(stored_matrices))
+	if(length(stored_matrices))
 		for(var/name in stored_matrices)
 			if(name == selected_matrix)
 				data += "-> <b>[name]</b><br>"
@@ -65,7 +65,7 @@
 		if("new")
 			var/matrix/M
 
-			if(alert("Identity matrix?", "Matrix creation", "Yes", "No") == "Yes")
+			if(alert("Identity matrix?", "Matrix creation", usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) == usr.client.auto_lang(LANGUAGE_YES))
 				M = matrix()
 			else
 				var/elements_str = input("Please enter the elements of the matrix as a comma-separated string. Elements should be given by column first, not row!", "Matrix elements") as null|text
@@ -145,7 +145,7 @@
 			if(!M)
 				return
 
-			if(alert("Are you sure you want to delete [selected_matrix]?", "Matrix deletion", "Yes", "No") != "Yes")
+			if(alert("Are you sure you want to delete [selected_matrix]?", "Matrix deletion", usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 				return
 
 			qdel(M)

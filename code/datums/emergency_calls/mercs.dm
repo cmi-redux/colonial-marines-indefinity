@@ -5,7 +5,7 @@
 /datum/emergency_call/mercs
 	name = "Freelancers (Squad)"
 	mob_max = 8
-	probability = 25
+	probability = 20
 
 
 /datum/emergency_call/mercs/New()
@@ -20,7 +20,7 @@
 /datum/emergency_call/mercs/friendly //if admins want to specifically call in friendly ones
 	name = "Friendly Freelancers (Squad)"
 	mob_max = 8
-	probability = 0
+	probability = 1
 
 /datum/emergency_call/mercs/friendly/New()
 	. = ..()
@@ -31,7 +31,7 @@
 /datum/emergency_call/mercs/hostile //ditto
 	name = "Hostile Freelancers (Squad)"
 	mob_max = 8
-	probability = 0
+	probability = 1
 
 /datum/emergency_call/mercs/hostile/New()
 	. = ..()
@@ -51,7 +51,7 @@
 		to_chat(H, SPAN_NOTICE(SPAN_BOLD("To this end, you have been contacted by Weyland-Yutani of the USCSS Royce to assist the [MAIN_SHIP_NAME]..")))
 		to_chat(H, SPAN_NOTICE(SPAN_BOLD("Ensure they are not destroyed.</b>")))
 
-/datum/emergency_call/mercs/create_member(datum/mind/M, turf/override_spawn_loc)
+/datum/emergency_call/mercs/create_member(datum/mind/mind, turf/override_spawn_loc)
 	var/turf/spawn_loc = override_spawn_loc ? override_spawn_loc : get_spawn_point()
 
 	if(!istype(spawn_loc))
@@ -59,7 +59,8 @@
 
 	var/mob/living/carbon/human/H = new(spawn_loc)
 	H.name = H.real_name
-	M.transfer_to(H, TRUE)
+	mind.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 	H.job = "Mercenary"
 
 	if(!leader && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(H.client, JOB_SQUAD_LEADER, time_required_for_job))
@@ -81,14 +82,14 @@
 	name = "Freelancers (Platoon)"
 	mob_min = 8
 	mob_max = 30
-	probability = 0
+	probability = 1
 	max_medics = 3
 
 /datum/emergency_call/heavy_mercs
 	name = "Elite Mercenaries (Random Alignment)"
 	mob_min = 4
 	mob_max = 8
-	probability = 0
+	probability = 1
 	max_medics = 1
 	max_engineers = 1
 	max_heavies = 1
@@ -132,7 +133,7 @@
 		to_chat(H, SPAN_NOTICE(SPAN_BOLD("To this end, you have been contacted by Weyland-Yutani of the USCSS Royce to assist the [MAIN_SHIP_NAME]..")))
 		to_chat(H, SPAN_NOTICE(SPAN_BOLD("Ensure they are not destroyed.</b>")))
 
-/datum/emergency_call/heavy_mercs/create_member(datum/mind/M, turf/override_spawn_loc)
+/datum/emergency_call/heavy_mercs/create_member(datum/mind/mind, turf/override_spawn_loc)
 	var/turf/spawn_loc = override_spawn_loc ? override_spawn_loc : get_spawn_point()
 
 	if(!istype(spawn_loc))
@@ -140,7 +141,8 @@
 
 	var/mob/living/carbon/human/H = new(spawn_loc)
 	H.name = H.real_name
-	M.transfer_to(H, TRUE)
+	mind.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 	H.job = "Mercenary"
 
 	if(!leader && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(H.client, JOB_SQUAD_LEADER, time_required_for_job))    //First one spawned is always the leader.

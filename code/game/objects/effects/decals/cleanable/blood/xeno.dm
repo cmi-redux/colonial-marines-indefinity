@@ -6,7 +6,7 @@
 	desc = "It's yellow and acidic. It looks like... <i>blood?</i>"
 	icon = 'icons/effects/blood.dmi'
 	basecolor = "#dffc00"
-	amount = 1
+	bloodiness = 4
 
 /obj/effect/decal/cleanable/blood/gibs/xeno
 	name = "steaming gibs"

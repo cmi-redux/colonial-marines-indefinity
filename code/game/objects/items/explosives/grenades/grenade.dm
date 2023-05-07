@@ -18,8 +18,11 @@
 	var/has_arm_sound = TRUE
 	var/underslug_launchable = FALSE
 	var/hand_throwable = TRUE
-	harmful = TRUE //Is it harmful? Are they banned for synths?
-	antigrief_protection = TRUE //Should it be checked by antigrief?
+	harmful = TRUE	//Is it harmful? Are they banned for synths?
+	antigrief_protection = TRUE	//Should it be checked by antigrief?
+	hud_state = "grenade_he"
+	hud_state_empty = "grenade_empty"
+	var/explosing = FALSE
 
 /obj/item/explosive/grenade/Initialize()
 	. = ..()
@@ -60,7 +63,7 @@
 	if(!. || isnull(loc))
 		return
 
-	if(antigrief_protection && user.faction == FACTION_MARINE && explosive_antigrief_check(src, user))
+	if(antigrief_protection && user.faction == GLOB.faction_datum[FACTION_MARINE] && explosive_antigrief_check(src, user))
 		to_chat(user, SPAN_WARNING("\The [name]'s safe-area accident inhibitor prevents you from priming the grenade!"))
 		// Let staff know, in case someone's actually about to try to grief
 		msg_admin_niche("[key_name(user)] attempted to prime \a [name] in [get_area(src)] (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[src.loc.x];Y=[src.loc.y];Z=[src.loc.z]'>JMP</a>)")
@@ -106,6 +109,7 @@
 		activate_sensors()
 	else
 		active = TRUE
+		explosing = TRUE
 		det_time ? addtimer(CALLBACK(src, PROC_REF(prime)), det_time) : prime()
 	w_class = SIZE_MASSIVE // We cheat a little, primed nades become massive so they cant be stored anywhere
 	update_icon()
@@ -124,23 +128,23 @@
 /obj/item/explosive/grenade/launch_towards(datum/launch_metadata/LM)
 	if(active && ismob(LM.thrower))
 		var/mob/M = LM.thrower
-		M.count_niche_stat(STATISTICS_NICHE_GRENADES)
+		M.count_statistic_stat(STATISTICS_GRENADES)
 	. = ..()
 
 
 /obj/item/explosive/grenade/attackby(obj/item/W as obj, mob/user as mob)
 	if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 		switch(det_time)
-			if ("1")
+			if("1")
 				det_time = 10
 				to_chat(user, SPAN_NOTICE("You set the [name] for 1 second detonation time."))
-			if ("10")
+			if("10")
 				det_time = 30
 				to_chat(user, SPAN_NOTICE("You set the [name] for 3 second detonation time."))
-			if ("30")
+			if("30")
 				det_time = 50
 				to_chat(user, SPAN_NOTICE("You set the [name] for 5 second detonation time."))
-			if ("50")
+			if("50")
 				det_time = 1
 				to_chat(user, SPAN_NOTICE("You set the [name] for instant detonation."))
 		add_fingerprint(user)
@@ -151,3 +155,43 @@
 	walk(src, null, null)
 	..()
 	return
+
+/obj/item/explosive/grenade/proc/explosing_check()
+	if(!explosing)
+		return TRUE
+	return FALSE
+
+/obj/item/explosive/grenade/bullet_act(obj/item/projectile/P)
+	..()
+
+	if(!explosing_check())
+		return
+	var/ammo_flags = P.ammo.traits_to_give | P.projectile_override_flags
+	if(ammo_flags && ammo_flags & (/datum/element/bullet_trait_incendiary) || P.ammo.flags_ammo_behavior & AMMO_XENO)
+		explosing = TRUE
+		playsound(src, 'sound/effects/explosion_psss.ogg', 5, 1)
+		force = TRUE
+		prime()
+	else if(rand(0,300) < 20)
+		explosing = TRUE
+		playsound(src, 'sound/effects/explosion_psss.ogg', 5, 1)
+		force = TRUE
+		prime()
+
+/obj/item/explosive/grenade/ex_act(severity)
+	if(!explosing_check())
+		return
+	switch(severity)
+		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
+			explosing = TRUE
+			playsound(src, 'sound/effects/explosion_psss.ogg', 5, 1)
+			force = TRUE
+			prime()
+
+/obj/item/explosive/grenade/flamer_fire_act()
+	if(!explosing_check())
+		return
+	explosing = TRUE
+	playsound(src, 'sound/effects/explosion_psss.ogg', 5, 1)
+	force = TRUE
+	prime()

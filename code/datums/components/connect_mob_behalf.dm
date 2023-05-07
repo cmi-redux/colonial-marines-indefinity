@@ -54,6 +54,6 @@
 
 	tracked_mob = null
 
-/datum/component/connect_mob_behalf/proc/on_logout(mob/source)
+/datum/component/connect_mob_behalf/proc/on_logout(mob/user)
 	SIGNAL_HANDLER
 	update_signals()

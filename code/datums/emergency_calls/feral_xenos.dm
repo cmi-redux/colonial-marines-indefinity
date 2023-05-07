@@ -19,42 +19,43 @@
 	var/turf/drop_spawn = get_spawn_point(TRUE)
 	if(istype(drop_spawn))
 		//drop some weeds for xeno plasma regen.
-		new /obj/effect/alien/weeds/node/feral(drop_spawn)
+		new /obj/effect/alien/weeds/node/feral(drop_spawn, null, null, GLOB.faction_datum[FACTION_XENOMORPH_FERAL])
 
-/datum/emergency_call/feral_xenos/create_member(datum/mind/M, turf/override_spawn_loc)
+/datum/emergency_call/feral_xenos/create_member(datum/mind/mind, turf/override_spawn_loc)
 	var/turf/spawn_loc = override_spawn_loc ? override_spawn_loc : get_spawn_point()
+	var/datum/faction/faction_to_set = GLOB.faction_datum[FACTION_XENOMORPH_FERAL]
 
 	if(!istype(spawn_loc))
 		return //Didn't find a useable spawn point.
 
-	var/mob/current_mob = M.current
+	var/mob/current_mob = mind.current
 	var/hive_leader = FALSE
 
-	var/mob/living/carbon/xenomorph/new_xeno
+	var/mob/living/carbon/xenomorph/xenomorph
 	if(!leader)
 		var/picked = pick(/mob/living/carbon/xenomorph/ravager, /mob/living/carbon/xenomorph/praetorian, /mob/living/carbon/xenomorph/crusher)
-		new_xeno = new picked(spawn_loc)
-		leader = new_xeno
+		xenomorph = new picked(spawn_loc, null, faction_to_set)
+		leader = xenomorph
 		hive_leader = TRUE
 
 	else if(medics < max_medics)
 		medics++
 		var/picked = pick(/mob/living/carbon/xenomorph/drone, /mob/living/carbon/xenomorph/hivelord, /mob/living/carbon/xenomorph/burrower)
-		new_xeno = new picked(spawn_loc)
+		xenomorph = new picked(spawn_loc, null, faction_to_set)
 
 	else if(engineers < max_engineers)
 		engineers++
 		var/picked = pick(/mob/living/carbon/xenomorph/warrior, /mob/living/carbon/xenomorph/lurker, /mob/living/carbon/xenomorph/spitter)
-		new_xeno = new picked(spawn_loc)
+		xenomorph = new picked(spawn_loc, null, faction_to_set)
 
 	else
 		var/picked = pick(/mob/living/carbon/xenomorph/drone, /mob/living/carbon/xenomorph/runner, /mob/living/carbon/xenomorph/defender)
-		new_xeno = new picked(spawn_loc)
+		xenomorph = new picked(spawn_loc, null, faction_to_set)
 
-	M.transfer_to(new_xeno, TRUE)
-	new_xeno.set_hive_and_update(XENO_HIVE_FERAL)
+	mind.transfer_to(xenomorph, TRUE)
+	GLOB.ert_mobs += xenomorph
 	if(hive_leader)
-		new_xeno.hive.add_hive_leader(new_xeno)
+		faction_to_set.add_hive_leader(xenomorph)
 
 	QDEL_NULL(current_mob)
 
@@ -63,4 +64,4 @@
 	name = "Xenomorphs (Feral Platoon)"
 	mob_min = 1
 	mob_max = 30
-	probability = 0
+	probability = 1

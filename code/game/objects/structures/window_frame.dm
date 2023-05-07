@@ -3,6 +3,7 @@
 	desc = "A big hole in the wall that used to sport a large window. Can be vaulted through"
 	icon = 'icons/turf/walls/window_frames.dmi'
 	icon_state = "window0_frame"
+	plane = WALL_PLANE
 	layer = WINDOW_FRAME_LAYER
 	density = TRUE
 	throwpass = TRUE
@@ -19,15 +20,17 @@
 	projectile_coverage = PROJECTILE_COVERAGE_MEDIUM
 	surgery_duration_multiplier = SURGERY_SURFACE_MULT_UNSUITED
 
-	tiles_with = list(/turf/closed/wall)
-	var/tiles_special[] = list(/obj/structure/machinery/door/airlock,
+	tiles_with = list(
+		/turf/closed/wall)
+	var/tiles_special = list(
+		/obj/structure/machinery/door/airlock,
 		/obj/structure/window/framed,
 		/obj/structure/girder,
 		/obj/structure/window_frame)
 
 /obj/structure/window_frame/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_OVER|PASS_TYPE_CRAWLER
 
 /obj/structure/window_frame/BlockedPassDirs(atom/movable/mover, target_dir)
@@ -71,11 +74,11 @@
 /obj/structure/window_frame/ex_act(power)
 	switch(power)
 		if(0 to EXPLOSION_THRESHOLD_LOW)
-			if (prob(25))
+			if(prob(25))
 				qdel(src)
 				return
 		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
-			if (prob(50))
+			if(prob(50))
 				qdel(src)
 				return
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
@@ -140,7 +143,7 @@
 		playsound(src, 'sound/effects/metalhit.ogg', 25, 1)
 		take_damage((max_health / XENO_HITS_TO_DESTROY_WINDOW_FRAME) + 1)
 		return XENO_ATTACK_ACTION
-	else if (reinforced && user.claw_type >= CLAW_TYPE_SHARP)
+	else if(reinforced && user.claw_type >= CLAW_TYPE_SHARP)
 		user.animation_attack_on(src)
 		playsound(src, 'sound/effects/metalhit.ogg', 25, 1)
 		take_damage((max_health / XENO_HITS_TO_DESTROY_R_WINDOW_FRAME) + 1)
@@ -207,20 +210,20 @@
 	reinforced = TRUE
 
 /obj/structure/window_frame/hangar
-	icon_state = "hngr_window0"
+	icon_state = "hngr_window0_frame"
 	basestate = "hngr_window"
 
 /obj/structure/window_frame/hangar/reinforced
-	icon_state = "hngr_rwindow0"
+	icon_state = "hngr_rwindow0_frame"
 	basestate = "hngr_rwindow"
 	reinforced = TRUE
 
 /obj/structure/window_frame/bunker
-	icon_state = "bnkr_window0"
+	icon_state = "bnkr_window0_frame"
 	basestate = "bnkr_window"
 
 /obj/structure/window_frame/bunker/reinforced
-	icon_state = "bnkr_rwindow0"
+	icon_state = "bnkr_rwindow0_frame"
 	basestate = "bnkr_rwindow"
 	reinforced = TRUE
 

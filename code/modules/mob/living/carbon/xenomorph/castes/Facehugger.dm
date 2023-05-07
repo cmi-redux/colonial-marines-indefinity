@@ -12,8 +12,6 @@
 	evolution_allowed = FALSE
 	can_be_revived = FALSE
 
-	minimap_icon = "facehugger"
-
 /mob/living/carbon/xenomorph/facehugger
 	name = XENO_CASTE_FACEHUGGER
 	caste_type = XENO_CASTE_FACEHUGGER
@@ -41,6 +39,7 @@
 	counts_for_roundend = FALSE
 	refunds_larva_if_banished = FALSE
 	can_hivemind_speak = FALSE
+
 	base_actions = list(
 		/datum/action/xeno_action/onclick/xeno_resting,
 		/datum/action/xeno_action/watch_xeno,
@@ -54,6 +53,8 @@
 
 	icon_xeno = 'icons/mob/xenos/facehugger.dmi'
 	icon_xenonid = 'icons/mob/xenonids/facehugger.dmi'
+
+	balance_formulas = list(BALANCE_FORMULA_XENO_ABILITER)
 
 /mob/living/carbon/xenomorph/facehugger/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
@@ -103,7 +104,7 @@
 		var/obj/effect/alien/resin/special/eggmorph/morpher = A
 		if(time_of_birth + 3 SECONDS > world.time)
 			return
-		if(morpher.linked_hive.hivenumber != hivenumber)
+		if(morpher.faction != faction)
 			to_chat(src, SPAN_XENOWARNING("This isn't your hive's eggmorpher!"))
 			return
 		if(morpher.stored_huggers >= morpher.huggers_to_grow_max)
@@ -119,7 +120,7 @@
 		if(!human.lying)
 			to_chat(src, SPAN_WARNING("You can't reach \the [human], they need to be lying down."))
 			return
-		if(!can_hug(human, hivenumber))
+		if(!can_hug(human, faction))
 			to_chat(src, SPAN_WARNING("You can't infect \the [human]..."))
 			return
 		visible_message(SPAN_WARNING("\The [src] starts climbing onto \the [human]'s face..."), SPAN_XENONOTICE("You start climbing onto \the [human]'s face..."))
@@ -128,7 +129,7 @@
 		if(!human.lying)
 			to_chat(src, SPAN_WARNING("You can't reach \the [human], they need to be lying down."))
 			return
-		if(!can_hug(human, hivenumber))
+		if(!can_hug(human, faction))
 			to_chat(src, SPAN_WARNING("You can't infect \the [human]..."))
 			return
 		handle_hug(human)
@@ -138,11 +139,10 @@
 	xeno_attack_delay(src) //Adds some lag to the 'attack'
 
 /mob/living/carbon/xenomorph/facehugger/proc/handle_hug(mob/living/carbon/human/human)
-	var/obj/item/clothing/mask/facehugger/hugger = new /obj/item/clothing/mask/facehugger(loc, hivenumber)
+	var/obj/item/clothing/mask/facehugger/hugger = new /obj/item/clothing/mask/facehugger(loc, faction)
 	var/did_hug = hugger.attach(human, TRUE, 0.5)
-	if(client)
-		client?.player_data?.adjust_stat(PLAYER_STAT_FACEHUGS, STAT_CATEGORY_XENO, 1)
 	var/area/hug_area = get_area(src)
+	track_ability_usage(STATISTICS_FACEHUGGE, caste_type, 1)
 	if(hug_area)
 		for(var/mob/dead/observer/observer as anything in GLOB.observer_list)
 			to_chat(observer, SPAN_DEADSAY("<b>[human]</b> has been facehugged by <b>[src]</b> at \the <b>[hug_area]</b>" + " (<a href='?src=\ref[observer];jumptocoord=1;X=[human.loc.x];Y=[human.loc.y];Z=[human.loc.z]'>JMP</a>)"))
@@ -153,9 +153,9 @@
 		to_chat(src, SPAN_DEADSAY("<b>[human]</b> has been facehugged by <b>[src]</b>"))
 	qdel(src)
 	if(hug_area)
-		xeno_message(SPAN_XENOMINORWARNING("You sense that [src] has facehugged a host at \the [hug_area]!"), 1, src.hivenumber)
+		xeno_message(SPAN_XENOMINORWARNING("You sense that [src] has facehugged a host at \the [hug_area]!"), 1, faction)
 	else
-		xeno_message(SPAN_XENOMINORWARNING("You sense that [src] has facehugged a host!"), 1, src.hivenumber)
+		xeno_message(SPAN_XENOMINORWARNING("You sense that [src] has facehugged a host!"), 1, faction)
 	return did_hug
 
 /mob/living/carbon/xenomorph/facehugger/age_xeno()
@@ -164,7 +164,7 @@
 
 	age = XENO_NORMAL
 
-	var/total_facehugs = get_client_stat(client, PLAYER_STAT_FACEHUGS)
+	var/total_facehugs = client?.player_data?.player_entity?.get_statistic(STATISTIC_TYPE_CASTE_ABILITIES, caste_type, STATISTICS_FACEHUGGE)
 	switch(total_facehugs)
 		if(FACEHUG_TIER_1 to FACEHUG_TIER_2)
 			age = XENO_MATURE

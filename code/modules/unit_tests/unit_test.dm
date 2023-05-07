@@ -163,7 +163,7 @@ GLOBAL_VAR_INIT(focused_test, focused_test())
 	var/list/log_entry = list()
 	var/list/fail_reasons = test.fail_reasons
 
-	for(var/reasonID in 1 to LAZYLEN(fail_reasons))
+	for(var/reasonID in 1 to length(fail_reasons))
 		var/text = fail_reasons[reasonID][1]
 		var/file = fail_reasons[reasonID][2]
 		var/line = fail_reasons[reasonID][3]

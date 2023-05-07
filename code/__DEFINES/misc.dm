@@ -4,6 +4,16 @@
 #define FULLSCREEN_OVERLAY_RESOLUTION_X 15
 #define FULLSCREEN_OVERLAY_RESOLUTION_Y 15
 
+// Droppods
+#define DROPPOD_DROPPED (1<<0)
+#define DROPPOD_DROPPING (1<<1)
+#define DROPPOD_OPEN (1<<2)
+#define DROPPOD_STRIPPED (1<<3)
+#define DROPPOD_RETURNING (1<<4)
+
+//snow
+#define MAX_LAYER_SNOW_LEVELS 3
+
 //dirt type for each turf types.
 
 #define NO_DIRT 0
@@ -28,22 +38,20 @@
 
 // What kind of function to use for Explosions falling off.
 
-#define EXPLOSION_FALLOFF_SHAPE_LINEAR   0
-#define EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL  1
-#define EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL_HALF 2
+#define EXPLOSION_FALLOFF_SHAPE_LINEAR				0
+#define EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL			1
+#define EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL_HALF	2
 
 #define EXPLOSION_MAX_POWER 5000
 
-//area flags
+#define AREA_AVOID_BIOSCAN			(1<<0)
+#define AREA_NOTUNNEL				(1<<1)
+#define AREA_ALLOW_XENO_JOIN		(1<<2)
+#define AREA_CONTAINMENT			(1<<3)
+#define AREA_RECOVER_CORPSES		(1<<4)
+#define AREA_RECOVER_ITEMS			(1<<5)
+#define AREA_RECOVER_FULTON_ITEMS	(1<<6)
 
-/// used to make mobs skip bioscans
-#define AREA_AVOID_BIOSCAN (1<<0)
-/// makes it so the area can not be tunneled to
-#define AREA_NOTUNNEL (1<<1)
-/// xenos can join whilst in this area (for admin zlevel)
-#define AREA_ALLOW_XENO_JOIN (1<<2)
-/// Flags the area as a containment area
-#define AREA_CONTAINMENT (1<<3)
 /// Default number of ticks for do_after
 #define DA_DEFAULT_NUM_TICKS 5
 
@@ -160,68 +168,12 @@
 #define MATRIX_NVG 1
 #define MATRIX_WIDE 2
 
-// Statistics defines
-#define STATISTIC_XENO "xeno"
-#define STATISTIC_HUMAN "human"
-
-#define STATISTICS_DEATH_LIST_LEN 10
-
-#define STATISTICS_NICHE_EXECUTION   "Executions Made"
-#define STATISTICS_NICHE_MEDALS  "Medals Received"
-#define STATISTICS_NICHE_MEDALS_GIVE "Medals Given"
-#define STATISTICS_NICHE_SHOCK   "Times Shocked"
-#define STATISTICS_NICHE_GRENADES    "Grenades Thrown"
-#define STATISTICS_NICHE_FLIGHT  "Flights Piloted"
-#define STATISTICS_NICHE_HANDCUFF    "Handcuffs Applied"
-#define STATISTICS_NICHE_PILLS   "Pills Fed"
-#define STATISTICS_NICHE_DISCHARGE   "Accidental Discharges"
-#define STATISTICS_NICHE_FULTON  "Fultons Deployed"
-#define STATISTICS_NICHE_DISK    "Disks Decrypted"
-#define STATISTICS_NICHE_UPLOAD  "Data Uploaded"
-#define STATISTICS_NICHE_CHEMS   "Chemicals Discovered"
-#define STATISTICS_NICHE_CRATES  "Supplies Airdropped"
-#define STATISTICS_NICHE_OB  "Bombardments Fired"
-
-#define STATISTICS_NICHE_CADES   "Barricades Built"
-#define STATISTICS_NICHE_UPGRADE_CADES "Barricades Upgraded"
-#define STATISTICS_NICHE_REPAIR_CADES    "Barricades Repaired"
-#define STATISTICS_NICHE_REPAIR_GENERATOR    "Generators Repaired"
-#define STATISTICS_NICHE_REPAIR_APC  "APCs Repaired"
-#define STATISTICS_NICHE_DEFENSES_BUILT "Defenses Built"
-
-#define STATISTICS_NICHE_CORGI   "Corgis Murdered"
-#define STATISTICS_NICHE_CAT "Cats Murdered"
-#define STATISTICS_NICHE_COW "Cows Murdered"
-#define STATISTICS_NICHE_CHICKEN "Chickens Murdered"
-
-#define STATISTICS_NICHE_SURGERY_BONES   "Bones Mended"
-#define STATISTICS_NICHE_SURGERY_IB  "Internal Bleedings Stopped"
-#define STATISTICS_NICHE_SURGERY_BRAIN   "Brains Mended"
-#define STATISTICS_NICHE_SURGERY_EYE "Eyes Mended"
-#define STATISTICS_NICHE_SURGERY_LARVA   "Larvae Removed"
-#define STATISTICS_NICHE_SURGERY_SHRAPNEL    "Shrapnel Removed"
-#define STATISTICS_NICHE_SURGERY_AMPUTATE    "Limbs Amputated"
-#define STATISTICS_NICHE_SURGERY_ORGAN_REPAIR    "Organs Repaired"
-#define STATISTICS_NICHE_SURGERY_ORGAN_ATTACH    "Organs Implanted"
-#define STATISTICS_NICHE_SURGERY_ORGAN_REMOVE    "Organs Harvested"
-
-#define STATISTICS_NICHE_DESTRUCTION_WALLS   "Walls Destroyed"
-#define STATISTICS_NICHE_DESTRUCTION_DOORS   "Doors Destroyed"
-#define STATISTICS_NICHE_DESTRUCTION_WINDOWS "Windows Destroyed"
-
 //Multiplier for turning points into cash
-#define DEFCON_TO_MONEY_MULTIPLIER 10000
 #define SUPPLY_TO_MONEY_MUPLTIPLIER 100
 
 //Force the config directory to be something other than "config"
 #define OVERRIDE_CONFIG_DIRECTORY_PARAMETER "config-directory"
 
-//Gun categories, currently used for firing while dualwielding.
-#define GUN_CATEGORY_HANDGUN 1
-#define GUN_CATEGORY_SMG 2
-#define GUN_CATEGORY_RIFLE 3
-#define GUN_CATEGORY_SHOTGUN 4
-#define GUN_CATEGORY_HEAVY 5
 
 // These guns can be used at maximum efficacy by untrained civilians.
 #define UNTRAINED_USABLE_CATEGORIES list(GUN_CATEGORY_HANDGUN, GUN_CATEGORY_SMG)
@@ -243,7 +195,7 @@
 
 #define CLIENT_FROM_VAR(I) (ismob(I) ? I:client : (istype(I, /client) ? I : (istype(I, /datum/mind) ? I:current?:client : null)))
 
-#define to_chat_forced(Target, Message) to_chat_immediate(Target, Message)
+#define to_chat_forced(Target, Message) to_chat(Target, Message, immediate = TRUE)
 
 #define to_world(Message) to_chat(world, Message)
 
@@ -275,13 +227,14 @@
 #define GHOST_ORBIT_SQUARE "square"
 #define GHOST_ORBIT_PENTAGON "pentagonal"
 
-//Command message cooldown defines:
-#define COOLDOWN_COMM_MESSAGE 30 SECONDS
-#define COOLDOWN_COMM_MESSAGE_LONG 1 MINUTES
-#define COOLDOWN_COMM_REQUEST 5 MINUTES
-#define COOLDOWN_COMM_CENTRAL 30 SECONDS
-#define COOLDOWN_COMM_DESTRUCT 5 MINUTES
+#define COLOR_WEBHOOK_DEFAULT 0x8bbbd5
 
+//Command message cooldown defines:
+#define COOLDOWN_COMM_MESSAGE		30 SECONDS
+#define COOLDOWN_COMM_MESSAGE_LONG	1 MINUTES
+#define COOLDOWN_COMM_REQUEST		5 MINUTES
+#define COOLDOWN_COMM_CENTRAL		30 SECONDS
+#define COOLDOWN_COMM_DESTRUCT		5 MINUTES
 
 // magic value to use for indicating a proc slept
 #define PROC_RETURN_SLEEP -1

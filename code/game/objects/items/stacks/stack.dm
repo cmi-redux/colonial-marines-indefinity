@@ -55,7 +55,7 @@ Also change the icon to reflect the amount of sheets, if possible.*/
 	..()
 	update_icon()
 
-/obj/item/stack/on_exit_storage()
+/obj/item/stack/on_exit_storage(obj/item/storage/storage)
 	..()
 	if(ismob(loc))
 		return
@@ -66,7 +66,7 @@ Also change the icon to reflect the amount of sheets, if possible.*/
 	update_icon()
 
 /obj/item/stack/Destroy()
-	if (usr && usr.interactee == src)
+	if(usr && usr.interactee == src)
 		close_browser(src, "stack")
 	return ..()
 
@@ -126,7 +126,7 @@ Also change the icon to reflect the amount of sheets, if possible.*/
 				t1 += " |"
 				var/list/multipliers = list(5, 10, 25)
 				for (var/n in multipliers)
-					if (max_multiplier>=n)
+					if(max_multiplier>=n)
 						t1 += " <A href='?src=\ref[src];make=[i];multiplier=[n]'>[n*R.res_amount]x</A>"
 				if(!(max_multiplier in multipliers))
 					t1 += " <A href='?src=\ref[src];make=[i];multiplier=[max_multiplier]'>[max_multiplier*R.res_amount]x</A>"
@@ -223,7 +223,7 @@ Also change the icon to reflect the amount of sheets, if possible.*/
 			for(var/obj/item/stack/F in usr.loc)
 				if(S.stack_id == F.stack_id && S != F)
 					var/diff = F.max_amount - F.amount
-					if (S.amount < diff)
+					if(S.amount < diff)
 						F.amount += S.amount
 						qdel(S)
 					else
@@ -285,11 +285,11 @@ Also change the icon to reflect the amount of sheets, if possible.*/
 	var/obj/item/stack/oldsrc = src
 	src = null
 	for (var/obj/item/stack/item in user.loc)
-		if (item==oldsrc)
+		if(item==oldsrc)
 			continue
-		if (!istype(item, oldsrc.type))
+		if(!istype(item, oldsrc.type))
 			continue
-		if (item.amount>=item.max_amount)
+		if(item.amount>=item.max_amount)
 			continue
 		oldsrc.attackby(item, user)
 		to_chat(user, "You add new [item.singular_name] to the stack. It now contains [item.amount] [item.singular_name]\s.")
@@ -317,14 +317,14 @@ Also change the icon to reflect the amount of sheets, if possible.*/
 		return ..()
 
 /obj/item/stack/attack_hand(mob/user as mob)
-	if (user.get_inactive_hand() == src)
+	if(user.get_inactive_hand() == src)
 		var/obj/item/stack/F = new src.type(user, 1)
 		transfer_fingerprints_to(F)
 		user.put_in_hands(F)
 		src.add_fingerprint(user)
 		F.add_fingerprint(user)
 		use(1)
-		if (src && usr.interactee==src)
+		if(src && usr.interactee == src)
 			INVOKE_ASYNC(src, TYPE_PROC_REF(/obj/item/stack, interact), usr)
 	else
 		..()
@@ -342,10 +342,10 @@ Also change the icon to reflect the amount of sheets, if possible.*/
 				return
 			to_chat(user, SPAN_INFO("You transfer [to_transfer] between the stacks."))
 			S.add(to_transfer)
-			if (S && usr.interactee==S)
+			if(S && usr.interactee == S)
 				INVOKE_ASYNC(S, TYPE_PROC_REF(/obj/item/stack, interact), usr)
-			src.use(to_transfer)
-			if (src && usr.interactee==src)
+			use(to_transfer)
+			if(src && usr.interactee == src)
 				INVOKE_ASYNC(src, TYPE_PROC_REF(/obj/item/stack, interact), usr)
 			user.next_move = world.time + 0.3 SECONDS
 			return TRUE

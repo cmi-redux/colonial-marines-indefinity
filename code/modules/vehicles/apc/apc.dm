@@ -17,7 +17,7 @@ GLOBAL_LIST_EMPTY(command_apc_list)
 
 	interior_map = /datum/map_template/interior/apc
 
-	passengers_slots = 15
+	passengers_slots = 18
 	xenos_slots = 8
 
 	entrances = list(
@@ -34,7 +34,6 @@ GLOBAL_LIST_EMPTY(command_apc_list)
 
 	movement_sound = 'sound/vehicles/tank_driving.ogg'
 
-	luminosity = 7
 	var/gunner_view_buff = 10
 
 	hardpoints_allowed = list(
@@ -78,12 +77,11 @@ GLOBAL_LIST_EMPTY(command_apc_list)
 
 	vehicle_ram_multiplier = VEHICLE_TRAMPLE_DAMAGE_APC_REDUCTION
 
+	faction_to_get = FACTION_MARINE
+
 /obj/vehicle/multitile/apc/Initialize()
 	. = ..()
-
-	var/turf/gotten_turf = get_turf(src)
-	if(gotten_turf && gotten_turf.z)
-		SSminimaps.add_marker(src, gotten_turf.z, MINIMAP_FLAG_USCM, "apc", 'icons/ui_icons/map_blips_large.dmi')
+	SSmapview.add_marker(src, "vehicle_apc")
 
 /obj/vehicle/multitile/apc/load_role_reserved_slots()
 	var/datum/role_reserved_slots/RRS = new
@@ -207,7 +205,7 @@ GLOBAL_LIST_EMPTY(command_apc_list)
 
 //PRESET: FPWs, no hardpoints
 /obj/effect/vehicle_spawner/apc/spawn_vehicle()
-	var/obj/vehicle/multitile/apc/APC = new (loc)
+	var/obj/vehicle/multitile/apc/APC = new(loc)
 
 	load_misc(APC)
 	load_fpw(APC)
@@ -221,7 +219,7 @@ GLOBAL_LIST_EMPTY(command_apc_list)
 
 //PRESET: default hardpoints, destroyed (this one spawns on VASRS elevatorfor VCs)
 /obj/effect/vehicle_spawner/apc/decrepit/spawn_vehicle()
-	var/obj/vehicle/multitile/apc/APC = new (loc)
+	var/obj/vehicle/multitile/apc/APC = new(loc)
 
 	load_misc(APC)
 	load_fpw(APC)
@@ -250,7 +248,7 @@ GLOBAL_LIST_EMPTY(command_apc_list)
 
 //PRESET: no hardpoints
 /obj/effect/vehicle_spawner/apc/unarmed/spawn_vehicle()
-	var/obj/vehicle/multitile/apc/unarmed/APC = new (loc)
+	var/obj/vehicle/multitile/apc/unarmed/APC = new(loc)
 
 	load_misc(APC)
 	load_hardpoints(APC)
@@ -262,7 +260,7 @@ GLOBAL_LIST_EMPTY(command_apc_list)
 
 //PRESET: default hardpoints, destroyed
 /obj/effect/vehicle_spawner/apc/unarmed/decrepit/spawn_vehicle()
-	var/obj/vehicle/multitile/apc/unarmed/APC = new (loc)
+	var/obj/vehicle/multitile/apc/unarmed/APC = new(loc)
 
 	load_misc(APC)
 	load_hardpoints(APC)

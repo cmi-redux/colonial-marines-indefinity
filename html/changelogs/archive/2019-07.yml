@@ -134,7 +134,7 @@
   - rscadd: All modes use power. The automatic firing mode uses the most.
   - rscadd: The smartgun now has 2 loading systems both having their own drawbacks.
   - rscadd: The classic system stayed the same. 50 round size magazine.
-  - rscadd: The new (default) mode can only be used with an empty belt slot.
+  - rscadd: The new(default) mode can only be used with an empty belt slot.
   - rscadd: It has a 500 round magazine but when added to the gun goes into your belt
       slot.
   - rscadd: This mean you cannot use a sidearm or carry extra ammo while using this

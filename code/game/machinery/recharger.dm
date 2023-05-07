@@ -21,7 +21,7 @@
 
 	var/allowed = 0
 	for (var/allowed_type in allowed_devices)
-		if (istype(G, allowed_type)) allowed = 1
+		if(istype(G, allowed_type)) allowed = 1
 
 	if(allowed)
 		if(charging)
@@ -34,7 +34,7 @@
 			return
 		if(istype(G, /obj/item/device/defibrillator))
 			var/obj/item/device/defibrillator/D = G
-			if(D.ready)
+			if(D.paddles_type && D.paddles_type.loc == D.loc)
 				to_chat(user, SPAN_WARNING("It won't fit, put the paddles back into \the [D] first!"))
 				return
 		if(istype(G, /obj/item/tool/portadialysis))

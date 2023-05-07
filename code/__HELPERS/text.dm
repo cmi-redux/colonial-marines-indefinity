@@ -14,7 +14,7 @@
  */
 
 //Simply removes < and > and limits the length of the message
-/proc/strip_html_simple(t, limit=MAX_MESSAGE_LEN)
+/proc/strip_html_simple(t, limit = MAX_MESSAGE_LEN)
 	var/list/strip_chars = list("<",">")
 	t = copytext(t,1,limit)
 	for(var/char in strip_chars)
@@ -53,34 +53,39 @@
 
 //Runs sanitize and strip_html_simple
 //I believe strip_html_simple() is required to run first to prevent '<' from displaying as '&lt;' after sanitize() calls byond's html_encode()
-/proc/strip_html(text, limit=MAX_MESSAGE_LEN)
+/proc/strip_html(text, limit = MAX_MESSAGE_LEN)
 	return copytext((sanitize(strip_html_simple(text))), 1, limit)
 
 //Runs byond's sanitization proc along-side strip_html_simple
 //I believe strip_html_simple() is required to run first to prevent '<' from displaying as '&lt;' that html_encode() would cause
-/proc/adminscrub(text, limit=MAX_MESSAGE_LEN)
+/proc/adminscrub(text, limit = MAX_MESSAGE_LEN)
 	return copytext((html_encode(strip_html_simple(text))), 1, limit)
 
 //Returns null if there is any bad text in the string
-/proc/reject_bad_text(text, max_length=512)
-	if(length(text) > max_length) return //message too long
+/proc/reject_bad_text(text, max_length = MAX_MESSAGE_LEN)
+	if(length(text) > max_length)
+		return //message too long
 	var/non_whitespace = 0
 	for(var/i=1, i<=length(text), i++)
 		switch(text2ascii(text,i))
-			if(62,60,92,47) return //rejects the text if it contains these bad characters: <, >, \ or /
-			if(127 to 255) return //rejects weird letters like �
-			if(0 to 31) return //more weird stuff
-			if(32) continue //whitespace
-			else non_whitespace = 1
-	if(non_whitespace) return text //only accepts the text if it has some non-spaces
+			if(62,60,92,47)
+				return //rejects the text if it contains these bad characters: <, >, \ or /
+			if(0 to 31)
+				return //more weird stuff
+			if(32)
+				continue //whitespace
+			else
+				non_whitespace = 1
+	if(non_whitespace)
+		return text //only accepts the text if it has some non-spaces
 
 // Used to get a sanitized input.
-/proc/stripped_input(mob/user, message = "", title = "", default = "", max_length=MAX_MESSAGE_LEN)
+/proc/stripped_input(mob/user, message = "", title = "", default = "", max_length = MAX_MESSAGE_LEN)
 	var/name = input(user, message, title, default) as text|null
 	return html_encode(trim(name, max_length))
 
 // Used to get a properly sanitized multiline input, of max_length
-/proc/stripped_multiline_input(mob/user, message = "", title = "", default = "", max_length=MAX_MESSAGE_LEN)
+/proc/stripped_multiline_input(mob/user, message = "", title = "", default = "", max_length = MAX_MESSAGE_LEN)
 	var/name = input(user, message, title, default) as message|null
 	return html_encode(trim(name, max_length))
 
@@ -179,14 +184,14 @@
 //Returns a string with reserved characters and spaces before the first letter removed
 /proc/trim_left(text)
 	for (var/i in 1 to length(text))
-		if (text2ascii(text, i) > 32)
+		if(text2ascii(text, i) > 32)
 			return copytext(text, i)
 	return ""
 
 //Returns a string with reserved characters and spaces after the last letter removed
 /proc/trim_right(text)
 	for (var/i in length(text) to 1 step -1)
-		if (text2ascii(text, i) > 32)
+		if(text2ascii(text, i) > 32)
 			return copytext(text, 1, i + 1)
 
 	return ""
@@ -197,7 +202,39 @@
 
 //Returns a string with the first element of the string capitalized.
 /proc/capitalize(t as text)
-	return uppertext(copytext(t, 1, 2)) + copytext(t, 2)
+	return r_capitalize(t)
+
+/proc/r_lowertext(text)
+	var/t = ""
+	for(var/i = 1, i <= length(text), i++)
+		var/a = text2ascii(text, i)
+		if(a == 1105 || a == 1025)
+			t += ascii2text(1105)
+			continue
+		if(a < 1040 || a > 1071)
+			t += ascii2text(a)
+			continue
+		t += ascii2text(a + 32)
+	return lowertext(t)
+
+/proc/r_uppertext(text)
+	var/t = ""
+	for(var/i = 1, i <= length(text), i++)
+		var/a = text2ascii(text, i)
+		if(a == 1105 || a == 1025)
+			t += ascii2text(1025)
+			continue
+		if(a < 1072 || a > 1105)
+			t += ascii2text(a)
+			continue
+		t += ascii2text(a - 32)
+	return uppertext(t)
+
+/proc/r_capitalize(t)
+	. = t
+	if(t)
+		. = t[1]
+		return uppertext(.) + copytext(t, 1 + length(.))
 
 /proc/stringpercent(text,character = "*")
 //This proc returns the number of chars of the string that is the character
@@ -239,7 +276,7 @@
 	if(length(A) != length(B))
 		return FALSE
 	for(var/i = 1 to length(A))
-		if (text2ascii(A, i) != text2ascii(B, i))
+		if(text2ascii(A, i) != text2ascii(B, i))
 			return FALSE
 	return TRUE
 
@@ -330,7 +367,7 @@
 // For processing simple markup, similar to what Skype and Discord use.
 // Enabled from a config setting.
 /proc/process_chat_markup(message, list/ignore_tags = list())
-	if (!message)
+	if(!message)
 		return ""
 
 	// ---Begin URL caching.

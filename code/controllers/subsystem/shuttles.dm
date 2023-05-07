@@ -3,7 +3,7 @@
 
 SUBSYSTEM_DEF(shuttle)
 	name = "Shuttle"
-	wait = 10
+	wait = 1 SECONDS
 	init_order = SS_INIT_SHUTTLE
 	flags = SS_KEEP_TIMING
 
@@ -16,10 +16,14 @@ SUBSYSTEM_DEF(shuttle)
 	/// For ID generation
 	var/list/assoc_stationary = list()
 
+	var/list/ert_shuttles = list()
+
 	var/list/transit_requesters = list()
 	var/list/transit_request_failures = list()
 
 	var/obj/docking_port/mobile/vehicle_elevator/vehicle_elevator
+	var/obj/docking_port/mobile/crashmode/uss_heart_of_gold
+	var/obj/docking_port/mobile/sselevator/sky_scraper_elevator
 
 	var/list/hidden_shuttle_turfs = list() //all turfs hidden from navigation computers associated with a list containing the image hiding them and the type of the turf they are pretending to be
 	var/list/hidden_shuttle_turf_images = list() //only the images from the above list
@@ -420,13 +424,17 @@ SUBSYSTEM_DEF(shuttle)
 	for(var/area/A as anything in preview_shuttle.shuttle_areas)
 		for(var/turf/T as anything in A)
 			// turfs inside the shuttle are not available for shuttles
-			T.flags_atom &= ~UNUSED_RESERVATION_TURF
+			T.flags_atom &= ~TURF_UNUSED_RESERVATION
 
 			// update underlays
 			if(istype(T, /turf/closed/shuttle))
 				var/dx = T.x - preview_shuttle.x
 				var/dy = T.y - preview_shuttle.y
 				var/turf/target_lz = locate(D.x + dx, D.y + dy, D.z)
+				if(!target_lz)
+					WARNING("Template shuttle [preview_shuttle] cannot find target lz [D] (at [D.x + dx] ([D.x], [dx]), [D.y + dy] ([D.y], [dy]), [D.z]).")
+					continue
+
 				T.underlays.Cut()
 				T.underlays += mutable_appearance(target_lz.icon, target_lz.icon_state, TURF_LAYER, FLOOR_PLANE)
 

@@ -1,3 +1,5 @@
+GLOBAL_LIST_EMPTY_TYPED(donators_info, /datum/donator_info)
+GLOBAL_LIST_EMPTY_TYPED(player_entities, /datum/player_entity)
 
 var/list/unansweredAhelps = list() //This feels inefficient, but I can't think of a better way. Stores the message indexed by CID
 
@@ -6,8 +8,13 @@ GLOBAL_LIST_EMPTY(USCMFaxes)
 GLOBAL_LIST_EMPTY(ProvostFaxes)
 GLOBAL_LIST_EMPTY(GeneralFaxes) //Inter-machine faxes
 GLOBAL_LIST_EMPTY(fax_contents) //List of fax contents to maintain it even if source paper is deleted
-
 GLOBAL_LIST_EMPTY(failed_fultons) //A list of fultoned items which weren't collected and fell back down
+GLOBAL_LIST_EMPTY(nuke_spawn_locs)
+GLOBAL_LIST_EMPTY(active_nuke_list)
+GLOBAL_LIST_EMPTY(resin_silo_spawn_locs)
+GLOBAL_LIST_EMPTY(xeno_resin_silos)
+GLOBAL_LIST_EMPTY(siren_objects)
+GLOBAL_LIST_EMPTY(fusion_cores)
 
 GLOBAL_LIST_INIT_TYPED(custom_huds_list, /datum/custom_hud, setup_all_huds())
 GLOBAL_LIST_INIT_TYPED(custom_human_huds, /datum/custom_hud, setup_human_huds())
@@ -24,6 +31,11 @@ var/global/list/ai_mob_list = list() //List of all AIs
 GLOBAL_LIST_EMPTY(freed_mob_list) // List of mobs freed for ghosts
 
 GLOBAL_LIST_INIT(available_taskbar_icons, setup_taskbar_icons())
+
+GLOBAL_LIST_EMPTY(towers)
+
+GLOBAL_LIST_EMPTY(skyscrapers_sec_comps)
+GLOBAL_LIST_EMPTY(ss_elevator_floors)
 
 GLOBAL_LIST_EMPTY(minimap_icons)
 
@@ -47,38 +59,46 @@ GLOBAL_LIST_EMPTY(mainship_pipes)
 // Resin constructions parameters
 GLOBAL_LIST_INIT_TYPED(resin_constructions_list, /datum/resin_construction, setup_resin_constructions())
 
+GLOBAL_LIST_INIT(resin_build_order_default, list(
+	/datum/resin_construction/resin_turf/wall,
+	/datum/resin_construction/resin_turf/membrane,
+	/datum/resin_construction/resin_obj/door
+))
+
 GLOBAL_LIST_INIT(resin_build_order_drone, list(
 	/datum/resin_construction/resin_turf/wall,
 	/datum/resin_construction/resin_turf/membrane,
 	/datum/resin_construction/resin_obj/door,
 	/datum/resin_construction/resin_obj/nest,
 	/datum/resin_construction/resin_obj/sticky_resin,
-	/datum/resin_construction/resin_obj/fast_resin,
-	/datum/resin_construction/resin_obj/resin_spike
+	/datum/resin_construction/resin_obj/fast_resin
 ))
 
 GLOBAL_LIST_INIT(resin_build_order_hivelord, list(
 	/datum/resin_construction/resin_turf/wall/thick,
-	/datum/resin_construction/resin_turf/wall/reflective,
 	/datum/resin_construction/resin_turf/membrane/thick,
 	/datum/resin_construction/resin_obj/door/thick,
 	/datum/resin_construction/resin_obj/nest,
-	/datum/resin_construction/resin_obj/acid_pillar,
 	/datum/resin_construction/resin_obj/sticky_resin,
-	/datum/resin_construction/resin_obj/fast_resin,
-	/datum/resin_construction/resin_obj/resin_spike
+	/datum/resin_construction/resin_obj/fast_resin
 ))
 
-GLOBAL_LIST_INIT(resin_build_order_ovipositor, list(
+GLOBAL_LIST_INIT(resin_build_order_queen, list(
 	/datum/resin_construction/resin_turf/wall/queen,
-	/datum/resin_construction/resin_turf/wall/reflective,
 	/datum/resin_construction/resin_turf/membrane/queen,
 	/datum/resin_construction/resin_obj/door/queen,
 	/datum/resin_construction/resin_obj/nest,
-	/datum/resin_construction/resin_obj/acid_pillar,
 	/datum/resin_construction/resin_obj/sticky_resin,
 	/datum/resin_construction/resin_obj/fast_resin,
-	/datum/resin_construction/resin_obj/resin_spike
+))
+
+GLOBAL_LIST_INIT(resin_build_order_queen_ovi, list(
+	/datum/resin_construction/resin_turf/wall/thick,
+	/datum/resin_construction/resin_turf/membrane/thick,
+	/datum/resin_construction/resin_obj/door/thick,
+	/datum/resin_construction/resin_obj/nest,
+	/datum/resin_construction/resin_obj/sticky_resin,
+	/datum/resin_construction/resin_obj/fast_resin,
 ))
 
 //Xeno Leader Mark Meanings
@@ -123,7 +143,6 @@ var/global/list/active_areas = list()
 var/global/list/all_areas = list()
 
 var/global/list/turfs = list()
-var/global/list/z1turfs = list()
 
 /var/global/list/objects_of_interest // This is used to track the stealing objective for Agents.
 
@@ -146,31 +165,18 @@ GLOBAL_LIST_INIT(language_keys, setup_language_keys()) //table of say codes for 
 GLOBAL_REFERENCE_LIST_INDEXED(origins, /datum/origin, name)
 GLOBAL_LIST_INIT(player_origins, USCM_ORIGINS)
 
-//Xeno mutators
-GLOBAL_REFERENCE_LIST_INDEXED_SORTED(xeno_mutator_list, /datum/xeno_mutator, name)
+//Xeno mutators & strains
+GLOBAL_REFERENCE_LIST_INDEXED_SORTED(xeno_mutator_list, /datum/xeno_mutation/mutator, name)
+GLOBAL_REFERENCE_LIST_INDEXED_SORTED(xeno_strain_list, /datum/xeno_mutation/strain, name)
 
-//Xeno hives
-GLOBAL_LIST_INIT_TYPED(hive_datum, /datum/hive_status, list(
-	XENO_HIVE_NORMAL = new /datum/hive_status(),
-	XENO_HIVE_CORRUPTED = new /datum/hive_status/corrupted(),
-	XENO_HIVE_ALPHA = new /datum/hive_status/alpha(),
-	XENO_HIVE_BRAVO = new /datum/hive_status/bravo(),
-	XENO_HIVE_CHARLIE = new /datum/hive_status/charlie(),
-	XENO_HIVE_DELTA = new /datum/hive_status/delta(),
-	XENO_HIVE_FERAL = new /datum/hive_status/feral(),
-	XENO_HIVE_TAMED = new /datum/hive_status/corrupted/tamed(),
-	XENO_HIVE_MUTATED = new /datum/hive_status/mutated(),
-	XENO_HIVE_FORSAKEN = new /datum/hive_status/forsaken(),
-	XENO_HIVE_YAUTJA = new /datum/hive_status/yautja()
-))
+GLOBAL_LIST_INIT_TYPED(objectives_reward_list, /datum/objectives_reward, create_objectives_rewards_list())
+GLOBAL_LIST_INIT_TYPED(objective_controller, /datum/objectives_datum, setup_defcons())
 
 GLOBAL_LIST_INIT(xeno_evolve_times, setup_xeno_evolve_times())
 
 /proc/setup_xeno_evolve_times()
 	for(var/datum/caste_datum/caste as anything in subtypesof(/datum/caste_datum))
 		LAZYADDASSOCLIST(., num2text(initial(caste.minimum_evolve_time)), caste)
-
-GLOBAL_LIST_INIT(custom_event_info_list, setup_custom_event_info())
 
 // Posters
 GLOBAL_LIST_INIT(poster_designs, subtypesof(/datum/poster))
@@ -269,6 +275,25 @@ GLOBAL_LIST_INIT(emote_list, init_emote_list())
 		L[i] = text2num(L[i])
 	return L
 
+/proc/create_objectives_rewards_list()
+	var/list/all_rewards = list()
+	for(var/faction_to_get in FACTION_LIST_ALL)
+		all_rewards[faction_to_get] = list()
+	for(var/T in subtypesof(/datum/objectives_reward))
+		var/datum/objectives_reward/reward = new T
+		if(!reward.associated_faction || !reward.cost)
+			continue
+		all_rewards[reward.associated_faction] += reward
+	return all_rewards
+
+/proc/setup_defcons()
+	var/list/all_defcon_controllers = list()
+	for(var/faction_to_get in FACTION_LIST_ALL)
+		var/datum/objectives_datum/objectives_datum = new(faction_to_get)
+		objectives_datum.associated_faction = faction_to_get
+		all_defcon_controllers[faction_to_get] = objectives_datum
+	return all_defcon_controllers
+
 /proc/setup_species()
 	var/rkey = 0
 	var/list/all_species = list()
@@ -289,14 +314,14 @@ GLOBAL_LIST_INIT(emote_list, init_emote_list())
 
 /proc/setup_resin_constructions()
 	var/list/resin_constructions_list = list()
-	for (var/T in subtypesof(/datum/resin_construction) - list(/datum/resin_construction/resin_obj, /datum/resin_construction/resin_turf))
+	for(var/T in subtypesof(/datum/resin_construction) - list(/datum/resin_construction/resin_obj, /datum/resin_construction/resin_turf))
 		var/datum/resin_construction/RC = new T
 		resin_constructions_list[T] = RC
 	return sortAssoc(resin_constructions_list)
 
 /proc/setup_resin_mark_meanings()
 	var/list/resin_meanings_list = list()
-	for (var/T in subtypesof(/datum/xeno_mark_define))
+	for(var/T in subtypesof(/datum/xeno_mark_define))
 		var/datum/xeno_mark_define/XMD = new T
 		resin_meanings_list[T] = XMD
 	return sortAssoc(resin_meanings_list)
@@ -305,7 +330,7 @@ GLOBAL_LIST_INIT(emote_list, init_emote_list())
 	var/list/gear_path_presets_list = list()
 	for(var/T in typesof(/datum/equipment_preset))
 		var/datum/equipment_preset/EP = T
-		if (!initial(EP.flags))
+		if(!initial(EP.flags))
 			continue
 		EP = new T
 		gear_path_presets_list[EP.type] = EP
@@ -315,7 +340,7 @@ GLOBAL_LIST_INIT(emote_list, init_emote_list())
 	var/list/gear_path_presets_list = list()
 	for(var/T in typesof(/datum/equipment_preset))
 		var/datum/equipment_preset/EP = T
-		if (!initial(EP.flags))
+		if(!initial(EP.flags))
 			continue
 		EP = new T
 		gear_path_presets_list[EP.name] = EP
@@ -323,7 +348,7 @@ GLOBAL_LIST_INIT(emote_list, init_emote_list())
 
 /proc/setup_language_keys()
 	var/list/language_keys = list()
-	for (var/language_name in subtypesof(/datum/language))
+	for(var/language_name in subtypesof(/datum/language))
 		var/datum/language/L = language_name
 		language_keys[":[lowertext(initial(L.key))]"] = initial(L.name)
 		language_keys[".[lowertext(initial(L.key))]"] = initial(L.name)
@@ -376,26 +401,6 @@ GLOBAL_LIST_INIT(emote_list, init_emote_list())
 		mobtypes["[T]"] = typecacheof(T.target_mobtypes)
 	return mobtypes
 
-/proc/setup_custom_event_info()
-	//faction event messages
-	var/list/custom_event_info_list = list()
-	var/datum/custom_event_info/CEI = new /datum/custom_event_info
-	CEI.faction = "Global" //the old public one for whole server to see
-	custom_event_info_list[CEI.faction] = CEI
-	for(var/T in FACTION_LIST_HUMANOID)
-		CEI = new /datum/custom_event_info
-		CEI.faction = T
-		custom_event_info_list[T] = CEI
-
-	var/datum/hive_status/hive
-	for(var/hivenumber in GLOB.hive_datum)
-		hive = GLOB.hive_datum[hivenumber]
-		CEI = new /datum/custom_event_info
-		CEI.faction = hive.internal_faction
-		custom_event_info_list[hive.name] = CEI
-
-	return custom_event_info_list
-
 /proc/setup_taskbar_icons()
 	var/list/png_list = flist("icons/taskbar")
 	for(var/png in png_list)
@@ -432,11 +437,10 @@ GLOBAL_LIST_INIT(emote_list, init_emote_list())
 		cape_list[initial(cape_type.name)] = cape_type
 	return cape_list
 
-
 /* // Uncomment to debug chemical reaction list.
 /client/verb/debug_chemical_list()
 
-	for (var/reaction in chemical_reactions_filtered_list)
+	for(var/reaction in chemical_reactions_filtered_list)
 		. += "chemical_reactions_filtered_list\[\"[reaction]\"\] = \"[chemical_reactions_filtered_list[reaction]]\"\n"
 		if(islist(chemical_reactions_filtered_list[reaction]))
 			var/list/L = chemical_reactions_filtered_list[reaction]

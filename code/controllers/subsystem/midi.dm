@@ -3,24 +3,22 @@
 	var/midi
 
 SUBSYSTEM_DEF(midi)
-	name  = "Midi"
-	wait  = 2 SECONDS
-	flags = SS_NO_INIT|SS_BACKGROUND
-	runlevels = RUNLEVELS_DEFAULT|RUNLEVEL_LOBBY
-	priority = SS_PRIORITY_MIDI
+	name		= "Midi"
+	wait		= 2 SECONDS
+	flags		= SS_NO_INIT|SS_BACKGROUND
+	runlevels	= RUNLEVELS_DEFAULT|RUNLEVEL_LOBBY
+	priority	= SS_PRIORITY_MIDI
 
 	var/list/datum/midi_record/prepped_midis = list()
 
 	var/list/datum/midi_record/currentrun = list()
 
-
 /datum/controller/subsystem/midi/stat_entry(msg)
 	msg = "MR:[prepped_midis.len]"
 	return ..()
 
-
 /datum/controller/subsystem/midi/fire(resumed = FALSE)
-	if (!resumed)
+	if(!resumed)
 		currentrun = prepped_midis
 		prepped_midis = list()
 
@@ -28,12 +26,12 @@ SUBSYSTEM_DEF(midi)
 		var/datum/midi_record/E = currentrun[currentrun.len]
 		currentrun.len--
 
-		if (!E)
+		if(!E)
 			continue
 
 		E.target << E.midi
 
-		if (MC_TICK_CHECK)
+		if(MC_TICK_CHECK)
 			return
 
 /datum/controller/subsystem/midi/proc/queue(target, midi)

@@ -16,12 +16,12 @@ var/jobban_keylist[0] //to store the keys & ranks
 		jobban_keylist[.] = list()
 
 /proc/jobban_fullban(mob/M, rank, reason)
-	if (!M || !M.ckey) return
+	if(!M || !M.ckey) return
 	rank = check_jobban_path(rank)
 	jobban_keylist[rank][M.ckey] = reason
 
 /proc/jobban_client_fullban(ckey, rank)
-	if (!ckey || !rank) return
+	if(!ckey || !rank) return
 	rank = check_jobban_path(rank)
 	jobban_keylist[rank][ckey] = "Reason Unspecified"
 
@@ -53,7 +53,7 @@ var/jobban_keylist[0] //to store the keys & ranks
 	log_admin("Loading jobban_rank")
 	S["runonce"] >> jobban_runonce
 
-	if (!length(jobban_keylist))
+	if(!length(jobban_keylist))
 		jobban_keylist=list()
 		log_admin("jobban_keylist was empty")
 
@@ -89,7 +89,7 @@ var/jobban_keylist[0] //to store the keys & ranks
 	if(!M.ckey) //sanity
 		to_chat(usr, "This mob has no ckey")
 		return
-	if(!RoleAuthority)
+	if(!SSticker.role_authority)
 		to_chat(usr, "The Role Authority is not set up!")
 		return
 
@@ -133,7 +133,7 @@ WARNING!*/
 	jobs += generate_job_ban_list(M, P, ROLES_MISC, "Misc", "aaee55")
 	jobs += "<br>"
 // Xenos (Orange)
-	jobs += generate_job_ban_list(M, P, ROLES_XENO, "Xenos", "a268b1")
+	jobs += generate_job_ban_list(M, P, ROLES_REGULAR_XENO, "Xenos", "a268b1")
 	jobs += "<br>"
 //Extra (Orange)
 	var/isbanned_dept = jobban_isbanned(M, "Syndicate", P)
@@ -156,11 +156,6 @@ WARNING!*/
 		jobs += "<td width='20%'><a href='?src=\ref[src];[HrefToken(forceGlobal = TRUE)];jobban3=Agent;jobban4=\ref[M]'><font color=red>Agent</font></a></td>"
 	else
 		jobs += "<td width='20%'><a href='?src=\ref[src];[HrefToken(forceGlobal = TRUE)];jobban3=Agent;jobban4=\ref[M]'>Agent</a></td>"
-
-	if(jobban_isbanned(M, "Urgent Adminhelp", P))
-		jobs += "<td width='20%'><a href='?src=\ref[src];[HrefToken(forceGlobal = TRUE)];jobban3=Urgent Adminhelp;jobban4=\ref[M]'><font color=red>Urgent Adminhelp</font></a></td>"
-	else
-		jobs += "<td width='20%'><a href='?src=\ref[src];[HrefToken(forceGlobal = TRUE)];jobban3=Urgent Adminhelp;jobban4=\ref[M]'>Urgent Adminhelp</a></td>"
 
 
 	body = "<body>[jobs]</body>"

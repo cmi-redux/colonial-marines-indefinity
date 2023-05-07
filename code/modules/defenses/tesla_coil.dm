@@ -17,24 +17,6 @@
 	health_max = 150
 	display_additional_stats = TRUE
 
-	has_camera = FALSE
-
-	choice_categories = list(
-		SENTRY_CATEGORY_IFF = list(FACTION_USCM, FACTION_WEYLAND, FACTION_HUMAN),
-	)
-
-	selected_categories = list(
-		SENTRY_CATEGORY_IFF = FACTION_USCM,
-	)
-
-
-/obj/structure/machinery/defenses/tesla_coil/Initialize()
-	. = ..()
-
-	if(turned_on)
-		start_processing()
-	update_icon()
-
 /obj/structure/machinery/defenses/tesla_coil/update_icon()
 	..()
 
@@ -43,23 +25,23 @@
 		overlays += image(icon, icon_state = "[defense_type] tesla_coil_destroyed", pixel_y = 3)
 		return
 
-	if(turned_on)
+	if(light_on)
 		overlays += image(icon, icon_state = "[defense_type] tesla_coil_on", pixel_y = 3)
 	else
 		overlays += image(icon, icon_state = "[defense_type] tesla_coil", pixel_y = 3)
 
 /obj/structure/machinery/defenses/tesla_coil/power_on_action()
-	SetLuminosity(7)
+	set_light_on(TRUE)
 	start_processing()
 	visible_message("[icon2html(src, viewers(src))] [SPAN_NOTICE("The [name] gives a short zap, as it awakens.")]")
 
 /obj/structure/machinery/defenses/tesla_coil/power_off_action()
-	SetLuminosity(0)
+	set_light_on(FALSE)
 	stop_processing()
 	visible_message("[icon2html(src, viewers(src))] [SPAN_NOTICE("The [name] dies out with a last spark.")]")
 
 /obj/structure/machinery/defenses/tesla_coil/process()
-	if(!anchored || !turned_on || stat)
+	if(!anchored || !light_on || stat)
 		return
 
 	get_target()
@@ -77,17 +59,17 @@
 			to_chat(M, SPAN_WARNING("You ignore some weird noises as you charge."))
 			continue
 
-		if(M.get_target_lock(faction_group))
+		if(M.ally(faction))
 			continue
 
 		targets += M
 
 	for(var/obj/structure/machinery/defenses/D in oview(tesla_range, src))
-		if(D.turned_on)
+		if(D.light_on)
 			targets += D
 
 /obj/structure/machinery/defenses/tesla_coil/proc/fire(atoms)
-	if(!(world.time - last_fired >= fire_delay) || !turned_on)
+	if(!(world.time - last_fired >= fire_delay) || !light_on)
 		return
 
 	last_fired = world.time
@@ -155,7 +137,7 @@
 	if(targets)
 		targets = null
 
-	SetLuminosity(0)
+	set_light_on(FALSE)
 	. = ..()
 
 #define TESLA_COIL_STUN_FIRE_DELAY 3 SECONDS

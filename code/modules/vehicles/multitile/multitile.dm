@@ -99,7 +99,7 @@
 		/obj/structure/airlock_assembly,
 		/obj/structure/barricade,
 		/obj/structure/machinery/defenses,
-		/obj/structure/machinery/m56d_post,
+		/obj/structure/machinery/mounted_defence,
 		/obj/structure/machinery/cm_vending,
 		/obj/structure/machinery/vending,
 		/obj/structure/window,
@@ -110,14 +110,11 @@
 	//allows more flexibility in ram damage
 	var/vehicle_ram_multiplier = 1
 
-	//vehicles with this off will be ignored by tacmap.
-	var/visible_in_tacmap = TRUE
-
 	//Amount of seconds spent on entering/leaving. Always the same when dragging stuff (2 seconds) and for xenos (1 second)
 	var/entrance_speed = 1 SECONDS
 
 	//Whether or not entering the vehicle is ID restricted to those with crewman, command or MP access only. Toggleable by the driver.
-	//Having command/MP/Crewmen access won't matter if the faction of the vehicle is not yours, so you can't infiltrate the vehicle.
+	//Having command/mp/Crewmen access won't matter if the faction of the vehicle is not yours, so you can't infiltrate the vehicle.
 	var/door_locked = FALSE
 	req_one_access = list(
 		ACCESS_MARINE_CREWMAN,
@@ -126,9 +123,6 @@
 		// You can't hide from the MPs
 		ACCESS_MARINE_BRIG,
 	)
-
-	//used for IFF stuff. Determined by driver. It will remember faction of a last driver. IFF-compatible rounds won't damage vehicle.
-	var/vehicle_faction = ""
 
 	//All the connected entrances sorted by tag
 	//Exits will be loaded by the interior manager and sorted by tag to match
@@ -148,6 +142,7 @@
 		"bullet" = 1.0,
 		"explosive" = 1.0,
 		"blunt" = 1.0,
+		"weather" = 1.0,
 		"abstract" = 1.0) //abstract for when you just want to hurt it
 
 	// This is more important than you think.
@@ -159,6 +154,11 @@
 	icon_state = "cargo_engine"
 
 	var/move_on_turn = FALSE
+
+	light_system = MOVABLE_LIGHT_DIRECTIONAL
+	light_range = 16
+	light_power = 1
+	light_on = FALSE
 
 /obj/vehicle/multitile/Initialize()
 	. = ..()
@@ -175,6 +175,8 @@
 	update_icon()
 
 	GLOB.all_multi_vehicles += src
+
+	set_light_on(TRUE)
 
 /obj/vehicle/multitile/proc/do_create_interior()
 	interior.create_interior(interior_map)
@@ -214,7 +216,7 @@
 		damage_overlay.alpha = 255 * (1 - (health / initial(health)))
 		overlays += damage_overlay
 
-	var/amt_hardpoints = LAZYLEN(hardpoints)
+	var/amt_hardpoints = length(hardpoints)
 	if(amt_hardpoints)
 		var/list/hardpoint_images[amt_hardpoints]
 		var/list/C[HDPT_LAYER_MAX]
@@ -359,8 +361,8 @@
 		handle_all_modules_broken()
 
 	//vehicle is dead, no more lights
-	if(health <= 0 && luminosity)
-		SetLuminosity(0)
+	if(health == 0 && light_on)
+		set_light_on(FALSE)
 	update_icon()
 
 /*

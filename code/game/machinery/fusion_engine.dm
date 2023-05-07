@@ -49,7 +49,7 @@
 			update_icon()
 			stop_processing()
 		return 0
-	if (fusion_cell.fuel_amount <= 0)
+	if(fusion_cell.fuel_amount <= 0)
 		visible_message("[icon2html(src, viewers(src))] <b>[src]</b> flashes that the fuel cell is empty as the engine seizes.")
 		fuel_rate = 0
 		buildstate = 2  //No fuel really fucks it.
@@ -199,7 +199,7 @@
 					return FALSE
 				playsound(loc, 'sound/items/Ratchet.ogg', 25, 1)
 				buildstate = 0
-				user.count_niche_stat(STATISTICS_NICHE_REPAIR_GENERATOR)
+				user.count_statistic_stat(STATISTICS_REPAIR_GENERATOR)
 				user.visible_message(SPAN_NOTICE("[user] repairs [src]'s tubing and plating."),
 				SPAN_NOTICE("You repair [src]'s tubing and plating."))
 				update_icon()

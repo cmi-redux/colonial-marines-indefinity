@@ -16,20 +16,21 @@
 	objectives = "Ensure the survival of the [MAIN_SHIP_NAME], eliminate any hostiles, and assist the crew in any way possible."
 
 
-/datum/emergency_call/contractors/create_member(datum/mind/M, turf/override_spawn_loc)
+/datum/emergency_call/contractors/create_member(datum/mind/mind, turf/override_spawn_loc)
 	var/turf/spawn_loc = override_spawn_loc ? override_spawn_loc : get_spawn_point()
 
 	if(!istype(spawn_loc))
 		return //Didn't find a useable spawn point.
 
 	var/mob/living/carbon/human/mob = new(spawn_loc)
-	M.transfer_to(mob, TRUE)
+	mind.transfer_to(mob, TRUE)
+	GLOB.ert_mobs += mob
 
 	if(!leader && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(mob.client, JOB_SQUAD_LEADER, time_required_for_job))
 		leader = mob
 		to_chat(mob, SPAN_ROLE_HEADER("You are a Contractor Team Leader of Vanguard's Arrow Incorporated!"))
 		arm_equipment(mob, /datum/equipment_preset/contractor/duty/leader, TRUE, TRUE)
-	else if(synths < max_synths && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_SYNTH) && RoleAuthority.roles_whitelist[mob.ckey] & WHITELIST_SYNTHETIC)
+	else if(synths < max_synths && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_SYNTH) && SSticker.role_authority.roles_whitelist[mob.ckey] & WHITELIST_SYNTHETIC)
 		synths++
 		to_chat(mob, SPAN_ROLE_HEADER("You are a Contractor Support Synthetic of Vanguard's Arrow Incorporated!"))
 		arm_equipment(mob, /datum/equipment_preset/contractor/duty/synth, TRUE, TRUE)
@@ -78,7 +79,7 @@
 	name = "Military Contractors (Platoon) (Friendly)"
 	mob_min = 7
 	mob_max = 28
-	probability = 0
+	probability = 1
 	max_medics = 3
 	max_heavies = 3
 	max_engineers = 2
@@ -87,7 +88,7 @@
 /datum/emergency_call/contractors/covert
 	name = "Military Contractors (Covert) (Hostile to WY)"
 	mob_max = 7
-	probability = 0
+	probability = 1
 	max_medics = 1
 	max_engineers = 1
 	max_heavies = 1
@@ -105,7 +106,7 @@
 	objectives += "Sabotage Weyland-Yutani efforts."
 	checked_objective = TRUE
 
-/datum/emergency_call/contractors/covert/create_member(datum/mind/M, turf/override_spawn_loc)
+/datum/emergency_call/contractors/covert/create_member(datum/mind/mind, turf/override_spawn_loc)
 	var/turf/spawn_loc = override_spawn_loc ? override_spawn_loc : get_spawn_point()
 
 	if(!istype(spawn_loc))
@@ -114,36 +115,37 @@
 	if(!checked_objective)
 		check_objective_info()
 
-	var/mob/living/carbon/human/H = new(spawn_loc)
-	H.key = M.key
-	if(H.client)
-		H.client.change_view(world_view_size)
+	var/mob/living/carbon/human/mob = new(spawn_loc)
+	mob.key = mind.key
+	if(mob.client)
+		mob.client.change_view(world_view_size)
+	GLOB.ert_mobs += mob
 
-	if(!leader && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(H.client, JOB_SQUAD_LEADER, time_required_for_job))    //First one spawned is always the leader.
-		leader = H
-		to_chat(H, SPAN_ROLE_HEADER("You are a Covert Contractor Team Leader of Vanguard's Arrow Incorporated!"))
-		arm_equipment(H, /datum/equipment_preset/contractor/covert/leader, TRUE, TRUE)
-	else if(synths < max_synths && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_SYNTH) && RoleAuthority.roles_whitelist[H.ckey] & WHITELIST_SYNTHETIC)
+	if(!leader && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(mob.client, JOB_SQUAD_LEADER, time_required_for_job))    //First one spawned is always the leader.
+		leader = mob
+		to_chat(mob, SPAN_ROLE_HEADER("You are a Covert Contractor Team Leader of Vanguard's Arrow Incorporated!"))
+		arm_equipment(mob, /datum/equipment_preset/contractor/covert/leader, TRUE, TRUE)
+	else if(synths < max_synths && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_SYNTH) && SSticker.role_authority.roles_whitelist[mob.ckey] & WHITELIST_SYNTHETIC)
 		synths++
-		to_chat(H, SPAN_ROLE_HEADER("You are a Contractor Support Synthetic of Vanguard's Arrow Incorporated!"))
-		arm_equipment(H, /datum/equipment_preset/contractor/covert/synth, TRUE, TRUE)
-	else if(medics < max_medics && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_MEDIC) && check_timelock(H.client, JOB_SQUAD_MEDIC, time_required_for_job))
+		to_chat(mob, SPAN_ROLE_HEADER("You are a Contractor Support Synthetic of Vanguard's Arrow Incorporated!"))
+		arm_equipment(mob, /datum/equipment_preset/contractor/covert/synth, TRUE, TRUE)
+	else if(medics < max_medics && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_MEDIC) && check_timelock(mob.client, JOB_SQUAD_MEDIC, time_required_for_job))
 		medics++
-		to_chat(H, SPAN_ROLE_HEADER("You are a Covert Contractor Medical Specialist of Vanguard's Arrow Incorporated!"))
-		arm_equipment(H, /datum/equipment_preset/contractor/covert/medic, TRUE, TRUE)
-	else if(heavies < max_heavies && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_SMARTGUNNER) && check_timelock(H.client, JOB_SQUAD_SMARTGUN, time_required_for_job))
+		to_chat(mob, SPAN_ROLE_HEADER("You are a Covert Contractor Medical Specialist of Vanguard's Arrow Incorporated!"))
+		arm_equipment(mob, /datum/equipment_preset/contractor/covert/medic, TRUE, TRUE)
+	else if(heavies < max_heavies && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_SMARTGUNNER) && check_timelock(mob.client, JOB_SQUAD_SMARTGUN, time_required_for_job))
 		heavies++
-		to_chat(H, SPAN_ROLE_HEADER("You are a Covert Contractor Machinegunner of Vanguard's Arrow Incorporated!"))
-		arm_equipment(H, /datum/equipment_preset/contractor/covert/heavy, TRUE, TRUE)
-	else if(engineers < max_engineers && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_ENGINEER) && check_timelock(H.client, JOB_SQUAD_ENGI))
+		to_chat(mob, SPAN_ROLE_HEADER("You are a Covert Contractor Machinegunner of Vanguard's Arrow Incorporated!"))
+		arm_equipment(mob, /datum/equipment_preset/contractor/covert/heavy, TRUE, TRUE)
+	else if(engineers < max_engineers && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_ENGINEER) && check_timelock(mob.client, JOB_SQUAD_ENGI))
 		engineers++
-		to_chat(H, SPAN_ROLE_HEADER("You are a Covert Contractor Engineering Specialist of Vanguard's Arrow Incorporated!"))
-		arm_equipment(H, /datum/equipment_preset/contractor/covert/engi, TRUE, TRUE)
+		to_chat(mob, SPAN_ROLE_HEADER("You are a Covert Contractor Engineering Specialist of Vanguard's Arrow Incorporated!"))
+		arm_equipment(mob, /datum/equipment_preset/contractor/covert/engi, TRUE, TRUE)
 	else
-		to_chat(H, SPAN_ROLE_HEADER("You are a Covert Contractor of Vanguard's Arrow Incorporated!"))
-		arm_equipment(H, /datum/equipment_preset/contractor/covert/standard, TRUE, TRUE)
+		to_chat(mob, SPAN_ROLE_HEADER("You are a Covert Contractor of Vanguard's Arrow Incorporated!"))
+		arm_equipment(mob, /datum/equipment_preset/contractor/covert/standard, TRUE, TRUE)
 
-	print_backstory(H)
+	print_backstory(mob)
 
-	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), H, SPAN_BOLD("Objectives:</b> [objectives]")), 1 SECONDS)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), mob, SPAN_BOLD("Objectives:</b> [objectives]")), 1 SECONDS)
 

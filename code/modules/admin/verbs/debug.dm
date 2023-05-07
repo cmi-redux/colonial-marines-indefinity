@@ -5,7 +5,7 @@
 		return
 	var/turf/T = mob.loc
 
-	if (!( istype(T, /turf) ))
+	if(!( istype(T, /turf) ))
 		return
 
 	var/list/air_info = T.return_air()
@@ -69,16 +69,16 @@
 	else
 		alert("Invalid mob")
 
-/client/proc/cmd_admin_change_hivenumber()
+/client/proc/cmd_admin_change_faction()
 	set category = "Debug"
-	set name = "Change Hivenumber"
+	set name = "Change faction"
 
-	var/mob/living/carbon/X = tgui_input_list(src,"Select a xeno.", "Change Hivenumber", GLOB.living_xeno_list)
+	var/mob/living/carbon/X = tgui_input_list(src,"Select a xeno.", "Change faction", GLOB.living_xeno_list)
 	if(!istype(X))
 		to_chat(usr, "This can only be done to instances of type /mob/living/carbon")
 		return
 
-	cmd_admin_change_their_hivenumber(X)
+	cmd_admin_change_their_faction(X)
 
 /client/proc/cmd_debug_toggle_should_check_for_win()
 	set category = "Debug"
@@ -87,7 +87,7 @@
 	if(!SSticker.mode)
 		to_chat(usr, "Mode not found?")
 	round_should_check_for_win = !round_should_check_for_win
-	if (round_should_check_for_win)
+	if(round_should_check_for_win)
 		message_admins("[key_name(src)] enabled checking for round-end.")
 	else
 		message_admins("[key_name(src)] disabled checking for round-end.")
@@ -109,7 +109,7 @@
 			if(hsbitem)
 				var/do_delete = 1
 				if(hsbitem in blocked)
-					if(alert("Are you REALLY sure you wish to delete all instances of [hsbitem]? This will lead to catastrophic results!",,"Yes","No") != "Yes")
+					if(alert("Are you REALLY sure you wish to delete all instances of [hsbitem]? This will lead to catastrophic results!", , usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 						do_delete = 0
 				var/del_amt = 0
 				if(do_delete)
@@ -129,7 +129,8 @@
 /client/proc/cmd_debug_make_powernets()
 	set category = "Debug"
 	set name = "Generate Powernets"
-	if(alert("Are you sure you want to do this?",, "Yes", "No") != "Yes") return
+	if(alert("Are you sure you want to do this?", , usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
+		return
 	makepowernets()
 	message_admins("[key_name_admin(src)] has remade the powernets. makepowernets() called.", 0)
 
@@ -141,12 +142,12 @@
 	if(!check_rights(R_DEBUG|R_ADMIN))
 		return
 
-	if (!SSticker.mode)
+	if(!SSticker.mode)
 		alert("Wait until the game starts")
 		return
-	if (istype(M, /mob/living/carbon/human))
+	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
-		if (H.wear_id)
+		if(H.wear_id)
 			var/obj/item/card/id/id = H.wear_id
 			id.icon_state = "gold"
 			id:access = get_all_accesses()+get_all_centcom_access()+get_all_syndicate_access()
@@ -241,15 +242,14 @@
 		return //mob is garbage collected
 
 	if(M.ckey)
-		if(alert("This mob is being controlled by [M.ckey]. Are you sure you wish to assume control of it? [M.ckey] will be made a ghost.",,"Yes","No") != "Yes")
+		if(alert("This mob is being controlled by [M.ckey]. Are you sure you wish to assume control of it? [M.ckey] will be made a ghost.", , usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 			return
 
 		M.ghostize()
 
 	if(M.mind)
-		if(M.mind.player_entity)
-			M.track_death_calculations()
-		M.mind.player_entity = setup_player_entity(src.ckey)
+		M.track_death_calculations()
+		M.client.player_data.setup_statistics()
 		M.statistic_tracked = FALSE
 
 	usr.mind.transfer_to(M, TRUE)

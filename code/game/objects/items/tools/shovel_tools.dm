@@ -15,7 +15,7 @@
 	matter = list("metal" = 50)
 
 	attack_verb = list("bashed", "bludgeoned", "thrashed", "whacked")
-	var/dirt_overlay = "shovel_overlay"
+	var/dirt_overlay = "dirt"
 	var/folded = FALSE
 	/// 0 for no dirt, 1 for brown dirt, 2 for snow, 3 for big red.
 	var/dirt_type = NO_DIRT
@@ -23,9 +23,12 @@
 	var/dirt_amt = 0
 	var/dirt_amt_per_dig = 6
 
+/obj/item/tool/shovel/Initialize()
+	. = ..()
+	update_icon()
 
 /obj/item/tool/shovel/update_icon()
-	var/image/I = image(icon,src,dirt_overlay)
+	var/image/I = image(icon,src,"[icon_state]_[dirt_overlay]")
 	switch(dirt_type) // We can actually shape the color for what enviroment we dig up our dirt in.
 		if(DIRT_TYPE_GROUND) I.color = "#512A09"
 		if(DIRT_TYPE_MARS) I.color = "#FF5500"
@@ -37,8 +40,6 @@
 		overlays += I
 	else
 		I = null
-
-
 
 /obj/item/tool/shovel/get_examine_text(mob/user)
 	. = ..()
@@ -65,101 +66,81 @@
 
 
 /obj/item/tool/shovel/afterattack(atom/target, mob/user, proximity)
-	if(!proximity || folded || !isturf(target))
+	if(!proximity || folded)
 		return
 
 	if(user.action_busy)
 		return
 
 	if(!dirt_amt)
-		var/turf/T = target
-		var/turfdirt = T.get_dirt_type()
-		if(turfdirt)
+		if(istype(target, /turf))
+			var/turf/T = target
+			var/turfdirt = T.get_dirt_type()
+			if(turfdirt)
+				to_chat(user, SPAN_NOTICE("You start digging."))
+				playsound(user.loc, 'sound/effects/thud.ogg', 40, 1, 6)
+				if(!do_after(user, shovelspeed * user.get_skill_duration_multiplier(SKILL_CONSTRUCTION), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
+					to_chat(user, SPAN_NOTICE("You stop digging."))
+					return
+
+				var/transfer_amount = dirt_amt_per_dig
+				if(istype(T,/turf/open))
+					var/turf/open/OT = T
+					if(OT.bleed_layer)
+						transfer_amount = min(OT.bleed_layer, dirt_amt_per_dig)
+						if(istype(T, /turf/open/auto_turf))
+							var/turf/open/auto_turf/AT = T
+							AT.changing_layer(AT.bleed_layer - transfer_amount)
+						else
+							OT.bleed_layer -= transfer_amount
+							OT.update_icon(1,0)
+				to_chat(user, SPAN_NOTICE("You dig up some [dirt_type_to_name(turfdirt)]."))
+				dirt_amt = transfer_amount
+				dirt_type = turfdirt
+				update_icon()
+
+		else if(istype(target, /obj/structure/snow))
+			var/obj/structure/snow/snow = target
 			to_chat(user, SPAN_NOTICE("You start digging."))
 			playsound(user.loc, 'sound/effects/thud.ogg', 40, 1, 6)
 			if(!do_after(user, shovelspeed * user.get_skill_duration_multiplier(SKILL_CONSTRUCTION), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 				to_chat(user, SPAN_NOTICE("You stop digging."))
 				return
 
-			var/transfer_amount = dirt_amt_per_dig
-			if(istype(T,/turf/open))
-				var/turf/open/OT = T
-				if(OT.bleed_layer)
-					transfer_amount = min(OT.bleed_layer, dirt_amt_per_dig)
-					if(istype(T, /turf/open/auto_turf))
-						var/turf/open/auto_turf/AT = T
-						AT.changing_layer(AT.bleed_layer - transfer_amount)
-					else
-						OT.bleed_layer -= transfer_amount
-						OT.update_icon(1,0)
-			to_chat(user, SPAN_NOTICE("You dig up some [dirt_type_to_name(turfdirt)]."))
+			var/transfer_amount = min(snow.bleed_layer, dirt_amt_per_dig)
+			snow.changing_layer(snow.bleed_layer - transfer_amount)
+			to_chat(user, SPAN_NOTICE("You dig up some [dirt_type_to_name(DIRT_TYPE_SNOW)]."))
 			dirt_amt = transfer_amount
-			dirt_type = turfdirt
+			dirt_type = DIRT_TYPE_SNOW
 			update_icon()
-
-			var/digmore = FALSE
-			var/sandbagcheck = FALSE
-			while(dirt_amt > 0) // loop to check for leftover dirt and use it on nearby sandbags
-				var/obj/item/stack/sandbags_empty/SB = user.get_inactive_hand()
-				if(!istype(SB, /obj/item/stack/sandbags_empty)) // If no sandbag in off hand, checks around the user
-					for(var/obj/item/stack/sandbags_empty/sandbags in range(1, user))
-						SB = sandbags
-						break
-
-				if(!istype(SB, /obj/item/stack/sandbags_empty)) // Checks sandbag a second time to confirm, if none are found, cancels everything
-					to_chat(user, SPAN_NOTICE("There are no sandbags nearby to fill up."))
-					break
-
-				if(sandbagcheck == FALSE)
-					sandbagcheck = TRUE
-					to_chat(user, SPAN_NOTICE("You begin filling the sandbags with [dirt_type_to_name(turfdirt)]."))
-					if(!do_after(user, shovelspeed / 2, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD)) // Sandbag filling speed faster than normal, no skillchecks required since filling bags is almost instant
-						to_chat(user, SPAN_NOTICE("You stop filling the sandbags with [dirt_type_to_name(turfdirt)]."))
-						return
-
-				if(get_dist(user, SB) > 1) // check if sandbag still beside them
-					break
-
-				if(SB.amount < 0) // check if sandbag is used by someone else
-					SB = null
-					continue
-
-				if(dirt_amt <= 0) // check if the user has already used all the dirt
-					continue
-
-				var/dirttransfer_amount = min(SB.amount, dirt_amt)
-				dirt_amt -= dirttransfer_amount
-				update_icon()
-				var/obj/item/stack/sandbags/new_bags = new(user.loc)
-				new_bags.amount = dirttransfer_amount
-				new_bags.add_to_stacks(user)
-				var/replace = (user.get_inactive_hand() == SB)
-				playsound(user.loc, "rustle", 30, 1, 6)
-				SB.use(dirttransfer_amount)
-				if(!SB && replace)
-					user.put_in_hands(new_bags)
-
-				if(dirt_amt <= 0) // Ends the loop when no dirt is left
-					digmore = TRUE
-					break
-			if(digmore)
-				afterattack(target, user, proximity)
-// auto repeat ends
 
 	else
 		dump_shovel(target, user)
 
 /obj/item/tool/shovel/proc/dump_shovel(atom/target, mob/user)
-	var/turf/T = target
-	to_chat(user, SPAN_NOTICE("you dump the [dirt_type_to_name(dirt_type)]!"))
-	playsound(user.loc, "rustle", 30, 1, 6)
-	if(dirt_type == DIRT_TYPE_SNOW)
-		var/obj/item/stack/snow/S = locate() in T
-		if(S && S.amount + dirt_amt < S.max_amount)
-			S.amount += dirt_amt
+	if(istype(target, /turf))
+		var/turf/T = target
+		to_chat(user, SPAN_NOTICE("You dump the [dirt_type_to_name(dirt_type)]!"))
+		playsound(user.loc, "rustle", 30, 1, 6)
+		if(dirt_type == DIRT_TYPE_SNOW)
+			var/obj/item/stack/snow/S = locate() in T
+			if(S && S.amount + dirt_amt < S.max_amount)
+				S.amount += dirt_amt
+			else
+				new /obj/item/stack/snow(T, dirt_amt)
+		dirt_amt = 0
+
+	else if(istype(target, /obj/structure/snow) && dirt_type == DIRT_TYPE_SNOW)
+		var/obj/structure/snow/snow = target
+		if(snow.bleed_layer >= MAX_LAYER_SNOW_LEVELS)
+			to_chat(user, SPAN_NOTICE("There no more space!"))
+			return
 		else
-			new /obj/item/stack/snow(T, dirt_amt)
-	dirt_amt = 0
+			to_chat(user, SPAN_NOTICE("You dump the [dirt_type_to_name(dirt_type)]!"))
+			playsound(user.loc, "rustle", 30, 1, 6)
+			snow.changing_layer(1)
+			dirt_amt = 0
+
 	update_icon()
 
 /obj/item/tool/shovel/proc/dirt_type_to_name(dirt_type)
@@ -188,7 +169,6 @@
 	force = 5
 	throwforce = 7
 	w_class = SIZE_SMALL
-	dirt_overlay = "spade_overlay"
 	shovelspeed = 60
 	dirt_amt_per_dig = 1
 
@@ -215,20 +195,17 @@
 	throwforce = 2
 	w_class = SIZE_LARGE
 
-	dirt_overlay = "etool_overlay"
 	dirt_amt_per_dig = 5
 	shovelspeed = 50
 
-
 /obj/item/tool/shovel/etool/update_icon()
 	if(folded)
-		icon_state = "etool_c"
-		item_state = "etool_c"
+		icon_state = "[icon_state]_c"
+		item_state = "[item_state]_c"
 	else
-		icon_state = "etool"
-		item_state = "etool"
+		icon_state = initial(icon_state)
+		item_state = initial(item_state)
 	..()
-
 
 /obj/item/tool/shovel/etool/attack_self(mob/user as mob)
 	folded = !folded
@@ -244,5 +221,3 @@
 	folded = TRUE
 	w_class = SIZE_MEDIUM
 	force = 2
-	icon_state = "etool_c"
-	item_state = "etool_c"

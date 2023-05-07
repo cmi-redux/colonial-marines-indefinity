@@ -32,7 +32,7 @@
 /datum/equipment_preset/uscm_event/dress/nco
 	name = "Dress Blues - (E-4) Corporal"
 	paygrade = "ME4"
-	skills = /datum/skills/SL
+	skills = /datum/skills/sl
 
 	dress_under = list(/obj/item/clothing/under/marine/dress/blues/senior)
 	dress_over = list(/obj/item/clothing/suit/storage/jacket/marine/dress/blues/nco)

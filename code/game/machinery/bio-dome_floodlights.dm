@@ -6,7 +6,7 @@
 	density = FALSE
 	anchored = TRUE
 	var/ispowered = FALSE
-	var/turned_on = 0 //has to be toggled in engineering
+	light_on = 0
 	use_power = USE_POWER_IDLE
 	unslashable = TRUE
 	unacidable = TRUE
@@ -37,7 +37,7 @@
 /obj/structure/machinery/hydro_floodlight_switch/update_icon()
 	if(!ispowered)
 		icon_state = "panelnopower"
-	else if(turned_on)
+	else if(light_on)
 		icon_state = "panelon"
 	else
 		icon_state = "paneloff"
@@ -45,10 +45,9 @@
 /obj/structure/machinery/hydro_floodlight_switch/power_change()
 	..()
 	if((stat & NOPOWER))
-		if(ispowered && turned_on)
+		if(ispowered && light_on)
 			toggle_lights()
 		ispowered = FALSE
-		turned_on = 0
 		update_icon()
 	else
 		ispowered = TRUE
@@ -59,11 +58,13 @@
 		if(!istype(F) || QDELETED(F) || F.damaged) continue //Missing or damaged, skip it
 
 		spawn(rand(0,50))
-			if(F.is_lit) //Shut it down
-				F.SetLuminosity(0)
+			if(F.light_on) //Shut it down
+				F.set_light_on(FALSE)
+				F.update_light()
 			else
-				F.SetLuminosity(F.lum_value)
-			F.is_lit = !(F.is_lit)
+				F.set_light_on(TRUE)
+				F.update_light()
+			F.light_on = !(F.light_on)
 			F.update_icon()
 	return 0
 
@@ -77,7 +78,6 @@
 	playsound(src,'sound/machines/click.ogg', 15, 1)
 	use_power(5)
 	toggle_lights()
-	turned_on = !(src.turned_on)
 	update_icon()
 	return 1
 
@@ -95,13 +95,18 @@
 	var/power_tick = 800 // power each floodlight takes up per process
 	use_power = USE_POWER_NONE //It's the switch that uses the actual power, not the lights
 	var/obj/structure/machinery/hydro_floodlight_switch/fswitch = null //Reverse lookup for power grabbing in area
-	var/lum_value = 7
+
+	light_system = STATIC_LIGHT
+	light_range = 7
+	light_power = 1
+	light_on = FALSE
 
 /obj/structure/machinery/hydro_floodlight/Destroy()
 	if(fswitch?.floodlist)
 		fswitch.floodlist -= src
 	fswitch = null
-	SetLuminosity(0)
+	set_light_on(FALSE)
+	update_light()
 	return ..()
 
 /obj/structure/machinery/hydro_floodlight/update_icon()
@@ -130,7 +135,8 @@
 				user.visible_message(SPAN_NOTICE("[user] finishes welding [src]'s damage."), \
 					SPAN_NOTICE("You finish welding [src]'s damage."))
 				if(is_lit)
-					SetLuminosity(lum_value)
+					set_light_on(TRUE)
+					update_light()
 				update_icon()
 				return 1
 		else
@@ -161,7 +167,8 @@
 			if(do_after(user, 50, INTERRUPT_ALL, BUSY_ICON_HOSTILE) && !damaged) //Not when it's already damaged.
 				if(!src) return 0
 				damaged = 1
-				SetLuminosity(0)
+				set_light_on(FALSE)
+				update_light()
 				user.visible_message(SPAN_DANGER("[user] slashes up [src]!"),
 				SPAN_DANGER("You slash up [src]!"))
 				playsound(src, 'sound/weapons/blade1.ogg', 25, 1)

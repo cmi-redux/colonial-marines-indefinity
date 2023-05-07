@@ -134,8 +134,10 @@
 	return
 
 /obj/item/hardpoint/proc/generate_bullet(mob/user, turf/origin_turf)
-	var/obj/item/projectile/P = new(origin_turf, create_cause_data(initial(name), user))
-	P.generate_bullet(new ammo.default_ammo)
+	var/obj/item/projectile/projectile = ammo.transfer_bullet_out()
+	projectile.cause_data = create_cause_data(initial(name), user)
+	projectile.bullet_ready_to_fire(initial(name), null, user)
+	projectile.forceMove(origin_turf)
 	// Apply bullet traits from gun
 	for(var/entry in traits_to_give)
 		var/list/L
@@ -145,8 +147,8 @@
 		else
 			// Prepend the bullet trait to the list
 			L = list(entry) + traits_to_give[entry]
-		P.apply_bullet_trait(L)
-	return P
+		projectile.apply_bullet_trait(L)
+	return projectile
 
 /obj/item/hardpoint/proc/can_take_damage()
 	if(!damage_multiplier)
@@ -178,10 +180,10 @@
 /obj/item/hardpoint/proc/apply_buff(obj/vehicle/multitile/V)
 	if(buff_applied)
 		return
-	if(LAZYLEN(type_multipliers))
+	if(length(type_multipliers))
 		for(var/type in type_multipliers)
 			V.dmg_multipliers[type] *= LAZYACCESS(type_multipliers, type)
-	if(LAZYLEN(buff_multipliers))
+	if(length(buff_multipliers))
 		for(var/type in buff_multipliers)
 			V.misc_multipliers[type] *= LAZYACCESS(buff_multipliers, type)
 	buff_applied = TRUE
@@ -190,10 +192,10 @@
 /obj/item/hardpoint/proc/remove_buff(obj/vehicle/multitile/V)
 	if(!buff_applied)
 		return
-	if(LAZYLEN(type_multipliers))
+	if(length(type_multipliers))
 		for(var/type in type_multipliers)
 			V.dmg_multipliers[type] *= 1 / LAZYACCESS(type_multipliers, type)
-	if(LAZYLEN(buff_multipliers))
+	if(length(buff_multipliers))
 		for(var/type in buff_multipliers)
 			V.misc_multipliers[type] *= 1 / LAZYACCESS(buff_multipliers, type)
 	buff_applied = FALSE
@@ -244,9 +246,9 @@
 
 	if(ammo)
 		data["uses_ammo"] = TRUE
-		data["current_rounds"] = ammo.current_rounds
+		data["current_rounds"] = ammo.ammo_position
 		data["max_rounds"] = ammo.max_rounds
-		data["mags"] = LAZYLEN(backup_clips)
+		data["mags"] = length(backup_clips)
 		data["max_mags"] = max_clips
 	else
 		data["uses_ammo"] = FALSE
@@ -319,8 +321,8 @@
 			to_chat(user, SPAN_WARNING("You need to wait [SPAN_HELPFUL((next_use - world.time) / 10)] seconds before [name] can be used again."))
 		return FALSE
 
-	if(ammo && ammo.current_rounds <= 0)
-		to_chat(user, SPAN_WARNING("<b>\The [name] is out of ammo!</b> Magazines: <b>[SPAN_HELPFUL(LAZYLEN(backup_clips))]/[SPAN_HELPFUL(max_clips)]</b>"))
+	if(ammo && ammo.ammo_position <= 0)
+		to_chat(user, SPAN_WARNING("<b>\The [name] is out of ammo!</b> Magazines: <b>[SPAN_HELPFUL(length(backup_clips))]/[SPAN_HELPFUL(max_clips)]</b>"))
 		return FALSE
 
 	if(!in_firing_arc(A))
@@ -355,7 +357,7 @@
 
 //reloading hardpoint - take mag from backup clips and replace current ammo with it. Will change in future. Called via weapons loader
 /obj/item/hardpoint/proc/reload(mob/user)
-	if(!LAZYLEN(backup_clips))
+	if(!length(backup_clips))
 		to_chat(usr, SPAN_WARNING("\The [name] has no remaining backup clips."))
 		return
 
@@ -383,7 +385,7 @@
 	if(max_clips == 0)
 		to_chat(user, SPAN_WARNING("\The [name] does not have room for additional ammo."))
 		return FALSE
-	else if(LAZYLEN(backup_clips) >= max_clips)
+	else if(length(backup_clips) >= max_clips)
 		to_chat(user, SPAN_WARNING("\The [name]'s reloader is full."))
 		return FALSE
 
@@ -393,7 +395,7 @@
 		to_chat(user, SPAN_WARNING("Something interrupted you while reloading \the [name]."))
 		return FALSE
 
-	if(LAZYLEN(backup_clips) >= max_clips)
+	if(length(backup_clips) >= max_clips)
 		to_chat(user, SPAN_WARNING("\The [name]'s reloader is full."))
 		return FALSE
 
@@ -401,7 +403,7 @@
 
 	playsound(loc, 'sound/machines/hydraulics_2.ogg', 50)
 	LAZYADD(backup_clips, A)
-	to_chat(user, SPAN_NOTICE("You load \the [A] into \the [name]. Ammo: <b>[SPAN_HELPFUL(ammo.current_rounds)]/[SPAN_HELPFUL(ammo.max_rounds)]</b> | Mags: <b>[SPAN_HELPFUL(LAZYLEN(backup_clips))]/[SPAN_HELPFUL(max_clips)]</b>"))
+	to_chat(user, SPAN_NOTICE("You load \the [A] into \the [name]. Ammo: <b>[SPAN_HELPFUL(ammo.ammo_position)]/[SPAN_HELPFUL(ammo.max_rounds)]</b> | Mags: <b>[SPAN_HELPFUL(length(backup_clips))]/[SPAN_HELPFUL(max_clips)]</b>"))
 	return TRUE
 
 /obj/item/hardpoint/attackby(obj/item/O, mob/user)
@@ -529,35 +531,33 @@
 
 //doing last preparation before actually firing gun
 /obj/item/hardpoint/proc/fire(mob/user, atom/A)
-	if(ammo.current_rounds <= 0)
+	if(ammo.ammo_position <= 0)
 		return
 
 	next_use = world.time + cooldown * owner.misc_multipliers["cooldown"]
 	if(!prob((accuracy * 100) / owner.misc_multipliers["accuracy"]))
-		A = get_step(get_turf(A), pick(cardinal))
+		A = get_step(get_turf(A), pick( GLOB.cardinals))
 
-	if(LAZYLEN(activation_sounds))
+	if(length(activation_sounds))
 		playsound(get_turf(src), pick(activation_sounds), 60, 1)
 
 	fire_projectile(user, A)
 
-	to_chat(user, SPAN_WARNING("[name] Ammo: <b>[SPAN_HELPFUL(ammo ? ammo.current_rounds : 0)]/[SPAN_HELPFUL(ammo ? ammo.max_rounds : 0)]</b> | Mags: <b>[SPAN_HELPFUL(LAZYLEN(backup_clips))]/[SPAN_HELPFUL(max_clips)]</b>"))
+	to_chat(user, SPAN_WARNING("[name] Ammo: <b>[SPAN_HELPFUL(ammo ? ammo.ammo_position : 0)]/[SPAN_HELPFUL(ammo ? ammo.max_rounds : 0)]</b> | Mags: <b>[SPAN_HELPFUL(length(backup_clips))]/[SPAN_HELPFUL(max_clips)]</b>"))
 
 //finally firing the gun
 /obj/item/hardpoint/proc/fire_projectile(mob/user, atom/A)
-	set waitfor = 0
+	set waitfor = FALSE
 
 	var/turf/origin_turf = get_turf(src)
 	origin_turf = locate(origin_turf.x + origins[1], origin_turf.y + origins[2], origin_turf.z)
 
-	var/obj/item/projectile/P = generate_bullet(user, origin_turf)
-	SEND_SIGNAL(P, COMSIG_BULLET_USER_EFFECTS, user)
-	P.fire_at(A, user, src, P.ammo.max_range, P.ammo.shell_speed)
+	var/obj/item/projectile/projectile = generate_bullet(user, origin_turf)
+	SEND_SIGNAL(projectile, COMSIG_BULLET_USER_EFFECTS, user)
+	projectile.fire_at(A, user, src, projectile.ammo.max_range, projectile.ammo.shell_speed)
 
 	if(use_muzzle_flash)
 		muzzle_flash(Get_Angle(origin_turf, A))
-
-	ammo.current_rounds--
 
 //-----------------------------
 //------ICON PROCS----------
@@ -568,7 +568,7 @@
 	var/offset_x = 0
 	var/offset_y = 0
 
-	if(LAZYLEN(px_offsets) && loc)
+	if(length(px_offsets) && loc)
 		offset_x = px_offsets["[loc.dir]"][1]
 		offset_y = px_offsets["[loc.dir]"][2]
 
@@ -615,7 +615,7 @@
 	// Account for turret rotation
 	if(istype(loc, /obj/item/hardpoint/holder))
 		var/obj/item/hardpoint/holder/H = loc
-		if(LAZYLEN(H.px_offsets))
+		if(length(H.px_offsets))
 			muzzle_flash_x += H.px_offsets["[H.loc.dir]"][1]
 			muzzle_flash_y += H.px_offsets["[H.loc.dir]"][2]
 

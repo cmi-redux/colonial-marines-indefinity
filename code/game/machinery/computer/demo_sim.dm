@@ -193,7 +193,6 @@
 			QDEL_IN(dummy, detonation_cooldown_time - 10 SECONDS)
 		else
 			var/mob/living/carbon/xenomorph/xeno_dummy = new spawn_path(get_turf(spawn_loc))
-			xeno_dummy.hardcore = TRUE
 			QDEL_IN(xeno_dummy, detonation_cooldown_time - 10 SECONDS)
 
 	//Simply an explosive

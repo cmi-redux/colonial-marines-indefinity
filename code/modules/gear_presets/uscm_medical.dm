@@ -19,9 +19,6 @@
 	role_comm_title = "CMO"
 	skills = /datum/skills/CMO
 
-	minimap_icon = list("medic" = MINIMAP_ICON_COLOR_HEAD)
-	minimap_background = MINIMAP_ICON_BACKGROUND_CIC
-
 	utility_under = list(/obj/item/clothing/under/rank/chief_medical_officer)
 	utility_hat = list(/obj/item/clothing/head/cmo)
 	utility_gloves = list(/obj/item/clothing/gloves/latex)
@@ -41,7 +38,7 @@
 
 /datum/equipment_preset/uscm_ship/uscm_medical/cmo/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine
 
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/cmo(H), WEAR_L_EAR)
@@ -63,7 +60,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/cmo(H), WEAR_HEAD)
 	H.equip_to_slot_or_del(new /obj/item/device/healthanalyzer(H), WEAR_J_STORE)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/uscm_medical/doctor
 	name = "USCM Surgeon"
@@ -75,8 +72,6 @@
 	paygrade = "MO1"
 	role_comm_title = "Doc"
 	skills = /datum/skills/doctor
-
-	minimap_icon = list("medic" = MINIMAP_ICON_COLOR_DOCTOR)
 
 	utility_under = list(/obj/item/clothing/under/rank/medical/green)
 	utility_hat = list(/obj/item/clothing/head/surgery/green)
@@ -97,7 +92,7 @@
 
 /datum/equipment_preset/uscm_ship/uscm_medical/doctor/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine
 
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/doc(H), WEAR_L_EAR)
@@ -118,7 +113,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/surgery/green(H), WEAR_HEAD)
 	H.equip_to_slot_or_del(new /obj/item/device/healthanalyzer(H), WEAR_IN_BELT)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/uscm_medical/nurse
 	name = "USCM Nurse"
@@ -130,8 +125,6 @@
 	paygrade = "ME5"
 	role_comm_title = "Nurse"
 	skills = /datum/skills/nurse
-
-	minimap_icon = list("medic")
 
 	utility_under = list(/obj/item/clothing/under/rank/medical/green)
 	utility_hat = list(/obj/item/clothing/head/surgery/green)
@@ -152,7 +145,7 @@
 
 /datum/equipment_preset/uscm_ship/uscm_medical/nurse/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine
 
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/doc(H), WEAR_L_EAR)
@@ -178,7 +171,7 @@
 			return "ME3"
 	return paygrade
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 /datum/equipment_preset/uscm_ship/uscm_medical/researcher
 	name = "USCM Researcher"
 	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
@@ -189,8 +182,6 @@
 	paygrade = "MO1"
 	role_comm_title = "Rsr"
 	skills = /datum/skills/researcher
-
-	minimap_icon = "researcher"
 
 	utility_under = list(/obj/item/clothing/under/rank/medical/green)
 	utility_hat = list(/obj/item/clothing/head/surgery/green)
@@ -211,7 +202,7 @@
 
 /datum/equipment_preset/uscm_ship/uscm_medical/researcher/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine
 
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/doc(H), WEAR_L_EAR)
@@ -233,4 +224,4 @@
 	H.equip_to_slot_or_del(new /obj/item/tool/surgery/surgical_line, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/tool/surgery/synthgraft, WEAR_IN_BACK)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//

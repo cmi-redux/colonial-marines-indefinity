@@ -29,7 +29,7 @@
 
 /datum/component/shield_slash/proc/handle_stat_display(mob/living/carbon/xenomorph/X, list/statdata)
 	SIGNAL_HANDLER
-	statdata += "Stored [stat_name]: [stored_shield]/[max_shield]"
+	statdata += "Хранится [stat_name]: [stored_shield]/[max_shield]"
 
 /datum/component/shield_slash/proc/handle_shield_buildup(mob/living/carbon/xenomorph/X)
 	SIGNAL_HANDLER

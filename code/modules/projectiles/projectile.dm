@@ -5,16 +5,34 @@
 
 //The actual bullet objects.
 /obj/item/projectile
-	name = "projectile"
-	icon = 'icons/obj/items/weapons/projectiles.dmi'
-	icon_state = "bullet"
-	density = FALSE
-	unacidable = TRUE
-	anchored = TRUE //You will not have me, space wind!
-	flags_atom = NOINTERACT //No real need for this, but whatever. Maybe this flag will do something useful in the future.
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	invisibility = 100 // We want this thing to be invisible when it drops on a turf because it will be on the user's turf. We then want to make it visible as it travels.
-	layer = FLY_LAYER
+	name = "bullet"
+	desc = "This is bullet."
+	var/fire_ready = FALSE
+	plane = GAME_PLANE
+	matter = list("metal" = 50)
+	flags_atom = FPRINT|CONDUCT
+
+	throwforce = 2
+	w_class = SIZE_SMALL
+	throw_speed = SPEED_SLOW
+	throw_range = 6
+	var/caliber = null // This is used for matching handfuls to each other or whatever the mag is. Examples are" "12g" ".44" ".357" etc.
+
+	var/cause_data = "взрыв боеприпасов"
+	var/shrapnel_type = /datum/ammo/bullet/shrapnel
+	var/explosing
+
+	attack_speed = 3 // should make reloading less painful
+
+	var/can_be_scraped = TRUE
+	var/scrapping_probability = 0.01
+	var/scrap_ammo_perc = 0 //If 0, all good, if 100 your ass gonna die
+
+	//light
+	light_system = MOVABLE_LIGHT
+	light_range = 2
+	light_power = 0.2
+	light_color = COLOR_VERY_SOFT_YELLOW
 
 	var/datum/ammo/ammo //The ammo data which holds most of the actual info.
 
@@ -22,35 +40,21 @@
 	var/p_x = 0
 	var/p_y = 0 // the pixel location of the clicked/aimed location in target turf
 
-	var/current  = null
-	var/atom/shot_from  = null // the object which shot us
-	var/atom/original  = null // the original target clicked
-	var/atom/firer  = null // Who shot it
+	var/apx //Pixel location in absolute coordinates. This is (((x - 1) * 32) + 16 + pixel_x)
+	var/apy //These values are floats, not integers. They need to be converted through CEILING or such when translated to relative pixel coordinates.
 
-	var/turf/target_turf = null
-	var/turf/starting  = null // the projectile's starting turf
+	var/current = null
+	var/atom/shot_from = null // the object which shot us
+	var/turf/starting_turf = null // the projectile's starting turf
+	var/atom/original_target = null // the original target clicked
+	var/turf/original_target_turf = null // the original target's starting turf
+	var/atom/firer = null // Who shot it
 
-	var/turf/path[]  = null
-	var/permutated[]  = null // we've passed through these atoms, don't try to hit them again
-
-	/// Additional ammo flags applied to the projectile
-	var/projectile_override_flags = NONE
-	/// Flags for behaviors of the projectile itself
-	var/projectile_flags = NONE
-
-	/// How much time has the projectile carried for fractional movement, in seconds (delta_time format)
-	var/time_carry = 0
-	/// How many turfs per 1ds the projectile travels
-	var/speed = 0
-	/// Direct angle at firing time, in degrees from BYOND NORTH, used for visual updates and path extension
-	var/angle = 0
-	/// Turfs traveled so far, for use in visual updates, in conjunction with angle for projection
-	var/vis_travelled = 0
-	/// Origin point for tracing and visual updates
-	var/turf/vis_source
+	var/permutated[] = null // we've passed through these atoms, don't try to hit them again
+	var/list/atom/movable/uncross_scheduled = list() // List of border movable atoms to check for when exiting a turf.
 
 	var/damage = 0
-	var/accuracy = 85 //Base projectile accuracy. Can maybe be later taken from the mob if desired.
+	var/accuracy = 75 //Base projectile accuracy. Can maybe be later taken from the mob if desired.
 
 	var/damage_falloff = 0 //how much effectiveness in damage the projectile loses per tiles travelled beyond the effective range
 	var/damage_buildup = 0 //how much effectiveness in damage the projectile loses before the effective range
@@ -61,6 +65,11 @@
 	var/scatter = 0
 	var/distance_travelled = 0
 
+	var/projectile_speed = 1 //Tiles travelled per full tick.
+
+	var/projectile_override_flags = NO_FLAGS
+	var/projectile_flags = NO_FLAGS
+
 	var/datum/cause_data/weapon_cause_data
 	var/list/bullet_traits
 
@@ -70,73 +79,133 @@
 	/// The flicker that plays when a bullet hits a target. Usually red. Can be nulled so it doesn't show up at all.
 	var/hit_effect_color = "#FF0000"
 
-/obj/item/projectile/Initialize(mapload, datum/cause_data/cause_data)
-	. = ..()
-	path = list()
+	//Fired processing vars
+	var/last_projectile_move = 0
+	var/stored_moves = 0
+	var/dir_angle //0 is north, 90 is east, 180 is south, 270 is west. BYOND angles and all.
+	var/x_offset //Float, not integer.
+	var/y_offset
+
+//custom bullets, used only in custom projectiles, but can in normal if you wanna make hard custom proj
+	var/obj/item/ammo_parts/part/container/container = null
+
+/obj/item/projectile/Initialize(mapload, datum/cause_data/cause_data, datum/ammo/ammo_datum, ammo_caliber)
+	. = ..(mapload)
 	permutated = list()
-	weapon_cause_data = istype(cause_data) ? cause_data : create_cause_data(cause_data)
-	firer = cause_data?.resolve_mob()
+	if(can_be_scraped && prob(scrapping_probability))
+		scrap_ammo_perc = rand(1, 100)
+
+	if(cause_data)
+		weapon_cause_data = cause_data
+
+	if(ammo_datum)
+		ammo = ammo_datum
+		name = ammo_datum.name
+
+	if(ammo_caliber)
+		caliber = ammo_caliber
+
+	pixel_x = rand(-8.0, 8) //Want to move them just a tad.
+	pixel_y = rand(-8.0, 8)
+
+/obj/item/projectile/update_icon() //Handles the icon itself as well as some bonus things.
+	if(!ammo)
+		return
+	if(!fire_ready)
+		icon = 'icons/obj/items/weapons/guns/handful.dmi'
+		icon_state = ammo.handful_state + "_1"
+	else
+		icon = 'icons/obj/items/weapons/projectiles.dmi'
+		icon_state = ammo.icon_state
+
+/obj/item/projectile/pickup(mob/user)
+	var/olddir = dir
+	. = ..()
+	dir = olddir
+
+/obj/item/projectile/equipped(mob/user, slot)
+	var/thisDir = src.dir
+	..(user,slot)
+	setDir(thisDir)
+	return
 
 /obj/item/projectile/Destroy()
-	speed = 0
+	SSprojectiles.stop_projectile(src)
+	QDEL_NULL(bound_beam)
+	. = ..()
 	ammo = null
 	shot_from = null
-	original = null
-	target_turf = null
-	starting = null
+	original_target = null
 	permutated = null
-	path = null
+	uncross_scheduled = null
+	original_target_turf = null
+	starting_turf = null
 	weapon_cause_data = null
 	firer = null
-	QDEL_NULL(bound_beam)
-	SSprojectiles.stop_projectile(src)
-	return ..()
+
+/obj/item/projectile/Crossed(atom/movable/AM) //A mob moving on a tile with a projectile is hit by it.
+	. = ..()
+	if(AM && !QDELETED(src) && !(AM in permutated) && fire_ready)
+		if(scan_a_turf(get_turf(AM)))
+			SSprojectiles.stop_projectile(src)
+			qdel(src)
+		permutated |= AM //Don't want to hit them again.
+
+/obj/item/projectile/Collided(atom/movable/AM)
+	if(AM && !QDELETED(src) && !(AM in permutated) && fire_ready)
+		if(scan_a_turf(get_turf(AM)))
+			SSprojectiles.stop_projectile(src)
+			qdel(src)
+		permutated |= AM //Don't want to hit them again.
 
 /obj/item/projectile/proc/apply_bullet_trait(list/entry)
 	bullet_traits += list(entry.Copy())
 	// Need to use the proc instead of the wrapper because each entry is a list
 	_AddElement(entry)
 
-/obj/item/projectile/proc/give_bullet_traits(obj/item/projectile/to_give)
+/obj/item/projectile/proc/give_bullet_traits(obj/item/projectile/proj)
 	for(var/list/entry in bullet_traits)
-		to_give.apply_bullet_trait(entry.Copy())
+		proj.apply_bullet_trait(entry.Copy())
 
-/obj/item/projectile/Collided(atom/movable/AM)
-	if(AM && !(AM in permutated))
-		if(scan_a_turf(AM.loc))
-			SSprojectiles.stop_projectile(src)
-			qdel(src)
+/obj/item/projectile/proc/bullet_ready_to_fire(bullet_source = null, happened = null, weapon_source_mob = null)
+	unacidable = TRUE
+	anchored = TRUE
+	flags_atom = NOINTERACT
+	layer = FLY_LAYER
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	generate_bullet(null, weapon_source_mob, 0, NO_FLAGS)
 
-/obj/item/projectile/Crossed(atom/movable/AM)
-	/* Fun fact: Crossed is called for any contents involving operations.
-	 * This notably means, inserting a magazing in a gun Crossed() it with the bullets in the gun. */
-	if(!loc.z)
-		return // Not on the map. Don't scan a turf. Don't shoot the poor guy reloading his gun.
-	if(AM && !(AM in permutated))
-		if(scan_a_turf(get_turf(AM)))
-			SSprojectiles.stop_projectile(src)
-			qdel(src)
+	pixel_x = 0 //Want to move them just a tad.
+	pixel_y = 0
 
+	if(isliving(loc) && !weapon_source_mob)
+		var/mob/M = loc
+		weapon_source_mob = M
+	var/datum/cause_data/cause_data = create_cause_data(happened, weapon_source_mob, bullet_source)
+	weapon_cause_data = cause_data
+	firer = cause_data?.resolve_mob()
 
 /obj/item/projectile/ex_act()
-	return FALSE //We do not want anything to delete these, simply to make sure that all the bullet references are not runtiming. Otherwise, constantly need to check if the bullet exists.
+	if(fire_ready)
+		return FALSE //We do not want anything to delete these, simply to make sure that all the bullet references are not runtiming. Otherwise, constantly need to check if the bullet exists.
+	. = ..()
 
-/obj/item/projectile/proc/generate_bullet(datum/ammo/ammo_datum, bonus_damage = 0, special_flags = 0, mob/bullet_generator)
-	ammo = ammo_datum
+/obj/item/projectile/proc/generate_bullet(ammo_datum = null, bullet_generator, bonus_damage = 0, special_flags = NO_FLAGS)
+	if(ammo_datum)
+		ammo = ammo_datum
 	name = ammo.name
 	icon = ammo.icon
 	icon_state = ammo.icon_state
-	damage = ammo.damage + bonus_damage //Mainly for emitters.
+	damage = (ammo.damage + bonus_damage) * (rand(PROJ_VARIANCE_LOW-ammo.damage_var_low, PROJ_VARIANCE_HIGH+ammo.damage_var_high) * PROJ_BASE_DAMAGE_MULT)
 	scatter = ammo.scatter
-	accuracy   += ammo.accuracy
-	accuracy   *= rand(PROJ_VARIANCE_LOW-ammo.accuracy_var_low, PROJ_VARIANCE_HIGH+ammo.accuracy_var_high) * PROJ_BASE_ACCURACY_MULT//Rand only works with integers.
-	damage  *= rand(PROJ_VARIANCE_LOW-ammo.damage_var_low, PROJ_VARIANCE_HIGH+ammo.damage_var_high) * PROJ_BASE_DAMAGE_MULT
+	accuracy = (accuracy + ammo.accuracy) * (rand(PROJ_VARIANCE_LOW-ammo.accuracy_var_low, PROJ_VARIANCE_HIGH+ammo.accuracy_var_high) * PROJ_BASE_ACCURACY_MULT)
 	damage_falloff = ammo.damage_falloff
 	damage_buildup = ammo.damage_buildup
 	hit_effect_color = ammo.hit_effect_color
 	projectile_override_flags = special_flags
+	fire_ready = TRUE
 
-	ammo_datum.on_bullet_generation(src, bullet_generator)
+	ammo.on_bullet_generation(src, bullet_generator)
 
 	// Apply bullet traits from ammo
 	for(var/entry in ammo.traits_to_give)
@@ -149,6 +218,41 @@
 			L = list(entry) + ammo.traits_to_give[entry]
 		// Need to use the proc instead of the wrapper because each entry is a list
 		apply_bullet_trait(L)
+	update_icon()
+
+/obj/item/projectile/attackby(obj/item/I, mob/user)
+	if(fire_ready)
+		return
+	if(istype(I, /obj/item/projectile)) // We have a handful. They don't need to hold it.
+		bullet_make_handful(user, I)
+
+/obj/item/projectile/proc/bullet_make_handful(mob/user, obj/item/projectile/proj)
+	if(proj)
+		var/obj/item/ammo_magazine/handful/new_handful = new ammo.handful_type(src, TRUE, TRUE)
+		new_handful.generate_handful(ammo, caliber, 5)
+		new_handful.generate_ammo(TRUE)
+		user.temp_drop_inv_item(src)
+		user.temp_drop_inv_item(proj)
+		proj.forceMove(new_handful)
+		if(!user.put_in_hands(new_handful))
+			new_handful.forceMove(user.loc)
+		forceMove(new_handful)
+		new_handful.ammo_position++
+		new_handful.current_rounds[new_handful.ammo_position] = proj
+		new_handful.ammo_position++
+		new_handful.current_rounds[new_handful.ammo_position] = src
+		new_handful.update_icon()
+		return new_handful
+	else
+		var/obj/item/ammo_magazine/handful/new_handful = new ammo.handful_type(src, TRUE, TRUE)
+		new_handful.generate_handful(ammo, caliber, 5)
+		new_handful.generate_ammo(TRUE)
+		user.temp_drop_inv_item(src)
+		forceMove(new_handful)
+		new_handful.ammo_position++
+		new_handful.current_rounds[new_handful.ammo_position] = src
+		new_handful.update_icon()
+		return new_handful
 
 /obj/item/projectile/proc/calculate_damage()
 	if(effective_range_min && distance_travelled < effective_range_min)
@@ -158,43 +262,70 @@
 	return damage
 
 // Target, firer, shot from (i.e. the gun), projectile range, projectile speed, original target (who was aimed at, not where projectile is going towards)
-/obj/item/projectile/proc/fire_at(atom/target, atom/F, atom/S, range = 30, speed = 1, atom/original_override)
-	SHOULD_NOT_SLEEP(TRUE)
-	original = original || original_override || target
+/obj/item/projectile/proc/fire_at(atom/target, atom/shooter, atom/source, range, speed, atom/original_override, angle)
+	if(!isnull(speed))
+		projectile_speed = speed
+	if(!original_target)
+		original_target = istype(original_override) ? original_override : target
 	if(!loc)
-		if (!(projectile_flags & PROJECTILE_SHRAPNEL))
-			var/move_turf = get_turf(F)
-			if(move_turf)
-				forceMove(move_turf)
+		if(!(projectile_flags & PROJECTILE_SHRAPNEL))
+			forceMove(get_turf(shooter))
 		else
-			var/move_turf = get_turf(S)
-			if(move_turf)
-				forceMove(move_turf)
-	starting = get_turf(src)
-	if(starting != loc)
-		forceMove(starting) //Put us on the turf, if we're not.
+			forceMove(get_turf(source))
 
-	target_turf = get_turf(target)
-	if(!target_turf || !starting || target_turf == starting) //This shouldn't happen, but it can.
+	//Safety checks.
+	if(QDELETED(target) && !isnum(angle)) //We can work with either a target or an angle, or both, but not without any.
+		stack_trace("fire_at called on a QDELETED target ([target]) with no original_target_turf and a null angle.")
 		qdel(src)
 		return
-	firer = F
+	if(projectile_speed <= 0) //Shouldn't happen without a coder oofing, but if they do, it risks breaking a lot, so better safe than sorry.
+		stack_trace("[src] achieved [projectile_speed] velocity somehow at fire_at. Type: [type]. From: [target]. Shot by: [shooter].")
+		qdel(src)
+		return
 
-	if(F && !(projectile_flags & PROJECTILE_SHRAPNEL))
-		permutated |= F //Don't hit the shooter (firer)
-	else if (S && (projectile_flags & PROJECTILE_SHRAPNEL))
-		permutated |= S
+	if(!isnull(range))
+		ammo.max_range = range
+	if(source)
+		shot_from = source
+	permutated |= src
+	if(!isturf(loc))
+		forceMove(get_turf(src))
+	starting_turf = loc
 
-	permutated |= src //Don't try to hit self.
-	shot_from = S
+	if(target)
+		original_target = target
+		original_target_turf = get_turf(target)
+		if(original_target_turf == loc) //Shooting from and towards the same tile. Why not?
+			distance_travelled++
+			scan_a_turf(loc)
+			invisibility = 100
+			qdel(src)
+			return
 
-	setDir(get_dir(loc, target_turf))
+	apx = ABS_COOR(x) //Set the absolute coordinates. Center of a tile is assumed to be (16,16)
+	apy = ABS_COOR(y)
+
+	if(isnum(angle))
+		dir_angle = angle
+	else
+		if(isliving(target)) //If we clicked on a living mob, use the clicked atom tile's center for maximum accuracy. Else aim for the clicked pixel.
+			dir_angle = round(Get_Pixel_Angle((ABS_COOR(target.x) - apx), (ABS_COOR(target.y) - apy))) //Using absolute pixel coordinates.
+		else
+			dir_angle = round(Get_Pixel_Angle((ABS_COOR_OFFSET(target.x, p_x) - apx), (ABS_COOR_OFFSET(target.y, p_y) - apy)))
+
+	x_offset = round(sin(dir_angle), 0.01)
+	y_offset = round(cos(dir_angle), 0.01)
+
+	setDir(get_dir(loc, original_target_turf))
+
+	apx += pixel_x //Update the absolute pixels with the offset.
+	apy += pixel_y
 
 	var/ammo_flags = ammo.flags_ammo_behavior | projectile_override_flags
-	if(round_statistics && ammo_flags & AMMO_BALLISTIC)
-		round_statistics.total_projectiles_fired++
+	if(SSticker.mode.round_statistics && ammo_flags & AMMO_BALLISTIC)
+		SSticker.mode.round_statistics.total_projectiles_fired++
 		if(ammo.bonus_projectiles_amount)
-			round_statistics.total_projectiles_fired += ammo.bonus_projectiles_amount
+			SSticker.mode.round_statistics.total_projectiles_fired += ammo.bonus_projectiles_amount
 	if(firer && ismob(firer) && weapon_cause_data)
 		var/mob/M = firer
 		M.track_shot(weapon_cause_data.cause_name)
@@ -203,160 +334,259 @@
 	if(ammo.bonus_projectiles_amount && ammo.bonus_projectiles_type)
 		ammo.fire_bonus_projectiles(src)
 
-	path = getline2(starting, target_turf)
-	p_x += Clamp((rand()-0.5)*scatter*3, -8, 8)
-	p_y += Clamp((rand()-0.5)*scatter*3, -8, 8)
-	update_angle(starting, target_turf)
+	var/matrix/rotate = matrix() //Change the bullet angle.
+	rotate.Turn(dir_angle)
+	transform = rotate
 
-	src.speed = speed
-	// Randomize speed by a small factor to help bullet animations look okay
-	// Otherwise you get a   s   t   r   e   a   m of warping bullets in same positions
-	src.speed *= (1 + (rand()-0.5) * 0.30) // 15.0% variance either way
-	src.speed = Clamp(src.speed, 0.1, 100) // Safety to avoid loop hazards
+	if(shooter && !(projectile_flags & PROJECTILE_SHRAPNEL))
+		firer = shooter
+		permutated |= firer //Don't hit the shooter
 
-	// Also give it some headstart, flying it now ahead of tick
-	var/delta_time = world.tick_lag * rand() * 0.4
-	if(process(delta_time))
-		return // Hit something already?!
-	time_carry -= delta_time // Substract headstart from next tick
+	var/first_move = min(1, 1)
+	var/first_moves = projectile_speed
+	if(projectile_batch_move(first_move)) //Hit on first movement.
+		invisibility = 100
+		qdel(src)
+		return
+	first_moves -= first_move
+	if(first_moves && projectile_batch_move(first_moves)) //First movement batch happens on the same tick.
+		invisibility = 100
+		qdel(src)
+		return
 
-	// Finally queue it to Subsystem for further processing
+	set_light_on(TRUE)
+
 	SSprojectiles.queue_projectile(src)
 
-/obj/item/projectile/proc/update_angle(turf/source_turf, turf/aim_turf)
-	p_x = Clamp(p_x, -16, 16)
-	p_y = Clamp(p_y, -16, 16)
+/obj/item/projectile/process()
+	if(QDELETED(src))
+		return PROCESS_KILL
 
-	if(source_turf != vis_source)
-		vis_travelled = 0
-	vis_source = source_turf
+	var/required_moves = required_moves_calc()
+	if(!required_moves)
+		return //Slowpoke. Maybe next tick.
 
-	angle = 0 // Stolen from Get_Angle() basically
-	var/dx = p_x + aim_turf.x * 32 - source_turf.x * 32 // todo account for firer offsets
-	var/dy = p_y + aim_turf.y * 32 - source_turf.y * 32
-	if(!dy)
-		if(dx >= 0)
-			angle = 90
-		else
-			angle = 280
-	else
-		angle = arctan(dx/dy)
-		if(dy < 0)
-			angle += 180
-		else if(dx < 0)
-			angle += 360
+	if(projectile_batch_move(required_moves))
+		qdel(src)
+		return PROCESS_KILL
 
-	var/matrix/rotate = matrix() //Change the bullet angle.
-	rotate.Turn(angle)
-	apply_transform(rotate)
 
-/obj/item/projectile/process(delta_time)
-	. = PROC_RETURN_SLEEP
+/obj/item/projectile/proc/required_moves_calc()
+	var/elapsed_time_deciseconds = world.time - last_projectile_move
+	if(!elapsed_time_deciseconds)
+		return 0 //No moves needed if not a tick has passed.
+	var/required_moves = (elapsed_time_deciseconds * projectile_speed) + stored_moves
+	stored_moves = 0
+	var/modulus_excess = MODULUS(required_moves, 1) //Fractions of a move.
+	if(modulus_excess)
+		required_moves -= modulus_excess
+		stored_moves += modulus_excess
 
-	// Keep going as long as we got speed and time
-	while(speed > 0 && (speed * ((delta_time + time_carry)/10) >= 1))
-		time_carry -= 1/speed*10
-		if(time_carry < 0)
-			delta_time += time_carry
-			time_carry = 0
-		if(fly())
-			qdel(src)
-			return PROCESS_KILL
+	if(required_moves > SSprojectiles.global_max_tick_moves)
+		stored_moves += required_moves - SSprojectiles.global_max_tick_moves
+		required_moves = SSprojectiles.global_max_tick_moves
 
-	time_carry += delta_time
-	return FALSE
+	return required_moves
 
-/// Flies the projectile forward one single turf
-/obj/item/projectile/proc/fly()
-	SHOULD_NOT_SLEEP(TRUE)
-	PRIVATE_PROC(TRUE)
-	var/turf/current_turf = get_turf(src)
-	var/turf/next_turf = popleft(path)
+/*
+CEILING() is used on some contexts:
+1) For absolute pixel locations to tile conversions, as the coordinates are read from left-to-right (from low to high numbers) and each tile occupies 32 pixels.
+So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we are on the 33th (to 64th) we are then on the second tile.
+2) For number of pixel moves, as it is counting number of full (pixel) moves required.
+*/
+#define PROJ_ABS_PIXEL_TO_TURF(abspx, abspy, zlevel) (locate(CEILING((abspx / 32), 1), CEILING((abspy / 32), 1), zlevel))
+#define PROJ_ANIMATION_SPEED ((end_of_movement/projectile_speed) || (required_moves/projectile_speed)) //Movements made times deciseconds per movement.
 
-	// Terminal projectiles (about to hit) are handled first for retarget logic
-	if((speed * world.tick_lag) >= get_dist(current_turf, target_turf))
-		SEND_SIGNAL(src, COMSIG_BULLET_TERMINAL)
+/obj/item/projectile/proc/projectile_batch_move(required_moves)
+	var/end_of_movement = 0 //In batch moves this loop, only if the projectile stopped.
+	var/turf/last_processed_turf = loc
+	var/x_pixel_dist_travelled = 0
+	var/y_pixel_dist_travelled = 0
+	for(var/i in 1 to required_moves)
+		distance_travelled++
+		//Here we take the projectile's absolute pixel coordinate + the travelled distance and use PROJ_ABS_PIXEL_TO_TURF to first convert it into tile coordinates, and then use those to locate the turf.
+		var/turf/next_turf = PROJ_ABS_PIXEL_TO_TURF((apx + x_pixel_dist_travelled + (32 * x_offset)), (apy + y_pixel_dist_travelled + (32 * y_offset)), z)
+		if(!next_turf) //Map limit.
+			end_of_movement = (i-- || 1)
+			break
+		if(next_turf == last_processed_turf)
+			x_pixel_dist_travelled += 32 * x_offset
+			y_pixel_dist_travelled += 32 * y_offset
+			continue //Pixel movement only, didn't manage to change turf.
+		var/movement_dir = get_dir(last_processed_turf, next_turf)
+		if(dir != movement_dir)
+			setDir(movement_dir)
 
-	// Check we can reach the turf at all based on pathed grid
-	var/proj_dir = get_dir(current_turf, next_turf)
-	if((proj_dir & (proj_dir - 1)) && !current_turf.Adjacent(next_turf))
-		ammo.on_hit_turf(current_turf, src)
-		current_turf.bullet_act(src)
+		if(ISDIAGONALDIR(movement_dir)) //Diagonal case. We need to check the turf to cross to get there.
+			if(!x_offset || !y_offset) //Unless a coder screws up this won't happen. Buf if they do it will cause an infinite processing loop due to division by zero, so better safe than sorry.
+				stack_trace("projectile_batch_move called with diagonal movement_dir and offset-lacking. x_offset: [x_offset], y_offset: [y_offset].")
+				return TRUE
+			var/turf/turf_crossed_by
+			var/pixel_moves_until_crossing_x_border
+			var/pixel_moves_until_crossing_y_border
+			var/border_escaped_through
+			switch(movement_dir)
+				if(NORTHEAST)
+					pixel_moves_until_crossing_x_border = CEILING(((33 - ABS_PIXEL_TO_REL(apx + x_pixel_dist_travelled)) / x_offset), 1)
+					pixel_moves_until_crossing_y_border = CEILING(((33 - ABS_PIXEL_TO_REL(apy + y_pixel_dist_travelled)) / y_offset), 1)
+					if(pixel_moves_until_crossing_y_border < pixel_moves_until_crossing_x_border) //Escapes vertically.
+						border_escaped_through = NORTH
+					else if(pixel_moves_until_crossing_x_border < pixel_moves_until_crossing_y_border) //Escapes horizontally.
+						border_escaped_through = EAST
+					else //Escapes both borders at the same time, perfectly diagonal.
+						border_escaped_through = pick(NORTH, EAST) //So choose at random to preserve behavior of no purely diagonal movements allowed.
+				if(SOUTHEAST)
+					pixel_moves_until_crossing_x_border = CEILING(((33 - ABS_PIXEL_TO_REL(apx + x_pixel_dist_travelled)) / x_offset), 1)
+					pixel_moves_until_crossing_y_border = CEILING(((0 - ABS_PIXEL_TO_REL(apy + y_pixel_dist_travelled)) / y_offset), 1)
+					if(pixel_moves_until_crossing_y_border < pixel_moves_until_crossing_x_border)
+						border_escaped_through = SOUTH
+					else if(pixel_moves_until_crossing_x_border < pixel_moves_until_crossing_y_border)
+						border_escaped_through = EAST
+					else
+						border_escaped_through = pick(SOUTH, EAST)
+				if(SOUTHWEST)
+					pixel_moves_until_crossing_x_border = CEILING(((0 - ABS_PIXEL_TO_REL(apx + x_pixel_dist_travelled)) / x_offset), 1)
+					pixel_moves_until_crossing_y_border = CEILING(((0 - ABS_PIXEL_TO_REL(apy + y_pixel_dist_travelled)) / y_offset), 1)
+					if(pixel_moves_until_crossing_y_border < pixel_moves_until_crossing_x_border)
+						border_escaped_through = SOUTH
+					else if(pixel_moves_until_crossing_x_border < pixel_moves_until_crossing_y_border)
+						border_escaped_through = WEST
+					else
+						border_escaped_through = pick(SOUTH, WEST)
+				if(NORTHWEST)
+					pixel_moves_until_crossing_x_border = CEILING(((0 - ABS_PIXEL_TO_REL(apx + x_pixel_dist_travelled)) / x_offset), 1)
+					pixel_moves_until_crossing_y_border = CEILING(((33 - ABS_PIXEL_TO_REL(apy + y_pixel_dist_travelled)) / y_offset), 1)
+					if(pixel_moves_until_crossing_y_border < pixel_moves_until_crossing_x_border)
+						border_escaped_through = NORTH
+					else if(pixel_moves_until_crossing_x_border < pixel_moves_until_crossing_y_border)
+						border_escaped_through = WEST
+					else
+						border_escaped_through = pick(NORTH, WEST)
+			turf_crossed_by = get_step(last_processed_turf, border_escaped_through)
+			for(var/j in uncross_scheduled)
+				var/atom/movable/thing_to_uncross = j
+				if(QDELETED(thing_to_uncross))
+					continue
+				if(!thing_to_uncross.projectile_hit(src, REVERSE_DIR(border_escaped_through), TRUE))
+					continue
+				thing_to_uncross.do_projectile_hit(src)
+				end_of_movement = i
+				break
+			uncross_scheduled.len = 0
+			if(end_of_movement)
+				if(border_escaped_through & (NORTH|SOUTH))
+					x_pixel_dist_travelled += --pixel_moves_until_crossing_x_border * x_offset
+					y_pixel_dist_travelled += --pixel_moves_until_crossing_x_border * y_offset
+				else
+					x_pixel_dist_travelled += pixel_moves_until_crossing_y_border * x_offset
+					y_pixel_dist_travelled += pixel_moves_until_crossing_y_border * y_offset
+				break
+			if(scan_a_turf(turf_crossed_by, border_escaped_through))
+				last_processed_turf = turf_crossed_by
+				if(border_escaped_through & (NORTH|SOUTH)) //Escapes through X.
+					x_pixel_dist_travelled += pixel_moves_until_crossing_x_border * x_offset
+					y_pixel_dist_travelled += pixel_moves_until_crossing_x_border * y_offset
+				else //Escapes through Y.
+					x_pixel_dist_travelled += pixel_moves_until_crossing_y_border * x_offset
+					y_pixel_dist_travelled += pixel_moves_until_crossing_y_border * y_offset
+				end_of_movement = i
+				break
+			if(turf_crossed_by == original_target_turf && ammo.flags_ammo_behavior & AMMO_EXPLOSIVE)
+				last_processed_turf = turf_crossed_by
+				ammo.on_hit_turf(turf_crossed_by, src)
+				if(border_escaped_through & (NORTH|SOUTH))
+					x_pixel_dist_travelled += pixel_moves_until_crossing_x_border * x_offset
+					y_pixel_dist_travelled += pixel_moves_until_crossing_x_border * y_offset
+				else
+					x_pixel_dist_travelled += pixel_moves_until_crossing_y_border * x_offset
+					y_pixel_dist_travelled += pixel_moves_until_crossing_y_border * y_offset
+				end_of_movement = i
+				break
+			movement_dir -= border_escaped_through //Next scan should come from the other component cardinals direction.
+			for(var/j in uncross_scheduled) //We are leaving turf_crossed_by now.
+				var/atom/movable/thing_to_uncross = j
+				if(QDELETED(thing_to_uncross))
+					continue
+				if(!thing_to_uncross.projectile_hit(src, REVERSE_DIR(movement_dir), TRUE))
+					continue
+				thing_to_uncross.do_projectile_hit(src)
+				end_of_movement = i
+				break
+			uncross_scheduled.len = 0
+			if(end_of_movement)	//This is a bit overkill to deliver the right animation, but oh well.
+				if(border_escaped_through & (NORTH|SOUTH)) //Inverse logic than before. We now want to run the longer distance now.
+					x_pixel_dist_travelled += pixel_moves_until_crossing_y_border * x_offset
+					y_pixel_dist_travelled += pixel_moves_until_crossing_y_border * y_offset
+				else
+					x_pixel_dist_travelled += pixel_moves_until_crossing_x_border * x_offset
+					y_pixel_dist_travelled += pixel_moves_until_crossing_x_border * y_offset
+				break
+		if(length(uncross_scheduled)) //Time to exit the last turf entered, if the diagonal movement didn't handle it already.
+			for(var/j in uncross_scheduled)
+				var/atom/movable/thing_to_uncross = j
+				if(QDELETED(thing_to_uncross))
+					continue
+				if(!thing_to_uncross.projectile_hit(src, REVERSE_DIR(movement_dir), TRUE))
+					continue //We act as if we were entering the tile through the opposite direction, to check for barricade blockage.
+				thing_to_uncross.do_projectile_hit(src)
+				end_of_movement = i
+				break
+			uncross_scheduled.len = 0
+			if(end_of_movement)
+				break
+		x_pixel_dist_travelled += 32 * x_offset
+		y_pixel_dist_travelled += 32 * y_offset
+		last_processed_turf = next_turf
+		if(scan_a_turf(next_turf, movement_dir))
+			end_of_movement = i
+			break
+		if(next_turf == original_target_turf && ammo.flags_ammo_behavior & AMMO_EXPLOSIVE)
+			ammo.on_hit_turf(next_turf, src)
+			end_of_movement = i
+			break
+		if(distance_travelled >= ammo.max_range)
+			ammo.do_at_max_range(src)
+			end_of_movement = i
+			break
+
+	if(end_of_movement && last_processed_turf == loc)
+		last_projectile_move = world.time
 		return TRUE
 
-	// Check for hits that would occur when moving to turf, such as a blocking cade
-	if(scan_a_turf(next_turf, proj_dir))
+	apx += x_pixel_dist_travelled
+	apy += y_pixel_dist_travelled
+
+
+	var/new_pixel_x = ABS_PIXEL_TO_REL(apx) //The final pixel offset after this movement. Float value.
+	var/new_pixel_y = ABS_PIXEL_TO_REL(apy)
+
+	if(projectile_speed > 5) //At this speed the animation barely shows. Changing the vars through animation alone takes almost 5 times the CPU than setting them directly. No need for that if there's nothing to show for it.
+		pixel_x = round(new_pixel_x, 1) - 16
+		pixel_y = round(new_pixel_y, 1) - 16
+		forceMove(last_processed_turf)
+	else //Pixel shifts during the animation, which happens after the fact has happened. Light travels slowly here...
+		var/old_pixel_x = new_pixel_x - x_pixel_dist_travelled //The pixel offset relative to the new position of where we came from. Float value.
+		var/old_pixel_y = new_pixel_y - y_pixel_dist_travelled
+		pixel_x = round(old_pixel_x, 1) - 16 //Projectile's sprite is displaced back to where it came from through relative pixel offset. Integer value.
+		pixel_y = round(old_pixel_y, 1) - 16 //We substract 16 because this value should range from 1 to 32, but pixel offset usually ranges within the same tile from -15 to 16 (depending on the sprite).
+		if(last_processed_turf != loc)
+			forceMove(last_processed_turf)
+		animate(src, pixel_x = (round(new_pixel_x, 1) - 16), pixel_y = (round(new_pixel_y, 1) - 16), time = PROJ_ANIMATION_SPEED, flags = ANIMATION_END_NOW) //Then we represent the movement through the animation, which updates the position to the new and correct one.
+
+	last_projectile_move = world.time
+	if(end_of_movement) //We hit something ...probably!
 		return TRUE
+	return FALSE //No hits ...yet!
 
-	// Actually move
-	forceMove(next_turf)
-	distance_travelled++
-	vis_travelled++
-	if(distance_travelled > 1)
-		invisibility = 0
-
-	// Check we're still flying - in the highly unlikely but apparently possible case
-	// we hit something through forceMove callbacks that we didn't pick up in scan_a_turf
-	if(!speed)
-		return TRUE
-
-	// Process on move effects
-	if(distance_travelled == round(ammo.max_range / 2))
-		ammo.do_at_half_range(src)
-	if(distance_travelled >= ammo.max_range)
-		ammo.do_at_max_range(src)
-		speed = 0
-		return TRUE
-
-	// Adjust computed path if we just missed our intended target
-	if(!length(path))
-		var/turf/aim_turf = get_angle_target_turf(src, angle, distance_travelled * 2 + 1)
-		if(!aim_turf || aim_turf == loc) // Map border safety
-			speed = 0
-			return TRUE
-		p_x *= 2
-		p_y *= 2
-		retarget(aim_turf, keep_angle = TRUE)
-
-	// Nowe we update visual offset by tracing the bullet predicted location against real one
-	//
-	// Travelled real distance so far
-	var/dist = vis_travelled * 32 + speed * (time_carry*10)
-	// Compute where we should be
-	var/vis_x = vis_source.x * 32 + sin(angle) * dist
-	var/vis_y = vis_source.y * 32 + cos(angle) * dist
-	// Get the difference with where we actually are
-	var/dx = vis_x - loc.x * 32
-	var/dy = vis_y - loc.y * 32
-	// Clamp and set this as pixel offsets
-	pixel_x = Clamp(dx, -16, 16)
-	pixel_y = Clamp(dy, -16, 16)
-
-/obj/item/projectile/proc/retarget(atom/new_target, keep_angle = FALSE)
-	var/turf/current_turf = get_turf(src)
-	path = getline2(current_turf, new_target)
-	path.Cut(1, 2) // remove the turf we're already on
-	var/atom/source = keep_angle ? original : current_turf
-	update_angle(source, new_target)
+#undef PROJ_ABS_PIXEL_TO_TURF
+#undef PROJ_ANIMATION_SPEED
 
 /obj/item/projectile/proc/scan_a_turf(turf/T, proj_dir)
-	. = TRUE // Sleep safeguard: stop the bullet
-
-	//Not actually flying? Should not be hitting anything.
-	if(!speed)
-		return FALSE
-	// Not a turf, keep moving
-	if(!istype(T))
-		return FALSE
-
-	if(T.density) // Handle wall hit
+	if(T && T.density) //Handle wall hit.
 		var/ammo_flags = ammo.flags_ammo_behavior | projectile_override_flags
 
 		if(SEND_SIGNAL(src, COMSIG_BULLET_PRE_HANDLE_TURF, T) & COMPONENT_BULLET_PASS_THROUGH)
 			return FALSE
-
-		if(T.bullet_act(src))
-			return TRUE
 
 		// If the ammo should hit the surface of the target and the next turf is dense
 		// The current turf is the "surface" of the target
@@ -369,7 +599,17 @@
 		if(SEND_SIGNAL(src, COMSIG_BULLET_POST_HANDLE_TURF, T) & COMPONENT_BULLET_PASS_THROUGH)
 			return FALSE
 
+		ammo.on_hit_turf(T, src)
+		T.bullet_act(src)
 		return TRUE
+
+	if(shot_from)
+		switch(SEND_SIGNAL(shot_from, COMSIG_PROJ_SCANTURF, T))
+			if(COMPONENT_PROJ_SCANTURF_TURFCLEAR)
+				return FALSE
+			if(COMPONENT_PROJ_SCANTURF_TARGETFOUND)
+				original_target.do_projectile_hit(src)
+				return TRUE
 
 	// Firer's turf, keep moving
 	if(firer && T == firer.loc && !(projectile_flags & PROJECTILE_SHRAPNEL))
@@ -379,14 +619,55 @@
 	var/hit_turf = FALSE
 	// Explosive ammo always explodes on the turf of the clicked target
 	// So does ammo that's flagged to always hit the target
-	if(((ammo_flags & AMMO_EXPLOSIVE) || (ammo_flags & AMMO_HITS_TARGET_TURF)) && T == target_turf)
+	if(((ammo_flags & AMMO_EXPLOSIVE) || (ammo_flags & AMMO_HITS_TARGET_TURF)) && T == original_target_turf)
 		hit_turf = TRUE
 
-	for(var/atom/movable/clone/C in T) //Handle clones if there are any
-		if(isobj(C.mstr) && handle_object(C.mstr))
+	if(ammo_flags & AMMO_SCANS_NEARBY && proj_dir)
+		//this thing scans depending on dir
+		var/cardinal_dir = get_perpen_dir(proj_dir)
+		if(!cardinal_dir)
+			var/d1 = proj_dir&(proj_dir-1)		// eg west		(1+8)&(8) = 8
+			var/d2 = proj_dir - d1			// eg north		(1+8) - 8 = 1
+			cardinal_dir = list(d1,d2)
+
+		var/remote_detonation = 0
+		var/kill_proj = 0
+
+		for(var/ddir in cardinal_dir)
+			var/dloc = get_step(T, ddir)
+			var/turf/dturf = get_turf(dloc)
+			for(var/atom/movable/dA in dturf)
+				if(!isliving(dA))
+					continue
+				var/mob/living/dL = dA
+				if(dL.is_dead())
+					continue
+				if(SEND_SIGNAL(src, COMSIG_BULLET_CHECK_MOB_SKIPPING, dL) & COMPONENT_SKIP_MOB\
+					|| runtime_iff_group && dL.ally(runtime_iff_group)\
+				)
+					continue
+
+				if(ammo_flags & AMMO_SKIPS_ALIENS && isxeno(dL))
+					var/mob/living/carbon/xenomorph/X = dL
+					var/mob/living/carbon/xenomorph/F = firer
+
+					if(!istype(F))
+						continue
+					if(F.can_not_harm(X))
+						continue
+				remote_detonation = 1
+				kill_proj = ammo.on_near_target(T, src)
+				break
+			if(remote_detonation)
+				break
+
+		if(kill_proj)
 			return TRUE
-		if(isliving(C.mstr) && handle_mob(C.mstr))
-			return TRUE
+
+	// Empty turf, keep moving
+	if(!T || (!T.contents.len && !hit_turf))
+		return FALSE
+
 	for(var/obj/O in T) //check objects before checking mobs, so that barricades protect
 		if(handle_object(O))
 			return TRUE
@@ -412,9 +693,9 @@
 		var/ammo_flags = ammo.flags_ammo_behavior | projectile_override_flags
 
 		// If we are a xeno shooting something
-		if (istype(ammo, /datum/ammo/xeno) && isxeno(firer) && ammo.apply_delegate)
+		if(istype(ammo, /datum/ammo/xeno) && isxeno(firer) && ammo.apply_delegate)
 			var/mob/living/carbon/xenomorph/X = firer
-			if (X.behavior_delegate)
+			if(X.behavior_delegate)
 				var/datum/behavior_delegate/MD = X.behavior_delegate
 				MD.ranged_attack_additional_effects_target(O)
 				MD.ranged_attack_additional_effects_self(O)
@@ -448,13 +729,13 @@
 	if((ammo.flags_ammo_behavior & AMMO_XENO) && L.stat == DEAD) //xeno ammo is NEVER meant to hit or damage dead people. If you want to add a xeno ammo that DOES then make a new flag that makes it ignore this check.
 		return FALSE
 
-	var/hit_chance = L.get_projectile_hit_chance(src)
+	var/hit_chance = max(L.get_projectile_hit_chance(src), 0)
 
 	if(hit_chance) // Calculated from combination of both ammo accuracy and gun accuracy
 
-		var/hit_roll = rand(1,100)
+		var/hit_roll = rand(1, 100)
 
-		if(original != L || hit_roll > hit_chance-base_miss_chance[def_zone]-20) // If hit roll is high or the firer wasn't aiming at this mob, we still hit but now we might hit the wrong body part
+		if(original_target != L || hit_roll > hit_chance-base_miss_chance[def_zone])	// If hit roll is high or the firer wasn't aiming at this mob, we still hit but now we might hit the wrong body part
 			def_zone = rand_zone()
 		else
 			SEND_SIGNAL(firer, COMSIG_BULLET_DIRECT_HIT, L)
@@ -482,23 +763,24 @@
 				ammo.on_hit_mob(L,src, firer)
 
 				// If we are a xeno shooting something
-				if (istype(ammo, /datum/ammo/xeno) && isxeno(firer) && L.stat != DEAD && ammo.apply_delegate)
+				if(istype(ammo, /datum/ammo/xeno) && isxeno(firer) && L.stat != DEAD && ammo.apply_delegate)
 					var/mob/living/carbon/xenomorph/X = firer
-					if (X.behavior_delegate)
+					if(X.behavior_delegate)
 						var/datum/behavior_delegate/MD = X.behavior_delegate
 						MD.ranged_attack_additional_effects_target(L)
 						MD.ranged_attack_additional_effects_self(L)
 
 				// If the thing we're hitting is a Xeno
-				if (istype(L, /mob/living/carbon/xenomorph))
+				if(istype(L, /mob/living/carbon/xenomorph))
 					var/mob/living/carbon/xenomorph/X = L
-					if (X.behavior_delegate)
+					if(X.behavior_delegate)
 						X.behavior_delegate.on_hitby_projectile(ammo)
 
 			. = TRUE
 		else if(!L.lying)
 			animatation_displace_reset(L)
-			if(ammo.sound_miss) playsound_client(L.client, ammo.sound_miss, get_turf(L), 75, TRUE)
+			if(ammo.sound_miss)
+				playsound_client(L.client, ammo.sound_miss, get_turf(L), 75, TRUE)
 			L.visible_message(SPAN_AVOIDHARM("[src] misses [L]!"),
 				SPAN_AVOIDHARM("[src] narrowly misses you!"), null, 4, CHAT_TYPE_TAKING_HIT)
 			log_attack("[src] narrowly missed [key_name(L)]")
@@ -508,10 +790,9 @@
 				L.attack_log += "[time_stamp()]\] [src], fired by [key_name(firer)], narrowly missed [key_name(L)]"
 				shotby.attack_log += "[time_stamp()]\] [src], fired by [key_name(shotby)], narrowly missed [key_name(L)]"
 
-
-		#if DEBUG_HIT_CHANCE
-		to_world(SPAN_DEBUG("([L]) Missed."))
-		#endif
+			#if DEBUG_HIT_CHANCE
+			to_world(SPAN_DEBUG("([L]) Missed."))
+			#endif
 
 	if(SEND_SIGNAL(src, COMSIG_BULLET_POST_HANDLE_MOB, L, .) & COMPONENT_BULLET_PASS_THROUGH)
 		return FALSE
@@ -523,6 +804,12 @@
 				// \\
 //----------------------------------------------------------
 
+//returns probability for the projectile to hit us.
+/atom/proc/projectile_hit(obj/item/projectile/proj, cardinal_move, uncrossing)
+	return FALSE
+
+/atom/proc/do_projectile_hit(obj/item/projectile/proj)
+	return
 
 /obj/item/projectile/proc/get_effective_accuracy()
 	#if DEBUG_HIT_CHANCE
@@ -552,7 +839,7 @@
 	return effective_accuracy
 
 //objects use get_projectile_hit_boolean unlike mobs, which use get_projectile_hit_chance
-/obj/proc/get_projectile_hit_boolean(obj/item/projectile/P)
+/obj/proc/get_projectile_hit_boolean(obj/item/projectile/projectile)
 	if(!density)
 		return FALSE
 
@@ -562,33 +849,32 @@
 	return TRUE
 
 //Used by machines and structures to calculate shooting past cover
-/obj/proc/calculate_cover_hit_boolean(obj/item/projectile/P, distance = 0, cade_direction_correct = FALSE)
-	if(istype(P.shot_from, /obj/item/hardpoint)) //anything shot from a tank gets a bonus to bypassing cover
+/obj/proc/calculate_cover_hit_boolean(obj/item/projectile/proj, distance = 0, cade_direction_correct = FALSE)
+	if(istype(proj.shot_from, /obj/item/hardpoint)) //anything shot from a tank gets a bonus to bypassing cover
 		distance -= 3
 
 	if(distance < 1 || (distance > 3 && cade_direction_correct))
 		return FALSE
 
 	//an object's "projectile_coverage" var indicates the maximum probability of blocking a projectile
-	var/effective_accuracy = P.get_effective_accuracy()
+	var/effective_accuracy = proj.get_effective_accuracy()
 	var/distance_limit = 6 //number of tiles needed to max out block probability
 	var/accuracy_factor = 50 //degree to which accuracy affects probability   (if accuracy is 100, probability is unaffected. Lower accuracies will increase block chance)
 
-	var/hitchance = min(projectile_coverage, (projectile_coverage * distance/distance_limit) + accuracy_factor * (1 - effective_accuracy/100))
+	var/hitchance = min(projectile_coverage, (projectile_coverage * distance/distance_limit) + accuracy_factor * (effective_accuracy/100))
 
 	#if DEBUG_HIT_CHANCE
-	to_world(SPAN_DEBUG("([name] as cover) Distance travelled: [P.distance_travelled]  |  Effective accuracy: [effective_accuracy]  |  Hit chance: [hitchance]"))
+	to_world(SPAN_DEBUG("([name] as cover) Distance travelled: [proj.distance_travelled]  |  Effective accuracy: [effective_accuracy]  |  Hit chance: [hitchance]"))
 	#endif
 
 	return prob(hitchance)
 
-/obj/structure/machinery/get_projectile_hit_boolean(obj/item/projectile/P)
-
-	if(src == P.original && layer > ATMOS_DEVICE_LAYER) //clicking on the object itself hits the object
-		var/hitchance = P.get_effective_accuracy()
+/obj/structure/machinery/get_projectile_hit_boolean(obj/item/projectile/proj)
+	if(src == proj.original_target && layer > ATMOS_DEVICE_LAYER) //clicking on the object itself hits the object
+		var/hitchance = proj.get_effective_accuracy()
 
 		#if DEBUG_HIT_CHANCE
-		to_world(SPAN_DEBUG("([name]) Distance travelled: [P.distance_travelled]  |  Effective accuracy: [hitchance]  |  Hit chance: [hitchance]"))
+		to_world(SPAN_DEBUG("([name]) Distance travelled: [proj.distance_travelled]  |  Effective accuracy: [hitchance]  |  Hit chance: [hitchance]"))
 		#endif
 
 		if(prob(hitchance))
@@ -602,34 +888,34 @@
 
 	if(!throwpass)
 		return TRUE
-	var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
+	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
 	if(ammo_flags & AMMO_IGNORE_COVER)
 		return FALSE
 
-	var/distance = P.distance_travelled
+	var/distance = proj.distance_travelled
 
 	if(flags_atom & ON_BORDER) //windoors
-		if(P.dir & reverse_direction(dir))
+		if(proj.dir & reverse_direction(dir))
 			distance-- //no bias towards "inner" side
 			if(ammo_flags & AMMO_STOPPED_BY_COVER)
 				return TRUE
-		else if( !(P.dir & dir) )
+		else if( !(proj.dir & dir) )
 			return FALSE //no effect if bullet direction is perpendicular to barricade
 	else
 		distance--
 
-	return calculate_cover_hit_boolean(P, distance)
+	return calculate_cover_hit_boolean(proj, distance)
 
 
-/obj/structure/get_projectile_hit_boolean(obj/item/projectile/P)
-	if(src == P.original && layer > ATMOS_DEVICE_LAYER) //clicking on the object itself hits the object
-		var/hitchance = P.get_effective_accuracy()
+/obj/structure/get_projectile_hit_boolean(obj/item/projectile/proj)
+	if(src == proj.original_target && layer > ATMOS_DEVICE_LAYER) //clicking on the object itself hits the object
+		var/hitchance = proj.get_effective_accuracy()
 
 		#if DEBUG_HIT_CHANCE
-		to_world(SPAN_DEBUG("([name]) Distance travelled: [P.distance_travelled]  |  Effective accuracy: [hitchance]  |  Hit chance: [hitchance]"))
+		to_world(SPAN_DEBUG("([name]) Distance travelled: [proj.distance_travelled]  |  Effective accuracy: [hitchance]  |  Hit chance: [hitchance]"))
 		#endif
 
-		if( prob(hitchance) )
+		if(prob(hitchance))
 			return TRUE
 
 	if(!density)
@@ -642,37 +928,39 @@
 		return TRUE
 
 	//At this point, all that's left is window frames, tables, and barricades
-	var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
-	if(ammo_flags & AMMO_IGNORE_COVER && src != P.original)
+	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
+	if(ammo_flags & AMMO_IGNORE_COVER && src != proj.original_target)
 		return FALSE
 
-	var/distance = P.distance_travelled
+	var/distance = proj.distance_travelled
 
 	var/cade_direction_correct = TRUE
 	if(flags_atom & ON_BORDER) //barricades, flipped tables
-		if(P.dir & reverse_direction(dir))
+		if(proj.dir & reverse_direction(dir))
 			if(ammo_flags & AMMO_STOPPED_BY_COVER)
 				return TRUE
 			distance-- //no bias towards "inner" side
 			cade_direction_correct = FALSE
-		else if(!(P.dir & dir))
+		else if(!(proj.dir & dir))
 			return FALSE //no effect if bullet direction is perpendicular to barricade
 
 	else
 		distance--
 		if(climbable)
-			for(var/obj/structure/S in get_turf(P))
-				if(S && S.climbable && !(S.flags_atom & ON_BORDER)) //if a projectile is coming from a window frame or table, it's guaranteed to pass the next window frame/table
+			for(var/obj/structure/S in get_turf(proj))
+				if(S && S.climbable && !(S.flags_atom & ON_BORDER)) //if a proj is coming from a window frame or table, it's guaranteed to pass the next window frame/table
 					return FALSE
-	return calculate_cover_hit_boolean(P, distance, cade_direction_correct)
+	return calculate_cover_hit_boolean(proj, distance, cade_direction_correct)
 
+/obj/item/do_projectile_hit(obj/item/projectile/proj)
+	proj.ammo.on_hit_obj(src, proj)
+	if(QDELETED(src)) //on_hit_obj could delete the object
+		return
+	bullet_act(proj)
 
-/obj/item/get_projectile_hit_boolean(obj/item/projectile/P)
-
-	if(P && src == P.original) //clicking on the object itself. Code copied from mob get_projectile_hit_chance
-
-		var/hitchance = P.get_effective_accuracy()
-
+/obj/item/get_projectile_hit_boolean(obj/item/projectile/proj)
+	if(proj && src == proj.original_target) //clicking on the object itself. Code copied from mob get_projectile_hit_chance
+		var/hitchance = proj.get_effective_accuracy()
 		switch(w_class) //smaller items are harder to hit
 			if(1)
 				hitchance -= 50
@@ -684,10 +972,10 @@
 				hitchance -= 10
 
 		#if DEBUG_HIT_CHANCE
-		to_world(SPAN_DEBUG("([name]) Distance travelled: [P.distance_travelled]  |  Effective accuracy: [hitchance]  |  Hit chance: [hitchance]"))
+		to_world(SPAN_DEBUG("([name]) Distance travelled: [proj.distance_travelled]  |  Effective accuracy: [hitchance]  |  Hit chance: [hitchance]"))
 		#endif
 
-		if( prob(hitchance) )
+		if(prob(hitchance))
 			return TRUE
 
 	if(!density)
@@ -699,16 +987,15 @@
 	return TRUE
 
 
-/obj/vehicle/get_projectile_hit_boolean(obj/item/projectile/P)
-
-	if(src == P.original) //clicking on the object itself hits the object
-		var/hitchance = P.get_effective_accuracy()
+/obj/vehicle/get_projectile_hit_boolean(obj/item/projectile/proj)
+	if(src == proj.original_target) //clicking on the object itself hits the object
+		var/hitchance = proj.get_effective_accuracy()
 
 		#if DEBUG_HIT_CHANCE
-		to_world(SPAN_DEBUG("([P.name]) Distance travelled: [P.distance_travelled]  |  Effective accuracy: [hitchance]  |  Hit chance: [hitchance]"))
+		to_world(SPAN_DEBUG("([proj.name]) Distance travelled: [proj.distance_travelled]  |  Effective accuracy: [hitchance]  |  Hit chance: [hitchance]"))
 		#endif
 
-		if( prob(hitchance) )
+		if(prob(hitchance))
 			return TRUE
 
 	if(!density)
@@ -720,57 +1007,77 @@
 	return TRUE
 
 
-/obj/structure/window/get_projectile_hit_boolean(obj/item/projectile/P)
-	var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
+/obj/structure/window/get_projectile_hit_boolean(obj/item/projectile/proj)
+	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
 	if(ammo_flags & AMMO_ENERGY)
 		return FALSE
-	else if(!(flags_atom & ON_BORDER) || (P.dir & dir) || (P.dir & reverse_direction(dir)))
+	else if(!(flags_atom & ON_BORDER) || (proj.dir & dir) || (proj.dir & reverse_direction(dir)))
 		return TRUE
 
-/obj/structure/machinery/door/poddoor/railing/get_projectile_hit_boolean(obj/item/projectile/P)
-	return src == P.original
+/obj/structure/machinery/door/poddoor/railing/get_projectile_hit_boolean(obj/item/projectile/proj)
+	return src == proj.original_target
 
-/obj/effect/alien/egg/get_projectile_hit_boolean(obj/item/projectile/P)
-	return src == P.original
+/obj/effect/alien/egg/get_projectile_hit_boolean(obj/item/projectile/proj)
+	return src == proj.original_target
 
-/obj/effect/alien/resin/trap/get_projectile_hit_boolean(obj/item/projectile/P)
-	return src == P.original
+/obj/effect/alien/resin/trap/get_projectile_hit_boolean(obj/item/projectile/proj)
+	return src == proj.original_target
 
-/obj/item/clothing/mask/facehugger/get_projectile_hit_boolean(obj/item/projectile/P)
-	return src == P.original
+/obj/item/clothing/mask/facehugger/get_projectile_hit_boolean(obj/item/projectile/proj)
+	return src == proj.original_target
 
 
 
 //mobs use get_projectile_hit_chance instead of get_projectile_hit_boolean
 
-/mob/living/proc/get_projectile_hit_chance(obj/item/projectile/P)
-	if(lying && src != P.original)
-		return FALSE
-	var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
+
+/mob/living/do_projectile_hit(obj/item/projectile/proj)
+	proj.ammo.on_hit_mob(src, proj)
+	bullet_act(proj)
+
+/mob/living/carbon/do_projectile_hit(obj/item/projectile/proj)
+	. = ..()
+
+
+/mob/living/proc/get_projectile_hit_chance(obj/item/projectile/proj)
+	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
 	if(ammo_flags & AMMO_XENO)
 		if((status_flags & XENO_HOST) && HAS_TRAIT(src, TRAIT_NESTED))
 			return FALSE
 
-	. = P.get_effective_accuracy()
+	. = proj.get_effective_accuracy()
 
-	if(lying && stat) . += 15 //Bonus hit against unconscious people.
+	if(src == proj.original_target)
+		if(lying && stat)
+			. += 50
+		else
+			. -= 25
+	else
+		. -= 50
 
-	if(isliving(P.firer))
-		var/mob/living/shooter_living = P.firer
-		if(!can_see(shooter_living,src))
-			. -= 15 //Can't see the target (Opaque thing between shooter and target)
 
-/mob/living/carbon/human/get_projectile_hit_chance(obj/item/projectile/P)
+	if(istype(get_turf(src), /turf/open/trench))
+		if(src == proj.original_target)
+			. -= 25
+		else
+			. -= 50
+
+	if(isliving(proj.firer))
+		var/mob/living/shooter_living = proj.firer
+		if(!can_see(shooter_living, src))
+			. -= 25 //Can't see the target (Opaque thing between shooter and target)
+
+/mob/living/carbon/human/get_projectile_hit_chance(obj/item/projectile/proj)
 	. = ..()
 	if(.)
-		var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
-		if(SEND_SIGNAL(P, COMSIG_BULLET_CHECK_MOB_SKIPPING, src) & COMPONENT_SKIP_MOB\
-			|| P.runtime_iff_group && get_target_lock(P.runtime_iff_group)\
+		var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
+		if(SEND_SIGNAL(proj, COMSIG_BULLET_CHECK_MOB_SKIPPING, src) & COMPONENT_SKIP_MOB\
+			|| proj.runtime_iff_group && ally(proj.runtime_iff_group)\
 		)
 			return FALSE
 		if(mobility_aura)
 			. -= mobility_aura * 5
-		var/mob/living/carbon/human/shooter_human = P.firer
+		var/mob/living/carbon/human/shooter_human = proj.firer
 		if(istype(shooter_human))
 			if(shooter_human.faction == faction && !(ammo_flags & AMMO_ALWAYS_FF))
 				. -= FF_hit_evade
@@ -781,26 +1088,27 @@
 				else
 					return FALSE
 
-/mob/living/carbon/xenomorph/get_projectile_hit_chance(obj/item/projectile/P)
+/mob/living/carbon/xenomorph/get_projectile_hit_chance(obj/item/projectile/proj)
 	. = ..()
 	if(.)
-		var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
-		if(SEND_SIGNAL(P, COMSIG_BULLET_CHECK_MOB_SKIPPING, src) & COMPONENT_SKIP_MOB\
-			|| P.runtime_iff_group && get_target_lock(P.runtime_iff_group))
+		var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
+		if(SEND_SIGNAL(proj, COMSIG_BULLET_CHECK_MOB_SKIPPING, src) & COMPONENT_SKIP_MOB\
+			|| proj.runtime_iff_group && ally(proj.runtime_iff_group))
 			return FALSE
 
 		if(ammo_flags & AMMO_SKIPS_ALIENS)
-			var/mob/living/carbon/xenomorph/X = P.firer
+			var/mob/living/carbon/xenomorph/X = proj.firer
 			if(!istype(X))
 				return FALSE
-			if(X.hivenumber == hivenumber)
+			if(X.faction == faction)
 				return FALSE
 
-		if(mob_size >= MOB_SIZE_BIG) . += 10
+		if(mob_size >= MOB_SIZE_BIG)
+			. += 10
 		if(evasion > 0)
 			. -= evasion
 
-/mob/living/silicon/robot/drone/get_projectile_hit_chance(obj/item/projectile/P)
+/mob/living/silicon/robot/drone/get_projectile_hit_chance(obj/item/projectile/proj)
 	return FALSE // just stop them getting hit by projectiles completely
 
 
@@ -823,71 +1131,73 @@
 				// \\
 //----------------------------------------------------------
 
-/atom/proc/bullet_act(obj/item/projectile/P)
+/atom/proc/bullet_act(obj/item/projectile/proj)
 	return FALSE
 
-/mob/dead/bullet_act(/obj/item/projectile/P)
+/mob/dead/bullet_act(/obj/item/projectile/proj)
 	return FALSE
 
-/mob/living/bullet_act(obj/item/projectile/P)
-	if(!P)
+/mob/living/bullet_act(obj/item/projectile/proj)
+	if(!proj)
 		return
 
-	var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
-	var/damage = P.calculate_damage()
-	if(P.ammo.debilitate && stat != DEAD && ( damage || (ammo_flags & AMMO_IGNORE_RESIST) ) )
-		apply_effects(arglist(P.ammo.debilitate))
+	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
+	var/damage = proj.calculate_damage()
+	if(proj.ammo.debilitate && stat != DEAD && ( damage || (ammo_flags & AMMO_IGNORE_RESIST) ) )
+		apply_effects(arglist(proj.ammo.debilitate))
 
 	. = TRUE
 	if(damage)
-		bullet_message(P)
-		apply_damage(damage, P.ammo.damage_type, P.def_zone, 0, 0, P)
-		P.play_hit_effect(src)
+		bullet_message(proj)
+		apply_damage(damage, proj.ammo.damage_type, proj.def_zone, 0, 0, proj)
+		proj.play_hit_effect(src)
 
-	SEND_SIGNAL(P, COMSIG_BULLET_ACT_LIVING, src, damage, damage)
+	SEND_SIGNAL(proj, COMSIG_BULLET_ACT_LIVING, src, damage, damage)
 
 
-/mob/living/carbon/human/bullet_act(obj/item/projectile/P)
-	if(!P)
+/mob/living/carbon/human/bullet_act(obj/item/projectile/proj)
+	if(!proj)
 		return
 
-	if(isxeno(P.firer))
-		var/mob/living/carbon/xenomorph/X = P.firer
+	if(isxeno(proj.firer))
+		var/mob/living/carbon/xenomorph/X = proj.firer
 		if(X.can_not_harm(src))
-			bullet_ping(P)
+			bullet_ping(proj)
 			return -1
 
-	var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
-	if(P.weapon_cause_data && P.weapon_cause_data.cause_name)
-		var/mob/M = P.weapon_cause_data.resolve_mob()
-		if(istype(M))
-			M.track_shot_hit(P.weapon_cause_data.cause_name, src)
+	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
+	var/mob/shoot_mob
+	if(proj.weapon_cause_data)
+		shoot_mob = proj.weapon_cause_data.resolve_mob()
 
-	var/damage = P.calculate_damage()
+	if(shoot_mob)
+		shoot_mob.track_shot_hit(proj.weapon_cause_data.cause_name, src)
+
+	var/damage = proj.calculate_damage()
 	var/damage_result = damage
 
-	if(SEND_SIGNAL(src, COMSIG_HUMAN_PRE_BULLET_ACT, P) & COMPONENT_CANCEL_BULLET_ACT)
+	if(SEND_SIGNAL(src, COMSIG_HUMAN_PRE_BULLET_ACT, proj) & COMPONENT_CANCEL_BULLET_ACT)
 		return
 
 	flash_weak_pain()
-	if(P.ammo.stamina_damage)
-		apply_stamina_damage(P.ammo.stamina_damage, P.def_zone, ARMOR_ENERGY) // Stamina damage is energy
+	if(proj.ammo.stamina_damage)
+		apply_stamina_damage(proj.ammo.stamina_damage, proj.def_zone, ARMOR_ENERGY) // Stamina damage is energy
 
 	//Shields
-	if( !(ammo_flags & AMMO_ROCKET) ) //No, you can't block rockets.
-		if(prob(75) && check_shields(damage * 0.65, "[P]") ) // Lower chance to block bullets
-			P.ammo.on_shield_block(src)
-			bullet_ping(P)
+	if(!(ammo_flags & AMMO_ROCKET)) //No, you can't block rockets.
+		if(prob(75) && check_shields(damage * 0.65, "[proj]") ) // Lower chance to block bullets
+			proj.ammo.on_shield_block(src)
+			bullet_ping(proj)
 			return
 
-	var/obj/limb/organ = get_limb(check_zone(P.def_zone)) //Let's finally get what organ we actually hit.
+	var/obj/limb/organ = get_limb(check_zone(proj.def_zone)) //Let's finally get what organ we actually hit.
 	if(!organ)
 		return//Nope. Gotta shoot something!
 
 	//Run armor check. We won't bother if there is no damage being done.
-	if( damage > 0 && !(ammo_flags & AMMO_IGNORE_ARMOR) )
+	if(damage > 0 && !(ammo_flags & AMMO_IGNORE_ARMOR))
 		var/armor //Damage types don't correspond to armor types. We are thus merging them.
-		switch(P.ammo.damage_type)
+		switch(proj.ammo.damage_type)
 			if(BRUTE)
 				if(ammo_flags & AMMO_ROCKET)
 					armor = getarmor_organ(organ, ARMOR_BOMB)
@@ -905,41 +1215,39 @@
 			else
 				armor = getarmor_organ(organ, ARMOR_ENERGY) //Won't be used, but just in case.
 
-		damage_result = armor_damage_reduction(GLOB.marine_ranged, damage, armor, P.ammo.penetration)
-
+		damage_result = armor_damage_reduction(GLOB.marine_ranged, damage, armor, proj.ammo.penetration)
 		if(damage_result <= 5)
-			to_chat(src,SPAN_XENONOTICE("Your armor absorbs the force of [P]!"))
+			to_chat(src,SPAN_XENONOTICE("Your armor absorbs the force of [proj]!"))
 		if(damage_result <= 3)
 			damage_result = 0
-			bullet_ping(P)
-			visible_message(SPAN_AVOIDHARM("[src]'s armor deflects [P]!"))
-			if(P.ammo.sound_armor) playsound(src, P.ammo.sound_armor, 50, 1)
+			bullet_ping(proj)
+			visible_message(SPAN_AVOIDHARM("[src]'s armor deflects [proj]!"))
+			if(proj.ammo.sound_armor)
+				playsound(src, proj.ammo.sound_armor, 50, 1)
 
-	if(P.ammo.debilitate && stat != DEAD && ( damage || ( ammo_flags & AMMO_IGNORE_RESIST) ) )  //They can't be dead and damage must be inflicted (or it's a xeno toxin).
+	if(proj.ammo.debilitate && stat != DEAD && ( damage || ( ammo_flags & AMMO_IGNORE_RESIST) ) )  //They can't be dead and damage must be inflicted (or it's a xeno toxin).
 		//Predators and synths are immune to these effects to cut down on the stun spam. This should later be moved to their apply_effects proc, but right now they're just humans.
 		if(!isspeciesyautja(src) && !isspeciessynth(src))
-			apply_effects(arglist(P.ammo.debilitate))
+			apply_effects(arglist(proj.ammo.debilitate))
 
-	bullet_message(P) //We still want this, regardless of whether or not the bullet did damage. For griefers and such.
+	bullet_message(proj) //We still want this, regardless of whether or not the bullet did damage. For griefers and such.
 
-	if(SEND_SIGNAL(src, COMSIG_HUMAN_BULLET_ACT, damage_result, ammo_flags, P) & COMPONENT_CANCEL_BULLET_ACT)
+	if(SEND_SIGNAL(src, COMSIG_HUMAN_BULLET_ACT, damage_result, ammo_flags, proj) & COMPONENT_CANCEL_BULLET_ACT)
 		return
 
-	P.play_hit_effect(src)
+	proj.play_hit_effect(src)
 	if(damage || (ammo_flags & AMMO_SPECIAL_EMBED))
-
-		var/splatter_dir = get_dir(P.starting, loc)
+		var/splatter_dir = get_dir(proj.starting_turf, loc)
 		handle_blood_splatter(splatter_dir)
-
 		. = TRUE
-		apply_damage(damage_result, P.ammo.damage_type, P.def_zone, firer = P.firer)
+		apply_damage(damage_result, proj.ammo.damage_type, proj.def_zone, firer = proj.firer)
 
-		if(P.ammo.shrapnel_chance > 0 && prob(P.ammo.shrapnel_chance + round(damage / 10)))
+		if(proj.ammo.shrapnel_chance > 0 && prob(proj.ammo.shrapnel_chance + round(damage / 10)))
 			if(ammo_flags & AMMO_SPECIAL_EMBED)
-				P.ammo.on_embed(src, organ)
+				proj.ammo.on_embed(src, organ)
 
-			var/obj/item/shard/shrapnel/new_embed = new P.ammo.shrapnel_type
-			var/obj/item/large_shrapnel/large_embed = new P.ammo.shrapnel_type
+			var/obj/item/shard/shrapnel/new_embed = new proj.ammo.shrapnel_type
+			var/obj/item/large_shrapnel/large_embed = new proj.ammo.shrapnel_type
 			if(istype(large_embed))
 				large_embed.on_embed(src, organ)
 			if(istype(new_embed))
@@ -957,35 +1265,41 @@
 				if(!stat && pain.feels_pain)
 					emote("scream")
 					to_chat(src, SPAN_HIGHDANGER("You scream in pain as the impact sends <B>shrapnel</b> into the wound!"))
-	SEND_SIGNAL(P, COMSIG_POST_BULLET_ACT_HUMAN, src, damage, damage_result)
+
+	if(shoot_mob)
+		shoot_mob.track_damage(proj.weapon_cause_data.cause_name, src, damage)
+		if(shoot_mob.faction == faction)
+			shoot_mob.track_friendly_damage(proj.weapon_cause_data.cause_name, src, damage)
+
+	SEND_SIGNAL(proj, COMSIG_POST_BULLET_ACT_HUMAN, src, damage, damage_result)
 
 //Deal with xeno bullets.
-/mob/living/carbon/xenomorph/bullet_act(obj/item/projectile/P)
-	if(!P || !istype(P))
+/mob/living/carbon/xenomorph/bullet_act(obj/item/projectile/proj)
+	if(!proj || !istype(proj))
 		return
 
-	var/damage = P.calculate_damage()
+	var/damage = proj.calculate_damage()
 	var/damage_result = damage
-
-	var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
+	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
+	var/mob/shoot_mob
+	if(proj.weapon_cause_data)
+		shoot_mob = proj.weapon_cause_data.resolve_mob()
 
 	if((ammo_flags & AMMO_FLAME) && (src.caste.fire_immunity & FIRE_IMMUNITY_NO_IGNITE|FIRE_IMMUNITY_NO_DAMAGE))
 		to_chat(src, SPAN_AVOIDHARM("You shrug off the glob of flame."))
 		return
 
-	if(isxeno(P.firer))
-		var/mob/living/carbon/xenomorph/X = P.firer
+	if(isxeno(proj.firer))
+		var/mob/living/carbon/xenomorph/X = proj.firer
 		if(X.can_not_harm(src))
-			bullet_ping(P)
+			bullet_ping(proj)
 			return -1
 		else
 			damage *= XVX_PROJECTILE_DAMAGEMULT
 			damage_result = damage
 
-	if(P.weapon_cause_data && P.weapon_cause_data.cause_name)
-		var/mob/M = P.weapon_cause_data.resolve_mob()
-		if(istype(M))
-			M.track_shot_hit(P.weapon_cause_data.cause_name, src)
+	if(shoot_mob)
+		shoot_mob.track_shot_hit(proj.weapon_cause_data.cause_name, src)
 
 	flash_weak_pain()
 
@@ -995,11 +1309,11 @@
 		var/list/damagedata = list(
 			"damage" = damage,
 			"armor" = armor,
-			"penetration" = P.ammo.penetration,
-			"armour_break_pr_pen" = P.ammo.pen_armor_punch,
-			"armour_break_flat" = P.ammo.damage_armor_punch,
+			"penetration" = proj.ammo.penetration,
+			"armour_break_pr_pen" = proj.ammo.pen_armor_punch,
+			"armour_break_flat" = proj.ammo.damage_armor_punch,
 			"armor_integrity" = armor_integrity,
-			"direction" = P.dir,
+			"direction" = proj.dir,
 		)
 		SEND_SIGNAL(src, COMSIG_XENO_PRE_CALCULATE_ARMOURED_DAMAGE_PROJECTILE, damagedata)
 		damage_result = armor_damage_reduction(GLOB.xeno_ranged, damagedata["damage"],
@@ -1014,65 +1328,70 @@
 
 		if(damage <= 3)
 			damage = 0
-			bullet_ping(P)
+			bullet_ping(proj)
 
-	bullet_message(P) //Message us about the bullet, since damage was inflicted.
+	bullet_message(proj) //Message us about the bullet, since damage was inflicted.
 
 
 
-	if(SEND_SIGNAL(src, COMSIG_XENO_BULLET_ACT, damage_result, ammo_flags, P) & COMPONENT_CANCEL_BULLET_ACT)
+	if(SEND_SIGNAL(src, COMSIG_XENO_BULLET_ACT, damage_result, ammo_flags, proj) & COMPONENT_CANCEL_BULLET_ACT)
 		return
 
 	if(damage)
 		//only apply the blood splatter if we do damage
-		handle_blood_splatter(get_dir(P.starting, loc))
+		if(shoot_mob)
+			shoot_mob.track_damage(proj.weapon_cause_data.cause_name, src, damage)
+			if(shoot_mob.faction == faction)
+				shoot_mob.track_friendly_damage(proj.weapon_cause_data.cause_name, src, damage)
+		handle_blood_splatter(get_dir(proj.starting_turf, loc))
 
-		apply_damage(damage_result,P.ammo.damage_type, P.def_zone) //Deal the damage.
+		apply_damage(damage_result, proj.ammo.damage_type, proj.def_zone)	//Deal the damage.
 		if(xeno_shields.len)
-			P.play_shielded_hit_effect(src)
+			proj.play_shielded_hit_effect(src)
 		else
-			P.play_hit_effect(src)
+			proj.play_hit_effect(src)
 		if(!stat && prob(5 + round(damage_result / 4)))
 			var/pain_emote = prob(70) ? "hiss" : "roar"
 			emote(pain_emote)
 		updatehealth()
 
-	SEND_SIGNAL(P, COMSIG_BULLET_ACT_XENO, src, damage, damage_result)
+	SEND_SIGNAL(proj, COMSIG_BULLET_ACT_XENO, src, damage, damage_result)
 
 	return TRUE
 
-/turf/bullet_act(obj/item/projectile/P)
-	if(SEND_SIGNAL(src, COMSIG_TURF_BULLET_ACT, P) & COMPONENT_BULLET_ACT_OVERRIDE)
+/turf/bullet_act(obj/item/projectile/proj)
+	if(SEND_SIGNAL(src, COMSIG_TURF_BULLET_ACT, proj) & COMPONENT_BULLET_ACT_OVERRIDE)
 		return
 
-	if(!P || !density)
+	if(!proj || !density)
 		return //It's just an empty turf
 
-	bullet_ping(P)
+	bullet_ping(proj)
 
 	var/list/mobs_list = list() //Let's built a list of mobs on the bullet turf and grab one.
 	for(var/mob/living/L in src)
-		if(L in P.permutated)
+		if(L in proj.permutated)
 			continue
-		if(prob(L.get_projectile_hit_chance(P)))
+		var/chance_hit = max(L.get_projectile_hit_chance(proj), 0)
+		if(prob(chance_hit))
 			mobs_list += L
 
 	if(length(mobs_list))
 		var/mob/living/picked_mob = pick(mobs_list) //Hit a mob, if there is one.
 		if(istype(picked_mob))
-			picked_mob.bullet_act(P)
+			picked_mob.bullet_act(proj)
 			return
 	return
 
 // walls can get shot and damaged, but bullets (vs energy guns) do much less.
-/turf/closed/wall/bullet_act(obj/item/projectile/P)
+/turf/closed/wall/bullet_act(obj/item/projectile/proj)
 	. = ..()
-	var/damage = P.damage
+	var/damage = proj.damage
 	if(damage < 1)
 		return
-	var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
+	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
 
-	switch(P.ammo.damage_type)
+	switch(proj.ammo.damage_type)
 		if(BRUTE) //Rockets do extra damage to walls.
 			if(ammo_flags & AMMO_ROCKET)
 				damage = round(damage * 10)
@@ -1083,11 +1402,11 @@
 				damage = round(damage * ANTISTRUCT_DMG_MULT_WALL)
 	if(ammo_flags & AMMO_BALLISTIC)
 		current_bulletholes++
-	take_damage(damage, P.firer)
+	take_damage(damage, proj.firer)
 
-/turf/closed/wall/almayer/research/containment/bullet_act(obj/item/projectile/P)
-	if(P)
-		var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
+/turf/closed/wall/almayer/research/containment/bullet_act(obj/item/projectile/proj)
+	if(proj)
+		var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
 		if(ammo_flags & AMMO_ACIDIC)
 			return //immune to acid spit
 	. = ..()
@@ -1097,19 +1416,19 @@
 
 //Hitting an object. These are too numerous so they're staying in their files.
 //Why are there special cases listed here? Oh well, whatever. ~N
-/obj/bullet_act(obj/item/projectile/P)
-	bullet_ping(P)
+/obj/bullet_act(obj/item/projectile/proj)
+	bullet_ping(proj)
 	return TRUE
 
-/obj/item/bullet_act(obj/item/projectile/P)
-	bullet_ping(P)
-	if(P.ammo.damage_type == BRUTE)
-		explosion_throw(P.damage/2, P.dir, 4)
+/obj/item/bullet_act(obj/item/projectile/proj)
+	bullet_ping(proj)
+	if(proj.ammo.damage_type == BRUTE)
+		explosion_throw(proj.damage/2, proj.dir, 4)
 	return TRUE
 
-/obj/structure/surface/table/bullet_act(obj/item/projectile/P)
-	bullet_ping(P)
-	health -= round(P.damage/2)
+/obj/structure/surface/table/bullet_act(obj/item/projectile/proj)
+	bullet_ping(proj)
+	health -= round(proj.damage/2)
 	if(health < 0)
 		visible_message(SPAN_WARNING("[src] breaks down!"))
 		deconstruct()
@@ -1125,54 +1444,54 @@
 
 
 //This is where the bullet bounces off.
-/atom/proc/bullet_ping(obj/item/projectile/P, pixel_x_offset = 0, pixel_y_offset = 0)
-	if(!P || !P.ammo.ping)
+/atom/proc/bullet_ping(obj/item/projectile/proj, pixel_x_offset = 0, pixel_y_offset = 0)
+	if(!proj || !proj.ammo.ping)
 		return
 
-	if(P.ammo.sound_bounce) playsound(src, P.ammo.sound_bounce, 50, 1)
-	var/image/I = image('icons/obj/items/weapons/projectiles.dmi', src, P.ammo.ping, 10)
-	var/offset_x = Clamp(P.pixel_x + pixel_x_offset, -10, 10)
-	var/offset_y = Clamp(P.pixel_y + pixel_y_offset, -10, 10)
-	I.pixel_x += round(rand(-4,4) + offset_x, 1)
-	I.pixel_y += round(rand(-4,4) + offset_y, 1)
+	if(proj.ammo.sound_bounce)
+		playsound(src, proj.ammo.sound_bounce, 50, 1)
+	var/image/I = image('icons/obj/items/weapons/projectiles.dmi', src, proj.ammo.ping,10, pixel_x = pixel_x_offset, pixel_y = pixel_y_offset)
+	var/angle = (proj.firer && prob(60)) ? round(Get_Angle(proj.firer, src)) : round(rand(1,359))
+	I.pixel_x += rand(-6,6)
+	I.pixel_y += rand(-6,6)
 
 	var/matrix/rotate = matrix()
-	rotate.Turn(P.angle)
+	rotate.Turn(angle)
 	I.transform = rotate
 	// Need to do this in order to prevent the ping from being deleted
 	addtimer(CALLBACK(I, TYPE_PROC_REF(/image, flick_overlay), src, 3), 1)
 
-/mob/proc/bullet_message(obj/item/projectile/P)
-	if(!P)
+/mob/proc/bullet_message(obj/item/projectile/proj)
+	if(!proj)
 		return
-	visible_message(SPAN_DANGER("[src] is hit by the [P.name] in the [parse_zone(P.def_zone)]!"), \
-		SPAN_HIGHDANGER("You are hit by the [P.name] in the [parse_zone(P.def_zone)]!"), null, 4, CHAT_TYPE_TAKING_HIT)
+	visible_message(SPAN_DANGER("[src] is hit by the [proj.name] in the [parse_zone(proj.def_zone)]!"), \
+		SPAN_HIGHDANGER("You are hit by the [proj.name] in the [parse_zone(proj.def_zone)]!"), null, 4, CHAT_TYPE_TAKING_HIT)
 
-	last_damage_data = P.weapon_cause_data
-	if(P.firer && ismob(P.firer))
-		var/mob/firingMob = P.firer
+	last_damage_data = proj.weapon_cause_data
+	if(proj.firer && ismob(proj.firer))
+		var/mob/firingMob = proj.firer
 		var/area/A = get_area(src)
 		if(ishuman(firingMob) && ishuman(src) && faction == firingMob.faction && !A?.statistic_exempt) //One human shot another, be worried about it but do everything basically the same //special_role should be null or an empty string if done correctly
-			if(!istype(P.ammo, /datum/ammo/energy/taser))
-				round_statistics.total_friendly_fire_instances++
-				var/ff_msg = "[key_name(firingMob)] shot [key_name(src)] with \a [P.name] in [get_area(firingMob)] (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[firingMob.x];Y=[firingMob.y];Z=[firingMob.z]'>JMP</a>) ([firingMob.client ? "<a href='?priv_msg=[firingMob.client.ckey]'>PM</a>" : "NO CLIENT"])"
+			if(!istype(proj.ammo, /datum/ammo/energy/taser))
+				var/ff_msg = "[key_name(firingMob)] shot [key_name(src)] with \a [proj.name] in [get_area(firingMob)]"
+				var/ffl = "(<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[firingMob.x];Y=[firingMob.y];Z=[firingMob.z]'>JMP</a>) ([firingMob.client ? "<a href='?priv_msg=[firingMob.client.ckey]'>PM</a>" : "NO CLIENT"])"
 				var/ff_living = TRUE
 				if(src.stat == DEAD)
 					ff_living = FALSE
-				msg_admin_ff(ff_msg, ff_living)
-				if(ishuman(firingMob) && P.weapon_cause_data)
+				msg_admin_ff("[ff_msg] [ffl]", ff_msg, ff_living)
+				if(ishuman(firingMob) && proj.weapon_cause_data)
 					var/mob/living/carbon/human/H = firingMob
-					H.track_friendly_fire(P.weapon_cause_data.cause_name)
+					H.track_friendly_fire(proj.weapon_cause_data.cause_name)
 			else
 				msg_admin_attack("[key_name(firingMob)] tased [key_name(src)] in [get_area(firingMob)] ([firingMob.x],[firingMob.y],[firingMob.z]).", firingMob.x, firingMob.y, firingMob.z)
 		else
-			msg_admin_attack("[key_name(firingMob)] shot [key_name(src)] with \a [P.name] in [get_area(firingMob)] ([firingMob.x],[firingMob.y],[firingMob.z]).", firingMob.x, firingMob.y, firingMob.z)
-		attack_log += "\[[time_stamp()]\] <b>[key_name(firingMob)]</b> shot <b>[key_name(src)]</b> with \a <b>[P]</b> in [get_area(firingMob)]."
-		firingMob.attack_log += "\[[time_stamp()]\] <b>[key_name(firingMob)]</b> shot <b>[key_name(src)]</b> with \a <b>[P]</b> in [get_area(firingMob)]."
+			msg_admin_attack("[key_name(firingMob)] shot [key_name(src)] with \a [proj.name] in [get_area(firingMob)] ([firingMob.x],[firingMob.y],[firingMob.z]).", firingMob.x, firingMob.y, firingMob.z)
+		attack_log += "\[[time_stamp()]\] <b>[key_name(firingMob)]</b> shot <b>[key_name(src)]</b> with \a <b>[proj]</b> in [get_area(firingMob)]."
+		firingMob.attack_log += "\[[time_stamp()]\] <b>[key_name(firingMob)]</b> shot <b>[key_name(src)]</b> with \a <b>[proj]</b> in [get_area(firingMob)]."
 		return
 
-	attack_log += "\[[time_stamp()]\] <b>SOMETHING??</b> shot <b>[key_name(src)]</b> with a <b>[P]</b>"
-	msg_admin_attack("SOMETHING?? shot [key_name(src)] with a [P] in [get_area(src)] ([loc.x],[loc.y],[loc.z]).", loc.x, loc.y, loc.z)
+	attack_log += "\[[time_stamp()]\] <b>SOMETHING??</b> shot <b>[key_name(src)]</b> with a <b>[proj]</b>"
+	msg_admin_attack("SOMETHING?? shot [key_name(src)] with a [proj] in [get_area(src)] ([loc.x],[loc.y],[loc.z]).", loc.x, loc.y, loc.z)
 
 //Abby -- Just check if they're 1 tile horizontal or vertical, no diagonals
 /proc/get_adj_simple(atom/Loc1,atom/Loc2)

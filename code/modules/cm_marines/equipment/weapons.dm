@@ -130,7 +130,7 @@
 
 /obj/item/smartgun_powerpack/get_examine_text(mob/user)
 	. = ..()
-	if (pcell && get_dist(user, src) <= 1)
+	if(pcell && get_dist(user, src) <= 1)
 		. += "A small gauge in the corner reads: Power: [pcell.charge] / [pcell.maxcharge]."
 
 /obj/item/smartgun_powerpack/proc/drain_powerpack(drain = 0, obj/item/cell/c)

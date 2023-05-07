@@ -20,7 +20,7 @@
 	var/v = reserved_turfs.Copy()
 	for(var/i in reserved_turfs)
 		var/turf/T = i
-		T.flags_atom |= UNUSED_RESERVATION_TURF
+		T.turf_flags |= TURF_UNUSED_RESERVATION
 		reserved_turfs -= i
 		SSmapping.used_turfs -= i
 	SSmapping.reserve_turfs(v)
@@ -37,19 +37,19 @@
 	for(var/i in avail)
 		CHECK_TICK
 		bottom_left = i
-		if(!(bottom_left.flags_atom & UNUSED_RESERVATION_TURF))
+		if(!(bottom_left.turf_flags & TURF_UNUSED_RESERVATION))
 			continue
 		if(bottom_left.x + width > world.maxx || bottom_left.y + height > world.maxy)
 			continue
 		top_right = locate(bottom_left.x + width - 1, bottom_left.y + height - 1, bottom_left.z)
-		if(!(top_right.flags_atom & UNUSED_RESERVATION_TURF))
+		if(!(top_right.turf_flags & TURF_UNUSED_RESERVATION))
 			continue
 		final = block(bottom_left, top_right)
 		if(!final)
 			continue
 		passing = TRUE
 		for(var/turf/checking as anything in final)
-			if(!(checking.flags_atom & UNUSED_RESERVATION_TURF))
+			if(!(checking.turf_flags & TURF_UNUSED_RESERVATION))
 				passing = FALSE
 				break
 		if(!passing)
@@ -67,7 +67,7 @@
 		SSmapping.unused_turfs["[T.z]"] -= T
 		SSmapping.used_turfs[T] = weakref
 		T = T.ChangeTurf(turf_type, turf_type)
-		T.flags_atom &= ~UNUSED_RESERVATION_TURF
+		T.turf_flags &= ~TURF_UNUSED_RESERVATION
 	src.width = width
 	src.height = height
 	return TRUE

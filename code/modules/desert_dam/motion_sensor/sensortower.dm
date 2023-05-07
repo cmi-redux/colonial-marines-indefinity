@@ -32,7 +32,7 @@
 	if(!buildstate && is_on)
 		desc = "A tower with a lot of delicate sensors made to track weather conditions. This one has been adjusted to track biosignatures. It looks like it is online."
 		icon_state = "sensor_"
-	else if (!buildstate && !is_on)
+	else if(!buildstate && !is_on)
 		desc = "A tower with a lot of delicate sensors made to track weather conditions. This one has been adjusted to track biosignatures. It looks like it is offline."
 		icon_state = "sensor_off"
 	else if(buildstate == SENSORTOWER_BUILDSTATE_BLOWTORCH)
@@ -46,30 +46,7 @@
 		icon_state = "sensor_broken"
 
 /obj/structure/machinery/sensortower/process()
-	if(!is_on || buildstate || !anchored) //Default logic checking
-		remove_xenos_from_minimap()
-		return FALSE
-	if(inoperable())
-		remove_xenos_from_minimap()
-		return FALSE
 	checkfailure()
-	add_xenos_to_minimap()
-
-/obj/structure/machinery/sensortower/proc/remove_xenos_from_minimap()
-	for(var/mob/living/carbon/xenomorph/current_xeno as anything in GLOB.living_xeno_list)
-		if(WEAKREF(current_xeno) in minimap_added)
-			SSminimaps.remove_marker(current_xeno)
-			current_xeno.add_minimap_marker()
-			minimap_added -= WEAKREF(current_xeno)
-
-/obj/structure/machinery/sensortower/proc/add_xenos_to_minimap()
-	for(var/mob/living/carbon/xenomorph/current_xeno as anything in GLOB.living_xeno_list)
-		if(WEAKREF(current_xeno) in minimap_added)
-			return
-
-		SSminimaps.remove_marker(current_xeno)
-		current_xeno.add_minimap_marker(MINIMAP_FLAG_USCM|MINIMAP_FLAG_XENO)
-		minimap_added += WEAKREF(current_xeno)
 
 /obj/structure/machinery/sensortower/proc/checkfailure()
 	cur_tick++
@@ -108,10 +85,10 @@
 	if(buildstate == SENSORTOWER_BUILDSTATE_BLOWTORCH)
 		to_chat(usr, SPAN_INFO("Use a blowtorch, then wirecutters, then wrench to repair it."))
 		return FALSE
-	else if (buildstate == SENSORTOWER_BUILDSTATE_WIRECUTTERS)
+	else if(buildstate == SENSORTOWER_BUILDSTATE_WIRECUTTERS)
 		to_chat(usr, SPAN_INFO("Use some wirecutters, then wrench to repair it."))
 		return FALSE
-	else if (buildstate == SENSORTOWER_BUILDSTATE_WRENCH)
+	else if(buildstate == SENSORTOWER_BUILDSTATE_WRENCH)
 		to_chat(usr, SPAN_INFO("Use a wrench to repair it."))
 		return FALSE
 	if(is_on)
@@ -120,7 +97,6 @@
 		cur_tick = 0
 		update_icon()
 		STOP_PROCESSING(SSslowobj, src)
-		remove_xenos_from_minimap()
 		return TRUE
 	visible_message("[icon2html(src, viewers(src))] [SPAN_WARNING("<b>\The [src]</b> lights up as [usr] turns the power on.")]")
 	is_on = TRUE

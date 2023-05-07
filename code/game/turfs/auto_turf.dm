@@ -2,6 +2,8 @@
 	name = "auto-sand"
 	icon = 'icons/turf/floors/auto_sand.dmi'
 	icon_state = "sand_1"//editor icon
+	turf_flags = TURF_MULTIZ|TURF_TRENCHING
+	weedable = FULLY_WEEDABLE
 	is_groundmap_turf = TRUE
 	var/icon_prefix = "sand"
 	var/layer_name = list("layer 1", "layer2", "layer 3", "layer 4", "layer 5")
@@ -10,9 +12,6 @@
 
 /turf/open/auto_turf/insert_self_into_baseturfs()
 	baseturfs += type
-
-/turf/open/auto_turf/is_weedable()//for da xenos
-	return FULLY_WEEDABLE
 
 /turf/open/auto_turf/get_dirt_type()
 	return DIRT_TYPE_GROUND //automatically diggable I guess
@@ -26,7 +25,7 @@
 		icon_state = "[icon_prefix]_[bleed_layer]_[variant]"
 	else
 		icon_state = "[icon_prefix]_[bleed_layer]"
-	setDir(pick(NORTH,SOUTH,EAST,WEST,NORTHEAST,NORTHWEST,SOUTHEAST,SOUTHWEST))
+	setDir(pick(GLOB.alldirs))
 
 	var/name_to_set
 	switch(bleed_layer)
@@ -53,7 +52,7 @@
 		return
 
 	bleed_layer = max(0, new_layer)
-	for(var/direction in alldirs)
+	for(var/direction in GLOB.alldirs)
 		var/turf/open/T = get_step(src, direction)
 		if(istype(T))
 			T.update_icon()
@@ -132,6 +131,7 @@
 
 /turf/open/auto_turf/ice/get_dirt_type()
 	return NO_DIRT
+
 /turf/open/auto_turf/ice/layer0 //still have to manually define the layers for the editor
 	icon_state = "ice_0"
 	bleed_layer = 0
@@ -152,6 +152,13 @@
 	icon_prefix = "snow"
 	layer_name = list("icy dirt", "shallow snow", "deep snow", "very deep snow", "rock filled snow")
 
+/turf/open/auto_turf/snow/Initialize()
+	. = ..()
+	if(bleed_layer)
+		new /obj/structure/snow(src, bleed_layer)
+		bleed_layer = 0
+		update_icon()
+
 /turf/open/auto_turf/snow/insert_self_into_baseturfs()
 	baseturfs += /turf/open/auto_turf/snow/layer0
 
@@ -160,9 +167,6 @@
 		return DIRT_TYPE_SNOW
 	else
 		return DIRT_TYPE_GROUND
-
-/turf/open/auto_turf/snow/is_weedable()
-	return bleed_layer ? NOT_WEEDABLE : FULLY_WEEDABLE
 
 /turf/open/auto_turf/snow/attackby(obj/item/I, mob/user)
 	//Light Stick
@@ -183,7 +187,7 @@
 		L.forceMove(src)
 		L.pixel_x += rand(-5,5)
 		L.pixel_y += rand(-5,5)
-		L.SetLuminosity(2)
+		L.set_light(2)
 		playsound(user, 'sound/weapons/Genhit.ogg', 25, 1)
 
 //Digging up snow
@@ -210,10 +214,10 @@
 
 	return XENO_NO_DELAY_ACTION
 
-/turf/open/auto_turf/snow/Entered(atom/movable/AM)
+/turf/open/auto_turf/snow/Entered(atom/movable/arrived, old_loc)
 	if(bleed_layer > 0)
-		if(iscarbon(AM))
-			var/mob/living/carbon/C = AM
+		if(iscarbon(arrived))
+			var/mob/living/carbon/C = arrived
 			var/slow_amount = 0.35
 			var/can_stuck = 1
 			if(istype(C, /mob/living/carbon/xenomorph)||isyautja(C))
@@ -277,6 +281,7 @@
 /turf/open/auto_turf/snow/brown_base/layer4
 	icon_state = "snow_b_4" //Add sorokyne rock decals to this one
 	bleed_layer = 4
+
 /turf/open/auto_turf/strata_grass
 	name = "matted grass"
 	icon = 'icons/turf/floors/auto_strata_grass.dmi'

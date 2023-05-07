@@ -4,10 +4,11 @@
 	set desc = "Check the status of your current hive."
 	set category = "Alien"
 
-	if(!hive)
+	if(!faction)
+		to_chat(src, SPAN_WARNING("You are not connected to any faction."))
 		return
 
-	if((!hive.living_xeno_queen || SSmapping.configs[GROUND_MAP].map_name == MAP_WHISKEY_OUTPOST) && !hive.allow_no_queen_actions) //No Hive status on WO
+	if(!faction.living_xeno_queen && (!Check_WO() && !Check_Crash()) && !faction.allow_no_queen_actions) //No Hive status on WO
 		to_chat(src, SPAN_WARNING("There is no Queen. You are alone."))
 		return
 
@@ -15,25 +16,7 @@
 		to_chat(src, SPAN_WARNING("A headhunter temporarily cut off your psychic connection!"))
 		return
 
-	hive.hive_ui.open_hive_status(src)
-
-/mob/living/carbon/xenomorph/verb/hive_alliance_status()
-	set name = "Hive Alliance Status"
-	set desc = "Check the status of your alliances."
-	set category = "Alien"
-
-	if(!hive)
-		return
-
-	if((!hive.living_xeno_queen || Check_WO()) && !hive.allow_no_queen_actions) //No Hive status on WO
-		to_chat(src, SPAN_WARNING("There is no Queen. You are alone."))
-		return
-
-	if(interference)
-		to_chat(src, SPAN_WARNING("A headhunter temporarily cut off your psychic connection!"))
-		return
-
-	hive.faction_ui.tgui_interact(src)
+	faction.get_faction_info(src)
 
 /mob/living/carbon/xenomorph/verb/clear_built_structures()
 	set name = "Clear Built Structures"
@@ -75,7 +58,7 @@
 	set category = "Alien"
 
 	var/datum/mob_hud/H = huds[MOB_HUD_XENO_STATUS]
-	if (xeno_mobhud)
+	if(xeno_mobhud)
 		H.remove_hud_from(usr)
 	else
 		H.add_hud_to(usr)
@@ -88,7 +71,7 @@
 	set category = "Alien"
 
 	var/datum/mob_hud/H = huds[MOB_HUD_XENO_HOSTILE]
-	if (xeno_hostile_hud)
+	if(xeno_hostile_hud)
 		H.remove_hud_from(usr)
 	else
 		H.add_hud_to(usr)
@@ -101,12 +84,12 @@
 	set desc = "Toggles between using middle mouse click and shift click for selected ability use."
 	set category = "Alien"
 
-	if (!client || !client.prefs)
+	if(!client || !client.prefs)
 		return
 
 	client.prefs.toggle_prefs ^= TOGGLE_MIDDLE_MOUSE_CLICK
 	client.prefs.save_preferences()
-	if (client.prefs.toggle_prefs & TOGGLE_MIDDLE_MOUSE_CLICK)
+	if(client.prefs.toggle_prefs & TOGGLE_MIDDLE_MOUSE_CLICK)
 		to_chat(src, SPAN_NOTICE("The selected xeno ability will now be activated with middle mouse clicking."))
 	else
 		to_chat(src, SPAN_NOTICE("The selected xeno ability will now be activated with shift clicking."))
@@ -116,7 +99,7 @@
 	set desc = "Toggles the use of directional assist attacks."
 	set category = "Alien"
 
-	if (!client || !client.prefs)
+	if(!client || !client.prefs)
 		return
 
 	client.prefs.toggle_prefs ^= TOGGLE_DIRECTIONAL_ATTACK
@@ -131,11 +114,3 @@
 
 	if(observed_xeno)
 		overwatch(observed_xeno, TRUE)
-
-// /mob/living/carbon/xenomorph/verb/enter_tree()
-// set name = "Enter Techtree"
-// set desc = "Enter the Xenomorph techtree"
-// set category = "Alien.Techtree"
-
-// var/datum/techtree/T = GET_TREE(TREE_XENO)
-// T.enter_mob(src)

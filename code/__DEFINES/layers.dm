@@ -10,6 +10,8 @@
 \*=============================*/
 
 //#define AREA_LAYER 1
+// PLANE_SPACE layer(s)
+#define SPACE_LAYER 1.8
 
 #define UNDER_TURF_LAYER 1.99
 
@@ -33,7 +35,11 @@
 /// bluespace beacon, navigation beacon, etc
 #define UNDERFLOOR_OBJ_LAYER 2.46
 /// catwalk overlay of /turf/open/floor/plating/plating_catwalk
-#define CATWALK_LAYER 2.5
+#define CATWALK_LAYER 2.47
+
+/// stairs overlay on turf
+#define STAIRS_LAYER 2.5
+
 /// Alien weeds and node layer
 #define WEED_LAYER 2.51
 /// Over weeds, such as blood
@@ -79,7 +85,7 @@
 /// for items that should be at the bottom of the pile of items
 #define LOWER_ITEM_LAYER 2.99
 
-//#define OBJ_LAYER 3
+#define OBJ_LAYER 3
 
 #define ABOVE_SPECIAL_RESIN_STRUCTURE_LAYER 3.01
 
@@ -115,15 +121,14 @@
 
 #define ABOVE_MOB_LAYER 4.1
 
-/// above ABOVE_MOB_LAYER because it's used for shallow river overlays which clips with the top of large xeno sprites.
+/// above ABOVE_MOB_LAYER because it's used for shallow river overlays
 #define BIG_XENO_LAYER 4.11
-
 /// for xenos to hide behind bushes and tall grass
 #define ABOVE_XENO_LAYER 4.12
-/// For facehuggers
+/// for facehuggers
 #define FACEHUGGER_LAYER 4.13
-/// For WEATHER
-#define WEATHER_LAYER 4.14
+/// for vehicle
+#define VEHICLE_LAYER 4.14
 #define INTERIOR_WALL_SOUTH_LAYER 5.2
 #define INTERIOR_DOOR_LAYER 5.21
 
@@ -133,27 +138,34 @@
 
 #define ABOVE_FLY_LAYER 6
 
-#define ABOVE_LIGHTING_PLANE 16
+//---------- LIGHTING -------------
+/// The layer for the main lights of the station
+#define LIGHTING_PRIMARY_LAYER 15
+/// The layer that dims the main lights of the station
+#define LIGHTING_PRIMARY_DIMMER_LAYER 15.1
+/// The colourful, usually small lights that go on top
+#define LIGHTING_SECONDARY_LAYER 16
+/// The layer you should use if you _really_ don't want an emissive overlay to be blocked.
 
 /// blip from motion detector
-#define BELOW_FULLSCREEN_LAYER 16.9
-#define FULLSCREEN_LAYER 17
+#define BELOW_FULLSCREEN_LAYER 17.9
+#define FULLSCREEN_LAYER 18
 /// Weather
-#define FULLSCREEN_WEATHER_LAYER 17.01
+#define FULLSCREEN_WEATHER_LAYER 18.01
 /// visual impairment from wearing welding helmet, etc.
-#define FULLSCREEN_IMPAIRED_LAYER 17.02
-#define FULLSCREEN_DRUGGY_LAYER 17.03
-#define FULLSCREEN_BLURRY_LAYER 17.04
+#define FULLSCREEN_IMPAIRED_LAYER 18.02
+#define FULLSCREEN_DRUGGY_LAYER 18.03
+#define FULLSCREEN_BLURRY_LAYER 18.04
 /// flashed
-#define FULLSCREEN_FLASH_LAYER 17.05
+#define FULLSCREEN_FLASH_LAYER 18.05
 /// red circles when hurt
-#define FULLSCREEN_DAMAGE_LAYER 17.1
+#define FULLSCREEN_DAMAGE_LAYER 18.1
 /// unconscious
-#define FULLSCREEN_BLIND_LAYER 17.15
+#define FULLSCREEN_BLIND_LAYER 18.15
 /// pain flashes
-#define FULLSCREEN_PAIN_LAYER 17.2
+#define FULLSCREEN_PAIN_LAYER	18.2
 /// in critical
-#define FULLSCREEN_CRIT_LAYER 17.25
+#define FULLSCREEN_CRIT_LAYER 18.25
 
 #define HUD_LAYER 19
 #define ABOVE_HUD_LAYER 20
@@ -165,6 +177,11 @@
 /// for areas, so they appear above everything else on map file.
 #define AREAS_LAYER 999
 
+#define EMISSIVE_LAYER_UNBLOCKABLE 9999
+#define FOV_EFFECTS_LAYER 10000 //Blindness effects are not layer 4, they lie to you
+
+
+
 /*=============================*\
 | |
 |   PLANE DEFINES |
@@ -174,21 +191,93 @@
 /// NEVER HAVE ANYTHING BELOW THIS PLANE ADJUST IF YOU NEED MORE SPACE
 #define LOWEST_EVER_PLANE -200
 
-#define FLOOR_PLANE -7
-#define GAME_PLANE -6
-#define ABOVE_GAME_PLANE -5
+#define FIELD_OF_VISION_BLOCKER_PLANE -199
+#define FIELD_OF_VISION_BLOCKER_RENDER_TARGET "*FIELD_OF_VISION_BLOCKER_RENDER_TARGET"
+
+#define CLICKCATCHER_PLANE -99
+
+#define PLANE_SPACE -95
+#define PLANE_SPACE_PARALLAX -90
+
+#define WEATHER_OVERLAY_PLANE -80
+#define WEATHER_RENDER_TARGET "*WEATHER_OVERLAY_PLANE"
+
+#define GRAVITY_PULSE_PLANE -70
+#define GRAVITY_PULSE_RENDER_TARGET "*GRAVPULSE_RENDER_TARGET"
+
+#define DISPLACEMENT_MAP_PLANE -69
+
+#define OPENSPACE_LAYER 600 //Openspace layer over all
+#define TRANSPARENT_FLOOR_PLANE -62 //Transparent plane that shows openspace underneath the floor
+#define OPENSPACE_PLANE -61 //Openspace plane below all turfs
+#define OPENSPACE_BACKDROP_PLANE -60 //Black square just over openspace plane to guaranteed cover all in openspace turf
+
+#define FLOOR_PLANE -45
+
+#define OVER_TILE_PLANE -44
+
+#define WALL_PLANE -43
+
+#define GAME_PLANE -42
+
+#define WEATHER_EFFECT_PLANE -30
+
+#define GAME_PLANE_FOV_HIDDEN -29
+#define GAME_PLANE_UPPER -28
+#define GAME_PLANE_UPPER_FOV_HIDDEN -27
+#define PARTICLES_PLANE -26
+
+#define ABOVE_GAME_PLANE -20
+
+#define UNDER_FRILL_PLANE -12 //MOJAVE SUN EDIT - Wallening Testmerge
+#define UNDER_FRILL_RENDER_TARGET "*UNDER_RENDER_TARGET" //MOJAVE SUN EDIT - Wallening Testmerge
+#define FRILL_PLANE -11 //MOJAVE SUN EDIT - Wallening Testmerge
+#define OVER_FRILL_PLANE -10 //MOJAVE SUN EDIT - Wallening Testmerge
+
+#define LAYER_CUTTER_VISUAL_PLANE -1
+#define LAYER_CUTTER_VISUAL_RENDER_TARGET "*LAYER_CUTTER_PLANE"
 
 /// To keep from conflicts with SEE_BLACKNESS internals
 #define BLACKNESS_PLANE 0
 
 #define GHOST_PLANE 80
 
-#define LIGHTING_PLANE 100
-#define EXTERIOR_LIGHTING_PLANE 101
+#define FRILL_MASK_PLANE 95
+#define FRILL_MASK_RENDER_TARGET "*FRILL_MASK_RENDER_TARGET"
 
-///Popup Chat Messages
+//------------------- LIGHTING -------------------
+//Normal 1 per turf dynamic lighting underlays
+#define LIGHTING_PLANE 100
+
+#define S_LIGHTING_VISUAL_PLANE 101
+#define S_LIGHTING_VISUAL_RENDER_TARGET "S_LIGHT_VISUAL_PLANE"
+
+#define O_LIGHTING_VISUAL_PLANE 102
+#define O_LIGHTING_VISUAL_RENDER_TARGET "O_LIGHT_VISUAL_PLANE"
+
+#define E_LIGHTING_VISUAL_PLANE 103
+#define E_LIGHTING_VISUAL_RENDER_TARGET "E_LIGHT_VISUAL_PLANE"
+
+//Things that should render ignoring lighting
+#define ABOVE_LIGHTING_PLANE 120
+
+//visibility + hiding of things outside of light source range
+#define BYOND_LIGHTING_PLANE 130
+
+//------------------- EMISSIVES -------------------
+//Layering order of these is not particularly meaningful.
+//Important part is the seperation of the planes for control via plane_master
+
+/// This plane masks out lighting to create an "emissive" effect, ie for glowing lights in otherwise dark areas.
+#define EMISSIVE_PLANE 150
+/// The render target used by the emissive layer.
+#define EMISSIVE_RENDER_TARGET "*EMISSIVE_PLANE"
+
+//------------------- FULLSCREEN RUNECHAT BUBBLES -
+//Popup Chat Messages
 #define RUNECHAT_PLANE 501
 
+//------------------- Rendering -------------------
 #define RENDER_PLANE_GAME 990
 #define RENDER_PLANE_NON_GAME 995
 
@@ -196,8 +285,14 @@
 
 #define RENDER_PLANE_MASTER 999
 
-//-------------------- HUD ---------------------
-#define FULLSCREEN_PLANE 900
+// NOTE! You can only ever have planes greater then -10000, if you add too many with large offsets you will brick multiz
+// Same can be said for large multiz maps. Tread carefully mappers
+#define HIGHEST_EVER_PLANE RENDER_PLANE_MASTER
+/// The range unique planes can be in
+#define PLANE_RANGE (HIGHEST_EVER_PLANE - LOWEST_EVER_PLANE)
+
+//------------------- HUD -------------------------
+#define FULLSCREEN_PLANE 500
 
 /// HUD layer defines
 #define HUD_PLANE 1000

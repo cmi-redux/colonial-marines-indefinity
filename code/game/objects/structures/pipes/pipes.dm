@@ -115,10 +115,10 @@
 			if(V.welded)
 				to_chat(user, SPAN_WARNING("This vent is closed off, you cannot climb through it."))
 				return
-			var/obj/effect/alien/weeds/W = locate(/obj/effect/alien/weeds) in V.loc
-			if(W)
-				var/mob/living/carbon/xenomorph/X = user
-				if(!istype(X) || X.hivenumber != W.linked_hive.hivenumber)
+			var/obj/effect/alien/weeds/weeds = locate(/obj/effect/alien/weeds) in V.loc
+			if(weeds)
+				var/mob/living/carbon/xenomorph/xeno = user
+				if(!istype(xeno) || xeno.faction != weeds.faction)
 					to_chat(user, SPAN_WARNING("The weeds are blocking the exit of this vent"))
 					return
 
@@ -197,8 +197,6 @@
 	if(!time_till)
 		CRASH("No time given to /warning_explode.")
 	var/turf/position = get_turf(src)
-	if(protected_by_pylon(TURF_PROTECTION_MORTAR, position))
-		return
 
 	new /obj/effect/warning/explosive(position, time_till)
 	playsound(src, 'sound/effects/pipe_hissing.ogg', vol = 40)

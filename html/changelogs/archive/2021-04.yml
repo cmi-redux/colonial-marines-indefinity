@@ -503,7 +503,7 @@
   - tweak: Attack delay for missing a directional attack is now 0.25 seconds, down
       from (usually) 1 second.
   - tweak: Directional attacks now calculate angles more precisely, so your mouse
-      doesn't need to be perfectly lined up to attack in a cardinal direction.
+      doesn't need to be perfectly lined up to attack in a cardinals direction.
   - tweak: The non-help intent self-harm preference toggle doesn't apply to xenomorphs
       anymore, as they can't do anything to themselves unless someone someday gives
       them weapon items. This prevents the toggle from messing you up when you click

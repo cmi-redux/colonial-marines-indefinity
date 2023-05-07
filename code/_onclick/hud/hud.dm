@@ -1,4 +1,3 @@
-
 /*
 	The hud datum
 	Used to show and hide huds for all the different mob types,
@@ -61,6 +60,8 @@
 	var/list/atom/movable/screen/plane_master/plane_masters = list() // see "appearance_flags" in the ref, assoc list of "[plane]" = object
 	///Assoc list of controller groups, associated with key string group name with value of the plane master controller ref
 	var/list/atom/movable/plane_master_controller/plane_master_controllers = list()
+
+	var/atom/movable/screen/ammo
 
 	var/list/static_inventory = list() //the screen objects which are static
 	var/list/toggleable_inventory = list() //the screen objects which can be hidden
@@ -167,8 +168,6 @@
 /datum/hud/proc/show_hud(version = 0, mob/viewmob)
 	if(!ismob(mymob))
 		return FALSE
-// if(!mymob.client)
-// return FALSE
 	var/mob/screenmob = viewmob || mymob
 	if(!screenmob.client)
 		return FALSE
@@ -183,8 +182,8 @@
 		display_hud_version = 1
 
 	switch(display_hud_version)
-		if(HUD_STYLE_STANDARD) //Default HUD
-			hud_shown = 1 //Governs behavior of other procs
+		if(HUD_STYLE_STANDARD)	//Default HUD
+			hud_shown = TRUE	//Governs behavior of other procs
 			if(static_inventory.len)
 				screenmob.client.screen += static_inventory
 			if(toggleable_inventory.len && inventory_shown)
@@ -194,8 +193,8 @@
 			if(infodisplay.len)
 				screenmob.client.screen += infodisplay
 
-		if(HUD_STYLE_REDUCED) //Reduced HUD
-			hud_shown = 0 //Governs behavior of other procs
+		if(HUD_STYLE_REDUCED)	//Reduced HUD
+			hud_shown = FALSE	//Governs behavior of other procs
 			if(static_inventory.len)
 				screenmob.client.screen -= static_inventory
 			if(toggleable_inventory.len)
@@ -213,8 +212,8 @@
 			if(action_intent)
 				screenmob.client.screen += action_intent //we want the intent switcher visible
 
-		if(HUD_STYLE_NOHUD) //No HUD
-			hud_shown = 0 //Governs behavior of other procs
+		if(HUD_STYLE_NOHUD)	//No HUD
+			hud_shown = FALSE	//Governs behavior of other procs
 			if(static_inventory.len)
 				screenmob.client.screen -= static_inventory
 			if(toggleable_inventory.len)
@@ -228,6 +227,7 @@
 	persistent_inventory_update(screenmob)
 	mymob.update_action_buttons(TRUE)
 	mymob.reload_fullscreens()
+	update_parallax_pref(screenmob)
 
 	// ensure observers get an accurate and up-to-date view
 	if(!viewmob)

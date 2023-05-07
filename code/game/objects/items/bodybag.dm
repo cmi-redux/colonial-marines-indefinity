@@ -156,8 +156,8 @@
 	if(..())
 		density = FALSE
 		update_name()
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 /obj/structure/closet/bodybag/open()
 	. = ..()
@@ -176,8 +176,8 @@
 
 
 /obj/structure/closet/bodybag/Move(NewLoc, direct)
-	if (roller_buckled && roller_buckled.loc != NewLoc) //not updating position
-		if (!roller_buckled.anchored)
+	if(roller_buckled && roller_buckled.loc != NewLoc) //not updating position
+		if(!roller_buckled.anchored)
 			return roller_buckled.Move(NewLoc, direct)
 		else
 			return 0
@@ -307,7 +307,7 @@
 		var/mob/living/carbon/human/H = stasis_mob
 		var/stasis_ref = WEAKREF(H)
 		for(var/datum/data/record/R as anything in GLOB.data_core.medical)
-			if (R.fields["ref"] == stasis_ref)
+			if(R.fields["ref"] == stasis_ref)
 				if(!(R.fields["last_scan_time"]))
 					. += "<span class = 'deptradio'>No scan report on record</span>\n"
 				else
@@ -325,7 +325,7 @@
 	. = ..()
 	if(.)
 		return
-	if (href_list["scanreport"])
+	if(href_list["scanreport"])
 		if(hasHUD(usr,"medical"))
 			if(!skillcheck(usr, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC))
 				to_chat(usr, SPAN_WARNING("You're not trained to use this."))
@@ -337,7 +337,7 @@
 				var/mob/living/carbon/human/H = stasis_mob
 				var/stasis_ref = WEAKREF(H)
 				for(var/datum/data/record/R as anything in GLOB.data_core.medical)
-					if (R.fields["ref"] == stasis_ref)
+					if(R.fields["ref"] == stasis_ref)
 						if(R.fields["last_scan_time"] && R.fields["last_tgui_scan_result"])
 							tgui_interact(usr, human = H)
 						break

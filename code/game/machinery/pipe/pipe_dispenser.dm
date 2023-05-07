@@ -75,7 +75,7 @@
 /obj/structure/machinery/pipedispenser/Topic(href, href_list)
 	if(..())
 		return
-	if(unwrenched || !usr.canmove || usr.stat || usr.is_mob_restrained() || !in_range(loc, usr))
+	if(unwrenched || !usr.can_action || usr.is_mob_restrained() || !in_range(loc, usr))
 		close_browser(usr, "pipedispenser")
 		return
 	usr.set_interaction(src)
@@ -84,7 +84,7 @@
 		if(!wait)
 			var/p_type = text2num(href_list["make"])
 			var/p_dir = text2num(href_list["dir"])
-			var/obj/item/pipe/P = new (/*usr.loc*/ src.loc, p_type, p_dir)
+			var/obj/item/pipe/P = new(/*usr.loc*/ src.loc, p_type, p_dir)
 			P.update()
 			P.add_fingerprint(usr)
 			wait = 1
@@ -98,16 +98,16 @@
 
 /obj/structure/machinery/pipedispenser/attackby(obj/item/W as obj, mob/user as mob)
 	src.add_fingerprint(usr)
-	if (istype(W, /obj/item/pipe) || istype(W, /obj/item/pipe_meter))
+	if(istype(W, /obj/item/pipe) || istype(W, /obj/item/pipe_meter))
 		to_chat(usr, SPAN_NOTICE(" You put [W] back to [src]."))
 		user.drop_held_item()
 		qdel(W)
 		return
-	else if (HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
-		if (unwrenched==0)
+	else if(HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
+		if(unwrenched==0)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
 			to_chat(user, SPAN_NOTICE(" You begin to unfasten \the [src] from the floor..."))
-			if (do_after(user, 40, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
+			if(do_after(user, 40, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 				user.visible_message( \
 					"[user] unfastens \the [src].", \
 					SPAN_NOTICE("You have unfastened \the [src]. Now it can be pulled somewhere else."), \
@@ -115,12 +115,12 @@
 				src.anchored = FALSE
 				src.stat |= MAINT
 				src.unwrenched = 1
-				if (usr.interactee==src)
+				if(usr.interactee==src)
 					close_browser(usr, "pipedispenser")
-		else /*if (unwrenched==1)*/
+		else /*if(unwrenched==1)*/
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
 			to_chat(user, SPAN_NOTICE(" You begin to fasten \the [src] to the floor..."))
-			if (do_after(user, 20, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
+			if(do_after(user, 20, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 				user.visible_message( \
 					"[user] fastens \the [src].", \
 					SPAN_NOTICE("You have fastened \the [src]. Now it can dispense pipes."), \
@@ -150,13 +150,13 @@ Nah
 
 //Allow you to drag-drop disposal pipes into it
 /obj/structure/machinery/pipedispenser/disposal/MouseDrop_T(obj/structure/disposalconstruct/pipe as obj, mob/usr as mob)
-	if(!usr.canmove || usr.stat || usr.is_mob_restrained())
+	if(!usr.can_action || usr.is_mob_restrained())
 		return
 
-	if (!istype(pipe) || get_dist(usr, src) > 1 || get_dist(src,pipe) > 1 )
+	if(!istype(pipe) || get_dist(usr, src) > 1 || get_dist(src,pipe) > 1 )
 		return
 
-	if (pipe.anchored)
+	if(pipe.anchored)
 		return
 
 	qdel(pipe)
@@ -192,12 +192,12 @@ Nah
 	usr.set_interaction(src)
 	src.add_fingerprint(usr)
 	if(href_list["dmake"])
-		if(unwrenched || !usr.canmove || usr.stat || usr.is_mob_restrained() || !in_range(loc, usr))
+		if(unwrenched || !usr.can_action || usr.is_mob_restrained() || !in_range(loc, usr))
 			close_browser(usr, "pipedispenser")
 			return
 		if(!wait)
 			var/p_type = text2num(href_list["dmake"])
-			var/obj/structure/disposalconstruct/C = new (src.loc)
+			var/obj/structure/disposalconstruct/C = new(src.loc)
 			switch(p_type)
 				if(0)
 					C.ptype = 0

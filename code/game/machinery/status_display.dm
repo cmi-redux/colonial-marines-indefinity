@@ -78,7 +78,7 @@
 			return 1
 		if(STATUS_DISPLAY_TRANSFER_SHUTTLE_TIME) //emergency shuttle timer
 			message1 = "EVAC"
-			message2 = EvacuationAuthority.get_status_panel_eta()
+			message2 = SSevacuation.get_evac_status_panel_eta()
 			if(message2)
 				if(length(message2) > CHARS_PER_LINE) message2 = "Error"
 				update_display(message1, message2)
@@ -109,10 +109,10 @@
 			return 1
 		if(STATUS_DISPLAY_TIME)
 			message1 = "TIME"
-			message2 = worldtime2text()
+			message2 = game_time_timestamp()
 			update_display(message1, message2)
-			return 1
-	return 0
+			return TRUE
+	return FALSE
 
 /obj/structure/machinery/status_display/get_examine_text(mob/user)
 	. = ..()
@@ -147,7 +147,7 @@
 
 /obj/structure/machinery/status_display/proc/get_supply_shuttle_timer()
 	var/datum/shuttle/ferry/supply/shuttle = supply_controller.shuttle
-	if (!shuttle)
+	if(!shuttle)
 		return "Error"
 
 	if(shuttle.has_arrive_time())
@@ -236,6 +236,71 @@
 	if(overlays.len)
 		overlays.Cut()
 	overlays += image('icons/obj/structures/machinery/status_display.dmi', icon_state=picture_state)
+
+/obj/structure/machinery/status_display/lifeboat
+	var/id
+	var/lifeboat_dir
+	var/lifeboat_background
+	maptext_y = 4
+
+/obj/structure/machinery/status_display/lifeboat/Initialize()
+	. = ..()
+	GLOB.lifeboat_displays += src
+	lifeboat_background = "lifeboat_background_[lifeboat_dir]"
+	underlays += "frame"
+
+/obj/structure/machinery/status_display/lifeboat/Destroy()
+	GLOB.lifeboat_displays -= src
+	return ..()
+
+/obj/structure/machinery/status_display/lifeboat/update_display(line1, line2)
+	var/new_text = {"<div style="font-size:[FONT_SIZE];color:[COLOR_RED];font:'[FONT_STYLE]';text-align:center;" valign="middle">[line1]</div>"}
+	if(maptext != new_text)
+		maptext = new_text
+
+/obj/structure/machinery/status_display/lifeboat/proc/set_and_update(line1, line2)
+	mode = 2
+	remove_overlay()
+	update_display(line1, line2)
+	set_message(line1, line2)
+
+/obj/structure/machinery/status_display/lifeboat/proc/set_and_update_lifeboat(line1, line2)
+	if(icon_state != lifeboat_background)
+		icon_state = lifeboat_background
+	set_and_update(line1, line2)
+
+/obj/structure/machinery/status_display/lifeboat/set_picture(state)
+	picture_state = state
+	mode = 3
+	remove_display()
+	icon_state = picture_state
+
+/obj/structure/machinery/status_display/lifeboat/remove_display()
+	icon_state = null
+	remove_overlay()
+	if(maptext)
+		maptext = ""
+
+/obj/structure/machinery/status_display/lifeboat/proc/set_overlay(state)
+	picture_state = state
+	mode = 3
+	remove_overlay()
+	overlays += image('icons/obj/structures/machinery/status_display.dmi', icon_state=picture_state)
+
+/obj/structure/machinery/status_display/lifeboat/proc/set_lifeboat_overlay(state)
+	if(icon_state != lifeboat_background)
+		icon_state = lifeboat_background
+	set_overlay(state)
+
+/obj/structure/machinery/status_display/lifeboat/proc/set_lifeboat_overlay_arrow()
+	var/arrow = "lifeboat_overlay_arrow_[lifeboat_dir]"
+	set_lifeboat_overlay(arrow)
+
+/obj/structure/machinery/status_display/lifeboat/proc/remove_overlay(state)
+	if(overlays.len)
+		overlays.Cut()
+	if(maptext)
+		maptext = ""
 
 #undef DEFAULT_FONT_COLOR
 #undef FONT_STYLE

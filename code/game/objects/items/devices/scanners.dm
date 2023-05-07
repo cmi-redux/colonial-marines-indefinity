@@ -170,14 +170,14 @@ FORENSIC SCANNER
 /obj/item/device/analyzer/attack_self(mob/user as mob)
 	..()
 
-	if (user.stat)
+	if(user.stat)
 		return
-	if (!(istype(usr, /mob/living/carbon/human) || SSticker) && SSticker.mode.name != "monkey")
+	if(!(istype(usr, /mob/living/carbon/human) || SSticker) && SSticker.mode.name != "monkey")
 		to_chat(usr, SPAN_DANGER("You don't have the dexterity to do this!"))
 		return
 
 	var/turf/location = user.loc
-	if (!( istype(location, /turf) ))
+	if(!( istype(location, /turf) ))
 		return
 
 	var/env_pressure = location.return_pressure()
@@ -227,12 +227,12 @@ FORENSIC SCANNER
 /obj/item/device/mass_spectrometer/attack_self(mob/user)
 	..()
 
-	if (user.stat)
+	if(user.stat)
 		return
-	if (crit_fail)
+	if(crit_fail)
 		to_chat(user, SPAN_DANGER("This device has critically failed and is no longer functional!"))
 		return
-	if (!(istype(user, /mob/living/carbon/human) || SSticker) && SSticker.mode.name != "monkey")
+	if(!(istype(user, /mob/living/carbon/human) || SSticker) && SSticker.mode.name != "monkey")
 		to_chat(user, SPAN_DANGER("You don't have the dexterity to do this!"))
 		return
 
@@ -263,14 +263,14 @@ FORENSIC SCANNER
 /obj/item/device/reagent_scanner/afterattack(obj/O, mob/user as mob, proximity)
 	if(!proximity)
 		return
-	if (user.stat)
+	if(user.stat)
 		return
-	if (!(istype(user, /mob/living/carbon/human) || SSticker) && SSticker.mode.name != "monkey")
+	if(!(istype(user, /mob/living/carbon/human) || SSticker) && SSticker.mode.name != "monkey")
 		to_chat(user, SPAN_DANGER("You don't have the dexterity to do this!"))
 		return
 	if(!istype(O))
 		return
-	if (crit_fail)
+	if(crit_fail)
 		to_chat(user, SPAN_DANGER("This device has critically failed and is no longer functional!"))
 		return
 
@@ -397,7 +397,7 @@ FORENSIC SCANNER
 	if(!dat)
 		to_chat(user, SPAN_NOTICE("No scan data available."))
 		return
-	if(alert(user,"Print latest scan?","[scan_name]","Yes","No") == "Yes")
+	if(alert(user, "Print latest scan?", "[scan_name]", user.client.auto_lang(LANGUAGE_YES), user.client.auto_lang(LANGUAGE_NO)) == user.client.auto_lang(LANGUAGE_YES))
 		var/obj/item/paper/printing = new /obj/item/paper/()
 		printing.name = scan_name
 		printing.info = "Chemicals found: [dat]"

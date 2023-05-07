@@ -33,7 +33,7 @@
 	if(contents.len)
 		var/obj/item/book/choice = input("Which book would you like to remove from the shelf?") as null|obj in contents
 		if(choice)
-			if(!usr.canmove || usr.stat || usr.is_mob_restrained() || !in_range(loc, usr))
+			if(!usr.can_action || usr.is_mob_restrained() || !in_range(loc, usr))
 				return
 			if(ishuman(user))
 				if(!user.get_active_hand())
@@ -45,7 +45,7 @@
 /obj/structure/bookcase/ex_act(severity)
 	switch(severity)
 		if(0 to EXPLOSION_THRESHOLD_LOW)
-			if (prob(50))
+			if(prob(50))
 				for(var/obj/item/book/b in contents)
 					b.forceMove((get_turf(src)))
 				deconstruct(FALSE)

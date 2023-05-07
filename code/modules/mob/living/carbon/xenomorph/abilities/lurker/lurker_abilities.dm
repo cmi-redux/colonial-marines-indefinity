@@ -15,34 +15,34 @@
 
 /datum/action/xeno_action/activable/pounce/lurker/additional_effects_always()
 	var/mob/living/carbon/xenomorph/X = owner
-	if (!istype(X))
+	if(!istype(X))
 		return
 
-	if (X.mutation_type == LURKER_NORMAL)
+	if(X.mutation_type == LURKER_NORMAL)
 		var/found = FALSE
 		for (var/mob/living/carbon/human/H in get_turf(X))
 			found = TRUE
 			break
 
-		if (found)
+		if(found)
 			var/datum/action/xeno_action/onclick/lurker_invisibility/LIA = get_xeno_action_by_type(X, /datum/action/xeno_action/onclick/lurker_invisibility)
-			if (istype(LIA))
+			if(istype(LIA))
 				LIA.invisibility_off()
 
 /datum/action/xeno_action/activable/pounce/lurker/additional_effects(mob/living/L)
-	var/mob/living/carbon/xenomorph/X = owner
-	if (!istype(X))
+	var/mob/living/carbon/xenomorph/xeno = owner
+	if(!istype(xeno))
 		return
 
-	if (X.mutation_type == LURKER_NORMAL)
-		RegisterSignal(X, COMSIG_XENO_SLASH_ADDITIONAL_EFFECTS_SELF, PROC_REF(remove_freeze))
+	if(xeno.mutation_type == LURKER_NORMAL)
+		RegisterSignal(xeno, COMSIG_XENO_SLASH_ADDITIONAL_EFFECTS_SELF, PROC_REF(remove_freeze))
 
-/datum/action/xeno_action/activable/pounce/lurker/proc/remove_freeze(mob/living/carbon/xenomorph/X)
+/datum/action/xeno_action/activable/pounce/lurker/proc/remove_freeze(mob/living/carbon/xenomorph/xeno)
 	SIGNAL_HANDLER
 
-	var/datum/behavior_delegate/lurker_base/BD = X.behavior_delegate
-	if (istype(BD))
-		UnregisterSignal(X, COMSIG_XENO_SLASH_ADDITIONAL_EFFECTS_SELF)
+	var/datum/behavior_delegate/lurker_base/BD = xeno.behavior_delegate
+	if(istype(BD))
+		UnregisterSignal(xeno, COMSIG_XENO_SLASH_ADDITIONAL_EFFECTS_SELF)
 		end_pounce_freeze()
 
 /datum/action/xeno_action/onclick/lurker_invisibility

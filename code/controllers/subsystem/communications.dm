@@ -156,7 +156,7 @@ var/list/radiochannels = list(
 	SQUAD_MARINE_4 = DELTA_FREQ,
 	SQUAD_MARINE_5 = ECHO_FREQ,
 	SQUAD_MARINE_CRYO = CRYO_FREQ,
-	SQUAD_SOF = SOF_FREQ,
+	SQUAD_MARINE_SOF = SOF_FREQ,
 
 	RADIO_CHANNEL_ALAMO = DS1_FREQ,
 	RADIO_CHANNEL_NORMANDY = DS2_FREQ,
@@ -350,7 +350,7 @@ SUBSYSTEM_DEF(radio)
 		if(!start_point)
 			qdel(signal)
 			return 0
-	if (filter)
+	if(filter)
 		send_to_filter(source, signal, filter, start_point, range)
 		send_to_filter(source, signal, RADIO_DEFAULT, start_point, range)
 	else
@@ -360,7 +360,7 @@ SUBSYSTEM_DEF(radio)
 
 //Sends a signal to all machines belonging to a given filter. Should be called by post_signal()
 /datum/radio_frequency/proc/send_to_filter(obj/source, datum/signal/signal, filter, turf/start_point = null, range = null)
-	if (range && !start_point)
+	if(range && !start_point)
 		return
 
 	for(var/datum/weakref/device_ref as anything in devices[filter])
@@ -382,7 +382,7 @@ SUBSYSTEM_DEF(radio)
 		device.receive_signal(signal, TRANSMISSION_RADIO, frequency)
 
 /datum/radio_frequency/proc/add_listener(obj/device as obj, filter as text|null)
-	if (!filter)
+	if(!filter)
 		filter = RADIO_DEFAULT
 
 	var/datum/weakref/new_listener = WEAKREF(device)
@@ -390,7 +390,7 @@ SUBSYSTEM_DEF(radio)
 		return stack_trace("null, non-datum or qdeleted device")
 
 	var/list/devices_line = devices[filter]
-	if (!devices_line)
+	if(!devices_line)
 		devices_line = new
 		devices[filter] = devices_line
 	devices_line += new_listener
@@ -401,7 +401,7 @@ SUBSYSTEM_DEF(radio)
 		devices_line -= WEAKREF(device)
 		while (null in devices_line)
 			devices_line -= null
-		if (devices_line.len==0)
+		if(devices_line.len==0)
 			devices -= devices_filter
 			qdel(devices_line)
 
@@ -426,7 +426,7 @@ SUBSYSTEM_DEF(radio)
 	frequency = model.frequency
 
 /datum/signal/proc/debug_print()
-	if (source)
+	if(source)
 		. = "signal = {source = '[source]' ([source:x],[source:y],[source:z])\n"
 	else
 		. = "signal = {source = '[source]' ()\n"

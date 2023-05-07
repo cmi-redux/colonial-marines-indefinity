@@ -7,7 +7,7 @@
 /datum/xeno_shield/vanguard/on_hit(damage)
 	notify_xeno()
 
-	if (!hit_yet)
+	if(!hit_yet)
 		hit_yet = TRUE
 		rapid_decay()
 		return 0
@@ -15,7 +15,7 @@
 		return ..(damage)
 
 /datum/xeno_shield/vanguard/Destroy()
-	if (linked_xeno)
+	if(linked_xeno)
 		linked_xeno.explosivearmor_modifier -= explosive_armor_amount
 		linked_xeno.recalculate_armor()
 
@@ -28,7 +28,7 @@
 	return PROCESS_KILL // REALLY, don't process us!
 
 /datum/xeno_shield/vanguard/proc/rapid_decay()
-	set waitfor = 0
+	set waitfor = FALSE
 	while(amount > 0)
 		amount *= 0.70
 		amount -= 50
@@ -36,21 +36,21 @@
 		notify_xeno()
 		sleep(0.4 SECONDS)
 
-	if (amount <= 0)
-		if (linked_xeno)
-			if (QDELETED(linked_xeno) || !istype(linked_xeno))
+	if(amount <= 0)
+		if(linked_xeno)
+			if(QDELETED(linked_xeno) || !istype(linked_xeno))
 				return
 
 			linked_xeno.overlay_shields()
 			var/datum/action/xeno_action/activable/cleave/cAction = get_xeno_action_by_type(linked_xeno, /datum/action/xeno_action/activable/cleave)
-			if (istype(cAction))
+			if(istype(cAction))
 				addtimer(CALLBACK(cAction, TYPE_PROC_REF(/datum/action/xeno_action/activable/cleave, remove_buff)), 7, TIMER_UNIQUE)
 
 /datum/xeno_shield/vanguard/proc/notify_xeno()
-	if (!istype(linked_xeno))
+	if(!istype(linked_xeno))
 		return
 
-	if (linked_xeno.mutation_type == PRAETORIAN_VANGUARD)
+	if(linked_xeno.mutation_type == PRAETORIAN_VANGUARD)
 		var/datum/behavior_delegate/praetorian_vanguard/BD = linked_xeno.behavior_delegate
-		if (istype(BD))
+		if(istype(BD))
 			BD.last_combat_time = world.time

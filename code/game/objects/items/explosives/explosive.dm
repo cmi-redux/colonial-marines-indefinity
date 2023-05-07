@@ -27,6 +27,8 @@
 	var/use_dir = FALSE
 	var/angle = 360
 	var/has_blast_wave_dampener = FALSE; //Whether or not the casing can be toggle between different falloff_mode
+	var/hud_state
+	var/hud_state_empty = "grenade_empty"
 
 /obj/item/explosive/Initialize()
 	. = ..()
@@ -124,7 +126,7 @@
 		playsound(loc, 'sound/items/Screwdriver2.ogg', 25, 0, 6)
 		user.temp_drop_inv_item(det)
 		det.forceMove(src)
-		detonator = det
+		add_detonator(det)
 		assembly_stage = ASSEMBLY_UNLOCKED
 		desc = initial(desc) + "\n Contains [containers.len] containers[detonator?" and detonator":""]"
 		update_icon()
@@ -162,6 +164,9 @@
 					desc = initial(desc) + "\n Contains [containers.len] containers[detonator?" and detonator":""]"
 			else
 				to_chat(user, SPAN_DANGER("\the [W] is empty."))
+
+/obj/item/explosive/proc/add_detonator(obj/item/device/assembly_holder/det)
+	detonator = det
 
 /obj/item/explosive/proc/activate_sensors()
 	if(!detonator || active || assembly_stage < ASSEMBLY_LOCKED)

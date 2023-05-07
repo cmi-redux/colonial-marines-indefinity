@@ -72,7 +72,7 @@
 
 /obj/item/cell/emp_act(severity)
 	charge -= 1000 / severity
-	if (charge < 0)
+	if(charge < 0)
 		charge = 0
 	if(reliability != 100 && prob(50/severity))
 		reliability -= 10 / severity
@@ -96,15 +96,15 @@
 
 /obj/item/cell/proc/get_electrocute_damage()
 	switch (charge)
-		if (1000000 to INFINITY)
+		if(1000000 to INFINITY)
 			return min(rand(50,160),rand(50,160))
-		if (200000 to 1000000-1)
+		if(200000 to 1000000-1)
 			return min(rand(25,80),rand(25,80))
-		if (100000 to 200000-1)//Ave powernet
+		if(100000 to 200000-1)//Ave powernet
 			return min(rand(20,60),rand(20,60))
-		if (50000 to 100000-1)
+		if(50000 to 100000-1)
 			return min(rand(15,40),rand(15,40))
-		if (1000 to 50000-1)
+		if(1000 to 50000-1)
 			return min(rand(10,20),rand(10,20))
 		else
 			return 0

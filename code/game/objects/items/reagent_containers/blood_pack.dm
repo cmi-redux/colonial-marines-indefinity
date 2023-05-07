@@ -14,7 +14,7 @@
 	. = ..()
 	if(blood_type != null)
 		name = "BloodPack [blood_type]"
-		reagents.add_reagent("blood", 200, list("viruses"=null,"blood_type"=blood_type,"resistances"=null))
+		reagents.add_reagent("blood", 200, list("viruses" = null, "blood_type" = blood_type, "resistances" = null))
 		update_icon()
 
 /obj/item/reagent_container/blood/on_reagent_change()
@@ -23,9 +23,16 @@
 /obj/item/reagent_container/blood/update_icon()
 	var/percent = round((reagents.total_volume / volume) * 100)
 	switch(percent)
-		if(0 to 9) icon_state = "empty"
-		if(10 to 50) icon_state = "half"
-		if(51 to INFINITY) icon_state = "full"
+		if(0 to 9)
+			icon_state = "empty"
+		if(10 to 24)
+			icon_state = "half_minus"
+		if(25 to 49)
+			icon_state = "half"
+		if(50 to 74)
+			icon_state = "half_plus"
+		if(75 to INFINITY)
+			icon_state = "full"
 
 /obj/item/reagent_container/blood/APlus
 	blood_type = "A+"

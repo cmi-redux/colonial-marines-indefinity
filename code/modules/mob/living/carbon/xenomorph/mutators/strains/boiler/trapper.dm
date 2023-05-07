@@ -1,19 +1,18 @@
 
-/datum/xeno_mutator/trapper
-	name = "STRAIN: Boiler - Trapper"
-	description = "You trade your ability to bombard, lance, and dump your acid in order to gain some speed and the ability to create acid explosions and restrain talls within them. With your longer-range vision, set up traps that immobilize your opponents and place acid mines which deal damage to talls and barricades and reduce the cooldown of your trap deployment for every tall hit. Finally, hit talls with your Acid Shotgun ability which adds a stack of insight to empower the next trap you place once you reach a maximum of ten insight. A point-blank shot or a shot on a stunned target will instantly apply ten stacks."
-	flavor_description = "Hsss, I love the smell of burnin' tallhost flesh in the mornin'."
-	cost = MUTATOR_COST_EXPENSIVE
+/datum/xeno_mutation/strain/trapper
+	name = LANGUAGE_STRAIN_TRAPPER
+	description = LANGUAGE_STRAIN_DESC_TRAPPER
+	cost = MUTATOR_COST_CHEAP
 	individual_only = TRUE
 	caste_whitelist = list(XENO_CASTE_BOILER) //Only boiler.
-	mutator_actions_to_remove = list(
+	mutation_actions_to_remove = list(
 		/datum/action/xeno_action/activable/xeno_spit/bombard,
 		/datum/action/xeno_action/onclick/shift_spits/boiler,
 		/datum/action/xeno_action/activable/spray_acid/boiler,
 		/datum/action/xeno_action/onclick/dump_acid,
 		/datum/action/xeno_action/onclick/toggle_long_range/boiler,
 	)
-	mutator_actions_to_add = list(
+	mutation_actions_to_add = list(
 		/datum/action/xeno_action/activable/boiler_trap,
 		/datum/action/xeno_action/activable/acid_mine,
 		/datum/action/xeno_action/activable/acid_shotgun,
@@ -23,7 +22,7 @@
 
 	behavior_delegate_type = /datum/behavior_delegate/boiler_trapper
 
-/datum/xeno_mutator/trapper/apply_mutator(datum/mutator_set/individual_mutators/mutator_set)
+/datum/xeno_mutation/strain/trapper/apply_mutator(datum/mutator_set/individual_mutations/mutator_set)
 	. = ..()
 	if(. == 0)
 		return
@@ -62,7 +61,7 @@
 	var/temp_movespeed_messaged = FALSE
 
 /datum/behavior_delegate/boiler_trapper/on_hitby_projectile(ammo)
-	if (temp_movespeed_usable)
+	if(temp_movespeed_usable)
 		temp_movespeed_time_used = world.time
 		temp_movespeed_usable = FALSE
 
@@ -73,20 +72,20 @@
 			addtimer(CALLBACK(src, PROC_REF(remove_speed_buff)), temp_movespeed_duration)
 
 /datum/behavior_delegate/boiler_trapper/ranged_attack_additional_effects_target(atom/target_atom)
-	if (!ishuman(target_atom))
+	if(!ishuman(target_atom))
 		return
-	if (!istype(bound_xeno))
+	if(!istype(bound_xeno))
 		return
 
 	var/mob/living/carbon/human/target_human = target_atom
 	var/datum/effects/boiler_trap/found = null
-	for (var/datum/effects/boiler_trap/trap in target_human.effects_list)
-		if (trap.cause_data?.resolve_mob() == bound_xeno)
+	for(var/datum/effects/boiler_trap/trap in target_human.effects_list)
+		if(trap.cause_data?.resolve_mob() == bound_xeno)
 			found = trap
 			break
 
 	var/datum/action/xeno_action/activable/boiler_trap/trap_ability = get_xeno_action_by_type(bound_xeno, /datum/action/xeno_action/activable/boiler_trap)
-	if (found)
+	if(found)
 		target_human.apply_armoured_damage(bonus_damage_shotgun_trapped, ARMOR_BIO, BURN)
 		trap_ability.empowering_charge_counter = trap_ability.empower_charge_max
 	else
@@ -102,8 +101,8 @@
 		trap_ability.empowering_charge_counter = trap_ability.empower_charge_max
 
 /datum/behavior_delegate/boiler_trapper/on_life()
-	if ((temp_movespeed_time_used + temp_movespeed_cooldown) < world.time)
-		if (!temp_movespeed_messaged)
+	if((temp_movespeed_time_used + temp_movespeed_cooldown) < world.time)
+		if(!temp_movespeed_messaged)
 			to_chat(bound_xeno, SPAN_XENODANGER("You feel your adrenaline glands refill! Your speedboost will activate again."))
 			temp_movespeed_messaged = TRUE
 		temp_movespeed_usable = TRUE

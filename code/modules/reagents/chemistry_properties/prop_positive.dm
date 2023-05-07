@@ -542,7 +542,7 @@
 		to_chat(H, SPAN_NOTICE("You feel your heart struggling as you suddenly feel a spark, making it desperately try to continue pumping."))
 		playsound_client(H.client, 'sound/effects/Heart Beat Short.ogg', 35)
 		addtimer(CALLBACK(H, TYPE_PROC_REF(/mob/living/carbon/human, handle_revive)), 50, TIMER_UNIQUE)
-	else if (potency > POTENCY_MAX_TIER_1 && H.check_tod() && H.is_revivable() && H.health < HEALTH_THRESHOLD_DEAD) //Will heal if level is 7 or greater
+	else if(potency > POTENCY_MAX_TIER_1 && H.check_tod() && H.is_revivable() && H.health < HEALTH_THRESHOLD_DEAD) //Will heal if level is 7 or greater
 		to_chat(H, SPAN_NOTICE("You feel a faint spark in your chest."))
 		H.apply_damage(-potency * POTENCY_MULTIPLIER_LOW, BRUTE)
 		H.apply_damage(-potency * POTENCY_MULTIPLIER_LOW, BURN)

@@ -9,7 +9,7 @@
 	icon_state = "apron"
 	item_state = "apron"
 	blood_overlay_type = "armor"
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 	allowed = list (
 		/obj/item/reagent_container/spray/plantbgone,
 		/obj/item/device/analyzer/plant_analyzer,
@@ -120,7 +120,7 @@
 	icon_state = "apronchef"
 	item_state = "apronchef"
 	blood_overlay_type = "armor"
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 	allowed = list (
 		/obj/item/tool/kitchen/knife,
 		/obj/item/tool/kitchen/knife/butcher,
@@ -166,7 +166,7 @@
 	allowed = list(
 		/obj/item/weapon/gun,
 		/obj/item/ammo_magazine,
-		/obj/item/ammo_casing,
+		/obj/item/ammo_parts,
 		/obj/item/weapon/melee/baton,
 		/obj/item/handcuffs,
 		/obj/item/storage/fancy/cigarettes,
@@ -203,7 +203,7 @@
 	allowed = list(
 		/obj/item/weapon/gun,
 		/obj/item/ammo_magazine,
-		/obj/item/ammo_casing,
+		/obj/item/ammo_parts,
 		/obj/item/weapon/melee/baton,
 		/obj/item/handcuffs,
 		/obj/item/device/taperecorder,
@@ -334,7 +334,7 @@
 	set category = "Object"
 	set src in usr
 
-	if(!usr.canmove || usr.stat || usr.is_mob_restrained())
+	if(!usr.can_action || usr.is_mob_restrained())
 		return 0
 
 	switch(icon_state)
@@ -437,4 +437,4 @@
 	icon = 'icons/obj/items/clothing/belts.dmi'
 	icon_state = "suspenders"
 	blood_overlay_type = "armor"
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS

@@ -5,8 +5,8 @@
 	return FALSE
 
 /datum/action/item_action/specialist/proc/handle_spec_macro()
-	if (can_use_action())
-		action_activate()
+    if(can_use_action())
+        action_activate()
 
 /datum/action/item_action/specialist/update_button_icon()
 	if(action_cooldown_check())
@@ -21,10 +21,10 @@
 	set hidden = TRUE
 
 	var/mob/living/carbon/human/H = src
-	if (!istype(H))
+	if(!istype(H))
 		return
 	for (var/datum/action/item_action/specialist/SA in H.actions)
-		if (SA.ability_primacy == SPEC_PRIMARY_ACTION_1)
+		if(SA.ability_primacy == SPEC_PRIMARY_ACTION_1)
 			SA.handle_spec_macro()
 
 /mob/living/carbon/human/verb/spec_activation_two()
@@ -33,8 +33,8 @@
 	set hidden = TRUE
 
 	var/mob/living/carbon/human/H = src
-	if (!istype(H))
+	if(!istype(H))
 		return
 	for (var/datum/action/item_action/specialist/SA in H.actions)
-		if (SA.ability_primacy == SPEC_PRIMARY_ACTION_2)
+		if(SA.ability_primacy == SPEC_PRIMARY_ACTION_2)
 			SA.handle_spec_macro()

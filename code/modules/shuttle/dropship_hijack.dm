@@ -77,8 +77,8 @@
 		return FALSE
 	shuttle.callTime = DROPSHIP_CRASH_TRANSIT_DURATION * GLOB.ship_alt
 	SSshuttle.moveShuttle(shuttle.id, crash_site.id, TRUE)
-	if(round_statistics)
-		round_statistics.track_hijack()
+	if(SSticker.mode.round_statistics)
+		SSticker.mode.round_statistics.track_hijack()
 	return TRUE
 
 /datum/dropship_hijack/almayer/proc/target_crash_site(ship_section)
@@ -121,7 +121,7 @@
 		// spawn crash location
 		var/turf/target = pick(get_area_turfs(target_area))
 		crash_site.Move(target)
-		marine_announcement("A hostile aircraft on course for the [target_ship_section] has been successfully deterred.", "IX-50 MGAD System")
+		faction_announcement("A hostile aircraft on course for the [target_ship_section] has been successfully deterred.", "IX-50 MGAD System", GLOB.faction_datum[FACTION_MARINE])
 		target_ship_section = new_target_ship_section
 		// TODO mobs not alerted
 		for(var/area/internal_area in shuttle.shuttle_areas)
@@ -147,7 +147,7 @@
 
 	shuttle.crashing = TRUE
 
-	marine_announcement("DROPSHIP ON COLLISION COURSE. CRASH IMMINENT." , "EMERGENCY", 'sound/AI/dropship_emergency.ogg')
+	faction_announcement("DROPSHIP ON COLLISION COURSE. CRASH IMMINENT." , "EMERGENCY", 'sound/AI/dropship_emergency.ogg', GLOB.faction_datum[FACTION_MARINE])
 
 	announce_dchat("The dropship is about to impact [get_area_name(crash_site)]", crash_site)
 	final_announcement = TRUE

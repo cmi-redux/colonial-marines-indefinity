@@ -1,11 +1,11 @@
 SUBSYSTEM_DEF(statpanels)
-	name = "Stat Panels"
-	wait = 0.4 SECONDS
-	init_order = SS_INIT_STATPANELS
-	init_stage = INITSTAGE_EARLY
-	priority = SS_PRIORITY_STATPANEL
-	flags = SS_NO_INIT
-	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
+	name		= "Stat Panels"
+	wait		= 4
+	init_order	= SS_INIT_STATPANELS
+	init_stage	= INITSTAGE_EARLY
+	priority	= SS_PRIORITY_STATPANEL
+	flags		= SS_NO_INIT
+	runlevels	= RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
 	var/list/currentrun = list()
 	var/list/global_data
 	var/list/mc_data
@@ -19,9 +19,8 @@ SUBSYSTEM_DEF(statpanels)
 	///how many full runs this subsystem has completed. used for variable rate refreshes.
 	var/num_fires = 0
 
-
 /datum/controller/subsystem/statpanels/fire(resumed = FALSE)
-	if (!resumed)
+	if(!resumed)
 		num_fires++
 		var/datum/map_config/cached
 		if(SSmapping.next_map_configs)
@@ -29,11 +28,11 @@ SUBSYSTEM_DEF(statpanels)
 		global_data = list(
 			"Map: [SSmapping.configs?[GROUND_MAP]?.map_name || "Loading..."]",
 			cached ? "Next Map: [cached?.map_name]" : null,
-// "Round ID: [GLOB.round_id ? GLOB.round_id : "NULL"]", // this is commented because we don't have it and we should have it instead of using debug DB - be the hero of today
-//   "Round Time: [ROUND_TIME]",
+			"Round ID: [SSperf_logging.round ? SSperf_logging.round.id : "NULL"]",
 			"Server Time: [time2text(world.timeofday, "YYYY-MM-DD hh:mm:ss")]",
 			"Round Time: [duration2text()]",
-			"Operation Time: [worldtime2text()]",
+			"Operation Time: [game_time_timestamp()]",
+			"Operation Zone Time: [planet_game_time_timestamp()]",
 		)
 
 		src.currentrun = GLOB.clients.Copy()
@@ -198,7 +197,6 @@ SUBSYSTEM_DEF(statpanels)
 		list("World Time:", "[world.time]"),
 		list("Globals:", GLOB.stat_entry(), "\ref[GLOB]"),
 		list("[config]:", config.stat_entry(), "\ref[config]"),
-// list("Byond:", "(FPS:[world.fps]) (TickCount:[world.time/world.tick_lag]) (TickDrift:[round(Master.tickdrift,1)]([round((Master.tickdrift/(world.time/world.tick_lag))*100,0.1)]%)) (Internal Tick Usage: [round(MAPTICK_LAST_INTERNAL_TICK_USAGE,0.1)]%)"),
 		list("Byond:", "(FPS:[world.fps]) (TickCount:[world.time/world.tick_lag]) (TickDrift:[round(Master.tickdrift,1)]([round((Master.tickdrift/(world.time/world.tick_lag))*100,0.1)]%)"),
 		list("Master Controller:", Master.stat_entry(), "\ref[Master]"),
 		list("Failsafe Controller:", Failsafe.stat_entry(), "\ref[Failsafe]"),
@@ -212,7 +210,7 @@ SUBSYSTEM_DEF(statpanels)
 	var/list/sdql2_initial = list()
 	//sdql2_initial[length(sdql2_initial)++] = list("", "Access Global SDQL2 List", REF(GLOB.sdql2_vv_statobj))
 	var/list/sdql2_querydata = list()
-	//for(var/datum/sdql2_query/query as anything in GLOB.sdql2_queries)
+	//for(datum/sdql2_query/query as anything in GLOB.sdql2_queries)
 		//sdql2_querydata = query.generate_stat()
 
 	sdql2_initial += sdql2_querydata
@@ -348,13 +346,13 @@ SUBSYSTEM_DEF(statpanels)
 	qdel(GetComponent(/datum/component/connect_mob_behalf))
 	actively_tracking = FALSE
 
-/datum/object_window_info/proc/on_mob_move(mob/source)
+/datum/object_window_info/proc/on_mob_move(mob/user)
 	SIGNAL_HANDLER
-	var/turf/listed = source.listed_turf
-	if(!listed || !source.TurfAdjacent(listed))
-		source.set_listed_turf(null)
+	var/turf/listed = user.listed_turf
+	if(!listed || !user.TurfAdjacent(listed))
+		user.set_listed_turf(null)
 
-/datum/object_window_info/proc/on_mob_logout(mob/source)
+/datum/object_window_info/proc/on_mob_logout(mob/user)
 	SIGNAL_HANDLER
 	on_mob_move(parent.mob)
 

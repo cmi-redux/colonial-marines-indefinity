@@ -7,12 +7,15 @@
 	if(QDELETED(src))
 		return
 
+	overlays.Cut()
+
 	if(!damage_overlays[1]) //list hasn't been populated
 		generate_damage_overlays()
 
-	overlays.Cut()
-
 	add_cleanable_overlays()
+
+	if(turf_flags & TURF_WEATHER)
+		overlays += SSsunlighting.get_weather_overlay()
 
 	//smooth wall stuff
 	if(!special_icon)
@@ -84,7 +87,7 @@
 				break
 
 		if(success)
-			if(get_dir(src, T) in cardinal)
+			if(get_dir(src, T) in  GLOB.cardinals)
 				wall_dirs += get_dir(src, T)
 
 	for(var/neighbor in wall_dirs)
@@ -108,7 +111,8 @@
 #define CORNER_CLOCKWISE 4
 
 /proc/dirs_to_corner_states(list/dirs)
-	if(!istype(dirs)) return
+	if(!istype(dirs))
+		return
 
 	var/list/ret = list(NORTHWEST, SOUTHEAST, NORTHEAST, SOUTHWEST)
 

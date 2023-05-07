@@ -6,7 +6,7 @@
 		to_chat(usr, "Only administrators may use this command.")
 		return
 
-	if(!LAZYLEN(GLOB.custom_event_info_list))
+	if(!length(GLOB.custom_event_info_list))
 		to_chat(usr, "custom_event_info_list is not initialized, tell a dev.")
 		return
 
@@ -14,39 +14,36 @@
 
 	for(var/T in GLOB.custom_event_info_list)
 		var/datum/custom_event_info/CEI = GLOB.custom_event_info_list[T]
-		temp_list["[CEI.msg ? "(x) [CEI.faction]" : CEI.faction]"] = CEI.faction
+		temp_list["[CEI.msg ? "(x) [CEI.faction_name]" : CEI.faction_name]"] = CEI.faction_name
 
-	var/faction = tgui_input_list(usr, "Select faction. Ghosts will see only \"Global\" category message. Factions with event message set are marked with (x).", "Faction Choice", temp_list)
-	if(!faction)
+	var/event_info_get = temp_list[tgui_input_list(usr, "Select faction. Ghosts will see only \"Global\" category message. Factions with event message set are marked with (x).", "Faction Choice", temp_list)]
+	if(!event_info_get)
 		return
 
-	faction = temp_list[faction]
-
-	if(!GLOB.custom_event_info_list[faction])
-		to_chat(usr, "Error has occured, [faction] category is not found.")
+	var/datum/custom_event_info/CEI = GLOB.custom_event_info_list[event_info_get]
+	if(!CEI)
+		to_chat(usr, "custom_event_info_list don't have [event_info_get] in list, tell a dev.")
 		return
 
-	var/datum/custom_event_info/CEI = GLOB.custom_event_info_list[faction]
-
-	var/input = input(usr, "Enter the custom event message for \"[faction]\" category. Be descriptive. \nTo remove the event message, remove text and confirm.", "[faction] Event Message", CEI.msg) as message|null
+	var/input = input(usr, "Enter the custom event message for \"[event_info_get]\" category. Be descriptive. \nTo remove the event message, remove text and confirm.", "[event_info_get] Event Message", CEI.msg) as message|null
 	if(isnull(input))
 		return
 
 	if(input == "" || !input)
 		CEI.msg = ""
-		message_admins("[key_name_admin(usr)] has removed the event message for \"[faction]\" category.")
+		message_admins("[key_name_admin(usr)] has removed the event message for \"[event_info_get]\" category.")
 		return
 
 	CEI.msg = html_encode(input)
-	message_admins("[key_name_admin(usr)] has changed the event message for \"[faction]\" category.")
+	message_admins("[key_name_admin(usr)] has changed the event message for \"[event_info_get]\" category.")
 
-	CEI.handle_event_info_update(faction)
+	CEI.handle_event_info_update()
 
 /client/proc/change_security_level()
 	if(!check_rights(R_ADMIN))
 		return
 	var sec_level = input(usr, "It's currently code [get_security_level()].", "Select Security Level")  as null|anything in (list("green","blue","red","delta")-get_security_level())
-	if(sec_level && alert("Switch from code [get_security_level()] to code [sec_level]?","Change security level?","Yes","No") == "Yes")
+	if(sec_level && alert("Switch from code [get_security_level()] to code [sec_level]?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) == usr.client.auto_lang(LANGUAGE_YES))
 		set_security_level(seclevel2num(sec_level))
 		log_admin("[key_name(usr)] changed the security level to code [sec_level].")
 
@@ -84,7 +81,7 @@
 	var/list/choices = list("Small Bomb", "Medium Bomb", "Big Bomb", "Custom Bomb")
 	var/list/falloff_shape_choices = list("CANCEL", "Linear", "Exponential")
 	var/choice = tgui_input_list(usr, "What size explosion would you like to produce?", "Drop Bomb", choices)
-	var/datum/cause_data/cause_data = create_cause_data("divine intervention")
+	var/datum/cause_data/cause_data = create_cause_data("божественного вмешательства")
 	switch(choice)
 		if(null)
 			return 0
@@ -186,7 +183,7 @@
 	set desc = "Call a distress beacon. This should not be done if the shuttle's already been called."
 	set category = "Admin.Shuttles"
 
-	if (!SSticker.mode)
+	if(!SSticker.mode)
 		return
 
 	if(!check_rights(R_EVENT)) // Seems more like an event thing than an admin thing
@@ -203,36 +200,36 @@
 
 	list_of_calls += "Randomize"
 
-	var/choice = tgui_input_list(usr, "Which distress call?", "Distress Signal", list_of_calls)
+	var/ert_choice = tgui_input_list(usr, "Which distress call?", MODE_NAME_DISTRESS_SIGNAL, list_of_calls)
 
-	if(!choice)
+	if(!ert_choice)
 		return
 
 	var/datum/emergency_call/chosen_ert
-	if(choice == "Randomize")
+	if(ert_choice == "Randomize")
 		chosen_ert = SSticker.mode.get_random_call()
 	else
-		var/datum/emergency_call/em_call = assoc_list[choice]
+		var/datum/emergency_call/em_call = assoc_list[ert_choice]
 		chosen_ert = new em_call.type()
 
 	if(!istype(chosen_ert))
 		return
 
 	var/is_announcing = TRUE
-	switch(alert(src, "Would you like to announce the distress beacon to the server population? This will reveal the distress beacon to all players.", "Announce distress beacon?", "Yes", "No", "Cancel"))
-		if("Cancel")
-			qdel(chosen_ert)
-			return
-		if("No")
-			is_announcing = FALSE
+	var/choice = alert(src, "Would you like to announce the distress beacon to the server population? This will reveal the distress beacon to all players.", usr.client.auto_lang(LANGUAGE_DISTRESS_ANNOUNCE), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO), usr.client.auto_lang(LANGUAGE_CANCEL))
+	if(choice ==usr.client.auto_lang(LANGUAGE_CANCEL))
+		qdel(chosen_ert)
+		return
+	else if(choice == usr.client.auto_lang(LANGUAGE_NO))
+		is_announcing = FALSE
 
 	var/turf/override_spawn_loc
-	switch(alert(usr, "Spawn at their assigned spawnpoints, or at your location?", "Spawnpoint Selection", "Assigned Spawnpoint", "Current Location", "Cancel"))
-		if("Cancel")
-			qdel(chosen_ert)
-			return
-		if("Current Location")
-			override_spawn_loc = get_turf(usr)
+	choice = alert(usr, "Spawn at their assigned spawnpoints, or at your location?", usr.client.auto_lang(LANGUAGE_DISTRESS_SPAWNPOINT), usr.client.auto_lang(LANGUAGE_DISTRESS_LOC_CURRENT), usr.client.auto_lang(LANGUAGE_DISTRESS_LOC_ASSIGNED), usr.client.auto_lang(LANGUAGE_CANCEL))
+	if(choice == usr.client.auto_lang(LANGUAGE_CANCEL))
+		qdel(chosen_ert)
+		return
+	else if(choice == usr.client.auto_lang(LANGUAGE_DISTRESS_LOC_CURRENT))
+		override_spawn_loc = get_turf(usr)
 
 	chosen_ert.activate(is_announcing, override_spawn_loc)
 
@@ -246,7 +243,7 @@
 	if(!SSticker.mode || !check_rights(R_ADMIN))
 		return
 	set_security_level(SEC_LEVEL_RED)
-	EvacuationAuthority.initiate_evacuation()
+	SSevacuation.initiate_evacuation()
 
 	message_admins("[key_name_admin(usr)] forced an emergency evacuation.")
 
@@ -257,7 +254,7 @@
 
 	if(!SSticker.mode || !check_rights(R_ADMIN))
 		return
-	EvacuationAuthority.cancel_evacuation()
+	SSevacuation.cancel_evacuation()
 
 	message_admins("[key_name_admin(usr)] canceled an emergency evacuation.")
 
@@ -291,10 +288,13 @@
 	if(!SSticker.mode || !check_rights(R_ADMIN) || get_security_level() == "delta")
 		return
 
-	if(alert(src, "Are you sure you want to do this?", "Confirmation", "Yes", "No") != "Yes")
+	if(alert(src, "Are you sure you want to do this?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 
-	set_security_level(SEC_LEVEL_DELTA)
+	if(!SSevacuation.enable_self_destruct(FALSE, FALSE))
+		to_chat(usr, SPAN_WARNING("You are unable to authorize the self-destruct right now!"))
+	else
+		message_admins("[key_name_admin(usr)] force-enabled the self-destruct system.")
 
 	message_admins("[key_name_admin(usr)] admin-started self-destruct system.")
 
@@ -359,33 +359,24 @@
 		return
 
 	// Mostly replicated code from observer.dm.hive_status()
-	var/list/hives = list()
-	var/datum/hive_status/last_hive_checked
+	var/list/factions = list()
+	for(var/faction_to_get in FACTION_LIST_XENOMORPH)
+		var/datum/faction/faction_to_set = GLOB.faction_datum[faction_to_get]
+		if(!length(faction_to_set.totalMobs) && !length(faction_to_set.totalDeadMobs))
+			continue
+		LAZYSET(factions, faction_to_set.name, faction_to_set)
 
-	var/datum/hive_status/hive
-	for(var/hivenumber in GLOB.hive_datum)
-		hive = GLOB.hive_datum[hivenumber]
-		if(hive.totalXenos.len > 0 || hive.totalDeadXenos.len > 0)
-			hives += list("[hive.name]" = hive.hivenumber)
-			last_hive_checked = hive
-
-	if(!length(hives))
-		to_chat(src, SPAN_ALERT("There seem to be no hives at the moment."))
+	var/choice = tgui_input_list(src, "Select which hive to award", "Hive Choice", factions, theme = "hive_status")
+	if(!choice)
 		return
-	else if(length(hives) > 1) // More than one hive, display an input menu for that
-		var/faction = tgui_input_list(src, "Select which hive to award", "Hive Choice", hives, theme="hive_status")
-		if(!faction)
-			to_chat(src, SPAN_ALERT("Hive choice error. Aborting."))
-			return
-		last_hive_checked = GLOB.hive_datum[hives[faction]]
 
-	give_jelly_award(last_hive_checked, as_admin=TRUE)
+	give_jelly_award(factions[choice], as_admin = TRUE)
 
 /client/proc/turn_everyone_into_primitives()
 	var/random_names = FALSE
-	if (alert(src, "Do you want to give everyone random numbered names?", "Confirmation", "Yes", "No") == "Yes")
+	if(alert(src, "Do you want to give everyone random numbered names?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) == usr.client.auto_lang(LANGUAGE_YES))
 		random_names = TRUE
-	if (alert(src, "Are you sure you want to do this? It will laaag.", "Confirmation", "Yes", "No") != "Yes")
+	if(alert(src, "Are you sure you want to do this? It will laaag.", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 	for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
 		if(ismonkey(H))
@@ -409,12 +400,13 @@
 
 	var/list/shuttles = list(DROPSHIP_ALAMO, DROPSHIP_NORMANDY)
 	var/tag = tgui_input_list(usr, "Which dropship should be force launched?", "Select a dropship:", shuttles)
-	if(!tag) return
+	if(!tag)
+		return
 	var/crash = 0
-	switch(tgui_input_list(usr, "Would you like to force a crash?", "Force crash", list("Yes", "No")))
-		if("Yes") crash = 1
-		if("No") crash = 0
-		else return
+	if(tgui_input_list(usr, "Would you like to force a crash?", "Force crash", list(usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO))) != usr.client.auto_lang(LANGUAGE_YES))
+		crash = FALSE
+	else
+		crash = TRUE
 
 	var/obj/docking_port/mobile/marine_dropship/dropship = SSshuttle.getShuttle(tag)
 
@@ -435,38 +427,45 @@
 
 	if(!admin_holder || !(admin_holder.rights & R_MOD))
 		to_chat(src, "Only administrators may use this command.")
-		return
-	var/faction = tgui_input_list(usr, "Please choose faction your announcement will be shown to.", "Faction Selection", (FACTION_LIST_HUMANOID - list(FACTION_YAUTJA) + list("Everyone (-Yautja)")))
-	if(!faction)
-		return
+		return FALSE
+
+	var/list/factions = list()
+	LAZYSET(factions, "All Humans", "Everyone (-Yautja)")
+	for(var/faction_to_get in FACTION_LIST_HUMANOID)
+		var/datum/faction/faction_to_set = GLOB.faction_datum[faction_to_get]
+		LAZYSET(factions, faction_to_set.name, faction_to_set)
+
+	var/choice = tgui_input_list(usr, "Please choose faction your announcement will be shown to.", "Faction Selection", factions)
+	if(!choice)
+		return FALSE
+
 	var/input = input(usr, "Please enter announcement text. Be advised, this announcement will be heard both on Almayer and planetside by conscious humans of selected faction.", "What?", "") as message|null
 	if(!input)
-		return
-	var/customname = input(usr, "Pick a title for the announcement. Confirm empty text for \"[faction] Update\" title.", "Title") as text|null
+		return FALSE
+	var/customname = input(usr, "Pick a title for the announcement. Confirm empty text for \"[choice] Update\" title.", "Title") as text|null
 	if(isnull(customname))
-		return
+		return FALSE
 	if(!customname)
-		customname = "[faction] Update"
-	if(faction == FACTION_MARINE)
+		customname = "[choice] Update"
+
+	if(choice == "Everyone (-Yautja)")
+		faction_announcement(input, customname, 'sound/AI/commandreport.ogg', choice)
+	else if(choice == FACTION_MARINE)
 		for(var/obj/structure/machinery/computer/almayer_control/C in machines)
 			if(!(C.inoperable()))
-				var/obj/item/paper/P = new /obj/item/paper( C.loc )
+				var/obj/item/paper/P = new /obj/item/paper(C.loc)
 				P.name = "'[command_name] Update.'"
 				P.info = input
 				P.update_icon()
 				C.messagetitle.Add("[command_name] Update")
 				C.messagetext.Add(P.info)
-
-		if(alert("Press \"Yes\" if you want to announce it to ship crew and marines. Press \"No\" to keep it only as printed report on communication console.",,"Yes","No") == "Yes")
-			if(alert("Do you want PMCs (not Death Squad) to see this announcement?",,"Yes","No") == "Yes")
-				marine_announcement(input, customname, 'sound/AI/commandreport.ogg', faction)
-			else
-				marine_announcement(input, customname, 'sound/AI/commandreport.ogg', faction, FALSE)
+		if(alert("Press \"Yes\" if you want to announce it to ship crew and marines. Press \"No\" to keep it only as printed report on communication console.", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) == usr.client.auto_lang(LANGUAGE_YES))
+			faction_announcement(input, customname, 'sound/AI/commandreport.ogg', factions[choice])
 	else
-		marine_announcement(input, customname, 'sound/AI/commandreport.ogg', faction)
+		faction_announcement(input, customname, 'sound/AI/commandreport.ogg', factions[choice])
 
-	message_admins("[key_name_admin(src)] has created a [faction] command report")
-	log_admin("[key_name_admin(src)] [faction] command report: [input]")
+	message_admins("[key_name_admin(src)] has created a [choice] command report")
+	log_admin("[key_name_admin(src)] [choice] command report: [input]")
 
 /client/proc/cmd_admin_xeno_report()
 	set name = "Report: Queen Mother"
@@ -475,37 +474,33 @@
 
 	if(!admin_holder || !(admin_holder.rights & R_MOD))
 		to_chat(src, "Only administrators may use this command.")
-		return
-
-	var/list/hives = list()
-	for(var/hivenumber in GLOB.hive_datum)
-		var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
-		hives += list("[hive.name]" = hive.hivenumber)
-
-	hives += list("All Hives" = "everything")
-	var/hive_choice = tgui_input_list(usr, "Please choose the hive you want to see your announcement. Selecting \"All hives\" option will change title to \"Unknown Higher Force\"", "Hive Selection", hives)
-	if(!hive_choice)
 		return FALSE
 
-	var/hivenumber = hives[hive_choice]
+	var/list/factions = list()
+	LAZYSET(factions, "All Hives", "Everyone")
+	for(var/faction_to_get in FACTION_LIST_XENOMORPH)
+		var/datum/faction/faction_to_set = GLOB.faction_datum[faction_to_get]
+		LAZYSET(factions, faction_to_set.name, faction_to_set)
 
+	var/choice = tgui_input_list(usr, "Please choose the hive you want to see your announcement. Selecting \"All hives\" option will change title to \"Unknown Higher Force\"", "Hive Selection", factions)
+	if(!choice)
+		return FALSE
+
+	var/datum/faction/chosen_faction
+	if(choice != "All Hives")
+		chosen_faction = factions[choice]
 
 	var/input = input(usr, "This should be a message from the ruler of the Xenomorph race.", "What?", "") as message|null
 	if(!input)
 		return FALSE
 
-	var/hive_prefix = ""
-	if(GLOB.hive_datum[hivenumber])
-		var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
-		hive_prefix = "[hive.prefix] "
-
-	if(hivenumber == "everything")
-		xeno_announcement(input, hivenumber, HIGHER_FORCE_ANNOUNCE)
+	if(!chosen_faction)
+		xeno_announcement(input, choice, HIGHER_FORCE_ANNOUNCE)
 	else
-		xeno_announcement(input, hivenumber, SPAN_ANNOUNCEMENT_HEADER_BLUE("[hive_prefix][QUEEN_MOTHER_ANNOUNCE]"))
+		xeno_announcement(input, chosen_faction, SPAN_ANNOUNCEMENT_HEADER_BLUE("[chosen_faction.prefix][QUEEN_MOTHER_ANNOUNCE]"))
 
-	message_admins("[key_name_admin(src)] has created a [hive_choice] Queen Mother report")
-	log_admin("[key_name_admin(src)] Queen Mother ([hive_choice]): [input]")
+	message_admins("[key_name_admin(src)] has created a [choice] Queen Mother report")
+	log_admin("[key_name_admin(src)] Queen Mother ([choice]): [input]")
 
 /client/proc/cmd_admin_create_AI_report()
 	set name = "Report: ARES Comms"
@@ -564,7 +559,7 @@
 	if(!admin_holder || !(admin_holder.rights & R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
-	var/input = input(usr, "This is an announcement type message from the ship's AI. This will be announced to every conscious human on Almayer z-level. Be aware, this will work even if ARES unpowered/destroyed. Check with online staff before you send this.", "What?", "") as message|null
+	var/input = input(usr, "This is an announcement type message from the ship's AI. This will be announced to every conscious human on Almayer z-level. Be aware, this will work even if [MAIN_AI_SYSTEM] unpowered/destroyed. Check with online staff before you send this.", "What?", "") as message|null
 	if(!input)
 		return FALSE
 
@@ -599,7 +594,7 @@
 	set name = "Narrate to Everyone"
 	set category = "Admin.Events"
 
-	if (!admin_holder || !(admin_holder.rights & R_MOD))
+	if(!admin_holder || !(admin_holder.rights & R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
 
@@ -688,7 +683,7 @@
 /client/proc/event_panel()
 	set name = "Event Panel"
 	set category = "Admin.Panels"
-	if (admin_holder)
+	if(admin_holder)
 		admin_holder.event_panel()
 	return
 
@@ -747,7 +742,7 @@
 /datum/admins/var/create_xenos_html = null
 /datum/admins/proc/create_xenos(mob/user)
 	if(!create_xenos_html)
-		var/hive_types = jointext(ALL_XENO_HIVES, ";")
+		var/hive_types = jointext(FACTION_LIST_XENOMORPH, ";")
 		var/xeno_types = jointext(ALL_XENO_CASTES, ";")
 		create_xenos_html = file2text('html/create_xenos.html')
 		create_xenos_html = replacetext(create_xenos_html, "null /* hive paths */", "\"[hive_types]\"")
@@ -773,16 +768,18 @@
 	if(!check_rights(R_MOD))
 		return
 
-	if(alert(usr, "Are you sure you want to change all mutineers back to normal?", "Confirmation", "Yes", "No") != "Yes")
+	if(alert(usr, "Are you sure you want to change all mutineers back to normal?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 
 	for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
-		if(H.mob_flags & MUTINEER)
-			H.mob_flags &= ~MUTINEER
-			H.hud_set_squad()
+		if(!H || !(H.mob_flags & MUTINEER))
+			continue
 
-			for(var/datum/action/human_action/activable/mutineer/A in H.actions)
-				A.remove_from(H)
+		GLOB.faction_datum[FACTION_NEUTRAL].add_mob(H)
+		H.hud_set_squad()
+
+		for(var/datum/action/human_action/activable/mutineer/action in H.actions)
+			action.remove_from(H)
 
 /client/proc/cmd_fun_fire_ob()
 	set category = "Admin.Fun"
@@ -871,13 +868,15 @@
 			qdel(OBShell)
 
 	if(custom)
-		if(alert(usr, statsmessage, "Confirm Stats", "Yes", "No") != "Yes") return
+		if(alert(usr, statsmessage, usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
+			return
 		message_admins(statsmessage)
 
 	var/turf/target = get_turf(usr.loc)
 
 	if(alert(usr, "Fire or Spawn Warhead?", "Mode", "Fire", "Spawn") == "Fire")
-		if(alert("Are you SURE you want to do this? It will create an OB explosion!",, "Yes", "No") != "Yes") return
+		if(alert("Are you SURE you want to do this? It will create an OB explosion!", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
+			return
 		message_admins("[key_name(usr)] has fired \an [warhead.name] at ([target.x],[target.y],[target.z]).")
 		warhead.warhead_impact(target)
 		QDEL_IN(warhead, OB_CRASHING_DOWN)
@@ -899,38 +898,3 @@
 	SSticker.mode.taskbar_icon = taskbar_icon
 	SSticker.set_clients_taskbar_icon(taskbar_icon)
 	message_admins("[key_name_admin(usr)] has changed the taskbar icon to [taskbar_icon].")
-
-/client/proc/change_weather()
-	set name = "Change Weather"
-	set category = "Admin.Events"
-
-	if(!check_rights(R_EVENT))
-		return
-
-	if(!SSweather.map_holder)
-		to_chat(src, SPAN_WARNING("This map has no weather data."))
-		return
-
-	if(SSweather.is_weather_event_starting)
-		to_chat(src, SPAN_WARNING("A weather event is already starting. Please wait."))
-		return
-
-	if(SSweather.is_weather_event)
-		if(tgui_alert(src, "A weather event is already in progress! End it?", "Confirm", list("End", "Continue"), 10 SECONDS) == "Continue")
-			return
-		if(SSweather.is_weather_event)
-			SSweather.end_weather_event()
-
-	var/list/mappings = list()
-	for(var/datum/weather_event/typepath as anything in subtypesof(/datum/weather_event))
-		mappings[initial(typepath.name)] = typepath
-	var/chosen_name = tgui_input_list(src, "Select a weather event to start", "Weather Selector", mappings)
-	var/chosen_typepath = mappings[chosen_name]
-	if(!chosen_typepath)
-		return
-
-	var/retval = SSweather.setup_weather_event(chosen_typepath)
-	if(!retval)
-		to_chat(src, SPAN_WARNING("Could not start the weather event at present!"))
-		return
-	to_chat(src, SPAN_BOLDNOTICE("Success! The weather event should start shortly."))

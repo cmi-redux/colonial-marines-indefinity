@@ -20,7 +20,7 @@
 //gets the actual job rank (ignoring alt titles)
 //this is used solely for sechuds
 /obj/proc/GetJobRealName()
-	if (!istype(src,/obj/item/card/id)) return
+	if(!istype(src,/obj/item/card/id)) return
 	var/obj/item/card/id/I = src
 	if(I.rank in GLOB.joblist) return I.rank
 	if(I.assignment in GLOB.joblist) return I.assignment
@@ -46,13 +46,6 @@
 		if(I.assignment in centcom) return "Centcom"//Return with the NT logo if it is a Centcom job
 		if(I.rank in centcom) return "Centcom"
 	return "Unknown" //Return unknown if none of the above apply
-
-/proc/get_actual_job_name(mob/M)
-	if(!M)
-		return null
-
-	var/job_name = M.job
-	return job_name
 
 /proc/get_marine_jobs()
 	return list(

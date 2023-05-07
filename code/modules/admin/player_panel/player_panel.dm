@@ -1,6 +1,6 @@
 
 /datum/admins/proc/player_panel_new()//The new one
-	if (!usr.client.admin_holder || !(usr.client.admin_holder.rights & R_MOD))
+	if(!usr.client.admin_holder || !(usr.client.admin_holder.rights & R_MOD))
 		return
 	var/dat = "<html>"
 
@@ -15,12 +15,12 @@
 					var filter_text = document.getElementById('filter');
 					var filter = filter_text.value.toLowerCase();
 
-					if (complete_list != null && complete_list != "") {
+					if(complete_list != null && complete_list != "") {
 						var mtbl = document.getElementById("maintable_data_archive");
 						mtbl.innerHTML = complete_list;
 					}
 
-					if (filter.value == "") {
+					if(filter.value == "") {
 						return;
 					} else {
 						var maintable_data = document.getElementById('maintable_data');
@@ -28,7 +28,7 @@
 						for (var i = 0; i < ltr.length; ++i) {
 							try {
 								var tr = ltr\[i\];
-								if (tr.getAttribute("id").indexOf("data") != 0) {
+								if(tr.getAttribute("id").indexOf("data") != 0) {
 									continue;
 								}
 								tr.style.display = '';
@@ -36,7 +36,7 @@
 								var td = ltd\[0\];
 								var lsearch = td.getElementsByTagName("b");
 								var search = lsearch\[0\];
-								if (search.innerText.toLowerCase().indexOf(filter) == -1) {
+								if(search.innerText.toLowerCase().indexOf(filter) == -1) {
 									tr.style.display = 'none';
 								}
 							} catch(err) {}
@@ -87,13 +87,13 @@
 						var pass = 1;
 
 						for (var j = 0; j < locked_tabs.length; j++) {
-							if (locked_tabs\[j\]==id) {
+							if(locked_tabs\[j\]==id) {
 								pass = 0;
 								break;
 							}
 						}
 
-						if (pass != 1)
+						if(pass != 1)
 							continue;
 
 						span.innerHTML = "";
@@ -103,7 +103,7 @@
 				function addToLocked(id,link_id,notice_span_id) {
 					var link = document.getElementById(link_id);
 					var decision = link.getAttribute("name");
-					if (decision == "1") {
+					if(decision == "1") {
 						link.setAttribute("name","2");
 					} else {
 						link.setAttribute("name","1");
@@ -113,12 +113,12 @@
 
 					var pass = 1;
 					for (var j = 0; j < locked_tabs.length; j++) {
-						if (locked_tabs\[j\]==id) {
+						if(locked_tabs\[j\]==id) {
 							pass = 0;
 							break;
 						}
 					}
-					if (!pass)
+					if(!pass)
 						return;
 					locked_tabs.push(id);
 					var notice_span = document.getElementById(notice_span_id);
@@ -133,13 +133,13 @@
 					var index = 0;
 					var pass = 0;
 					for (var j = 0; j < locked_tabs.length; j++) {
-						if (locked_tabs\[j\]==id) {
+						if(locked_tabs\[j\]==id) {
 							pass = 1;
 							index = j;
 							break;
 						}
 					}
-					if (!pass)
+					if(!pass)
 						return;
 					locked_tabs\[index\] = "";
 					var notice_span = document.getElementById(notice_span_id);
@@ -162,7 +162,7 @@
 
 	//title + search bar
 	dat += {"
-		<table width='560' align='center' cellspacing='0' cellpadding='5' id='maintable'>
+		<table width='600' align='center' cellspacing='0' cellpadding='5' id='maintable'>
 			<tr id='title_tr'>
 				<td align='center'>
 					<font size='5'><b>Player panel</b></font><br>
@@ -172,7 +172,7 @@
 			</tr>
 			<tr id='search_tr'>
 				<td align='center'>
-					<b>Search:</b> <input type='text' id='filter' value='' onkeyup='updateSearch();' style='width:300px;'>
+					<b>Search:</b> <input type='text' id='filter' value='' onkeyup='updateSearch();' style='width:340px;'>
 				</td>
 			</tr>
 		</table>
@@ -181,7 +181,7 @@
 	//player table header
 	dat += {"
 		<span id='maintable_data_archive'>
-		<table width='600' align='center' cellspacing='0' cellpadding='5' id='maintable_data'>"}
+		<table width='640' align='center' cellspacing='0' cellpadding='5' id='maintable_data'>"}
 
 	var/list/mobs = sortmobs()
 	var/i = 1
@@ -272,11 +272,11 @@
 	</body></html>
 	"}
 
-	show_browser(usr, dat, "User Panel", "players", "size=600x480")
+	show_browser(usr, dat, "Admin Player Panel", "players", "size=640x640")
 
 //Extended panel with ban related things
 /datum/admins/proc/player_panel_extended()
-	if (!usr.client.admin_holder || !(usr.client.admin_holder.rights & R_MOD))
+	if(!usr.client.admin_holder || !(usr.client.admin_holder.rights & R_MOD))
 		return
 
 	var/dat = "<html>"
@@ -318,7 +318,7 @@
 
 	dat += "</table></body></html>"
 
-	show_browser(usr, dat, "Player Menu", "players", "size=640x480")
+	show_browser(usr, dat, "Player Menu", "players", "size=680x680")
 
 
 /datum/admins/proc/check_antagonists()
@@ -328,7 +328,7 @@
 
 	var/dat = "<html><body><h1><B>Antagonists</B></h1>"
 	dat += "Current Game Mode: <B>[SSticker.mode.name]</B><BR>"
-	dat += "Round Duration: <B>[round(world.time / 36000)]:[add_zero(world.time / 600 % 60, 2)]:[world.time / 100 % 6][world.time / 100 % 10]</B><BR>"
+	dat += "Round Duration: <B>[duration2text()]</B><BR>"
 
 	if(length(GLOB.other_factions_human_list))
 		dat += "<br><table cellspacing=5><tr><td><B>Other human factions</B></td><td></td><td></td></tr>"
@@ -339,8 +339,8 @@
 				dat += "<tr><td><A href='?src=\ref[usr];priv_msg=[H.ckey]'>[H.real_name]</a>[H.client ? "" : " <i>(logged out)</i>"][H.stat == DEAD ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 				dat += "<td>[location]</td>"
 				dat += "<td>[H.faction]</td>"
-				dat += "<td><a href='?src=\ref[usr];track=\ref[H]'>F</a></td>"
-				dat += "<td><a href='?src=\ref[src];[HrefToken()];adminplayeropts=\ref[H]'>PP</a></td>"
+				dat += "<td>[ADMIN_FLW(H)]</td>"
+				dat += "<td>[ADMIN_PP(H)]</td>"
 		dat += "</table>"
 
 	if(SSticker.mode.survivors.len)
@@ -351,8 +351,8 @@
 			if(M)
 				dat += "<tr><td><A href='?src=\ref[usr];priv_msg=[M.ckey]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 				dat += "<td>[location]</td>"
-				dat += "<td><a href='?src=\ref[usr];track=\ref[M]'>F</a></td>"
-				dat += "<td><A href='?src=\ref[src];[HrefToken()];adminplayeropts=\ref[M]'>PP</A></td></TR>"
+				dat += "<td>[ADMIN_FLW(M)]</td>"
+				dat += "<td>[ADMIN_PP(M)]</td></TR>"
 		dat += "</table>"
 
 	if(SSticker.mode.xenomorphs.len)
@@ -363,8 +363,8 @@
 				var/location = get_area(M.loc)
 				dat += "<tr><td><A href='?src=\ref[usr];priv_msg=[M.ckey]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 				dat += "<td>[location]</td>"
-				dat += "<td><a href='?src=\ref[usr];track=\ref[M]'>F</a></td>"
-				dat += "<td><A href='?src=\ref[src];[HrefToken()];adminplayeropts=\ref[M]'>PP</A></td></TR>"
+				dat += "<td>[ADMIN_FLW(M)]</td>"
+				dat += "<td>[ADMIN_PP(M)]</td></TR>"
 		dat += "</table>"
 
 	if(SSticker.mode.survivors.len)
@@ -375,43 +375,54 @@
 			if(M)
 				dat += "<tr><td><A href='?src=\ref[usr];priv_msg=[M.ckey]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 				dat += "<td>[location]</td>"
-				dat += "<td><a href='?src=\ref[usr];track=\ref[M]'>F</a></td>"
-				dat += "<td><A href='?src=\ref[src];[HrefToken()];adminplayeropts=\ref[M]'>PP</A></td></TR>"
+				dat += "<td>[ADMIN_FLW(M)]</td>"
+				dat += "<td>[ADMIN_PP(M)]</td></TR>"
 		dat += "</table>"
 
 	dat += "</body></html>"
 	show_browser(usr, dat, "Antagonists", "antagonists", "size=600x500")
 
 /datum/admins/proc/check_round_status()
-	if (SSticker.current_state >= GAME_STATE_PLAYING)
-		var/dat = "<html><body><h1><B>Round Status</B></h1>"
-		dat += "Current Game Mode: <B>[SSticker.mode.name]</B><BR>"
-		dat += "Round Duration: <B>[round(world.time / 36000)]:[add_zero(world.time / 600 % 60, 2)]:[world.time / 100 % 6][world.time / 100 % 10]</B><BR>"
+	if(SSticker.current_state >= GAME_STATE_PLAYING)
+		var/dat = "<html><body><h1><B>Статус Раунда</B></h1>"
+		dat += "Игровой Режим: <B>[SSticker.mode.name]</B><BR>"
+		dat += "Время Раунда: <B>[duration2text()]</B><BR>"
+
+		if(!SSevacuation.dest_master)
+			SSevacuation.prepare()
 
 		if(check_rights(R_DEBUG, 0))
-			dat += "<br><A HREF='?_src_=vars;Vars=\ref[EvacuationAuthority]'>VV Evacuation Controller</A><br>"
-			dat += "<A HREF='?_src_=vars;Vars=\ref[shuttle_controller]'>VV Shuttle Controller</A><br><br>"
+			dat += "<tr><td><A href='?src=\ref[src];[HrefToken()];Vars=\ref[SSevacuation]'>VV Эвакуационный Контрллер</A></td>"
+			dat += "<td><A href='?src=\ref[src];[HrefToken()];Vars=\ref[shuttle_controller]'>VV Шатл Контрллер</A></td></TR>"
 
 		if(check_rights(R_MOD, 0))
-			dat += "<b>Evacuation:</b> "
-			switch(EvacuationAuthority.evac_status)
-				if(EVACUATION_STATUS_STANDING_BY) dat += "STANDING BY"
-				if(EVACUATION_STATUS_INITIATING) dat += "IN PROGRESS: [EvacuationAuthority.get_status_panel_eta()]"
-				if(EVACUATION_STATUS_COMPLETE) dat += "COMPLETE"
+			dat += "<br><table cellspacing=5><tr><td><B>Эвакуация:</B></td><td></td><td></td></tr>"
+			switch(SSevacuation.evac_status)
+				if(EVACUATION_STATUS_STANDING_BY)
+					dat += "ОЖИДАЕТ"
+				if(EVACUATION_STATUS_INITIATING)
+					dat += "В ПРОЦЕССЕ: [SSevacuation.get_evac_status_panel_eta()]"
+				if(EVACUATION_STATUS_IN_PROGRESS)
+					dat += "СЕЙЧАС"
+				if(EVACUATION_STATUS_COMPLETE)
+					dat += "ВЫПОЛНЕНО"
 			dat += "<br>"
-
 			dat += "<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];evac_authority=init_evac'>Initiate Evacuation</a><br>"
 			dat += "<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];evac_authority=cancel_evac'>Cancel Evacuation</a><br>"
 			dat += "<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];evac_authority=toggle_evac'>Toggle Evacuation Permission (does not affect evac in progress)</a><br>"
 			if(check_rights(R_ADMIN, 0)) dat += "<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];evac_authority=force_evac'>Force Evacuation Now</a><br>"
 
 		if(check_rights(R_ADMIN, 0))
-			dat += "<b>Self-Destruct:</b> "
-			switch(EvacuationAuthority.dest_status)
-				if(NUKE_EXPLOSION_INACTIVE) dat += "INACTIVE"
-				if(NUKE_EXPLOSION_ACTIVE) dat += "ACTIVE"
-				if(NUKE_EXPLOSION_IN_PROGRESS) dat += "IN PROGRESS"
-				if(NUKE_EXPLOSION_FINISHED, NUKE_EXPLOSION_GROUND_FINISHED) dat += "FINISHED"
+			dat += "<br><table cellspacing=5><tr><td><B>Самоуничтожение:</B></td><td></td><td></td></tr>"
+			switch(SSevacuation.dest_status)
+				if(NUKE_EXPLOSION_INACTIVE)
+					dat += "НЕАКТИВНО"
+				if(NUKE_EXPLOSION_ACTIVE)
+					dat += "АКТИВНО"
+				if(NUKE_EXPLOSION_IN_PROGRESS)
+					dat += "В ПРОЦЕССЕ"
+				if(NUKE_EXPLOSION_FINISHED)
+					dat += "ВЫПОЛНЕНО"
 			dat += "<br>"
 
 			dat += "<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];evac_authority=init_dest'>Unlock Self-Destruct control panel for humans</a><br>"
@@ -421,9 +432,9 @@
 
 		dat += "<br><A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];delay_round_end=1'>[SSticker.delay_end ? "End Round Normally" : "Delay Round End"]</A><br>"
 		dat += "</body></html>"
-		show_browser(usr, dat, "Round Status", "roundstatus", "size=600x500")
+		show_browser(usr, dat, "Статус Раунда", "roundstatus", "size=600x500")
 	else
-		alert("The game hasn't started yet!")
+		alert("Игра еще не начата!")
 
 /proc/check_role_table(name, list/members, admins, show_objectives=1)
 	var/txt = "<br><table cellspacing=5><tr><td><b>[name]</b></td><td></td></tr>"
@@ -433,7 +444,7 @@
 	return txt
 
 /proc/check_role_table_row(mob/M, admins=src, show_objectives)
-	if (!istype(M))
+	if(!istype(M))
 		return "<tr><td><i>Not found!</i></td></tr>"
 
 	var/txt = {"
@@ -448,7 +459,7 @@
 			</td>
 	"}
 
-	if (show_objectives)
+	if(show_objectives)
 		txt += {"
 			<td>
 				<a href='?src=\ref[admins];traitor=\ref[M]'>Show Objective</a>
@@ -478,7 +489,7 @@
 		return
 
 	ui = SStgui.try_update_ui(user, src, ui)
-	if (!ui)
+	if(!ui)
 		ui = new(user, src, "PlayerPanel", "[targetMob.name] Player Panel")
 		ui.open()
 		ui.set_autoupdate(FALSE)
@@ -536,9 +547,9 @@ GLOBAL_LIST_INIT(pp_hives, pp_generate_hives())
 
 /proc/pp_generate_hives()
 	. = list()
-	for(var/hivenumber in GLOB.hive_datum)
-		var/datum/hive_status/H = GLOB.hive_datum[hivenumber]
-		.[H.name] = H.hivenumber
+	for(var/faction_to_get in FACTION_LIST_XENOMORPH)
+		var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
+		.[faction.name] = faction.faction_name
 
 GLOBAL_LIST_INIT(pp_limbs, list(
 	"Head" = "head",
@@ -605,7 +616,7 @@ GLOBAL_LIST_INIT(pp_status_flags, list(
 		var/client/C = src
 		src = C.admin_holder
 
-	if (!istype(src,/datum/admins) || !(src.rights & R_MOD))
+	if(!istype(src,/datum/admins) || !(src.rights & R_MOD))
 		to_chat(owner, "Error: you are not an admin!")
 		return
 

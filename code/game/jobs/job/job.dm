@@ -7,8 +7,8 @@
 	var/total_positions = 0 //How many players can be this job
 	var/spawn_positions = 0 //How many players can spawn in as this job
 	var/total_positions_so_far = 0 //How many slots were open in this round. Used to prevent slots locking with decreasing amount of alive players
-	var/allow_additional = 0 //Can admins modify positions to it
-	var/scaled = 0
+	var/allow_additional = FALSE //Can admins modify positions to it
+	var/scaled = FALSE
 	var/current_positions = 0 //How many players have this job
 	var/supervisors = "" //Supervisors, who this person answers to directly. Should be a string, shown to the player when they enter the game.
 	var/selection_class = "" // Job Selection span class (for background color)
@@ -34,11 +34,14 @@
 	/// When set to true, SSticker won't call spawn_in_player, instead calling the job's spawn_and_equip proc
 	var/handle_spawn_and_equip = FALSE
 
+	var/balance_formulas = list("misc")
+
 /datum/job/New()
 	. = ..()
 
 	minimum_playtimes = setup_requirements(list())
-	if(!disp_title) disp_title = title
+	if(!disp_title)
+		disp_title = title
 
 /datum/job/proc/get_whitelist_status(list/roles_whitelist, client/player)
 	if(!roles_whitelist)
@@ -180,7 +183,7 @@
 	return "[entry_message_intro]<br>[entry_message_body]<br>[entry_message_end]"
 
 /datum/job/proc/announce_entry_message(mob/living/carbon/human/H, datum/money_account/M, whitelist_status) //The actual message that is displayed to the mob when they enter the game as a new player.
-	set waitfor = 0
+	set waitfor = FALSE
 	sleep(10)
 	if(H && H.loc && H.client)
 		var/title_given
@@ -197,7 +200,7 @@
 		to_chat_spaced(H, html = entrydisplay)
 
 /datum/job/proc/generate_entry_conditions(mob/living/M, whitelist_status)
-	if (istype(M) && M.client)
+	if(istype(M) && M.client)
 		M.client.soundOutput.update_ambience()
 
 	return //Anything special that should happen to the mob upon entering the world.
@@ -207,30 +210,29 @@
 /datum/job/proc/get_total_positions(latejoin)
 	return latejoin ? total_positions : spawn_positions
 
-/datum/job/proc/spawn_in_player(mob/new_player/NP)
-	if(!istype(NP))
+/datum/job/proc/spawn_in_player(mob/new_player/new_player)
+	if(!istype(new_player))
 		return
 
-	NP.spawning = TRUE
-	NP.close_spawn_windows()
+	new_player.spawning = TRUE
+	new_player.close_spawn_windows()
 
-	var/mob/living/carbon/human/new_character = new(NP.loc)
-	new_character.lastarea = get_area(NP.loc)
+	var/mob/living/carbon/human/new_character = new(new_player.loc)
+	new_character.lastarea = get_area(new_player.loc)
 
-	NP.client.prefs.copy_all_to(new_character)
+	new_player.client.prefs.copy_all_to(new_character)
 
-	if (NP.client.prefs.be_random_body)
-		var/datum/preferences/TP = new()
-		TP.randomize_appearance(new_character)
+	if(new_player.client.prefs.be_random_body)
+		var/datum/preferences/preferences = new()
+		preferences.randomize_appearance(new_character)
 
-	new_character.job = NP.job
-	new_character.name = NP.real_name
-	new_character.voice = NP.real_name
+	new_character.job = new_player.job
+	new_character.name = new_player.real_name
+	new_character.voice = new_player.real_name
 
-	if(NP.mind)
-		NP.mind_initialize()
-		NP.mind.transfer_to(new_character, TRUE)
-		NP.mind.setup_human_stats()
+	if(new_player.mind)
+		new_player.mind_initialize()
+		new_player.mind.transfer_to(new_character, TRUE)
 
 	// Update the character icons
 	// This is done in set_species when the mob is created as well, but
@@ -248,7 +250,7 @@
 		var/mob/living/carbon/human/human = M
 
 		var/job_whitelist = title
-		var/whitelist_status = get_whitelist_status(RoleAuthority.roles_whitelist, human.client)
+		var/whitelist_status = get_whitelist_status(SSticker.role_authority.roles_whitelist, human.client)
 
 		if(whitelist_status)
 			job_whitelist = "[title][whitelist_status]"
@@ -267,9 +269,9 @@
 			generate_entry_conditions(human) //Do any other thing that relates to their spawn.
 
 		if(flags_startup_parameters & ROLE_ADD_TO_SQUAD) //Are we a muhreen? Randomize our squad. This should go AFTER IDs. //TODO Robust this later.
-			RoleAuthority.randomize_squad(human)
+			SSticker.role_authority.randomize_squad(human)
 
-		if(Check_WO() && job_squad_roles.Find(GET_DEFAULT_ROLE(human.job))) //activates self setting proc for marine headsets for WO
+		if(Check_WO() && JOB_SQUAD_ROLES_LIST & GET_DEFAULT_ROLE(human.job)) //activates self setting proc for marine headsets for WO
 			var/datum/game_mode/whiskey_outpost/WO = SSticker.mode
 			WO.self_set_headset(human)
 
@@ -282,10 +284,10 @@
 			join_turf = get_turf(pick(GLOB.spawns_by_squad_and_job[assigned_squad][type]))
 		else if(GLOB.spawns_by_job[type])
 			join_turf = get_turf(pick(GLOB.spawns_by_job[type]))
-		else if(assigned_squad && GLOB.latejoin_by_squad[assigned_squad])
-			join_turf = get_turf(pick(GLOB.latejoin_by_squad[assigned_squad]))
-		else
-			join_turf = get_turf(pick(GLOB.latejoin))
+
+		if(!join_turf)
+			join_turf = get_latejoin_spawn(human, assigned_squad)
+
 		human.forceMove(join_turf)
 
 		for(var/cardinal in GLOB.cardinals)

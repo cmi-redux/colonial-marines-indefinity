@@ -106,6 +106,14 @@
 	specialty = "military police"
 	flags_atom = NO_SNOW_TYPE
 
+/obj/item/clothing/under/marine/officer/intel
+	name = "\improper marine intelligence officer sweatsuit"
+	desc = "Tighter than a vice. Slicker than beard oil. Covered from head to toe in pouches, pockets, bags, straps, and belts. Clearly, you are not only the most intelligent of intelligence officers, but the most fashionable as well. This suit took an entire R&D team five days to develop. It is more expensive than the entire Almayer... probably."
+	icon_state = "io"
+	item_state = "io"
+	worn_state = "io"
+	specialty = "marine intelligence officer"
+
 /obj/item/clothing/under/marine/warden
 	name = "military warden jumpsuit"
 	desc = "Standard-issue Military Warden uniform. It has shards of light Kevlar to help protect against stabbing weapons and bullets."
@@ -247,7 +255,7 @@
 	flags_atom = NO_SNOW_TYPE
 	item_state_slots = list(WEAR_BODY = "mt_jumpsuit")
 
-/obj/item/clothing/under/marine/officer/engi/OT
+/obj/item/clothing/under/marine/officer/engi/ot
 	name = "ordnance engineer uniform"
 	desc = "A uniform for a professional bomb maker. It has shards of light Kevlar to help protect against stabbing weapons, bullets, and shrapnel from explosions. Padded with extra plates to take the brunt force of an explosion."
 	armor_bomb = CLOTHING_ARMOR_LOW
@@ -353,7 +361,7 @@
 	specialty = "provost"
 
 	suit_restricted = list(
-		/obj/item/clothing/suit/storage/marine/MP,
+		/obj/item/clothing/suit/storage/marine/mp,
 		/obj/item/clothing/suit/armor/riot/marine,
 		/obj/item/clothing/suit/storage/jacket/marine/provost,
 	)
@@ -519,7 +527,7 @@
 	suit_restricted = list(/obj/item/clothing/suit/storage/marine/veteran/bear)
 
 
-/obj/item/clothing/under/marine/veteran/UPP
+/obj/item/clothing/under/marine/veteran/upp
 	name = "\improper UPP fatigues"
 	desc = "A set of UPP fatigues, mass produced for the armed-forces of the Union of Progressive Peoples. A rare sight, especially in ICC zones. This particular set sports the dark drab pattern of the UPP 17th battalion, 'Smoldering Sons', operating in the sparse UPP frontier in the Anglo-Japanese arm."
 	icon_state = "upp_uniform"
@@ -527,55 +535,55 @@
 	min_cold_protection_temperature = ICE_PLANET_MIN_COLD_PROT
 	has_sensor = UNIFORM_HAS_SENSORS
 	sensor_faction = FACTION_UPP
-	suit_restricted = list(/obj/item/clothing/suit/storage/marine/faction/UPP, /obj/item/clothing/suit/gimmick/jason, /obj/item/clothing/suit/storage/snow_suit/soviet, /obj/item/clothing/suit/storage/snow_suit/survivor)
+	suit_restricted = list(/obj/item/clothing/suit/storage/marine/faction/upp, /obj/item/clothing/suit/gimmick/jason, /obj/item/clothing/suit/storage/snow_suit/soviet, /obj/item/clothing/suit/storage/snow_suit/survivor)
 	flags_jumpsuit = UNIFORM_SLEEVE_ROLLABLE
 
-/obj/item/clothing/under/marine/veteran/UPP/medic
+/obj/item/clothing/under/marine/veteran/upp/medic
 	name = "\improper UPP medic fatigues"
 	desc = "A set of medic UPP fatigues, mass produced for the armed-forces of the Union of Progressive Peoples. A rare sight, especially in ICC zones. This particular set sports the dark drab pattern of the UPP 17th battalion, 'Smoldering Sons', operating in the sparse UPP frontier in the Anglo-Japanese arm."
 	icon_state = "upp_uniform_medic"
 	worn_state = "upp_uniform_medic"
 	flags_jumpsuit = UNIFORM_SLEEVE_ROLLABLE
 
-/obj/item/clothing/under/marine/veteran/UPP/engi
+/obj/item/clothing/under/marine/veteran/upp/engi
 	name = "\improper UPP engineer fatigues"
 	desc = "A set of Engineer UPP fatigues, mass produced for the armed-forces of the Union of Progressive Peoples. A rare sight, especially in ICC zones. This particular set sports the dark drab pattern of the UPP 17th battalion, 'Smoldering Sons', operating in the sparse UPP frontier in the Anglo-Japanese arm."
 	icon_state = "upp_uniform_engi"
 	worn_state = "upp_uniform_engi"
 	flags_jumpsuit = UNIFORM_SLEEVE_ROLLABLE
 
-/obj/item/clothing/under/marine/veteran/UPP/mp
+/obj/item/clothing/under/marine/veteran/upp/mp
 	name = "\improper UPP Military Police fatigues"
 	desc = "A set of Military Police UPP fatigues, mass produced for the armed-forces of the Union of Progressive Peoples. A rare sight, especially in ICC zones. This particular set sports the dark drab pattern of the UPP 17th battalion, 'Smoldering Sons', operating in the sparse UPP frontier in the Anglo-Japanese arm."
 	icon_state = "upp_uniform_mp"
 	worn_state = "upp_uniform_mp"
 	flags_jumpsuit = UNIFORM_SLEEVE_ROLLABLE
 
-/obj/item/clothing/under/marine/veteran/UPP/officer
+/obj/item/clothing/under/marine/veteran/upp/officer
 	name = "\improper UPP Officer fatigues"
 	desc = "A set of Officer UPP fatigues, mass produced for the armed-forces of the Union of Progressive Peoples. A rare sight, especially in ICC zones. This particular set sports the dark drab pattern of the UPP 17th battalion, 'Smoldering Sons', operating in the sparse UPP frontier in the Anglo-Japanese arm."
 	icon_state = "upp_uniform_officer"
 	worn_state = "upp_uniform_officer"
 
-/obj/item/clothing/under/marine/veteran/UPP/civi1
+/obj/item/clothing/under/marine/veteran/upp/civi1
 	name = "\improper UPP Civilian-style Orange overalls"
 	desc = "A set of Civilian-style Orange Overalls with a dark tan undershirt. The material is of a poor quality, however it's better than nothing. Clothing of this style is typically given out to those who work laborious jobs."
 	icon_state = "upp_uniform_civi1"
 	worn_state = "upp_uniform_civi1"
 
-/obj/item/clothing/under/marine/veteran/UPP/civi2
+/obj/item/clothing/under/marine/veteran/upp/civi2
 	name = "\improper UPP Civilian-style tan overalls"
 	desc = "A set of Civilian-style Tan Overalls with a Blue undershirt. The material is of a poor quality, however it's better than nothing. Clothing of this style is typically given to those who work laborious jobs."
 	icon_state = "upp_uniform_civi2"
 	worn_state = "upp_uniform_civi2"
 
-/obj/item/clothing/under/marine/veteran/UPP/civi3
+/obj/item/clothing/under/marine/veteran/upp/civi3
 	name = "\improper UPP Civilian-style shirt and pants"
 	desc = "A set of Civilian-style tan shirt and jeans. The material, while poor, is comfortable enough to be worn during all periods of the day."
 	icon_state = "upp_uniform_civi3"
 	worn_state = "upp_uniform_civi3"
 
-/obj/item/clothing/under/marine/veteran/UPP/civi4
+/obj/item/clothing/under/marine/veteran/upp/civi4
 	name = "\improper UPP Civilian-style Vest and pants"
 	desc = "A set of Civilian-style Brown vest and orange pants. The material is surprisingly decent, something not often worn by the civilians of the UPP for two reasons: They typically can't afford such clothing, and if they can, it paints a target on their back."
 	icon_state = "upp_uniform_civi4"

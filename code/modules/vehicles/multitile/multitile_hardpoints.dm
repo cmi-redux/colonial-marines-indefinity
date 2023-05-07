@@ -83,7 +83,7 @@
 		to_chat(user, SPAN_WARNING("All the mounting points on \the [src] are broken!"))
 		return
 
-	if(LAZYLEN(hardpoints))
+	if(length(hardpoints))
 		for(var/obj/item/hardpoint/H in hardpoints)
 			if(HP.slot == H.slot)
 				to_chat(user, SPAN_WARNING("There is already something installed there!"))
@@ -242,7 +242,7 @@
 		if(HP == active_hp[seat] || HP.slot != HDPT_PRIMARY && HP.slot != HDPT_SECONDARY)
 			usable_hps.Remove(HP)
 
-	if(!LAZYLEN(usable_hps))
+	if(!length(usable_hps))
 		to_chat(M, SPAN_WARNING("No other working weapons detected."))
 		return
 
@@ -264,7 +264,7 @@
 		if(HP.slot != HDPT_SUPPORT)
 			usable_hps.Remove(HP)
 
-	if(!LAZYLEN(usable_hps))
+	if(!length(usable_hps))
 		to_chat(M, SPAN_WARNING("No activatable support modules detected."))
 		return
 

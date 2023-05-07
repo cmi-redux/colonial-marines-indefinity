@@ -13,7 +13,7 @@ SUBSYSTEM_DEF(item_cleanup)
 	flags = SS_NO_INIT
 
 /datum/controller/subsystem/item_cleanup/fire()
-	set background = 1
+	set background = TRUE
 	if(world.time < start_processing_time)
 		//Do nothing for the first 35 minutes to preserve the colony look for the first drop
 		return
@@ -49,7 +49,7 @@ SUBSYSTEM_DEF(item_cleanup)
 	delete_z_level(SSmapping.levels_by_trait(ZTRAIT_GROUND))
 
 /datum/controller/subsystem/item_cleanup/proc/delete_z_level(list/z_levels)
-	set background = 1
+	set background = TRUE
 	for(var/obj/o in world)
 		if(QDELETED(o) || isnull(o.loc))
 			continue

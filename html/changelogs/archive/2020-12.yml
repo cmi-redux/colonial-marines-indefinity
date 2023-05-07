@@ -494,7 +494,7 @@
       shell backpack in addition to the mortar itself.
   Waltermeldron:
   - tweak: Increased weak resin cooldown and plasma usage.
-  - tweak: Weak resin can only be built from the cardinal directions. No more diagonal
+  - tweak: Weak resin can only be built from the cardinals directions. No more diagonal
       weeds.
   - tweak: Weak resin can no longer be built on the same tile for 15 seconds after
       it is placed down.
@@ -631,7 +631,7 @@
   Archemagus:
   - imageadd: Replaced old camera console input list with fancy TGui
   alardun:
-  - tweak: The Sniper Aimed Shot now indicate to the target the cardinal direction
+  - tweak: The Sniper Aimed Shot now indicate to the target the cardinals direction
       from which the shot originate. This compensates both the relative lack of insight
       in dodging, and the lightning-speed at which the bullet goes preventing knowing
       where the hit is coming from.

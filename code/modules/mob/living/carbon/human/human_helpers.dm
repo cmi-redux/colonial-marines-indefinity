@@ -5,74 +5,74 @@
 
 /proc/get_gender_name(gender)
 	var/g = "m"
-	if (gender == FEMALE)
+	if(gender == FEMALE)
 		g = "f"
 	return g
 
 /proc/get_limb_icon_name(datum/species/S, body_type, gender, limb_name, ethnicity)
 	if(S.uses_ethnicity)
 		switch(limb_name)
-			if ("torso")
+			if("torso")
 				return "[ethnicity]_torso_[body_type]_[get_gender_name(gender)]"
 
-			if ("chest")
+			if("chest")
 				return "[ethnicity]_torso_[body_type]_[get_gender_name(gender)]"
 
-			if ("head")
+			if("head")
 				return "[ethnicity]_[limb_name]_[get_gender_name(gender)]"
 
-			if ("groin")
+			if("groin")
 				return "[ethnicity]_[limb_name]_[get_gender_name(gender)]"
 
 			if("synthetic head")
 				return "head_[get_gender_name(gender)]"
 
-			if ("r_arm")
+			if("r_arm")
 				return "[ethnicity]_right_arm"
 
-			if ("right arm")
+			if("right arm")
 				return "[ethnicity]_right_arm"
 
-			if ("l_arm")
+			if("l_arm")
 				return "[ethnicity]_left_arm"
 
-			if ("left arm")
+			if("left arm")
 				return "[ethnicity]_left_arm"
 
-			if ("r_leg")
+			if("r_leg")
 				return "[ethnicity]_right_leg"
 
-			if ("right leg")
+			if("right leg")
 				return "[ethnicity]_right_leg"
 
-			if ("l_leg")
+			if("l_leg")
 				return "[ethnicity]_left_leg"
 
-			if ("left leg")
+			if("left leg")
 				return "[ethnicity]_left_leg"
 
-			if ("r_hand")
+			if("r_hand")
 				return "[ethnicity]_right_hand"
 
-			if ("right hand")
+			if("right hand")
 				return "[ethnicity]_right_hand"
 
-			if ("l_hand")
+			if("l_hand")
 				return "[ethnicity]_left_hand"
 
-			if ("left hand")
+			if("left hand")
 				return "[ethnicity]_left_hand"
 
-			if ("r_foot")
+			if("r_foot")
 				return "[ethnicity]_right_foot"
 
-			if ("right foot")
+			if("right foot")
 				return "[ethnicity]_right_foot"
 
-			if ("l_foot")
+			if("l_foot")
 				return "[ethnicity]_left_foot"
 
-			if ("left foot")
+			if("left foot")
 				return "[ethnicity]_left_foot"
 
 			else
@@ -80,67 +80,67 @@
 				return null
 	else
 		switch(limb_name)
-			if ("torso")
+			if("torso")
 				return "[limb_name]_[get_gender_name(gender)]"
 
-			if ("chest")
+			if("chest")
 				return "[limb_name]_[get_gender_name(gender)]"
 
-			if ("head")
+			if("head")
 				return "[limb_name]_[get_gender_name(gender)]"
 
-			if ("groin")
+			if("groin")
 				return "[limb_name]_[get_gender_name(gender)]"
 
 			if("synthetic head")
 				return "head_[get_gender_name(gender)]"
 
-			if ("r_arm")
+			if("r_arm")
 				return "[limb_name]"
 
-			if ("right arm")
+			if("right arm")
 				return "r_arm"
 
-			if ("l_arm")
+			if("l_arm")
 				return "[limb_name]"
 
-			if ("left arm")
+			if("left arm")
 				return "l_arm"
 
-			if ("r_leg")
+			if("r_leg")
 				return "[limb_name]"
 
-			if ("right leg")
+			if("right leg")
 				return "r_leg"
 
-			if ("l_leg")
+			if("l_leg")
 				return "[limb_name]"
 
-			if ("left leg")
+			if("left leg")
 				return "l_leg"
 
-			if ("r_hand")
+			if("r_hand")
 				return "[limb_name]"
 
-			if ("right hand")
+			if("right hand")
 				return "r_hand"
 
-			if ("l_hand")
+			if("l_hand")
 				return "[limb_name]"
 
-			if ("left hand")
+			if("left hand")
 				return "l_hand"
 
-			if ("r_foot")
+			if("r_foot")
 				return "[limb_name]"
 
-			if ("right foot")
+			if("right foot")
 				return "r_foot"
 
-			if ("l_foot")
+			if("l_foot")
 				return "[limb_name]"
 
-			if ("left foot")
+			if("left foot")
 				return "l_foot"
 			else
 				message_admins("DEBUG: Something called get_limb_icon_name() incorrectly, they use the name [limb_name]")
@@ -153,12 +153,12 @@
 	var/e_icon
 	var/b_icon
 
-	if (!E)
+	if(!E)
 		e_icon = "western"
 	else
 		e_icon = E.icon_name
 
-	if (!B)
+	if(!B)
 		b_icon = "mesomorphic"
 	else
 		b_icon = B.icon_name
@@ -192,7 +192,6 @@
 		// Might need re-wording.
 		to_chat(user, SPAN_WARNING("There is no exposed flesh or thin material [target_zone == "head" ? "on their head" : "on their body"] to inject into."))
 
-
 /mob/living/carbon/human/has_brain()
 	var/datum/internal_organ/brain = LAZYACCESS(internal_organs_by_name, "brain")
 	if(istype(brain))
@@ -205,20 +204,16 @@
 		return TRUE
 	return FALSE
 
-
 /mob/living/carbon/human/is_mob_restrained(check_grab = 1)
 	if(check_grab && pulledby && pulledby.grab_level >= GRAB_AGGRESSIVE)
-		return 1
-	if (handcuffed)
-		return 1
-	if (istype(wear_suit, /obj/item/clothing/suit/straight_jacket))
-		return 1
-
-	if (HAS_TRAIT(src, TRAIT_NESTED))
 		return TRUE
-
-	return 0
-
+	if(handcuffed)
+		return TRUE
+	if(istype(wear_suit, /obj/item/clothing/suit/straight_jacket))
+		return TRUE
+	if(HAS_TRAIT(src, TRAIT_NESTED))
+		return TRUE
+	return FALSE
 
 /mob/living/carbon/human/has_legs()
 	. = 0
@@ -258,57 +253,6 @@
 	var/list/cont = contents_recursive()
 	for(var/obj/item/device/radio/headset/h in cont)
 		h.on = FALSE
-
-/mob/living/carbon/human/proc/disable_lights(armor = 1, guns = 1, flares = 1, misc = 1)
-	var/light_off = 0
-	var/goes_out = 0
-	if(armor)
-		if(istype(wear_suit, /obj/item/clothing/suit/storage/marine))
-			var/obj/item/clothing/suit/storage/marine/S = wear_suit
-			if(S.turn_off_light(src))
-				light_off++
-		for(var/obj/item/clothing/head/helmet/marine/H in contents)
-			for(var/obj/item/attachable/flashlight/FL in H.pockets)
-				if(FL.activate_attachment(H, src, TRUE))
-					light_off++
-		for(var/obj/item/clothing/head/hardhat/headlamp in contents)
-			if(headlamp.turn_off_light(src))
-				light_off++
-	if(guns)
-		for(var/obj/item/weapon/gun/G in contents)
-			if(G.turn_off_light(src))
-				light_off++
-	if(flares)
-		for(var/obj/item/device/flashlight/flare/F in contents)
-			if(F.on) goes_out++
-			F.turn_off(src)
-	if(misc)
-		for(var/obj/item/device/flashlight/L in contents)
-			if(istype(L, /obj/item/device/flashlight/flare)) continue
-			if(L.turn_off_light(src))
-				light_off++
-		for(var/obj/item/tool/weldingtool/W in contents)
-			if(W.isOn())
-				W.toggle()
-				goes_out++
-		for(var/obj/item/tool/match/M in contents)
-			M.burn_out(src)
-		for(var/obj/item/tool/lighter/Z in contents)
-			if(Z.turn_off(src))
-				goes_out++
-	if(goes_out && light_off)
-		to_chat(src, SPAN_NOTICE("Your sources of light short and fizzle out."))
-	else if(goes_out)
-		if(goes_out > 1)
-			to_chat(src, SPAN_NOTICE("Your sources of light fizzle out."))
-		else
-			to_chat(src, SPAN_NOTICE("Your source of light fizzles out."))
-	else if(light_off)
-		if(light_off > 1)
-			to_chat(src, SPAN_NOTICE("Your sources of light short out."))
-		else
-			to_chat(src, SPAN_NOTICE("Your source of light shorts out."))
-
 
 /mob/living/carbon/human/a_intent_change(intent as num)
 	. = ..()
@@ -382,7 +326,7 @@
 	return FALSE
 
 /mob/living/carbon/human/get_role_name()
-	return get_actual_job_name(src)
+	return job
 
 /mob/living/carbon/human/check_fire_intensity_resistance()
 	return clothing_fire_intensity_resistance()
@@ -415,13 +359,13 @@
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		ignores_stripdrag_flag = H.species.ignores_stripdrag_flag
-	if(MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_STRIPDRAG_ENEMY) && !ignores_stripdrag_flag && (stat == DEAD || health < HEALTH_THRESHOLD_CRIT) && !get_target_lock(M.faction_group))
+	if(MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_STRIPDRAG_ENEMY) && !ignores_stripdrag_flag && (stat == DEAD || health < HEALTH_THRESHOLD_CRIT) && !ally(M.faction))
 		to_chat(M, SPAN_WARNING("You can't pull a crit or dead member of another faction!"))
 		return FALSE
 	return TRUE
 
 /mob/living/carbon/human/proc/get_brute_mod()
-	if(LAZYLEN(brute_mod_override))
+	if(length(brute_mod_override))
 		var/lowest_brute_mod = INFINITY
 		for(var/thing in brute_mod_override)
 			var/brute_mod = brute_mod_override[thing]
@@ -431,7 +375,7 @@
 	return species?.brute_mod
 
 /mob/living/carbon/human/proc/get_burn_mod()
-	if(LAZYLEN(burn_mod_override))
+	if(length(burn_mod_override))
 		var/lowest_burn_mod = INFINITY
 		for(var/thing in burn_mod_override)
 			var/burn_mod = burn_mod_override[thing]
@@ -458,12 +402,3 @@
 
 /mob/living/carbon/human/get_orbit_size()
 	return langchat_height
-
-/mob/living/carbon/human/proc/update_minimap_icon()
-	var/obj/item/device/radio/headset/headset
-	if(istype(wear_l_ear, /obj/item/device/radio/headset))
-		headset = wear_l_ear
-	else if(istype(wear_r_ear, /obj/item/device/radio/headset))
-		headset = wear_r_ear
-	if(headset)
-		headset.update_minimap_icon()

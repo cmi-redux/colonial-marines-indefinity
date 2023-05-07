@@ -5,7 +5,6 @@
 /obj/vehicle/multitile/van
 	name = "Colony Van"
 	desc = "A rather old hunk of metal with four wheels, you know what to do. Entrance on the back and sides."
-	layer = ABOVE_XENO_LAYER
 
 	icon = 'icons/obj/vehicles/van.dmi'
 	icon_state = "van_base"
@@ -41,8 +40,6 @@
 	movement_sound = 'sound/vehicles/tank_driving.ogg'
 	honk_sound = 'sound/vehicles/honk_2_truck.ogg'
 
-	luminosity = 8
-
 	move_max_momentum = 3
 
 	hardpoints_allowed = list(
@@ -74,6 +71,8 @@
 	var/next_push = 0
 	var/push_delay = 0.5 SECONDS
 
+	faction_to_get = FACTION_MARINE
+
 /obj/vehicle/multitile/van/Initialize()
 	. = ..()
 	under_image = image(icon, src, icon_state, layer = BELOW_MOB_LAYER)
@@ -87,6 +86,8 @@
 
 	for(var/I in GLOB.player_list)
 		add_default_image(SSdcs, I)
+
+	SSmapview.add_marker(src, "vehicle_van")
 
 /obj/vehicle/multitile/van/BlockedPassDirs(atom/movable/mover, target_dir)
 	if(mover in mobs_under) //can't collide with the thing you're buckled to
@@ -102,7 +103,7 @@
 			return NO_BLOCKED_MOVEMENT
 
 		if(M.mob_size >= MOB_SIZE_IMMOBILE && next_push < world.time)
-			if(try_move(target_dir, force=TRUE))
+			if(try_move(target_dir, force = TRUE))
 				next_push = world.time + push_delay
 				return NO_BLOCKED_MOVEMENT
 
@@ -219,7 +220,7 @@
 	misc_multipliers["move"] += overdrive_speed_mult
 
 /obj/vehicle/multitile/van/get_projectile_hit_boolean(obj/item/projectile/P)
-	if(src == P.original) //clicking on the van itself will hit it.
+	if(src == P.original_target) //clicking on the van itself will hit it.
 		var/hitchance = P.get_effective_accuracy()
 		if(prob(hitchance))
 			return TRUE
@@ -260,7 +261,7 @@
 
 //PRESET: no hardpoints
 /obj/effect/vehicle_spawner/van/spawn_vehicle()
-	var/obj/vehicle/multitile/van/VAN = new (loc)
+	var/obj/vehicle/multitile/van/VAN = new(loc)
 
 	load_misc(VAN)
 	handle_direction(VAN)
@@ -268,7 +269,7 @@
 
 //PRESET: wheels installed, destroyed
 /obj/effect/vehicle_spawner/van/decrepit/spawn_vehicle()
-	var/obj/vehicle/multitile/van/VAN = new (loc)
+	var/obj/vehicle/multitile/van/VAN = new(loc)
 
 	load_misc(VAN)
 	load_hardpoints(VAN)
@@ -281,7 +282,7 @@
 
 //PRESET: wheels installed
 /obj/effect/vehicle_spawner/van/fixed/spawn_vehicle()
-	var/obj/vehicle/multitile/van/VAN = new (loc)
+	var/obj/vehicle/multitile/van/VAN = new(loc)
 
 	load_misc(VAN)
 	load_hardpoints(VAN)

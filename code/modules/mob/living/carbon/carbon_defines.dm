@@ -23,16 +23,24 @@
 
 	var/datum/huntdata/hunter_data //Stores all information relating to Hunters for use with their HUD and other systems.
 
+	var/obj/item/faction_tag/organ/organ_faction_tag = null
+	var/obj/item/faction_tag/faction_tag = null
+
+	var/morale_flags = NO_FLAGS
+	var/morale = 100
+
+	sensor_radius = 7
+
 /mob/living/carbon/vv_get_dropdown()
 	. = ..()
 	VV_DROPDOWN_OPTION("", "-----CARBON-----")
-	VV_DROPDOWN_OPTION(VV_HK_CHANGEHIVENUMBER, "Change Hive Number")
+	VV_DROPDOWN_OPTION(VV_HK_CHANGEFACTION, "Change Faction")
 
 /mob/living/carbon/vv_do_topic(list/href_list)
 	. = ..()
 
-	if(href_list[VV_HK_CHANGEHIVENUMBER])
+	if(href_list[VV_HK_CHANGEFACTION])
 		if(!check_rights(R_DEBUG|R_ADMIN))
 			return
 
-		usr.client.cmd_admin_change_their_hivenumber(src)
+		usr.client.cmd_admin_change_their_faction(src)

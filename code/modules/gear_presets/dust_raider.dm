@@ -3,6 +3,7 @@
 	idtype = /obj/item/card/id/dogtag
 	languages = list(LANGUAGE_ENGLISH)
 	faction = FACTION_MARINE
+	auto_squad_name = SQUAD_MARINE_5
 
 
 /datum/equipment_preset/dust_raider/load_name(mob/living/carbon/human/H)
@@ -15,7 +16,7 @@
 	H.name = H.real_name
 	H.age = rand(21,45)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/dust_raider/private
 	name = "Dust Raider Private"
@@ -37,7 +38,7 @@
 	generate_random_marine_primary_for_wo(H)
 	add_common_wo_equipment(H)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/dust_raider/leader
 	name = "Dust Raider Squad Leader"
@@ -48,7 +49,7 @@
 	rank = "Squad Leader"
 	paygrade = "ME5"
 	role_comm_title = "SL"
-	skills = /datum/skills/SL
+	skills = /datum/skills/sl
 
 /datum/equipment_preset/dust_raider/leader/load_gear(mob/living/carbon/human/H)
 	//TODO: add backpacks and satchels
@@ -63,10 +64,10 @@
 	H.equip_to_slot_or_del(new /obj/item/device/whiskey_supply_beacon(H), WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/device/whiskey_supply_beacon(H), WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/device/whiskey_supply_beacon(H), WEAR_IN_BACK)
-	H.equip_to_slot_or_del(new /obj/item/map/whiskey_outpost_map(H), WEAR_IN_BACK)
+	H.equip_to_slot_or_del(new /obj/item/map/current_map(H), WEAR_IN_BACK)
 	add_common_wo_equipment(H)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/dust_raider/smartgunner
 	name = "Dust Raider Smartgunner"
@@ -92,7 +93,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/magazine/large/pmc_m39(H), WEAR_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/night/m56_goggles(H), WEAR_EYES)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/dust_raider/engineer
 	name = "Dust Raider Engineer"
@@ -121,7 +122,7 @@
 	generate_random_marine_primary_for_wo(H)
 	add_common_wo_equipment(H)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/dust_raider/medic
 	name = "Dust Raider Hospital Corpsman"
@@ -156,7 +157,7 @@
 	generate_random_marine_primary_for_wo(H)
 	add_common_wo_equipment(H)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/dust_raider/specialist
 	name = "Dust Raider Specialist"

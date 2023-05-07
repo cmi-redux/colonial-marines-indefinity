@@ -95,10 +95,9 @@
 			S.forget_marine_in_squad(H)
 		message_admins("[key_name_admin(user)] sent [key_name_admin(target)] ([H.job]) to cryogenics.")
 
-	SSticker.mode.latejoin_tally-- //Cryoing someone out removes someone from the Marines, blocking further larva spawns until accounted for
-
 	//Handle job slot/tater cleanup.
-	RoleAuthority.free_role(RoleAuthority.roles_for_mode[target.job], TRUE)
+	SSticker.role_authority.free_role(GET_MAPPED_ROLE(target.job), TRUE)
+	SSautobalancer.balance_action(target, "remove")
 
 	//Delete them from datacore.
 	var/target_ref = WEAKREF(target)
@@ -196,7 +195,7 @@
 
 /datum/player_action/set_squad/act(client/user, mob/living/carbon/human/target, list/params)
 	var/list/squads = list()
-	for(var/datum/squad/S in RoleAuthority.squads)
+	for(var/datum/squad/S in SSticker.role_authority.squads)
 		squads[S.name] = S
 
 	var/selected_squad = tgui_input_list(user, "Select a squad.", "Squad Selection", squads)
@@ -213,12 +212,10 @@
 	name = "Set Faction"
 	permissions_required = R_VAREDIT
 
-/datum/player_action/set_faction/act(client/user, mob/living/carbon/human/target, list/params)
-	var/new_faction = tgui_input_list(usr, "Select faction.", "Faction Choice", FACTION_LIST_HUMANOID)
-	if(!new_faction)
-		new_faction = FACTION_NEUTRAL
-	target.faction = new_faction
-	target.faction_group = list(new_faction)
+/datum/player_action/set_faction/act(client/user, mob/living/carbon/target, list/params)
+	var/faction_to_get = tgui_input_list(usr, "Select faction", "Faction Choice", FACTION_LIST_ALL)
+	if(faction_to_get)
+		GLOB.faction_datum[faction_to_get].add_mob(target)
 
-	message_admins("[key_name_admin(user)][new_faction ? "" : " failed to"] set [key_name_admin(target)]'s faction to [new_faction].")
+	message_admins("[key_name_admin(user)][faction_to_get ? "" : " failed to"] set [key_name_admin(target)]'s faction to [faction_to_get].")
 	return TRUE

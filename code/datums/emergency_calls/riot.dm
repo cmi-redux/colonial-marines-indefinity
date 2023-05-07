@@ -5,17 +5,18 @@
 	mob_max = 10
 	mob_min = 5
 	objectives = "Ensure order is restored and Marine Law is maintained."
-	probability = 0
+	probability = 1
 
 
-/datum/emergency_call/riot/create_member(datum/mind/M, turf/override_spawn_loc)
+/datum/emergency_call/riot/create_member(datum/mind/mind, turf/override_spawn_loc)
 	var/turf/T = override_spawn_loc ? override_spawn_loc : get_spawn_point()
 
 	if(!istype(T))
 		return FALSE
 
 	var/mob/living/carbon/human/H = new(T)
-	M.transfer_to(H, TRUE)
+	mind.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 
 	if(!leader && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(H.client, list(JOB_WARDEN, JOB_CHIEF_POLICE), time_required_for_job))
 		leader = H

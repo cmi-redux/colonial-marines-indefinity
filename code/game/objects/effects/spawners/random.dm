@@ -350,7 +350,7 @@
 	if(gunpath)
 		gun = new gunpath(spawnloc)
 		if(scatter)
-			var/direction = pick(alldirs)
+			var/direction = pick(GLOB.alldirs)
 			var/turf/T = get_step(gun, direction)
 			if(!T || T.density)
 				return
@@ -360,7 +360,7 @@
 			ammo = new ammopath(spawnloc)
 			if(scatter)
 				for(i=0, i<rand(1,3), i++)
-					var/direction = pick(alldirs)
+					var/direction = pick(GLOB.alldirs)
 					var/turf/T = get_step(ammo, direction)
 					if(!T || T.density)
 						break

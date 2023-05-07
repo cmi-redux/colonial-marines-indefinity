@@ -43,7 +43,7 @@
 
 	data["name"] = name
 	data["uses_ammo"] = TRUE
-	data["current_rounds"] = ammo.current_rounds
+	data["current_rounds"] = ammo.ammo_position
 	data["max_rounds"] = ammo.max_rounds
 	data["fpw"] = TRUE
 
@@ -76,7 +76,7 @@
 		to_chat(user, SPAN_NOTICE("\The [name] is reloading. Wait [SPAN_HELPFUL("[((reload_time_started + reload_time - world.time) / 10)]")] seconds."))
 		return FALSE
 
-	if(ammo && ammo.current_rounds <= 0)
+	if(ammo && ammo.ammo_position <= 0)
 		if(reloading)
 			to_chat(user, SPAN_WARNING("<b>\The [name] is out of ammo! You have to wait [(reload_time_started + reload_time - world.time) / 10] seconds before it reloads!"))
 		else
@@ -93,13 +93,14 @@
 	if(!ammo)
 		ammo = new /obj/item/ammo_magazine/hardpoint/firing_port_weapon
 	else
-		ammo.current_rounds = ammo.max_rounds
+		ammo.generate_ammo(FALSE)
+
 	reloading = FALSE
 
 	playsound(owner, 'sound/items/m56dauto_setup.ogg', 50, TRUE)
 
 	if(user && owner.get_mob_seat(user))
-		to_chat(user, SPAN_WARNING("\The [name]'s automated reload is finished. Ammo: <b>[SPAN_HELPFUL(ammo ? ammo.current_rounds : 0)]/[SPAN_HELPFUL(ammo ? ammo.max_rounds : 0)]</b>"))
+		to_chat(user, SPAN_WARNING("\The [name]'s automated reload is finished. Ammo: <b>[SPAN_HELPFUL(ammo ? ammo.ammo_position : 0)]/[SPAN_HELPFUL(ammo ? ammo.max_rounds : 0)]</b>"))
 
 /obj/item/hardpoint/special/firing_port_weapon/proc/start_auto_reload(mob/user)
 	if(reloading)
@@ -122,7 +123,7 @@
 		to_chat(user, SPAN_WARNING("You need a free hand to use \the [name]."))
 		return
 
-	if(ammo.current_rounds <= 0)
+	if(ammo.ammo_position <= 0)
 		start_auto_reload(user)
 		return
 
@@ -131,12 +132,12 @@
 	for(var/bullets_fired = 1, bullets_fired <= burst_amount, bullets_fired++)
 		var/atom/T = A
 		if(!prob((accuracy * 100) / owner.misc_multipliers["accuracy"]))
-			T = get_step(get_turf(A), pick(cardinal))
-		if(LAZYLEN(activation_sounds))
+			T = get_step(get_turf(A), pick( GLOB.cardinals))
+		if(length(activation_sounds))
 			playsound(get_turf(src), pick(activation_sounds), 60, 1)
 		fire_projectile(user, T)
-		if(ammo.current_rounds <= 0)
+		if(ammo.ammo_position <= 0)
 			break
 		if(bullets_fired < burst_amount) //we need to sleep only if there are more bullets to shoot in the burst
 			sleep(3)
-	to_chat(user, SPAN_WARNING("[src] Ammo: <b>[SPAN_HELPFUL(ammo ? ammo.current_rounds : 0)]/[SPAN_HELPFUL(ammo ? ammo.max_rounds : 0)]</b>"))
+	to_chat(user, SPAN_WARNING("[src] Ammo: <b>[SPAN_HELPFUL(ammo ? ammo.ammo_position : 0)]/[SPAN_HELPFUL(ammo ? ammo.max_rounds : 0)]</b>"))

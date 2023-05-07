@@ -12,7 +12,6 @@
 	max_storage_space = 4
 	storage_flags = STORAGE_FLAGS_DEFAULT|STORAGE_USING_DRAWING_METHOD|STORAGE_ALLOW_QUICKDRAW
 	///Icon/item states change based on contents; this stores base icon state.
-	var/base_icon
 	var/drawSound = 'sound/weapons/gun_rifle_draw.ogg'
 
 
@@ -186,6 +185,7 @@
 	var/obj/item/ammo_magazine/flamer_tank/large/fuel
 	var/obj/item/ammo_magazine/flamer_tank/large/B/fuelB
 	var/obj/item/ammo_magazine/flamer_tank/large/X/fuelX
+	var/obj/item/ammo_magazine/flamer_tank/large/G/fuelG
 	var/obj/item/ammo_magazine/flamer_tank/large/active_fuel
 	var/obj/item/weapon/gun/flamer/M240T/linked_flamer
 	var/toggling = FALSE
@@ -199,6 +199,7 @@
 	fuel = new /obj/item/ammo_magazine/flamer_tank/large()
 	fuelB = new /obj/item/ammo_magazine/flamer_tank/large/B()
 	fuelX = new /obj/item/ammo_magazine/flamer_tank/large/X()
+	fuelG =  new /obj/item/ammo_magazine/flamer_tank/large/G()
 	active_fuel = fuel
 	flamer_overlay = overlay_image('icons/obj/items/clothing/backpacks.dmi', "+m240t")
 
@@ -207,6 +208,7 @@
 	QDEL_NULL(fuel)
 	QDEL_NULL(fuelB)
 	QDEL_NULL(fuelX)
+	QDEL_NULL(fuelG)
 	if(linked_flamer)
 		linked_flamer.fuelpack = null
 		linked_flamer = null
@@ -225,7 +227,7 @@
 /obj/item/storage/large_holster/fuelpack/dropped(mob/user)
 	if(linked_flamer)
 		linked_flamer.fuelpack = null
-		if(linked_flamer.current_mag in list(fuel, fuelB, fuelX))
+		if(linked_flamer.current_mag in list(fuel, fuelB, fuelX, fuelG))
 			linked_flamer.current_mag = null
 		linked_flamer.update_icon()
 		linked_flamer = null
@@ -260,21 +262,26 @@
 	// Toggle to the next one
 
 	// Handles toggling of fuel. Snowflake way of changing action icon. Change icon, update action icon, change icon back
-	if(istype(active_fuel, /obj/item/ammo_magazine/flamer_tank/large/X))
+	if(active_fuel == fuelG)
 		active_fuel = fuel
-	else if(istype(active_fuel, /obj/item/ammo_magazine/flamer_tank/large/B))
+	else if(active_fuel == fuel)
+		active_fuel = fuelB
+	else if(active_fuel == fuelB)
 		active_fuel = fuelX
 	else
-		active_fuel = fuelB
+		active_fuel = fuelG
 
 	for(var/X in actions)
-		var/datum/action/A = X
-		A.update_button_icon()
+		var/datum/action/action = X
+		action.update_button_icon()
 
 	to_chat(user, "You switch the fuel tank to <b>[active_fuel.caliber]</b>")
 	playsound(src, 'sound/machines/click.ogg', 25, TRUE)
 	F.current_mag = active_fuel
 	F.update_icon()
+
+	var/atom/movable/screen/ammo/ammo_hud = user.hud_used.ammo
+	ammo_hud.update_hud(user)
 
 	return TRUE
 
@@ -304,10 +311,13 @@
 
 /obj/item/storage/large_holster/fuelpack/proc/switch_fuel(obj/item/ammo_magazine/flamer_tank/large/new_fuel, mob/user)
 	// Switch out the currently stored fuel and drop it
-	if(istype(new_fuel, /obj/item/ammo_magazine/flamer_tank/large/X/))
+	if(istype(new_fuel, /obj/item/ammo_magazine/flamer_tank/large/G))
+		fuelG.forceMove(get_turf(user))
+		fuelG = new_fuel
+	else if(istype(new_fuel, /obj/item/ammo_magazine/flamer_tank/large/X))
 		fuelX.forceMove(get_turf(user))
 		fuelX = new_fuel
-	else if(istype(new_fuel, /obj/item/ammo_magazine/flamer_tank/large/B/))
+	else if(istype(new_fuel, /obj/item/ammo_magazine/flamer_tank/large/B))
 		fuelB.forceMove(get_turf(user))
 		fuelB = new_fuel
 	else
@@ -327,13 +337,15 @@
 	. = ..()
 	if(contents.len)
 		. += "It is storing \a M240-T incinerator unit."
-	if (get_dist(user, src) <= 1)
+	if(get_dist(user, src) <= 1)
 		if(fuel)
 			. += "The [fuel.caliber] currently contains: [round(fuel.get_ammo_percent())]% fuel."
 		if(fuelB)
 			. += "The [fuelB.caliber] currently contains: [round(fuelB.get_ammo_percent())]% fuel."
 		if(fuelX)
 			. += "The [fuelX.caliber] currently contains: [round(fuelX.get_ammo_percent())]% fuel."
+		if(fuelG)
+			. += "The [fuelG.caliber] currently contains: [round(fuelG.get_ammo_percent())]% fuel."
 
 /datum/action/item_action/specialist/toggle_fuel
 	ability_primacy = SPEC_PRIMARY_ACTION_1
@@ -346,11 +358,13 @@
 
 /datum/action/item_action/specialist/toggle_fuel/update_button_icon()
 	var/obj/item/storage/large_holster/fuelpack/FP = holder_item
-	if (!istype(FP))
+	if(!istype(FP))
 		return
 
 	var/icon = 'icons/obj/items/weapons/guns/ammo_by_faction/uscm.dmi'
 	var/icon_state
+	if(istype(FP.active_fuel, /obj/item/ammo_magazine/flamer_tank/large/G))
+		icon_state = "flametank_large_glob"
 	if(istype(FP.active_fuel, /obj/item/ammo_magazine/flamer_tank/large/X))
 		icon_state = "flametank_large_blue"
 	else if(istype(FP.active_fuel, /obj/item/ammo_magazine/flamer_tank/large/B))
@@ -364,11 +378,11 @@
 
 /datum/action/item_action/specialist/toggle_fuel/can_use_action()
 	var/mob/living/carbon/human/H = owner
-	if(istype(H) && !H.is_mob_incapacitated() && !H.lying && holder_item == H.back)
+	if(istype(H) && !H.is_mob_incapacitated() && H.can_action && holder_item == H.back)
 		return TRUE
 
 /datum/action/item_action/specialist/toggle_fuel/action_activate()
 	var/obj/item/storage/large_holster/fuelpack/FP = holder_item
-	if (!istype(FP))
+	if(!istype(FP))
 		return
 	FP.toggle_fuel()

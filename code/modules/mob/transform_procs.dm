@@ -1,14 +1,15 @@
 /mob/living/carbon/human/proc/monkeyize()
-	if (monkeyizing)
+	if(monkeyizing)
 		return
 	for(var/obj/item/W in src)
-		if (W==w_uniform) // will be torn
+		if(W==w_uniform) // will be torn
 			continue
 		drop_inv_item_on_ground(W)
 	regenerate_icons()
 	monkeyizing = 1
-	canmove = 0
-	stunned = 1
+	canmove = FALSE
+	can_action = FALSE
+	stunned = TRUE
 	icon = null
 	invisibility = 101
 	for(var/t in limbs)
@@ -38,7 +39,7 @@
 
 	O.med_hud_set_status()
 
-	if (client)
+	if(client)
 		client.mob = O
 	if(mind)
 		mind.transfer_to(O)
@@ -55,7 +56,7 @@
 	return ..()
 
 /mob/living/carbon/human/AIize()
-	if (monkeyizing)
+	if(monkeyizing)
 		return
 	for(var/t in limbs)
 		qdel(t)
@@ -63,12 +64,13 @@
 	return ..()
 
 /mob/living/carbon/AIize()
-	if (monkeyizing)
+	if(monkeyizing)
 		return
 	for(var/obj/item/W in src)
 		drop_inv_item_on_ground(W)
 	monkeyizing = 1
-	canmove = 0
+	canmove = FALSE
+	can_action = FALSE
 	icon = null
 	invisibility = 101
 	return ..()
@@ -79,13 +81,14 @@
 
 //human -> robot
 /mob/living/carbon/human/proc/Robotize()
-	if (monkeyizing)
+	if(monkeyizing)
 		return
 	for(var/obj/item/W in src)
 		drop_inv_item_on_ground(W)
 	regenerate_icons()
 	monkeyizing = 1
-	canmove = 0
+	canmove = FALSE
+	can_action = FALSE
 	icon = null
 	invisibility = 101
 	for(var/t in limbs)
@@ -125,13 +128,14 @@
 
 //human -> alien
 /mob/living/carbon/human/proc/Alienize(list/types)
-	if (monkeyizing)
+	if(monkeyizing)
 		return
 	for(var/obj/item/W in src)
 		drop_inv_item_on_ground(W)
 	regenerate_icons()
 	monkeyizing = 1
-	canmove = 0
+	canmove = FALSE
+	can_action = FALSE
 	icon = null
 	invisibility = 101
 	for(var/t in limbs)
@@ -187,13 +191,14 @@
 	return
 
 /mob/living/carbon/human/proc/corgize()
-	if (monkeyizing)
+	if(monkeyizing)
 		return
 	for(var/obj/item/W in src)
 		drop_inv_item_on_ground(W)
 	regenerate_icons()
 	monkeyizing = 1
-	canmove = 0
+	canmove = FALSE
+	can_action = FALSE
 	icon = null
 	invisibility = 101
 	for(var/t in limbs) //this really should not be necessary
@@ -224,7 +229,8 @@
 
 	regenerate_icons()
 	monkeyizing = 1
-	canmove = 0
+	canmove = FALSE
+	can_action = FALSE
 	icon = null
 	invisibility = 101
 
@@ -265,28 +271,28 @@
  * This proc is here to force coders to manually place their mob in this list, hopefully tested.
  * This also gives a place to explain -why- players shouldnt be turn into certain mobs and hopefully someone can fix them.
  */
-/mob/proc/safe_animal(MP)
+/mob/proc/safe_animal(mp)
 
 //Bad mobs! - Remember to add a comment explaining what's wrong with the mob
-	if(!MP)
+	if(!mp)
 		return 0 //Sanity, this should never happen.
 
 //Good mobs!
-	if(ispath(MP, /mob/living/simple_animal/cat))
+	if(ispath(mp, /mob/living/simple_animal/cat))
 		return 1
-	if(ispath(MP, /mob/living/simple_animal/corgi))
+	if(ispath(mp, /mob/living/simple_animal/corgi))
 		return 1
-	if(ispath(MP, /mob/living/simple_animal/crab))
+	if(ispath(mp, /mob/living/simple_animal/crab))
 		return 1
-	if(ispath(MP, /mob/living/simple_animal/hostile/carp))
+	if(ispath(mp, /mob/living/simple_animal/hostile/carp))
 		return 1
-	if(ispath(MP, /mob/living/simple_animal/tomato))
+	if(ispath(mp, /mob/living/simple_animal/tomato))
 		return 1
-	if(ispath(MP, /mob/living/simple_animal/mouse))
+	if(ispath(mp, /mob/living/simple_animal/mouse))
 		return 1 //It is impossible to pull up the player panel for mice (Fixed! - Nodrak)
-	if(ispath(MP, /mob/living/simple_animal/hostile/bear))
+	if(ispath(mp, /mob/living/simple_animal/hostile/bear))
 		return 1 //Bears will auto-attack mobs, even if they're player controlled (Fixed! - Nodrak)
-	if(ispath(MP, /mob/living/simple_animal/parrot))
+	if(ispath(mp, /mob/living/simple_animal/parrot))
 		return 1 //Parrots are no longer unfinished! -Nodrak
 
 	//Not in here? Must be untested!

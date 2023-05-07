@@ -2,10 +2,10 @@
 
 ///Reads out a description of game time, game date, main ship and current area. Originally for displaying roundstart messages on a conventional SS13 server.
 /proc/show_location_blurb(list/mob/targets, area/A, duration)
-	set waitfor = 0
+	set waitfor = FALSE
 	var/areaname = replacetext(A.name, "\improper", "") //The \improper flickers "ÿ" briefly
 
-	var/text = "[worldtime2text("hhmm")], [time2text(REALTIMEOFDAY, "DD-MMM-[game_year]")]\n[station_name], [areaname]"
+	var/text = "[game_time_timestamp("hhmm")] (время в зоне операции [planet_game_time_timestamp("hh:mm:ss")]), [time2text(REALTIMEOFDAY, "DD-MMM-[game_year]")]\n[station_name], [areaname]"
 
 	show_blurb(targets, duration, text, TRUE)
 
@@ -19,8 +19,8 @@ base = the base the marines are staging from. The ship, Whiskey Outpost etc. Non
 		exempt_ztraits = list(exempt_ztraits)
 	var/list/exempt_zlevels = SSmapping.levels_by_any_trait(exempt_ztraits)
 
-	var/base_text = "<b>[uppertext(round_statistics.round_name)]</b>\n\
-						[worldtime2text("hhmm hrs")], [uppertext(time2text(REALTIMEOFDAY, "DD-MMM-[game_year]"))]\n\
+	var/base_text = "<b>[uppertext(SSticker.mode.round_statistics.round_name)]</b>\n\
+						[game_time_timestamp("hhmm hrs")] (время в зоне операции [planet_game_time_timestamp("hh:mm:ss")]), [uppertext(time2text(REALTIMEOFDAY, "DD-MMM-[game_year]"))]\n\
 						[SSmapping.configs[GROUND_MAP].map_name]"
 
 	var/list/post_text = list("combat" = "\n[unit]",
@@ -91,7 +91,7 @@ ignore_key = used to skip key checks. Ex. a USCM ERT member shouldn't see the no
 but should see their own spawn message even if the player already dropped as USCM.**/
 /proc/show_blurb(list/mob/targets, duration = 3 SECONDS, message, scroll_down, screen_position = "LEFT+0:16,BOTTOM+1:16",\
 	text_alignment = "left", text_color = "#FFFFFF", blurb_key, ignore_key = FALSE, speed = 1)
-	set waitfor = 0
+	set waitfor = FALSE
 	if(!islist(targets))
 		targets = list(targets)
 	if(!length(targets))

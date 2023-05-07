@@ -10,10 +10,15 @@
 	var/timing = FALSE
 	var/time = 10 SECONDS
 	var/range = 2
-	var/iff_signal = FACTION_MARINE
+	faction_to_get = FACTION_MARINE
 
 	var/delay = 1 //number of seconds between sensing and pulsing
 	var/delaying = FALSE
+
+/obj/item/device/assembly/prox_sensor/Initialize(datum/faction/faction_to_set)
+	if(faction_to_set)
+		faction = faction_to_set
+	. = ..()
 
 /obj/item/device/assembly/prox_sensor/activate()
 	if(!..())
@@ -65,12 +70,11 @@
 	delaying = FALSE
 	..()
 
-
 /obj/item/device/assembly/prox_sensor/process(delta_time)
 	if(scanning)
 		var/turf/mainloc = get_turf(src)
 		for(var/mob/living/M in range(range,mainloc))
-			if(M.get_target_lock(iff_signal))
+			if(M.ally(faction))
 				continue
 			HasProximity(M)
 
@@ -112,7 +116,7 @@
 
 /obj/item/device/assembly/prox_sensor/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
-	if (!ui)
+	if(!ui)
 		ui = new(user, src, "Proximity", "Proximity Assembly")
 		ui.open()
 		ui.set_autoupdate(timing)

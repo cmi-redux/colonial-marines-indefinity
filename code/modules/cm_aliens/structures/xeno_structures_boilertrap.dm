@@ -12,7 +12,6 @@
 	health = 1
 	layer = RESIN_STRUCTURE_LAYER
 	var/list/tripwires = list()
-	var/hivenumber = XENO_HIVE_NORMAL
 	var/root_duration = 17.5
 
 	var/mob/living/carbon/xenomorph/bound_xeno // Boiler linked to this trap
@@ -23,10 +22,12 @@
 /obj/effect/alien/resin/boilertrap/Initialize(mapload, mob/living/carbon/xenomorph/X)
 	if(mapload || !istype(X))
 		return INITIALIZE_HINT_QDEL
+
+	. = ..()
+
 	bound_xeno = X
-	hivenumber = X.hivenumber
-	set_hive_data(src, hivenumber)
-	return ..()
+	faction = X.faction
+	set_hive_data(src, faction)
 
 /obj/effect/alien/resin/boilertrap/Destroy(force)
 	bound_xeno = null
@@ -58,14 +59,14 @@
 	to_chat(M, SPAN_XENOHIGHDANGER("You are caught by a trap made of foul resin!"))
 	qdel(src)
 
-/obj/effect/alien/resin/boilertrap/attack_alien(mob/living/carbon/xenomorph/X)
-	to_chat(X, SPAN_XENOWARNING("Best not to meddle with that trap."))
+/obj/effect/alien/resin/boilertrap/attack_alien(mob/living/carbon/xenomorph/xeno)
+	to_chat(xeno, SPAN_XENOWARNING("Best not to meddle with that trap."))
 	return XENO_NO_DELAY_ACTION
 
 /obj/effect/alien/resin/boilertrap/Crossed(atom/A)
-	if (isxeno(A))
-		var/mob/living/carbon/xenomorph/X = A
-		if (X.hivenumber != hivenumber)
+	if(isxeno(A))
+		var/mob/living/carbon/xenomorph/xeno = A
+		if(xeno.faction != faction)
 			trigger_trap(A)
 	else if(ishuman(A))
 		trigger_trap(A)

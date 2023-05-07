@@ -5,6 +5,8 @@ GLOBAL_LIST_EMPTY_TYPED(transmitters, /obj/structure/transmitter)
 	icon = 'icons/obj/structures/structures.dmi'
 	icon_state = "wall_phone"
 	desc = "It is a wall mounted telephone. The fine text reads: To log your details with the mainframe please insert your keycard into the slot below. Unfortunately the slot is jammed. You can still use the phone, however."
+	plane = GAME_PLANE
+	faction_to_get = FACTION_MARINE
 
 	var/phone_category = "Uncategorised"
 	var/phone_color = "white"
@@ -31,20 +33,19 @@ GLOBAL_LIST_EMPTY_TYPED(transmitters, /obj/structure/transmitter)
 	var/timeout_timer_id
 	var/timeout_duration = 30 SECONDS
 
-	var/network_receive = FACTION_MARINE
-	var/list/networks_transmit = list(FACTION_MARINE)
-
 /obj/structure/transmitter/hidden
 	callable = FALSE
 
-/obj/structure/transmitter/Initialize(mapload, ...)
+/obj/structure/transmitter/Initialize(mapload, datum/faction/faction_to_set)
 	. = ..()
-	base_icon_state = icon_state
 
+	if(faction_to_set)
+		faction = faction_to_set
+
+	base_icon_state = icon_state
 	attached_to = new phone_type(src)
 	RegisterSignal(attached_to, COMSIG_PARENT_PREQDELETED, PROC_REF(override_delete))
 	update_icon()
-
 	if(!get_turf(src))
 		return
 
@@ -80,9 +81,7 @@ GLOBAL_LIST_EMPTY_TYPED(transmitters, /obj/structure/transmitter)
 
 	for(var/possible_phone in GLOB.transmitters)
 		var/obj/structure/transmitter/target_phone = possible_phone
-		if(TRANSMITTER_UNAVAILABLE(target_phone) || !target_phone.callable) // Phone not available
-			continue
-		if(!(target_phone.network_receive in networks_transmit))
+		if(TRANSMITTER_UNAVAILABLE(target_phone) || !target_phone.callable || !target_phone.faction.faction_is_ally(faction)) // Phone not available
 			continue
 
 		var/id = target_phone.phone_id
@@ -409,7 +408,7 @@ GLOBAL_LIST_EMPTY_TYPED(transmitters, /obj/structure/transmitter)
 
 /obj/item/phone/proc/reset_tether()
 	SIGNAL_HANDLER
-	if (tether_effect)
+	if(tether_effect)
 		UnregisterSignal(tether_effect, COMSIG_PARENT_QDELETING)
 		if(!QDESTROYING(tether_effect))
 			qdel(tether_effect)
@@ -489,7 +488,7 @@ GLOBAL_LIST_EMPTY_TYPED(transmitters, /obj/structure/transmitter)
 
 	set_raised(FALSE, user)
 
-/obj/item/phone/on_enter_storage(obj/item/storage/S)
+/obj/item/phone/on_enter_storage(obj/item/storage/storage)
 	. = ..()
 	if(attached_to)
 		attached_to.recall_phone()
@@ -539,8 +538,7 @@ GLOBAL_LIST_EMPTY_TYPED(transmitters, /obj/structure/transmitter)
 
 
 /obj/structure/transmitter/colony_net
-	network_receive = FACTION_COLONIST
-	networks_transmit = list(FACTION_COLONIST)
+	faction_to_get = FACTION_COLONIST
 
 /obj/structure/transmitter/colony_net/rotary
 	name = "rotary telephone"
@@ -552,6 +550,9 @@ GLOBAL_LIST_EMPTY_TYPED(transmitters, /obj/structure/transmitter)
 	name = "rotary telephone"
 	icon_state = "rotary_phone"
 	desc = "The finger plate is a little stiff."
+
+/obj/structure/transmitter/rotary/uscm
+	faction_to_get = FACTION_USCM
 
 /obj/structure/transmitter/touchtone
 	name = "touch-tone telephone"

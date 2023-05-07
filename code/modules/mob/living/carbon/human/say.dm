@@ -92,7 +92,7 @@
 		speaking = get_default_language()
 
 	var/ending = copytext(message, length(message))
-	if (speaking)
+	if(speaking)
 		// This is broadcast to all mobs with the language,
 		// irrespective of distance or anything else.
 		if(speaking.flags & HIVEMIND)
@@ -109,7 +109,7 @@
 		if(ending=="?")
 			verb="asks"
 
-	if (istype(wear_mask, /obj/item/clothing/mask/muzzle))
+	if(istype(wear_mask, /obj/item/clothing/mask/muzzle))
 		return
 
 	message = capitalize(trim(message))
@@ -156,7 +156,7 @@
 		if(length(used_radios))
 			GLOB.STUI.game.Add("\[[time_stamp()]]<font color='#FF0000'>RADIO: [key_name(src)] : [message]</font><br>")
 			GLOB.STUI.processing |= STUI_LOG_GAME_CHAT
-			if (speech_sound)
+			if(speech_sound)
 				sound_vol *= 0.5
 
 			for(var/mob/living/M in hearers(message_range, src))
@@ -177,24 +177,24 @@
 		R.talk_into(src, message, message_mode, verb, speaking)
 
 /mob/living/carbon/human/proc/forcesay(forcesay_type = SUDDEN)
-	if (!client || stat != CONSCIOUS)
+	if(!client || stat != CONSCIOUS)
 		return
 
 	var/say_text = winget(client, "input", "text")
-	if (length(say_text) < 8)
+	if(length(say_text) < 8)
 		return
 
 	var/regex/say_regex = regex("say \"(;|:)*", "i")
 	say_text = say_regex.Replace(say_text, "")
 
 	switch (forcesay_type)
-		if (SUDDEN)
+		if(SUDDEN)
 			say_text += "-"
-		if (GRADUAL)
+		if(GRADUAL)
 			say_text += "..."
-		if (PAINFUL)
+		if(PAINFUL)
 			say_text += pick("-OW!", "-UGH!", "-ACK!")
-		if (EXTREMELY_PAINFUL)
+		if(EXTREMELY_PAINFUL)
 			say_text += pick("-AAAGH!", "-AAARGH!", "-AAAHH!")
 
 	say(say_text)
@@ -206,17 +206,17 @@
 		return 1
 
 	//These only pertain to common. Languages are handled by mob/say_understands()
-	if (!speaking)
-		if (isSilicon(other))
+	if(!speaking)
+		if(isSilicon(other))
 			return 1
-		if (istype(other, /mob/living/brain))
+		if(istype(other, /mob/living/brain))
 			return 1
 
 	//This is already covered by mob/say_understands()
-	//if (istype(other, /mob/living/simple_animal))
-	// if((other.universal_speak && !speaking) || src.universal_speak || src.universal_understand)
-	// return 1
-	// return 0
+	//if(istype(other, /mob/living/simple_animal))
+	//	if((other.universal_speak && !speaking) || src.universal_speak || src.universal_understand)
+	//		return 1
+	//	return 0
 
 	return ..()
 
@@ -314,7 +314,7 @@ for it but just ignore it.
 
 /mob/living/carbon/human/hear_apollo()
 	var/obj/item/device/radio/headset/dongle = get_type_in_ears(/obj/item/device/radio/headset)
-	if (dongle && dongle.translate_apollo)
+	if(dongle && dongle.translate_apollo)
 		return TRUE
 	for(var/datum/language/apollo/link in languages)
 		return TRUE

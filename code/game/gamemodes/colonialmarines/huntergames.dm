@@ -88,8 +88,8 @@ var/waiting_for_drop_votes = 0
 //Digging through this is a pain. I'm leaving it mostly alone until a full rework takes place.
 
 /datum/game_mode/huntergames
-	name = "Hunter Games"
-	config_tag = "Hunter Games"
+	name = MODE_NAME_HUNTER_GAMES
+	config_tag = MODE_NAME_HUNTER_GAMES
 	required_players = 1
 	flags_round_type = MODE_NO_LATEJOIN
 	latejoin_larva_drop = 0 //You never know
@@ -262,7 +262,7 @@ var/waiting_for_drop_votes = 0
 		if(3) //CL
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/liaison_suit(H), WEAR_BODY)
 			H.equip_to_slot_or_del(new /obj/item/clothing/shoes/laceup(H), WEAR_FEET)
-		if(4) //pmc!
+		if(4) //PMC!
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/veteran/pmc(H), WEAR_BODY)
 			H.equip_to_slot_or_del(new /obj/item/clothing/shoes/laceup(H), WEAR_FEET)
 			H.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/pmc(H), WEAR_FACE)
@@ -342,8 +342,9 @@ var/waiting_for_drop_votes = 0
 	ticks_passed++
 	if(prob(2)) dropoff_timer += ticks_passed //Increase the timer the longer the round goes on.
 
-	if(round_started > 0) //Initial countdown, just to be safe, so that everyone has a chance to spawn before we check anything.
+	if(round_started > 0)
 		round_started--
+		return FALSE
 
 	if(checkwin_counter >= 10) //Only check win conditions every 5 ticks.
 		if(!finished)
@@ -351,6 +352,19 @@ var/waiting_for_drop_votes = 0
 		checkwin_counter = 0
 	return 0
 
+/datum/game_mode/huntergames/proc/count_humans()
+	var/human_count = 0
+
+	for(var/mob/living/carbon/human/H in GLOB.alive_mob_list)
+		if(istype(H) && H.stat == 0 && !istype(get_area(H.loc),/area/centcom) && !istype(get_area(H.loc),/area/tdome))
+			if(H.species != "Yautja") // Preds don't count in round end.
+				human_count++ //Add them to the amount of people who're alive.
+
+	return human_count
+
+///////////////////////////
+//Checks to see who won///
+//////////////////////////
 /datum/game_mode/huntergames/check_win()
 	var/C = count_humans()
 	if(C < last_tally)
@@ -365,30 +379,18 @@ var/waiting_for_drop_votes = 0
 	last_tally = C
 	if(last_tally == 1 || ismob(last_tally))
 		finished = 1
-	else if (last_tally < 1)
+	else if(last_tally < 1)
 		finished = 2
 	else
 		finished = 0
-
-/datum/game_mode/huntergames/proc/count_humans()
-	var/human_count = 0
-
-	for(var/mob/living/carbon/human/H in GLOB.alive_mob_list)
-		if(istype(H) && H.stat == 0 && !istype(get_area(H.loc),/area/centcom) && !istype(get_area(H.loc),/area/tdome))
-			if(H.species != "Yautja") // Preds don't count in round end.
-				human_count += 1 //Add them to the amount of people who're alive.
-
-	return human_count
 
 ///////////////////////////////
 //Checks if the round is over//
 ///////////////////////////////
 /datum/game_mode/huntergames/check_finished()
-	if(finished != 0)
-		return 1
-
-	return 0
-
+	if(finished)
+		return TRUE
+	return FALSE
 
 //////////////////////////////////////////////////////////////////////
 //Announces the end of the game with all relevant information stated//

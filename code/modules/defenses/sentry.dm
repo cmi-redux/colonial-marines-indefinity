@@ -28,12 +28,12 @@
 	var/omni_directional = FALSE
 	var/additional_rounds_stored = FALSE
 	var/sentry_range = SENTRY_RANGE
-
+	var/list/list/traits_to_give
 	has_camera = TRUE
-
 	var/damage_mult = 1
 	var/accuracy_mult = 1
 	var/burst = 1
+	var/max_inherent_rounds = 500
 	handheld_type = /obj/item/defenses/handheld/sentry
 
 	/// timer triggered when sentry gun shoots at a target to not spam the laptop
@@ -46,23 +46,22 @@
 	/// action list is configurable for all subtypes, this is just an example
 	choice_categories = list(
 		// SENTRY_CATEGORY_ROF = list(ROF_SINGLE, ROF_BURST, ROF_FULL_AUTO),
-		SENTRY_CATEGORY_IFF = list(FACTION_USCM, FACTION_WEYLAND, FACTION_HUMAN),
+		SENTRY_CATEGORY_IFF = list(SENTRY_IFF_OFF, SENTRY_IFF_HALF, SENTRY_IFF_FULL),
 	)
 
 	selected_categories = list(
 		// SENTRY_CATEGORY_ROF = ROF_SINGLE,
-		SENTRY_CATEGORY_IFF = FACTION_USCM,
+		SENTRY_CATEGORY_IFF = SENTRY_IFF_HALF,
 	)
 
 /obj/structure/machinery/defenses/sentry/Initialize()
-	. = ..()
 	spark_system = new /datum/effect_system/spark_spread
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
-	if(turned_on)
-		start_processing()
-		set_range()
-	update_icon()
+	LAZYADD(traits_to_give, list(
+		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_iff)
+	))
+	. = ..()
 
 /obj/structure/machinery/defenses/sentry/Destroy() //Clear these for safety's sake.
 	targets = null
@@ -72,11 +71,10 @@
 	QDEL_NULL(spark_system)
 	QDEL_NULL(ammo)
 	stop_processing()
-	SetLuminosity(0)
 	. = ..()
 
 /obj/structure/machinery/defenses/sentry/process()
-	if(!turned_on)
+	if(!light_on)
 		stop_processing()
 		return
 
@@ -117,10 +115,10 @@
 		overlays += "[defense_type] uac_[sentry_type]_destroyed"
 		return
 
-	if(!ammo || ammo && !ammo.current_rounds)
+	if(!ammo || ammo && !ammo.ammo_position)
 		overlays += "[defense_type] uac_[sentry_type]_noammo"
 		return
-	if(turned_on)
+	if(light_on)
 		overlays += "[defense_type] uac_[sentry_type]_on"
 	else
 		overlays += "[defense_type] uac_[sentry_type]"
@@ -167,11 +165,11 @@
 /obj/structure/machinery/defenses/sentry/get_examine_text(mob/user)
 	. = ..()
 	if(ammo)
-		. += SPAN_NOTICE("\The [src] has [ammo.current_rounds]/[ammo.max_rounds] round\s loaded.")
-		if(additional_rounds_stored)
-			. += SPAN_NOTICE("\The [src] has [ammo.max_inherent_rounds] round\s left in storage.")
-		if(upgraded)
-			. += SPAN_NOTICE("\The [src] has been reinforced with metal sheets.")
+		. += SPAN_NOTICE("[src] has [ammo.ammo_position]/[ammo.max_rounds] rounds loaded.")
+	if(additional_rounds_stored)
+		. += SPAN_NOTICE("\The [src] has [max_inherent_rounds] round\s left in storage.")
+	if(upgraded)
+		. += SPAN_NOTICE("\The [src] has been reinforced with metal sheets.")
 	else
 		. += SPAN_NOTICE("\The [src] is empty and needs to be refilled with ammo.")
 		if(additional_rounds_stored)
@@ -179,7 +177,8 @@
 
 /obj/structure/machinery/defenses/sentry/power_on_action()
 	target = null
-	SetLuminosity(luminosity_strength)
+
+	set_light_on(TRUE)
 
 	visible_message("[icon2html(src, viewers(src))] [SPAN_NOTICE("The [name] hums to life and emits several beeps.")]")
 	visible_message("[icon2html(src, viewers(src))] [SPAN_NOTICE("The [name] buzzes in a monotone voice: 'Default systems initiated'")]")
@@ -187,7 +186,7 @@
 	set_range()
 
 /obj/structure/machinery/defenses/sentry/power_off_action()
-	SetLuminosity(0)
+	set_light_on(FALSE)
 	visible_message("[icon2html(src, viewers(src))] [SPAN_NOTICE("The [name] powers down and goes silent.")]")
 	stop_processing()
 	unset_range()
@@ -211,7 +210,7 @@
 			to_chat(user, SPAN_WARNING("[src] is completely welded in place. You can't move it without damaging it."))
 			return
 
-		if(turned_on)
+		if(light_on)
 			to_chat(user, SPAN_WARNING("[src] is currently active. The motors will prevent you from rotating it safely."))
 			return
 
@@ -225,7 +224,7 @@
 		if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI) || user.action_busy)
 			return
 
-		if(ammo.current_rounds)
+		if(ammo.ammo_position)
 			to_chat(user, SPAN_WARNING("You only know how to swap [M.name] when it's empty."))
 			return
 
@@ -256,7 +255,7 @@
 		setDir(pick(NORTH, EAST, SOUTH, WEST))
 		sleep(2)
 
-	cell_explosion(loc, 10, 10, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("sentry explosion", owner_mob))
+	cell_explosion(loc, 10, 10, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("взрыва турели", owner_mob))
 	if(!QDELETED(src))
 		qdel(src)
 
@@ -267,14 +266,14 @@
 
 
 /obj/structure/machinery/defenses/sentry/proc/fire(atom/A)
-	if(!(world.time-last_fired >= fire_delay) || !turned_on || !ammo || QDELETED(target))
+	if(!(world.time-last_fired >= fire_delay) || !light_on || !ammo || QDELETED(target))
 		return
 
 	if(world.time-last_fired >= 30 SECONDS) //if we haven't fired for a while, beep first
 		playsound(loc, 'sound/machines/twobeep.ogg', 50, 1)
 		sleep(3)
 
-	if(ammo && ammo.current_rounds <= 0)
+	if(ammo && ammo.ammo_position <= 0)
 		to_chat(usr, SPAN_WARNING("[name] does not have any ammo."))
 		return
 
@@ -292,34 +291,36 @@
 	if(targets.len)
 		addtimer(CALLBACK(src, PROC_REF(get_target)), fire_delay)
 
-	if(!engaged_timer)
-		SEND_SIGNAL(src, COMSIG_SENTRY_ENGAGED_ALERT, src)
-		engaged_timer = addtimer(CALLBACK(src, PROC_REF(reset_engaged_timer)), SENTRY_ENGAGED_TIMEOUT)
-
-	if(!low_ammo_timer && ammo?.current_rounds && (ammo?.current_rounds < (ammo?.max_rounds * SENTRY_LOW_AMMO_ALERT_PERCENTAGE)))
-		SEND_SIGNAL(src, COMSIG_SENTRY_LOW_AMMO_ALERT, src)
-		low_ammo_timer = addtimer(CALLBACK(src, PROC_REF(reset_low_ammo_timer)), SENTRY_LOW_AMMO_TIMEOUT)
-
-/obj/structure/machinery/defenses/sentry/proc/reset_engaged_timer()
-	engaged_timer = null
-
-/obj/structure/machinery/defenses/sentry/proc/reset_low_ammo_timer()
-	low_ammo_timer = null
-
-/obj/structure/machinery/defenses/sentry/proc/actual_fire(atom/target)
-	var/obj/item/projectile/new_projectile = new(src, create_cause_data(initial(name), owner_mob, src))
-	new_projectile.generate_bullet(new ammo.default_ammo)
-	new_projectile.damage *= damage_mult
-	new_projectile.accuracy *= accuracy_mult
-	GIVE_BULLET_TRAIT(new_projectile, /datum/element/bullet_trait_iff, faction_group)
-	new_projectile.fire_at(target, src, owner_mob, new_projectile.ammo.max_range, new_projectile.ammo.shell_speed, null, FALSE)
-	muzzle_flash(Get_Angle(get_turf(src), target))
-	ammo.current_rounds--
+/obj/structure/machinery/defenses/sentry/proc/actual_fire(atom/A)
+	var/obj/item/projectile/P = ammo.transfer_bullet_out()
+	P.forceMove(src)
+	apply_traits(P)
+	P.bullet_ready_to_fire(initial(name), null, owner_mob)
+	var/datum/cause_data/cause_data = create_cause_data(initial(name), owner_mob, src)
+	P.weapon_cause_data = cause_data
+	P.firer = cause_data?.resolve_mob()
+	P.damage *= damage_mult
+	P.accuracy *= accuracy_mult
+	GIVE_BULLET_TRAIT(P, /datum/element/bullet_trait_iff, faction)
+	P.fire_at(A, src, owner_mob, P.ammo.max_range, P.ammo.shell_speed, null)
+	muzzle_flash(Get_Angle(get_turf(src), A))
 	track_shot()
-	if(ammo.current_rounds == 0)
+	if(!ammo.ammo_position)
 		handle_empty()
 		return TRUE
 	return FALSE
+
+/obj/structure/machinery/defenses/sentry/proc/apply_traits(obj/item/projectile/P)
+	// Apply bullet traits from gun
+	for(var/entry in traits_to_give)
+		var/list/L
+		// Check if this is an ID'd bullet trait
+		if(istext(entry))
+			L = traits_to_give[entry].Copy()
+		else
+			// Prepend the bullet trait to the list
+			L = list(entry) + traits_to_give[entry]
+		P.apply_bullet_trait(L)
 
 /obj/structure/machinery/defenses/sentry/proc/handle_empty()
 	visible_message("[icon2html(src, viewers(src))] [SPAN_WARNING("The [name] beeps steadily and its ammo light blinks red.")]")
@@ -333,8 +334,12 @@
 	if(isnull(angle))
 		return
 
-	SetLuminosity(SENTRY_MUZZLELUM)
-	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, SetLuminosity), -SENTRY_MUZZLELUM), 10)
+	light_range += SENTRY_MUZZLELUM
+	update_light()
+//	play_fov_effect(src, 6, "gunfire", dir = NORTH, angle = angle)
+	spawn(5)
+		light_range -= SENTRY_MUZZLELUM
+		update_light()
 
 	var/image_layer = layer + 0.1
 	var/offset = 13
@@ -367,7 +372,7 @@
 				targets.Remove(A)
 				continue
 
-			if(M.get_target_lock(faction_group) || M.invisibility)
+			if(M.ally(faction) || M.invisibility)
 				if(M == target)
 					target = null
 				targets.Remove(M)
@@ -472,15 +477,15 @@
 /obj/structure/machinery/defenses/sentry/premade
 	name = "UA-577 Gauss Turret"
 	immobile = TRUE
-	turned_on = TRUE
+	light_on = TRUE
 	icon_state = "premade" //for the map editor only
-	faction_group = FACTION_LIST_MARINE
+	faction_to_get = FACTION_MARINE
 	static = TRUE
 
 /obj/structure/machinery/defenses/sentry/premade/Initialize()
 	. = ..()
 	if(selected_categories[SENTRY_CATEGORY_IFF])
-		selected_categories[SENTRY_CATEGORY_IFF] = FACTION_USCM
+		selected_categories[SENTRY_CATEGORY_IFF] = SENTRY_IFF_HALF
 
 /obj/structure/machinery/defenses/sentry/premade/get_examine_text(mob/user)
 	. = ..()
@@ -501,7 +506,7 @@
 /obj/structure/machinery/defenses/sentry/premade/dumb
 	name = "Modified UA-577 Gauss Turret"
 	desc = "A deployable, semi-automated turret with AI targeting capabilities. Armed with an M30 Autocannon and a high-capacity drum magazine. This one's IFF system has been disabled, and it will open fire on any targets within range."
-	faction_group = null
+	faction_to_get = null
 	ammo = new /obj/item/ammo_magazine/sentry/premade/dumb
 
 //the turret inside a static sentry deployment system
@@ -509,7 +514,7 @@
 	name = "UA-633 Static Gauss Turret"
 	desc = "A fully-automated defence turret with mid-range targeting capabilities. Armed with a modified M32-S Autocannon and an internal belt feed."
 	density = TRUE
-	faction_group = FACTION_LIST_MARINE
+	faction_to_get = FACTION_MARINE
 	fire_delay = 1
 	ammo = new /obj/item/ammo_magazine/sentry/premade
 	var/obj/structure/machinery/sentry_holder/deployment_system
@@ -521,17 +526,12 @@
 	. = ..()
 
 /obj/structure/machinery/defenses/sentry/premade/deployable/colony
-	faction_group = list(FACTION_MARINE, FACTION_COLONIST, FACTION_SURVIVOR)
-
-/obj/structure/machinery/defenses/sentry/premade/deployable/colony/Initialize()
-	. = ..()
-	choice_categories[SENTRY_CATEGORY_IFF] = list(FACTION_COLONY, FACTION_WEYLAND)
-	selected_categories[SENTRY_CATEGORY_IFF] = FACTION_COLONY
+	faction_to_get = FACTION_COLONIST
 
 //the turret inside the shuttle sentry deployment system
 /obj/structure/machinery/defenses/sentry/premade/dropship
 	density = TRUE
-	faction_group = FACTION_LIST_MARINE
+	faction_to_get = FACTION_MARINE
 	omni_directional = TRUE
 	choice_categories = list()
 	selected_categories = list()
@@ -556,15 +556,6 @@
 	accuracy_mult = 4
 	damage_mult = 2
 	handheld_type = /obj/item/defenses/handheld/sentry/dmr
-
-	choice_categories = list(
-		SENTRY_CATEGORY_IFF = list(FACTION_USCM, FACTION_WEYLAND, FACTION_HUMAN),
-	)
-
-	selected_categories = list(
-		SENTRY_CATEGORY_IFF = FACTION_USCM,
-	)
-
 
 /obj/structure/machinery/defenses/sentry/dmr/handle_rof(level)
 	return
@@ -596,13 +587,13 @@
 
 /obj/structure/machinery/defenses/sentry/shotgun/attack_alien(mob/living/carbon/xenomorph/M)
 	. = ..()
-	if(. == XENO_ATTACK_ACTION && turned_on)
+	if(. == XENO_ATTACK_ACTION && light_on)
 		M.visible_message(SPAN_DANGER("The sentry's steel tusks cut into [M]!"),
 		SPAN_DANGER("The sentry's steel tusks cut into you!"), null, 5, CHAT_TYPE_XENO_COMBAT)
 		M.apply_damage(20)
 
 /obj/structure/machinery/defenses/sentry/shotgun/hitby(atom/movable/AM)
-	if(AM.throwing && turned_on)
+	if(AM.throwing && light_on)
 		if(ismob(AM))
 			var/mob/living/L = AM
 			L.apply_damage(20)
@@ -628,7 +619,8 @@
 	name = "\improper UA 571-O sentry post"
 	desc = "A deployable, omni-directional automated turret with AI targeting capabilities. Armed with an M30 Autocannon and a 100-round drum magazine with 500 rounds stored internally.  Due to the deployment method it is incapable of being moved."
 	ammo = new /obj/item/ammo_magazine/sentry/dropped
-	faction_group = FACTION_LIST_MARINE
+	faction_to_get = FACTION_MARINE
+	light_range = 5
 	omni_directional = TRUE
 	additional_rounds_stored = TRUE
 	immobile = TRUE
@@ -688,13 +680,12 @@
 
 /obj/structure/machinery/defenses/sentry/launchable/attack_hand_checks(mob/user)
 	// Reloads the sentry using inherent rounds
-	if(!turned_on && additional_rounds_stored && (ammo.current_rounds < ammo.max_rounds))
+	if(!light_on && additional_rounds_stored && (ammo.current_rounds < ammo.max_rounds))
 		if(!do_after(user, 2 SECONDS * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
 			to_chat(user, SPAN_WARNING("You were interrupted! Try to stay still while you reload the sentry..."))
 			return
 
-		var/rounds_used = ammo.inherent_reload(user)
-		to_chat(user, SPAN_WARNING("[src]'s internal magazine was reloaded with [rounds_used] rounds, [ammo.max_inherent_rounds] rounds left in storage"))
+		to_chat(user, SPAN_WARNING("[src]'s internal magazine was reloaded with [ammo.current_rounds] rounds, [max_inherent_rounds] rounds left in storage"))
 		playsound(loc, 'sound/weapons/handling/m40sd_reload.ogg', 25, 1)
 		update_icon()
 		return FALSE
@@ -704,7 +695,7 @@
 
 /obj/structure/machinery/defenses/sentry/launchable/handle_empty()
 	// Checks if its completely dry or just needs reload, deconstruct if completely empty
-	if(ammo.max_inherent_rounds > 0)
+	if(max_inherent_rounds > 0)
 		visible_message(SPAN_WARNING("\The [name] beeps steadily and its ammo light blinks red. It still has rounds, requires manual reload!"))
 		playsound(loc, 'sound/weapons/smg_empty_alarm.ogg', 25, 1)
 		update_icon()

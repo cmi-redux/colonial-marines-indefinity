@@ -1,7 +1,6 @@
 SUBSYSTEM_DEF(ticker)
 	name = "Ticker"
 	init_order = SS_INIT_TICKER
-
 	priority = SS_PRIORITY_TICKER
 	flags = SS_KEEP_TIMING
 	runlevels = RUNLEVEL_LOBBY | RUNLEVEL_SETUP | RUNLEVEL_GAME
@@ -13,6 +12,7 @@ SUBSYSTEM_DEF(ticker)
 	var/setup_started = FALSE
 
 	var/datum/game_mode/mode = null
+	var/datum/authority/branch/role/role_authority = null
 
 	var/list/login_music = null //Music played in pregame lobby
 
@@ -48,12 +48,15 @@ SUBSYSTEM_DEF(ticker)
 	var/totalPlayersReady = 0 //used for pregame stats on statpanel
 
 /datum/controller/subsystem/ticker/Initialize(timeofday)
-	load_mode()
-
 	var/all_music = CONFIG_GET(keyed_list/lobby_music)
 	var/key = SAFEPICK(all_music)
 	if(key)
 		login_music = file(all_music[key])
+	mode = config.pick_mode(GLOB.master_mode)
+	mode.setup_round_stats()
+	if(!role_authority)
+		role_authority = new /datum/authority/branch/role()
+		INIT_ANNOUNCE("\b Job setup complete")
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/ticker/fire(resumed = FALSE)
@@ -63,8 +66,11 @@ SUBSYSTEM_DEF(ticker)
 				return
 			if(isnull(start_at))
 				start_at = time_left || world.time + (CONFIG_GET(number/lobby_countdown) * 10)
-			to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, margin_top = 2, margin_bottom = 0, html = SPAN_ROUNDHEADER("Welcome to the pre-game lobby of [CONFIG_GET(string/servername)]!"))
-			to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, margin_top = 0, html = SPAN_ROUNDBODY("Please, setup your character and select ready. Game will start in [round(time_left / 10) || CONFIG_GET(number/lobby_countdown)] seconds."))
+			var/message_send = list(CLIENT_LANGUAGE_ENGLISH = SPAN_ROUNDHEADER("[LANGUAGE_WELCOME_ENG] [CONFIG_GET(string/servername)]!"), CLIENT_LANGUAGE_RUSSIAN = SPAN_ROUNDHEADER("[LANGUAGE_WELCOME_RU] [CONFIG_GET(string/servername)]!"))
+			var/countdown = time_left || CONFIG_GET(number/lobby_countdown) * 10
+			var/second_message_send = list(CLIENT_LANGUAGE_ENGLISH = SPAN_ROUNDBODY("[LANGUAGE_WELCOME_SET_ENG] [DisplayTimeText(countdown, language = CLIENT_LANGUAGE_ENGLISH)]"), CLIENT_LANGUAGE_RUSSIAN = SPAN_ROUNDBODY("[LANGUAGE_WELCOME_SET_RU] [DisplayTimeText(countdown, language = CLIENT_LANGUAGE_RUSSIAN)]"))
+			to_chat_spaced(world, message_send, MESSAGE_TYPE_SYSTEM, margin_top = 2, margin_bottom = 0)
+			to_chat_spaced(world, second_message_send, MESSAGE_TYPE_SYSTEM, margin_top = 0)
 			SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MODE_PREGAME_LOBBY)
 			current_state = GAME_STATE_PREGAME
 			fire()
@@ -73,7 +79,7 @@ SUBSYSTEM_DEF(ticker)
 			if(isnull(time_left))
 				time_left = max(0, start_at - world.time)
 
-			totalPlayers = LAZYLEN(GLOB.new_player_list)
+			totalPlayers = length(GLOB.new_player_list)
 			totalPlayersReady = 0
 			for(var/i in GLOB.new_player_list)
 				var/mob/new_player/player = i
@@ -100,7 +106,7 @@ SUBSYSTEM_DEF(ticker)
 				ooc_allowed = TRUE
 				mode.declare_completion(force_ending)
 				flash_clients()
-				if(text2num(SSperf_logging?.round?.id) % CONFIG_GET(number/gamemode_rounds_needed) == 0)
+				if(text2num(SSperf_logging?.round?.id) % CONFIG_GET(number/gamemode_rounds_needed) == 0 || GLOB.master_mode != MODE_NAME_DISTRESS_SIGNAL)
 					addtimer(CALLBACK(
 						SSvote,
 						/datum/controller/subsystem/vote/proc/initiate_vote,
@@ -154,6 +160,8 @@ SUBSYSTEM_DEF(ticker)
 	return TRUE
 
 /datum/controller/subsystem/ticker/proc/handle_map_reboot()
+	if(SSmapping?.next_map_configs && SSmapping?.next_map_configs?[GROUND_MAP])
+		Reboot()
 	addtimer(CALLBACK(
 		SSvote,
 		/datum/controller/subsystem/vote/proc/initiate_vote,
@@ -164,23 +172,21 @@ SUBSYSTEM_DEF(ticker)
 	), 3 SECONDS)
 
 /datum/controller/subsystem/ticker/proc/setup()
-	to_chat(world, SPAN_BOLDNOTICE("Enjoy the game!"))
+	to_chat(world, list(CLIENT_LANGUAGE_ENGLISH = SPAN_BOLDNOTICE(LANGUAGE_JOIN_ENG), CLIENT_LANGUAGE_RUSSIAN = SPAN_BOLDNOTICE(LANGUAGE_JOIN_RU)))
 	var/init_start = world.timeofday
-	//Create and announce mode
-	mode = config.pick_mode(GLOB.master_mode)
 
 	CHECK_TICK
 	if(!mode.can_start(bypass_checks))
-		to_chat(world, "Reverting to pre-game lobby.")
+		to_chat(world, list(CLIENT_LANGUAGE_ENGLISH = LANGUAGE_RLOBBY_ENG, CLIENT_LANGUAGE_RUSSIAN = LANGUAGE_RLOBBY_RU))
 		QDEL_NULL(mode)
-		RoleAuthority.reset_roles()
+		SSticker.role_authority.reset_roles()
 		return FALSE
 
 	CHECK_TICK
 	if(!mode.pre_setup() && !bypass_checks)
 		QDEL_NULL(mode)
-		to_chat(world, "<b>Error in pre-setup for [GLOB.master_mode].</b> Reverting to pre-game lobby.")
-		RoleAuthority.reset_roles()
+		to_chat(world, list(CLIENT_LANGUAGE_ENGLISH = "<b>[LANGUAGE_RLOBBYP_ENG] [GLOB.master_mode].</b> [LANGUAGE_RLOBBY_ENG]", CLIENT_LANGUAGE_RUSSIAN = "<b>[LANGUAGE_RLOBBYP_RU] [GLOB.master_mode].</b> [LANGUAGE_RLOBBY_RU]"))
+		SSticker.role_authority.reset_roles()
 		return FALSE
 
 	CHECK_TICK
@@ -203,15 +209,9 @@ SUBSYSTEM_DEF(ticker)
 	LAZYCLEARLIST(round_start_events)
 	CHECK_TICK
 
-	// We need stats to track roundstart role distribution.
-	mode.setup_round_stats()
-
 	//Configure mode and assign player to special mode stuff
-	if (!(mode.flags_round_type & MODE_NO_SPAWN))
-		var/roles_to_roll = null
-		if(length(mode.roles_to_roll))
-			roles_to_roll = mode.roles_to_roll
-		RoleAuthority.setup_candidates_and_roles(roles_to_roll) //Distribute jobs
+	if(!(mode.flags_round_type & MODE_NO_SPAWN))
+		SSticker.role_authority.setup_candidates_and_roles() //Distribute jobs
 		if(mode.flags_round_type & MODE_NEW_SPAWN)
 			create_characters() // Create and equip characters
 		else
@@ -220,9 +220,10 @@ SUBSYSTEM_DEF(ticker)
 
 	GLOB.data_core.manifest()
 
-	log_world("Game start took [(world.timeofday - init_start) / 10]s")
+	log_world("Начало игры заняло [(world.timeofday - init_start) / 10]s")
 	round_start_time = world.time
-	//SSdbcore.SetRoundStart()
+	if(Check_DS())
+		GLOB.xenomorph_attack_delay = 35 MINUTES + round_start_time
 
 	current_state = GAME_STATE_PLAYING
 	Master.SetRunLevel(RUNLEVEL_GAME)
@@ -246,13 +247,12 @@ SUBSYSTEM_DEF(ticker)
 	mode.initialize_emergency_calls()
 	mode.post_setup()
 
-	begin_game_recording()
-
 	// Switch back to default automatically
 	save_mode(CONFIG_GET(string/gamemode_default))
-
-	if(round_statistics)
-		to_chat_spaced(world, html = FONT_SIZE_BIG(SPAN_ROLE_BODY("<B>Welcome to [round_statistics.round_name]</B>")))
+	SSstats_collector.initial_players_counter = length(GLOB.clients)
+	if(mode.round_statistics)
+		to_chat_spaced(world, html = list(CLIENT_LANGUAGE_ENGLISH = FONT_SIZE_BIG(SPAN_ROLE_BODY("<B>[LANGUAGE_WELC_ENG] [mode.round_statistics.round_name]</B>")), CLIENT_LANGUAGE_RUSSIAN = FONT_SIZE_BIG(SPAN_ROLE_BODY("<B>[LANGUAGE_WELC_RU] [mode.round_statistics.round_name]</B>"))))
+		begin_game_recording()
 
 	supply_controller.process() //Start the supply shuttle regenerating points -- TLE
 
@@ -262,8 +262,7 @@ SUBSYSTEM_DEF(ticker)
 	for(var/obj/structure/machinery/vending/V in machines)
 		INVOKE_ASYNC(V, TYPE_PROC_REF(/obj/structure/machinery/vending, select_gamemode_equipment), mode.type)
 
-	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_POST_SETUP)
-
+	SSautobalancer.round_start()
 
 //These callbacks will fire after roundstart key transfer
 /datum/controller/subsystem/ticker/proc/OnRoundstart(datum/callback/cb)
@@ -331,9 +330,9 @@ SUBSYSTEM_DEF(ticker)
 /datum/controller/subsystem/ticker/proc/load_mode()
 	var/mode = trim(file2text("data/mode.txt"))
 	if(mode)
-		GLOB.master_mode = SSmapping.configs[GROUND_MAP].force_mode ? SSmapping.configs[GROUND_MAP].force_mode : mode
+		GLOB.master_mode = SSmapping?.configs?[GROUND_MAP].force_mode ? SSmapping.configs[GROUND_MAP].force_mode : mode
 	else
-		GLOB.master_mode = "Extended"
+		GLOB.master_mode = MODE_NAME_EXTENDED
 	log_game("Saved mode is '[GLOB.master_mode]'")
 
 
@@ -349,8 +348,8 @@ SUBSYSTEM_DEF(ticker)
 		return
 
 	if(graceful)
-		to_chat_forced(world, "<h3>[SPAN_BOLDNOTICE("Shutting down...")]</h3>")
-		world.Reboot(FALSE)
+		to_chat_forced(world, list(CLIENT_LANGUAGE_ENGLISH = "<h3>[SPAN_BOLDNOTICE(LANGUAGE_SHUTDOWN_ENG)]</h3>", CLIENT_LANGUAGE_RUSSIAN = "<h3>[SPAN_BOLDNOTICE(LANGUAGE_SHUTDOWN_RU)]</h3>"))
+		world.Reboot(graceful)
 		return
 
 	if(!delay)
@@ -358,25 +357,23 @@ SUBSYSTEM_DEF(ticker)
 
 	var/skip_delay = check_rights()
 	if(delay_end && !skip_delay)
-		to_chat(world, SPAN_BOLDNOTICE("An admin has delayed the round end."))
+		to_chat(world, list(CLIENT_LANGUAGE_ENGLISH = SPAN_BOLDNOTICE(LANGUAGE_RESTARTD_ENG), CLIENT_LANGUAGE_RUSSIAN = SPAN_BOLDNOTICE(LANGUAGE_RESTARTD_RU)))
 		return
-
-	to_chat(world, SPAN_BOLDNOTICE("Rebooting World in [DisplayTimeText(delay)]. [reason]"))
-
+	to_chat(world, list(CLIENT_LANGUAGE_ENGLISH = SPAN_BOLDNOTICE("[LANGUAGE_RESTARTIN_ENG] [DisplayTimeText(delay, language = CLIENT_LANGUAGE_ENGLISH)]. [reason]"), CLIENT_LANGUAGE_RUSSIAN = SPAN_BOLDNOTICE("[LANGUAGE_RESTARTIN_RU] [DisplayTimeText(delay, language = CLIENT_LANGUAGE_RUSSIAN)]. [reason]")))
 	var/start_wait = world.time
 	sleep(delay - (world.time - start_wait))
 
 	if(delay_end && !skip_delay)
-		to_chat(world, SPAN_BOLDNOTICE("Reboot was cancelled by an admin."))
+		to_chat(world, list(CLIENT_LANGUAGE_ENGLISH = SPAN_BOLDNOTICE(LANGUAGE_RESTARTC_ENG), CLIENT_LANGUAGE_RUSSIAN = SPAN_BOLDNOTICE(LANGUAGE_RESTARTC_RU)))
 		return
 
-	log_game("Rebooting World. [reason]")
-	to_chat_forced(world, "<h3>[SPAN_BOLDNOTICE("Rebooting...")]</h3>")
+	log_game("Перезагрузка мира. [reason]")
+	to_chat_forced(world, list(CLIENT_LANGUAGE_ENGLISH = "<h3>[SPAN_BOLDNOTICE(LANGUAGE_RESTART_ENG)]</h3>", CLIENT_LANGUAGE_RUSSIAN = "<h3>[SPAN_BOLDNOTICE(LANGUAGE_RESTART_RU)]</h3>"))
 
-	world.Reboot(TRUE)
+	world.Reboot(graceful)
 
 /datum/controller/subsystem/ticker/proc/create_characters()
-	if(!RoleAuthority)
+	if(!SSticker.role_authority)
 		return
 
 	for(var/mob/new_player/player in GLOB.player_list)
@@ -386,7 +383,7 @@ SUBSYSTEM_DEF(ticker)
 		INVOKE_ASYNC(src, PROC_REF(spawn_and_equip_char), player)
 
 /datum/controller/subsystem/ticker/proc/spawn_and_equip_char(mob/new_player/player)
-	var/datum/job/J = RoleAuthority.roles_for_mode[player.job]
+	var/datum/job/J = GET_MAPPED_ROLE(player.job)
 	if(J.handle_spawn_and_equip)
 		J.spawn_and_equip(player)
 	else
@@ -414,7 +411,7 @@ SUBSYSTEM_DEF(ticker)
 
 /datum/controller/subsystem/ticker/proc/equip_characters()
 	var/captainless=1
-	if(mode && istype(mode,/datum/game_mode/huntergames)) // || istype(mode,/datum/game_mode/whiskey_outpost)
+	if(mode && istype(mode, /datum/game_mode/huntergames)) // || istype(mode,/datum/game_mode/whiskey_outpost)
 		return
 
 	for(var/mob/living/carbon/human/player in GLOB.human_mob_list)
@@ -422,18 +419,18 @@ SUBSYSTEM_DEF(ticker)
 			if(player.job == "Commanding Officers")
 				captainless = FALSE
 			if(player.job)
-				RoleAuthority.equip_role(player, RoleAuthority.roles_by_name[player.job], late_join = FALSE)
+				SSticker.role_authority.equip_role(player, GET_MAPPED_ROLE(player.job), late_join = FALSE)
 				EquipCustomItems(player)
 			if(player.client)
 				var/client/C = player.client
 				if(C.player_data && C.player_data.playtime_loaded && length(C.player_data.playtimes) == 0)
 					msg_admin_niche("NEW PLAYER: <b>[key_name(player, 1, 1, 0)] (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];ahelp=adminmoreinfo;extra=\ref[player]'>?</A>)</b>. IP: [player.lastKnownIP], CID: [player.computer_id]")
 				if(C.player_data && C.player_data.playtime_loaded && ((round(C.get_total_human_playtime() DECISECONDS_TO_HOURS, 0.1)) <= 5))
-					msg_sea(("NEW PLAYER: <b>[key_name(player, 0, 1, 0)]</b> only has [(round(C.get_total_human_playtime() DECISECONDS_TO_HOURS, 0.1))] hours as a human. Current role: [get_actual_job_name(player)] - Current location: [get_area(player)]"), TRUE)
+					msg_sea(("NEW PLAYER: <b>[key_name(player, 0, 1, 0)]</b> only has [(round(C.get_total_human_playtime() DECISECONDS_TO_HOURS, 0.1))] hours as a human. Current role: [player.get_role_name()] - Current location: [get_area(player)]"), TRUE)
 	if(captainless)
 		for(var/mob/M in GLOB.player_list)
 			if(!istype(M,/mob/new_player))
-				to_chat(M, "Marine commanding officer position not forced on anyone.")
+				to_chat(M, "Должность командира морской пехоты никому не выдана.")
 
 /datum/controller/subsystem/ticker/proc/send_tip_of_the_round()
 	var/message
@@ -445,7 +442,7 @@ SUBSYSTEM_DEF(ticker)
 		CRASH("send_tip_of_the_round() failed somewhere")
 
 	if(message)
-		to_chat(world, SPAN_PURPLE("<b>Tip of the round: </b>[html_encode(message)]"))
+		to_chat(world, list(CLIENT_LANGUAGE_ENGLISH = "<span class='purple'><b>[LANGUAGE_TIPS_ENG]: </b>[html_encode(message)]</span>", CLIENT_LANGUAGE_RUSSIAN = "<span class='purple'><b>[LANGUAGE_TIPS_RU]: </b>[html_encode(message)]</span>"))
 		return TRUE
 	else
 		return FALSE
@@ -459,11 +456,11 @@ SUBSYSTEM_DEF(ticker)
 	 * SScellauto: can't touch this because it would directly affect explosion spread speed
 	 */
 
-	SSquadtree?.wait    = 0.8 SECONDS // From 0.5, relevant based on player movement speed (higher = more error in sound location, motion detector pings, sentries target acquisition)
-	SSlighting?.wait    = 0.6 SECONDS // From 0.4, same but also heavily scales on player/scene density (higher = less frequent lighting updates which is very noticeable as you move)
-	SSstatpanels?.wait  = 1.5 SECONDS // From 0.6, refresh rate mainly matters for ALT+CLICK turf contents (which gens icons, intensive)
-	SSsoundscape?.wait  =   2 SECONDS // From 1, soudscape triggering checks, scales on player count
-	SStgui?.wait    = 1.2 SECONDS // From 0.9, UI refresh rate
+	SSquadtree?.wait	= 0.8 SECONDS // From 0.5, relevant based on player movement speed (higher = more error in sound location, motion detector pings, sentries target acquisition)
+	SSlighting?.wait	= 0.6 SECONDS // From 0.4, same but also heavily scales on player/scene density (higher = less frequent lighting updates which is very noticeable as you move)
+	SSstatpanels?.wait	= 1.5 SECONDS // From 0.6, refresh rate mainly matters for ALT+CLICK turf contents (which gens icons, intensive)
+	SSsoundscape?.wait	= 2 SECONDS // From 1, soudscape triggering checks, scales on player count
+	SStgui?.wait		= 1.2 SECONDS // From 0.9, UI refresh rate
 
 	log_debug("Switching to lazy Subsystem timings for performance")
 

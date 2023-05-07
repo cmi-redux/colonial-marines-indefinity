@@ -84,7 +84,7 @@
 
 /datum/db/adapter/native_adapter/update_table(table_name, list/values, datum/callback/CB, sync = FALSE)
 	if(!sync)
-		set waitfor = 0
+		set waitfor = FALSE
 
 	for(var/list/vals in values)
 		var/list/qpars = list()
@@ -92,7 +92,7 @@
 		SSdatabase.create_parametric_query_sync(query_updaterow, qpars, CB)
 
 /datum/db/adapter/native_adapter/insert_table(table_name, list/values, datum/callback/CB, sync = FALSE)
-	set waitfor = 0
+	set waitfor = FALSE
 	var/length = values.len
 	var/startid = internal_request_insert_allocation(table_name, length)
 	var/list/qpars = list()

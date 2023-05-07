@@ -34,7 +34,7 @@
 	name = "Toggle Sleeping"
 
 /datum/player_action/mob_sleep/act(client/user, mob/target, list/params)
-	if (!params["sleep"]) //if they're already slept, set their sleep to zero and remove the icon
+	if(!params["sleep"]) //if they're already slept, set their sleep to zero and remove the icon
 		target.sleeping = 0
 		target.RemoveSleepingIcon()
 	else
@@ -59,7 +59,7 @@
 		to_chat(user, SPAN_WARNING("[target.name] doesn't seem to have an active client."))
 		return
 
-	if(alert(user, "Send [key_name(target)] back to Lobby?", "Message", "Yes", "No") != "Yes")
+	if(alert(user, "Send [key_name(target)] back to Lobby?", "Message", user.auto_lang(LANGUAGE_YES), user.auto_lang(LANGUAGE_NO)) != user.auto_lang(LANGUAGE_YES))
 		return
 
 	message_admins("[key_name_admin(user)] has sent [key_name_admin(target)] back to the Lobby.")
@@ -223,6 +223,23 @@
 
 	return TRUE
 
+/datum/player_action/access_statistics
+	action_tag = "access_statistics"
+	name = "Access Statistics"
+
+/datum/player_action/access_statistics/act(client/user, mob/target, list/params)
+	target?.client?.player_data?.player_entity.tgui_interact(user.mob)
+
+	return TRUE
+
+/datum/player_action/access_discord
+	action_tag = "access_discord"
+	name = "Access Discord"
+
+/datum/player_action/access_discord/act(client/user, mob/target, list/params)
+	target?.client?.discord.ui_interact(user.mob)
+
+	return TRUE
 
 /datum/player_action/access_admin_datum
 	action_tag = "access_admin_datum"

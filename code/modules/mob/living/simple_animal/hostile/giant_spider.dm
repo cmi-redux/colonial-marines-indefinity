@@ -29,10 +29,11 @@
 	cold_damage_per_tick = 20
 	var/poison_per_bite = 5
 	var/poison_type = "toxin"
-	faction = "spiders"
 	var/busy = FALSE
 	move_to_delay = 6
 	speed = 3
+
+	faction_to_get = FACTION_NEUTRAL
 
 //nursemaids - these create webs and eggs
 /mob/living/simple_animal/hostile/giant_spider/nurse
@@ -64,7 +65,7 @@
 
 /mob/living/simple_animal/hostile/giant_spider/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_pass = PASS_FLAGS_CRAWLER
 
 /mob/living/simple_animal/hostile/giant_spider/AttackingTarget()

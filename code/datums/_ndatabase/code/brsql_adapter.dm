@@ -102,7 +102,7 @@
 
 /datum/db/adapter/brsql_adapter/insert_table(table_name, list/values, datum/callback/CB, sync = FALSE)
 	if(!sync)
-		set waitfor = 0
+		set waitfor = FALSE
 	var/length = values.len
 	var/list/qpars = list()
 	var/query_inserttable = getquery_insert_table(table_name, values, qpars)

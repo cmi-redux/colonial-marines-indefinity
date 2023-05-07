@@ -7,6 +7,38 @@
 	For more information, see the byond documentation on the screen_loc and screen vars.
 */
 
+/atom/movable/screen
+	name = ""
+	icon = 'icons/mob/hud/screen1.dmi'
+	icon_state = "x"
+	plane = HUD_PLANE
+	layer = ABOVE_HUD_LAYER
+	unacidable = TRUE
+	animate_movement = SLIDE_STEPS
+	appearance_flags = NO_CLIENT_COLOR //So that saturation/desaturation etc. effects don't hit the HUD.
+	vis_flags = VIS_INHERIT_PLANE
+	var/obj/master = null	//A reference to the object in the slot. Grabs or items, generally.
+	/// A reference to the owner HUD, if any.
+	var/datum/hud/hud = null
+	/**
+	 * Map name assigned to this object.
+	 * Automatically set by /client/proc/add_obj_to_map.
+	 */
+	var/assigned_map
+	/**
+	 * Mark this object as garbage-collectible after you clean the map
+	 * it was registered on.
+	 *
+	 * This could probably be changed to be a proc, for conditional removal.
+	 * But for now, this works.
+	 */
+	var/del_on_map_removal = TRUE
+
+	/// If FALSE, this will not be cleared when calling /client/clear_screen()
+	var/clear_with_screen = TRUE
+
+/atom/movable/screen/proc/update_icon()
+
 /atom/movable/screen/text
 	icon = null
 	icon_state = null
@@ -26,6 +58,10 @@
 /atom/movable/screen/cinematic/explosion
 	icon = 'icons/effects/station_explosion.dmi'
 	icon_state = "intro_ship"
+
+/atom/movable/screen/cinematic/ground
+	icon = 'icons/effects/station_explosion.dmi'
+	icon_state = "intro_planet"
 
 /atom/movable/screen/inventory
 	var/slot_id //The indentifier for the slot. It has nothing to do with ID cards.
@@ -51,7 +87,7 @@
 	var/image/maptext_overlay
 
 /atom/movable/screen/action_button/attack_ghost(mob/dead/observer/user)
-	return
+	return FALSE
 
 /atom/movable/screen/action_button/clicked(mob/user)
 	if(!user || !source_action)
@@ -101,7 +137,7 @@
 		name = "Hide Buttons"
 		icon_state = "hide"
 	user.update_action_buttons()
-	return 1
+	return TRUE
 
 /atom/movable/screen/action_button/ghost/minimap/get_button_screen_loc(button_number)
 	return "SOUTH:6,CENTER+1:24"
@@ -120,7 +156,7 @@
 
 		//Calculate fullness for etiher max storage, or for storage slots if the container has them
 		var/fullness = 0
-		if (master_storage.storage_slots == null)
+		if(master_storage.storage_slots == null)
 			fullness = round(10*total_w/master_storage.max_storage_space)
 		else
 			fullness = round(10*master_storage.contents.len/master_storage.storage_slots)
@@ -152,21 +188,21 @@
 			icon_state = "no_walk0"
 			name = "Allow Walking"
 		screen_loc = initial(screen_loc)
-		return
+		return FALSE
 	screen_loc = null
 
 /atom/movable/screen/gun/move/clicked(mob/user)
-	if (..())
-		return 1
+	if(..())
+		return TRUE
 
 	if(gun_click_time > world.time - 30) //give them 3 seconds between mode changes.
-		return 1
+		return TRUE
 	if(!isgun(user.get_held_item()))
 		to_chat(user, "You need your gun in your active hand to do that!")
-		return 1
+		return TRUE
 	user.AllowTargetMove()
 	gun_click_time = world.time
-	return 1
+	return TRUE
 
 
 /atom/movable/screen/gun/run
@@ -183,21 +219,21 @@
 				icon_state = "no_run0"
 				name = "Allow Running"
 			screen_loc = initial(screen_loc)
-			return
+			return FALSE
 	screen_loc = null
 
 /atom/movable/screen/gun/run/clicked(mob/user)
-	if (..())
-		return 1
+	if(..())
+		return TRUE
 
 	if(gun_click_time > world.time - 30) //give them 3 seconds between mode changes.
-		return 1
+		return TRUE
 	if(!isgun(user.get_held_item()))
 		to_chat(user, "You need your gun in your active hand to do that!")
-		return 1
+		return TRUE
 	user.AllowTargetRun()
 	gun_click_time = world.time
-	return 1
+	return TRUE
 
 
 /atom/movable/screen/gun/item
@@ -213,21 +249,21 @@
 			icon_state = "no_item0"
 			name = "Disallow Item Use"
 		screen_loc = initial(screen_loc)
-		return
+		return FALSE
 	screen_loc = null
 
 /atom/movable/screen/gun/item/clicked(mob/user)
-	if (..())
-		return 1
+	if(..())
+		return TRUE
 
 	if(gun_click_time > world.time - 30) //give them 3 seconds between mode changes.
-		return 1
+		return TRUE
 	if(!isgun(user.get_held_item()))
 		to_chat(user, "You need your gun in your active hand to do that!")
-		return 1
+		return TRUE
 	user.AllowTargetClick()
 	gun_click_time = world.time
-	return 1
+	return TRUE
 
 
 /atom/movable/screen/gun/mode
@@ -241,10 +277,10 @@
 		icon_state = "gun0"
 
 /atom/movable/screen/gun/mode/clicked(mob/user)
-	if (..())
-		return 1
+	if(..())
+		return TRUE
 	user.ToggleGunMode()
-	return 1
+	return TRUE
 
 
 /atom/movable/screen/zone_sel
@@ -258,8 +294,8 @@
 	user.zone_selected = selecting
 
 /atom/movable/screen/zone_sel/clicked(mob/user, list/mods)
-	if (..())
-		return 1
+	if(..())
+		return TRUE
 
 	var/icon_x = text2num(mods["icon-x"])
 	var/icon_y = text2num(mods["icon-y"])
@@ -273,7 +309,7 @@
 				if(17 to 22)
 					selecting = "l_foot"
 				else
-					return 1
+					return TRUE
 		if(4 to 9) //Legs
 			switch(icon_x)
 				if(10 to 15)
@@ -281,7 +317,7 @@
 				if(17 to 22)
 					selecting = "l_leg"
 				else
-					return 1
+					return TRUE
 		if(10 to 13) //Hands and groin
 			switch(icon_x)
 				if(8 to 11)
@@ -291,7 +327,7 @@
 				if(21 to 24)
 					selecting = "l_hand"
 				else
-					return 1
+					return TRUE
 		if(14 to 22) //Chest and arms to shoulders
 			switch(icon_x)
 				if(8 to 11)
@@ -301,7 +337,7 @@
 				if(21 to 24)
 					selecting = "l_arm"
 				else
-					return 1
+					return TRUE
 		if(23 to 30) //Head, but we need to check for eye or mouth
 			if(icon_x in 12 to 20)
 				selecting = "head"
@@ -318,121 +354,121 @@
 
 	if(old_selecting != selecting)
 		update_icon(user)
-	return 1
+	return TRUE
 
 /atom/movable/screen/zone_sel/robot
 	icon = 'icons/mob/hud/screen1_robot.dmi'
 
 /atom/movable/screen/clicked(mob/user)
-	if(!user) return 1
+	if(!user) return TRUE
 
 	switch(name)
 		if("equip")
 			if(ishuman(user))
 				var/mob/living/carbon/human/human = user
 				human.quick_equip()
-			return 1
+			return TRUE
 
 		if("Reset Machine")
 			user.unset_interaction()
-			return 1
+			return TRUE
 
 		if("module")
 			if(isSilicon(user))
 				if(user:module)
-					return 1
+					return TRUE
 				user:pick_module()
-			return 1
+			return TRUE
 
 		if("radio")
 			if(isSilicon(user))
 				user:radio_menu()
-			return 1
+			return TRUE
 		if("panel")
 			if(isSilicon(user))
 				user:installed_modules()
-			return 1
+			return TRUE
 
 		if("store")
 			if(isSilicon(user))
 				user:uneq_active()
-			return 1
+			return TRUE
 
 		if("module1")
 			if(isrobot(user))
 				user:toggle_module(1)
-			return 1
+			return TRUE
 
 		if("module2")
 			if(isrobot(user))
 				user:toggle_module(2)
-			return 1
+			return TRUE
 
 		if("module3")
 			if(isrobot(user))
 				user:toggle_module(3)
-			return 1
+			return TRUE
 
 		if("Activate weapon attachment")
 			var/obj/item/weapon/gun/held_item = user.get_held_item()
 			if(istype(held_item))
 				held_item.activate_attachment_verb()
-			return 1
+			return TRUE
 
 		if("Toggle Rail Flashlight")
 			var/obj/item/weapon/gun/held_item = user.get_held_item()
 			if(istype(held_item))
 				held_item.activate_rail_attachment_verb()
-			return 1
+			return TRUE
 
 		if("Eject magazine")
 			var/obj/item/weapon/gun/held_item = user.get_held_item()
 			if(istype(held_item))
 				held_item.empty_mag()
-			return 1
+			return TRUE
 
 		if("Toggle burst fire")
 			var/obj/item/weapon/gun/held_item = user.get_held_item()
 			if(istype(held_item))
 				held_item.use_toggle_burst()
-			return 1
+			return TRUE
 
 		if("Use unique action")
 			var/obj/item/weapon/gun/held_item = user.get_held_item()
 			if(istype(held_item))
 				held_item.use_unique_action()
-			return 1
-	return 0
+			return TRUE
+	return FALSE
 
 
 /atom/movable/screen/inventory/clicked(mob/user)
-	if (..())
-		return 1
+	if(..())
+		return TRUE
 	if(user.is_mob_incapacitated(TRUE))
-		return 1
+		return TRUE
 	switch(name)
 		if("r_hand")
 			if(iscarbon(user))
 				var/mob/living/carbon/carbon = user
 				carbon.activate_hand("r")
-			return 1
+			return TRUE
 		if("l_hand")
 			if(iscarbon(user))
 				var/mob/living/carbon/carbon = user
 				carbon.activate_hand("l")
-			return 1
+			return TRUE
 		if("swap")
 			user.swap_hand()
-			return 1
+			return TRUE
 		if("hand")
 			user.swap_hand()
-			return 1
+			return TRUE
 		else
 			if(user.attack_ui(slot_id))
 				user.update_inv_l_hand(0)
 				user.update_inv_r_hand(0)
-				return 1
-	return 0
+				return TRUE
+	return FALSE
 
 /atom/movable/screen/throw_catch
 	name = "throw/catch"
@@ -442,13 +478,13 @@
 /atom/movable/screen/throw_catch/clicked(mob/user, list/mods)
 	var/mob/living/carbon/carbon = user
 
-	if (!istype(carbon))
-		return
+	if(!istype(carbon))
+		return FALSE
 
 	if(user.is_mob_incapacitated())
 		return TRUE
 
-	if (mods["ctrl"])
+	if(mods["ctrl"])
 		carbon.toggle_throw_mode(THROW_MODE_HIGH)
 	else
 		carbon.toggle_throw_mode(THROW_MODE_NORMAL)
@@ -462,7 +498,7 @@
 
 /atom/movable/screen/drop/clicked(mob/user)
 	user.drop_item_v()
-	return 1
+	return TRUE
 
 
 /atom/movable/screen/resist
@@ -475,7 +511,7 @@
 	if(isliving(user))
 		var/mob/living/living = user
 		living.resist()
-		return 1
+		return TRUE
 
 /atom/movable/screen/mov_intent
 	name = "run/walk toggle"
@@ -525,7 +561,7 @@
 
 /atom/movable/screen/act_intent/clicked(mob/user)
 	user.a_intent_change()
-	return 1
+	return TRUE
 
 /atom/movable/screen/act_intent/corner/clicked(mob/user, list/mods)
 	var/_x = text2num(mods["icon-x"])
@@ -543,7 +579,7 @@
 	else if(_x>=17 && _y>=17)
 		user.a_intent_change(INTENT_DISARM)
 
-	return 1
+	return TRUE
 
 
 /atom/movable/screen/healths
@@ -558,14 +594,14 @@
 	icon_state = "pull0"
 
 /atom/movable/screen/pull/clicked(mob/user)
-	if (..())
-		return 1
+	if(..())
+		return TRUE
 	user.stop_pulling()
-	return 1
+	return TRUE
 
 /atom/movable/screen/pull/update_icon(mob/user)
 	if(!user)
-		return
+		return FALSE
 	if(user.pulling)
 		icon_state = "pull"
 	else
@@ -582,21 +618,21 @@
 
 /atom/movable/screen/squad_leader_locator/clicked(mob/living/carbon/human/user, mods)
 	if(!istype(user))
-		return
+		return FALSE
 	var/obj/item/device/radio/headset/earpiece = user.get_type_in_ears(/obj/item/device/radio/headset)
 	var/has_access = earpiece.misc_tracking || (user.assigned_squad && user.assigned_squad.radio_freq == earpiece.frequency)
 	if(!istype(earpiece) || !earpiece.has_hud || !has_access)
 		to_chat(user, SPAN_WARNING("Unauthorized access detected."))
-		return
+		return FALSE
 	if(mods["shift"])
 		var/area/current_area = get_area(user)
 		to_chat(user, SPAN_NOTICE("You are currently at: <b>[current_area.name]</b>."))
-		return
+		return FALSE
 	else if(mods["alt"])
 		earpiece.switch_tracker_target()
-		return
+		return FALSE
 	if(user.get_active_hand())
-		return
+		return FALSE
 	if(user.assigned_squad)
 		user.assigned_squad.tgui_interact(user)
 
@@ -614,20 +650,20 @@
 		else
 			to_chat(user, SPAN_XENONOTICE("You psychically observe the [user.tracked_marker.mark_meaning.name] resin mark in [get_area_name(user.tracked_marker)]."))
 			user.overwatch(user.tracked_marker) //this is so scuffed, sorry if this causes errors
-		return
+		return FALSE
 	if(mods["alt"] && user.tracked_marker)
 		user.stop_tracking_resin_mark()
-		return
-	if(!user.hive)
-		to_chat(user, SPAN_WARNING("You don't belong to a hive!"))
 		return FALSE
-	if(!user.hive.living_xeno_queen)
+	if(!user.faction)
+		to_chat(user, SPAN_WARNING("You don't belong to a any hive!"))
+		return FALSE
+	if(!user.faction.living_xeno_queen)
 		to_chat(user, SPAN_WARNING("Without a queen your psychic link is broken!"))
 		return FALSE
 	if(user.burrow || user.is_mob_incapacitated() || user.buckled)
 		return FALSE
-	user.hive.mark_ui.update_all_data()
-	user.hive.mark_ui.open_mark_menu(user)
+	user.faction.mark_ui.update_all_data()
+	user.faction.mark_ui.open_mark_menu(user)
 
 /atom/movable/screen/queen_locator
 	name = "queen locator"
@@ -641,32 +677,32 @@
 	if(mods["shift"])
 		var/area/current_area = get_area(user)
 		to_chat(user, SPAN_NOTICE("You are currently at: <b>[current_area.name]</b>."))
-		return
-	if(!user.hive)
+		return FALSE
+	if(!user.faction)
 		to_chat(user, SPAN_WARNING("You don't belong to a hive!"))
 		return FALSE
 	if(mods["alt"])
 		var/list/options = list()
-		if(user.hive.living_xeno_queen)
+		if(user.faction.living_xeno_queen)
 			options["Queen"] = TRACKER_QUEEN
-		if(user.hive.hive_location)
+		if(user.faction.faction_location)
 			options["Hive Core"] = TRACKER_HIVE
 		var/xeno_leader_index = 1
-		for(var/xeno in user.hive.xeno_leader_list)
-			var/mob/living/carbon/xenomorph/xeno_lead = user.hive.xeno_leader_list[xeno_leader_index]
+		for(var/xeno in user.faction.xeno_leader_list)
+			var/mob/living/carbon/xenomorph/xeno_lead = user.faction.xeno_leader_list[xeno_leader_index]
 			if(xeno_lead)
 				options["Xeno Leader [xeno_lead]"] = "[xeno_leader_index]"
 			xeno_leader_index++
 		var/selected = tgui_input_list(user, "Select what you want the locator to track.", "Locator Options", options)
 		if(selected)
 			track_state = options[selected]
-		return
-	if(!user.hive.living_xeno_queen)
+		return FALSE
+	if(!user.faction.living_xeno_queen)
 		to_chat(user, SPAN_WARNING("Your hive doesn't have a living queen!"))
 		return FALSE
 	if(user.burrow || user.is_mob_incapacitated() || user.buckled)
 		return FALSE
-	user.overwatch(user.hive.living_xeno_queen)
+	user.overwatch(user.faction.living_xeno_queen)
 
 /atom/movable/screen/xenonightvision
 	icon = 'icons/mob/hud/alien_standard.dmi'
@@ -674,12 +710,12 @@
 	icon_state = "nightvision_full"
 
 /atom/movable/screen/xenonightvision/clicked(mob/user)
-	if (..())
-		return 1
+	if(..())
+		return TRUE
 	var/mob/living/carbon/xenomorph/X = user
 	X.toggle_nightvision()
 	update_icon(X)
-	return 1
+	return TRUE
 
 /atom/movable/screen/xenonightvision/update_icon(mob/living/carbon/xenomorph/owner)
 	. = ..()
@@ -709,8 +745,8 @@
 	icon_state = "other"
 
 /atom/movable/screen/toggle_inv/clicked(mob/user)
-	if (..())
-		return 1
+	if(..())
+		return TRUE
 
 	if(user && user.hud_used)
 		if(user.hud_used.inventory_shown)
@@ -721,13 +757,130 @@
 			user.client.screen += user.hud_used.toggleable_inventory
 
 		user.hud_used.hidden_inventory_update()
-	return 1
+	return TRUE
 
 /atom/movable/screen/preview
 	icon = 'icons/turf/almayer.dmi'
 	icon_state = "blank"
 	plane = -100
 	layer = TURF_LAYER
+
+/atom/movable/screen/ammo
+	name = "ammo"
+	icon = 'icons/mob/hud/ammoHUD.dmi'
+	icon_state = "ammo"
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	var/warned = FALSE
+	var/is_warning = FALSE
+
+/atom/movable/screen/ammo/proc/add_hud(mob/living/user, obj/item/weapon/gun/G)
+	if(!user?.client)
+		return FALSE
+
+	if(!G)
+		G = user.get_held_item()
+
+	if(!(G.flags_gun_features & GUN_AMMO_COUNTER) && !G.active_attachable)
+		return FALSE
+
+	if(user.client.prefs && !(user.client.prefs.toggle_prefs & TOGGLE_GUN_AMMO_COUNTER))
+		return FALSE
+
+	user.client.screen += src
+
+/atom/movable/screen/ammo/proc/remove_hud(mob/living/user)
+	user?.client?.screen -= src
+
+/atom/movable/screen/ammo/proc/update_hud(mob/living/user, obj/item/weapon/gun/G)
+	if(!user?.client?.screen.Find(src))
+		return FALSE
+
+	if(user.client.prefs && !(user.client.prefs.toggle_prefs & TOGGLE_GUN_AMMO_COUNTER))
+		return FALSE
+
+	if(!G)
+		G = user.get_held_item()
+
+	if(!istype(G))
+		remove_hud(user)
+		return FALSE
+
+	if(!(G.flags_gun_features & GUN_AMMO_COUNTER) || !G.get_ammo_type() || isnull(G.get_ammo_count()) && !G.active_attachable)
+		remove_hud(user)
+		return FALSE
+
+	if(G.active_attachable)
+		update_attachable_hud(user, G)
+		return FALSE
+
+	var/list/ammo_type = G.get_ammo_type()
+	var/rounds = G.get_ammo_count()
+
+	var/hud_state = ammo_type[1]
+	var/hud_state_empty = ammo_type[2]
+
+	overlays.Cut()
+
+	var/empty = image(icon, src, "[hud_state_empty]")
+
+	if(rounds == 0)
+		overlays += empty
+	else
+		overlays += image(icon, src, "[hud_state]")
+
+	rounds = num2text(rounds)
+
+	//Handle the amount of rounds
+	switch(length(rounds))
+		if(1)
+			overlays += image(icon, src, "o[rounds[1]]")
+		if(2)
+			overlays += image(icon, src, "o[rounds[2]]")
+			overlays += image(icon, src, "t[rounds[1]]")
+		if(3)
+			overlays += image(icon, src, "o[rounds[3]]")
+			overlays += image(icon, src, "t[rounds[2]]")
+			overlays += image(icon, src, "h[rounds[1]]")
+		else //"0" is still length 1 so this means it's over 999
+			overlays += image(icon, src, "o9")
+			overlays += image(icon, src, "t9")
+			overlays += image(icon, src, "h9")
+
+/atom/movable/screen/ammo/proc/update_attachable_hud(mob/living/user, obj/item/weapon/gun/G)
+	var/obj/item/attachable/attached_gun/AG = G.active_attachable
+
+	var/list/ammo_type = AG.get_attachment_ammo_type()
+	var/rounds = AG.get_attachment_ammo_count()
+
+	var/hud_state = ammo_type[1]
+	var/hud_state_empty = ammo_type[2]
+
+	overlays.Cut()
+
+	var/empty = image(icon, src, "[hud_state_empty]")
+
+	if(rounds == 0)
+		overlays += empty
+	else
+		overlays += image(icon, src, "[hud_state]")
+
+	rounds = num2text(rounds)
+
+	//Handle the amount of rounds
+	switch(length(rounds))
+		if(1)
+			overlays += image(icon, src, "o[rounds[1]]")
+		if(2)
+			overlays += image(icon, src, "o[rounds[2]]")
+			overlays += image(icon, src, "t[rounds[1]]")
+		if(3)
+			overlays += image(icon, src, "o[rounds[3]]")
+			overlays += image(icon, src, "t[rounds[2]]")
+			overlays += image(icon, src, "h[rounds[1]]")
+		else //"0" is still length 1 so this means it's over 999
+			overlays += image(icon, src, "o9")
+			overlays += image(icon, src, "t9")
+			overlays += image(icon, src, "h9")
 
 /atom/movable/screen/rotate
 	icon_state = "centred_arrow"

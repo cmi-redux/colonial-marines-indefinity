@@ -1,8 +1,8 @@
 SUBSYSTEM_DEF(round_recording)
-	name  = "Round Recording"
-	wait  = 5 SECONDS
-	priority = SS_PRIORITY_ROUND_RECORDING
-	flags = SS_KEEP_TIMING
+	name		= "Round Recording"
+	wait		= 5 SECONDS
+	priority	= SS_PRIORITY_ROUND_RECORDING
+	flags		= SS_KEEP_TIMING
 
 	var/list/currentrun
 	var/datum/round_recorder/recorder
@@ -15,7 +15,7 @@ SUBSYSTEM_DEF(round_recording)
 // use CONFIG_GET(flag/record_rounds)
 
 /datum/controller/subsystem/round_recording/stat_entry(msg)
-	msg = recorder ? "SS#: [recorder.snapshots] T: [LAZYLEN(recorder.tracked_players)]" : "Disabled"
+	msg = recorder ? "SS#: [recorder.snapshots] T: [length(recorder.tracked_players)]" : "Disabled"
 	return ..()
 
 /datum/controller/subsystem/round_recording/fire(resumed = FALSE)
@@ -46,5 +46,5 @@ SUBSYSTEM_DEF(round_recording)
 
 		recorder.snapshot_player(M)
 
-		if (MC_TICK_CHECK)
+		if(MC_TICK_CHECK)
 			return*/

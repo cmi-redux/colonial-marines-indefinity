@@ -8,31 +8,32 @@
 	throw_speed = SPEED_VERY_FAST
 	throw_range = 20
 	matter = list("metal" = 500)
-	var/obj/item/disk/nuclear/the_disk = null
-	var/active = 0
+	var/active
+	var/atom/movable/target
+	var/list/tracked_list
 
-
-/obj/item/device/pinpointer/attack_self()
-	..()
-
-	if(!active)
-		active = 1
-		workdisk()
-		to_chat(usr, SPAN_NOTICE(" You activate the pinpointer"))
-	else
-		active = 0
-		icon_state = "pinoff"
-		to_chat(usr, SPAN_NOTICE(" You deactivate the pinpointer"))
+/obj/item/device/pinpointer/proc/set_target(mob/user)
+	if(!length(tracked_list))
+		to_chat(user, "<span class='warning'>No traceable signals found!</span>")
+		return
+	target = tgui_input_list(user, "Select the item you wish to track.", "Pinpointer", tracked_list)
+	if(QDELETED(target))
+		return
+	var/turf/pinpointer_loc = get_turf(src)
+	if(target.z != pinpointer_loc.z)
+		to_chat(user, "<span class='warning'>Chosen target signal too weak. Choose another.</span>")
+		target = null
+		return
 
 /obj/item/device/pinpointer/proc/workdisk()
 	if(!active) return
-	if(!the_disk)
-		the_disk = locate()
-		if(!the_disk)
+	if(!target)
+		target = locate()
+		if(!target)
 			icon_state = "pinonnull"
 			return
-	setDir(get_dir(src,the_disk))
-	switch(get_dist(src,the_disk))
+	setDir(get_dir(src,target))
+	switch(get_dist(src,target))
 		if(0)
 			icon_state = "pinondirect"
 		if(1 to 8)
@@ -49,13 +50,69 @@
 		if(bomb.timing)
 			. += "Extreme danger.  Arming signal detected.   Time remaining: [bomb.timeleft]"
 
+	if(ishuman(user))
+		if(active)
+			deactivate(user)
+		else
+			activate(user)
+
+/obj/item/device/pinpointer/proc/activate(mob/user)
+	set_target(user)
+	if(!target)
+		return
+	active = TRUE
+	START_PROCESSING(SSobj, src)
+	to_chat(user, "<span class='notice'>You activate the pinpointer</span>")
+
+
+/obj/item/device/pinpointer/proc/deactivate(mob/user)
+	active = FALSE
+	target = null
+	STOP_PROCESSING(SSobj, src)
+	icon_state = "pinoff"
+	to_chat(user, "<span class='notice'>You deactivate the pinpointer</span>")
+
+
+/obj/item/device/pinpointer/process()
+	if(!target)
+		icon_state = "pinonnull"
+		active = FALSE
+		return
+
+	setDir(get_dir(src, target))
+	switch(get_dist(src, target))
+		if(0)
+			icon_state = "pinondirect"
+		if(1 to 8)
+			icon_state = "pinonclose"
+		if(9 to 16)
+			icon_state = "pinonmedium"
+		if(16 to INFINITY)
+			icon_state = "pinonfar"
+
+
+/obj/item/device/pinpointer/nuke
+	name = "Nuke Pinpointer"
+	desc = "A pinpointer designed to detect the encrypted emissions of nuclear devices"
+
+/obj/item/device/pinpointer/nuke/Initialize()
+	. = ..()
+	tracked_list += GLOB.nuke_disk_generators
+	tracked_list += GLOB.nuke_list
+
+/obj/item/device/pinpointer/nuke/examine(mob/user)
+	. = ..()
+	for(var/i in GLOB.nuke_list)
+		var/obj/structure/machinery/nuclearbomb/bomb = i
+		if(bomb.timing)
+			continue
+		to_chat(user, "Extreme danger.  Arming signal detected.   Time remaining: [bomb.timeleft]")
 
 /obj/item/device/pinpointer/advpinpointer
 	name = "Advanced Pinpointer"
 	desc = "A larger version of the normal pinpointer, this unit features a helpful quantum entanglement detection system to locate various objects that do not broadcast a locator signal."
 	var/mode = 0  // Mode 0 locates disk, mode 1 locates coordinates.
 	var/turf/location = null
-	var/obj/target = null
 
 /obj/item/device/pinpointer/advpinpointer/attack_self()
 	..()

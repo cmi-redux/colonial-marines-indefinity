@@ -111,7 +111,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 
 /obj/structure/machinery/newscaster/security_unit/Destroy()
 	allCasters -= src
-	SetLuminosity(0)
+	set_light(0)
 	return ..()
 
 /obj/structure/machinery/newscaster/update_icon()
@@ -214,7 +214,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 							dat+="<B><FONT style='BACKGROUND-COLOR: LightGreen '><A href='?src=\ref[src];show_channel=\ref[CHANNEL]'>[CHANNEL.channel_name]</A></FONT></B><BR>"
 						else
 							dat+="<B><A href='?src=\ref[src];show_channel=\ref[CHANNEL]'>[CHANNEL.channel_name]</A> [(CHANNEL.censored) ? ("<FONT COLOR='red'>***</FONT>") : null]<BR></B>"
-					/*for(var/datum/feed_channel/CHANNEL in src.channel_list)
+					/*for(datum/feed_channel/CHANNEL in src.channel_list)
 						dat+="<B>[CHANNEL.channel_name]: </B> <BR><FONT SIZE=1>\[created by: <FONT COLOR='maroon'>[CHANNEL.author]</FONT>\]</FONT><BR><BR>"
 						if(!length(CHANNEL.messages) )
 							dat+="<I>No feed messages found in channel...</I><BR><BR>"
@@ -228,7 +228,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 				dat+="Creating new Feed Channel..."
 				dat+="<HR><B><A href='?src=\ref[src];set_channel_name=1'>Channel Name</A>:</B> [src.channel_name]<BR>"
 				dat+="<B>Channel Author:</B> <FONT COLOR='green'>[src.scanned_user]</FONT><BR>"
-				dat+="<B><A href='?src=\ref[src];set_channel_lock=1'>Will Accept Public Feeds</A>:</B> [(src.c_locked) ? ("NO") : ("YES")]<BR><BR>"
+				dat+="<B><A href='?src=\ref[src];set_channel_lock=1'>Will Accept Public Feeds</A>:</B> [(src.c_locked) ? (user.client.auto_lang(LANGUAGE_NO)) : (user.client.auto_lang(LANGUAGE_YES))]<BR><BR>"
 				dat+="<BR><A href='?src=\ref[src];submit_new_channel=1'>Submit</A><BR><BR><A href='?src=\ref[src];setScreen=[0]'>Cancel</A><BR>"
 			if(3)
 				dat+="Creating new Feed Message..."
@@ -433,7 +433,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 /obj/structure/machinery/newscaster/Topic(href, href_list)
 	if(..())
 		return
-	if ((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (isRemoteControlling(usr)))
+	if((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (isRemoteControlling(usr)))
 		usr.set_interaction(src)
 		if(href_list["set_channel_name"])
 			src.channel_name = strip_html(input(usr, "Provide a Feed Channel Name", "Network Channel Handler", ""))
@@ -671,7 +671,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 
 		else if(href_list["setScreen"]) //Brings us to the main menu and resets all fields~
 			src.screen = text2num(href_list["setScreen"])
-			if (src.screen == 0)
+			if(src.screen == 0)
 				src.scanned_user = "Unknown";
 				msg = "";
 				src.c_locked=0;
@@ -697,7 +697,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 
 /obj/structure/machinery/newscaster/attackby(obj/item/I as obj, mob/user as mob)
 
-	if (src.isbroken)
+	if(src.isbroken)
 		playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 25, 1)
 		for (var/mob/O in hearers(5, src.loc))
 			O.show_message("<EM>[user.name]</EM> further abuses the shattered [src.name].", SHOW_MESSAGE_VISIBLE)
@@ -738,7 +738,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 	else if(istype(user,/mob/living/silicon))
 		var/mob/living/silicon/tempAI = user
 		var/datum/picture/selection = tempAI.GetPicture()
-		if (!selection)
+		if(!selection)
 			return
 
 		var/obj/item/photo/P = new/obj/item/photo()
@@ -850,7 +850,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 /obj/item/newspaper/Topic(href, href_list)
 	var/mob/living/U = usr
 	..()
-	if ((src in U.contents) || ( istype(loc, /turf) && in_range(src, U) ))
+	if((src in U.contents) || ( istype(loc, /turf) && in_range(src, U) ))
 		U.set_interaction(src)
 		if(href_list["next_page"])
 			if(curr_page==src.pages+1)
@@ -875,7 +875,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 			src.curr_page--
 			playsound(src.loc, "pageturn", 15, 1)
 
-		if (istype(src.loc, /mob))
+		if(istype(src.loc, /mob))
 			src.attack_self(src.loc)
 
 
@@ -886,9 +886,9 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 		else
 			var/s = strip_html( input(user, "Write something", "Newspaper", "") )
 			s = strip_html(s)
-			if (!s)
+			if(!s)
 				return
-			if (!in_range(src, usr) && src.loc != usr)
+			if(!in_range(src, usr) && src.loc != usr)
 				return
 			src.scribble_page = src.curr_page
 			src.scribble = s

@@ -9,6 +9,7 @@
 #define ADMIN_LANDING_PAD_3 "base-ert3"
 #define ADMIN_LANDING_PAD_4 "base-ert4"
 #define ADMIN_LANDING_PAD_5 "base-ert5"
+#define ADMIN_LANDING_PAD_6 "base-ert6"
 
 // Base ERT Shuttle
 /obj/docking_port/mobile/emergency_response
@@ -101,6 +102,13 @@
 /obj/docking_port/mobile/emergency_response/ert3
 	name = "UPP Shuttle"
 	id = MOBILE_SHUTTLE_ID_ERT3
+	preferred_direction = SOUTH
+	port_direction = NORTH
+
+// ERT Shuttle 4
+/obj/docking_port/mobile/emergency_response/ert4
+	name = "USCM Shuttle"
+	id = MOBILE_SHUTTLE_ID_ERT4
 	preferred_direction = SOUTH
 	port_direction = NORTH
 
@@ -279,16 +287,22 @@
 
 /obj/docking_port/stationary/emergency_response/idle_port4
 	name = "Response Station Landing Pad 4"
-	dir = EAST
+	dir = NORTH
 	id = ADMIN_LANDING_PAD_4
-	width  = 6
-	height = 9
-	roundstart_template = /datum/map_template/shuttle/small_ert
+	roundstart_template = /datum/map_template/shuttle/uscm_ert
 
 /obj/docking_port/stationary/emergency_response/idle_port5
 	name = "Response Station Landing Pad 5"
 	dir = EAST
 	id = ADMIN_LANDING_PAD_5
+	width  = 6
+	height = 9
+	roundstart_template = /datum/map_template/shuttle/small_ert
+
+/obj/docking_port/stationary/emergency_response/idle_port6
+	name = "Response Station Landing Pad 6"
+	dir = EAST
+	id = ADMIN_LANDING_PAD_6
 	width  = 17
 	height = 29
 	roundstart_template = /datum/map_template/shuttle/big_ert
@@ -304,6 +318,10 @@
 /datum/map_template/shuttle/upp_ert
 	name = "UPP Shuttle"
 	shuttle_id = "ert_upp_shuttle"
+
+/datum/map_template/shuttle/uscm_ert
+	name = "USCM Shuttle"
+	shuttle_id = "ert_uscm_shuttle"
 
 /datum/map_template/shuttle/small_ert
 	name = "Rescue Shuttle"

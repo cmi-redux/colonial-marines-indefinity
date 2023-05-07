@@ -1,6 +1,5 @@
 #define FALLOFF_SOUNDS 1
 
-#define FREE_CHAN_END 1016
 #define INITIAL_SOUNDSCAPE_COOLDOWN 20
 
 #define EAR_DEAF_MUTE 1
@@ -21,14 +20,18 @@
 #define ITEM_EQUIP_VOLUME 50
 
 //Reserved channels
-#define SOUND_CHANNEL_VOX    1017
-#define SOUND_CHANNEL_MUSIC 1018
-#define SOUND_CHANNEL_AMBIENCE 1019
-#define SOUND_CHANNEL_WALKMAN 1020
-#define SOUND_CHANNEL_SOUNDSCAPE 1021
-#define SOUND_CHANNEL_ADMIN_MIDI 1022
-#define SOUND_CHANNEL_LOBBY 1023
-#define SOUND_CHANNEL_Z 1024
+#define FREE_CHAN_END				1013
+#define SOUND_CHANNEL_WEATHER		1014
+#define SOUND_CHANNEL_REACTOR_ON	1015
+#define SOUND_CHANNEL_REACTOR_SIREN	1016
+#define SOUND_CHANNEL_VOX           1017
+#define SOUND_CHANNEL_MUSIC			1018
+#define SOUND_CHANNEL_AMBIENCE		1019
+#define SOUND_CHANNEL_WALKMAN		1020
+#define SOUND_CHANNEL_SOUNDSCAPE	1021
+#define SOUND_CHANNEL_ADMIN_MIDI	1022
+#define SOUND_CHANNEL_LOBBY			1023
+#define SOUND_CHANNEL_Z				1024
 
 //default byond sound environments
 #define SOUND_ENVIRONMENT_NONE -1
@@ -74,14 +77,18 @@
 #define AMBIENCE_PRISON 'sound/ambience/shipambience.ogg'
 #define AMBIENCE_TRIJENT 'sound/ambience/desert.ogg'
 
-#define SCAPE_PL_WIND list('sound/soundscape/wind1.ogg','sound/soundscape/wind2.ogg')
-#define SCAPE_PL_LV522_OUTDOORS list('sound/soundscape/lv522/outdoors/wind1.ogg','sound/soundscape/lv522/outdoors/wind2.ogg','sound/soundscape/lv522/outdoors/wind3.ogg',)
-#define SCAPE_PL_LV522_INDOORS list('sound/soundscape/lv522/indoors/indoor_wind.ogg','sound/soundscape/lv522/indoors/indoor_wind2.ogg')
+#define SCAPE_PL_WIND list('sound/soundscape/wind1.ogg', 'sound/soundscape/wind2.ogg')
+#define SCAPE_PL_LV522_OUTDOORS list('sound/soundscape/lv522/outdoors/wind1.ogg', 'sound/soundscape/lv522/outdoors/wind2.ogg', 'sound/soundscape/lv522/outdoors/wind3.ogg',)
+#define SCAPE_PL_LV522_INDOORS list('sound/soundscape/lv522/indoors/indoor_wind.ogg', 'sound/soundscape/lv522/indoors/indoor_wind2.ogg')
 #define SCAPE_PL_CAVE list('sound/soundscape/rocksfalling1.ogg', 'sound/soundscape/rocksfalling2.ogg')
-#define SCAPE_PL_ELEVATOR_MUSIC list('sound/soundscape/medbay1.ogg','sound/soundscape/medbay2.ogg', 'sound/soundscape/medbay3.ogg')
+#define SCAPE_PL_ELEVATOR_MUSIC list('sound/soundscape/medbay1.ogg', 'sound/soundscape/medbay2.ogg', 'sound/soundscape/medbay3.ogg')
 #define SCAPE_PL_THUNDER list('sound/soundscape/thunderclap1.ogg', 'sound/soundscape/thunderclap2.ogg')
 #define SCAPE_PL_DESERT_STORM list('sound/soundscape/thunderclap1.ogg', 'sound/soundscape/thunderclap2.ogg', 'sound/soundscape/wind1.ogg','sound/soundscape/wind2.ogg')
 #define SCAPE_PL_CIC list('sound/soundscape/cicamb2.ogg', 'sound/soundscape/cicamb3.ogg', 'sound/soundscape/cicamb4.ogg', 'sound/soundscape/cicamb5.ogg', 'sound/soundscape/cicamb6.ogg', )
 #define SCAPE_PL_ENG list('sound/soundscape/engamb1.ogg', 'sound/soundscape/engamb2.ogg', 'sound/soundscape/engamb3.ogg', 'sound/soundscape/engamb4.ogg', 'sound/soundscape/engamb5.ogg', 'sound/soundscape/engamb6.ogg', 'sound/soundscape/engamb7.ogg', )
 #define SCAPE_PL_HANGAR list('sound/soundscape/hangaramb1.ogg', 'sound/soundscape/hangaramb2.ogg', 'sound/soundscape/hangaramb3.ogg', 'sound/soundscape/hangaramb4.ogg', 'sound/soundscape/hangaramb5.ogg', 'sound/soundscape/hangaramb6.ogg', 'sound/soundscape/hangaramb7.ogg', 'sound/soundscape/hangaramb8.ogg', 'sound/soundscape/hangaramb9.ogg', 'sound/soundscape/hangaramb10.ogg', )
 #define SCAPE_PL_ARES list('sound/soundscape/mother.ogg')
+
+#define SCAPE_PL_BACKGROUND_SOUNDS_DAY_SUMMER list('sound/ambience/background/rnd_outdoor/rnd_bird_1.ogg', 'sound/ambience/background/rnd_outdoor/rnd_bird_2.ogg', 'sound/ambience/background/rnd_outdoor/rnd_bird_3.ogg', 'sound/ambience/background/rnd_outdoor/rnd_bird_4.ogg', 'sound/ambience/background/rnd_outdoor/rnd_bird_5.ogg', 'sound/ambience/background/rnd_outdoor/rnd_bird_6.ogg', 'sound/ambience/background/rnd_outdoor/rnd_bird_7.ogg', 'sound/ambience/background/rnd_outdoor/rnd_bird_8.ogg', 'sound/ambience/background/rnd_outdoor/rnd_bird_9.ogg', 'sound/ambience/background/rnd_outdoor/rnd_bird_10.ogg', 'sound/ambience/background/rnd_outdoor/rnd_bird_11.ogg', 'sound/ambience/background/rnd_outdoor/rnd_dog1.ogg', 'sound/ambience/background/rnd_outdoor/rnd_dog2.ogg', 'sound/ambience/background/rnd_outdoor/rnd_dog3.ogg', 'sound/ambience/background/rnd_outdoor/rnd_dog4.ogg', 'sound/ambience/background/rnd_outdoor/rnd_dog5.ogg', 'sound/ambience/background/rnd_outdoor/rnd_dog6.ogg', 'sound/ambience/background/rnd_outdoor/rnd_dog7.ogg', 'sound/ambience/background/rnd_outdoor/rnd_dog8.ogg', 'sound/ambience/background/rnd_outdoor/rnd_dog9.ogg', 'sound/ambience/background/rnd_outdoor/rnd_dog10.ogg', 'sound/ambience/background/rnd_outdoor/rnd_crow_1.ogg', 'sound/ambience/background/rnd_outdoor/rnd_crow_2.ogg', 'sound/ambience/background/rnd_outdoor/rnd_crow_3.ogg', 'sound/ambience/background/rnd_outdoor/rnd_crow_4.ogg', 'sound/ambience/background/rnd_outdoor/rnd_crow_5.ogg', 'sound/ambience/background/rnd_outdoor/rnd_crow_6.ogg', 'sound/ambience/background/rnd_outdoor/rnd_crow_7.ogg', 'sound/ambience/background/rnd_outdoor/rnd_crow_8.ogg', 'sound/ambience/background/rnd_outdoor/rnd_crow_9.ogg', 'sound/ambience/background/rnd_outdoor/rnd_crow_10.ogg', 'sound/ambience/background/rnd_outdoor/rnd_crow_11.ogg', 'sound/ambience/background/rnd_outdoor/rnd_crow_12.ogg', 'sound/ambience/background/rnd_outdoor/ambient_wind_1.ogg', 'sound/ambience/background/rnd_outdoor/ambient_wind_2.ogg', 'sound/ambience/background/rnd_outdoor/ambient_wind_3.ogg', 'sound/ambience/background/rnd_outdoor/ambient_wind_4.ogg', 'sound/ambience/background/rnd_outdoor/rnd_insect_8.ogg',)
+
+//#define SCAPE_PL_BACKGROUND_SOUNDS_NIGHT_SUMMER list('sound/ambience/background/rnd_outdoor_night/rnd_moan.ogg', 'sound/ambience/background/rnd_outdoor_night/rnd_moan2.ogg', 'sound/ambience/background/rnd_outdoor_night/rnd_moan3.ogg', 'sound/ambience/background/rnd_outdoor_night/rnd_moan4.ogg', 'sound/ambience/background/rnd_outdoor_night/rnd_moan5.ogg', 'sound/ambience/background/rnd_outdoor_night/rnd_moan6.ogg', 'sound/ambience/background/rnd_outdoor_night/ambient_night_1.ogg', 'sound/ambience/background/rnd_outdoor_night/ambient_night_2.ogg', 'sound/ambience/background/rnd_outdoor_night/ambient_night_3.ogg', 'sound/ambience/background/rnd_outdoor_night/ambient_night_4.ogg', 'sound/ambience/background/rnd_outdoor_night/ambient_night_5.ogg', 'sound/ambience/background/rnd_outdoor_night/ambient_night_6.ogg', 'sound/ambience/background/rnd_outdoor_night/ambient_night_7.ogg', 'sound/ambience/background/rnd_outdoor_night/ambient_night_8.ogg', 'sound/ambience/background/rnd_outdoor_night/ambient_night_9.ogg', 'sound/ambience/background/rnd_outdoor_night/ambient_night_10.ogg', 'sound/ambience/background/rnd_outdoor_night/wolf_howl_01.ogg', 'sound/ambience/background/rnd_outdoor_night/wolf_howl_02.ogg', 'sound/ambience/background/rnd_outdoor_night/wolf_howl_03.ogg', 'sound/ambience/background/rnd_outdoor_night/wolf_howl_04.ogg',)

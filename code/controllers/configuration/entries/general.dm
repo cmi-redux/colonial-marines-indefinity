@@ -33,15 +33,18 @@ Basics, the most important.
 
 /datum/config_entry/string/dburl
 
+/// Shutdown server instead of actually restarting when using /world/Reboot()
+/datum/config_entry/flag/no_restarts
+	config_entry_value = FALSE
+
+/datum/config_entry/flag/allow_shutdown
+	config_entry_value = FALSE
+
 /// Server to notify of game events
 /datum/config_entry/string/manager_url
 
 /// URL for the CentCom Galactic Ban DB API
 /datum/config_entry/string/centcom_ban_db
-
-/// Host of the webmap
-/datum/config_entry/string/webmap_host
-	config_entry_value = "https://affectedarc07.github.io/SS13WebMap/CMSS13/"
 
 /datum/config_entry/string/python_path
 
@@ -130,7 +133,7 @@ Administrative related.
 /// logs all timers in buckets on automatic bucket reset (Useful for timer debugging)
 /datum/config_entry/flag/log_timers_on_bucket_reset
 
-/datum/config_entry/number/vote_adjustment_callback
+/datum/config_entry/number/vote_adjustment
 	config_entry_value = 0.1
 
 /datum/config_entry/string/ooc_color_normal
@@ -201,7 +204,7 @@ Administrative related.
 	config_entry_value = 180
 
 /datum/config_entry/number/round_end_countdown
-	config_entry_value = 120
+	config_entry_value = 60
 
 /datum/config_entry/flag/see_own_notes
 
@@ -267,6 +270,9 @@ Voting
 
 // Rounds needed for gamemode vote
 /datum/config_entry/number/gamemode_rounds_needed
+	config_entry_value = 5
+
+/datum/config_entry/number/ship_map_rounds_needed
 	config_entry_value = 5
 
 /datum/config_entry/number/rounds_until_hard_restart
@@ -385,7 +391,6 @@ The default value assumes youtube-dl is in your system PATH
 	config_entry_value = 50
 	integer = FALSE
 
-
 /datum/config_entry/number/soft_popcap
 	min_val = 0
 
@@ -399,15 +404,15 @@ The default value assumes youtube-dl is in your system PATH
 
 
 /datum/config_entry/string/soft_popcap_message
-	config_entry_value = "The server is currently serving a high number of users, joining the round may get disabled soon."
+	config_entry_value = "В данный момент на сервере находится большое количество людей, скоро будет включена система очереди."
 
 
 /datum/config_entry/string/hard_popcap_message
-	config_entry_value = "The server is currently serving a high number of users, You cannot currently join, but you can observe or wait for the number of living crew to decline."
+	config_entry_value = "В данный момент на сервере находится слишком много людей, ожидайте в очереди."
 
 
 /datum/config_entry/string/extreme_popcap_message
-	config_entry_value = "The server is currently serving a high number of users, joining the server has been disabled."
+	config_entry_value = "В данный момент сервер перегружен, вы не можете зайти, ждите пока кто-то выйдет."
 
 
 /datum/config_entry/flag/byond_member_bypass_popcap
@@ -514,12 +519,7 @@ This maintains a list of ip addresses that are able to bypass topic filtering.
 /datum/config_entry/string/ahelp_message
 	default = ""
 
-/datum/config_entry/string/urgent_ahelp_user_prompt
-	default = "There are no admins currently on. Do not press the button below if your ahelp is a joke, a request or a question. Use it only for cases of obvious grief."
-
-/datum/config_entry/string/urgent_adminhelp_webhook_url
-
-/datum/config_entry/string/regular_adminhelp_webhook_url
+/datum/config_entry/string/adminhelp_webhook_url
 
 /datum/config_entry/string/adminhelp_webhook_pfp
 
@@ -527,7 +527,13 @@ This maintains a list of ip addresses that are able to bypass topic filtering.
 
 /datum/config_entry/string/adminhelp_ahelp_link
 
-/datum/config_entry/string/round_results_webhook_url
+/datum/config_entry/string/verefy_webhook_url
+
+/datum/config_entry/string/new_round_webhook_url
+
+/datum/config_entry/string/new_round_mention_webhook_url
+
+/datum/config_entry/flag/native_fov
 
 /// logs all timers in buckets on automatic bucket reset (Useful for timer debugging)
 /datum/config_entry/flag/log_timers_on_bucket_reset

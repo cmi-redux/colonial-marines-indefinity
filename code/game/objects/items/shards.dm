@@ -26,7 +26,8 @@
 
 /obj/item/shard/Initialize()
 	. = ..()
-	shardsize = pick("large", "medium", "small")
+	if(!shardsize)
+		shardsize = pick("large", "medium", "small")
 	switch(shardsize)
 		if("small")
 			pixel_x = rand(-12, 12)
@@ -44,7 +45,7 @@
 
 
 /obj/item/shard/attackby(obj/item/W, mob/user)
-	if ( iswelder(W))
+	if( iswelder(W))
 		if(!HAS_TRAIT(W, TRAIT_TOOL_BLOWTORCH))
 			to_chat(user, SPAN_WARNING("You need a stronger blowtorch!"))
 			return
@@ -237,6 +238,13 @@
 	desc = "Some shrapnel that used to be embedded underneath someone's skin."
 	icon_state = "small"
 	damage_on_move = 2
+
+/obj/item/shard/shrapnel/big
+	name = "big shrapnel"
+	desc = "Some shrapnel that used to be embedded on someone's skin."
+	matter = list("metal" = 400)
+	damage_on_move = 14
+	shardsize = "large"
 
 /obj/item/shard/shrapnel/nagant/bits
 	name = "tiny shrapnel"

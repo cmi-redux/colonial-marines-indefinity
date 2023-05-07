@@ -2,8 +2,9 @@
     "map_name": "LV-624",
     "map_path": "map_files/LV624",
     "map_file": "LV624.dmm",
-    "webmap_url": "LV624",
-    "weather_holder": "/datum/weather_ss_map_holder/lv624",
+    "weather": [
+    "weather_rain"
+    ],
     "survivor_types": [
         "/datum/equipment_preset/survivor/scientist/lv",
         "/datum/equipment_preset/survivor/doctor/lv",
@@ -16,7 +17,6 @@
         "/datum/equipment_preset/survivor/clf",
         "/datum/equipment_preset/survivor/civilian"
     ],
-    "map_item_type": "/obj/item/map/lazarus_landing_map",
     "announce_text": "An automated distress signal has been received from archaeology site Lazarus Landing, on border world LV-624. A response team from the ###SHIPNAME### will be dispatched shortly to investigate.",
     "monkey_types": [
         "farwa",
@@ -25,18 +25,42 @@
         "stok"
     ],
     "environment_traits": { "Fog": true },
-    "traits": [{ "Ground": true }],
+    "traits": [
+        {
+            "Ground": true,
+            "Up": 1
+        },
+        {
+            "Ground": true,
+            "Down": -1,
+            "Baseturf": "/turf/open/openspace"
+        }
+   ],
     "nightmare_path": "maps/Nightmare/maps/LV624/",
     "xvx_hives": {
-        "xeno_hive_alpha": 0,
-        "xeno_hive_bravo": 0,
-        "xeno_hive_charlie": 70
+        "alpha_xenomorph": 0,
+        "bravo_xenomorph": 0,
+        "charlie_xenomorph": 70
     },
     "gamemodes": [
         "Distress Signal",
+        "Crash",
         "Hunter Games",
         "Hive Wars",
         "Faction Clash",
         "Infection"
-    ]
+    ],
+    "map_day_night_modificator": {
+        "Midnight": 864000,
+        "Night": 72000,
+        "Dawn": 144000,
+        "Sunrise": 216000,
+        "Sunrise-Morning": 252000,
+        "Morning": 288000,
+        "Daytime": 360000,
+        "Evening": 576000,
+        "Sunset": 684000,
+        "Dusk": 792000
+    },
+    "custom_time_rate_multiplier": 0.5
 }

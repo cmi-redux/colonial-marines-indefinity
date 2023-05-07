@@ -15,7 +15,7 @@ var/list/reboot_sfx = file2list("config/reboot_sfx.txt")
 
 /world/New()
 	var/debug_server = world.GetConfig("env", "AUXTOOLS_DEBUG_DLL")
-	if (debug_server)
+	if(debug_server)
 		LIBCALL(debug_server, "auxtools_init")()
 		enable_debugging()
 	internal_tick_usage = 0.2 * world.tick_lag
@@ -80,12 +80,6 @@ var/list/reboot_sfx = file2list("config/reboot_sfx.txt")
 	// Only do offline sleeping when the server isn't running unit tests or hosting a local dev test
 	sleep_offline = (!running_tests && !testing_locally)
 
-	if(!RoleAuthority)
-		RoleAuthority = new /datum/authority/branch/role()
-		to_world(SPAN_DANGER("\b Job setup complete"))
-
-	if(!EvacuationAuthority) EvacuationAuthority = new
-
 	initiate_minimap_icons()
 
 	change_tick_lag(CONFIG_GET(number/ticklag))
@@ -100,8 +94,8 @@ var/list/reboot_sfx = file2list("config/reboot_sfx.txt")
 	update_status()
 
 	//Scramble the coords obsfucator
-	obfs_x = rand(-500, 500) //A number between -100 and 100
-	obfs_y = rand(-500, 500) //A number between -100 and 100
+	obfs_x = rand(-2000, 2000) //A number between -2000 and 2000
+	obfs_y = rand(-2000, 2000) //A number between -2000 and 2000
 
 	spawn(3000) //so we aren't adding to the round-start lag
 		if(CONFIG_GET(flag/ToRban))
@@ -110,7 +104,7 @@ var/list/reboot_sfx = file2list("config/reboot_sfx.txt")
 	// If the server's configured for local testing, get everything set up ASAP.
 	// Shamelessly stolen from the test manager's host_tests() proc
 	if(testing_locally)
-		master_mode = "extended"
+		GLOB.master_mode = "extended"
 
 		// Wait for the game ticker to initialize
 		while(!SSticker.initialized)
@@ -132,42 +126,25 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	if (T == "ping")
 		var/x = 1
-		for (var/client/C)
+		for(var/client/C)
 			x++
 		return x
 
 	else if(T == "players")
 		return length(GLOB.clients)
 
-	else if (T == "status")
+	else if(T == "status")
 		var/list/s = list()
-		s["version"] = game_version
-		s["mode"] = master_mode
-		s["respawn"] = CONFIG_GET(flag/respawn)
-		s["enter"] = enter_allowed
-		s["vote"] = CONFIG_GET(flag/allow_vote_mode)
-		s["ai"] = CONFIG_GET(flag/allow_ai)
-		s["host"] = host ? host : null
-		s["players"] = list()
+		s["mode"] = GLOB.master_mode
+		if(SSmapping && SSmapping?.configs?[GROUND_MAP])
+			s["map"] = SSmapping.configs[GROUND_MAP].map_name
 		s["stationtime"] = duration2text()
-		var/n = 0
-		var/admins = 0
-
-		for(var/client/C in GLOB.clients)
-			if(C.admin_holder)
-				if(C.admin_holder.fakekey)
-					continue //so stealthmins aren't revealed by the hub
-				admins++
-			s["player[n]"] = C.key
-			n++
-		s["players"] = n
-
-		s["admins"] = admins
+		s["players"] = GLOB.clients.len
 
 		return list2params(s)
 
 	// Used in external requests for player data.
-	else if (T == "pinfo")
+	else if(T == "pinfo")
 		var/retdata = ""
 		if(addr != "127.0.0.1")
 			return "Nah ah ah, you didn't say the magic word"
@@ -198,7 +175,10 @@ var/world_topic_spam_protect_time = world.timeofday
 			dat += "[ban_text][N.text]<br/>by [admin_name] ([N.admin_rank])[confidential_text] on [N.date]<br/><br/>"
 		return dat
 
-/world/Reboot(reason)
+/world/Reboot(shutdown = FALSE, reason)
+	if(!notify_restart())
+		log_debug("Failed to notify discord about restart")
+
 	Master.Shutdown()
 	send_reboot_sound()
 	var/server = CONFIG_GET(string/server)
@@ -215,18 +195,22 @@ var/world_topic_spam_protect_time = world.timeofday
 	return
 	#endif
 
-	if(TgsAvailable())
-		send_tgs_restart()
-
-		TgsReboot()
-		TgsEndProcess()
-	else
+	if(shutdown)
 		shutdown()
+	else
+		..(reason)
+
+//	if(TgsAvailable())
+//		send_tgs_restart()
+//		TgsReboot()
+//		TgsEndProcess()
+//	else
+//		shutdown()
 
 /world/proc/send_tgs_restart()
 	if(CONFIG_GET(string/new_round_alert_channel) && CONFIG_GET(string/new_round_alert_role_id))
-		if(round_statistics)
-			send2chat("[round_statistics.round_name] completed!", CONFIG_GET(string/new_round_alert_channel))
+		if(SSticker.mode.round_statistics)
+			send2chat("[SSticker.mode.round_statistics.round_name] completed!", CONFIG_GET(string/new_round_alert_channel))
 		if(SSmapping.next_map_configs)
 			var/datum/map_config/next_map = SSmapping.next_map_configs[GROUND_MAP]
 			if(next_map)
@@ -243,12 +227,73 @@ var/world_topic_spam_protect_time = world.timeofday
 			if(client?.prefs.toggles_sound & SOUND_REBOOT)
 				SEND_SOUND(client, reboot_sound_ref)
 
+/world/proc/notify_restart()
+	if(world.port != 1400)
+		return FALSE
+	var/datum/discord_embed/embed = new()
+	embed.title = "**Раунд [SSticker.mode.round_statistics.round_name], № [SSperf_logging?.round?.id] ЗАВЕРШЕН**"
+	var/next_map_info = ""
+	if(SSmapping?.next_map_configs && SSmapping?.next_map_configs?[GROUND_MAP])
+		next_map_info = ", **Следующая Карта:** __[SSmapping.next_map_configs[GROUND_MAP]?.map_name]__"
+	var/last_round = ""
+	if(SSticker.graceful)
+		last_round = "\n__**Это последний раунд!**__\nВсем спасибо за участие на старте, cледующий старт по расписанию."
+	embed.description = "[SSticker.mode.end_round_message()]\n**Онлайн:** **(AVG)** ``[round(SSstats_collector.get_avg_players(), 0.01)]``, *на момент перезапуска ``[length(GLOB.clients)]``*\n\
+	**Карта:** __[SSmapping.configs[GROUND_MAP]?.map_name]__[next_map_info]\n**Длительность раунда:** *[duration2text()]*[last_round]"
+	embed.color = COLOR_WEBHOOK_DEFAULT
+	embed.content = "[CONFIG_GET(string/new_round_mention_webhook_url)]"
+	send2new_round_webhook(embed)
+	return TRUE
+
+/proc/send2new_round_webhook(message_or_embed)
+	var/webhook = CONFIG_GET(string/new_round_webhook_url)
+	if(!webhook)
+		return
+
+	var/list/webhook_info = list()
+	if(istext(message_or_embed))
+		var/message_content = replacetext(replacetext(message_or_embed, "\proper", ""), "\improper", "")
+		message_content = GLOB.has_discord_embeddable_links.Replace(replacetext(message_content, "`", ""), " ```$1``` ")
+		webhook_info["content"] = message_content
+	else
+		var/datum/discord_embed/embed = message_or_embed
+		webhook_info["embeds"] = list(embed.convert_to_list())
+		if(embed.content)
+			webhook_info["content"] = embed.content
+	var/list/headers = list()
+	headers["Content-Type"] = "application/json"
+	var/datum/http_request/request = new()
+	request.prepare(RUSTG_HTTP_METHOD_POST, webhook, json_encode(webhook_info), headers, "tmp/response.json")
+	request.begin_async()
+
+/world/proc/notify_manager(restarting = FALSE)
+	. = FALSE
+	var/manager = CONFIG_GET(string/manager_url)
+	if(!manager)
+		return TRUE
+
+	var/list/payload = list()
+	payload["round_time"] = world.time
+	payload["drift"] = Master.tickdrift
+	if(restarting)
+		payload["restarting"] = TRUE
+		if(SSticker?.mode)
+			payload["round_result"] = SSticker.mode.end_round_message()
+	if(SSticker?.mode?.round_statistics)
+		payload["mission_name"] = SSticker.mode.round_statistics.round_name
+	if(SSmapping.next_map_configs)
+		var/datum/map_config/next_map = SSmapping.next_map_configs[GROUND_MAP]
+		if(next_map)
+			payload["next_map"] = next_map.map_name
+	payload["avg_players"] = SSstats_collector.get_avg_players()
+
+	var/payload_ser = url_encode(json_encode(payload))
+	world.Export("[manager]/?payload=[payload_ser]")
+	return TRUE
+
 /world/proc/load_mode()
-	var/list/Lines = file2list("data/mode.txt")
-	if(Lines.len)
-		if(Lines[1])
-			master_mode = Lines[1]
-			log_misc("Saved mode is '[master_mode]'")
+	GLOB.master_mode = trim(file2text("data/mode.txt"))
+	log_misc("Saved mode is '[GLOB.master_mode]'")
 
 /world/proc/save_mode(the_mode)
 	var/F = file("data/mode.txt")
@@ -256,7 +301,7 @@ var/world_topic_spam_protect_time = world.timeofday
 	F << the_mode
 
 /world/proc/load_motd()
-	join_motd = file2text("config/motd.txt")
+	join_motd = list(CLIENT_LANGUAGE_RUSSIAN = file2text("config/motd_ru.txt"), CLIENT_LANGUAGE_ENGLISH = file2text("config/motd_en.txt"))
 
 /world/proc/load_tm_message()
 	var/datum/getrev/revdata = GLOB.revdata
@@ -266,17 +311,14 @@ var/world_topic_spam_protect_time = world.timeofday
 /world/proc/update_status()
 	//Note: Hub content is limited to 254 characters, including limited HTML/CSS.
 	var/s = ""
-
 	if(CONFIG_GET(string/servername))
 		s += "<a href=\"[CONFIG_GET(string/forumurl)]\"><b>[CONFIG_GET(string/servername)]</b></a>"
-
 	if(SSmapping?.configs)
 		var/datum/map_config/MG = SSmapping.configs[GROUND_MAP]
 		s += "<br>Map: [MG?.map_name ? "<b>[MG.map_name]</b>" : ""]"
 	if(SSticker?.mode)
 		s += "<br>Mode: <b>[SSticker.mode.name]</b>"
 		s += "<br>Round time: <b>[duration2text()]</b>"
-
 	world.status = s
 
 #define FAILED_DB_CONNECTION_CUTOFF 1

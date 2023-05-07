@@ -2,8 +2,17 @@
 
 //turfs with density = TRUE
 /turf/closed
-	density = TRUE
+	plane = WALL_PLANE
+	weather_affectable = FALSE
 	opacity = TRUE
+	density = TRUE
+	/// Icon path. Smoothing objects larger than 32x32 require a visual object to represent the excess part, in order not to increase its hitbox. We call that a frill.
+	var/frill_icon
+
+/turf/closed/Initialize(mapload)
+	. = ..()
+	if(frill_icon)
+		AddElement(/datum/element/frill, frill_icon)
 
 /turf/closed/insert_self_into_baseturfs()
 	return
@@ -55,7 +64,7 @@
 	. = ..()
 	if(prob(6))
 		icon_state = "wall1"
-	else if (prob(5))
+	else if(prob(5))
 		icon_state = "wall3"
 	else
 		icon_state = "wall2"
@@ -216,6 +225,13 @@
 	icon = 'icons/turf/ert_shuttle.dmi'
 	icon_state = "stan4"
 
+/turf/closed/shuttle/crash
+	icon = 'icons/turf/crash_shuttle.dmi'
+	icon_state = "0"
+
+/turf/closed/shuttle/crash/window
+	icon_state = "7"
+	opacity = 0
 
 /turf/closed/shuttle/dropship1
 	name = "\improper Alamo"
@@ -264,15 +280,29 @@
 	icon = 'icons/turf/elevator.dmi'
 	icon_state = "wall"
 
+/turf/closed/shuttle/elevator/window
+	icon = 'icons/turf/elevator.dmi'
+	icon_state = "wall_w"
+	opacity = FALSE
+
 // Wall with gears that animate when elevator is moving
 /turf/closed/shuttle/elevator/gears
 	icon_state = "wall_gear"
 
+/turf/closed/shuttle/elevator/gears/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock, idnum, override)
+	. = ..()
+	if(istype(port, /obj/docking_port/mobile/sselevator))
+		var/obj/docking_port/mobile/sselevator/L = port
+		L.gears += src
+
 /turf/closed/shuttle/elevator/gears/proc/start()
-	icon_state = "wall_gear_animated"
+	icon_state = "[initial(icon_state)]_animated"
 
 /turf/closed/shuttle/elevator/gears/proc/stop()
-	icon_state = "wall_gear"
+	icon_state = initial(icon_state)
+
+/turf/closed/shuttle/elevator/gears/sci
+	icon_state = "wall_w_gear"
 
 // Special wall icons
 /turf/closed/shuttle/elevator/research

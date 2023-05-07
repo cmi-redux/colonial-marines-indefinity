@@ -283,7 +283,7 @@
 		mission_error = "Fire Mission is under way already."
 		return 0
 	if((new_dir != 1) && (new_dir != 2) && (new_dir != 4) && (new_dir != 8))
-		mission_error = "Direction has to be cardinal (i.e. North/South/West/East)"
+		mission_error = "Direction has to be cardinals (i.e. North/South/West/East)"
 		return 0
 	if(new_dir<0 || new_dir>15)
 		mission_error = "Do not use 4D coordinate matrix vector please." //hehe

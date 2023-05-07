@@ -392,7 +392,7 @@
 		if(FRIDGE_WIRE_SHOCK)
 			COOLDOWN_START(src, electrified_cooldown, 12 HOURS)
 			visible_message(SPAN_DANGER("Electric arcs shoot off from \the [src]!"))
-		if (FRIDGE_WIRE_SHOOT_INV)
+		if(FRIDGE_WIRE_SHOOT_INV)
 			if(!shoot_inventory)
 				shoot_inventory = TRUE
 				visible_message(SPAN_WARNING("\The [src] begins whirring noisily."))

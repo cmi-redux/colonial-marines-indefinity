@@ -9,31 +9,36 @@
 	buildstacktype = null //can't be disassembled and doesn't drop anything when destroyed
 	unacidable = TRUE
 	health = 100
+	var/image/cover_overlay = null
 	var/on_fire = 0
 	var/resisting = 0
 	var/resisting_ready = 0
 	var/nest_resist_time = 1200
 	var/mob/dead/observer/ghost_of_buckled_mob =  null
-	var/hivenumber = XENO_HIVE_NORMAL
 	layer = RESIN_STRUCTURE_LAYER
+
+	faction_to_get = FACTION_XENOMORPH_NORMAL
 
 	var/force_nest = FALSE
 
-/obj/structure/bed/nest/Initialize(mapload, hive)
+/obj/structure/bed/nest/Initialize(mapload, mob/builder, datum/faction/faction_to_set)
 	. = ..()
 
-	if (hive)
-		hivenumber = hive
+	if(faction_to_set)
+		faction = faction_to_set
 
-	set_hive_data(src, hivenumber)
+	set_hive_data(src, faction)
+
+	cover_overlay = image("icon_state"="nest_overlay")
+	cover_overlay.layer = LYING_LIVING_MOB_LAYER + 0.1
 
 /obj/structure/bed/nest/alpha
 	color = "#ff4040"
-	hivenumber = XENO_HIVE_ALPHA
+	faction_to_get = FACTION_XENOMORPH_ALPHA
 
 /obj/structure/bed/nest/forsaken
 	color = "#cc8ec4"
-	hivenumber = XENO_HIVE_FORSAKEN
+	faction_to_get = FACTION_XENOMORPH_FORSAKEN
 
 /obj/structure/bed/nest/attackby(obj/item/W, mob/living/user)
 	if(istype(W, /obj/item/grab))
@@ -46,8 +51,8 @@
 	if(W.flags_item & NOBLUDGEON)
 		return
 	if(iscarbon(user))
-		var/mob/living/carbon/carbon = user
-		if(HIVE_ALLIED_TO_HIVE(carbon.hivenumber, hivenumber))
+		var/mob/living/carbon/C = user
+		if(C.faction == faction || C.ally(faction))
 			to_chat(user, SPAN_XENOWARNING("You shouldn't interfere with the nest, leave that to the drones."))
 			return
 	if(buckled_mob)
@@ -99,13 +104,13 @@
 		return
 
 	if(isxeno(user))
-		var/mob/living/carbon/xenomorph/X = user
-		if(!X.hive.unnesting_allowed && !isxeno_builder(X) && HIVE_ALLIED_TO_HIVE(X.hivenumber, hivenumber))
-			to_chat(X, SPAN_XENOWARNING("You shouldn't interfere with the nest, leave that to the drones."))
+		var/mob/living/carbon/xenomorph/xeno = user
+		if(!xeno.faction.unnesting_allowed && !isxeno_builder(xeno) && (xeno.faction == faction || xeno.ally(faction)))
+			to_chat(xeno, SPAN_XENOWARNING("You shouldn't interfere with the nest, leave that to the drones."))
 			return
 	else if(iscarbon(user))
 		var/mob/living/carbon/H = user
-		if(HIVE_ALLIED_TO_HIVE(H.hivenumber, hivenumber))
+		if(H.faction == faction || H.ally(faction))
 			to_chat(H, SPAN_XENOWARNING("You shouldn't interfere with the nest, leave that to the drones."))
 			return
 
@@ -115,7 +120,7 @@
 			to_chat(user, SPAN_WARNING("[H] was nested recently. Wait a bit."))
 			return
 		if(H.stat != DEAD)
-			if(alert(user, "[H] is still alive and kicking! Are you sure you want to remove them from the nest?", "Confirmation", "Yes", "No") != "Yes")
+			if(alert(user, "[H] is still alive and kicking! Are you sure you want to remove them from the nest?", user.client.auto_lang(LANGUAGE_CONFIRM), user.client.auto_lang(LANGUAGE_YES), user.client.auto_lang(LANGUAGE_NO)) != user.client.auto_lang(LANGUAGE_YES))
 				return
 			if(!buckled_mob || !user.Adjacent(H) || user.stat || user.lying || user.is_mob_restrained())
 				return
@@ -262,7 +267,7 @@
 	if(on_fire)
 		overlays += "alien_fire"
 	if(buckled_mob)
-		overlays += image("icon_state"="nest_overlay","layer"=LYING_LIVING_MOB_LAYER + 0.1)
+		overlays += cover_overlay
 
 
 /obj/structure/bed/nest/proc/healthcheck()

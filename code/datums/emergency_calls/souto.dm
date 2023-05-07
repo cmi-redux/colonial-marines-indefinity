@@ -6,16 +6,17 @@
 	mob_min = 1
 	arrival_message = "Incoming Transmission: Give a round of applause for the marine who sent in ten-thousand Souto tabs to get me here! USS Almayer, Souto Man's here to party with YOU!"
 	objectives = "Party like it's 1999!"
-	probability = 0
+	probability = 1
 
-/datum/emergency_call/souto/create_member(datum/mind/M, turf/override_spawn_loc)
+/datum/emergency_call/souto/create_member(datum/mind/mind, turf/override_spawn_loc)
 	var/turf/spawn_loc = override_spawn_loc ? override_spawn_loc : get_spawn_point()
 
 	if(!istype(spawn_loc))
 		return //Didn't find a useable spawn point.
 
 	var/mob/living/carbon/human/H = new(spawn_loc)
-	M.transfer_to(H, TRUE)
+	mind.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 
 	arm_equipment(H, /datum/equipment_preset/other/souto, TRUE, TRUE)
 

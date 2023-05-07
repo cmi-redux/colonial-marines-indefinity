@@ -38,23 +38,23 @@
 		icon_state = initial(icon_state)
 		ion_trail.stop()
 
-	if (ismob(usr))
+	if(ismob(usr))
 		var/mob/M = usr
 		M.update_inv_back()
 
 	for(var/X in actions)
-		var/datum/action/A = X
-		A.update_button_icon()
+		var/datum/action/action = X
+		action.update_button_icon()
 
 /obj/item/tank/jetpack/proc/allow_thrust(num, mob/living/user)
 	if(!(src.on))
-		return 0
+		return FALSE
 
 	if(pressure > 5)
-		return 1
+		return TRUE
 	else
 		ion_trail.stop()
-		return 0
+		return FALSE
 
 
 /obj/item/tank/jetpack/ui_action_click()

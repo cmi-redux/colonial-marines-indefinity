@@ -8,8 +8,15 @@
 #define IS_OPAQUE_TURF(turf) (turf.directional_opacity == ALL_CARDINALS)
 
 /// Marks a turf as organic. Used for alien wall and membranes.
-#define TURF_ORGANIC (1<<0)
-
+#define TURF_DEBRISED					(1<<0)
+#define TURF_WEATHER					(1<<1)
+#define TURF_MULTIZ						(1<<2)
+#define TURF_TRENCHING					(1<<3)
+#define TURF_TRENCH						(1<<4)
+#define TURF_ORGANIC					(1<<5)
+#define TURF_NOJAUNT					(1<<6)
+#define TURF_UNUSED_RESERVATION			(1<<7)
+#define TURF_CAN_BE_DIRTY				(1<<8)
 
 #define REMOVE_CROWBAR  (1<<0)
 #define BREAK_CROWBAR   (1<<1)

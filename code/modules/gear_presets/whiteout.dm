@@ -43,8 +43,8 @@
 	H.equip_to_slot_or_del(new /obj/item/stack/nanopaste, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/tactical, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/storage/firstaid/synth, WEAR_IN_BACK)
-	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/flamer_tank/EX, WEAR_IN_BACK)
-	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/flamer_tank/EX, WEAR_IN_BACK)
+	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/flamer_tank/ex, WEAR_IN_BACK)
+	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/flamer_tank/ex, WEAR_IN_BACK)
 
 
 	//face
@@ -78,7 +78,7 @@
 	var/obj/item/device/internal_implant/agility/implant = new()
 	implant.on_implanted(H)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/pmc/w_y_whiteout/medic
 	name = "Whiteout Team Medic"
@@ -128,7 +128,7 @@
 	var/obj/item/device/internal_implant/agility/implant = new()
 	implant.on_implanted(H)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 /datum/equipment_preset/pmc/w_y_whiteout/terminator
 	name = "Whiteout Team Terminator"
 	flags = EQUIPMENT_PRESET_EXTRA
@@ -169,7 +169,7 @@
 	var/obj/item/device/internal_implant/agility/implant = new()
 	implant.on_implanted(H)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 /datum/equipment_preset/pmc/w_y_whiteout/leader
 	name = "Whiteout Team Leader"
 	flags = EQUIPMENT_PRESET_EXTRA

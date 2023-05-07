@@ -8,26 +8,6 @@
 	containername = "M56B Smartgun System Package"
 	group = "Weapons"
 
-/datum/supply_packs/m56_hmg
-	name = "M56D Heavy Machine Gun (x1)"
-	contains = list(
-		/obj/item/storage/box/guncase/m56d,
-	)
-	cost = 60
-	containertype = /obj/structure/closet/crate/weapon
-	containername = "M56D Machine Gun Crate"
-	group = "Weapons"
-
-/datum/supply_packs/m2c_hmg
-	name = "M2C Heavy Machine Gun (x1)"
-	contains = list(
-		/obj/item/storage/box/guncase/m2c,
-	)
-	cost = 60
-	containertype = /obj/structure/closet/crate/weapon
-	containername = "M2C Machine Gun Crate"
-	group = "Weapons"
-
 /datum/supply_packs/flamethrower
 	name = "M240 Flamethrower Crate (M240 x2, Broiler-T Fuelback x2)"
 	contains = list(
@@ -41,17 +21,6 @@
 	containername = "M240 Incinerator crate"
 	group = "Weapons"
 
-/datum/supply_packs/grenade_launchers
-	name = "M79 Grenade Launcher Crate (x2 Guncasess)"
-	contains = list(
-		/obj/item/storage/box/guncase/m79,
-		/obj/item/storage/box/guncase/m79,
-	)
-	cost = 40
-	containertype = /obj/structure/closet/crate/weapon
-	containername = "M79 grenade launcher crate"
-	group = "Weapons"
-
 /datum/supply_packs/mou53
 	name = "MOU-53 Break Action Shotgun Crate (x2)"
 	contains = list(
@@ -61,6 +30,70 @@
 	cost = 30
 	containertype = /obj/structure/closet/crate/weapon
 	containername = "MOU-53 Breack Action Shotgun Crate"
+	group = "Weapons"
+
+/datum/supply_packs/turrets
+	name = "turrets supply pack"
+	contains = list(
+		/obj/item/defenses/handheld/tesla_coil,
+		/obj/item/defenses/handheld/planted_flag,
+		/obj/item/defenses/handheld/bell_tower,
+		/obj/item/defenses/handheld/sentry,
+		/obj/item/defenses/handheld/sentry/flamer
+	)
+	cost = 240
+	containertype = /obj/structure/closet/crate
+	containername = "turrets supply pack"
+	group = "Weapons"
+
+/datum/supply_packs/turret_tesla
+	name = "turrets supply pack (x1 21S Tesla Coil)"
+	contains = list(
+		/obj/item/defenses/handheld/tesla_coil
+	)
+	cost = 50
+	containertype = /obj/structure/closet/crate
+	containername = "turret supply pack"
+	group = "Weapons"
+
+/datum/supply_packs/turret_jima
+	name = "turrets supply pack (x1 JIMA Planted Flag)"
+	contains = list(
+		/obj/item/defenses/handheld/planted_flag
+	)
+	cost = 50
+	containertype = /obj/structure/closet/crate
+	containername = "turret supply pack"
+	group = "Weapons"
+
+/datum/supply_packs/turret_bell
+	name = "turrets supply pack (x1 R-1NG Bell Tower)"
+	contains = list(
+		/obj/item/defenses/handheld/bell_tower
+	)
+	cost = 50
+	containertype = /obj/structure/closet/crate
+	containername = "turret supply pack"
+	group = "Weapons"
+
+/datum/supply_packs/turret_sentry
+	name = "turrets supply pack (x1 UA 571-C Sentry Gun)"
+	contains = list(
+		/obj/item/defenses/handheld/sentry
+	)
+	cost = 70
+	containertype = /obj/structure/closet/crate
+	containername = "turret supply pack"
+	group = "Weapons"
+
+/datum/supply_packs/turret_flamer
+	name = "turrets supply pack (x1 UA 42-F Sentry Flamer)"
+	contains = list(
+		/obj/item/defenses/handheld/sentry/flamer
+	)
+	cost = 70
+	containertype = /obj/structure/closet/crate
+	containername = "turret supply pack"
 	group = "Weapons"
 
 /datum/supply_packs/smartpistol
@@ -107,17 +140,6 @@
 	cost = 40
 	containertype = /obj/structure/closet/crate/weapon
 	containername = "\improper M41AE2 HPR crate"
-	group = "Weapons"
-
-/datum/supply_packs/gun/xm88
-	contains = list(
-		/obj/item/storage/box/guncase/xm88,
-		/obj/item/storage/box/guncase/xm88,
-	)
-	name = "XM88 Heavy Rifle crate (XM88 x2)"
-	cost = 40
-	containertype = /obj/structure/closet/crate/weapon
-	containername = "\improper XM88 Heavy Rifle crate"
 	group = "Weapons"
 
 /datum/supply_packs/gun/merc

@@ -1,16 +1,15 @@
-/datum/xeno_mutator/berserker
-	name = "STRAIN: Ravager - Berserker"
-	description = "You lose your empower, charge, and scissor cut, decrease your health, and sacrifice a bit of your influence under frenzy pheromones to increase your movement speed, slightly increase your armor, and gain a new set of abilities that make you a terrifying melee monster. By slashing, you heal yourself and gain a stack of rage that increases your armor, movement speed, attack speed, and your heals per slash, to a maximum of six rage. Use your new Appehend ability to increase your movement speed and apply a slow on the next target you slash and use your Clothesline ability to fling your target to heal yourself, even more-so if you have a rage stack that will be used up. Finally, use your Eviscerate to unleash a devastating windmill attack that heals you for every host you hit after an immobilizing wind-up."
-	flavor_description = "They shall be my finest warriors. They will rend and tear, crush and butcher, and maim and rage until every tallhost falls."
+/datum/xeno_mutation/strain/berserker
+	name = LANGUAGE_STRAIN_BERSERK
+	description = LANGUAGE_STRAIN_DESC_BERSERK
+	flavor_description = LANGUAGE_STRAIN_FLAV_DESC_BERSERK
 	cost = MUTATOR_COST_EXPENSIVE
-	individual_only = TRUE
 	caste_whitelist = list(XENO_CASTE_RAVAGER)
-	mutator_actions_to_remove = list(
+	mutation_actions_to_remove = list(
 		/datum/action/xeno_action/onclick/empower,
 		/datum/action/xeno_action/activable/pounce/charge,
 		/datum/action/xeno_action/activable/scissor_cut,
 	)
-	mutator_actions_to_add = list(
+	mutation_actions_to_add = list(
 		/datum/action/xeno_action/onclick/apprehend,
 		/datum/action/xeno_action/activable/clothesline,
 		/datum/action/xeno_action/activable/eviscerate,
@@ -18,18 +17,17 @@
 	keystone = TRUE
 	behavior_delegate_type = /datum/behavior_delegate/ravager_berserker
 
-/datum/xeno_mutator/berserker/apply_mutator(datum/mutator_set/individual_mutators/mutator_set)
+/datum/xeno_mutation/strain/berserker/apply_mutator(datum/mutator_set/individual_mutations/mutator_set)
 	. = ..()
-	if (. == 0)
+	if(. == 0)
 		return
 
 	var/mob/living/carbon/xenomorph/ravager/ravager = mutator_set.xeno
 	ravager.mutation_type = RAVAGER_BERSERKER
 	ravager.plasma_max = 0
-	ravager.health_modifier -= XENO_HEALTH_MOD_MED
 	ravager.armor_modifier += XENO_ARMOR_MOD_VERYSMALL
 	ravager.speed_modifier += XENO_SPEED_FASTMOD_TIER_3
-	ravager.received_phero_caps["frenzy"] = 2.9 // Moderate
+
 	mutator_update_actions(ravager)
 	mutator_set.recalculate_actions(description, flavor_description)
 
@@ -69,7 +67,7 @@
 /datum/behavior_delegate/ravager_berserker/melee_attack_additional_effects_self()
 	..()
 
-	if (rage != max_rage && !rage_cooldown_start_time)
+	if(rage != max_rage && !rage_cooldown_start_time)
 		rage = rage + 1
 		bound_xeno.armor_modifier += armor_buff_per_rage
 		bound_xeno.attack_speed_modifier -= attack_delay_buff_per_rage
@@ -78,7 +76,7 @@
 		bound_xeno.recalculate_speed()
 		last_slash_time = world.time
 
-		if (rage == max_rage)
+		if(rage == max_rage)
 			bound_xeno.add_filter("berserker_rage", 1, list("type" = "outline", "color" = "#000000ff", "size" = 1))
 			rage_lock()
 			to_chat(bound_xeno, SPAN_XENOHIGHDANGER("You feel a euphoric rush as you reach max rage! You are LOCKED at max Rage!"))
@@ -92,15 +90,15 @@
 
 /datum/behavior_delegate/ravager_berserker/on_life()
 	// Compute our current rage (demerit if necessary)
-	if (((last_slash_time + rage_decay_time) < world.time) && !(rage <= 0))
+	if(((last_slash_time + rage_decay_time) < world.time) && !(rage <= 0))
 		decrement_rage()
 
 // Handles internal state from decrementing rage
 /datum/behavior_delegate/ravager_berserker/proc/decrement_rage(amount = 1)
-	if (rage_lock_start_time)
+	if(rage_lock_start_time)
 		return
 	var/real_amount = amount
-	if (amount > rage)
+	if(amount > rage)
 		real_amount = rage
 
 	rage -= real_amount

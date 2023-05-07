@@ -102,7 +102,7 @@
 		L += Storage.return_inv()
 
 		//Leave this commented out, it will cause storage items to exponentially add duplicate to the list
-		//for(var/obj/item/storage/S in Storage.return_inv()) //Check for storage items
+		//for(obj/item/storage/S in Storage.return_inv()) //Check for storage items
 		// L += get_contents(S)
 
 		for(var/obj/item/gift/G in Storage.return_inv()) //Check for gift-wrapped items
@@ -138,8 +138,8 @@
 
 	for(var/obj/B in L)
 		if(B.type == A)
-			return 1
-	return 0
+			return TRUE
+	return FALSE
 
 
 /mob/living/proc/get_limbzone_target()
@@ -166,17 +166,17 @@
 
 	return
 
-/mob/living/Move(NewLoc, direct)
-	if (buckled && buckled.loc != NewLoc) //not updating position
-		if (!buckled.anchored)
-			return buckled.Move(NewLoc, direct)
+/mob/living/Move(newloc, direct)
+	if(buckled && buckled.loc != newloc) //not updating position
+		if(!buckled.anchored)
+			return buckled.Move(newloc, direct)
 		else
 			return FALSE
 
+	var/old_direction = dir
 	var/atom/movable/pullee = pulling
 	if(pullee && get_dist(src, pullee) > 1) //Is the pullee adjacent?
-		if(!pullee.clone || (pullee.clone && get_dist(src, pullee.clone) > 2)) //Be lenient with the close
-			stop_pulling()
+		stop_pulling()
 	var/turf/T = loc
 	. = ..()
 	if(. && pulling && pulling == pullee) //we were pulling a thing and didn't lose it during our move.
@@ -195,12 +195,12 @@
 					if(direct & WEST)
 						direction_to_face = WEST
 
-					pulling.Move(NewLoc, direction_to_face)
+					pulling.Move(newloc, direction_to_face)
 					var/mob/living/pmob = pulling
 					if(istype(pmob))
 						SEND_SIGNAL(pmob, COMSIG_MOB_MOVE_OR_LOOK, TRUE, direction_to_face, direction_to_face)
 				else
-					pulling.Move(NewLoc, direct)
+					pulling.Move(newloc, direct)
 		else if(get_dist(src, pulling) > 1 || ((pull_dir - 1) & pull_dir)) //puller and pullee more than one tile away or in diagonal position
 			var/pulling_dir = get_dir(pulling, T)
 			pulling.Move(T, pulling_dir) //the pullee tries to reach our previous position
@@ -216,7 +216,7 @@
 	if(pulledby && get_dist(src, pulledby) > 1)//separated from our puller and not in the middle of a diagonal move.
 		pulledby.stop_pulling()
 
-	if (s_active && !( s_active in contents ) && get_turf(s_active) != get_turf(src)) //check !( s_active in contents ) first so we hopefully don't have to call get_turf() so much.
+	if(s_active && !( s_active in contents ) && get_turf(s_active) != get_turf(src)) //check !( s_active in contents ) first so we hopefully don't have to call get_turf() so much.
 		s_active.storage_close(src)
 
 	// Check if we're still pulling something
@@ -226,7 +226,8 @@
 	if(back && (back.flags_item & ITEM_OVERRIDE_NORTHFACE))
 		update_inv_back()
 
-
+	if(lying && !buckled)
+		makeTrail(newloc, T, old_direction)
 
 /mob/proc/resist_grab(moving_resist)
 	return //returning 1 means we successfully broke free
@@ -251,11 +252,11 @@
 /mob/living/movement_delay()
 	. = ..()
 
-	if (do_bump_delay)
+	if(do_bump_delay)
 		. += 10
 		do_bump_delay = 0
 
-	if (drowsyness > 0)
+	if(drowsyness > 0)
 		. += 6
 
 	if(pulling && pulling.drag_delay && get_pull_miltiplier()) //Dragging stuff can slow you down a bit.
@@ -418,7 +419,7 @@
 
 //to make an attack sprite appear on top of the target atom.
 /mob/living/proc/flick_attack_overlay(atom/target, attack_icon_state, duration = 4)
-	set waitfor = 0
+	set waitfor = FALSE
 
 	if(!attack_icon)
 		return FALSE
@@ -452,23 +453,117 @@
 /mob/proc/flash_eyes()
 	return
 
-/mob/living/flash_eyes(intensity = EYE_PROTECTION_FLASH, bypass_checks, type = /atom/movable/screen/fullscreen/flash, flash_timer = 40)
-	if( bypass_checks || (get_eye_protection() < intensity && !(sdisabilities & DISABILITY_BLIND)))
+/mob/living/flash_eyes(intensity = 1, bypass_checks, type = /atom/movable/screen/fullscreen/flash, flash_timer = 40)
+	if(bypass_checks || (get_eye_protection() < intensity && !(sdisabilities & DISABILITY_BLIND)))
 		overlay_fullscreen("flash", type)
 		spawn(flash_timer)
 			clear_fullscreen("flash", 20)
 		return TRUE
+/**
+ * We want to relay the zmovement to the buckled atom when possible
+ * and only run what we can't have on buckled.zMove() or buckled.can_z_move() here.
+ * This way we can avoid esoteric bugs, copypasta and inconsistencies.
+ */
+/mob/living/zMove(dir, turf/target, z_move_flags = ZMOVE_FLIGHT_FLAGS)
+	if(buckled)
+		if(buckled.currently_z_moving)
+			return FALSE
+		if(!(z_move_flags & ZMOVE_ALLOW_BUCKLED))
+			buckled.unbuckle(src, FALSE)
+		else
+			if(!target)
+				target = can_z_move(dir, get_turf(src), null, z_move_flags, src)
+				if(!target)
+					return FALSE
+			return buckled.zMove(dir, target, z_move_flags) // Return value is a loc.
+	return ..()
 
-/mob/living/create_clone_movable(shift_x, shift_y)
-	..()
-	src.clone.hud_list = new /list(src.hud_list.len)
-	for(var/h in src.hud_possible) //Clone HUD
-		src.clone.hud_list[h] = new /image("loc" = src.clone, "icon" = src.hud_list[h].icon)
+/mob/living/can_z_move(direction, turf/start, turf/destination, z_move_flags = ZMOVE_FLIGHT_FLAGS, mob/living/rider)
+	if(z_move_flags & ZMOVE_INCAPACITATED_CHECKS && update_canmove())
+		if(z_move_flags & ZMOVE_FEEDBACK)
+			to_chat(rider || src, SPAN_WARNING("[rider ? src : "You"] can't do that right now!"))
+		return FALSE
+	if(!buckled || !(z_move_flags & ZMOVE_ALLOW_BUCKLED))
+		if(!(z_move_flags & ZMOVE_FALL_CHECKS) && canmove && (!rider || rider.canmove))
+			//An incorporeal mob will ignore obstacles unless it's a potential fall (it'd suck hard) or is carrying corporeal mobs.
+			//Coupled with flying/floating, this allows the mob to move up and down freely.
+			//By itself, it only allows the mob to move down.
+			z_move_flags |= ZMOVE_IGNORE_OBSTACLES
+		return ..()
 
-/mob/living/update_clone()
+/mob/set_currently_z_moving(value)
+	if(buckled)
+		return buckled.set_currently_z_moving(value)
+	return ..()
+
+/mob/living/onZImpact(turf/T, levels, message = TRUE)
+	ZImpactDamage(T, levels)
+	message = FALSE
+	return ..()
+
+/mob/living/proc/ZImpactDamage(turf/T, levels)
+	if(SEND_SIGNAL(src, COMSIG_LIVING_Z_IMPACT, levels, T) & NO_Z_IMPACT_DAMAGE)
+		return
+	visible_message(SPAN_DANGER("[src] crashes into [T] with a sickening noise!"), \
+					usr, SPAN_DANGER("You crash into [T] with a sickening noise!"))
+	adjustBruteLoss((levels * 5) ** 1.5)
+	KnockDown(levels * 4)
+	fall(TRUE)
+
+/mob/living/proc/makeTrail(turf/target_turf, turf/start, direction)
+	if(!isturf(start) || !blood_volume)
+		return
+
+	var/blood_exists = locate(/obj/effect/decal/cleanable/trail_holder) in start
+
+	var/trail_type = getTrail()
+	if(!trail_type)
+		return
+
+	var/brute_ratio = round(getBruteLoss() / maxHealth, 0.1)
+	if(blood_volume < max(BLOOD_VOLUME_NORMAL*(1 - brute_ratio * 0.25), 0))//don't leave trail if blood volume below a threshold
+		return
+
+	var/bleed_amount = bleedDragAmount()
+	blood_volume = max(blood_volume - bleed_amount, 0) //that depends on our brute damage.
+	var/newdir = get_dir(target_turf, start)
+	if(newdir != direction)
+		newdir = newdir | direction
+		if(newdir == (NORTH|SOUTH))
+			newdir = NORTH
+		else if(newdir == (EAST|WEST))
+			newdir = EAST
+	if((newdir in GLOB.cardinals) && (prob(50)))
+		newdir = turn(get_dir(target_turf, start), 180)
+	if(!blood_exists)
+		new /obj/effect/decal/cleanable/trail_holder(start, get_blood_color())
+
+	for(var/obj/effect/decal/cleanable/trail_holder/TH in start)
+		if((!(newdir in TH.existing_dirs) || trail_type == "trails_1" || trail_type == "trails_2") && TH.existing_dirs.len <= 16) //maximum amount of overlays is 16 (all light & heavy directions filled)
+			TH.existing_dirs += newdir
+			TH.add_overlay(image('icons/effects/new_blood.dmi', trail_type, dir = newdir)) //MOJAVE SUN EDIT - Blood Sprites
+
+/mob/living/carbon/human/makeTrail(turf/T)
+	if(!is_bleeding())
+		return
 	..()
-	for(var/h in src.hud_possible)
-		src.clone.hud_list[h].icon_state = src.hud_list[h].icon_state
+
+///Returns how much blood we're losing from being dragged a tile, from [/mob/living/proc/makeTrail]
+/mob/living/proc/bleedDragAmount()
+	var/brute_ratio = round(getBruteLoss() / maxHealth, 0.1)
+	return max(1, brute_ratio * 2)
+
+/mob/living/carbon/human/bleedDragAmount()
+	var/bleed_amount = 0
+	for(var/datum/effects/bleeding/external/B in effects_list)
+		bleed_amount += B.blood_loss
+	return bleed_amount
+
+/mob/living/proc/getTrail()
+	if(getBruteLoss() < 100) //MOJAVE SUN EDIT - Blood Sprites
+		return pick("ltrails_1", "ltrails_2")
+	else
+		return pick("trails_1", "trails_2")
 
 /mob/living/set_stat(new_stat)
 	. = ..()

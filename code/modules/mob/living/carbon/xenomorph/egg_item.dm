@@ -9,29 +9,29 @@
 	flags_item = NOBLUDGEON
 	throw_range = 1
 	layer = MOB_LAYER
+	faction_to_get = FACTION_XENOMORPH_NORMAL
 	black_market_value = 35
-	var/hivenumber = XENO_HIVE_NORMAL
 	var/flags_embryo = NO_FLAGS
 
-/obj/item/xeno_egg/Initialize(mapload, hive)
+/obj/item/xeno_egg/Initialize(mapload, datum/faction/faction_to_set)
 	pixel_x = rand(-3,3)
 	pixel_y = rand(-3,3)
 	create_reagents(60)
-	reagents.add_reagent(PLASMA_EGG, 60, list("hive_number" = hivenumber))
+	reagents.add_reagent(PLASMA_EGG, 60, list("hive_number" = faction))
 
-	if (hive)
-		hivenumber = hive
+	if(faction_to_set)
+		faction = faction_to_set
 
-	set_hive_data(src, hivenumber)
 	. = ..()
+
+	set_hive_data(src, faction)
 
 /obj/item/xeno_egg/get_examine_text(mob/user)
 	. = ..()
 	if(isxeno(user))
 		. += "A queen egg, it needs to be planted on weeds to start growing."
-		if(hivenumber != XENO_HIVE_NORMAL)
-			var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
-			. += "This one appears to belong to the [hive.name]"
+		if(faction != user.faction)
+			. += "This one appears to belong to the [faction.prefix]hive"
 
 /obj/item/xeno_egg/afterattack(atom/target, mob/user, proximity)
 	if(istype(target, /obj/effect/alien/resin/special/eggmorph))
@@ -44,12 +44,12 @@
 		plant_egg_human(user, T)
 
 /obj/item/xeno_egg/proc/plant_egg_human(mob/living/carbon/human/user, turf/T)
-	if(user.hivenumber != hivenumber)
+	if(user.faction != faction)
 		if(!istype(T, /turf/open/floor/almayer/research/containment))
 			to_chat(user, SPAN_WARNING("Best not to plant this thing outside of a containment cell."))
 			return
 		for (var/obj/O in T)
-			if (!istype(O,/obj/structure/machinery/light/small))
+			if(!istype(O,/obj/structure/machinery/light/small))
 				to_chat(user, SPAN_WARNING("The floor needs to be clear to plant this!"))
 				return
 
@@ -58,38 +58,37 @@
 	if(!do_after(user, 50, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 		return
 
-	if(user.hivenumber != hivenumber)
+	if(user.faction != faction)
 		for (var/obj/O in T)
-			if (!istype(O,/obj/structure/machinery/light/small))
+			if(!istype(O,/obj/structure/machinery/light/small))
 				return
 
-	var/obj/effect/alien/egg/newegg = new /obj/effect/alien/egg(T, hivenumber)
+	var/obj/effect/alien/egg/newegg = new /obj/effect/alien/egg(T, faction)
 	newegg.flags_embryo = flags_embryo
 
 	newegg.add_hiddenprint(user)
 	playsound(T, 'sound/effects/splat.ogg', 15, 1)
 	qdel(src)
 
-/obj/item/xeno_egg/proc/plant_egg(mob/living/carbon/xenomorph/user, turf/T, proximity = TRUE)
+/obj/item/xeno_egg/proc/plant_egg(mob/living/carbon/xenomorph/user, turf/target_turf, proximity = TRUE)
 	if(!proximity)
 		return // no message because usual behavior is not to show any
-	if(!user.hive)
+	if(!user.faction)
 		to_chat(user, SPAN_XENOWARNING("Your hive cannot procreate."))
 		return
-	if(!user.check_alien_construction(T))
+	if(!user.check_alien_construction(target_turf))
 		return
 	if(!user.check_plasma(30))
 		return
 
 	var/obj/effect/alien/weeds/hive_weeds = null
-	for(var/obj/effect/alien/weeds/W in T)
-		if(W.weed_strength >= WEED_LEVEL_HIVE && W.linked_hive.hivenumber == hivenumber)
-			hive_weeds = W
+	for(var/obj/effect/alien/weeds/weeds in target_turf)
+		if(weeds.weed_strength >= WEED_LEVEL_HIVE && weeds.faction == faction)
+			hive_weeds = weeds
 			break
 
 	if(!hive_weeds)
-		var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
-		to_chat(user, SPAN_XENOWARNING("[src] can only be planted on [lowertext(hive.prefix)]hive weeds."))
+		to_chat(user, SPAN_XENOWARNING("[src] can only be planted on [lowertext(faction.prefix)]hive weeds."))
 		return
 
 	user.visible_message(SPAN_XENONOTICE("[user] starts planting [src]."), SPAN_XENONOTICE("You start planting [src]."), null, 5)
@@ -101,20 +100,20 @@
 		plant_time = 10
 	if(!do_after(user, plant_time, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 		return
-	if(!user.check_alien_construction(T))
+	if(!user.check_alien_construction(target_turf))
 		return
 	if(!user.check_plasma(30))
 		return
 
-	for(var/obj/effect/alien/weeds/W in T)
-		if(W.weed_strength >= WEED_LEVEL_HIVE)
+	for(var/obj/effect/alien/weeds/weeds in target_turf)
+		if(weeds.weed_strength >= WEED_LEVEL_HIVE)
 			user.use_plasma(30)
-			var/obj/effect/alien/egg/newegg = new /obj/effect/alien/egg(T, hivenumber)
+			var/obj/effect/alien/egg/newegg = new /obj/effect/alien/egg(target_turf, faction)
 
 			newegg.flags_embryo = flags_embryo
 
 			newegg.add_hiddenprint(user)
-			playsound(T, 'sound/effects/splat.ogg', 15, 1)
+			playsound(target_turf, 'sound/effects/splat.ogg', 15, 1)
 			qdel(src)
 			break
 
@@ -155,8 +154,8 @@
 
 /obj/item/xeno_egg/alpha
 	color = "#ff4040"
-	hivenumber = XENO_HIVE_ALPHA
+	faction_to_get = FACTION_XENOMORPH_ALPHA
 
 /obj/item/xeno_egg/forsaken
 	color = "#cc8ec4"
-	hivenumber = XENO_HIVE_FORSAKEN
+	faction_to_get = FACTION_XENOMORPH_FORSAKEN

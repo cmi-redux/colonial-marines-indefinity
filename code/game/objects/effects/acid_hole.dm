@@ -32,7 +32,7 @@
 
 
 /obj/effect/acid_hole/MouseDrop_T(mob/M, mob/user)
-	if (!holed_wall)
+	if(!holed_wall)
 		return
 
 	if(M == user && isxeno(user))
@@ -75,7 +75,7 @@
 
 	var/turf/T = get_step(src, crawl_dir)
 
-	if (!T || T.density)
+	if(!T || T.density)
 		to_chat(user, "This hole leads nowhere!")
 		return
 
@@ -96,7 +96,7 @@
 
 	if(do_after(user, 15, INTERRUPT_NO_NEEDHAND, BUSY_ICON_GENERIC))
 		if(!user.is_mob_incapacitated() && !user.lying && !user.buckled)
-			if (T.density)
+			if(T.density)
 				return
 			for(var/obj/O in T)
 				if(O.BlockedPassDirs(user, crawl_dir))
@@ -165,7 +165,8 @@
 			F.forceMove(Target)
 			F.setDir(pick(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST))
 			step_away(F,src,rand(1,5))
-			F.SetLuminosity(0)
-			if(F.on && loc != user)
-				F.SetLuminosity(F.brightness_on)
+			if(F.light_on && loc != user)
+				F.set_light_on(TRUE)
+			else
+				F.set_light_on(FALSE)
 		return

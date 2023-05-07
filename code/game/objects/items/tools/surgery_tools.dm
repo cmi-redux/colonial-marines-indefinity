@@ -266,6 +266,26 @@
 	AddElement(/datum/element/suturing, FALSE, TRUE, 2.5, "graft", "grafting", "being burnt away all over again", "burns")
 
 /*
+ * Experimental Surgical-Graft.
+ * No substitutes. Not, strictly speaking, a surgical tool at all, but here for consistency with surgical line.
+ */
+
+/obj/item/tool/surgery/surgsynth_graftline
+	name = "Experimental Surgical-Graft line"
+	desc = "A roll of military-grade surgical line, able to seamlessly sew up any wound. Also works as a robust fishing line for maritime deployments. \
+		An applicator for synthetic skin field grafts. The stuff reeks, itches like the dickens, hurts going on, and the colour is \
+		a perfectly averaged multiethnic tone that doesn't blend with <i>anyone's</i> complexion. But at least you don't have to stay in sickbay."
+	icon_state = "line" //Placeholder.
+	color = "red" //Placeholder, to distinguish from other things.
+	force = 0
+	throwforce = 1.0
+	w_class = SIZE_SMALL
+
+/obj/item/tool/surgery/surgsynth_graftline/Initialize(mapload, ...)
+	. = ..()
+	AddElement(/datum/element/suturing, TRUE, TRUE, 1, "treat heavy damage", "treating damage", "being stabbed with needles", "wounds")
+
+/*
  * Bonesetter.
  * Usual substitutes: wrench.
  */
@@ -439,8 +459,8 @@ t. optimisticdude
 		to_chat(T, "You feel TREMENDOUS pain and jump back up to use the last of your strength to kill [usr] with your final moments of life. (~10 seconds)")
 		T.health = T.maxHealth*2 //It's hulk levels of angry.
 		active = 0
-		spawn (1000) //Around 10 seconds
-			T.apply_damage(5000, BRUTE) //to make sure it's DEAD after it's hyper-boost
+		spawn(1000) //Around 10 seconds
+			T.apply_damage(10000, BRUTE) //to make sure it's DEAD after it's hyper-boost
 		return
 
 	switch(T.butchery_progress)

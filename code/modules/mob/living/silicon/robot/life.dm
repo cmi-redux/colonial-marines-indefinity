@@ -1,8 +1,8 @@
 /mob/living/silicon/robot/Life(delta_time)
 	set invisibility = 0
-	set background = 1
+	set background = TRUE
 
-	if (src.monkeyizing)
+	if(src.monkeyizing)
 		return
 
 	src.blinded = FALSE
@@ -14,7 +14,7 @@
 	if(client)
 		handle_regular_hud_updates()
 		update_items()
-	if (src.stat != DEAD) //still using power
+	if(src.stat != DEAD) //still using power
 		use_power()
 		process_killswitch()
 		process_locks()
@@ -38,7 +38,7 @@
 		var/datum/robot_component/C = components[V]
 		C.update_power_state()
 
-	if ( cell && is_component_functioning("power cell") && src.cell.charge > 0 )
+	if( cell && is_component_functioning("power cell") && src.cell.charge > 0 )
 		if(src.module_state_1)
 			cell_use_power(50) // 50W load for every enabled tool TODO: tool-specific loads
 		if(src.module_state_2)
@@ -51,12 +51,12 @@
 
 		src.has_power = 1
 	else
-		if (src.has_power)
+		if(src.has_power)
 			to_chat(src, SPAN_DANGER("You are now running on emergency backup power."))
 		src.has_power = 0
 		if(lights_on) // Light is on but there is no power!
 			lights_on = 0
-			SetLuminosity(0)
+			set_light(0)
 
 /mob/living/silicon/robot/handle_regular_status_updates(regular_update = TRUE)
 
@@ -78,15 +78,15 @@
 	if(health < HEALTH_THRESHOLD_DEAD && stat != DEAD) //die only once
 		death()
 
-	if (stat != DEAD) //Alive.
-		if (knocked_out || stunned || knocked_down || !has_power) //Stunned etc.
+	if(stat != DEAD) //Alive.
+		if(knocked_out || stunned || knocked_down || !has_power) //Stunned etc.
 			set_stat(UNCONSCIOUS)
 			if(regular_update)
-				if (src.stunned > 0)
+				if(src.stunned > 0)
 					adjust_effect(-1, STUN)
-				if (src.knocked_down > 0)
+				if(src.knocked_down > 0)
 					adjust_effect(-1, WEAKEN)
-				if (src.knocked_out > 0)
+				if(src.knocked_out > 0)
 					adjust_effect(-1, PARALYZE)
 					src.blinded = TRUE
 				else
@@ -102,33 +102,33 @@
 	if(!regular_update)
 		return
 
-	if (src.stuttering) src.stuttering--
+	if(src.stuttering) src.stuttering--
 
-	if (src.eye_blind)
+	if(src.eye_blind)
 		src.ReduceEyeBlind(1)
 		src.blinded = TRUE
 
-	if (src.ear_deaf > 0) src.ear_deaf--
-	if (src.ear_damage < 25)
+	if(src.ear_deaf > 0) src.ear_deaf--
+	if(src.ear_damage < 25)
 		src.ear_damage -= 0.05
 		src.ear_damage = max(src.ear_damage, 0)
 
-	src.density = !( src.lying )
+	src.density = !(src.lying)
 
-	if ((src.sdisabilities & DISABILITY_BLIND))
+	if((src.sdisabilities & DISABILITY_BLIND))
 		src.blinded = TRUE
-	if ((src.sdisabilities & DISABILITY_DEAF))
+	if((src.sdisabilities & DISABILITY_DEAF))
 		SetEarDeafness(1)
 
-	if (src.eye_blurry > 0)
+	if(src.eye_blurry > 0)
 		src.ReduceEyeBlur(1)
 
-	if (src.druggy > 0)
+	if(src.druggy > 0)
 		src.druggy--
 		src.druggy = max(0, src.druggy)
 
 	//update the state of modules and components here
-	if (src.stat != 0)
+	if(src.stat != 0)
 		uneq_all()
 
 	if(!is_component_functioning("radio"))
@@ -145,8 +145,11 @@
 
 /mob/living/silicon/robot/proc/handle_regular_hud_updates()
 
-	if (hud_used && hud_used.healths)
-		if (src.stat != DEAD)
+	update_sight()
+
+
+	if(hud_used && hud_used.healths)
+		if(src.stat != DEAD)
 			if(ismaintdrone(src))
 				switch(round(health * 100 / maxHealth))
 					if(100 to INFINITY)
@@ -182,8 +185,8 @@
 		else
 			hud_used.healths.icon_state = "health7"
 
-	if (src.cells)
-		if (src.cell)
+	if(src.cells)
+		if(src.cell)
 			var/cellcharge = src.cell.charge/src.cell.maxcharge
 			switch(cellcharge)
 				if(0.75 to INFINITY)
@@ -214,8 +217,8 @@
 
 
 //Oxygen and fire does nothing yet!!
-// if (src.oxygen) src.oxygen.icon_state = "oxy[src.oxygen_alert ? 1 : 0]"
-// if (src.fire) src.fire.icon_state = "fire[src.fire_alert ? 1 : 0]"
+//	if(src.oxygen) src.oxygen.icon_state = "oxy[src.oxygen_alert ? 1 : 0]"
+//	if(src.fire) src.fire.icon_state = "fire[src.fire_alert ? 1 : 0]"
 
 	if(stat != DEAD) //the dead get zero fullscreens
 		if(blinded)
@@ -238,7 +241,7 @@
 	return 1
 
 /mob/living/silicon/robot/proc/update_items()
-	if (client)
+	if(client)
 		client.screen -= contents
 		for(var/obj/I in contents)
 			if(I && !(istype(I,/obj/item/cell) || istype(I,/obj/item/device/radio)  || istype(I,/obj/structure/machinery/camera) || istype(I,/obj/item/device/mmi)))
@@ -273,6 +276,8 @@
 			weaponlock_time = 120
 
 /mob/living/silicon/robot/update_canmove()
-	if(knocked_out || stunned || knocked_down || buckled || lockcharge || !is_component_functioning("actuator")) canmove = 0
-	else canmove = 1
+	if(knocked_out || stunned || knocked_down || buckled || lockcharge || !is_component_functioning("actuator"))
+		canmove = FALSE
+	else
+		canmove = TRUE
 	return canmove

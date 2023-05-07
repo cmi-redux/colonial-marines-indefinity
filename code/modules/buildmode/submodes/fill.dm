@@ -38,9 +38,6 @@
 		return
 	..()
 
-#define CONFIRM_NO "No"
-#define CONFIRM_YES "Yes"
-
 /datum/buildmode_mode/fill/handle_selected_area(client/c, params)
 	var/list/modifiers = params2list(params)
 
@@ -56,8 +53,7 @@
 				T.ScrapeAway(INFINITY, CHANGETURF_DEFER_CHANGE)
 			var/selection_size = abs(cornerA.x - cornerB.x) * abs(cornerA.y - cornerB.y)
 			if(selection_size > FILL_WARNING_MIN) // Confirm fill if the number of tiles in the selection is greater than FILL_WARNING_MIN
-				var/choice = alert("Your selected area is [selection_size] tiles! Continue?", "Large Fill Confirmation", CONFIRM_YES, CONFIRM_NO)
-				if(choice != CONFIRM_YES)
+				if(alert("Your selected area is [selection_size] tiles! Continue?", c.auto_lang(LANGUAGE_CONFIRM), c.auto_lang(LANGUAGE_YES), c.auto_lang(LANGUAGE_NO)) != c.auto_lang(LANGUAGE_YES))
 					return
 			for(var/turf/T in block(get_turf(cornerA),get_turf(cornerB)))
 				if(ispath(objholder,/turf))
@@ -69,5 +65,3 @@
 			log_admin("Build Mode: [key_name(c)] with path [objholder], filled the region from [AREACOORD(cornerA)] through [AREACOORD(cornerB)]")
 
 #undef FILL_WARNING_MIN
-#undef CONFIRM_YES
-#undef CONFIRM_NO

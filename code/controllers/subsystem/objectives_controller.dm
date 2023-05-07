@@ -1,20 +1,14 @@
-#define CORPSES_TO_SPAWN 25
+#define CORPSES_TO_SPAWN 200
 
 SUBSYSTEM_DEF(objectives)
 	name = "Objectives"
 	init_order = SS_INIT_OBJECTIVES
-	wait = 5.5 SECONDS
+	runlevels = RUNLEVEL_GAME
+	wait = 10 SECONDS
 	var/list/objectives = list()
 	var/list/processing_objectives = list()
-	var/datum/cm_objective/communications/comms
-	var/datum/cm_objective/power/establish_power/power
-	var/datum/cm_objective/recover_corpses/corpsewar
-	// var/datum/cm_objective/contain/contain
 	var/next_sitrep = SITREP_INTERVAL
-	var/first_drop_complete = FALSE // Some objectives don't process until first drop.
-
 	var/statistics = list()
-
 
 	// Keep track of the list of objectives to process, in case we need to defer to the next tick.
 	var/list/datum/cm_objective/current_active_run = list()
@@ -48,64 +42,45 @@ SUBSYSTEM_DEF(objectives)
 	statistics["corpses_recovered"] = 0
 	statistics["corpses_total_points_earned"] = 0
 
-	power = new
-	comms = new
-	corpsewar = new
-
 	RegisterSignal(SSdcs, COMSIG_GLOB_MODE_PRESETUP, PROC_REF(pre_round_start))
 	RegisterSignal(SSdcs, COMSIG_GLOB_MODE_POSTSETUP, PROC_REF(post_round_start))
-	RegisterSignal(SSdcs, COMSIG_GLOB_DS_FIRST_LANDED, PROC_REF(on_marine_landing))
 
 	return SS_INIT_SUCCESS
+
+/datum/controller/subsystem/objectives/stat_entry(msg)
+	msg = "O:[length(objectives)]|P:[length(processing_objectives)]|C:[length(GLOB.objective_controller)]"
+	return ..()
 
 /datum/controller/subsystem/objectives/fire(resumed = FALSE)
 	if(!resumed)
 		current_active_run = processing_objectives.Copy()
 
-		if(world.time > next_sitrep && SSobjectives.first_drop_complete)
+		if(world.time > next_sitrep)
+			next_sitrep = world.time + SITREP_INTERVAL
 			announce_stats()
 			if(MC_TICK_CHECK)
 				return
 
+
 	while(length(current_active_run))
-		var/datum/cm_objective/O = current_active_run[length(current_active_run)]
+		var/datum/cm_objective/objective = current_active_run[length(current_active_run)]
 
 		current_active_run.len--
-		O.process()
-		O.check_completion()
-		if(O.state == OBJECTIVE_COMPLETE)
-			stop_processing_objective(O)
+		objective.process()
+		objective.check_completion()
+		if(objective.state & OBJECTIVE_COMPLETE|OBJECTIVE_FAILED)
+			stop_processing_objective(objective)
 
 		if(MC_TICK_CHECK)
 			return
-
-// Called when marines first drop
-/datum/controller/subsystem/objectives/proc/on_marine_landing()
-	SIGNAL_HANDLER
-	first_drop_complete = TRUE
-	UnregisterSignal(SSdcs, COMSIG_GLOB_DS_FIRST_LANDED)
-
-/datum/controller/subsystem/objectives/proc/announce_stats()
-	var/datum/techtree/tree = GET_TREE(TREE_MARINE)
-
-	var/message = "TECH REPORT: [round(tree.points, 0.1)] points available"
-	var/earned = round(tree.total_points - tree.total_points_last_sitrep, 0.1)
-	if (earned)
-		message += " (+[earned])"
-	message += "."
-
-	ai_silent_announcement(message, ":v", TRUE)
-	ai_silent_announcement(message, ":t", TRUE)
-	tree.total_points_last_sitrep = tree.total_points
-
-	next_sitrep = world.time + SITREP_INTERVAL
 
 /// Allows to perform objective initialization later on in case of map changes
 /datum/controller/subsystem/objectives/proc/initialize_objectives()
 	SHOULD_NOT_SLEEP(TRUE)
 	generate_objectives()
 	connect_objectives()
-	corpsewar.generate_corpses(CORPSES_TO_SPAWN)
+	var/datum/objectives_datum/objectives_controller = GLOB.objective_controller[pick(GLOB.objective_controller)]
+	objectives_controller.corpsewar.generate_corpses(CORPSES_TO_SPAWN)
 
 /datum/controller/subsystem/objectives/proc/generate_objectives()
 	if(!length(GLOB.objective_landmarks_close) || !length(GLOB.objective_landmarks_medium) \
@@ -196,7 +171,7 @@ SUBSYSTEM_DEF(objectives)
 
 // Populate the map with objective items.
 
-/datum/controller/subsystem/objectives/proc/spawn_objective_at_landmark(dest, obj/item/it)
+/datum/controller/subsystem/objectives/proc/spawn_objective_at_landmark(dest, obj/item/item)
 	var/picked_location
 	switch(dest)
 		if("close")
@@ -246,36 +221,36 @@ SUBSYSTEM_DEF(objectives)
 
 	picked_location = get_turf(picked_location)
 	if(!picked_location)
-		CRASH("Unable to pick a location at [dest] for [it]")
+		CRASH("Unable to pick a location at [dest] for [item]")
 
 	var/generated = FALSE
-	for(var/obj/O in picked_location)
-		if(istype(O, /obj/structure/closet) || istype(O, /obj/structure/safe) || istype(O, /obj/structure/filingcabinet))
-			if(istype(O, /obj/structure/closet))
-				var/obj/structure/closet/c = O
-				if(c.opened)
+	for(var/obj/objective in picked_location)
+		if(istype(objective, /obj/structure/closet) || istype(objective, /obj/structure/safe) || istype(objective, /obj/structure/filingcabinet))
+			if(istype(objective, /obj/structure/closet))
+				var/obj/structure/closet/closet = objective
+				if(closet.opened)
 					continue //container is open, don't put stuff into it
-			var/obj/item/IT = new it(O)
-			O.contents += IT
+			var/obj/item/new_item = new item(objective)
+			objective.contents += new_item
 			generated = TRUE
 			break
 
 	if(!generated)
-		new it(picked_location)
+		new item(picked_location)
 
 /datum/controller/subsystem/objectives/proc/pre_round_start()
 	SIGNAL_HANDLER
 	initialize_objectives()
-	for(var/datum/cm_objective/O in objectives)
-		O.pre_round_start()
+	for(var/datum/cm_objective/objective in objectives)
+		objective.pre_round_start()
 
 /datum/controller/subsystem/objectives/proc/post_round_start()
 	SIGNAL_HANDLER
-	for(var/datum/cm_objective/O in objectives)
-		O.post_round_start()
+	for(var/datum/cm_objective/objective in objectives)
+		objective.post_round_start()
 
 /datum/controller/subsystem/objectives/proc/connect_objectives()
-	// Sets up the objective interdependence tree
+	// Sets up the objective interdependance faction
 	// Every objective (which isn't a dead end) gets one guaranteed objective it unlocks.
 	// Every objective gets x random objectives that unlock it based on variable 'number_of_clues_to_generate'
 
@@ -286,71 +261,71 @@ SUBSYSTEM_DEF(objectives)
 	var/list/absolute_value
 
 	// Sort objectives into categories
-	for(var/datum/cm_objective/O in objectives)
-		if(O.objective_flags & OBJECTIVE_DO_NOT_TREE)
+	for(var/datum/cm_objective/objective in objectives)
+		if(objective.objective_flags & OBJECTIVE_DO_NOT_TREE)
 			continue // exempt from the tree
-		switch(O.value)
+		switch(objective.value)
 			if(OBJECTIVE_LOW_VALUE)
-				LAZYADD(low_value, O)
+				LAZYADD(low_value, objective)
 			if(OBJECTIVE_MEDIUM_VALUE)
-				LAZYADD(medium_value, O)
+				LAZYADD(medium_value, objective)
 			if(OBJECTIVE_HIGH_VALUE)
-				LAZYADD(high_value, O)
+				LAZYADD(high_value, objective)
 			if(OBJECTIVE_EXTREME_VALUE)
-				LAZYADD(extreme_value, O)
+				LAZYADD(extreme_value, objective)
 			if(OBJECTIVE_ABSOLUTE_VALUE)
-				LAZYADD(absolute_value, O)
+				LAZYADD(absolute_value, objective)
 
 	// Set up preqrequisites:
 	// Low
 	for(var/datum/cm_objective/objective in low_value)
 		// Add at least one guaranteed clue for this objective to unlock.
-		if (!(objective.objective_flags & OBJECTIVE_DEAD_END) && LAZYLEN(medium_value))
+		if(!(objective.objective_flags & OBJECTIVE_DEAD_END) && length(medium_value))
 			var/datum/cm_objective/enables = pick(medium_value)
 			link_objectives(objective, enables)
 
 	// Medium
 	for(var/datum/cm_objective/objective in medium_value)
-		while(LAZYLEN(objective.required_objectives) < objective.number_of_clues_to_generate && LAZYLEN(low_value))
+		while(length(objective.required_objectives) < objective.number_of_clues_to_generate && length(low_value))
 			var/datum/cm_objective/req = pick(low_value)
 			if(req in objective.required_objectives || (req.objective_flags & OBJECTIVE_DEAD_END))
 				continue //don't want to pick the same thing twice OR use a dead-end objective.
 			link_objectives(req, objective)
 
 		// Add at least one guaranteed clue for this objective to unlock.
-		if (!(objective.objective_flags & OBJECTIVE_DEAD_END) && LAZYLEN(high_value))
+		if(!(objective.objective_flags & OBJECTIVE_DEAD_END) && length(high_value))
 			var/datum/cm_objective/enables = pick(high_value)
 			link_objectives(objective, enables)
 
 	// High
 	for(var/datum/cm_objective/objective in high_value)
-		while(LAZYLEN(objective.required_objectives) < objective.number_of_clues_to_generate && LAZYLEN(medium_value))
+		while(length(objective.required_objectives) < objective.number_of_clues_to_generate && length(medium_value))
 			var/datum/cm_objective/req = pick(medium_value)
 			if(req in objective.required_objectives || (req.objective_flags & OBJECTIVE_DEAD_END))
 				continue //don't want to pick the same thing twice OR use a dead-end objective.
 			link_objectives(req, objective)
 
 		// Add at least one guaranteed clue for this objective to unlock.
-		if (!(objective.objective_flags & OBJECTIVE_DEAD_END) && LAZYLEN(extreme_value))
+		if(!(objective.objective_flags & OBJECTIVE_DEAD_END) && length(extreme_value))
 			var/datum/cm_objective/enables = pick(extreme_value)
 			link_objectives(objective, enables)
 
 	// Extreme
 	for(var/datum/cm_objective/objective in extreme_value)
-		while(LAZYLEN(objective.required_objectives) < objective.number_of_clues_to_generate && LAZYLEN(high_value))
+		while(length(objective.required_objectives) < objective.number_of_clues_to_generate && length(high_value))
 			var/datum/cm_objective/req = pick(high_value)
 			if(req in objective.required_objectives || (req.objective_flags & OBJECTIVE_DEAD_END))
 				continue //don't want to pick the same thing twice OR use a dead-end objective.
 			link_objectives(req, objective)
 
 		// Add at least one guaranteed clue for this objective to unlock.
-		if (!(objective.objective_flags & OBJECTIVE_DEAD_END) && LAZYLEN(absolute_value))
+		if(!(objective.objective_flags & OBJECTIVE_DEAD_END) && length(absolute_value))
 			var/datum/cm_objective/enables = pick(absolute_value)
 			link_objectives(objective, enables)
 
 	// Absolute
 	for(var/datum/cm_objective/objective in absolute_value)
-		while(LAZYLEN(objective.required_objectives) < objective.number_of_clues_to_generate && LAZYLEN(extreme_value))
+		while(length(objective.required_objectives) < objective.number_of_clues_to_generate && length(extreme_value))
 			var/datum/cm_objective/req = pick(extreme_value)
 			if(req in objective.required_objectives || (req.objective_flags & OBJECTIVE_DEAD_END))
 				continue //don't want to pick the same thing twice OR use a dead-end objective.
@@ -361,14 +336,96 @@ SUBSYSTEM_DEF(objectives)
 	LAZYADD(enabled_objective.required_objectives, required_objective)
 	LAZYADD(required_objective.enables_objectives, enabled_objective)
 
-/datum/controller/subsystem/objectives/proc/add_objective(datum/cm_objective/O)
-	LAZYADD(objectives, O)
+/datum/controller/subsystem/objectives/proc/add_objective(datum/cm_objective/objective)
+	LAZYADD(objectives, objective)
 
-/datum/controller/subsystem/objectives/proc/remove_objective(datum/cm_objective/O)
-	LAZYREMOVE(objectives, O)
+/datum/controller/subsystem/objectives/proc/remove_objective(datum/cm_objective/objective)
+	LAZYREMOVE(objectives, objective)
 
-/datum/controller/subsystem/objectives/proc/start_processing_objective(datum/cm_objective/O)
-	processing_objectives += O
+/datum/controller/subsystem/objectives/proc/start_processing_objective(datum/cm_objective/objective)
+	processing_objectives += objective
 
-/datum/controller/subsystem/objectives/proc/stop_processing_objective(datum/cm_objective/O)
-	processing_objectives -= O
+/datum/controller/subsystem/objectives/proc/stop_processing_objective(datum/cm_objective/objective)
+	processing_objectives -= objective
+
+/datum/controller/subsystem/objectives/proc/get_objectives_progress(faction)
+	var/point_total = 0
+	var/complete = 0
+
+	var/list/categories = list()
+	var/list/notable_objectives = list()
+
+	for(var/datum/cm_objective/C as anything in objectives)
+		if(!C.observable_by_faction(faction))
+			continue
+		if(C.display_category)
+			if(!(C.display_category in categories))
+				categories += C.display_category
+				categories[C.display_category] = list("count" = 0, "total" = 0, "complete" = 0)
+			categories[C.display_category]["count"]++
+			categories[C.display_category]["total"] += C.total_point_value(faction)
+			categories[C.display_category]["complete"] += C.get_point_value(faction)
+
+		if(C.objective_flags & OBJECTIVE_DISPLAY_AT_END)
+			notable_objectives += C
+
+		point_total += C.total_point_value(faction)
+		complete += C.get_point_value(faction)
+
+	var/dat = ""
+	if(length(objectives)) // protect against divide by zero
+		dat = "<b>Total Objectives:</b> [complete]pts achieved<br>"
+		if(length(categories))
+			var/total = 1 //To avoid divide by zero errors, just in case...
+			var/compl
+			for(var/cat in categories)
+				total = categories[cat]["total"]
+				compl = categories[cat]["complete"]
+				if(total == 0)
+					total = 1 //To avoid divide by zero errors, just in case...
+				dat += "<b>[cat]: </b> [compl]pts achieved<br>"
+
+		for(var/datum/cm_objective/objective as anything in notable_objectives)
+			if(!objective.observable_by_faction(faction))
+				continue
+			dat += objective.get_readable_progress(faction)
+
+	return dat
+
+/datum/controller/subsystem/objectives/proc/get_scored_points(faction)
+	var/scored_points = 0
+
+	for(var/datum/cm_objective/L as anything in objectives)
+		if(!L.observable_by_faction(faction))
+			continue
+		scored_points += L.get_point_value(faction)
+
+	return scored_points
+
+/datum/controller/subsystem/objectives/proc/get_total_points(faction)
+	var/total_points = 0
+
+	for(var/datum/cm_objective/L as anything in objectives)
+		if(!L.observable_by_faction(faction))
+			continue
+		total_points += L.total_point_value(faction)
+
+	return total_points
+
+/datum/controller/subsystem/objectives/proc/announce_stats()
+	to_chat(GLOB.observer_list, "<h2 class='alert'>Отчет по задачам</h2>")
+	for(var/faction_to_get in FACTION_LIST_ALL)
+		var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
+		if(!faction.objectives_active)
+			continue
+		var/list/objectives_status = faction.objectives_controller.check_defcon_level()
+		var/message = "Статус цели: [objectives_status["scored_points"]] / [objectives_status["player_points_defcon"]] ([objectives_status["objectives_percentage"]]%)."
+		if(faction.faction_name == FACTION_MARINE)
+			ai_silent_announcement(message, ":i", TRUE)
+			ai_silent_announcement(message, ":t", TRUE)
+		else if(istype(faction, /datum/faction/xenomorph))
+			xeno_announcement(SPAN_XENOANNOUNCE(message), faction, XENO_GENERAL_ANNOUNCE)
+		else
+			faction_announcement(message, "Цели", 'sound/AI/commandreport.ogg', faction)
+		message_admins("[faction.name] [message]")
+		to_chat(GLOB.observer_list, SPAN_WARNING("[faction.name] [message]"))

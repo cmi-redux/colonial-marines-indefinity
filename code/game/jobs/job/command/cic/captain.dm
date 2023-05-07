@@ -3,10 +3,11 @@
 	title = JOB_CO
 	supervisors = "USCM high command"
 	selection_class = "job_co"
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT|ROLE_ADMIN_NOTIFY|ROLE_WHITELISTED
+	flags_startup_parameters = ROLE_ADMIN_NOTIFY|ROLE_WHITELISTED
 	flags_whitelist = WHITELIST_COMMANDER
 	gear_preset = /datum/equipment_preset/uscm_ship/commander
 	entry_message_body = "<a href='"+URL_WIKI_CO_GUIDE+"'>You are the Commanding Officer of the USS Almayer as well as the operation.</a> Your goal is to lead the Marines on their mission as well as protect and command the ship and her crew. Your job involves heavy roleplay and requires you to behave like a high-ranking officer and to stay in character at all times. As the Commanding Officer your only superior is High Command itself. You must abide by the <a href='"+URL_WIKI_CO_RULES+"'>Commanding Officer Code of Conduct</a>. Failure to do so may result in punitive action against you. Godspeed."
+	balance_formulas = list(BALANCE_FORMULA_COMMANDING, BALANCE_FORMULA_MISC, BALANCE_FORMULA_ENGINEER, BALANCE_FORMULA_SUPPORT, BALANCE_FORMULA_OPERATIONS, BALANCE_FORMULA_MEDIC, BALANCE_FORMULA_FIELD)
 
 /datum/job/command/commander/New()
 	. = ..()
@@ -34,22 +35,16 @@
 
 /datum/job/command/commander/generate_entry_conditions(mob/living/M, whitelist_status)
 	. = ..()
-	GLOB.marine_leaders[JOB_CO] = M
+	M.faction.faction_leaders["commander"] = M
 	RegisterSignal(M, COMSIG_PARENT_QDELETING, PROC_REF(cleanup_leader_candidate))
 
 /datum/job/command/commander/proc/cleanup_leader_candidate(mob/M)
 	SIGNAL_HANDLER
-	GLOB.marine_leaders -= JOB_CO
+	M.faction.faction_leaders["commander"] = null
 
 /datum/job/command/commander/proc/do_announce_entry_message(mob/living/carbon/human/H)
-		all_hands_on_deck("Attention all hands, [H.get_paygrade(0)] [H.real_name] on deck!")
-	//for(var/i in GLOB.co_secure_boxes)
-		//var/obj/structure/closet/secure_closet/securecom/S = i
-		//var/loc_to_spawn = S.opened ? get_turf(S) : S
-		//var/obj/item/weapon/gun/rifle/m46c/I = new(loc_to_spawn)
-		//new /obj/item/clothing/suit/storage/marine/MP/CO(loc_to_spawn)
-		//new /obj/item/clothing/head/helmet/marine/CO(loc_to_spawn)
-		//I.name_after_co(H, I)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(all_hands_on_deck), "Attention all hands, [H.get_paygrade(0)] [H.real_name] on deck!"), 5 SECONDS)
+	return
 
 /obj/effect/landmark/start/captain
 	name = JOB_CO

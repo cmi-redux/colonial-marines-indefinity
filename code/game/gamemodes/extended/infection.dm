@@ -1,7 +1,7 @@
 //THIS IS A BLANK LABEL ONLY SO PEOPLE CAN SEE WHEN WE RUNNIN DIS BITCH.   Should probably write a real one one day.  Maybe.
 /datum/game_mode/infection
-	name = "Infection"
-	config_tag = "Infection"
+	name = MODE_NAME_INFECTION
+	config_tag = MODE_NAME_INFECTION
 	required_players = 0 //otherwise... no zambies
 	latejoin_larva_drop = 0
 	flags_round_type = MODE_INFECTION //Apparently without this, the game mode checker ignores this as a potential legit game mode.
@@ -23,7 +23,7 @@
 	for(var/mob/new_player/np in GLOB.new_player_list)
 		np.new_player_panel_proc()
 	spawn(50)
-		marine_announcement("We've lost contact with the Weyland-Yutani's research facility, [name]. The [MAIN_SHIP_NAME] has been dispatched to assist.", "[MAIN_SHIP_NAME]")
+		faction_announcement("We've lost contact with the Weyland-Yutani's research facility, [name]. The [MAIN_SHIP_NAME] has been dispatched to assist.", "[MAIN_SHIP_NAME]")
 	return ..()
 
 /datum/game_mode/infection/proc/initialize_post_survivor_list()
@@ -50,7 +50,7 @@
 			possible_synth_survivors -= A
 			continue
 
-		if(RoleAuthority.roles_whitelist[ckey(A.key)] & WHITELIST_SYNTHETIC)
+		if(SSticker.role_authority.roles_whitelist[ckey(A.key)] & WHITELIST_SYNTHETIC)
 			if(A in possible_survivors)
 				continue //they are already applying to be a survivor
 			else
@@ -83,37 +83,51 @@
 					i--
 				possible_survivors -= new_survivor //either we drafted a survivor, or we're skipping over someone, either or - remove them
 
-/datum/game_mode/infection/check_win()
-	var/living_player_list[] = count_humans_and_xenos(EvacuationAuthority.get_affected_zlevels())
-	var/num_humans = living_player_list[1]
-	var/zed = living_player_list[2]
-
-	if(num_humans <=0 && zed >= 1)
-		round_finished = MODE_INFECTION_ZOMBIE_WIN
-
-/datum/game_mode/infection/check_finished()
-	if(round_finished) return 1
-
 /datum/game_mode/infection/process()
 	. = ..()
-	if(--round_started > 0)
-		return FALSE //Initial countdown, just to be safe, so that everyone has a chance to spawn before we check anything.
+	if(round_started > 0)
+		round_started--
+		return FALSE
 
 	if(!round_finished)
 		if(++round_checkwin >= 5) //Only check win conditions every 5 ticks.
 			check_win()
 			round_checkwin = 0
 
+///////////////////////////
+//Checks to see who won///
+//////////////////////////
+/datum/game_mode/infection/check_win()
+	var/living_player_list[] = count_humans_and_xenos(SSevacuation.get_affected_zlevels())
+	var/num_humans = living_player_list[1]
+	var/zed = living_player_list[2]
+
+	if(num_humans <=0 && zed >= 1)
+		round_finished = MODE_INFECTION_ZOMBIE_WIN
+	if(num_humans >=1 && zed <= 0)
+		round_finished = MODE_INFECTION_HUMAN_WIN
+
+///////////////////////////////
+//Checks if the round is over//
+///////////////////////////////
+/datum/game_mode/infection/check_finished()
+	if(round_finished)
+		return TRUE
+	return FALSE
+
+//////////////////////////////////////////////////////////////////////
+//Announces the end of the game with all relevant information stated//
+//////////////////////////////////////////////////////////////////////
 /datum/game_mode/infection/declare_completion()
 	announce_ending()
-	var/musical_track = pick('sound/theme/sad_loss1.ogg','sound/theme/sad_loss2.ogg')
+	var/musical_track = pick('sound/music/round_end/sad_loss1.ogg','sound/music/round_end/sad_loss2.ogg')
 	world << musical_track
 
-	if(round_statistics)
-		round_statistics.game_mode = name
-		round_statistics.round_length = world.time
-		round_statistics.end_round_player_population = GLOB.clients.len
-		round_statistics.log_round_statistics()
+	if(SSticker.mode.round_statistics)
+		SSticker.mode.round_statistics.game_mode = name
+		SSticker.mode.round_statistics.round_length = world.time
+		SSticker.mode.round_statistics.end_round_player_population = GLOB.clients.len
+		SSticker.mode.round_statistics.log_round_statistics()
 
 	declare_completion_announce_xenomorphs()
 	declare_completion_announce_predators()

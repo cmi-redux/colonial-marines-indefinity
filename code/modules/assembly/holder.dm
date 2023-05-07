@@ -79,8 +79,8 @@
 
 /obj/item/device/assembly_holder/get_examine_text(mob/user)
 	. = ..()
-	if (in_range(src, user) || loc == user)
-		if (secured)
+	if(in_range(src, user) || loc == user)
+		if(secured)
 			. += "[src] is ready!"
 		else
 			. += "[src] can be attached!"
@@ -226,7 +226,7 @@
 	set category = "Object"
 	set src in usr
 
-	if ( !(usr.stat || usr.is_mob_restrained()) )
+	if( !(usr.stat || usr.is_mob_restrained()) )
 		var/obj/item/device/assembly_holder/holder
 		if(istype(src,/obj/item/explosive))
 			var/obj/item/explosive/exp = src
@@ -242,7 +242,7 @@
 			to_chat(usr, SPAN_NOTICE("Clock is ticking already."))
 		else
 			var/ntime = tgui_input_number(usr, "Enter desired time in seconds", "Time", 5, 1000, 0)
-			if (ntime>0 && ntime<1000)
+			if(ntime>0 && ntime<1000)
 				tmr.time = ntime
 				name = initial(name) + "([tmr.time] secs)"
 				to_chat(usr, SPAN_NOTICE("Timer set to [tmr.time] seconds."))

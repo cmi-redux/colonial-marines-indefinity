@@ -24,18 +24,15 @@
 	var/fruit_growth_multiplier = 1
 	var/spread_on_semiweedable = FALSE
 	var/block_structures = BLOCK_NOTHING
-
-	var/datum/hive_status/linked_hive = null
-	var/hivenumber = XENO_HIVE_NORMAL
 	var/turf/weeded_turf
 
 	// Which node is responsible for keeping this weed patch alive?
 	var/obj/effect/alien/weeds/node/parent = null
 
-/obj/effect/alien/weeds/Initialize(mapload, obj/effect/alien/weeds/node/node, use_node_strength=TRUE)
+/obj/effect/alien/weeds/Initialize(mapload, obj/effect/alien/weeds/node/node, mob/living/carbon/xenomorph/xenomorph, datum/faction/faction_to_set, use_node_strength = TRUE)
 	. = ..()
 	if(node)
-		linked_hive = node.linked_hive
+		faction = node.faction
 		if(use_node_strength)
 			weed_strength = node.weed_strength
 		node_range = node.node_range
@@ -43,17 +40,18 @@
 			name = "hive [name]"
 			health = WEED_HEALTH_HIVE
 		node.add_child(src)
-		hivenumber = linked_hive.hivenumber
 		spread_on_semiweedable = node.spread_on_semiweedable
 		if(weed_strength < WEED_LEVEL_HIVE && spread_on_semiweedable)
 			name = "hardy [name]"
 			health = WEED_HEALTH_HARDY
 		block_structures = node.block_structures
 		fruit_growth_multiplier = node.fruit_growth_multiplier
-	else
-		linked_hive = GLOB.hive_datum[hivenumber]
+	else if(xenomorph && xenomorph.faction)
+		faction = xenomorph.faction
+	else if(faction_to_set)
+		faction = faction_to_set
 
-	set_hive_data(src, hivenumber)
+	set_hive_data(src, faction)
 	if(spread_on_semiweedable)
 		if(color)
 			var/list/RGB = ReadRGB(color)
@@ -72,26 +70,26 @@
 		else if(!hibernate)
 			addtimer(CALLBACK(src, PROC_REF(weed_expand)), WEED_BASE_GROW_SPEED / max(weed_strength, 1))
 
-	var/turf/T = get_turf(src)
-	if(T)
-		T.weeds = src
-		weeded_turf = T
+	var/turf/turf = get_turf(src)
+	if(turf)
+		turf.weeds = src
+		weeded_turf = turf
 
 	RegisterSignal(src, list(
 		COMSIG_ATOM_TURF_CHANGE,
 		COMSIG_MOVABLE_TURF_ENTERED
 	), PROC_REF(set_turf_weeded))
 
-/obj/effect/alien/weeds/proc/set_turf_weeded(datum/source, turf/T)
+/obj/effect/alien/weeds/proc/set_turf_weeded(datum/source, turf/target_turf)
 	SIGNAL_HANDLER
 	if(weeded_turf)
 		weeded_turf.weeds = null
 
-	T.weeds = src
+	target_turf.weeds = src
 
 /obj/effect/alien/weeds/initialize_pass_flags(datum/pass_flags_container/PF)
 	. = ..()
-	if (PF)
+	if(PF)
 		PF.flags_pass = PASS_FLAGS_WEEDS
 
 /obj/effect/alien/weeds/proc/on_weed_expand(obj/effect/alien/weeds/spread_from, list/new_weeds)
@@ -102,7 +100,7 @@
 	name = "weak weeds"
 	alpha = 127
 
-/obj/effect/alien/weeds/weak/Initialize(mapload, obj/effect/alien/weeds/node/node)
+/obj/effect/alien/weeds/weak/Initialize(mapload, obj/effect/alien/weeds/node/node, mob/living/carbon/xenomorph/builder, datum/faction/faction_to_set)
 	. = ..()
 	name = initial(name)
 	weed_strength = WEED_LEVEL_WEAK
@@ -114,7 +112,7 @@
 	health = WEED_HEALTH_STANDARD
 	alpha = 127
 
-/obj/effect/alien/weeds/node/weak/Initialize(mapload, obj/effect/alien/weeds/node/node, mob/living/carbon/xenomorph/X, datum/hive_status/hive)
+/obj/effect/alien/weeds/node/weak/Initialize(mapload, obj/effect/alien/weeds/node/node, mob/living/carbon/xenomorph/builder, datum/faction/faction_to_set)
 	. = ..()
 	name = initial(name)
 	weed_strength = WEED_LEVEL_WEAK
@@ -149,9 +147,9 @@
 
 /obj/effect/alien/weeds/get_examine_text(mob/user)
 	. = ..()
-	var/turf/T = get_turf(src)
-	if(istype(T, /turf/open))
-		var/ceiling_info = T.ceiling_desc(user)
+	var/turf/turf = get_turf(src)
+	if(istype(turf, /turf/open))
+		var/ceiling_info = turf.ceiling_desc(user)
 		if(ceiling_info)
 			. += ceiling_info
 
@@ -164,8 +162,8 @@
 
 	var/weed_slow = weed_strength
 
-	if(crossing_mob.ally_of_hivenumber(linked_hive.hivenumber))
-		if( (crossing_mob.hivenumber != linked_hive.hivenumber) && prob(7)) // small chance for allied mobs to get a message indicating this
+	if(crossing_mob.ally(faction))
+		if((crossing_mob.faction != faction) && prob(7)) // small chance for allied mobs to get a message indicating this
 			to_chat(crossing_mob, SPAN_NOTICE("The weeds seem to reshape themselves around your feet as you walk on them."))
 		return
 
@@ -194,51 +192,50 @@
 		return
 
 	var/obj/effect/alien/weeds/node/node = parent
-	var/turf/U = get_turf(src)
+	var/turf/turf_loc = get_turf(src)
 
-	if(!istype(U))
+	if(!istype(turf_loc))
 		return
 
-	var/list/weeds = list()
-	for(var/dirn in cardinal)
-		var/turf/T = get_step(src, dirn)
-		if(!istype(T))
+	var/list/all_weeds = list()
+	for(var/dirn in  GLOB.cardinals)
+		var/turf/turf = get_step(src, dirn)
+		if(!istype(turf))
 			continue
-		var/is_weedable = T.is_weedable()
-		if(!is_weedable)
+		if(!turf.weedable || turf.snow)
 			continue
-		if(!spread_on_semiweedable && is_weedable < FULLY_WEEDABLE)
+		if(!spread_on_semiweedable && turf.weedable < FULLY_WEEDABLE)
 			continue
 
-		var/obj/effect/alien/weeds/W = locate() in T
-		if(W)
-			if(W.indestructible)
+		var/obj/effect/alien/weeds/weeds = locate() in turf
+		if(weeds)
+			if(weeds.indestructible)
 				continue
-			else if(W.weed_strength >= WEED_LEVEL_HIVE)
+			else if(weeds.weed_strength >= WEED_LEVEL_HIVE)
 				continue
-			else if (W.linked_hive == node.linked_hive && W.weed_strength >= node.weed_strength)
+			else if(weeds.faction == node.faction && weeds.weed_strength >= node.weed_strength)
 				continue
-			qdel(W)
+			qdel(weeds)
 
-		if(istype(T, /turf/closed/wall/resin))
+		if(istype(turf, /turf/closed/wall/resin))
 			continue
 
-		if(istype(T, /turf/closed/wall) && T.density)
-			weeds.Add(new /obj/effect/alien/weeds/weedwall(T, node))
+		if(istype(turf, /turf/closed/wall) && turf.density)
+			all_weeds.Add(new /obj/effect/alien/weeds/weedwall(turf, node))
 			continue
 
-		if(!weed_expand_objects(T, dirn))
+		if(!weed_expand_objects(turf, dirn))
 			continue
 
-		weeds.Add(new /obj/effect/alien/weeds(T, node))
+		all_weeds.Add(new /obj/effect/alien/weeds(turf, node))
 
-	on_weed_expand(src, weeds)
+	on_weed_expand(src, all_weeds)
 	if(parent)
-		parent.on_weed_expand(src, weeds)
+		parent.on_weed_expand(src, all_weeds)
 
-	return weeds
+	return all_weeds
 
-/obj/effect/alien/weeds/proc/weed_expand_objects(turf/T, direction)
+/obj/effect/alien/weeds/proc/weed_expand_objects(turf/target_turf, direction)
 	for(var/obj/structure/platform/P in src.loc)
 		if(P.dir == reverse_direction(direction))
 			return FALSE
@@ -246,45 +243,45 @@
 		if(from_blocking_cade.density && from_blocking_cade.dir == direction && from_blocking_cade.health >= (from_blocking_cade.maxhealth / 4))
 			return FALSE
 
-	for(var/obj/O in T)
+	for(var/obj/O in target_turf)
 		if(istype(O, /obj/structure/platform))
 			if(O.dir == direction)
 				return FALSE
 
 		if(istype(O, /obj/structure/barricade)) //cades on tile we're trying to expand to
 			var/obj/structure/barricade/to_blocking_cade = O
-			if(to_blocking_cade.density && to_blocking_cade.dir == reverse_dir[direction] && to_blocking_cade.health >= (to_blocking_cade.maxhealth / 4))
+			if(to_blocking_cade.density && to_blocking_cade.dir ==  GLOB.reverse_dir[direction] && to_blocking_cade.health >= (to_blocking_cade.maxhealth / 4))
 				return FALSE
 
 		if(istype(O, /obj/structure/window/framed))
-			new /obj/effect/alien/weeds/weedwall/window(T, parent)
+			new /obj/effect/alien/weeds/weedwall/window(target_turf, parent)
 			return FALSE
 		else if(istype(O, /obj/structure/window_frame))
-			new /obj/effect/alien/weeds/weedwall/frame(T, parent)
+			new /obj/effect/alien/weeds/weedwall/frame(target_turf, parent)
 			return FALSE
 		else if(istype(O, /obj/structure/machinery/door) && O.density && (!(O.flags_atom & ON_BORDER) || O.dir != direction))
 			return FALSE
 	return TRUE
 
-/obj/effect/alien/weeds/proc/update_neighbours(turf/U)
-	if(!U)
-		U = loc
-	if(istype(U))
-		for(var/dirn in cardinal)
-			var/turf/T = get_step(U, dirn)
+/obj/effect/alien/weeds/proc/update_neighbours(turf/turf_loc)
+	if(!turf_loc)
+		turf_loc = loc
+	if(istype(turf_loc))
+		for(var/dirn in  GLOB.cardinals)
+			var/turf/turf = get_step(turf_loc, dirn)
 
-			if(!istype(T))
+			if(!istype(turf))
 				continue
 
-			var/obj/effect/alien/weeds/W = locate() in T
-			if(W)
-				W.update_icon()
+			var/obj/effect/alien/weeds/weeds = locate() in turf
+			if(weeds)
+				weeds.update_icon()
 
 /obj/effect/alien/weeds/update_icon()
 	overlays.Cut()
 
 	var/my_dir = 0
-	for(var/check_dir in cardinal)
+	for(var/check_dir in  GLOB.cardinals)
 		var/turf/check = get_step(src, check_dir)
 
 		if(!istype(check))
@@ -292,7 +289,7 @@
 		if(istype(check, /turf/closed/wall/resin))
 			my_dir |= check_dir
 
-		else if (locate(/obj/effect/alien/weeds) in check)
+		else if(locate(/obj/effect/alien/weeds) in check)
 			my_dir |= check_dir
 
 	// big brain the icon dir by letting -15 represent the base icon,
@@ -327,13 +324,13 @@
 		return
 	take_damage(severity * WEED_EXPLOSION_DAMAGEMULT)
 
-/obj/effect/alien/weeds/attack_alien(mob/living/carbon/xenomorph/X)
-	if(!indestructible && !HIVE_ALLIED_TO_HIVE(X.hivenumber, hivenumber))
-		X.animation_attack_on(src)
-		X.visible_message(SPAN_DANGER("\The [X] slashes [src]!"), \
+/obj/effect/alien/weeds/attack_alien(mob/living/carbon/xenomorph/xeno)
+	if(!indestructible && !(xeno.faction == faction || xeno.ally(faction)))
+		xeno.animation_attack_on(src)
+		xeno.visible_message(SPAN_DANGER("\The [xeno] slashes [src]!"), \
 		SPAN_DANGER("You slash [src]!"), null, 5)
 		playsound(loc, "alien_resin_break", 25)
-		take_damage(X.melee_damage_lower*WEED_XENO_DAMAGEMULT)
+		take_damage(xeno.melee_damage_lower*WEED_XENO_DAMAGEMULT)
 		return XENO_ATTACK_ACTION
 
 
@@ -435,6 +432,8 @@
 	var/static/staticnode
 	var/overlay_node = TRUE
 
+	faction_to_get = FACTION_XENOMORPH_NORMAL
+
 	// Which weeds are being kept alive by this node?
 	var/list/obj/effect/alien/weeds/children = list()
 
@@ -450,10 +449,10 @@
 	weed.parent = null
 	children -= weed
 
-/obj/effect/alien/weeds/node/proc/replace_child(turf/T, weed_type)
-	if(!T || !istype(T) || QDELETED(src))
+/obj/effect/alien/weeds/node/proc/replace_child(turf/target_turf, weed_type)
+	if(!target_turf || !istype(target_turf) || QDELETED(src))
 		return
-	var/obj/effect/alien/weeds/replacement_child = new weed_type(T, src)
+	var/obj/effect/alien/weeds/replacement_child = new weed_type(target_turf, src)
 	add_child(replacement_child)
 
 /obj/effect/alien/weeds/node/update_icon()
@@ -466,20 +465,18 @@
 	overlay_node = TRUE
 	overlays += staticnode
 
-/obj/effect/alien/weeds/node/Initialize(mapload, obj/effect/alien/weeds/node/node, mob/living/carbon/xenomorph/X, datum/hive_status/hive)
-	if (istype(hive))
-		linked_hive = hive
-	else if (istype(X) && X.hive)
-		linked_hive = X.hive
-	else
-		linked_hive = GLOB.hive_datum[hivenumber]
+/obj/effect/alien/weeds/node/Initialize(mapload, obj/effect/alien/weeds/node/node, mob/living/carbon/xenomorph/builder, datum/faction/faction_to_set)
+	if(builder && builder.faction)
+		faction = builder.faction
+	else if(faction_to_set)
+		faction = faction_to_set
 
-	for(var/obj/effect/alien/weeds/W in loc)
-		if(W != src)
-			if(W.weed_strength > WEED_LEVEL_HIVE)
+	for(var/obj/effect/alien/weeds/weeds in loc)
+		if(weeds != src)
+			if(weeds.weed_strength > WEED_LEVEL_HIVE)
 				qdel(src)
 				return
-			qdel(W) //replaces the previous weed
+			qdel(weeds) //replaces the previous weed
 			break
 
 	. = ..(mapload, src)
@@ -487,16 +484,18 @@
 	if(!staticnode)
 		staticnode = image('icons/mob/xenos/weeds.dmi', "weednode", ABOVE_OBJ_LAYER)
 
-	var/obj/effect/alien/resin/trap/TR = locate() in loc
-	if(TR)
-		RegisterSignal(TR, COMSIG_PARENT_PREQDELETED, PROC_REF(trap_destroyed))
+	var/obj/effect/alien/resin/trap/trap = locate() in loc
+	if(trap)
+		RegisterSignal(trap, COMSIG_PARENT_PREQDELETED, PROC_REF(trap_destroyed))
 		overlay_node = FALSE
 		overlays -= staticnode
 
-	if(X)
-		add_hiddenprint(X)
-		weed_strength = X.weed_level
-		if (weed_strength < WEED_LEVEL_STANDARD)
+	if(builder)
+		add_hiddenprint(builder)
+		weed_strength = builder.weed_level
+		if(builder.faction)
+			faction = builder.faction
+		if(weed_strength < WEED_LEVEL_STANDARD)
 			weed_strength = WEED_LEVEL_STANDARD
 
 		node_range = node_range + weed_strength - 1//stronger weeds expand further!
@@ -516,8 +515,8 @@
 /obj/effect/alien/weeds/node/Destroy()
 	// When the node is removed, weeds should start dying out
 	// Make all the children look for a new parent node
-	for(var/X in children)
-		var/obj/effect/alien/weeds/W = X
+	for(var/xenomorph in children)
+		var/obj/effect/alien/weeds/W = xenomorph
 		remove_child(W)
 		addtimer(CALLBACK(W, PROC_REF(avoid_orphanage)), WEED_BASE_DECAY_SPEED + rand(0, 1 SECONDS)) // Slight variation whilst decaying
 
@@ -533,13 +532,13 @@
 	health = NODE_HEALTH_STANDARD
 
 /obj/effect/alien/weeds/node/alpha
-	hivenumber = XENO_HIVE_ALPHA
+	faction_to_get = FACTION_XENOMORPH_ALPHA
 
 /obj/effect/alien/weeds/node/feral
-	hivenumber = XENO_HIVE_FERAL
+	faction_to_get = FACTION_XENOMORPH_FERAL
 
 /obj/effect/alien/weeds/node/forsaken
-	hivenumber = XENO_HIVE_FORSAKEN
+	faction_to_get = FACTION_XENOMORPH_FORSAKEN
 
 /obj/effect/alien/weeds/node/pylon
 	health = WEED_HEALTH_HIVE
@@ -565,7 +564,7 @@
 /obj/effect/alien/weeds/node/pylon/attackby(obj/item/W, mob/living/user)
 	return
 
-/obj/effect/alien/weeds/node/pylon/attack_alien(mob/living/carbon/xenomorph/X)
+/obj/effect/alien/weeds/node/pylon/attack_alien(mob/living/carbon/xenomorph/xeno)
 	return
 
 /obj/effect/alien/weeds/node/pylon/flamer_fire_act(dam)
@@ -575,7 +574,7 @@
 	return
 
 /obj/effect/alien/weeds/node/pylon/cluster/set_parent_damaged()
-	var/obj/effect/alien/resin/special/cluster/parent_cluster = resin_parent
+	var/obj/effect/alien/resin/special/pylon/cluster/parent_cluster = resin_parent
 	parent_cluster.damaged = TRUE
 
 /obj/effect/resin_construct

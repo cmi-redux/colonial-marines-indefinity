@@ -64,9 +64,9 @@
 /proc/islinked(mob/living/silicon/robot/bot, mob/living/silicon/ai/ai)
 	if(!istype(bot) || !istype(ai))
 		return 0
-	if (bot.connected_ai == ai)
-		return 1
-	return 0
+	if(bot.connected_ai == ai)
+		return TRUE
+	return FALSE
 
 
 // this function shows health in the Status panel
@@ -78,22 +78,21 @@
 
 // this function displays the station time in the status panel
 /mob/living/silicon/proc/show_station_time()
-	stat(null, "Station Time: [worldtime2text()]")
+	stat(null, "Station Time: [game_time_timestamp()]")
 
 
 // this function displays the shuttles ETA in the status panel if the shuttle has been called
 /mob/living/silicon/proc/show_emergency_shuttle_eta()
-	if(EvacuationAuthority)
-		var/eta_status = EvacuationAuthority.get_status_panel_eta()
+	if(SSevacuation)
+		var/eta_status = SSevacuation.get_evac_status_panel_eta()
 		if(eta_status)
 			stat(null, "Evacuation: [eta_status]")
-
 
 // this function displays the stations manifest in a separate window
 /mob/living/silicon/proc/show_station_manifest()
 	var/dat
 	dat += "<h4>Crew Manifest</h4>"
-	dat += GLOB.data_core.get_manifest(1) // make it monochrome
+	dat += GLOB.data_core.get_manifest(TRUE, faction) // make it monochrome
 	dat += "<br>"
 	src << browse(dat, "window=airoster")
 	onclose(src, "airoster")
@@ -111,7 +110,7 @@
 	return universal_speak || (speaking in src.speech_synthesizer_langs) //need speech synthesizer support to vocalize a language
 
 /mob/living/silicon/add_language(language, can_speak=1)
-	if (..(language) && can_speak)
+	if(..(language) && can_speak)
 		speech_synthesizer_langs.Add(GLOB.all_languages[language])
 		return 1
 
@@ -119,7 +118,7 @@
 	..(rem_language)
 
 	for (var/datum/language/L in speech_synthesizer_langs)
-		if (L.name == rem_language)
+		if(L.name == rem_language)
 			speech_synthesizer_langs -= L
 
 /mob/living/silicon/check_languages()
@@ -130,7 +129,7 @@
 	var/dat = "<b><font size = 5>Known Languages</font></b><br/><br/>"
 
 	for(var/datum/language/L in languages)
-		dat += "<b>[L.name] (:[L.key])</b><br/>Speech Synthesizer: <i>[(L in speech_synthesizer_langs)? "YES":"NOT SUPPORTED"]</i><br/>[L.desc]<br/><br/>"
+		dat += "<b>[L.name] (:[L.key])</b><br/>Speech Synthesizer: <i>[(L in speech_synthesizer_langs)? client.auto_lang(LANGUAGE_YES):"NOT SUPPORTED"]</i><br/>[L.desc]<br/><br/>"
 
 	src << browse(dat, "window=checklanguage")
 	return
@@ -193,14 +192,14 @@
 
 	switch(severity)
 		if(0 to EXPLOSION_THRESHOLD_LOW)
-			if (stat != 2)
+			if(stat != 2)
 				apply_damage(30, BRUTE)
 		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
-			if (stat != 2)
+			if(stat != 2)
 				apply_damage(60, BRUTE)
 				apply_damage(60, BURN)
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
-			if (stat != 2)
+			if(stat != 2)
 				apply_damage(100, BRUTE)
 				apply_damage(100, BURN)
 				if(!anchored)

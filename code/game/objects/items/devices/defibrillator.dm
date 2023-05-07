@@ -1,6 +1,34 @@
+#define LOW_MODE_RECH			4 SECONDS
+#define HALF_MODE_RECH			8 SECONDS
+#define FULL_MODE_RECH			16 SECONDS
+
+#define LOW_MODE_CHARGE			60
+#define HALF_MODE_CHARGE		120
+#define FULL_MODE_CHARGE		180
+
+#define LOW_MODE_DMGHEAL		10
+#define HALF_MODE_DMGHEAL		40
+#define FULL_MODE_DMGHEAL		120
+
+#define LOW_MODE_HEARTD_LOWER	1
+#define HALF_MODE_HEARTD_LOWER	1.5
+#define FULL_MODE_HEARTD_LOWER	2
+#define LOW_MODE_HEARTD_UPPER	4
+#define HALF_MODE_HEARTD_UPPER	9
+#define FULL_MODE_HEARTD_UPPER	18
+
+#define FULL_MODE_TOXIN_DMG		30
+
+#define LOW_MODE_DEF			"Low Power Mode"
+#define HALF_MODE_DEF			"Half Power Mode"
+#define FULL_MODE_DEF			"Full Power Mode"
+
+#define PROB_DMGHEART		33 //%
+
 /obj/item/device/defibrillator
 	name = "emergency defibrillator"
 	desc = "A handheld emergency defibrillator, used to restore fibrillating patients. Can optionally bring people back from the dead."
+	icon = 'icons/obj/items/defibs.dmi'
 	icon_state = "defib"
 	item_state = "defib"
 	flags_atom = FPRINT|CONDUCT
@@ -10,28 +38,43 @@
 	throwforce = 5
 	w_class = SIZE_MEDIUM
 
+	var/icon_state_for_paddles = "defib"
+
 	var/blocked_by_suit = TRUE
-	var/heart_damage_to_deal = 5
-	var/ready = 0
-	var/damage_heal_threshold = 12 //This is the maximum non-oxy damage the defibrillator will heal to get a patient above -100, in all categories
+	var/heart_damage_to_deal_lower = LOW_MODE_HEARTD_LOWER
+	var/heart_damage_to_deal_upper = LOW_MODE_HEARTD_UPPER
+	var/damage_heal_threshold = LOW_MODE_DMGHEAL //This is the maximum non-oxy damage the defibrillator will heal to get a patient above -100, in all categories
 	var/datum/effect_system/spark_spread/spark_system = new /datum/effect_system/spark_spread
-	var/charge_cost = 66 //How much energy is used.
+	var/charge_cost = LOW_MODE_CHARGE //How much energy is used.
 	var/obj/item/cell/dcell = null
 	var/datum/effect_system/spark_spread/sparks = new
-	var/defib_cooldown = 0 //Cooldown for toggling the defib
-	var/shock_cooldown = 0 //cooldown for shocking someone - separate to toggling
 
-/mob/living/carbon/human/proc/check_tod()
-	if(!undefibbable && world.time <= timeofdeath + revive_grace_period)
-		return TRUE
-	return FALSE
+	var/paddles = /obj/item/device/paddles
+	var/obj/item/device/paddles/paddles_type
+
+	var/atom/tether_holder
+
+	var/heart_damage_mult = 1.0 //Don't set on 0, bad move.
+	var/additional_charge_cost = 1.0 // 0.5 cost lower
+	var/boost_recharge = 1.0 // 0.5 faster
+	var/healing_mult = 1.0 // 1.5 heal more
+
+	var/skill_req = SKILL_MEDICAL_MEDIC
+
+	var/range = 4
+	var/list/difib_mode_choices = list(LOW_MODE_DEF, HALF_MODE_DEF, FULL_MODE_DEF)
+	var/defib_mode = LOW_MODE_DEF
+	var/defib_recharge = LOW_MODE_RECH //Recharge defib
 
 /obj/item/device/defibrillator/Initialize(mapload, ...)
 	. = ..()
 
+	paddles_type = new paddles(src)
+
 	sparks.set_up(5, 0, src)
 	sparks.attach(src)
 	dcell = new/obj/item/cell(src)
+	RegisterSignal(paddles_type, COMSIG_PARENT_PREQDELETED, PROC_REF(override_delete))
 	update_icon()
 
 /obj/item/device/defibrillator/Destroy()
@@ -43,21 +86,26 @@
 	icon_state = initial(icon_state)
 	overlays.Cut()
 
-	if(ready)
-		icon_state += "_out"
+	update_overlays()
+
+/obj/item/device/defibrillator/update_overlays()
+	. = ..()
+	if(overlays)
+		overlays.Cut()
+
+	if(paddles_type.loc == src)
+		overlays += image(icon, "+paddles_[icon_state_for_paddles]")
 
 	if(dcell && dcell.charge)
 		switch(round(dcell.charge * 100 / dcell.maxcharge))
 			if(67 to INFINITY)
-				overlays += "+full"
+				overlays += image(icon, "+full")
 			if(34 to 66)
-				overlays += "+half"
-			if(3 to 33)
-				overlays += "+low"
-			if(0 to 3)
-				overlays += "+empty"
+				overlays += image(icon, "+half")
+			if(1 to 33)
+				overlays += image(icon, "+low")
 	else
-		overlays += "+empty"
+		overlays += image(icon, "+empty")
 
 /obj/item/device/defibrillator/get_examine_text(mob/user)
 	. = ..()
@@ -65,35 +113,149 @@
 	var/currentuses = 0
 	maxuses = round(dcell.maxcharge / charge_cost)
 	currentuses = round(dcell.charge / charge_cost)
-	. += SPAN_INFO("It has [currentuses] out of [maxuses] uses left in its internal battery.")
+	. += SPAN_INFO("It has [currentuses] out of [maxuses] uses left in its internal battery. Currently it is in [defib_mode], and will take [defib_recharge/10] seconds to recharge between shocks.")
 	if(MODE_HAS_TOGGLEABLE_FLAG(MODE_STRONG_DEFIBS) || !blocked_by_suit)
 		. += SPAN_NOTICE("This defibrillator will ignore worn armor.")
 
-/obj/item/device/defibrillator/attack_self(mob/living/carbon/human/user)
-	..()
+/obj/item/device/defibrillator/clicked(mob/user, list/mods)
+	if(!ishuman(usr))
+		return
+	if(mods["alt"])
+		change_defib_mode(user)
+		return 1
+	return ..()
 
-	if(defib_cooldown > world.time) //cooldown only to prevent spam toggling
+/obj/item/device/defibrillator/proc/change_defib_mode(mob/user)
+	if(!skillcheck(user, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC))
+		to_chat(user, SPAN_WARNING("You don't seem to know how to use [src]..."))
 		return
 
-	//Job knowledge requirement
-	if (istype(user))
-		if(!skillcheck(user, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC))
-			to_chat(user, SPAN_WARNING("You don't seem to know how to use [src]..."))
-			return
+	if(paddles_type.charged)
+		to_chat(user, SPAN_WARNING("Paddles already charged, you don't can change mode."))
+		return
 
-	defib_cooldown = world.time + 10 //1 second cooldown every time the defib is toggled
-	ready = !ready
-	user.visible_message(SPAN_NOTICE("[user] turns [src] [ready? "on and takes the paddles out" : "off and puts the paddles back in"]."),
-	SPAN_NOTICE("You turn [src] [ready? "on and take the paddles out" : "off and put the paddles back in"]."))
-	playsound(get_turf(src), "sparks", 15, 1, 0)
-	if(ready)
-		w_class = SIZE_LARGE
+	var/difib_modes_to_choise = difib_mode_choices
+
+	defib_mode = tgui_input_list(usr, "Select Defib Mode", "Defib Mode Selecting", difib_modes_to_choise)
+
+	if(!defib_mode)
+		return
+
+	switch(defib_mode)
+		if(FULL_MODE_DEF)
+			heart_damage_to_deal_lower = FULL_MODE_HEARTD_LOWER * heart_damage_mult
+			heart_damage_to_deal_upper = FULL_MODE_HEARTD_UPPER * heart_damage_mult
+			damage_heal_threshold = FULL_MODE_DMGHEAL * healing_mult
+			charge_cost = FULL_MODE_CHARGE * additional_charge_cost
+			defib_recharge = FULL_MODE_RECH * boost_recharge
+		if(HALF_MODE_DEF)
+			heart_damage_to_deal_lower = HALF_MODE_HEARTD_LOWER * heart_damage_mult
+			heart_damage_to_deal_upper = HALF_MODE_HEARTD_UPPER * heart_damage_mult
+			damage_heal_threshold = HALF_MODE_DMGHEAL * healing_mult
+			charge_cost = HALF_MODE_CHARGE * additional_charge_cost
+			defib_recharge = HALF_MODE_RECH * boost_recharge
+		if(LOW_MODE_DEF)
+			heart_damage_to_deal_lower = LOW_MODE_HEARTD_LOWER * heart_damage_mult
+			heart_damage_to_deal_upper = LOW_MODE_HEARTD_UPPER * heart_damage_mult
+			damage_heal_threshold = LOW_MODE_DMGHEAL * healing_mult
+			charge_cost = LOW_MODE_CHARGE * additional_charge_cost
+			defib_recharge = LOW_MODE_RECH * boost_recharge
+
+	user.visible_message(SPAN_NOTICE("[user] turns [src] in [defib_mode]."),
+	SPAN_NOTICE("You change \the [src]'s mode to [defib_mode], recharging will take [defib_recharge/10] seconds."))
+	if(defib_mode == FULL_MODE_DEF)
+		to_chat(user, SPAN_WARNING("WARNING! \The [src] is now in high power mode! The increased voltage has the potential to cause severe cardiac damage!"))
+
+	add_fingerprint(user)
+
+/obj/item/device/defibrillator/attack_self(mob/living/carbon/human/user)
+	if(!ishuman(user))
+		return
+
+	if(!paddles_type || paddles_type.loc != src)
+		return
+
+	paddles_type.attack_hand(user)
+	to_chat(user, SPAN_PURPLE("[icon2html(src, user)] Picked up a paddles."))
+	playsound(get_turf(src), 'sound/items/defib_safetyOff.ogg', 25, 0)
+
+	user.put_in_inactive_hand(paddles_type)
+	paddles_type.update_icon()
+	update_icon()
+	add_fingerprint(usr)
+	..()
+
+/obj/item/device/defibrillator/MouseDrop(obj/over_object as obj)
+	if(!CAN_PICKUP(usr, src))
+		return ..()
+	if(!istype(over_object, /atom/movable/screen))
+		return ..()
+	if(loc != usr)
+		return ..()
+
+	switch(over_object.name)
+		if("r_hand")
+			if(usr.drop_inv_item_on_ground(src))
+				usr.put_in_r_hand(src)
+		if("l_hand")
+			if(usr.drop_inv_item_on_ground(src))
+				usr.put_in_l_hand(src)
+	add_fingerprint(usr)
+
+/obj/item/device/defibrillator/attackby(obj/item/W, mob/user)
+	if(W == paddles_type)
+		paddles_type.unwield(user)
+		recall_paddles()
 		playsound(get_turf(src), 'sound/items/defib_safetyOn.ogg', 25, 0)
 	else
-		w_class = initial(w_class)
-		playsound(get_turf(src), 'sound/items/defib_safetyOff.ogg', 25, 0)
+		. = ..()
+
+/obj/item/device/defibrillator/proc/set_tether_holder(atom/A)
+	tether_holder = A
+
+	if(paddles_type)
+		paddles_type.reset_tether()
+
+/obj/item/device/defibrillator/forceMove(atom/dest)
+	. = ..()
+	if(isturf(dest))
+		set_tether_holder(src)
+	else
+		set_tether_holder(loc)
+
+/obj/item/device/defibrillator/proc/override_delete()
+	SIGNAL_HANDLER
+	recall_paddles()
+	return COMPONENT_ABORT_QDEL
+
+/obj/item/device/defibrillator/proc/recall_paddles()
+	if(ismob(paddles_type.loc))
+		var/mob/M = paddles_type.loc
+		M.drop_held_item(paddles_type)
+		paddles_type.unwield(M)
+		playsound(get_turf(src), "sparks", 25, 1, 4)
+		paddles_type.charged = FALSE
+		paddles_type.update_icon()
+
+	paddles_type.forceMove(src)
+
 	update_icon()
-	add_fingerprint(user)
+
+/obj/item/device/defibrillator/on_enter_storage(obj/item/storage/storage)
+	. = ..()
+	if(paddles_type.loc != src)
+		recall_paddles()
+
+/obj/item/device/defibrillator/Destroy()
+	if(paddles_type)
+		if(paddles_type.loc == src)
+			UnregisterSignal(paddles_type, COMSIG_PARENT_PREQDELETED)
+			qdel(paddles_type)
+		else
+			paddles_type.attached_to = null
+			paddles_type = null
+
+	return ..()
 
 /mob/living/carbon/human/proc/get_ghost(check_client = TRUE, check_can_reenter = TRUE)
 	if(client)
@@ -102,8 +264,13 @@
 	for(var/mob/dead/observer/G in GLOB.observer_list)
 		if(G.mind && G.mind.original == src)
 			var/mob/dead/observer/ghost = G
-			if(ghost && (!check_client || ghost.client) && (!check_can_reenter || ghost.can_reenter_corpse))
+			if(ghost && ghost.client && ghost.can_reenter_corpse)
 				return ghost
+
+/mob/living/carbon/human/proc/check_tod()
+	if(!undefibbable && world.time <= timeofdeath + revive_grace_period)
+		return TRUE
+	return FALSE
 
 /mob/living/carbon/human/proc/is_revivable()
 	if(isnull(internal_organs_by_name) || isnull(internal_organs_by_name["heart"]))
@@ -115,144 +282,56 @@
 		return FALSE
 	return TRUE
 
-/obj/item/device/defibrillator/proc/check_revive(mob/living/carbon/human/H, mob/living/carbon/human/user)
-	if(!ishuman(H) || isyautja(H))
-		to_chat(user, SPAN_WARNING("You can't defibrilate [H]. You don't even know where to put the paddles!"))
-		return
-	if(!ready)
-		to_chat(user, SPAN_WARNING("Take [src]'s paddles out first."))
+/obj/item/device/defibrillator/proc/try_to_revive(mob/living/carbon/human/target, mob/living/carbon/human/user)
+	var/time_pass = world.time - target.timeofdeath
+	if(time_pass > target.revive_grace_period)
+		return TRUE
+	else
+		return prob(CEILING((time_pass * 100) / (target.revive_grace_period), 1) + charge_cost / 4)
+
+/obj/item/device/defibrillator/proc/check_revive(mob/living/carbon/human/target, mob/living/carbon/human/user)
+	if(!ishuman(target) || isyautja(target))
+		to_chat(user, SPAN_WARNING("You can't defibrilate [target]. You don't even know where to put the paddles!"))
 		return
 	if(dcell.charge <= charge_cost)
 		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src]'s battery is too low! It needs to recharge."))
 		return
-	if(H.stat != DEAD)
+	if(target.stat != DEAD)
 		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Vital signs detected. Aborting."))
 		return
 
-	if(!H.is_revivable())
+	if(!target.is_revivable())
 		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Patient's general condition does not allow reviving."))
 		return
 
-	if((!MODE_HAS_TOGGLEABLE_FLAG(MODE_STRONG_DEFIBS) && blocked_by_suit) && H.wear_suit && (istype(H.wear_suit, /obj/item/clothing/suit/armor) || istype(H.wear_suit, /obj/item/clothing/suit/storage/marine)) && prob(95))
+	if((blocked_by_suit && defib_mode != FULL_MODE_DEF) && target.wear_suit && (istype(target.wear_suit, /obj/item/clothing/suit/armor) || istype(target.wear_suit, /obj/item/clothing/suit/storage/marine)) && prob(95))
 		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Paddles registering >100,000 ohms, Possible cause: Suit or Armor interfering."))
 		return
 
-	if((!H.check_tod() && !issynth(H))) //synthetic species have no expiration date
+	if((!target.check_tod() && !issynth(target))) //synthetic species have no expiration date
 		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Patient is braindead."))
 		return
 
 	return TRUE
 
-/obj/item/device/defibrillator/attack(mob/living/carbon/human/H, mob/living/carbon/human/user)
-	if(shock_cooldown > world.time) //cooldown is only for shocking, this is so that you can immediately shock when you take the paddles out - stan_albatross
-		return
-
-	shock_cooldown = world.time + 20 //2 second cooldown before you can try shocking again
-
-	if(user.action_busy) //Currently deffibing
-		return
-
-	//job knowledge requirement
-	if(user.skills)
-		if(!skillcheck(user, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC))
-			to_chat(user, SPAN_WARNING("You don't seem to know how to use [src]..."))
-			return
-
-	if(!check_revive(H, user))
-		return
-
-	var/mob/dead/observer/G = H.get_ghost()
-	if(istype(G) && G.client)
-		playsound_client(G.client, 'sound/effects/adminhelp_new.ogg')
-		to_chat(G, SPAN_BOLDNOTICE(FONT_SIZE_LARGE("Someone is trying to revive your body. Return to it if you want to be resurrected! \
-			(Verbs -> Ghost -> Re-enter corpse, or <a href='?src=\ref[G];reentercorpse=1'>click here!</a>)")))
-
-	user.visible_message(SPAN_NOTICE("[user] starts setting up the paddles on [H]'s chest"), \
-		SPAN_HELPFUL("You start <b>setting up</b> the paddles on <b>[H]</b>'s chest."))
-	playsound(get_turf(src),'sound/items/defib_charge.ogg', 25, 0) //Do NOT vary this tune, it needs to be precisely 7 seconds
-
-	//Taking square root not to make defibs too fast...
-	if(!do_after(user, 7 SECONDS * user.get_skill_duration_multiplier(SKILL_MEDICAL), INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_FRIENDLY, H, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
-		user.visible_message(SPAN_WARNING("[user] stops setting up the paddles on [H]'s chest."), \
-		SPAN_WARNING("You stop setting up the paddles on [H]'s chest."))
-		return
-
-	if(!check_revive(H, user))
-		return
-
-	//Do this now, order doesn't matter
-	sparks.start()
-	dcell.use(charge_cost)
-	update_icon()
-	playsound(get_turf(src), 'sound/items/defib_release.ogg', 25, 1)
-	user.visible_message(SPAN_NOTICE("[user] shocks [H] with the paddles."),
-		SPAN_HELPFUL("You shock <b>[H]</b> with the paddles."))
-	H.visible_message(SPAN_DANGER("[H]'s body convulses a bit."))
-	shock_cooldown = world.time + 10 //1 second cooldown before you can shock again
-
-	var/datum/internal_organ/heart/heart = H.internal_organs_by_name["heart"]
-	if(heart && prob(25))
-		heart.take_damage(heart_damage_to_deal, TRUE) //Allow the defibrillator to possibly worsen heart damage. Still rare enough to just be the "clone damage" of the defib
-
-	if(!H.is_revivable())
-		playsound(get_turf(src), 'sound/items/defib_failed.ogg', 25, 0)
-		if(heart && heart.organ_status >= ORGAN_BROKEN)
-			user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Defibrillation failed. Patient's heart is too damaged. Immediate surgery is advised."))
-			return
-		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Defibrillation failed. Patient's general condition does not allow reviving."))
-		return
-
-	if(!H.client) //Freak case, no client at all. This is a braindead mob (like a colonist)
-		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: No soul detected, Attempting to revive..."))
-
-	if(isobserver(H.mind?.current) && !H.client) //Let's call up the correct ghost! Also, bodies with clients only, thank you.
-		H.mind.transfer_to(H, TRUE)
-
-
-	//At this point, the defibrillator is ready to work
-	H.apply_damage(-damage_heal_threshold, BRUTE)
-	H.apply_damage(-damage_heal_threshold, BURN)
-	H.apply_damage(-damage_heal_threshold, TOX)
-	H.apply_damage(-damage_heal_threshold, CLONE)
-	H.apply_damage(-H.getOxyLoss(), OXY)
-	H.updatehealth() //Needed for the check to register properly
-
-	if(!(H.species?.flags & NO_CHEM_METABOLIZATION))
-		for(var/datum/reagent/R in H.reagents.reagent_list)
-			var/datum/chem_property/P = R.get_property(PROPERTY_ELECTROGENETIC)//Adrenaline helps greatly at restarting the heart
-			if(P)
-				P.trigger(H)
-				H.reagents.remove_reagent(R.id, 1)
-				break
-	if(H.health > HEALTH_THRESHOLD_DEAD)
-		user.visible_message(SPAN_NOTICE("[icon2html(src, viewers(src))] \The [src] beeps: Defibrillation successful."))
-		playsound(get_turf(src), 'sound/items/defib_success.ogg', 25, 0)
-		user.track_life_saved(user.job)
-		H.handle_revive()
-		to_chat(H, SPAN_NOTICE("You suddenly feel a spark and your consciousness returns, dragging you back to the mortal plane."))
-		if(H.client?.prefs.toggles_flashing & FLASH_CORPSEREVIVE)
-			window_flash(H.client)
-	else
-		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Defibrillation failed. Vital signs are too weak, repair damage and try again.")) //Freak case
-		playsound(get_turf(src), 'sound/items/defib_failed.ogg', 25, 0)
-
 /obj/item/device/defibrillator/compact_adv
 	name = "advanced compact defibrillator"
 	desc = "An advanced compact defibrillator that trades capacity for strong immediate power. Ignores armor and heals strongly and quickly, at the cost of very low charge."
-	icon = 'icons/obj/items/experimental_tools.dmi'
 	icon_state = "compact_defib"
 	item_state = "defib"
 	w_class = SIZE_MEDIUM
 	blocked_by_suit = FALSE
-	heart_damage_to_deal = 0
-	damage_heal_threshold = 40
-	charge_cost = 198
+	heart_damage_mult = 0.6
+	additional_charge_cost = 1.8
+	boost_recharge = 0.4
+	healing_mult = 1.25
+	skill_req = SKILL_MEDICAL_TRAINED
 
 /obj/item/device/defibrillator/compact
 	name = "compact defibrillator"
 	desc ="This particular defibrillator has halved charge capacity compared to the standard emergency defibrillator, but can fit in your pocket."
-	icon = 'icons/obj/items/experimental_tools.dmi'
 	icon_state = "compact_defib"
 	item_state = "defib"
 	w_class = SIZE_SMALL
 	charge_cost = 99
+	additional_charge_cost = 1.5

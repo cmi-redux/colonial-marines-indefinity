@@ -121,7 +121,7 @@
 #define VV_HK_REMOVE_LANGUAGE "remove_language"
 #define VV_HK_EDIT_SKILL "edit_skill"
 
-#define VV_HK_CHANGEHIVENUMBER "changehivenumber"
+#define VV_HK_CHANGEFACTION "changefaction"
 
 // /mob/living/carbon/human
 #define VV_HK_SET_SPECIES "setspecies"

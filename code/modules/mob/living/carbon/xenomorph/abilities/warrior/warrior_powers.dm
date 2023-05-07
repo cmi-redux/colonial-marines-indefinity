@@ -1,20 +1,20 @@
 /datum/action/xeno_action/activable/lunge/use_ability(atom/A)
 	var/mob/living/carbon/xenomorph/X = owner
 
-	if (!action_cooldown_check())
+	if(!action_cooldown_check())
 		if(twitch_message_cooldown < world.time )
 			X.visible_message(SPAN_XENOWARNING("\The [X]'s claws twitch."), SPAN_XENOWARNING("Your claws twitch as you try to lunge but lack the strength. Wait a moment to try again."))
 			twitch_message_cooldown = world.time + 5 SECONDS
 		return //this gives a little feedback on why your lunge didn't hit other than the lunge button going grey. Plus, it might spook marines that almost got lunged if they know why the message appeared, and extra spookiness is always good.
 
-	if (!A)
+	if(!A)
 		return
 
-	if (!isturf(X.loc))
+	if(!isturf(X.loc))
 		to_chat(X, SPAN_XENOWARNING("You can't lunge from here!"))
 		return
 
-	if (!X.check_state() || X.agility)
+	if(!X.check_state() || X.agility)
 		return
 
 	if(X.can_not_harm(A) || !ismob(A))
@@ -25,7 +25,7 @@
 	if(H.stat == DEAD)
 		return
 
-	if (!check_and_use_plasma_owner())
+	if(!check_and_use_plasma_owner())
 		return
 
 	apply_cooldown()
@@ -35,7 +35,7 @@
 
 	X.throw_atom(get_step_towards(A, X), grab_range, SPEED_FAST, X)
 
-	if (X.Adjacent(H))
+	if(X.Adjacent(H))
 		X.start_pulling(H,1)
 	else
 		X.visible_message(SPAN_XENOWARNING("\The [X]'s claws twitch."), SPAN_XENOWARNING("Your claws twitch as you lunge but are unable to grab onto your target. Wait a moment to try again."))
@@ -45,14 +45,14 @@
 /datum/action/xeno_action/onclick/toggle_agility/use_ability(atom/A)
 	var/mob/living/carbon/xenomorph/X = owner
 
-	if (!action_cooldown_check())
+	if(!action_cooldown_check())
 		return
 
-	if (!X.check_state(1))
+	if(!X.check_state(1))
 		return
 
 	X.agility = !X.agility
-	if (X.agility)
+	if(X.agility)
 		to_chat(X, SPAN_XENOWARNING("You lower yourself to all fours."))
 	else
 		to_chat(X, SPAN_XENOWARNING("You raise yourself to stand on two feet."))
@@ -65,16 +65,16 @@
 /datum/action/xeno_action/activable/fling/use_ability(atom/target_atom)
 	var/mob/living/carbon/xenomorph/woyer = owner
 
-	if (!action_cooldown_check())
+	if(!action_cooldown_check())
 		return
 
-	if (!isxeno_human(target_atom) || woyer.can_not_harm(target_atom))
+	if(!isxeno_human(target_atom) || woyer.can_not_harm(target_atom))
 		return
 
-	if (!woyer.check_state() || woyer.agility)
+	if(!woyer.check_state() || woyer.agility)
 		return
 
-	if (!woyer.Adjacent(target_atom))
+	if(!woyer.Adjacent(target_atom))
 		return
 
 	var/mob/living/carbon/carbone = target_atom
@@ -89,7 +89,7 @@
 		to_chat(woyer, SPAN_XENOWARNING("[carbone] is too big for you to fling!"))
 		return
 
-	if (!check_and_use_plasma_owner())
+	if(!check_and_use_plasma_owner())
 		return
 
 	woyer.visible_message(SPAN_XENOWARNING("\The [woyer] effortlessly flings [carbone] to the side!"), SPAN_XENOWARNING("You effortlessly fling [carbone] to the side!"))
@@ -108,9 +108,9 @@
 	var/turf/throw_turf = woyer.loc
 	var/turf/temp = woyer.loc
 
-	for (var/x in 0 to fling_distance-1)
+	for(var/x in 0 to fling_distance-1)
 		temp = get_step(throw_turf, facing)
-		if (!temp)
+		if(!temp)
 			break
 		throw_turf = temp
 
@@ -127,23 +127,23 @@
 /datum/action/xeno_action/activable/warrior_punch/use_ability(atom/target_atom)
 	var/mob/living/carbon/xenomorph/woyer = owner
 
-	if (!action_cooldown_check())
+	if(!action_cooldown_check())
 		return
 
-	if (!isxeno_human(target_atom) || woyer.can_not_harm(target_atom))
+	if(!isxeno_human(target_atom) || woyer.can_not_harm(target_atom))
 		return
 
-	if (!woyer.check_state() || woyer.agility)
+	if(!woyer.check_state() || woyer.agility)
 		return
 
 	var/distance = get_dist(woyer, target_atom)
 
-	if (distance > 2)
+	if(distance > 2)
 		return
 
 	var/mob/living/carbon/carbone = target_atom
 
-	if (!woyer.Adjacent(carbone))
+	if(!woyer.Adjacent(carbone))
 		return
 
 	if(carbone.stat == DEAD) return
@@ -151,11 +151,11 @@
 
 	var/obj/limb/target_limb = carbone.get_limb(check_zone(woyer.zone_selected))
 
-	if (ishuman(carbone) && (!target_limb || (target_limb.status & LIMB_DESTROYED)))
+	if(ishuman(carbone) && (!target_limb || (target_limb.status & LIMB_DESTROYED)))
 		target_limb = carbone.get_limb("chest")
 
 
-	if (!check_and_use_plasma_owner())
+	if(!check_and_use_plasma_owner())
 		return
 
 	carbone.last_damage_data = create_cause_data(initial(woyer.caste_type), woyer)

@@ -20,10 +20,10 @@
 	desc = "A simple deck of playing cards."
 	icon = 'icons/obj/items/playing_cards.dmi'
 	icon_state = "deck"
+	base_icon = "deck"
 	w_class = SIZE_TINY
 	flags_item = NOTABLEMERGE
 
-	var/base_icon = "deck"
 	var/max_cards = 52
 	var/list/datum/playing_card/cards = list()
 

@@ -18,30 +18,22 @@ var/datum/controller/supply/supply_controller = new()
 /area/supply/station //DO NOT TURN THE lighting_use_dynamic STUFF ON FOR SHUTTLES. IT BREAKS THINGS.
 	name = "Supply Shuttle"
 	icon_state = "shuttle3"
-	luminosity = 1
-	lighting_use_dynamic = 0
 	requires_power = 0
 	ambience_exterior = AMBIENCE_ALMAYER
 
 /area/supply/dock //DO NOT TURN THE lighting_use_dynamic STUFF ON FOR SHUTTLES. IT BREAKS THINGS.
 	name = "Supply Shuttle"
 	icon_state = "shuttle3"
-	luminosity = 1
-	lighting_use_dynamic = 0
 	requires_power = 0
 
 /area/supply/station_vehicle //DO NOT TURN THE lighting_use_dynamic STUFF ON FOR SHUTTLES. IT BREAKS THINGS.
 	name = "Vehicle ASRS"
 	icon_state = "shuttle3"
-	luminosity = 1
-	lighting_use_dynamic = 0
 	requires_power = 0
 
 /area/supply/dock_vehicle //DO NOT TURN THE lighting_use_dynamic STUFF ON FOR SHUTTLES. IT BREAKS THINGS.
 	name = "Vehicle ASRS"
 	icon_state = "shuttle3"
-	luminosity = 1
-	lighting_use_dynamic = 0
 	requires_power = 0
 
 //SUPPLY PACKS MOVED TO /code/defines/obj/supplypacks.dm
@@ -163,12 +155,12 @@ var/datum/controller/supply/supply_controller = new()
 	icon_state = "security_cam"
 	circuit = /obj/item/circuitboard/computer/supply_drop_console
 	req_access = list(ACCESS_MARINE_CARGO)
+	faction_to_get = FACTION_MARINE
 	var/x_supply = 0
 	var/y_supply = 0
 	var/datum/squad/current_squad = null
 	var/drop_cooldown = 1 MINUTES
 	var/can_pick_squad = TRUE
-	var/faction = FACTION_MARINE
 	var/obj/structure/closet/crate/loaded_crate
 	COOLDOWN_DECLARE(next_fire)
 
@@ -191,7 +183,7 @@ var/datum/controller/supply/supply_controller = new()
 	var/list/data = list()
 
 	var/list/squad_list = list()
-	for(var/datum/squad/S in RoleAuthority.squads)
+	for(var/datum/squad/S in SSticker.role_authority.squads)
 		if(S.active && S.faction == faction && S.color)
 			squad_list += list(list(
 				"squad_name" = S.name,
@@ -301,17 +293,17 @@ var/datum/controller/supply/supply_controller = new()
 	else
 		z_coord = 1 // fuck it
 
-	var/turf/T = locate(x_coord, y_coord, z_coord)
-	if(!T)
+	var/turf/target = locate(x_coord, y_coord, z_coord)
+	if(!target)
 		to_chat(usr, "[icon2html(src, usr)] [SPAN_WARNING("Error, invalid coordinates.")]")
 		return
 
-	var/area/A = get_area(T)
-	if(A && CEILING_IS_PROTECTED(A.ceiling, CEILING_PROTECTION_TIER_2))
+	var/turf/real_target = target.get_real_roof()
+	if(real_target != target)
 		to_chat(usr, "[icon2html(src, usr)] [SPAN_WARNING("The landing zone is underground. The supply drop cannot reach here.")]")
 		return
 
-	if(istype(T, /turf/open/space) || T.density)
+	if(istype(real_target, /turf/open/space) || real_target.density)
 		to_chat(usr, "[icon2html(src, usr)] [SPAN_WARNING("The landing zone appears to be obstructed or out of bounds. Package would be lost on drop.")]")
 		return
 
@@ -321,12 +313,12 @@ var/datum/controller/supply/supply_controller = new()
 	COOLDOWN_START(src, next_fire, drop_cooldown)
 	if(ismob(usr))
 		var/mob/M = usr
-		M.count_niche_stat(STATISTICS_NICHE_CRATES)
+		M.count_statistic_stat(STATISTICS_CRATES)
 
 	playsound(C.loc,'sound/effects/bamf.ogg', 50, 1)  //Ehh
 	var/obj/structure/droppod/supply/pod = new()
 	C.forceMove(pod)
-	pod.launch(T)
+	pod.launch(target)
 	visible_message("[icon2html(src, viewers(src))] [SPAN_BOLDNOTICE("'[C.name]' supply drop launched! Another launch will be available in five minutes.")]")
 
 //A limited version of the above console
@@ -546,7 +538,6 @@ var/datum/controller/supply/supply_controller = new()
 		else qdel(movable_atom)
 
 /proc/maul_human(mob/living/carbon/human/mauled_human)
-
 	for(var/atom/computer as anything in supply_controller.bound_supply_computer_list)
 		computer.balloon_alert_to_viewers("you hear horrifying noises coming from the elevator!")
 
@@ -1044,7 +1035,6 @@ var/datum/controller/supply/supply_controller = new()
 		supply_shuttle_shoppinglist -= remove_supply
 		supply_shuttle_points += remove_supply.object.cost
 		temp += "Canceled: [remove_supply.object.name]<BR><BR><BR>"
-
 		for(var/S in supply_shuttle_shoppinglist)
 			var/datum/supply_order/SO = S
 			temp += "[SO.object.name] approved by [SO.orderedby] <A href='?src=\ref[src];cancelorder=[S]'>(Cancel)</A><BR>"
@@ -1264,8 +1254,8 @@ var/datum/controller/supply/supply_controller = new()
 	req_access = list(ACCESS_MARINE_CREWMAN)
 	circuit = /obj/item/circuitboard/computer/supplycomp/vehicle
 	// Can only retrieve one vehicle per round
-	var/spent = TRUE
-	var/tank_unlocked = FALSE
+	var/spent = FALSE
+	var/tank_unlocked = TRUE
 	var/list/allowed_roles = list(JOB_CREWMAN)
 
 	var/list/vehicles
@@ -1275,6 +1265,7 @@ var/datum/controller/supply/supply_controller = new()
 
 	var/obj/vehicle/ordered_vehicle
 	var/unlocked = TRUE
+	var/faction_to_get = FACTION_MARINE
 	var/failure_message = "<font color=\"red\"><b>Not enough resources were allocated to repair this vehicle during this operation.</b></font><br>"
 
 /datum/vehicle_order/proc/has_vehicle_lock()
@@ -1306,13 +1297,12 @@ var/datum/controller/supply/supply_controller = new()
 	. = ..()
 
 	vehicles = list(
-		/datum/vehicle_order/apc,
-		/datum/vehicle_order/apc/med,
-		/datum/vehicle_order/apc/cmd,
+		new /datum/vehicle_order/apc,
+		new /datum/vehicle_order/apc/med,
+		new /datum/vehicle_order/apc/cmd,
 	)
-
-	for(var/order as anything in vehicles)
-		new order
+	if(tank_unlocked)
+		vehicles += new /datum/vehicle_order/tank
 
 	if(!VehicleElevatorConsole)
 		VehicleElevatorConsole = src
@@ -1321,7 +1311,7 @@ var/datum/controller/supply/supply_controller = new()
 	if(inoperable())
 		return
 
-	if(LAZYLEN(allowed_roles) && !allowed_roles.Find(H.job)) //replaced Z-level restriction with role restriction.
+	if(length(allowed_roles) && !allowed_roles.Find(H.job)) //replaced Z-level restriction with role restriction.
 		to_chat(H, SPAN_WARNING("This console isn't for you."))
 		return
 
@@ -1338,27 +1328,28 @@ var/datum/controller/supply/supply_controller = new()
 		return
 
 	dat += "Platform position: "
-	if (SSshuttle.vehicle_elevator.timeLeft())
+	if(SSshuttle.vehicle_elevator.mode != SHUTTLE_IDLE)
 		dat += "Moving"
 	else
 		if(is_mainship_level(SSshuttle.vehicle_elevator.z))
 			dat += "Raised"
+			dat += "<a href='?src=\ref[src];lower_platform=TRUE'>Lower platform</a><br>"
 		else
 			dat += "Lowered"
-	dat += "<br><hr>"
+			dat += "<br><hr>"
 
-	if(spent)
-		dat += "No vehicles are available for retrieval."
-	else
-		dat += "Available vehicles:<br>"
-
-		for(var/d in vehicles)
-			var/datum/vehicle_order/VO = d
-
-			if(VO.has_vehicle_lock())
-				dat += VO.failure_message
+			if(spent)
+				dat += "No vehicles are available for retrieval."
 			else
-				dat += "<a href='?src=\ref[src];get_vehicle=\ref[VO]'>[VO.name]</a><br>"
+				dat += "Available vehicles:<br>"
+
+				for(var/d in vehicles)
+					var/datum/vehicle_order/VO = d
+
+					if(VO.has_vehicle_lock())
+						dat += VO.failure_message
+					else
+						dat += "<a href='?src=\ref[src];get_vehicle=\ref[VO]'>[VO.name]</a><br>"
 
 	show_browser(H, dat, "Automated Storage and Retrieval System", "computer", "size=575x450")
 
@@ -1374,18 +1365,21 @@ var/datum/controller/supply/supply_controller = new()
 		world.log << "## ERROR: Eek. The supply_controller controller datum is missing somehow."
 		return
 
-	if (!SSshuttle.vehicle_elevator)
+	if(!SSshuttle.vehicle_elevator)
 		world.log << "## ERROR: Eek. The supply/elevator datum is missing somehow."
-		return
-
-	if(!is_admin_level(SSshuttle.vehicle_elevator.z))
 		return
 
 	if(ismaintdrone(usr))
 		return
 
-	if(isturf(loc) && ( in_range(src, usr) || ishighersilicon(usr) ) )
+	if(isturf(loc) && (in_range(src, usr) || ishighersilicon(usr)))
 		usr.set_interaction(src)
+
+	if(href_list["lower_platform"])
+		SSshuttle.vehicle_elevator.request(SSshuttle.getDock("adminlevel vehicle"))
+
+	if(!is_admin_level(SSshuttle.vehicle_elevator.z))
+		return
 
 	if(href_list["get_vehicle"])
 		if(is_mainship_level(SSshuttle.vehicle_elevator.z))
@@ -1397,11 +1391,13 @@ var/datum/controller/supply/supply_controller = new()
 
 		var/datum/vehicle_order/VO = locate(href_list["get_vehicle"])
 
-		if(!VO) return
-		if(VO.has_vehicle_lock()) return
+		if(!VO)
+			return
+		if(VO.has_vehicle_lock())
+			return
 
 		spent = TRUE
-		ordered_vehicle = new VO.ordered_vehicle(middle_turf)
+		ordered_vehicle = new VO.ordered_vehicle(middle_turf, faction_to_get)
 		SSshuttle.vehicle_elevator.request(SSshuttle.getDock("almayer vehicle"))
 
 		VO.on_created(ordered_vehicle)

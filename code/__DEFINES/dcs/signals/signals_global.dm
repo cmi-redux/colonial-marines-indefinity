@@ -34,9 +34,6 @@
 
 #define COMSIG_GLOB_MOB_LOGIN "!mob_login"
 
-///from /datum/controller/subsystem/ticker/PostSetup
-#define COMSIG_GLOB_POST_SETUP "!post_setup"
-
 ///from /proc/set_security_level
 #define COMSIG_GLOB_SECURITY_LEVEL_CHANGED "!security_level_changed"
 

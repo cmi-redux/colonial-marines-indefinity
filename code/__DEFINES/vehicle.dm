@@ -49,9 +49,7 @@
 #define VEHICLE_TOGGLE_SHIFT_CLICK_GUNNER (1<<0)
 
 /// Vehicle Classes (for future)
-#define VEHICLE_CLASS_WEAK (1<<1) //light unarmored vehicles like colony vehicles/trucks/vans
-#define VEHICLE_CLASS_LIGHT (1<<2) //light class armor (APC, tank)
-#define VEHICLE_CLASS_MEDIUM (1<<3) //medium class armor (tank)
-#define VEHICLE_CLASS_HEAVY (1<<4) //heavy class armor (tank)
-
-#define TANK_POPLOCK 90
+#define VEHICLE_CLASS_WEAK		(1<<1)		//light unarmored vehicles like colony vehicles/trucks/vans
+#define VEHICLE_CLASS_LIGHT		(1<<2)		//light class armor (APC, tank)
+#define VEHICLE_CLASS_MEDIUM	(1<<3)		//medium class armor (tank)
+#define VEHICLE_CLASS_HEAVY		(1<<4)		//heavy class armor (tank)

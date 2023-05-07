@@ -3,9 +3,9 @@
 		.=1
 	else
 		return 0
-	if(LAZYLEN(accessories) && restricted_accessory_slots && (A.slot in restricted_accessory_slots))
+	if(length(accessories) && restricted_accessory_slots && (A.slot in restricted_accessory_slots))
 		for(var/obj/item/clothing/accessory/AC in accessories)
-			if (AC.slot == A.slot)
+			if(AC.slot == A.slot)
 				return 0
 
 /obj/item/clothing/accessory/proc/get_inv_overlay()
@@ -64,7 +64,7 @@
 			to_chat(user, SPAN_WARNING("You cannot attach more accessories of this type to [src]."))
 		return
 
-	if(LAZYLEN(accessories))
+	if(length(accessories))
 		for(var/obj/item/clothing/accessory/A in accessories)
 			A.attackby(I, user)
 		return
@@ -73,7 +73,7 @@
 
 /obj/item/clothing/attack_hand(mob/user, mods)
 	//only forward to the attached accessory if the clothing is equipped (not in a storage)
-	if(LAZYLEN(accessories) && src.loc == user)
+	if(length(accessories) && src.loc == user)
 		var/delegated //So that accessories don't block attack_hands unless they actually did something. Specifically meant for armour vests with medals, but can't hurt in general.
 		for(var/obj/item/clothing/accessory/A in accessories)
 			if(A.attack_hand(user, mods))
@@ -128,14 +128,14 @@
 		return
 	if(usr.stat)
 		return
-	if(!LAZYLEN(accessories))
+	if(!length(accessories))
 		return
 	var/obj/item/clothing/accessory/A
 	var/list/removables = list()
 	for(var/obj/item/clothing/accessory/ass in accessories)
 		if(ass.removable)
 			removables |= ass
-	if(LAZYLEN(accessories) > 1)
+	if(length(accessories) > 1)
 		A = tgui_input_list(usr, "Select an accessory to remove from [src]", "Remove accessory", removables)
 	else
 		A = LAZYACCESS(accessories, 1)
@@ -148,7 +148,7 @@
 		verbs -= /obj/item/clothing/proc/removetie_verb
 
 /obj/item/clothing/emp_act(severity)
-	if(LAZYLEN(accessories))
+	if(length(accessories))
 		for(var/obj/item/clothing/accessory/A in accessories)
 			A.emp_act(severity)
 	..()

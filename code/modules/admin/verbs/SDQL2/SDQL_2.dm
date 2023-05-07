@@ -340,7 +340,7 @@ GLOBAL_DATUM_INIT(sdql2_vv_statobj, /obj/effect/statclick/sdql2_vv_all, new(null
 	var/obj/effect/statclick/SDQL2_action/action_click
 
 /datum/sdql2_query/New(list/tree, SU = FALSE, admin_interact = TRUE, _options = SDQL2_OPTIONS_DEFAULT, finished_qdel = FALSE)
-	if(IsAdminAdvancedProcCall() || !LAZYLEN(tree))
+	if(IsAdminAdvancedProcCall() || !length(tree))
 		qdel(src)
 		return
 	LAZYADD(GLOB.sdql2_queries, src)

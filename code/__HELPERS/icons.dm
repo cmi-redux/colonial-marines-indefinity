@@ -213,6 +213,24 @@ world
 	maxz = 1
 */
 
+/proc/BlendRGB(rgb1, rgb2, amount)
+	var/list/RGB1 = ReadRGB(rgb1)
+	var/list/RGB2 = ReadRGB(rgb2)
+
+	// add missing alpha if needed
+	if(length(RGB1) < length(RGB2))
+		RGB1 += 255
+	else if(length(RGB2) < length(RGB1))
+		RGB2 += 255
+	var/usealpha = length(RGB1) > 3
+
+	var/r = round(RGB1[1] + (RGB2[1] - RGB1[1]) * amount, 1)
+	var/g = round(RGB1[2] + (RGB2[2] - RGB1[2]) * amount, 1)
+	var/b = round(RGB1[3] + (RGB2[3] - RGB1[3]) * amount, 1)
+	var/alpha = usealpha ? round(RGB1[4] + (RGB2[4] - RGB1[4]) * amount, 1) : null
+
+	return isnull(alpha) ? rgb(r, g, b) : rgb(r, g, b, alpha)
+
 #define TO_HEX_DIGIT(n) ascii2text((n&15) + ((n&15)<10 ? 48 : 87))
 
 /icon/proc/BecomeLying()
@@ -221,7 +239,7 @@ world
 	Shift(EAST,1)
 
 	// Multiply all alpha values by this float
-/icon/proc/ChangeOpacity(opacity = 1.0)
+/icon/proc/ChangeOpacity(opacity = TRUE)
 	MapColors(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,opacity, 0,0,0,0)
 
 	// Convert to grayscale
@@ -561,8 +579,10 @@ world
 	return flat_icon
 
 /proc/adjust_brightness(color, value)
-	if (!color) return "#FFFFFF"
-	if (!value) return color
+	if(!color)
+		return "#FFFFFF"
+	if(!value)
+		return color
 
 	var/list/RGB = ReadRGB(color)
 	RGB[1] = Clamp(RGB[1]+value,0,255)
@@ -612,28 +632,28 @@ world
 	I.flick_overlay(src, time)
 
 /proc/icon2html(thing, target, icon_state, dir = SOUTH, frame = 1, moving = FALSE, sourceonly = FALSE)
-	if (!thing)
+	if(!thing)
 		return
 
 	var/key
 	var/icon/I = thing
 
-	if (!target)
+	if(!target)
 		return
-	if (target == world)
+	if(target == world)
 		target = GLOB.clients
 
 	var/list/targets
-	if (!islist(target))
+	if(!islist(target))
 		targets = list(target)
 	else
 		targets = target
-		if (!targets.len)
+		if(!targets.len)
 			return
-	if (!isicon(I))
-		if (isfile(thing)) //special snowflake
+	if(!isicon(I))
+		if(isfile(thing)) //special snowflake
 			var/name = sanitize_filename("[generate_asset_name(thing)].png")
-			if (!SSassets.cache[name])
+			if(!SSassets.cache[name])
 				SSassets.transport.register_asset(name, thing)
 			for (var/thing2 in targets)
 				SSassets.transport.send_assets(thing2, name)
@@ -643,19 +663,19 @@ world
 		var/atom/A = thing
 
 		I = A.icon
-		if (isnull(icon_state))
+		if(isnull(icon_state))
 			icon_state = A.icon_state
-			if (!icon_state)
+			if(!icon_state)
 				icon_state = initial(A.icon_state)
-				if (isnull(dir))
+				if(isnull(dir))
 					dir = initial(A.dir)
 
-		if (isnull(dir))
+		if(isnull(dir))
 			dir = A.dir
 	else
-		if (isnull(dir))
+		if(isnull(dir))
 			dir = SOUTH
-		if (isnull(icon_state))
+		if(isnull(icon_state))
 			icon_state = ""
 
 	I = icon(I, icon_state, dir, frame, moving)
@@ -672,11 +692,11 @@ world
 //Costlier version of icon2html() that uses getFlatIcon() to account for overlays, underlays, etc. Use with extreme moderation, ESPECIALLY on mobs.
 /proc/costly_icon2html(thing, target, sourceonly = FALSE)
 	SHOULD_NOT_SLEEP(TRUE) // Sanity, for purpose of debugging with REALTIMEOFDAY below only
-	if (!thing)
+	if(!thing)
 		return
 
 	var/start_time = REALTIMEOFDAY
-	if (isicon(thing))
+	if(isicon(thing))
 		. = icon2html(thing, target)
 	else
 		var/icon/I = getFlatIcon(thing)
@@ -718,24 +738,6 @@ world
 		return FALSE
 	else
 		return TRUE
-
-/proc/BlendRGB(rgb1, rgb2, amount)
-	var/list/RGB1 = ReadRGB(rgb1)
-	var/list/RGB2 = ReadRGB(rgb2)
-
-	// add missing alpha if needed
-	if(length(RGB1) < length(RGB2))
-		RGB1 += 255
-	else if(length(RGB2) < length(RGB1))
-		RGB2 += 255
-	var/usealpha = length(RGB1) > 3
-
-	var/r = round(RGB1[1] + (RGB2[1] - RGB1[1]) * amount, 1)
-	var/g = round(RGB1[2] + (RGB2[2] - RGB1[2]) * amount, 1)
-	var/b = round(RGB1[3] + (RGB2[3] - RGB1[3]) * amount, 1)
-	var/alpha = usealpha ? round(RGB1[4] + (RGB2[4] - RGB1[4]) * amount, 1) : null
-
-	return isnull(alpha) ? rgb(r, g, b) : rgb(r, g, b, alpha)
 
 /proc/icon2base64(icon/icon)
 	if(!isicon(icon))

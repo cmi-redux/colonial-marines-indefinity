@@ -9,6 +9,9 @@
 	icon_state = "plating"
 	intact_tile = FALSE
 	tool_flags = NO_FLAGS
+	shoefootstep = FOOTSTEP_PLATING
+	barefootstep = FOOTSTEP_HARD
+	mediumxenofootstep = FOOTSTEP_PLATING
 
 /turf/open/floor/plating/is_plating()
 	return TRUE
@@ -107,6 +110,7 @@
 /turf/open/floor/plating/icefloor
 	icon_state = "plating"
 	name = "ice colony plating"
+	antipierce = 5
 
 /turf/open/floor/plating/icefloor/Initialize(mapload, ...)
 	. = ..()
@@ -126,6 +130,9 @@
 	icon_state = "plating_catwalk"
 	var/base_state = "plating" //Post mapping
 	var/covered = TRUE
+	shoefootstep = FOOTSTEP_CATWALK
+	barefootstep = FOOTSTEP_CATWALK
+	mediumxenofootstep = FOOTSTEP_CATWALK
 
 /turf/open/floor/plating/plating_catwalk/Initialize(mapload, ...)
 	. = ..()
@@ -139,7 +146,7 @@
 		overlays += image(icon, src, "catwalk", CATWALK_LAYER)
 
 /turf/open/floor/plating/plating_catwalk/attackby(obj/item/W as obj, mob/user as mob)
-	if (HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
+	if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 		if(covered)
 			var/obj/item/stack/catwalk/R = new(src, 1, type)
 			R.add_to_stacks(usr)
@@ -196,6 +203,9 @@
 	icon_state = "catwalk0"
 	name = "catwalk"
 	desc = "Cats really don't like these things."
+	shoefootstep = FOOTSTEP_CATWALK
+	barefootstep = FOOTSTEP_CATWALK
+	mediumxenofootstep = FOOTSTEP_CATWALK
 
 
 /turf/open/floor/almayer
@@ -209,6 +219,7 @@
 	desc = "There seems to be an awful lot of machinery down below"
 	icon = 'icons/turf/floors/floors.dmi'
 	icon_state = "black"
+	turf_flags = TURF_MULTIZ
 
 /turf/open/floor/almayer/empty/Initialize(mapload, ...)
 	. = ..()
@@ -217,9 +228,6 @@
 /turf/open/floor/almayer/empty/Destroy(force) // may as well
 	. = ..()
 	GLOB.asrs_empty_space_tiles_list -= src
-
-/turf/open/floor/almayer/empty/is_weedable()
-	return NOT_WEEDABLE
 
 /turf/open/floor/almayer/empty/ex_act(severity) //Should make it indestructible
 	return
@@ -230,18 +238,14 @@
 /turf/open/floor/almayer/empty/attackby() //This should fix everything else. No cables, etc
 	return
 
-/turf/open/floor/almayer/empty/Entered(atom/movable/AM)
+/turf/open/floor/almayer/empty/Entered(atom/movable/arrived)
 	..()
-	if(!isobserver(AM))
-		addtimer(CALLBACK(src, PROC_REF(enter_depths), AM), 0.2 SECONDS)
+	if(!isobserver(arrived))
+		addtimer(CALLBACK(src, PROC_REF(enter_depths), arrived), 0.2 SECONDS)
 
-/turf/open/floor/almayer/empty/proc/enter_depths(atom/movable/AM)
-	if(AM.throwing == 0 && istype(get_turf(AM), /turf/open/floor/almayer/empty))
-		AM.visible_message(SPAN_WARNING("[AM] falls into the depths!"), SPAN_WARNING("You fall into the depths!"))
-		if(!ishuman(AM))
-			qdel(AM)
-			return
-		var/mob/living/carbon/human/thrown_human = AM
+/turf/open/floor/almayer/empty/proc/enter_depths(atom/movable/movable_atom)
+	if(movable_atom.throwing == 0 && istype(get_turf(movable_atom), /turf/open/floor/almayer/empty))
+		movable_atom.visible_message(SPAN_WARNING("[movable_atom] falls into the depths!"), SPAN_WARNING("You fall into the depths!"))
 		for(var/atom/computer as anything in supply_controller.bound_supply_computer_list)
 			computer.balloon_alert_to_viewers("you hear horrifying noises coming from the elevator!")
 
@@ -252,12 +256,13 @@
 		for(var/turf/turf in area_shuttle)
 			turflist |= turf
 
-		thrown_human.forceMove(pick(turflist))
+		movable_atom.forceMove(pick(turflist))
 
-		var/timer = 0.5 SECONDS
-		for(var/index in 1 to 10)
-			timer += 0.5 SECONDS
-			addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(maul_human), thrown_human), timer)
+		if(ishuman(movable_atom))
+			var/timer = 0.5 SECONDS
+			for(var/index in 1 to 10)
+				timer += 0.5 SECONDS
+				addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(maul_human), movable_atom), timer)
 		return
 
 	else
@@ -307,27 +312,53 @@
 
 
 
+//Roofs
 
+/turf/open/floor/roof
+	icon = 'icons/turf/roofs/roof_asphalt.dmi'
+	icon_state = "roof-0"
+	base_icon = "roof"
+	name = "roof"
+	smoothing_flags = SMOOTH_BITMASK
+	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_ROOF_NORMAL)
+	canSmoothWith = list(SMOOTH_GROUP_ROOF_NORMAL)
 
-
-//Outerhull
-
-/turf/open/floor/almayer_hull
-	icon = 'icons/turf/almayer.dmi'
-	icon_state = "outerhull"
+/turf/open/floor/roof/ship_hull
+	icon = 'icons/turf/roofs/roof_ship.dmi'
 	name = "hull"
 	hull_floor = TRUE
+	smoothing_flags = NO_FLAGS
 
+/turf/open/floor/roof/ship_hull/lab
+	icon = 'icons/turf/roofs/roof_lab.dmi'
+	name = "lab roof"
 
+/turf/open/floor/roof/metal
+	icon = 'icons/turf/roofs/roof_metal.dmi'
+	name = "metal roof"
 
+/turf/open/floor/roof/metal/rusty
+	icon = 'icons/turf/roofs/roof_rusty.dmi'
+	name = "rusty metal roof"
 
+/turf/open/floor/roof/sheet
+	icon = 'icons/turf/roofs/roof_sheet.dmi'
+	name = "sheet roof"
 
+/turf/open/floor/roof/sheet/noborder
+	icon = 'icons/turf/roofs/roof_sheet_noborder.dmi'
 
+/turf/open/floor/roof/asphalt
+	icon = 'icons/turf/roofs/roof_asphalt.dmi'
+	name = "asphalt roof"
 
+/turf/open/floor/roof/asphalt/noborder
+	icon = 'icons/turf/roofs/roof_asphalt_noborder.dmi'
 
+/turf/open/floor/roof/wood
+	icon = 'icons/turf/roofs/roof_wood.dmi'
+	name = "wood roof"
 //////////////////////////////////////////////////////////////////////
-
-
 
 
 
@@ -353,6 +384,9 @@
 	icon_state = "wood"
 	tile_type = /obj/item/stack/tile/wood
 	tool_flags = BREAK_CROWBAR|REMOVE_SCREWDRIVER
+	shoefootstep = FOOTSTEP_WOOD
+	barefootstep = FOOTSTEP_WOOD
+	mediumxenofootstep = FOOTSTEP_WOOD
 
 /turf/open/floor/wood/is_wood_floor()
 	return TRUE
@@ -441,6 +475,11 @@
 	icon_state = "grass1"
 	tile_type = /obj/item/stack/tile/grass
 	tool_flags = null
+	shoefootstep = FOOTSTEP_GRASS
+	barefootstep = FOOTSTEP_GRASS
+	mediumxenofootstep = FOOTSTEP_GRASS
+
+	antipierce = 5
 
 /turf/open/floor/grass/Initialize(mapload, ...)
 	. = ..()
@@ -450,7 +489,7 @@
 
 /turf/open/floor/grass/LateInitialize()
 	. = ..()
-	for(var/direction in cardinal)
+	for(var/direction in  GLOB.cardinals)
 		if(istype(get_step(src,direction),/turf/open/floor))
 			var/turf/open/floor/FF = get_step(src,direction)
 			FF.update_icon() //so siding get updated properly
@@ -472,6 +511,9 @@
 	icon_state = "carpet"
 	tile_type = /obj/item/stack/tile/carpet
 	tool_flags = REMOVE_SCREWDRIVER
+	shoefootstep = FOOTSTEP_CARPET
+	barefootstep = FOOTSTEP_CARPET
+	mediumxenofootstep = FOOTSTEP_CARPET
 
 /turf/open/floor/carpet/Initialize(mapload, ...)
 	. = ..()
@@ -495,7 +537,7 @@
 	if(!broken && !burnt)
 		if(icon_state != "carpetsymbol")
 			var/connectdir = 0
-			for(var/direction in cardinal)
+			for(var/direction in  GLOB.cardinals)
 				if(istype(get_step(src, direction), /turf/open/floor))
 					var/turf/open/floor/FF = get_step(src, direction)
 					if(FF.is_carpet_floor())
@@ -536,7 +578,7 @@
 			icon_state = "carpet[connectdir]-[diagonalconnect]"
 
 /turf/open/floor/carpet/make_plating()
-	for(var/direction in alldirs)
+	for(var/direction in GLOB.alldirs)
 		if(istype(get_step(src, direction), /turf/open/floor))
 			var/turf/open/floor/FF = get_step(src,direction)
 			FF.update_icon() // So siding get updated properly

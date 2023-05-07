@@ -107,7 +107,7 @@
 			to_chat(user, SPAN_NOTICE("You need to open the drink!"))
 			return
 
-		if (istype(target, /obj/item/reagent_container/food/drinks/cans))
+		if(istype(target, /obj/item/reagent_container/food/drinks/cans))
 			var/obj/item/reagent_container/food/drinks/cans/cantarget = target
 			if(!cantarget.canopened)
 				to_chat(user, SPAN_NOTICE("You need to open the drink you want to pour into!"))

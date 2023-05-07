@@ -7,7 +7,7 @@
 #define ADD_TRAIT(target, trait, source) \
 	do { \
 		var/list/_L; \
-		if (!target.status_traits) { \
+		if(!target.status_traits) { \
 			target.status_traits = list(); \
 			_L = target.status_traits; \
 			_L[trait] = list(source); \
@@ -17,7 +17,7 @@
 			} \
 		} else { \
 			_L = target.status_traits; \
-			if (_L[trait]) { \
+			if(_L[trait]) { \
 				_L[trait] |= list(source); \
 			} else { \
 				_L[trait] = list(source); \
@@ -32,25 +32,25 @@
 	do { \
 		var/list/_L = target.status_traits; \
 		var/list/_S; \
-		if (sources && !islist(sources)) { \
+		if(sources && !islist(sources)) { \
 			_S = list(sources); \
 		} else { \
 			_S = sources\
 		}; \
-		if (_L && _L[trait]) { \
+		if(_L && _L[trait]) { \
 			for (var/_T in _L[trait]) { \
-				if ((!_S && (_T != TRAIT_SOURCE_QUIRK)) || (_T in _S)) { \
+				if((!_S && (_T != TRAIT_SOURCE_QUIRK)) || (_T in _S)) { \
 					_L[trait] -= _T \
 				} \
 			};\
-			if (!length(_L[trait])) { \
+			if(!length(_L[trait])) { \
 				_L -= trait; \
 				SEND_SIGNAL(target, SIGNAL_REMOVETRAIT(trait), trait); \
 				if(trait in GLOB.traits_with_elements) { \
 					target.RemoveElement(GLOB.traits_with_elements[trait]); \
 				} \
 			}; \
-			if (!length(_L)) { \
+			if(!length(_L)) { \
 				target.status_traits = null \
 			}; \
 		} \
@@ -59,10 +59,10 @@
 	do { \
 		var/list/_L = target.status_traits; \
 		var/list/_S = sources; \
-		if (_L) { \
+		if(_L) { \
 			for (var/_T in _L) { \
 				_L[_T] &= _S;\
-				if (!length(_L[_T])) { \
+				if(!length(_L[_T])) { \
 					_L -= _T; \
 					SEND_SIGNAL(target, SIGNAL_REMOVETRAIT(_T), _T); \
 					if(_T in GLOB.traits_with_elements) { \
@@ -70,7 +70,7 @@
 					}; \
 				};\
 			};\
-			if (!length(_L)) { \
+			if(!length(_L)) { \
 				target.status_traits = null\
 			};\
 		}\
@@ -80,15 +80,15 @@
 	do { \
 		var/list/_L = target.status_traits; \
 		var/list/_S = sources; \
-		if (sources && !islist(sources)) { \
+		if(sources && !islist(sources)) { \
 			_S = list(sources); \
 		} else { \
 			_S = sources\
 		}; \
-		if (_L) { \
+		if(_L) { \
 			for (var/_T in _L) { \
 				_L[_T] -= _S;\
-				if (!length(_L[_T])) { \
+				if(!length(_L[_T])) { \
 					_L -= _T; \
 					SEND_SIGNAL(target, SIGNAL_REMOVETRAIT(_T)); \
 					if(_T in GLOB.traits_with_elements) { \
@@ -96,7 +96,7 @@
 					}; \
 				};\
 			};\
-			if (!length(_L)) { \
+			if(!length(_L)) { \
 				target.status_traits = null\
 			};\
 		}\
@@ -169,6 +169,17 @@
 #define TRAIT_EMOTE_CD_EXEMPT "t_emote_cd_exempt"
 /// If the mob is holding a cane.
 #define TRAIT_HOLDS_CANE "t_holds_cane"
+
+/// If weather have same trait check protection, you evade damage
+#define TRAIT_LAVA_IMMUNE "lava_immune"
+#define TRAIT_ASHSTORM_IMMUNE "ashstorm_immune"
+#define TRAIT_SNOWSTORM_IMMUNE "snowstorm_immune"
+#define TRAIT_RADSTORM_IMMUNE "radstorm_immune"
+#define TRAIT_VOIDSTORM_IMMUNE "voidstorm_immune"
+#define TRAIT_DUSTSTORM_IMMUNE "duststorm_immune"
+#define TRAIT_RAINSTORM_IMMUNE "rainstorm_immune"
+#define TRAIT_WEATHER_IMMUNE "weather_immune"
+
 
 // -- ability traits --
 /// Xenos with this trait cannot have plasma transfered to them
@@ -253,7 +264,7 @@ GLOBAL_LIST_INIT(traits_by_type, list(
 		"TRAIT_ABILITY_NO_PLASMA_TRANSFER" = TRAIT_ABILITY_NO_PLASMA_TRANSFER,
 		"TRAIT_ABILITY_OVIPOSITOR" = TRAIT_ABILITY_OVIPOSITOR,
 	),
-	/datum/hive_status = list(
+	/datum/faction = list(
 		"TRAIT_XENONID" = TRAIT_XENONID,
 		"TRAIT_NO_HIVE_DELAY" = TRAIT_NO_HIVE_DELAY,
 		"TRAIT_NO_COLOR" = TRAIT_NO_COLOR,

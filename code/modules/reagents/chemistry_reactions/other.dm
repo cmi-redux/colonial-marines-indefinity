@@ -328,9 +328,9 @@
 	result_amount = 3
 
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 //*********************************Foam and Foam Precursor*********************************************/
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/chemical_reaction/surfactant
 	name = "Foam surfactant"
@@ -356,7 +356,7 @@
 
 	for(var/mob/M as anything in viewers(5, location))
 		to_chat(M, SPAN_WARNING("The solution spews out foam!"))
-	//for(var/datum/reagent/R in holder.reagent_list)
+	//for(datum/reagent/R in holder.reagent_list)
 
 	var/datum/effect_system/foam_spread/s = new()
 	s.set_up(created_volume, location, holder, 0)

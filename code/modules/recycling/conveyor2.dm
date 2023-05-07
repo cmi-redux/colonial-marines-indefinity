@@ -7,6 +7,7 @@
 	name = "conveyor belt"
 	desc = "A conveyor belt."
 	layer = CONVEYOR_LAYER // so they appear under stuff
+	plane = GAME_PLANE
 	anchored = TRUE
 	var/operating = 0 // 1 if running forward, -1 if backwards, 0 if off
 	var/operable = 1 // true if can operate (no broken segments in this belt run)
@@ -112,13 +113,13 @@
 
 // attack with hand, move pulled object onto conveyor
 /obj/structure/machinery/conveyor/attack_hand(mob/user as mob)
-	if ((!( user.canmove ) || user.is_mob_restrained() || !( user.pulling )))
+	if((!user.can_action || user.is_mob_restrained() || !user.pulling))
 		return
-	if (user.pulling.anchored)
+	if(user.pulling.anchored)
 		return
-	if ((user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1))
+	if((user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1))
 		return
-	if (ismob(user.pulling))
+	if(ismob(user.pulling))
 		var/mob/M = user.pulling
 		M.stop_pulling()
 		step(user.pulling, get_dir(user.pulling.loc, src))

@@ -27,6 +27,8 @@
 
 	var/silent = null //Can't talk. Value goes down every life proc.
 
+	var/fire_luminosity
+
 	// Putting these here for attack_animal().
 	var/melee_damage_lower = 0
 	var/melee_damage_upper = 0
@@ -49,7 +51,6 @@
 
 	var/list/icon/pipes_shown = list()
 	var/last_played_vent
-	var/is_ventcrawling = 0
 
 	var/pull_speed = 0 //How much slower or faster this mob drags as a base
 
@@ -61,10 +62,12 @@
 
 	var/reagent_move_delay_modifier = 0 //negative values increase movement speed
 
+	light_system = MOVABLE_LIGHT
+
 	var/blood_type = "X*"
 
 	//Flags for any active emotes the mob may be performing
-	var/flags_emote
+	var/flags_emote = NO_FLAGS
 	//ventcrawl
 	var/list/canEnterVentWith = list(
 		/obj/item/implant,
@@ -77,8 +80,6 @@
 	//blood.dm
 	var/blood_volume = 0 //how much blood the mob has
 	var/max_blood = BLOOD_VOLUME_NORMAL  // how much they should have
-
-	var/hivenumber
 
 	var/datum/pain/pain //Pain datum for the mob, set on New()
 	var/datum/stamina/stamina
@@ -93,6 +94,14 @@
 
 	var/current_weather_effect_type
 
+	var/atom/movable/icon_cutter
+
+	/// FOV view that is applied from either nativeness or traits
+//	var/fov_view
+	/// Native FOV that will be applied if a config is enabled
+//	var/native_fov = FOV_90_DEGREES
+	/// Lazy list of FOV traits that will apply a FOV view when handled.
+//	var/list/fov_traits
 
 	var/slash_verb = "attack"
 	var/slashes_verb = "attacks"

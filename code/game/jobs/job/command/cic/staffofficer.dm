@@ -2,9 +2,9 @@
 	title = JOB_SO
 	total_positions = 4
 	spawn_positions = 4
-	allow_additional = 1
+	allow_additional = TRUE
 	scaled = FALSE
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT
+	flags_startup_parameters = NO_FLAGS
 	gear_preset = /datum/equipment_preset/uscm_ship/so
 	entry_message_body = "<a href='"+URL_WIKI_SO_GUIDE+"'>Your job is to monitor the Marines, man the CIC, and listen to your superior officers.</a> You are in charge of logistics and the overwatch system. You are also in line to take command after other eligible superior commissioned officers."
 
@@ -14,7 +14,7 @@
 /datum/job/command/bridge/get_total_positions(latejoin = 0)
 	var/positions = spawn_positions
 	if(latejoin)
-		positions = so_slot_formula(get_total_marines())
+		positions = so_slot_formula(get_total_population(FACTION_MARINE))
 		if(positions <= total_positions_so_far)
 			positions = total_positions_so_far
 		else

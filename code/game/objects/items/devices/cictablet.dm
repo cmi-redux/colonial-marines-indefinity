@@ -12,33 +12,26 @@
 	var/cooldown_between_messages = COOLDOWN_COMM_MESSAGE
 
 	var/tablet_name = "Commanding Officer's Tablet"
-
 	var/announcement_title = COMMAND_ANNOUNCE
-	var/announcement_faction = FACTION_MARINE
-	var/add_pmcs = TRUE
 
-	var/datum/tacmap/tacmap
-	var/minimap_type = MINIMAP_FLAG_USCM
-
+	faction_to_get = FACTION_MARINE
 	COOLDOWN_DECLARE(announcement_cooldown)
 	COOLDOWN_DECLARE(distress_cooldown)
 
+	var/minimap_name = "Marine Tactical Map"
+	var/current_mapviewer
+	var/list/datum/ui_minimap/minimap = list()
+
 /obj/item/device/cotablet/Initialize()
-	tacmap = new(src, minimap_type)
-	if(SSticker.mode && MODE_HAS_FLAG(MODE_FACTION_CLASH))
-		add_pmcs = FALSE
-	else if(SSticker.current_state < GAME_STATE_PLAYING)
-		RegisterSignal(SSdcs, COMSIG_GLOB_MODE_PRESETUP, PROC_REF(disable_pmc))
-	return ..()
+	. = ..()
+	link_minimap()
 
-/obj/item/device/cotablet/Destroy()
-	QDEL_NULL(tacmap)
-	return ..()
-
-/obj/item/device/cotablet/proc/disable_pmc()
-	if(MODE_HAS_FLAG(MODE_FACTION_CLASH))
-		add_pmcs = FALSE
-	UnregisterSignal(SSdcs, COMSIG_GLOB_MODE_PRESETUP)
+/obj/item/device/cotablet/proc/link_minimap()
+	set waitfor = FALSE
+	WAIT_MAPVIEW_READY
+	for(var/i in ALL_MAPVIEW_MAPTYPES)
+		var/datum/ui_minimap/new_minimap = SSmapview.get_minimap_ui(faction, i, minimap_name)
+		minimap += list("[i]" = new_minimap)
 
 /obj/item/device/cotablet/attack_self(mob/user as mob)
 	..()
@@ -51,7 +44,7 @@
 /obj/item/device/cotablet/ui_static_data(mob/user)
 	var/list/data = list()
 
-	data["faction"] = announcement_faction
+	data["faction"] = faction.name
 	data["cooldown_message"] = cooldown_between_messages
 
 	return data
@@ -60,7 +53,7 @@
 	var/list/data = list()
 
 	data["alert_level"] = security_level
-	data["evac_status"] = EvacuationAuthority.evac_status
+	data["evac_status"] = SSevacuation.evac_status
 	data["endtime"] = announcement_cooldown
 	data["distresstime"] = distress_cooldown
 	data["distresstimelock"] = DISTRESS_TIME_LOCK
@@ -111,35 +104,38 @@
 					var/paygrade = get_paygrades(id.paygrade, FALSE, H.gender)
 					signed = "[paygrade] [id.registered_name]"
 
-			marine_announcement(input, announcement_title, faction_to_display = announcement_faction, add_PMCs = add_pmcs, signature = signed)
+			faction_announcement(input, announcement_title, null, faction, signed)
 			message_admins("[key_name(usr)] has made a command announcement.")
 			log_announcement("[key_name(usr)] has announced the following: [input]")
 			COOLDOWN_START(src, announcement_cooldown, cooldown_between_messages)
 			. = TRUE
 
 		if("award")
-			if(announcement_faction != FACTION_MARINE)
-				return
 			print_medal(usr, src)
 			. = TRUE
 
-		if("mapview")
-			tacmap.tgui_interact(usr)
-			. = TRUE
+		if("mapview_ground")
+			current_mapviewer = usr
+			mapview("[GROUND_MAP_Z]")
+			return
+
+		if("mapview_ship")
+			current_mapviewer = usr
+			mapview("[SHIP_MAP_Z]")
 
 		if("evacuation_start")
-			if(announcement_faction != FACTION_MARINE)
+			if(faction != GLOB.faction_datum[FACTION_MARINE])
 				return
 
 			if(security_level < SEC_LEVEL_RED)
 				to_chat(usr, SPAN_WARNING("The ship must be under red alert in order to enact evacuation procedures."))
 				return FALSE
 
-			if(EvacuationAuthority.flags_scuttle & FLAGS_EVACUATION_DENY)
+			if(SSevacuation.flags_scuttle & FLAGS_EVACUATION_DENY)
 				to_chat(usr, SPAN_WARNING("The USCM has placed a lock on deploying the evacuation pods."))
 				return FALSE
 
-			if(!EvacuationAuthority.initiate_evacuation())
+			if(!SSevacuation.initiate_evacuation())
 				to_chat(usr, SPAN_WARNING("You are unable to initiate an evacuation procedure right now!"))
 				return FALSE
 
@@ -163,12 +159,17 @@
 			COOLDOWN_START(src, distress_cooldown, COOLDOWN_COMM_REQUEST)
 			return TRUE
 
+/obj/item/device/cotablet/proc/mapview(map_to_view)
+	if(!Adjacent(current_mapviewer))
+		return
+	var/datum/ui_minimap/chosed = minimap["[map_to_view]"]
+	chosed.tgui_interact(current_mapviewer)
+
 /obj/item/device/cotablet/pmc
 	desc = "A special device used by corporate PMC directors."
 
 	tablet_name = "Site Director's Tablet"
+	announcement_title = WY_COMMAND_ANNOUNCE
 
-	announcement_title = PMC_COMMAND_ANNOUNCE
-	announcement_faction = FACTION_PMC
-
-	minimap_type = MINIMAP_FLAG_PMC
+	minimap_name = "WY Tactical Map"
+	faction_to_get = FACTION_WY

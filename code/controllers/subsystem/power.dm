@@ -1,10 +1,10 @@
 var/list/power_machines = list()
 
 SUBSYSTEM_DEF(power)
-	name   = "Power"
+	name = "Power"
 	init_order = SS_INIT_POWER
-	priority   = SS_PRIORITY_POWER
-	wait   = 2 SECONDS
+	priority = SS_PRIORITY_POWER
+	wait = 2 SECONDS
 
 	var/list/currentrun_cables = list()
 	var/list/currentrun_powerents = list()
@@ -22,8 +22,8 @@ SUBSYSTEM_DEF(power)
 
 
 /datum/controller/subsystem/power/fire(resumed = FALSE)
-	if (!resumed)
-		currentrun_powerents   = global.powernets.Copy()
+	if(!resumed)
+		currentrun_powerents = global.powernets.Copy()
 		currentrun_areas = active_areas.Copy()
 		currentrun_power_machines = global.power_machines.Copy()
 
@@ -34,7 +34,7 @@ SUBSYSTEM_DEF(power)
 		currentrun_powerents.len--
 		if(Powernet)
 			Powernet.process()
-		if (MC_TICK_CHECK)
+		if(MC_TICK_CHECK)
 			return
 
 
@@ -42,15 +42,15 @@ SUBSYSTEM_DEF(power)
 	while (currentrun_power_machines.len)
 		var/datum/X = currentrun_power_machines[currentrun_power_machines.len]
 		currentrun_power_machines.len--
-		if (!X || QDELETED(X))
+		if(!X || QDELETED(X))
 			continue
 
-		if (istype(X, /obj/structure/machinery))
+		if(istype(X, /obj/structure/machinery))
 			var/obj/structure/machinery/M = X
-			if (M.process() == PROCESS_KILL)
+			if(M.process() == PROCESS_KILL)
 				//M.inMachineList = FALSE
 				power_machines.Remove(M)
 				continue
 
-		if (MC_TICK_CHECK)
+		if(MC_TICK_CHECK)
 			return

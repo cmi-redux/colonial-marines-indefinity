@@ -1,6 +1,5 @@
 /mob/living/simple_animal/hostile
-	faction = "hostile"
-	var/stance = HOSTILE_STANCE_IDLE //Used to determine behavior
+	var/stance = HOSTILE_STANCE_IDLE	//Used to determine behavior
 	var/mob/living/target_mob
 	var/attack_same = 0
 	var/ranged = 0
@@ -15,6 +14,8 @@
 	black_market_value = KILL_MENDOZA
 	dead_black_market_value = 25
 	var/destroy_surroundings = 1
+
+	faction_to_get = FACTION_NEUTRAL
 
 /mob/living/simple_animal/hostile/Destroy()
 	friends = null
@@ -44,7 +45,7 @@
 
 		if(istype(A, /obj/structure/machinery/bot))
 			var/obj/structure/machinery/bot/B = A
-			if (B.health > 0)
+			if(B.health > 0)
 				stance = HOSTILE_STANCE_ATTACK
 				T = B
 				break
@@ -145,9 +146,9 @@
 
 /mob/living/simple_animal/hostile/proc/DestroySurroundings()
 	if(prob(break_stuff_probability))
-		for(var/dir in cardinal) // North, South, East, West
+		for(var/dir in  GLOB.cardinals) // North, South, East, West
 			for(var/obj/structure/window/obstacle in get_step(src, dir))
-				if(obstacle.dir == reverse_dir[dir]) // So that windows get smashed in the right order
+				if(obstacle.dir ==  GLOB.reverse_dir[dir]) // So that windows get smashed in the right order
 					obstacle.attack_animal(src)
 					return
 			var/obj/structure/obstacle = locate(/obj/structure, get_step(src, dir))

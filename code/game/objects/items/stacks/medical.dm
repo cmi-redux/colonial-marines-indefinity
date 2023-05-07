@@ -63,7 +63,7 @@
 	if(..())
 		return 1
 
-	if (istype(M, /mob/living/carbon/human))
+	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 
 		var/obj/limb/affecting = H.get_limb(user.zone_selected)
@@ -109,7 +109,7 @@
 	if(..())
 		return 1
 
-	if (istype(M, /mob/living/carbon/human))
+	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 
 		var/obj/limb/affecting = H.get_limb(user.zone_selected)
@@ -153,7 +153,7 @@
 	if(..())
 		return 1
 
-	if (istype(M, /mob/living/carbon/human))
+	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 
 		var/obj/limb/affecting = H.get_limb(user.zone_selected)
@@ -181,6 +181,7 @@
 				if(SEND_SIGNAL(affecting, COMSIG_LIMB_ADD_SUTURES, TRUE, FALSE, heal_amt * 0.5))
 					heal_amt *= 0.5
 				affecting.heal_damage(brute = heal_amt)
+				user.track_heal_damage(initial(name), affecting, heal_amt)
 				use(1)
 			if(WOUNDS_ALREADY_TREATED)
 				to_chat(user, SPAN_WARNING("The wounds on [possessive] [affecting.display_name] have already been treated."))
@@ -248,6 +249,7 @@
 				if(SEND_SIGNAL(affecting, COMSIG_LIMB_ADD_SUTURES, FALSE, TRUE, heal_amt * 0.5))
 					heal_amt *= 0.5
 				affecting.heal_damage(burn = heal_amt)
+				user.track_heal_damage(initial(name), affecting, heal_amt)
 				use(1)
 			if(WOUNDS_ALREADY_TREATED)
 				to_chat(user, SPAN_WARNING("The burns on [possessive] [affecting.display_name] have already been treated."))

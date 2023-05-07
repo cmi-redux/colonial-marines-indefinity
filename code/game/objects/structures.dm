@@ -10,6 +10,7 @@
 	var/list/debris
 	var/unslashable = FALSE
 	var/wrenchable = FALSE
+
 	health = 100
 	anchored = TRUE
 	projectile_coverage = PROJECTILE_COVERAGE_MEDIUM
@@ -56,7 +57,7 @@
 			deconstruct(FALSE)
 
 /obj/structure/proc/handle_debris(severity = 0, direction = 0)
-	if(!LAZYLEN(debris))
+	if(!length(debris))
 		return
 	switch(severity)
 		if(0)
@@ -150,7 +151,8 @@
 
 	for(var/mob/living/M in get_turf(src))
 
-		if(M.lying) return //No spamming this on people.
+		if(M.lying)
+			return //No spamming this on people.
 
 		M.apply_effect(5, WEAKEN)
 		to_chat(M, SPAN_WARNING("You topple as \the [src] moves under you!"))

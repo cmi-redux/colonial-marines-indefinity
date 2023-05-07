@@ -25,8 +25,6 @@
 
 	minimum_evolve_time = 4 MINUTES
 
-	minimap_icon = "defender"
-
 /mob/living/carbon/xenomorph/defender
 	caste_type = XENO_CASTE_DEFENDER
 	name = XENO_CASTE_DEFENDER
@@ -52,6 +50,13 @@
 	mutation_type = DEFENDER_NORMAL
 	icon_xeno = 'icons/mob/xenos/defender.dmi'
 	icon_xenonid = 'icons/mob/xenonids/defender.dmi'
+
+	balance_formulas = list(BALANCE_FORMULA_XENO_FIGHTER)
+
+/mob/living/carbon/xenomorph/defender/Initialize(mapload, mob/living/carbon/xenomorph/old_xeno, datum/faction/hive_to_set)
+	. = ..()
+
+	AddComponent(/datum/component/footstep, FOOTSTEP_XENO_MEDIUM)
 
 /mob/living/carbon/xenomorph/defender/handle_special_state()
 	if(fortify)

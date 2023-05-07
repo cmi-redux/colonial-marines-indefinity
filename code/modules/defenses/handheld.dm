@@ -10,35 +10,34 @@
 	throw_range = 5
 	w_class = SIZE_MEDIUM
 
-	indestructible = TRUE
 	var/defense_type = /obj/structure/machinery/defenses
 	var/deployment_time = 3 SECONDS
 
 	var/dropped = 1
 	var/obj/structure/machinery/defenses/TR
 
+	var/tcmp_color = COLOR_DEFENSES_TCMP
+
 /obj/item/defenses/handheld/get_examine_text(mob/user)
 	. = ..()
 	. += SPAN_INFO("It is ready for deployment.")
 	. += SPAN_INFO("It has [SPAN_HELPFUL("[TR.health]/[TR.health_max]")] health.")
 
-/obj/item/defenses/handheld/Initialize()
+/obj/item/defenses/handheld/Initialize(mapload, datum/faction/faction_to_set, obj/structure/machinery/defenses/defenses_ref)
 	. = ..()
-	connect()
+
+	if(faction_to_set)
+		faction = faction_to_set
+
+	if(defenses_ref)
+		TR = defenses_ref
+	else
+		TR = new defense_type(src, faction, src)
 
 /obj/item/defenses/handheld/Destroy()
 	if(!QDESTROYING(TR))
 		QDEL_NULL(TR)
 	return ..()
-
-/obj/item/defenses/handheld/proc/connect()
-	if(dropped && !TR)
-		TR = new defense_type
-		if(!TR.HD)
-			TR.HD = src
-			return TRUE
-		return TRUE
-	return FALSE
 
 /obj/item/defenses/handheld/attack_self(mob/living/carbon/human/user)
 	..()
@@ -51,6 +50,10 @@
 /obj/item/defenses/handheld/proc/deploy_handheld(mob/living/carbon/human/user)
 	if(SSinterior.in_interior(user))
 		to_chat(usr, SPAN_WARNING("It's too cramped in here to deploy \a [src]."))
+		return
+
+	if(TR.faction != user.faction && TR.faction)
+		to_chat(usr, SPAN_WARNING("\a [src] this is not your faction."))
 		return
 
 	var/turf/T = get_step(user, user.dir)
@@ -78,10 +81,12 @@
 
 	playsound(T, 'sound/mecha/mechmove01.ogg', 30, 1)
 
-	if(!TR.faction_group) //Littly trolling for stealing marines turrets, bad boys!
-		for(var/i in user.faction_group)
-			LAZYADD(TR.faction_group, i)
+	if(!TR.faction)
+		faction = user.faction
+		TR.faction = faction
+
 	TR.forceMove(get_turf(T))
+	SSmapview.add_marker(TR, "object_turret", rotating = TRUE, custom_color = tcmp_color)
 	TR.placed = 1
 	TR.update_icon()
 	TR.setDir(direction)

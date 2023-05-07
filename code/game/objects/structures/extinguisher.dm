@@ -7,7 +7,6 @@
 	density = FALSE
 	var/obj/item/tool/extinguisher/has_extinguisher = new/obj/item/tool/extinguisher
 	var/opened = 0
-	var/base_icon
 
 /obj/structure/extinguisher_cabinet/Initialize()
 	. = ..()

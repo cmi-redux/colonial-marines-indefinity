@@ -64,8 +64,8 @@
 	holder = new/obj/item/device/assembly_holder(get_turf(src))
 	if(holder.attach(A,src,user))
 		to_chat(user, SPAN_NOTICE("You attach \the [A] to \the [src]!"))
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 /obj/item/device/assembly/proc/process_cooldown() //Called via spawn(10) to have it count down the cooldown var
 	cooldown--

@@ -63,7 +63,7 @@
 	if(isnull(recipes))
 		recipes = list()
 		categories = list()
-		for(var/R in typesof(/datum/autolathe/recipe)-/datum/autolathe/recipe-/datum/autolathe/recipe/armylathe-/datum/autolathe/recipe/medilathe)
+		for(var/R in typesof(/datum/autolathe/recipe)-/datum/autolathe/recipe-/datum/autolathe/recipe/armylathe-/datum/autolathe/recipe/armylathe/ammo-/datum/autolathe/recipe/medilathe)
 			var/datum/autolathe/recipe/recipe = new R
 			if(recipe.category in disabled_categories)
 				continue
@@ -75,7 +75,7 @@
 				recipe.resources = list()
 				for(var/material in I.matter)
 					if(!isnull(storage_capacity[material]))
-						if(istype(I,/obj/item/stack/sheet))
+						if(istype(I, /obj/item/stack/sheet))
 							recipe.resources[material] = I.matter[material] //Doesn't take more if it's just a sheet or something. Get what you put in.
 						else
 							recipe.resources[material] = round(I.matter[material]*1.25) // More expensive to produce than they are to recycle.
@@ -399,7 +399,7 @@
 
 	busy = FALSE
 
-/obj/structure/machinery/autolathe/proc/print_item(datum/autolathe/recipe/making, multiplier, turf/make_loc)
+/obj/structure/machinery/autolathe/proc/print_item(datum/autolathe/recipe/making, multiplier, turf/make_loc, caliber)
 	// Make sure autolathe can print the item
 	for(var/material in making.resources)
 		if(isnull(stored_material[material]) || stored_material[material] < (making.resources[material]*multiplier))
@@ -436,6 +436,9 @@
 
 	//Create the desired item.
 	var/obj/item/I = new making.path(make_loc)
+	if(caliber)
+		var/obj/item/ammo_parts/ammo = I
+		ammo.caliber = caliber
 	if(multiplier > 1 && istype(I,/obj/item/stack))
 		var/obj/item/stack/S = I
 		S.amount = multiplier

@@ -4,13 +4,14 @@ SUBSYSTEM_DEF(projectiles)
 	init_order = SS_INIT_PROJECTILES
 	flags = SS_TICKER
 	priority = SS_PRIORITY_PROJECTILES
+	var/global_max_tick_moves = 10
 
 	/// List of projectiles handled by the subsystem
-	VAR_PRIVATE/list/obj/item/projectile/projectiles
+	VAR_PRIVATE/list/obj/item/projectile/projectiles = list()
 	/// List of projectiles on hold due to sleeping
-	VAR_PRIVATE/list/obj/item/projectile/sleepers
+	VAR_PRIVATE/list/obj/item/projectile/sleepers = list()
 	/// List of projectiles handled this controller firing
-	VAR_PRIVATE/list/obj/item/projectile/flying
+	VAR_PRIVATE/list/obj/item/projectile/flying = list()
 
 	/*
 	 * Scheduling notes:
@@ -32,9 +33,6 @@ SUBSYSTEM_DEF(projectiles)
 	return ..()
 
 /datum/controller/subsystem/projectiles/Initialize(start_timeofday)
-	projectiles = list()
-	flying = list()
-	sleepers = list()
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/projectiles/fire(resumed = FALSE)
@@ -55,7 +53,7 @@ SUBSYSTEM_DEF(projectiles)
 	// We're in double-check land here because there ARE rulebreakers.
 	if(QDELETED(projectile))
 		log_debug("SSprojectiles: projectile '[projectile.name]' shot by '[projectile.firer]' is scheduled despite being deleted.")
-	else if(projectile.speed > 0)
+	else if(projectile.projectile_speed > 0)
 		. = process_wrapper(projectile, delta_time)
 	else
 		log_debug("SSprojectiles: projectile '[projectile.name]' shot by '[projectile.firer]' discarded due to invalid speed.")
@@ -74,7 +72,7 @@ SUBSYSTEM_DEF(projectiles)
 
 /datum/controller/subsystem/projectiles/proc/queue_projectile(obj/item/projectile/projectile)
 	projectiles |= projectile
+
 /datum/controller/subsystem/projectiles/proc/stop_projectile(obj/item/projectile/projectile)
 	projectiles -= projectile
 	flying -= projectile // avoids problems with deleted projs
-	projectile.speed = 0

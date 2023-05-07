@@ -4,10 +4,11 @@
  * if you want to read more read the _render_readme.md
  */
 
+
 /**
  * Render relay object assigned to a plane master to be able to relay it's render onto other planes that are not it's own
  */
-/obj/render_plane_relay
+/atom/movable/render_plane_relay
 	screen_loc = "CENTER"
 	layer = -1
 	plane = 0
@@ -38,6 +39,10 @@
 	name = "game rendering plate"
 	plane = RENDER_PLANE_GAME
 	render_relay_plane = RENDER_PLANE_MASTER
+
+/atom/movable/screen/plane_master/rendering_plate/game_world/Initialize(mapload)
+	. = ..()
+	add_filter("displacer", 1, displacement_map_filter(render_source = GRAVITY_PULSE_RENDER_TARGET, size = 10))
 
 ///render plate for OOC stuff like ghosts, hud-screen effects, etc
 /atom/movable/screen/plane_master/rendering_plate/non_game

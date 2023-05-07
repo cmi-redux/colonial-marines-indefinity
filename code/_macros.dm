@@ -31,7 +31,7 @@
 //Picks from the list, with some safeties, and returns the "default" arg if it fails
 #define DEFAULTPICK(L, default) ((istype(L, /list) && L:len) ? pick(L) : default)
 // Ensures L is initailized after this point
-#define LAZYINITLIST(L) if (!L) L = list()
+#define LAZYINITLIST(L) if(!L) L = list()
 // Sets a L back to null iff it is empty
 #define UNSETEMPTY(L) if (L && !length(L)) L = null
 // Removes I from list L, and sets I to null if it is now empty
@@ -49,8 +49,8 @@
 #define LAZYSET(L, A, I) if(!L) { L = list(); } L[A] = I;
 // Reads I from L safely - Works with both associative and traditional lists.
 #define LAZYACCESS(L, I) (L ? (isnum(I) ? (I > 0 && I <= length(L) ? L[I] : null) : L[I]) : null)
-// Reads the length of L, returning 0 if null
-#define LAZYLEN(L) length(L)
+///Sets a list to null
+#define LAZYNULL(L) L = null
 // Safely checks if I is in L
 #define LAZYISIN(L, I) (L ? (I in L) : FALSE)
 // Null-safe L.Cut()
@@ -91,6 +91,5 @@
 
 #define RECT new /datum/shape/rectangle
 #define QTREE new /datum/quadtree
-#define SEARCH_QTREE(qtree, shape_range, flags) qtree.query_range(shape_range, null, flags)
 
 #define HTML_FILE(contents) "<!DOCTYPE html><html><body>[contents]</body></html>"

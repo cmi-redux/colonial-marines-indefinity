@@ -76,6 +76,10 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 		log_debug("Shuttle control computer failed to find shuttle with tag '[shuttle_tag]'!")
 		return
 
+	if(!isxeno(user) && shuttle.escape_locked)
+		to_chat(user, SPAN_WARNING("Shuttle locked for mission ending procedures."))
+		return
+
 	if(!isxeno(user) && (onboard || is_ground_level(z)) && !shuttle.iselevator)
 		if(shuttle.queen_locked)
 			if(onboard && skillcheck(user, SKILL_PILOT, SKILL_PILOT_TRAINED))
@@ -121,7 +125,7 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 /obj/structure/machinery/computer/shuttle_control/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 0)
 	var/data[0]
 	var/datum/shuttle/ferry/shuttle = get_shuttle()
-	if (!istype(shuttle))
+	if(!istype(shuttle))
 		return
 
 	var/shuttle_state
@@ -134,9 +138,9 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 	var/shuttle_status
 	switch (shuttle.process_state)
 		if(IDLE_STATE)
-			if (shuttle.in_use)
+			if(shuttle.in_use)
 				shuttle_status = "Busy."
-			else if (!shuttle.location)
+			else if(!shuttle.location)
 				shuttle_status = "Standing by at station."
 			else
 				shuttle_status = "Standing by at an off-site location."
@@ -205,7 +209,7 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 
 	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
 
-	if (!ui)
+	if(!ui)
 		ui = new(user, src, ui_key, shuttle.iselevator? "elevator_control_console.tmpl" : "shuttle_control_console.tmpl", shuttle.iselevator? "Elevator Control" : "Shuttle Control", 550, 500)
 		ui.set_initial_data(data)
 		ui.open()
@@ -218,7 +222,7 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 	add_fingerprint(usr)
 
 	var/datum/shuttle/ferry/shuttle = get_shuttle()
-	if (!istype(shuttle))
+	if(!istype(shuttle))
 		return
 
 	if(href_list["move"])
@@ -251,14 +255,14 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 
 			//Alert code is the Queen is the one calling it, the shuttle is on the ground and the shuttle still allows alerts
 			if(isqueen(M) && shuttle.location == 1 && shuttle.alerts_allowed && onboard && !shuttle.iselevator)
-				var/mob/living/carbon/xenomorph/queen/Q = M
+				var/mob/living/carbon/xenomorph/queen/XQ = M
 
 				// Check for onboard xenos, so the Queen doesn't leave most of her hive behind.
-				var/count = Q.count_hivemember_same_area()
+				var/count = XQ.count_hivemember_same_area()
 
 				// Check if at least half of the hive is onboard. If not, we don't launch.
-				if(count < length(Q.hive.totalXenos) * 0.5)
-					to_chat(Q, SPAN_WARNING("More than half of your hive is not on board. Don't leave without them!"))
+				if(count < length(XQ.faction.totalMobs) * 0.5)
+					to_chat(XQ, SPAN_WARNING("More than half of your hive is not on board. Don't leave without them!"))
 					return
 
 				// Allow the queen to choose the ship section to crash into
@@ -266,8 +270,7 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 				if(crash_target == "Cancel")
 					return
 
-				var/i = tgui_alert(Q, "Warning: Once you launch the shuttle you will not be able to bring it back. Confirm anyways?", "WARNING", list("Yes", "No"))
-				if(i != "Yes")
+				if(alert("Warning: Once you launch the shuttle you will not be able to bring it back. Confirm anyways?", "WARNING", usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 					return
 
 				if(shuttle.moving_status != SHUTTLE_IDLE || shuttle.locked || shuttle.location != 1 || !shuttle.alerts_allowed || !shuttle.queen_locked || shuttle.recharging)
@@ -288,24 +291,25 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 					shuttle1.crash_target_section = crash_target
 					shuttle1.transit_gun_mission = 0
 
-					if(round_statistics)
-						round_statistics.track_hijack()
+					if(SSticker.mode.round_statistics)
+						SSticker.mode.round_statistics.track_hijack()
 
-					marine_announcement("Unscheduled dropship departure detected from operational area. Hijack likely. Shutting down autopilot.", "Dropship Alert", 'sound/AI/hijack.ogg')
+					faction_announcement("Unscheduled dropship departure detected from operational area. Hijack likely. Shutting down autopilot.", "Dropship Alert", 'sound/AI/hijack.ogg')
 					shuttle.alerts_allowed--
 
-					to_chat(Q, SPAN_DANGER("A loud alarm erupts from [src]! The fleshy hosts must know that you can access it!"))
-					xeno_message(SPAN_XENOANNOUNCE("The Queen has commanded the metal bird to depart for the metal hive in the sky! Rejoice!"),3,Q.hivenumber)
-					xeno_message(SPAN_XENOANNOUNCE("The hive swells with power! You will now steadily gain burrowed larva over time."),2,Q.hivenumber)
+					to_chat(XQ, SPAN_DANGER("A loud alarm erupts from [src]! The fleshy hosts must know that you can access it!"))
+					xeno_message(SPAN_XENOANNOUNCE("The Queen has commanded the metal bird to depart for the metal hive in the sky! Rejoice!"), 3, XQ.faction)
+					xeno_message(SPAN_XENOANNOUNCE("The hive swells with power! You will now steadily gain pooled larva over time."), 2, XQ.faction)
 
 					// Notify the yautja too so they stop the hunt
 					message_all_yautja("The serpent Queen has commanded the landing shuttle to depart.")
 					playsound(src, 'sound/misc/queen_alarm.ogg')
 
-					Q.count_niche_stat(STATISTICS_NICHE_FLIGHT)
+					XQ.count_statistic_stat(STATISTICS_FLIGHT)
 
-					if(Q.hive)
-						addtimer(CALLBACK(Q.hive, TYPE_PROC_REF(/datum/hive_status, abandon_on_hijack)), DROPSHIP_WARMUP_TIME + 5 SECONDS, TIMER_UNIQUE) //+ 5 seconds catch standing in doorways
+					if(XQ.faction)
+						addtimer(CALLBACK(XQ.faction, TYPE_PROC_REF(/datum/faction/xenomorph, abandon_on_hijack)), DROPSHIP_WARMUP_TIME, TIMER_UNIQUE)
+						XQ.faction.hijack_burrowed_surge = TRUE
 
 					if(bomb_set)
 						for(var/obj/structure/machinery/nuclearbomb/bomb in world)
@@ -329,7 +333,7 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 				if(is_ground_level(z)) shuttle.transit_gun_mission = 0 //remote launch always do transport flight.
 				shuttle.launch(src)
 				if(onboard && !shuttle.iselevator)
-					M.count_niche_stat(STATISTICS_NICHE_FLIGHT)
+					M.count_statistic_stat(STATISTICS_FLIGHT)
 			msg_admin_niche("[M] ([M.key]) launched a [shuttle.iselevator? "elevator" : "shuttle"] using [src].")
 
 	ui_interact(usr)

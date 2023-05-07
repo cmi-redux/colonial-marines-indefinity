@@ -203,7 +203,7 @@
 		CHECK_TICK
 
 	//if(!no_changeturf)// mapping TODO:
-	// for(var/t in block(locate(bounds[MAP_MINX], bounds[MAP_MINY], bounds[MAP_MINZ]), locate(bounds[MAP_MAXX], bounds[MAP_MAXY], bounds[MAP_MAXZ])))
+	// for(t in block(locate(bounds[MAP_MINX], bounds[MAP_MINY], bounds[MAP_MINZ]), locate(bounds[MAP_MAXX], bounds[MAP_MAXY], bounds[MAP_MAXZ])))
 	// var/turf/T = t
 	// //we do this after we load everything in. if we don't; we'll have weird atmos bugs regarding atmos adjacent turfs
 	// T.AfterChange(CHANGETURF_IGNORE_AIR)
@@ -363,7 +363,7 @@
 				for(var/atom/A as anything in crds.GetAllTurfStrictContents())
 					if(isobserver(A))
 						continue
-					qdel(A, force=TRUE)
+					qdel(A, force = TRUE)
 
 			if(placeOnTop)
 				. = crds.PlaceOnTop(null, path, CHANGETURF_DEFER_CHANGE | (no_changeturf ? CHANGETURF_SKIP : NONE))
@@ -415,7 +415,7 @@
 //return the filled list
 /datum/parsed_map/proc/readlist(text as text, delimiter=",")
 	. = list()
-	if (!text)
+	if(!text)
 		return
 
 	var/position

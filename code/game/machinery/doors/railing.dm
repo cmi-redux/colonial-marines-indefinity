@@ -21,7 +21,7 @@
 		closed_layer = ABOVE_MOB_LAYER
 	layer = closed_layer
 
-	SetOpacity(initial(opacity))
+	set_opacity(initial(opacity))
 
 /obj/structure/machinery/door/poddoor/railing/update_icon()
 	if(density)
@@ -31,11 +31,11 @@
 
 /obj/structure/machinery/door/poddoor/railing/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = (PASS_OVER^PASS_OVER_FIRE)|PASS_CRUSHER_CHARGE
 
 /obj/structure/machinery/door/poddoor/railing/open()
-	if (operating == 1) //doors can still open when emag-disabled
+	if(operating == 1) //doors can still open when emag-disabled
 		return 0
 	if(!operating) //in case of emag
 		operating = 1
@@ -51,7 +51,7 @@
 	return 1
 
 /obj/structure/machinery/door/poddoor/railing/close()
-	if (operating)
+	if(operating)
 		return 0
 	density = TRUE
 	operating = 1

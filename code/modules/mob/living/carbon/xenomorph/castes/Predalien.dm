@@ -28,21 +28,15 @@
 
 	behavior_delegate_type = /datum/behavior_delegate/predalien_base
 
-	minimap_icon = "predalien"
-
 /mob/living/carbon/xenomorph/predalien
 	caste_type = XENO_CASTE_PREDALIEN
 	name = "Abomination" //snowflake name
 	desc = "A strange looking creature with fleshy strands on its head. It appears like a mixture of armor and flesh, smooth, but well carapaced."
-	icon = 'icons/mob/xenos/predalien.dmi'
-	icon_xeno = 'icons/mob/xenos/predalien.dmi'
-	icon_xenonid = 'icons/mob/xenos/predalien.dmi'
+	icon = 'icons/mob/hostiles/predalien.dmi'
 	icon_state = "Predalien Walking"
 	speaking_noise = 'sound/voice/predalien_click.ogg'
 	plasma_types = list(PLASMA_CATECHOLAMINE)
-	faction = FACTION_PREDALIEN
 	wall_smash = TRUE
-	hardcore = FALSE
 	pixel_x = -16
 	old_x = -16
 	mob_size = MOB_SIZE_BIG
@@ -65,8 +59,12 @@
 
 	var/butcher_time = 6 SECONDS
 
+	icon_xeno = 'icons/mob/hostiles/predalien.dmi'
+	icon_xenonid = 'icons/mob/xenonids/predalien.dmi'
 
-/mob/living/carbon/xenomorph/predalien/Initialize(mapload, mob/living/carbon/xenomorph/oldxeno, h_number)
+	balance_formulas = list(BALANCE_FORMULA_XENO_ABILITER, BALANCE_FORMULA_XENO_FIGHTER)
+
+/mob/living/carbon/xenomorph/predalien/Initialize(mapload, mob/living/carbon/xenomorph/old_xeno, datum/faction/hive_to_set)
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(announce_spawn)), 3 SECONDS)
 	hunter_data.dishonored = TRUE
@@ -74,7 +72,7 @@
 	hunter_data.dishonored_set = src
 	hud_set_hunter()
 
-	AddComponent(/datum/component/footstep, 4, 25, 11, 2, "alien_footstep_medium")
+	AddComponent(/datum/component/footstep, FOOTSTEP_XENO_MEDIUM)
 
 /mob/living/carbon/xenomorph/predalien/proc/announce_spawn()
 	if(!loc)
@@ -95,7 +93,7 @@ Your health meter will not regenerate normally, so kill and die for the hive!</s
 	name = "Base Predalien Behavior Delegate"
 
 	var/kills = 0
-	var/max_kills = 10
+	var/max_kills = 20
 
 /datum/behavior_delegate/predalien_base/append_to_stat()
 	. = list()
@@ -143,7 +141,7 @@ Your health meter will not regenerate normally, so kill and die for the hive!</s
 				var/obj/item/reagent_container/food/snacks/meat/h_meat = new(human_victim.loc)
 				h_meat.name = "[human_victim.name] meat"
 
-		else if (isxeno(victim))
+		else if(isxeno(victim))
 			var/mob/living/carbon/xenomorph/xeno_victim = victim
 
 			new /obj/effect/decal/remains/xeno(xeno_victim.loc)

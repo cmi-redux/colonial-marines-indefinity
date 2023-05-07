@@ -55,36 +55,146 @@
 ///New should call Initialize(FALSE)
 #define INITIALIZATION_INNEW_REGULAR 1
 
-//! ### Initialization hints
-
-///Nothing happens
-#define INITIALIZE_HINT_NORMAL 0
-/**
- * call LateInitialize at the end of all atom Initalization
- *
- * The item will be added to the late_loaders list, this is iterated over after
- * initalization of subsystems is complete and calls LateInitalize on the atom
- * see [this file for the LateIntialize proc](atom.html#proc/LateInitialize)
- */
-#define INITIALIZE_HINT_LATELOAD 1
-
-///Call qdel on the atom after intialization
-#define INITIALIZE_HINT_QDEL 2
-
-///Call LateInitialize on roundstart
-#define INITIALIZE_HINT_ROUNDSTART 3
+#define INIT_ANNOUNCE(X) to_chat(world, "<span class='notice'>[X]</span>"); log_world(X)
 
 ///type and all subtypes should always immediately call Initialize in New()
 #define INITIALIZE_IMMEDIATE(X) ##X/New(loc, ...){\
-	..();\
-	if(!(flags_atom & INITIALIZED)) {\
-		var/previous_initialized_value = SSatoms.initialized;\
-		SSatoms.initialized = INITIALIZATION_INNEW_MAPLOAD;\
-		args[1] = TRUE;\
-		SSatoms.InitAtom(src, FALSE, args);\
-		SSatoms.initialized = previous_initialized_value;\
-	}\
+    ..();\
+    if(!(flags_atom & INITIALIZED)) {\
+        args[1] = TRUE;\
+        SSatoms.InitAtom(src, FALSE, args);\
+    }\
 }
+
+// Subsystem defines.
+// All in one file so it's easier to see what everything is relative to.
+
+#define SS_INIT_EARLYRUNTIMES		1000
+#define SS_INIT_TICKER_SPAWN		999
+#define SS_INIT_TIMER				100
+#define SS_INIT_INPUT				95
+#define SS_INIT_RUST				94
+#define SS_INIT_OVERLAY				33
+#define SS_INIT_SUPPLY_SHUTTLE		32
+#define SS_INIT_GARBAGE				31
+#define SS_INIT_JOB					30
+#define SS_INIT_DATABASE			29
+#define SS_INIT_ENTITYMANAGER		28
+#define SS_INIT_TICKER				27
+#define SS_INIT_PLAYTIME			26
+#define SS_INIT_EVENTS				25
+#define SS_INIT_MAPPING				24
+#define SS_INIT_PREF_LOGGING		23
+#define SS_INIT_DONATORS			22
+#define SS_INIT_NIGHTMARE			21
+#define SS_INIT_PLANT				20
+#define SS_INIT_HUMANS				19
+#define SS_INIT_MAP					18
+#define SS_INIT_COMPONENT			17
+#define SS_INIT_POWER				16
+#define SS_INIT_OBJECT				15
+#define SS_INIT_PIPENET				14
+#define SS_INIT_XENOARCH			13
+#define SS_INIT_MORE_INIT			12
+#define SS_INIT_AIR					11
+#define SS_INIT_TELEPORTER			10
+#define SS_INIT_LIGHTING			9
+#define SS_INIT_DEFCON				8
+#define SS_INIT_LAW					7
+#define SS_INIT_FZ_TRANSITIONS		6
+#define SS_INIT_QUADTREE			5
+#define SS_INIT_ATOMS				4
+#define SS_INIT_DECORATOR			3
+#define SS_INIT_SHUTTLE				2
+#define SS_INIT_LANDMARK			1
+#define SS_INIT_PROJECTILES			0
+#define SS_INIT_MACHINES			-1
+#define SS_INIT_RADIO				-2
+#define SS_INIT_UNSPECIFIED			-3
+#define SS_INIT_EMERGENCY_SHUTTLE	-20
+#define SS_INIT_MAPVIEW				-21
+#define SS_INIT_ASSETS				-22
+#define SS_INIT_VOTE				-23
+#define SS_INIT_FINISH				-24
+#define SS_INIT_ADMIN				-26
+#define SS_INIT_PREDSHIPS			-30
+#define SS_INIT_OBJECTIVES			-31
+#define SS_INIT_TASKS				-32
+#define SS_INIT_LOBBYART			-33
+#define SS_INIT_ICON_SMOOTHING		-34
+#define SS_INIT_STATPANELS			-98
+#define SS_INIT_QUEUE				-99
+#define SS_INIT_CHAT				-100 //Should be last to ensure chat remains smooth during init.
+
+#define SS_PRIORITY_INPUT			1000
+#define SS_PRIORITY_SOUNDLOOPS		800
+#define SS_PRIORITY_TIMER			700
+#define SS_PRIORITY_OVERLAYS		500
+#define SS_PRIORITY_SOUND			250
+#define SS_PRIORITY_TICKER			200
+#define SS_PRIORITY_NIGHTMARE		180
+#define SS_PRIORITY_MAPVIEW			170
+#define SS_PRIORITY_QUADTREE		160
+#define SS_PRIORITY_CHAT			155
+#define SS_PRIORITY_STATPANEL		154
+#define SS_PRIORITY_PROJECTILES		152
+#define SS_PRIORITY_CELLAUTO		151
+#define SS_PRIORITY_MOB				150
+#define SS_PRIORITY_XENO			149
+#define SS_PRIORITY_HUMAN			148
+#define SS_PRIORITY_STAMINA			126
+#define SS_PRIORITY_COMPONENT		125
+#define SS_PRIORITY_NANOUI			120
+#define SS_PRIORITY_TGUI			120
+#define SS_PRIORITY_HIVE_STATUS		112
+#define SS_PRIORITY_SHIELD_PILLAR	111
+#define SS_PRIORITY_VOTE			110
+#define SS_PRIORITY_FAST_OBJECTS	105
+#define SS_PRIORITY_OBJECTS			104
+#define SS_PRIORITY_FACEHUGGERS		100
+#define SS_PRIORITY_DECORATOR		99
+#define SS_PRIORITY_POWER			95
+#define SS_PRIORITY_EFFECTS			92
+#define SS_PRIORITY_MACHINERY		90
+#define SS_PRIORITY_FZ_TRANSITIONS	88
+#define SS_PRIORITY_ROUND_RECORDING	83
+#define SS_PRIORITY_PIPENET			85
+#define SS_PRIORITY_SHUTTLE			80
+#define SS_PRIORITY_TELEPORTER		75
+#define SS_PRIORITY_EVENT			65
+#define SS_PRIORITY_DATABASE		64
+#define SS_PRIORITY_BALANCER		63
+#define SS_PRIORITY_PARALLAX		62
+#define SS_PRIORITY_DISEASE			60
+#define SS_PRIORITY_FAST_MACHINERY	55
+#define SS_PRIORITY_MIDI			40
+#define SS_PRIORITY_ENTITY			37
+#define SS_PRIORITY_DONATERS		36
+#define SS_PRIORITY_DEFCON			35
+#define SS_PRIORITY_ACID_PILLAR		34
+#define SS_PRIORITY_UNSPECIFIED		30
+#define SS_PRIORITY_PROCESS			25
+#define SS_PRIORITY_SOUNDSCAPE		24
+#define SS_PRIORITY_PAGER_STATUS	22
+#define SS_PRIORITY_LIGHTING		20
+#define SS_PRIORITY_TRACKING		19
+#define SS_PRIORITY_PING			10
+#define SS_PRIORITY_SMOOTHING		9
+#define SS_PRIORITY_SUNLIGHTING		8
+#define SS_PRIORITY_EVAC			7
+#define SS_PRIORITY_PLAYTIME		6
+#define SS_PRIORITY_PERFLOGGING		5
+#define SS_PRIORITY_QUEUE			4
+#define SS_PRIORITY_CORPSESPAWNER	3
+#define SS_PRIORITY_GARBAGE			2
+#define SS_PRIORITY_INACTIVITY		1
+#define SS_PRIORITY_ADMIN			0
+
+
+#define INITIALIZE_HINT_NORMAL		0  //Nothing happens
+#define INITIALIZE_HINT_LATELOAD	1  //Call LateInitialize
+#define INITIALIZE_HINT_QDEL		2  //Call qdel on the atom
+#define INITIALIZE_HINT_ROUNDSTART	3  //Call LateInitialize on roundstart
 
 //! ### SS initialization hints
 /**
@@ -104,122 +214,6 @@
 /// Successful, but don't print anything. Useful if subsystem was disabled.
 #define SS_INIT_NO_NEED 3
 
-//! ### SS initialization load orders
-// Subsystem init_order, from highest priority to lowest priority
-// Subsystems shutdown in the reverse of the order they initialize in
-// The numbers just define the ordering, they are meaningless otherwise.
-
-#define SS_INIT_TICKER_SPAWN    999
-#define SS_INIT_INPUT   85
-#define SS_INIT_RUST    26
-#define SS_INIT_SUPPLY_SHUTTLE  25
-#define SS_INIT_GARBAGE 24
-#define SS_INIT_EVENTS 23.5
-#define SS_INIT_JOB 23
-#define SS_INIT_MAPPING 22
-#define SS_INIT_NIGHTMARE   21.5
-#define SS_INIT_HUMANS  21
-#define SS_INIT_MAP 20
-#define SS_INIT_COMPONENT   19.5
-#define SS_INIT_POWER   19
-#define SS_INIT_OBJECT  18
-#define SS_INIT_PIPENET 17.5
-#define SS_INIT_XENOARCH    17
-#define SS_INIT_MORE_INIT   16
-#define SS_INIT_AIR 15
-#define SS_INIT_TELEPORTER  13
-#define SS_INIT_LIGHTING 12
-#define SS_INIT_DEFCON 9
-#define SS_INIT_LAW 6
-#define SS_INIT_FZ_TRANSITIONS 5
-#define SS_INIT_PROJECTILES 4.1
-#define SS_INIT_ATOMS   4
-#define SS_INIT_DECORATOR   3.7
-#define SS_INIT_SHUTTLE 3.5
-#define SS_INIT_LANDMARK    3.2
-#define SS_INIT_MACHINES   3
-#define SS_INIT_INTERIOR 2.7
-#define SS_INIT_TECHTREE    2.5
-#define SS_INIT_RADIO 2
-#define SS_INIT_TIMER   100
-#define SS_INIT_UNSPECIFIED 0
-#define SS_INIT_EMERGENCY_SHUTTLE -19
-#define SS_INIT_ASSETS -20
-#define SS_INIT_TICKER -21
-#define SS_INIT_VOTE   -23
-#define SS_INIT_FINISH -24
-#define SS_INIT_ADMIN  -26
-#define SS_INIT_DATABASE   -27
-#define SS_INIT_ENTITYMANAGER   -28
-#define SS_INIT_PLAYTIME   -29
-#define SS_INIT_PREDSHIPS  -30
-#define SS_INIT_OBJECTIVES -31
-#define SS_INIT_LOBBYART   -33
-#define SS_INIT_MINIMAP    -34
-#define SS_INIT_STATPANELS -98
-#define SS_INIT_CHAT    -100 //Should be last to ensure chat remains smooth during init.
-#define SS_INIT_EARLYRUNTIMES -500 // Post-init notifier
-
-// Subsystem fire priority, from lowest to highest priority
-// If the subsystem isn't listed here it's either DEFAULT or PROCESS (if it's a processing subsystem child)
-
-#define SS_PRIORITY_INPUT   1000
-#define SS_PRIORITY_TIMER   700
-#define SS_PRIORITY_SOUND   250
-#define SS_PRIORITY_TICKER  200
-#define SS_PRIORITY_NIGHTMARE   180
-#define SS_PRIORITY_MAPVIEW    170
-#define SS_PRIORITY_QUADTREE    160
-#define SS_PRIORITY_CHAT    155
-#define SS_PRIORITY_STATPANEL    154
-#define SS_PRIORITY_CELLAUTO    152
-#define SS_PRIORITY_PROJECTILES 151
-#define SS_PRIORITY_MOB 150
-#define SS_PRIORITY_XENO    149
-#define SS_PRIORITY_HUMAN   148
-#define SS_PRIORITY_STAMINA 126
-#define SS_PRIORITY_COMPONENT   125
-#define SS_PRIORITY_NANOUI  120
-#define SS_PRIORITY_TGUI    120
-#define SS_PRIORITY_HIVE_STATUS 112
-#define SS_PRIORITY_SHIELD_PILLAR  111
-#define SS_PRIORITY_VOTE    110
-#define SS_PRIORITY_FAST_OBJECTS   105
-#define SS_PRIORITY_OBJECTS 104
-#define SS_PRIORITY_FACEHUGGERS 100
-#define SS_PRIORITY_DECORATOR    99
-#define SS_PRIORITY_POWER   95
-#define SS_PRIORITY_EFFECTS 92
-#define SS_PRIORITY_MACHINERY   90
-#define SS_PRIORITY_FZ_TRANSITIONS 88
-#define SS_PRIORITY_PIPENET 85
-#define SS_PRIORITY_ROUND_RECORDING 83
-#define SS_PRIORITY_SHUTTLE 80
-#define SS_PRIORITY_TELEPORTER  75
-#define SS_PRIORITY_EVENT   65
-#define SS_PRIORITY_DISEASE 60
-#define SS_PRIORITY_FAST_MACHINERY 55
-#define SS_PRIORITY_MIDI    40
-#define SS_PRIORITY_ENTITY    37
-#define SS_PRIORITY_DEFCON  35
-#define SS_PRIORITY_ACID_PILLAR    34
-#define SS_PRIORITY_SOUNDLOOPS	   31
-#define SS_PRIORITY_UNSPECIFIED 30
-#define SS_PRIORITY_PROCESS 25
-#define SS_PRIORITY_SOUNDSCAPE    24
-#define SS_PRIORITY_PAGER_STATUS   22
-#define SS_PRIORITY_LIGHTING    20
-#define SS_PRIORITY_TRACKING    19
-#define SS_PRIORITY_MINIMAPS 11
-#define SS_PRIORITY_PING    10
-#define SS_PRIORITY_DATABASE    15
-#define SS_PRIORITY_PLAYTIME    5
-#define SS_PRIORITY_PERFLOGGING 4
-#define SS_PRIORITY_CORPSESPAWNER  3
-#define SS_PRIORITY_GARBAGE 2
-#define SS_PRIORITY_INACTIVITY  1
-#define SS_PRIORITY_ADMIN   0
-
 // SS runlevels
 
 #define RUNLEVEL_INIT 0
@@ -229,6 +223,26 @@
 #define RUNLEVEL_POSTGAME 8
 
 #define RUNLEVELS_DEFAULT (RUNLEVEL_SETUP | RUNLEVEL_GAME | RUNLEVEL_POSTGAME)
+
+
+#define COMPILE_OVERLAYS(A) \
+	do {\
+		var/list/ad = A.add_overlays;\
+		var/list/rm = A.remove_overlays;\
+		var/list/po = A.priority_overlays;\
+		if(length(rm)){\
+			A.overlays -= rm;\
+			rm.Cut();\
+		}\
+		if(length(ad)){\
+			A.overlays |= ad;\
+			ad.Cut();\
+		}\
+		if(length(po)){\
+			A.overlays |= po;\
+		}\
+		A.flags_atom &= ~OVERLAY_QUEUED;\
+	} while (FALSE)
 
 //SSticker.current_state values
 /// Game is loading

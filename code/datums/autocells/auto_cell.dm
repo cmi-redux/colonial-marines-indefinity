@@ -6,11 +6,11 @@
 */
 
 // No neighbors
-#define NEIGHBORS_NONE  0
+#define NEIGHBORS_NONE		0
 // Cardinal neighborhood
-#define NEIGHBORS_CARDINAL 1
+#define NEIGHBORS_CARDINAL	1
 // Ordinal neighborhood
-#define NEIGHBORS_ORDINAL  2
+#define NEIGHBORS_ORDINAL	2
 // Note that NEIGHBORS_CARDINAL | NEIGHBORS_ORDINALS gives you all 8 surrounding neighbors
 
 /datum/automata_cell
@@ -86,9 +86,9 @@
 
 	var/list/neighbors = list()
 
-	// Get cardinal neighbors
+	// Get cardinals neighbors
 	if(neighbor_type & NEIGHBORS_CARDINAL)
-		for(var/dir in cardinal)
+		for(var/dir in GLOB.cardinals)
 			var/turf/T = get_step(in_turf, dir)
 			if(QDELETED(T))
 				continue
@@ -100,7 +100,7 @@
 
 	// Get ordinal/diagonal neighbors
 	if(neighbor_type & NEIGHBORS_ORDINAL)
-		for(var/dir in diagonals)
+		for(var/dir in GLOB.diagonals)
 			var/turf/T = get_step(in_turf, dir)
 			if(QDELETED(T))
 				continue

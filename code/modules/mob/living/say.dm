@@ -21,7 +21,7 @@ var/list/department_radio_keys = list(
 	":y" = RADIO_CHANNEL_WY, ".y" = RADIO_CHANNEL_WY, "#y" = RADIO_CHANNEL_WY,
 	":o" = RADIO_CHANNEL_COLONY, ".o" = RADIO_CHANNEL_COLONY, "#o" = RADIO_CHANNEL_PMC_CCT,
 	":z" = RADIO_CHANNEL_HIGHCOM, ".z" = RADIO_CHANNEL_HIGHCOM, "#z" = RADIO_CHANNEL_PMC_CMD,
-	":k" = SQUAD_SOF, ".k" = SQUAD_SOF, "#k" = RADIO_CHANNEL_WY_WO,
+	":k" = SQUAD_MARINE_SOF, ".k" = SQUAD_MARINE_SOF, "#k" = RADIO_CHANNEL_WY_WO,
 
 	":I" = RADIO_CHANNEL_INTERCOM, ".I" = RADIO_CHANNEL_INTERCOM, "#I" = RADIO_CHANNEL_INTERCOM,
 	":H" = RADIO_CHANNEL_DEPARTMENT, ".H" = RADIO_CHANNEL_DEPARTMENT, "#H" = RADIO_CHANNEL_DEPARTMENT,
@@ -44,7 +44,7 @@ var/list/department_radio_keys = list(
 	":Y" = RADIO_CHANNEL_WY, ".Y" = RADIO_CHANNEL_WY, "#Y" = RADIO_CHANNEL_WY,
 	":O" = RADIO_CHANNEL_COLONY, ".O" = RADIO_CHANNEL_COLONY, "#O" = RADIO_CHANNEL_PMC_CCT,
 	":Z" = RADIO_CHANNEL_HIGHCOM, ".Z" = RADIO_CHANNEL_HIGHCOM, "#Z" = RADIO_CHANNEL_PMC_CMD,
-	":K" = SQUAD_SOF, ".K" = SQUAD_SOF, "#K" = RADIO_CHANNEL_WY_WO,
+	":K" = SQUAD_MARINE_SOF, ".K" = SQUAD_MARINE_SOF, "#K" = RADIO_CHANNEL_WY_WO,
 )
 
 /proc/channel_to_prefix(channel)
@@ -80,19 +80,16 @@ var/list/department_radio_keys = list(
 	message = process_chat_markup(message, list("~", "_"))
 
 	for(var/dst=0; dst<=1; dst++) //Will run twice if src has a clone
-		if(!dst && src.clone) //Will speak in src's location and the clone's
-			T = locate(src.loc.x + src.clone.proj_x, src.loc.y + src.clone.proj_y, src.loc.z)
-		else
-			T = get_turf(src)
-			dst++ //Only speak once
+		T = get_turf(src)
+		dst++ //Only speak once
 
 		//handle nonverbal and sign languages here
-		if (speaking)
-			if (speaking.flags & NONVERBAL)
-				if (prob(30))
+		if(speaking)
+			if(speaking.flags & NONVERBAL)
+				if(prob(30))
 					manual_emote(pick(speaking.signlang_verb))
 
-			if (speaking.flags & SIGNLANG)
+			if(speaking.flags & SIGNLANG)
 				say_signlang(message, pick(speaking.signlang_verb), speaking)
 				return 1
 

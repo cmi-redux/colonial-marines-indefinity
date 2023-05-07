@@ -282,7 +282,7 @@
 		if(usr.stat == 2)//and he's not dead....
 			return
 
-		if(alert(usr, "Would you like to activate the ejection sequence of the cryo cell? Healing may be in progress.", "Confirm", "Yes", "No") == "Yes")
+		if(alert(usr, "Would you like to activate the ejection sequence of the cryo cell? Healing may be in progress.", "Confirm", usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) == usr.client.auto_lang(LANGUAGE_YES))
 			to_chat(usr, SPAN_NOTICE("Cryo cell release sequence activated. This will take thirty seconds."))
 			visible_message(SPAN_WARNING ("The cryo cell's tank starts draining as its ejection lights blare!"))
 			sleep(300)

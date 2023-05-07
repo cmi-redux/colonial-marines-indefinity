@@ -16,6 +16,7 @@
 
 	// Is door control locked -- hijack
 	var/dropship_control_lost = FALSE
+	var/escape_locked = FALSE
 	var/door_control_cooldown
 
 	// Allows admins to var edit the time lock away.
@@ -54,8 +55,7 @@
 /obj/structure/machinery/computer/shuttle/dropship/flight/enable()
 	disabled = FALSE
 
-/obj/structure/machinery/computer/shuttle/dropship/flight/proc/update_equipment(optimised=FALSE)
-	var/obj/docking_port/mobile/marine_dropship/dropship = SSshuttle.getShuttle(shuttleId)
+/obj/structure/machinery/computer/shuttle/dropship/flight/proc/update_equipment(optimised = FALSE, obj/docking_port/mobile/marine_dropship/dropship = SSshuttle.getShuttle(shuttleId))
 	if(!dropship)
 		return
 
@@ -161,7 +161,7 @@
 		to_chat(xeno, SPAN_NOTICE("This terminal is inactive."))
 		return
 
-	if(!SSobjectives.first_drop_complete)
+	if(!faction.objectives_controller.first_drop_complete)
 		to_chat(xeno, SPAN_NOTICE("This terminal is inactive."))
 		return
 
@@ -174,7 +174,7 @@
 				to_chat(xeno, SPAN_WARNING("The metal bird can not land here. It might be currently occupied!"))
 				return
 			to_chat(xeno, SPAN_NOTICE("You command the metal bird to come down. Clever girl."))
-			xeno_announcement(SPAN_XENOANNOUNCE("Your Queen has commanded the metal bird to the hive at [linked_lz]."), xeno.hivenumber, XENO_GENERAL_ANNOUNCE)
+			xeno_announcement(SPAN_XENOANNOUNCE("Your Queen has commanded the metal bird to the hive at [linked_lz]."), xeno.faction, XENO_GENERAL_ANNOUNCE)
 			return
 		if(shuttle.destination.id != linked_lz)
 			to_chat(xeno, "The shuttle not ready. The screen reads T-[shuttle.timeLeft(10)]. Have patience.")
@@ -212,7 +212,7 @@
 	// door controls being overriden
 	if(!dropship_control_lost)
 		to_chat(xeno, SPAN_XENONOTICE("You override the doors."))
-		xeno_message(SPAN_XENOANNOUNCE("The doors of the metal bird have been overridden! Rejoice!"), 3, xeno.hivenumber)
+		xeno_message(SPAN_XENOANNOUNCE("The doors of the metal bird have been overridden! Rejoice!"), 3, xeno.faction)
 		dropship.control_doors("unlock", "all", TRUE)
 		dropship_control_lost = TRUE
 		door_control_cooldown = addtimer(CALLBACK(src, PROC_REF(remove_door_lock)), SHUTTLE_LOCK_COOLDOWN, TIMER_STOPPABLE)
@@ -260,12 +260,12 @@
 		almayer_orbital_cannon.is_disabled = TRUE
 		addtimer(CALLBACK(almayer_orbital_cannon, .obj/structure/orbital_cannon/proc/enable), 10 MINUTES, TIMER_UNIQUE)
 
-	marine_announcement("Unscheduled dropship departure detected from operational area. Hijack likely. Shutting down autopilot.", "Dropship Alert", 'sound/AI/hijack.ogg')
+	faction_announcement("Unscheduled dropship departure detected from operational area. Hijack likely. Shutting down autopilot.", "Dropship Alert", 'sound/AI/hijack.ogg', GLOB.faction_datum[FACTION_MARINE])
 
 	var/mob/living/carbon/xenomorph/xeno = user
-	xeno_message(SPAN_XENOANNOUNCE("The Queen has commanded the metal bird to depart for the metal hive in the sky! Rejoice!"), 3, xeno.hivenumber)
-	xeno_message(SPAN_XENOANNOUNCE("The hive swells with power! You will now steadily gain pooled larva over time."), 2, xeno.hivenumber)
-	xeno.hive.abandon_on_hijack()
+	xeno_message(SPAN_XENOANNOUNCE("The Queen has commanded the metal bird to depart for the metal hive in the sky! Rejoice!"), 3, xeno.faction)
+	xeno_message(SPAN_XENOANNOUNCE("The hive swells with power! You will now steadily gain pooled larva over time."), 2, xeno.faction)
+	xeno.faction.abandon_on_hijack()
 
 	// Notify the yautja too so they stop the hunt
 	message_all_yautja("The serpent Queen has commanded the landing shuttle to depart.")
@@ -290,7 +290,7 @@
 	.["shuttle_mode"] = shuttle.mode
 	.["flight_time"] = shuttle.timeLeft(0)
 	.["is_disabled"] = disabled || shuttle.is_hijacked
-	.["locked_down"] = FALSE
+	.["locked_down"] = escape_locked
 	.["can_fly_by"] = !is_remote
 	.["can_set_automated"] = is_remote
 	.["automated_control"] = list(
@@ -332,7 +332,7 @@
 		return
 	var/mob/user = usr
 	var/obj/structure/machinery/computer/shuttle/dropship/flight/comp = shuttle.getControlConsole()
-	if(comp.dropship_control_lost)
+	if(comp.dropship_control_lost || (comp.escape_locked && !istype(user, /mob/living/carbon/xenomorph/queen)))
 		to_chat(user, SPAN_WARNING("The dropship isn't responding to controls."))
 		return
 

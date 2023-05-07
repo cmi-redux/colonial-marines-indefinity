@@ -50,7 +50,7 @@
 
 /obj/item/hardpoint/holder/proc/can_install(obj/item/hardpoint/H)
 	// Can only have 1 hardpoint of each slot type
-	if(LAZYLEN(hardpoints))
+	if(length(hardpoints))
 		for(var/obj/item/hardpoint/HP in hardpoints)
 			if(HP.slot == H.slot)
 				return FALSE
@@ -166,7 +166,7 @@
 	var/list/images = list(I)
 	for(var/obj/item/hardpoint/H in hardpoints)
 		var/image/HI = H.get_hardpoint_image()
-		if(LAZYLEN(px_offsets) && loc && HI)
+		if(length(px_offsets) && loc && HI)
 			HI.pixel_x += px_offsets["[loc.dir]"][1]
 			HI.pixel_y += px_offsets["[loc.dir]"][2]
 		images += HI

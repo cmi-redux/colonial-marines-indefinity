@@ -4,4 +4,5 @@
 	icon = 'icons/turf/walls/hunter.dmi'
 	icon_state = "globe"
 
-	minimap_type = MINIMAP_FLAG_XENO|MINIMAP_FLAG_USCM
+	minimap_name = "Hanting Ground Minimap"
+	faction_to_get = FACTION_YAUTJA

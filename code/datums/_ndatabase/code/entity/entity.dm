@@ -77,7 +77,7 @@
 		stoplag()
 
 /datum/entity/proc/sync_then(datum/callback/CB)
-	set waitfor = 0
+	set waitfor = FALSE
 	while(status > DB_ENTITY_STATE_SYNCED)
 		stoplag()
 	if(CB)

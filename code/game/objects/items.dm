@@ -227,7 +227,7 @@ item, and will change the skin to whatever you specify here. You can also
 manually override the icon with a unique skin if wanted, for the outlier
 cases. Override_icon_state should be a list.*/
 /obj/item/proc/select_gamemode_skin(expected_type, list/override_icon_state, list/override_protection)
-	if(type == expected_type && !istype(src, /obj/item/clothing/suit/storage/marine/fluff) && !istype(src, /obj/item/clothing/head/helmet/marine/fluff) && !istype(src, /obj/item/clothing/under/marine/fluff))
+	if(type == expected_type)
 		var/new_icon_state
 		var/new_protection
 		var/new_item_state
@@ -242,7 +242,7 @@ cases. Override_icon_state should be a list.*/
 			if(MAP_WHISKEY_OUTPOST, MAP_DESERT_DAM, MAP_BIG_RED, MAP_KUTJEVO)
 				icon_state = new_icon_state ? new_icon_state : "d_" + icon_state
 				item_state = new_item_state ? new_item_state : "d_" + item_state
-			if(MAP_PRISON_STATION, MAP_PRISON_STATION_V3, MAP_LV522_CHANCES_CLAIM)
+			if(MAP_PRISON_STATION, MAP_PRISON_STATION_V3, MAP_SKY_SCRAPER, MAP_LV522_CHANCES_CLAIM)
 				icon_state = new_icon_state ? new_icon_state : "c_" + icon_state
 				item_state = new_item_state ? new_item_state : "c_" + item_state
 		if(new_protection)
@@ -274,7 +274,7 @@ cases. Override_icon_state should be a list.*/
 		. += SPAN_NOTICE("This has an <a href='byond://?src=\ref[src];desc_lore=1'>extended lore description</a>.")
 
 /obj/item/attack_hand(mob/user)
-	if (!user)
+	if(!user)
 		return
 
 	if(anchored)
@@ -282,8 +282,7 @@ cases. Override_icon_state should be a list.*/
 		return
 
 	if(!Adjacent(user)) // needed because of alt-click
-		if(src.clone && !src.clone.Adjacent(user)) // Is the clone adjacent?
-			return
+		return
 
 	if(isgun(loc)) // more alt-click hijinx
 		return
@@ -299,6 +298,7 @@ cases. Override_icon_state should be a list.*/
 			return
 	else
 		user.next_move = max(user.next_move+2,world.time + 2)
+
 	if(!QDELETED(src)) //item may have been qdel'd by the drop above.
 		add_fingerprint(user)
 		if(!user.put_in_active_hand(src))
@@ -307,11 +307,10 @@ cases. Override_icon_state should be a list.*/
 // Due to storage type consolidation this should get used more now.
 // I have cleaned it up a little, but it could probably use more.  -Sayu
 /obj/item/attackby(obj/item/W, mob/user)
-	. = ..()
-	if(.)
+	if(SEND_SIGNAL(src, COMSIG_ITEM_ATTACKED, W, user) & COMPONENT_CANCEL_ITEM_ATTACK)
 		return
 
-	if(istype(W,/obj/item/storage))
+	if(istype(W, /obj/item/storage))
 		var/obj/item/storage/S = W
 		if(S.storage_flags & STORAGE_CLICK_GATHER && isturf(loc))
 			if(S.storage_flags & STORAGE_GATHER_SIMULTAENOUSLY) //Mode is set to collect all items on a tile and we clicked on a valid one.
@@ -350,8 +349,8 @@ cases. Override_icon_state should be a list.*/
 	remove_item_verbs(user)
 
 	for(var/X in actions)
-		var/datum/action/A = X
-		A.remove_from(user)
+		var/datum/action/action = X
+		action.remove_from(user)
 
 	if(flags_item & DELONDROP)
 		qdel(src)
@@ -373,23 +372,23 @@ cases. Override_icon_state should be a list.*/
 	do_pickup_animation(user)
 
 // called when this item is removed from a storage item, which is passed on as S. The loc variable is already set to the new destination before this is called.
-/obj/item/proc/on_exit_storage(obj/item/storage/S as obj)
+/obj/item/proc/on_exit_storage(obj/item/storage/storage as obj)
 	SHOULD_CALL_PARENT(TRUE)
 	appearance_flags &= ~NO_CLIENT_COLOR
-	if(LAZYISIN(S.hearing_items, src))
-		LAZYREMOVE(S.hearing_items, src)
-		if(!LAZYLEN(S.hearing_items))
-			S.flags_atom &= ~USES_HEARING
-	var/atom/location = S.get_loc_turf()
+	if(LAZYISIN(storage.hearing_items, src))
+		LAZYREMOVE(storage.hearing_items, src)
+		if(!length(storage.hearing_items))
+			storage.flags_atom &= ~USES_HEARING
+	var/atom/location = storage.get_loc_turf()
 	do_drop_animation(location)
 
 // called when this item is added into a storage item, which is passed on as S. The loc variable is already set to the storage item.
-/obj/item/proc/on_enter_storage(obj/item/storage/S as obj)
+/obj/item/proc/on_enter_storage(obj/item/storage/storage as obj)
 	SHOULD_CALL_PARENT(TRUE)
 	appearance_flags |= NO_CLIENT_COLOR //It's in an inventory item, so saturation/desaturation etc. effects shouldn't affect it.
 	if(src.flags_atom & USES_HEARING)
-		LAZYADD(S.hearing_items, src)
-		S.flags_atom |= USES_HEARING
+		LAZYADD(storage.hearing_items, src)
+		storage.flags_atom |= USES_HEARING
 
 // called when "found" in pockets and storage items. Returns 1 if the search should end.
 /obj/item/proc/on_found(mob/finder as mob)
@@ -430,7 +429,7 @@ cases. Override_icon_state should be a list.*/
 
 
 	appearance_flags |= NO_CLIENT_COLOR //So that saturation/desaturation etc. effects don't hit inventory.
-	if(LAZYLEN(uniform_restricted))
+	if(length(uniform_restricted))
 		UnregisterSignal(user, COMSIG_MOB_ITEM_UNEQUIPPED)
 		if(flags_equip_slot & slotdefine2slotbit(slot))
 			RegisterSignal(user, COMSIG_MOB_ITEM_UNEQUIPPED, PROC_REF(check_for_uniform_restriction))
@@ -504,14 +503,14 @@ cases. Override_icon_state should be a list.*/
 			if(WEAR_L_HAND)
 				if(H.l_hand)
 					return FALSE
-				if(H.lying)
+				if(H.can_action)
 					to_chat(H, SPAN_WARNING("You can't equip that while lying down."))
 					return
 				return TRUE
 			if(WEAR_R_HAND)
 				if(H.r_hand)
 					return FALSE
-				if(H.lying)
+				if(H.can_action)
 					to_chat(H, SPAN_WARNING("You can't equip that while lying down."))
 					return
 				return TRUE
@@ -685,7 +684,7 @@ cases. Override_icon_state should be a list.*/
 						if(I.can_be_inserted(src,TRUE))
 							return TRUE
 			if(WEAR_IN_BACK)
-				if (H.back && isstorage(H.back))
+				if(H.back && isstorage(H.back))
 					var/obj/item/storage/B = H.back
 					if(B.can_be_inserted(src, 1))
 						return TRUE
@@ -831,10 +830,10 @@ cases. Override_icon_state should be a list.*/
 	))
 	UnregisterSignal(user, COMSIG_MOB_MOVE_OR_LOOK)
 	//General reset in case anything goes wrong, the view will always reset to default unless zooming in.
+//	user.remove_fov_trait(src, "no_fov")
 	if(user.client)
 		user.client.change_view(world_view_size, src)
-		user.client.pixel_x = 0
-		user.client.pixel_y = 0
+		animate(user.client, 8, pixel_x = 0, pixel_y = 0)
 
 /obj/item/proc/zoom_handle_mob_move_or_look(mob/living/mover, actually_moving, direction, specific_direction)
 	SIGNAL_HANDLER
@@ -865,22 +864,17 @@ cases. Override_icon_state should be a list.*/
 
 		zoom_initial_mob_dir = user.dir
 
-		var/tilesize = 32
-		var/viewoffset = tilesize * tileoffset
-
-		switch(user.dir)
+		var/viewoffset = tileoffset * 32
+		var/zoom_offset_time = 4*((viewoffset/32)/7)
+		switch(zoom_initial_mob_dir)
 			if(NORTH)
-				user.client.pixel_x = 0
-				user.client.pixel_y = viewoffset
+				animate(user.client, pixel_x = 0, pixel_y = viewoffset, time = zoom_offset_time)
 			if(SOUTH)
-				user.client.pixel_x = 0
-				user.client.pixel_y = -viewoffset
+				animate(user.client, pixel_x = 0, pixel_y = -viewoffset, time = zoom_offset_time)
 			if(EAST)
-				user.client.pixel_x = viewoffset
-				user.client.pixel_y = 0
+				animate(user.client, pixel_x = viewoffset, pixel_y = 0, time = zoom_offset_time)
 			if(WEST)
-				user.client.pixel_x = -viewoffset
-				user.client.pixel_y = 0
+				animate(user.client, pixel_x = -viewoffset, pixel_y = 0, time = zoom_offset_time)
 
 	SEND_SIGNAL(src, COMSIG_ITEM_ZOOM, user)
 	var/zoom_device = zoomdevicename ? "\improper [zoomdevicename] of [src]" : "\improper [src]"
@@ -893,7 +887,7 @@ cases. Override_icon_state should be a list.*/
 	var/item_state_slot_state = LAZYACCESS(item_state_slots, slot)
 	if(item_state_slot_state)
 		mob_state = item_state_slot_state
-	else if (item_state && (slot == WEAR_R_HAND || slot == WEAR_L_HAND || slot == WEAR_ID || slot == WEAR_WAIST))
+	else if(item_state && (slot == WEAR_R_HAND || slot == WEAR_L_HAND || slot == WEAR_ID || slot == WEAR_WAIST))
 		mob_state = item_state
 	else
 		mob_state = icon_state

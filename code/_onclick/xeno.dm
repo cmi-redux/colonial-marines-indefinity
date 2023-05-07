@@ -14,19 +14,19 @@
 	if(isturf(target) && tile_attack) //Attacks on turfs must be done indirectly through directional attacks or clicking own sprite.
 		var/turf/T = target
 		for(var/mob/living/L in T)
-			if (!iscarbon(L))
-				if (!alt)
+			if(!iscarbon(L))
+				if(!alt)
 					alt = L // last option is a simple mob
 				continue
 
-			if (!L.is_xeno_grabbable() || L == src) //Xenos never attack themselves.
+			if(!L.is_xeno_grabbable() || L == src) //Xenos never attack themselves.
 				continue
-			if (L.lying)
+			if(L.lying)
 				alt = L
 				continue
 			target = L
 			break
-		if (target == T && alt)
+		if(target == T && alt)
 			target = alt
 	target = target.handle_barriers(src, , (PASS_MOB_THRU_XENO|PASS_TYPE_CRAWLER)) // Checks if target will be attacked by the current alien OR if the blocker will be attacked
 	switch(target.attack_alien(src))
@@ -71,9 +71,9 @@
 
 /mob/living/carbon/xenomorph/RangedAttack(atom/A)
 	. = ..()
-	if (.)
+	if(.)
 		return
-	if (client && client.prefs && client.prefs.toggle_prefs & TOGGLE_DIRECTIONAL_ATTACK)
+	if(client && client.prefs && client.prefs.toggle_prefs & TOGGLE_DIRECTIONAL_ATTACK)
 		next_move += 0.25 SECONDS //Slight delay on missed directional attacks. If it finds a mob in the target tile, this will be overwritten by the attack delay.
 		return UnarmedAttack(get_step(src, Get_Compass_Dir(src, A)), tile_attack = TRUE)
 	return FALSE
@@ -81,7 +81,7 @@
 /**The parent proc, will default to UnarmedAttack behaviour unless overriden
 Return XENO_ATTACK_ACTION if it does something and the attack should have full attack delay.
 Return XENO_NONCOMBAT_ACTION if it did something and should have some delay.
-Return XENO_NO_DELAY_ACTION if it gave an error message or should have no delay at all, ex. "You can't X that, it's Y!"
+Return XENO_NO_DELAY_ACTION if it gave an error message or should have no delay at all, ex. "You can't xenomorph that, it's Y!"
 Return FALSE if it didn't do anything and should count as a missed slash.
 
 If using do_afters or sleeps, use invoke_async (or manually add the relevant action delayand return FALSE
@@ -90,29 +90,29 @@ so that it doesn't double up on the delays) so that it applies the delay immedia
 	return
 
 /mob/living/carbon/xenomorph/click(atom/A, list/mods)
-	if (queued_action)
+	if(queued_action)
 		handle_queued_action(A)
 		return TRUE
 
-	if (mods["alt"] && mods["shift"])
-		if (istype(A, /mob/living/carbon/xenomorph))
-			var/mob/living/carbon/xenomorph/X = A
+	if(mods["alt"] && mods["shift"])
+		if(istype(A, /mob/living/carbon/xenomorph))
+			var/mob/living/carbon/xenomorph/xenomorph = A
 
-			if (X && !QDELETED(X) && X != observed_xeno && X.stat != DEAD && !is_admin_level(X.z) && X.check_state(1) && X.hivenumber == hivenumber)
-				if (caste && istype(caste, /datum/caste_datum/queen))
-					var/mob/living/carbon/xenomorph/oldXeno = observed_xeno
-					overwatch(X, FALSE)
+			if(xenomorph && !QDELETED(xenomorph) && xenomorph != observed_xeno && xenomorph.stat != DEAD && !xenomorph.statistic_exempt && xenomorph.check_state(1) && xenomorph.faction == faction)
+				if(caste && istype(caste, /datum/caste_datum/queen))
+					var/mob/living/carbon/xenomorph/old_xenomorph = observed_xeno
+					overwatch(xenomorph, FALSE)
 
-					if (oldXeno)
-						oldXeno.hud_set_queen_overwatch()
-					if (X && !QDELETED(X))
-						X.hud_set_queen_overwatch()
+					if(old_xenomorph)
+						old_xenomorph.hud_set_queen_overwatch()
+					if(xenomorph && !QDELETED(xenomorph))
+						xenomorph.hud_set_queen_overwatch()
 
 				else
-					overwatch(X)
+					overwatch(xenomorph)
 
 				next_move = world.time + 3 // Some minimal delay so this isn't crazy spammy
-				return 1
+				return TRUE
 
 	if(mods["shift"] && !mods["middle"])
 		if(selected_ability && client && client.prefs && !(client.prefs.toggle_prefs & TOGGLE_MIDDLE_MOUSE_CLICK))
@@ -129,6 +129,6 @@ so that it doesn't double up on the delays) so that it applies the delay immedia
 
 	return ..()
 
-//Larva attack, will default to attack_alien behaviour unless overriden
+//larva attack, will default to attack_alien behaviour unless overriden
 /atom/proc/attack_larva(mob/living/carbon/xenomorph/larva/user)
 	return attack_alien(user)

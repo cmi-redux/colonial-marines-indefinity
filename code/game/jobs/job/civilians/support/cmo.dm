@@ -4,7 +4,7 @@
 	spawn_positions = 1
 	supervisors = "the acting commanding officer"
 	selection_class = "job_cmo"
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT
+	flags_startup_parameters = NO_FLAGS
 	gear_preset = /datum/equipment_preset/uscm_ship/uscm_medical/cmo
 	entry_message_body = "You're a commissioned officer of the USCM. <a href='"+URL_WIKI_CMO_GUIDE+"'>You have authority over everything related to Medbay and Research</a>, only able to be overriden by the XO and CO. You are in charge of medical staff, surgery, chemistry, stimulants and keeping the marines healthy overall."
 

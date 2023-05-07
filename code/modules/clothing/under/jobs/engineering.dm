@@ -18,7 +18,7 @@
 	name = "atmospheric technician's jumpsuit"
 	icon_state = "atmos"
 	item_state = "atmos_suit"
-	flags_jumpsuit = null
+	flags_jumpsuit = NO_FLAGS
 
 /obj/item/clothing/under/rank/engineer
 	desc = "It's an orange high visibility jumpsuit worn by engineers. It has minor radiation shielding."
@@ -33,7 +33,7 @@
 	armor_bio = CLOTHING_ARMOR_NONE
 	armor_rad = CLOTHING_ARMOR_MEDIUM
 	armor_internaldamage = CLOTHING_ARMOR_LOW
-	flags_jumpsuit = null
+	flags_jumpsuit = NO_FLAGS
 
 /obj/item/clothing/under/rank/roboticist
 	desc = "It's a slimming black with reinforced seams; great for industrial work."

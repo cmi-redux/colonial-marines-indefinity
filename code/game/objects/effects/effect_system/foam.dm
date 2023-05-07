@@ -60,7 +60,7 @@
 		return
 
 
-	for(var/direction in cardinal)
+	for(var/direction in  GLOB.cardinals)
 
 
 		var/turf/T = get_step(src,direction)
@@ -78,7 +78,7 @@
 		F.amount = amount
 		if(!metal)
 			F.create_reagents(10)
-			if (reagents)
+			if(reagents)
 				for(var/datum/reagent/R in reagents.reagent_list)
 					F.reagents.add_reagent(R.id, 1, safety = 1) //added safety check since reagents in the foam have already had a chance to react
 
@@ -94,7 +94,7 @@
 /obj/effect/particle_effect/foam/Crossed(atom/movable/AM)
 	if(metal)
 		return
-	if (iscarbon(AM))
+	if(iscarbon(AM))
 		var/mob/living/carbon/C = AM
 		C.slip("foam", 5, 2)
 
@@ -131,7 +131,7 @@
 			carried_reagents += R.id
 
 /datum/effect_system/foam_spread/start()
-	set waitfor = 0
+	set waitfor = FALSE
 	var/obj/effect/particle_effect/foam/F = locate() in location
 	if(F)
 		F.amount += amount

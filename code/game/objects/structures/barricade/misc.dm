@@ -15,6 +15,7 @@
 	destroyed_stack_amount = 0
 	can_wire = FALSE
 	metallic = FALSE
+	tcmp_color = COLOR_BARRICADE_SN_TCMP
 
 /obj/structure/barricade/snow/New(loc, mob/user, direction)
 	if(direction)
@@ -78,6 +79,7 @@
 	can_wire = FALSE
 	repair_materials = list("wood" = 1)
 	metallic = FALSE
+	tcmp_color = COLOR_BARRICADE_WO_TCMP
 
 /obj/structure/barricade/wooden/attackby(obj/item/W as obj, mob/user as mob)
 	for(var/obj/effect/xenomorph/acid/A in src.loc)
@@ -92,7 +94,7 @@
 				return
 			visible_message(SPAN_NOTICE("[user] begins to repair [src]."))
 			if(do_after(user, 2 SECONDS, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, src) && health < maxhealth)
-				if (D.use(1))
+				if(D.use(1))
 					update_health(-0.5*maxhealth)
 					update_damage_state()
 					visible_message(SPAN_NOTICE("[user] clumsily repairs [src]."))

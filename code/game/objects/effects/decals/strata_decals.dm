@@ -2,6 +2,21 @@
 	icon = 'icons/effects/strata_decals.dmi'
 	layer = TURF_LAYER
 
+/obj/effect/decal/strata_decals/ex_act(severity)
+	switch(severity)
+		if(0 to EXPLOSION_THRESHOLD_LOW)
+			if(prob(25))
+				qdel(src)
+				return
+		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
+			if(prob(50))
+				qdel(src)
+				return
+		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
+			qdel(src)
+			return
+	return
+
 /obj/effect/decal/strata_decals/catwalk/prison //For finding and replacing prison catwalk objects since they nasty
 	icon = 'icons/turf/floors/strata_floor.dmi'
 	icon_state = "catwalk"

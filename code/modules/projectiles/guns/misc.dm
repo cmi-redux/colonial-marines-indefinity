@@ -2,7 +2,7 @@
 //This gun is very powerful, but also has a kick.
 
 /obj/item/weapon/gun/minigun
-	name = "\improper Ol' Painless"
+	name = "Ol' Painless"
 	desc = "An enormous multi-barreled rotating gatling gun. This thing will no doubt pack a punch."
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/upp.dmi'
 	icon_state = "painless"
@@ -13,12 +13,15 @@
 	current_mag = /obj/item/ammo_magazine/minigun
 	w_class = SIZE_HUGE
 	force = 20
+	max_durability = WEAPON_DURABILITY_HEAVY
+	durability_tier = WEAPON_DAMAGE_SMALL
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_WIELDED_FIRING_ONLY|GUN_AMMO_COUNTER|GUN_RECOIL_BUILDUP|GUN_HAS_FULL_AUTO|GUN_CAN_POINTBLANK
 	gun_category = GUN_CATEGORY_HEAVY
 
 /obj/item/weapon/gun/minigun/Initialize(mapload, spawn_empty)
 	. = ..()
-	if(current_mag && current_mag.current_rounds > 0) load_into_chamber()
+	if(current_mag && current_mag.ammo_position > 0)
+		load_into_chamber()
 
 /obj/item/weapon/gun/minigun/set_gun_config_values()
 	..()
@@ -32,9 +35,23 @@
 	recoil = RECOIL_AMOUNT_TIER_5
 	recoil_buildup_limit = RECOIL_AMOUNT_TIER_3 / RECOIL_BUILDUP_VIEWPUNCH_MULTIPLIER
 
+/obj/item/weapon/gun/minigun/get_ammo_type()
+	if(!ammo)
+		return list("unknown", "unknown")
+	else if(!in_chamber)
+		return list(ammo.hud_state, ammo.hud_state_empty)
+	else
+		return list(in_chamber.ammo.hud_state, in_chamber.ammo.hud_state_empty)
+
+/obj/item/weapon/gun/minigun/get_ammo_count()
+	if(!current_mag)
+		return in_chamber ? 1 : 0
+	else
+		return in_chamber ? (current_mag.ammo_position + 1) : current_mag.ammo_position
+
 //Minigun UPP
 /obj/item/weapon/gun/minigun/upp
-	name = "\improper GSh-7.62 rotary machine gun"
+	name = "GSh-7.62 rotary machine gun"
 	desc = "A gas-operated rotary machine gun used by UPP heavies. Its enormous volume of fire and ammunition capacity allows the suppression of large concentrations of enemy forces. Heavy weapons training is required control its recoil."
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_AMMO_COUNTER|GUN_RECOIL_BUILDUP|GUN_HAS_FULL_AUTO|GUN_CAN_POINTBLANK
 
@@ -61,7 +78,7 @@
 
 //M60
 /obj/item/weapon/gun/m60
-	name = "\improper M60 General Purpose Machine Gun"
+	name = "M60 General Purpose Machine Gun"
 	desc = "The M60. The Pig. The Action Hero's wet dream."
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/colony.dmi'
 	icon_state = "m60"
@@ -86,7 +103,7 @@
 
 /obj/item/weapon/gun/m60/Initialize(mapload, spawn_empty)
 	. = ..()
-	if(current_mag && current_mag.current_rounds > 0)
+	if(current_mag && current_mag.ammo_position > 0)
 		load_into_chamber()
 
 /obj/item/weapon/gun/m60/set_gun_attachment_offsets()

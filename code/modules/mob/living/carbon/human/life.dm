@@ -9,7 +9,7 @@
 	if(undefibbable && stat == DEAD || spawned_corpse)
 		GLOB.data_core.manifest_modify(real_name, WEAKREF(src), null, null, "*Deceased*")
 		SShuman.processable_human_list -= src
-		if(hardcore)
+		if(MODE_HAS_FLAG(MODE_HARDCORE))
 			qdel(src) //We just delete the corpse on WO to keep things simple and lag-free
 		return
 
@@ -87,6 +87,8 @@
 	handle_regular_hud_updates()
 
 	pulse = handle_pulse()
+
+	morale = min(morale + 0.01, initial(morale))
 
 	if(!client && !mind && species)
 		species.handle_npc(src)

@@ -30,7 +30,7 @@
 			if(100) icon_state = "on[power_gen_percent]"
 
 
-	else if (!buildstate && !is_on)
+	else if(!buildstate && !is_on)
 		icon_state = "off"
 		desc = "A thermoelectric generator sitting atop a borehole dug deep in the planet's surface. It generates energy by boiling the plasma steam that rises from the well.\nIt is old technology and has a large failure rate, and must be repaired frequently.\nIt is currently turned off and silent."
 	else
@@ -93,8 +93,8 @@
 		update_icon()
 		cur_tick = 0
 		stop_processing()
-		return 1
-	return 0 //Nope, all fine
+		return TRUE
+	return FALSE //Nope, all fine
 
 /obj/structure/machinery/power/geothermal/attack_hand(mob/user as mob)
 	if(!anchored) return 0 //Shouldn't actually be possible
@@ -112,10 +112,10 @@
 	if(buildstate == 1)
 		to_chat(usr, SPAN_INFO("Use a blowtorch, then wirecutters, then wrench to repair it."))
 		return 0
-	else if (buildstate == 2)
+	else if(buildstate == 2)
 		to_chat(usr, SPAN_INFO("Use a wirecutters, then wrench to repair it."))
 		return 0
-	else if (buildstate == 3)
+	else if(buildstate == 3)
 		to_chat(usr, SPAN_INFO("Use a wrench to repair it."))
 		return 0
 	if(is_on)
@@ -190,7 +190,7 @@
 					return FALSE
 				playsound(loc, 'sound/items/Ratchet.ogg', 25, 1)
 				buildstate = 0
-				user.count_niche_stat(STATISTICS_NICHE_REPAIR_GENERATOR)
+				user.count_statistic_stat(STATISTICS_REPAIR_GENERATOR)
 				user.visible_message(SPAN_NOTICE("[user] repairs [src]'s tubing and plating."),
 				SPAN_NOTICE("You repair [src]'s tubing and plating."))
 				update_icon()
@@ -207,7 +207,6 @@
 	density = FALSE
 	anchored = TRUE
 	var/ispowered = FALSE
-	var/turned_on = 0 //has to be toggled in engineering
 	use_power = USE_POWER_IDLE
 	unslashable = TRUE
 	unacidable = TRUE
@@ -235,7 +234,7 @@
 /obj/structure/machinery/colony_floodlight_switch/update_icon()
 	if(!ispowered)
 		icon_state = "panelnopower"
-	else if(turned_on)
+	else if(light_on)
 		icon_state = "panelon"
 	else
 		icon_state = "paneloff"
@@ -243,7 +242,7 @@
 /obj/structure/machinery/colony_floodlight_switch/process()
 	var/lightpower = 0
 	for(var/obj/structure/machinery/colony_floodlight/C in floodlist)
-		if(!C.is_lit)
+		if(!C.light_on)
 			continue
 		lightpower += C.power_tick
 	use_power(lightpower)
@@ -251,40 +250,34 @@
 /obj/structure/machinery/colony_floodlight_switch/power_change()
 	..()
 	if((stat & NOPOWER))
-		if(ispowered && turned_on)
-			toggle_lights()
-		ispowered = FALSE
-		turned_on = 0
-		update_icon()
+		if(ispowered && light_on)
+			toggle_lights(FALSE)
+			ispowered = FALSE
+			update_icon()
 	else
 		ispowered = TRUE
 		update_icon()
 
-/obj/structure/machinery/colony_floodlight_switch/proc/toggle_lights()
+/obj/structure/machinery/colony_floodlight_switch/proc/toggle_lights(change_stat)
 	for(var/obj/structure/machinery/colony_floodlight/F in floodlist)
-		spawn(rand(0,50))
-			F.is_lit = !F.is_lit
-			if(!F.damaged)
-				if(F.is_lit) //Shut it down
-					F.SetLuminosity(F.lum_value)
-				else
-					F.SetLuminosity(0)
+		spawn(rand(0,100))
+			F.set_light_on(change_stat)
+			if(F.damaged)
+				F.set_light_on(FALSE)
 			F.update_icon()
-	return 0
 
 /obj/structure/machinery/colony_floodlight_switch/attack_hand(mob/user as mob)
 	if(!ishuman(user))
 		to_chat(user, "Nice try.")
-		return 0
+		return FALSE
 	if(!ispowered)
 		to_chat(user, "Nothing happens.")
-		return 0
+		return FALSE
 	playsound(src,'sound/machines/click.ogg', 15, 1)
 	use_power(5)
-	toggle_lights()
-	turned_on = !(src.turned_on)
+	toggle_lights(!light_on)
 	update_icon()
-	return 1
+	return TRUE
 
 
 #define FLOODLIGHT_REPAIR_UNSCREW 0
@@ -301,18 +294,22 @@
 	anchored = TRUE
 	layer = WINDOW_LAYER
 	var/damaged = 0 //Can be smashed by xenos
-	var/is_lit = 0 //whether the floodlight is switched to on or off. Does not necessarily mean it emits light.
 	unslashable = TRUE
 	unacidable = TRUE
 	var/power_tick = 50 // power each floodlight takes up per process
 	use_power = USE_POWER_NONE //It's the switch that uses the actual power, not the lights
 	var/obj/structure/machinery/colony_floodlight_switch/fswitch = null //Reverse lookup for power grabbing in area
-	var/lum_value = 7
+
+	light_system = STATIC_LIGHT
+	light_range = 7
+	light_power = 0.4
+	light_on = FALSE
+
 	var/repair_state = 0
 	health = 150
 
 /obj/structure/machinery/colony_floodlight/Destroy()
-	SetLuminosity(0)
+	set_light_on(FALSE)
 	if(fswitch)
 		fswitch.floodlist -= src
 		fswitch = null
@@ -321,7 +318,7 @@
 /obj/structure/machinery/colony_floodlight/update_icon()
 	if(damaged)
 		icon_state = "flood_s_dmg"
-	else if(is_lit)
+	else if(light_on)
 		icon_state = "flood_s_on"
 	else
 		icon_state = "flood_s_off"
@@ -358,8 +355,8 @@
 					health = initial(health)
 					user.visible_message(SPAN_NOTICE("[user] screws [src]'s maintenance hatch closed."), \
 					SPAN_NOTICE("You screw [src]'s maintenance hatch closed."))
-					if(is_lit)
-						SetLuminosity(lum_value)
+					if(light_on)
+						set_light_on(TRUE)
 					update_icon()
 			return TRUE
 
@@ -439,7 +436,7 @@
 	if(ishuman(user))
 		if(damaged)
 			to_chat(user, SPAN_WARNING("[src] is damaged."))
-		else if(!is_lit)
+		else if(!light_on)
 			to_chat(user, SPAN_WARNING("Nothing happens. Looks like it's powered elsewhere."))
 		return 0
 	..()
@@ -456,7 +453,7 @@
 					if(FLOODLIGHT_REPAIR_WELD) . += SPAN_INFO("You must weld the damage to it.")
 					if(FLOODLIGHT_REPAIR_CABLE) . += SPAN_INFO("You must replace its damaged cables.")
 					if(FLOODLIGHT_REPAIR_SCREW) . += SPAN_INFO("You must screw its maintenance hatch closed.")
-		else if(!is_lit)
+		else if(!light_on)
 			. += SPAN_INFO("It doesn't seem powered.")
 
 #undef FLOODLIGHT_REPAIR_UNSCREW

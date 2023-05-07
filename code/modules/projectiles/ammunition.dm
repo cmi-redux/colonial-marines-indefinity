@@ -18,18 +18,24 @@ They're all essentially identical when it comes to getting the job done.
 	w_class = SIZE_SMALL
 	throw_speed = SPEED_SLOW
 	throw_range = 6
-	var/default_ammo = /datum/ammo/bullet
+	var/list/ammo_preset = list(/datum/ammo/bullet)
+	var/list/default_ammo = list()
+	var/default_projectile = /obj/item/projectile
 	var/caliber = null // This is used for matching handfuls to each other or whatever the mag is. Examples are" "12g" ".44" ".357" etc.
-	var/current_rounds = -1 //Set this to something else for it not to start with different initial counts.
+	var/obj/item/projectile/current_rounds[]
 	var/max_rounds = 7 //How many rounds can it hold?
-	var/max_inherent_rounds = 0 //How many extra rounds the magazine has thats not in use? Used for Sentry Post, specifically for inherent reloading
+	var/ammo_position = 0
 	var/gun_type = null //Path of the gun that it fits. Mags will fit any of the parent guns as well, so make sure you want this.
-	var/reload_delay = 1 //Set a timer for reloading mags. Higher is slower.
 	var/flags_magazine = AMMUNITION_REFILLABLE //flags specifically for magazines.
 	var/base_mag_icon //the default mag icon state.
 	var/base_mag_item //the default mag item (inhand) state.
 	var/transfer_handful_amount = 8 //amount of bullets to transfer, 5 for 12g, 9 for 45-70
 	var/handful_state = "bullet" //used for generating handfuls from boxes and setting their sprite when loading/unloading
+	var/transfer_delay = 0.5 SECONDS
+	var/cause_data = "взрыв боеприпасов"
+	var/shrapnel_type = /datum/ammo/bullet/shrapnel
+	var/explosing = FALSE
+	var/acting_with = FALSE
 
 	/// If this and ammo_band_icon aren't null, run update_ammo_band(). Is the color of the band, such as green on AP.
 	var/ammo_band_color
@@ -39,22 +45,26 @@ They're all essentially identical when it comes to getting the job done.
 	var/ammo_band_icon_empty
 
 
-/obj/item/ammo_magazine/Initialize(mapload, spawn_empty)
+/obj/item/ammo_magazine/Initialize(mapload, spawn_empty = FALSE)
 	. = ..()
+	for(var/i in ammo_preset)
+		default_ammo += GLOB.ammo_list[i]
+
 	GLOB.ammo_magazine_list += src
 	base_mag_icon = icon_state
 	base_mag_item = item_state
-	if(spawn_empty) current_rounds = 0
-	switch(current_rounds)
-		if(-1) current_rounds = max_rounds //Fill it up. Anything other than -1 and 0 will just remain so.
-		if(0)
-			icon_state += "_e" //In case it spawns empty instead.
-			item_state += "_e"
-	pixel_y = rand(-6, 6)
-	pixel_x = rand(-7, 7)
+	if(max_rounds > AMMO_MAX_ROUNDS)
+		max_rounds = AMMO_MAX_ROUNDS
+
+	if(spawn_empty)
+		icon_state += "_e"
+		item_state += "_e"
+
+	generate_ammo(spawn_empty)
+	pixel_x = rand(-8, 8) //Want to move them just a tad.
+	pixel_y = rand(-8, 8)
 	if(ammo_band_color && ammo_band_icon)
 		update_ammo_band()
-
 
 /obj/item/ammo_magazine/Destroy()
 	GLOB.ammo_magazine_list -= src
@@ -63,27 +73,46 @@ They're all essentially identical when it comes to getting the job done.
 /obj/item/ammo_magazine/proc/update_ammo_band()
 	overlays.Cut()
 	var/band_icon = ammo_band_icon
-	if(!current_rounds)
+	if(!ammo_position)
 		band_icon = ammo_band_icon_empty
 	var/image/ammo_band_image = image(icon, src, band_icon)
 	ammo_band_image.color = ammo_band_color
 	ammo_band_image.appearance_flags = RESET_COLOR|KEEP_APART
 	overlays += ammo_band_image
 
-/obj/item/ammo_magazine/update_icon(round_diff = 0)
-	if(current_rounds <= 0)
+/obj/item/ammo_magazine/clicked(mob/user, list/mods)
+	if(mods["alt"] && Adjacent(user))
+		if(src == user.get_inactive_hand()) //Have to be holding it in the hand.
+			if(ammo_position > 0)
+				check_bad_ammo(user)
+			else
+				to_chat(user, "[src] пуст. Нечего проверять.")
+		return 1
+	if(mods["ctrl"] && Adjacent(user))
+		if(src == user.get_inactive_hand()) //Have to be holding it in the hand.
+			if(ammo_position > 0)
+				if(retrieve_ammo(1, user))
+					return 1
+			else
+				to_chat(user, "[src] пуст. Нечего взять.")
+		return 1
+	return (..())
+
+/obj/item/ammo_magazine/update_icon()
+	if(ammo_position <= 0)
 		icon_state = base_mag_icon + "_e"
 		item_state = base_mag_item + "_e"
-		add_to_garbage(src)
-	else if(current_rounds - round_diff <= 0)
+	else
 		icon_state = base_mag_icon
 		item_state = base_mag_item //to-do, unique magazine inhands for majority firearms.
+
 	if(iscarbon(loc))
 		var/mob/living/carbon/C = loc
 		if(C.r_hand == src)
 			C.update_inv_r_hand()
 		else if(C.l_hand == src)
 			C.update_inv_l_hand()
+
 	if(ammo_band_color && ammo_band_icon)
 		update_ammo_band()
 
@@ -92,130 +121,303 @@ They're all essentially identical when it comes to getting the job done.
 
 	if(flags_magazine & AMMUNITION_HIDE_AMMO)
 		return
-	// It should never have negative ammo after spawn. If it does, we need to know about it.
-	if(current_rounds < 0)
-		. += "Something went horribly wrong. Ahelp the following: ERROR CODE R1: negative current_rounds on examine."
-		log_debug("ERROR CODE R1: negative current_rounds on examine. User: <b>[usr]</b> Magazine: <b>[src]</b>")
-	else
-		. += "[src] has <b>[current_rounds]</b> rounds out of <b>[max_rounds]</b>."
+
+	. += "[src] has <b>[ammo_position]</b> rounds out of <b>[max_rounds]</b>."
+
+/obj/item/ammo_magazine/proc/check_bad_ammo(mob/user)
+	if(acting_with)
+		to_chat(user, "Вы уже взаимодествуете с [src].")
+		return FALSE
+	to_chat(user, "Вы начали проверять [src] на бракованные пули.")
+	var/list/current_rounds_updated[max_rounds]
+	for(var/i = 1 to max_rounds)
+		current_rounds_updated[i] = "empty"
+
+	var/broken_ammoes = 0
+	for(var/b = 1 to ammo_position)
+		var/obj/item/projectile/proj = current_rounds[b]
+		if(do_after(user, transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE, BUSY_ICON_GENERIC))
+			playsound(loc, pick('sound/weapons/handling/mag_refill_1.ogg', 'sound/weapons/handling/mag_refill_2.ogg', 'sound/weapons/handling/mag_refill_3.ogg'), 25, 1)
+
+			if((proj.scrap_ammo_perc && prob(20)) || (proj.scrap_ammo_perc > 25))
+				proj.forceMove(get_turf(user))
+				current_rounds[ammo_position] = "empty"
+				broken_ammoes++
+				to_chat(user, "Вы выбрасываете из магазина бракованный патрон [proj].")
+			else
+				current_rounds_updated[b-broken_ammoes] = current_rounds[b]
+				current_rounds[ammo_position] = "empty"
+				to_chat(user, "Вы переходите к следующему патрону.")
+		else
+			to_chat(user, "Вы перестали искать бракованные патроны в [src].")
+			for(var/c = 1 to ammo_position)
+				current_rounds_updated[c-broken_ammoes] = current_rounds[c-broken_ammoes]
+			break
+	for(var/obj/item/projectile/proj in current_rounds_updated)
+		current_rounds[current_rounds_updated[proj]] = proj
+	ammo_position -= broken_ammoes
 
 /obj/item/ammo_magazine/attack_hand(mob/user)
 	if(flags_magazine & AMMUNITION_REFILLABLE) //actual refillable magazine, not just a handful of bullets or a fuel tank.
 		if(src == user.get_inactive_hand()) //Have to be holding it in the hand.
-			if(flags_magazine & AMMUNITION_CANNOT_REMOVE_BULLETS)
-				to_chat(user, SPAN_WARNING("You can't remove ammo from \the [src]!"))
-				return
-			if (current_rounds > 0)
-				if(create_handful(user))
-					return
-			else to_chat(user, "[src] is empty. Nothing to grab.")
-			return
+			if(retrieve_ammo(0, user))
+				return TRUE
+			return FALSE
 	return ..() //Do normal stuff.
 
 //We should only attack it with handfuls. Empty hand to take out, handful to put back in. Same as normal handful.
 /obj/item/ammo_magazine/attackby(obj/item/I, mob/living/user, bypass_hold_check = 0)
-	if(istype(I, /obj/item/ammo_magazine))
+	if(istype(I, /obj/item/ammo_magazine) && flags_magazine & AMMUNITION_REFILLABLE)
 		var/obj/item/ammo_magazine/MG = I
 		if(MG.flags_magazine & AMMUNITION_HANDFUL) //got a handful of bullets
-			if(flags_magazine & AMMUNITION_REFILLABLE) //and a refillable magazine
-				var/obj/item/ammo_magazine/handful/transfer_from = I
-				if(src == user.get_inactive_hand() || bypass_hold_check) //It has to be held.
-					if(default_ammo == transfer_from.default_ammo)
-						transfer_ammo(transfer_from,user,transfer_from.current_rounds) // This takes care of the rest.
-					else to_chat(user, "Those aren't the same rounds. Better not mix them up.")
-				else to_chat(user, "Try holding [src] before you attempt to restock it.")
+			var/obj/item/ammo_magazine/handful/transfer_from = I
+			if(src == user.get_inactive_hand() || bypass_hold_check) //It has to be held.
+				transfer_ammo(transfer_from, transfer_from.ammo_position, user) // This takes care of the rest.
+			else
+				to_chat(user, "Try holding [src] before you attempt to restock it.")
+	else if(istype(I, /obj/item/projectile) && (flags_magazine & AMMUNITION_REFILLABLE))
+		if(src == user.get_inactive_hand() || bypass_hold_check) //It has to be held.
+			var/obj/item/projectile/transfer_from = I
+			transfer_bullet(transfer_from, user)
+	else if(istype(I, /obj/item/tool/weldingtool))
+		prime(create_cause_data(initial(I), user))
 
-//Generic proc to transfer ammo between ammo mags. Can work for anything, mags, handfuls, etc.
-/obj/item/ammo_magazine/proc/transfer_ammo(obj/item/ammo_magazine/source, mob/user, transfer_amount = 1)
-	if(current_rounds == max_rounds) //Does the mag actually need reloading?
-		to_chat(user, "[src] is already full.")
+/obj/item/ammo_magazine/proc/ammo_transfer_action_check(obj/item/projectile/source, mob/user)
+	if(explosing)
+		to_chat(user, "Вы в своем уме? Оно сейчас рванет!")
+		return FALSE
+	if(user?.action_busy || acting_with)
+		to_chat(user, "Вы уже чем-то заняты.")
+		return FALSE
+	if(source)
+		if(ammo_position == max_rounds)
+			to_chat(user, "[src] уже заполнено.")
+			return FALSE
+		if(source.caliber[1] != caliber[1])
+			to_chat(user, "Они разного калибра, лучше их не смешивать.")
+			return FALSE
+	else
+		if(!ammo_position)
+			to_chat(user, "[src] пусто.")
+			return FALSE
+	return TRUE
+
+/obj/item/ammo_magazine/proc/transfer_bullet_out(mob/user)
+	if(user)
+		if(!do_after(user, transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE, BUSY_ICON_FRIENDLY))
+			return FALSE
+		playsound(loc, pick('sound/weapons/handling/mag_refill_1.ogg', 'sound/weapons/handling/mag_refill_2.ogg', 'sound/weapons/handling/mag_refill_3.ogg'), 25, 1)
+	var/obj/item/projectile/proj = current_rounds[ammo_position]
+	current_rounds[ammo_position] = "empty"
+	ammo_position--
+	update_icon()
+	proj.update_icon()
+	return proj
+
+/obj/item/ammo_magazine/proc/transfer_bullet_in(obj/item/projectile/transfering, mob/user)
+	if(user)
+		if(!do_after(user, transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE, BUSY_ICON_FRIENDLY))
+			return FALSE
+		playsound(loc, pick('sound/weapons/handling/mag_refill_1.ogg', 'sound/weapons/handling/mag_refill_2.ogg', 'sound/weapons/handling/mag_refill_3.ogg'), 25, 1)
+		user.drop_inv_item_to_loc(transfering, src)
+	else
+		transfering.forceMove(src)
+	ammo_position++
+	current_rounds[ammo_position] = transfering
+	update_icon()
+
+/obj/item/ammo_magazine/proc/retrieve_ammo(transfer_amount, mob/user, put_somewhere = TRUE)
+	if(!ammo_transfer_action_check(null, user))
+		return FALSE
+	acting_with = TRUE
+	var/to_transfer = transfer_amount ? min(transfer_amount, ammo_position) : ammo_position
+	var/transfered = 1
+	var/obj/item/projectile/taken_projectile
+	var/obj/item/ammo_magazine/handful/new_handful
+	if(to_transfer == 1)
+		taken_projectile = transfer_bullet_out(user)
+		if(!taken_projectile)
+			acting_with = FALSE
+			return FALSE
+		if(put_somewhere)
+			if(user)
+				user.put_in_hands(taken_projectile)
+				to_chat(user, SPAN_NOTICE("Вы взяли <b>[transfered]</b> [taken_projectile] из [src]."))
+			else
+				taken_projectile.forceMove(get_turf(src))
+	else
+		var/obj/item/projectile/projectile_sample = current_rounds[ammo_position]
+		new_handful = new projectile_sample.ammo.handful_type(src, TRUE, TRUE)
+		new_handful.generate_handful(current_rounds[ammo_position].ammo, caliber, transfer_handful_amount, gun_type)
+		new_handful.generate_ammo(TRUE)
+		to_transfer = min(new_handful.max_rounds, ammo_position)
+
+		var/obj/item/projectile/projectile_transfering = transfer_bullet_out(user)
+		if(!projectile_transfering)
+			acting_with = FALSE
+			return FALSE
+		new_handful.transfer_bullet_in(projectile_transfering)
+		if(user)
+			user.put_in_hands(new_handful)
+		else
+			new_handful.forceMove(get_turf(src))
+
+		for(transfered;transfered<to_transfer;transfered++)
+			var/obj/item/projectile/proj = transfer_bullet_out(user)
+			if(!proj)
+				break
+			proj.forceMove(new_handful)
+			new_handful.transfer_bullet_in(proj)
+
+		if(user)
+			to_chat(user, SPAN_NOTICE("Вы взяли <b>[transfered]</b> [new_handful] из [src]."))
+
+	if(!ammo_position && istype(src, /obj/item/ammo_magazine/handful))
+		if(user)
+			user.temp_drop_inv_item(src)
+		qdel(src)
+	acting_with = FALSE
+	if(put_somewhere)
+		return transfered
+	else
+		return list(transfered, to_transfer == 1 ? taken_projectile : new_handful)
+
+/obj/item/ammo_magazine/proc/transfer_bullet(obj/item/projectile/source, mob/user)
+	if(!ammo_transfer_action_check(source, user))
+		return FALSE
+	acting_with = TRUE
+	transfer_bullet_in(source, user)
+	acting_with = FALSE
+	return TRUE
+
+/obj/item/ammo_magazine/proc/transfer_ammo(obj/item/ammo_magazine/source, transfer_amount, mob/user)
+	if(!ammo_transfer_action_check(source, user))
 		return
+	acting_with = TRUE
+	var/to_transfer = min(transfer_amount, max_rounds - ammo_position)
+	var/transfered = 0
+	for(transfered;transfered<to_transfer;transfered++)
+		var/obj/item/projectile/proj = source.transfer_bullet_out(user)
+		if(!proj)
+			break
+		proj.forceMove(src)
+		transfer_bullet_in(proj)
 
-	if(source.caliber != caliber) //Are they the same caliber?
-		to_chat(user, "The rounds don't match up. Better not mix them up.")
-		return
-
-	var/S = min(transfer_amount, max_rounds - current_rounds)
-	source.current_rounds -= S
-	current_rounds += S
-	if(source.current_rounds <= 0 && istype(source, /obj/item/ammo_magazine/handful)) //We want to delete it if it's a handful.
+	if(source.ammo_position <= 0 && istype(source, /obj/item/ammo_magazine/handful)) //We want to delete it if it'projectile a handful.
 		if(user)
 			user.temp_drop_inv_item(source)
 		qdel(source) //Dangerous. Can mean future procs break if they reference the source. Have to account for this.
-	else source.update_icon()
 
-	if(!istype(src, /obj/item/ammo_magazine/internal) && !istype(src, /obj/item/ammo_magazine/shotgun) && !istype(source, /obj/item/ammo_magazine/shotgun)) //if we are shotgun or revolver or whatever not using normal mag system
-		playsound(loc, pick('sound/weapons/handling/mag_refill_1.ogg', 'sound/weapons/handling/mag_refill_2.ogg', 'sound/weapons/handling/mag_refill_3.ogg'), 25, 1)
+	acting_with = FALSE
+	return transfered // We return the number transferred if it was successful.
 
-	update_icon(S)
-	return S // We return the number transferred if it was successful.
+/obj/item/ammo_magazine/proc/generate_ammo(empty)
+	current_rounds = list()
+	current_rounds.len = max_rounds
+	for(var/i = 1 to max_rounds)
+		current_rounds[i] = empty ? "empty" : new default_projectile(src, null, default_ammo[i % default_ammo.len + 1], caliber)
+	if(!empty)
+		ammo_position = current_rounds.len
+	update_icon()
 
-/// Proc to reload the current_ammo using the items existing inherent ammo, used for Sentry Post
-/obj/item/ammo_magazine/proc/inherent_reload(mob/user)
-	if(current_rounds == max_rounds) //Does the mag actually need reloading?
-		to_chat(user, SPAN_WARNING("[src] is already full."))
-		return 0
+/obj/item/ammo_magazine/proc/generate_bad_ammo(amount_ammo_broken = 1)
+	for(var/i=0;i<amount_ammo_broken;i++)
+		var/obj/item/projectile/proj = pick(current_rounds)
+		proj.scrap_ammo_perc += 4*round(0, amount_ammo_broken*20)
 
-	var/rounds_to_reload = max_rounds - current_rounds
-	current_rounds += rounds_to_reload
-	max_inherent_rounds -= rounds_to_reload
+//explosion
+/obj/item/ammo_magazine/proc/explosing_check()
+	if(!explosing)
+		return TRUE
+	return FALSE
 
-	return rounds_to_reload // Returns the amount of ammo it reloaded
-
-//This will attempt to place the ammo in the user's hand if possible.
-/obj/item/ammo_magazine/proc/create_handful(mob/user, transfer_amount, obj_name = src)
-	var/amount_to_transfer
-	if (current_rounds > 0)
-		var/obj/item/ammo_magazine/handful/new_handful = new /obj/item/ammo_magazine/handful
-		amount_to_transfer = transfer_amount ? min(current_rounds, transfer_amount) : min(current_rounds, transfer_handful_amount)
-		new_handful.generate_handful(default_ammo, caliber, transfer_handful_amount, amount_to_transfer, gun_type)
-		current_rounds -= amount_to_transfer
-		if(!istype(src, /obj/item/ammo_magazine/internal) && !istype(src, /obj/item/ammo_magazine/shotgun)) //if we are shotgun or revolver or whatever not using normal mag system
-			playsound(loc, pick('sound/weapons/handling/mag_refill_1.ogg', 'sound/weapons/handling/mag_refill_2.ogg', 'sound/weapons/handling/mag_refill_3.ogg'), 25, 1)
-
-		if(user)
-			user.put_in_hands(new_handful)
-			to_chat(user, SPAN_NOTICE("You grab <b>[amount_to_transfer]</b> round\s from [obj_name]."))
-
-		else new_handful.forceMove(get_turf(src))
-		update_icon(-amount_to_transfer) //Update the other one.
-	return amount_to_transfer //Give the number created.
-
-//our magazine inherits ammo info from a source magazine
-/obj/item/ammo_magazine/proc/match_ammo(obj/item/ammo_magazine/source)
-	caliber = source.caliber
-	default_ammo = source.default_ammo
-	gun_type = source.gun_type
-
-//~Art interjecting here for explosion when using flamer procs.
-/obj/item/ammo_magazine/flamer_fire_act(damage, datum/cause_data/flame_cause_data)
-	if(current_rounds < 1)
+/obj/item/ammo_magazine/proc/prime(datum/cause_data/weapon_cause_data)
+	if(!explosing_check())
 		return
+	explosing = TRUE
+	playsound(src, 'sound/effects/explosion_psss.ogg', 2, 1)
+	if(!weapon_cause_data)
+		weapon_cause_data = create_cause_data(cause_data)
+	anchored = TRUE
+	spawn(0.5 SECONDS)
+		create_shrapnel(src, 4, , ,shrapnel_type, weapon_cause_data)
+		start_shoting(src, , , , weapon_cause_data)
+		cell_explosion(src, 50, 200, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data)
+		if(!QDELETED(src))
+			qdel(src)
+
+/obj/item/ammo_magazine/proc/start_shoting(turf/epicenter, shrapnel_number = ammo_position, shrapnel_direction, shrapnel_spread = 90, datum/cause_data/cause_data_new, ignore_source_mob = FALSE, on_hit_coefficient = 0.15)
+	epicenter = get_turf(epicenter)
+
+	var/time_to_shot = 1 SECONDS
+	if(shrapnel_number)
+		time_to_shot = 5 SECONDS / shrapnel_number
+
+	var/mob/living/mob_standing_on_turf
+	var/mob/living/mob_lying_on_turf
+	var/atom/source = epicenter
+
+	for(var/mob/living/M in epicenter) //find a mob at the epicenter. Non-prone mobs take priority
+		if(M.density && !mob_standing_on_turf)
+			mob_standing_on_turf = M
+		else if(!mob_lying_on_turf)
+			mob_lying_on_turf = M
+
+	if(mob_standing_on_turf && isturf(mob_standing_on_turf.loc))
+		source = mob_standing_on_turf//we designate any mob standing on the turf as the "source" so that they don't simply get hit by every projectile
+
+
+	for(var/i=0;i<shrapnel_number;i++)
+		var/obj/item/projectile/proj = transfer_bullet_out()
+		proj.bullet_ready_to_fire(initial(name), cause_data)
+		if(cause_data_new)
+			proj.weapon_cause_data = cause_data_new
+		proj.forceMove(get_turf(src))
+
+		var/mob/source_mob = cause_data_new?.resolve_mob()
+		if(mob_standing_on_turf && mob_standing_on_turf && prob(100*on_hit_coefficient)) //if a non-prone mob is on the same turf as the shrapnel explosion, some of the shrapnel hits him
+			proj.ammo.on_hit_mob(mob_standing_on_turf, proj)
+			mob_standing_on_turf.bullet_act(proj)
+		else if(mob_lying_on_turf && mob_lying_on_turf && prob(100*on_hit_coefficient))
+			proj.ammo.on_hit_mob(mob_lying_on_turf, proj)
+			mob_lying_on_turf.bullet_act(proj)
+
+		else
+			var/angle = rand(0,360)
+			var/atom/target = get_angle_target_turf(epicenter, angle, 20)
+			proj.projectile_flags |= PROJECTILE_SHRAPNEL
+			proj.fire_at(target, source_mob, source, proj.ammo.max_range, proj.ammo.shell_speed, null)
+		sleep(time_to_shot)
+
+/obj/item/ammo_magazine/bullet_act(obj/item/projectile/proj)
+	..()
+
+	var/ammo_flags = proj.ammo.traits_to_give | proj.projectile_override_flags
+	if(ammo_flags && ammo_flags & (/datum/element/bullet_trait_incendiary) || proj.ammo.flags_ammo_behavior & AMMO_XENO)
+		addtimer(CALLBACK(src, PROC_REF(prime), proj.weapon_cause_data), 1)
+	else if(rand(0,50) < 1)
+		addtimer(CALLBACK(src, PROC_REF(prime), proj.weapon_cause_data), 1)
 	else
-		var/severity = round(current_rounds / 50)
-		//the more ammo inside, the faster and harder it cooks off
-		if(severity > 0)
-			addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(explosion), loc, -1, ((severity > 4) ? 0 : -1), Clamp(severity, 0, 1), Clamp(severity, 0, 2), 1, 0, 0, flame_cause_data), max(5 - severity, 2))
+		generate_bad_ammo(rand(1,ammo_position))
 
-	if(!QDELETED(src))
-		qdel(src)
+/obj/item/ammo_magazine/ex_act(severity, explosion_direction, datum/cause_data/explosion_cause_data)
+	switch(severity)
+		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
+			addtimer(CALLBACK(src, PROC_REF(prime), explosion_cause_data), 1)
 
-//our fueltanks are extremely fire-retardant and won't explode
-/obj/item/ammo_magazine/flamer_tank/flamer_fire_act(damage, datum/cause_data/flame_cause_data)
-	return
+/obj/item/ammo_magazine/flamer_fire_act(damage, datum/cause_data/flame_cause_data)
+	addtimer(CALLBACK(src, PROC_REF(prime), flame_cause_data), 1)
 
 //Magazines that actually cannot be removed from the firearm. Functionally the same as the regular thing, but they do have three extra vars.
 /obj/item/ammo_magazine/internal
 	name = "internal chamber"
 	desc = "You should not be able to examine it."
 	//For revolvers and shotguns.
-	var/chamber_contents[] //What is actually in the chamber. Initiated on New().
-	var/chamber_position = 1 //Where the firing pin is located. We usually move this instead of the contents.
 	var/chamber_closed = 1 //Starts out closed. Depends on firearm.
 
 //Helper proc, to allow us to see a percentage of how full the magazine is.
 /obj/item/ammo_magazine/proc/get_ammo_percent() // return % charge of cell
-	return 100.0*current_rounds/max_rounds
+	return 100*ammo_position/max_rounds
 
 //----------------------------------------------------------------//
 //Now for handfuls, which follow their own rules and have some special differences from regular boxes.
@@ -236,7 +438,6 @@ bullets/shells. ~N
 	matter = list("metal" = 50) //This changes based on the ammo ammount. 5k is the base of one shell/bullet.
 	flags_equip_slot = null // It only fits into pockets and such.
 	w_class = SIZE_SMALL
-	current_rounds = 1 // So it doesn't get autofilled for no reason.
 	max_rounds = 5 // For shotguns, though this will be determined by the handful type when generated.
 	flags_atom = FPRINT|CONDUCT
 	flags_magazine = AMMUNITION_HANDFUL
@@ -247,10 +448,10 @@ bullets/shells. ~N
 	update_icon()
 
 /obj/item/ammo_magazine/handful/update_icon() //Handles the icon itself as well as some bonus things.
-	if(max_rounds >= current_rounds)
-		var/I = current_rounds*50 // For the metal.
+	if(max_rounds >= ammo_position)
+		var/I = ammo_position*50 // For the metal.
 		matter = list("metal" = I)
-	icon_state = handful_state + "_[current_rounds]"
+	icon_state = handful_state + "_[ammo_position]"
 
 /obj/item/ammo_magazine/handful/pickup(mob/user)
 	var/olddir = dir
@@ -262,106 +463,35 @@ bullets/shells. ~N
 	..(user,slot)
 	setDir(thisDir)
 	return
-/*
-There aren't many ways to interact here.
-If the default ammo isn't the same, then you can't do much with it.
-If it is the same and the other stack isn't full, transfer an amount (default 1) to the other stack.
-*/
-/obj/item/ammo_magazine/handful/attackby(obj/item/ammo_magazine/handful/transfer_from, mob/user)
-	if(istype(transfer_from)) // We have a handful. They don't need to hold it.
-		if(default_ammo == transfer_from.default_ammo) //Has to match.
-			transfer_ammo(transfer_from,user, transfer_from.current_rounds) // Transfer it from currently held to src
-		else to_chat(user, "Those aren't the same rounds. Better not mix them up.")
 
-/obj/item/ammo_magazine/handful/proc/generate_handful(new_ammo, new_caliber, new_max_rounds, new_rounds, new_gun_type)
-	var/datum/ammo/A = GLOB.ammo_list[new_ammo]
-	var/ammo_name = A.name //Let's pull up the name.
+/obj/item/ammo_magazine/handful/attackby(obj/item/transfer_from, mob/user)
+	if(istype(transfer_from, /obj/item/ammo_magazine))
+		var/obj/item/ammo_magazine/transfering = transfer_from
+		if(transfer_ammo(transfering, transfering.ammo_position, user))
+			return TRUE
+		return FALSE
+
+	else if(istype(transfer_from, /obj/item/projectile))
+		var/obj/item/projectile/transfering = transfer_from
+		if(transfer_bullet(transfering, user))
+			return TRUE
+		return FALSE
+
+/obj/item/ammo_magazine/handful/proc/generate_handful(new_ammo, new_caliber, new_max_rounds, new_gun_type)
+	var/datum/ammo/A = new_ammo
+	var/ammo_name = A.name //Let'projectile pull up the name.
 	var/multiple_handful_name = A.multiple_handful_name
 
-	name = "handful of [ammo_name + (multiple_handful_name ? " ":"s ") + "([new_caliber])"]"
+	name = "handful of [ammo_name + (multiple_handful_name ? " ":"projectile ") + "([new_caliber[1]])"]"
 
-	default_ammo = new_ammo
+	default_ammo = list(new_ammo)
 	caliber = new_caliber
 	max_rounds = new_max_rounds
-	current_rounds = new_rounds
-	gun_type = new_gun_type
+	if(new_gun_type)
+		gun_type = new_gun_type
 	handful_state = A.handful_state
 	if(A.handful_color)
 		color = A.handful_color
 	update_icon()
 
 //----------------------------------------------------------------//
-
-
-/*
-Doesn't do anything or hold anything anymore.
-Generated per the various mags, and then changed based on the number of
-casings. .dir is the main thing that controls the icon. It modifies
-the icon_state to look like more casings are hitting the ground.
-There are 8 directions, 8 bullets are possible so after that it tries to grab the next
-icon_state while reseting the direction. After 16 casings, it just ignores new
-ones. At that point there are too many anyway. Shells and bullets leave different
-items, so they do not intersect. This is far more efficient than using Bl*nd() or
-Turn() or Shift() as there is virtually no overhead. ~N
-*/
-/obj/item/ammo_casing
-	name = "spent casing"
-	desc = "Empty and useless now."
-	icon = 'icons/obj/items/casings.dmi'
-	icon_state = "casing_"
-	throwforce = 1
-	w_class = SIZE_TINY
-	layer = LOWER_ITEM_LAYER //Below other objects
-	dir = NORTH //Always north when it spawns.
-	flags_atom = FPRINT|CONDUCT|DIRLOCK
-	matter = list("metal" = 8) //tiny amount of metal
-	var/current_casings = 1 //This is manipulated in the procs that use these.
-	var/max_casings = 16
-	var/current_icon = 0
-	var/number_of_states = 10 //How many variations of this item there are.
-	garbage = TRUE
-
-/obj/item/ammo_casing/Initialize()
-	. = ..()
-	pixel_x = rand(-2.0, 2) //Want to move them just a tad.
-	pixel_y = rand(-2.0, 2)
-	icon_state += "[rand(1,number_of_states)]" //Set the icon to it.
-
-//This does most of the heavy lifting. It updates the icon and name if needed, then changes .dir to simulate new casings.
-/obj/item/ammo_casing/update_icon()
-	if(max_casings >= current_casings)
-		if(current_casings == 2) name += "s" //In case there is more than one.
-		if(round((current_casings-1)/8) > current_icon)
-			current_icon++
-			icon_state += "_[current_icon]"
-
-		var/I = current_casings*8 // For the metal.
-		matter = list("metal" = I)
-		var/base_direction = current_casings - (current_icon * 8)
-		setDir(base_direction + round(base_direction)/3)
-		switch(current_casings)
-			if(3 to 5) w_class = SIZE_SMALL //Slightly heavier.
-			if(9 to 10) w_class = SIZE_MEDIUM //Can't put it in your pockets and stuff.
-
-
-//Making child objects so that locate() and istype() doesn't screw up.
-/obj/item/ammo_casing/bullet
-
-/obj/item/ammo_casing/cartridge
-	name = "spent cartridge"
-	icon_state = "cartridge_"
-
-/obj/item/ammo_casing/shell
-	name = "spent shell"
-	icon_state = "shell_"
-
-/obj/item/ammo_box/magazine/lever_action/xm88
-	name = "\improper .458 bullets box (.458 x 300)"
-	icon_state = "base_458"
-	overlay_ammo_type = "_blank"
-	overlay_gun_type = "_458"
-	overlay_content = "_458"
-	magazine_type = /obj/item/ammo_magazine/handful/lever_action/xm88
-
-/obj/item/ammo_box/magazine/lever_action/xm88/empty
-	empty = TRUE

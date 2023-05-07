@@ -28,7 +28,7 @@
 /datum/flameshape/default/handle_fire_spread(obj/flamer_fire/F, fire_spread_amount, burn_dam, fuel_pressure = 1)
 	var/turf/T
 	var/turf/source_turf = get_turf(F.loc)
-	for(var/dirn in cardinal)
+	for(var/dirn in  GLOB.cardinals)
 		T = get_step(source_turf, dirn)
 		if(istype(T, /turf/open/space))
 			continue
@@ -48,7 +48,7 @@
 
 			if(A)
 				A.flamer_fire_act(burn_dam, F.weapon_cause_data)
-				if (A.flags_atom & ON_BORDER)
+				if(A.flags_atom & ON_BORDER)
 					break
 				new_spread_amt = 0
 
@@ -64,7 +64,7 @@
 	id = FLAMESHAPE_STAR
 
 /datum/flameshape/star/proc/dirs_to_use()
-	return alldirs
+	return GLOB.alldirs
 
 /datum/flameshape/star/handle_fire_spread(obj/flamer_fire/F, fire_spread_amount, burn_dam, fuel_pressure = 1)
 	fire_spread_amount = Floor(fire_spread_amount * 1.5) // branch 'length'
@@ -90,7 +90,7 @@
 			var/atom/A = LinkBlocked(temp, prev_T, T)
 			if(A)
 				A.flamer_fire_act(burn_dam, , F.weapon_cause_data)
-				if (A.flags_atom & ON_BORDER)
+				if(A.flags_atom & ON_BORDER)
 					break
 
 			addtimer(CALLBACK(src, PROC_REF(generate_fire), T, F, 0, FLAMESHAPE_MINORSTAR, null, FALSE, fuel_pressure), 0)
@@ -102,9 +102,9 @@
 
 /datum/flameshape/star/minor/dirs_to_use()
 	if(prob(50))
-		return cardinal
+		return GLOB.cardinals
 	else
-		return diagonals
+		return GLOB.diagonals
 
 /datum/flameshape/line
 	name = "Line"
@@ -141,7 +141,7 @@
 
 			if(A)
 				A.flamer_fire_act(burn_dam, F.weapon_cause_data)
-				if (A.flags_atom & ON_BORDER)
+				if(A.flags_atom & ON_BORDER)
 					break
 				stop_at_turf = TRUE
 
@@ -166,7 +166,7 @@
 	id = FLAMESHAPE_TRIANGLE
 
 /datum/flameshape/triangle/handle_fire_spread(obj/flamer_fire/F, fire_spread_amount, burn_dam, fuel_pressure = 1)
-	set waitfor = 0
+	set waitfor = FALSE
 
 	var/mob/user
 
@@ -192,12 +192,12 @@
 			qdel(temp)
 			if(AM)
 				AM.flamer_fire_act(burn_dam, F.weapon_cause_data)
-				if (AM.flags_atom & ON_BORDER)
+				if(AM.flags_atom & ON_BORDER)
 					break
 				hit_dense_atom_mid = TRUE
 
 		if(T == F.loc)
-			if (hit_dense_atom_mid)
+			if(hit_dense_atom_mid)
 				break
 
 			prev_T = T
@@ -229,13 +229,13 @@
 				qdel(temp)
 				if(AM)
 					AM.flamer_fire_act(burn_dam, F.weapon_cause_data)
-					if (AM.flags_atom & ON_BORDER)
+					if(AM.flags_atom & ON_BORDER)
 						break
 					hit_dense_atom_side = TRUE
-				else if (hit_dense_atom_mid)
+				else if(hit_dense_atom_mid)
 					break
 			generate_fire(R, F, 0, FLAMESHAPE_TRIANGLE, FALSE, FALSE, fuel_pressure)
-			if (!hit_dense_atom_mid && hit_dense_atom_side)
+			if(!hit_dense_atom_mid && hit_dense_atom_side)
 				break
 			prev_R = R
 			sleep(1)
@@ -248,18 +248,18 @@
 				qdel(temp)
 				if(AM)
 					AM.flamer_fire_act(burn_dam, F.weapon_cause_data)
-					if (AM.flags_atom & ON_BORDER)
+					if(AM.flags_atom & ON_BORDER)
 						break
 					hit_dense_atom_side = TRUE
-				else if (hit_dense_atom_mid)
+				else if(hit_dense_atom_mid)
 					break
 			generate_fire(L, F, 0, FLAMESHAPE_TRIANGLE, FALSE, FALSE, fuel_pressure)
-			if (!hit_dense_atom_mid && hit_dense_atom_side)
+			if(!hit_dense_atom_mid && hit_dense_atom_side)
 				break
 			prev_L = L
 			sleep(1)
 
-		if (hit_dense_atom_mid)
+		if(hit_dense_atom_mid)
 			break
 
 		distance++

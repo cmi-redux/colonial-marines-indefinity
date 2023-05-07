@@ -7,17 +7,17 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 	//This list tracks characters spawned in the world and cannot be modified in-game. Currently referenced by respawn_character().
 	var/locked[] = list()
 
-/datum/datacore/proc/get_manifest(monochrome, OOC, nonHTML)
-	var/list/cic = ROLES_CIC.Copy()
-	var/list/auxil = ROLES_AUXIL_SUPPORT.Copy()
-	var/list/misc = ROLES_MISC.Copy()
-	var/list/mp = ROLES_POLICE.Copy()
-	var/list/eng = ROLES_ENGINEERING.Copy()
-	var/list/req = ROLES_REQUISITION.Copy()
-	var/list/med = ROLES_MEDICAL.Copy()
-	var/list/marines_by_squad = ROLES_SQUAD_ALL.Copy()
+/datum/datacore/proc/get_manifest(monochrome, datum/faction/faction, OOC, nonHTML)
+	var/list/cic = ROLES_CIC
+	var/list/auxil = ROLES_AUXIL_SUPPORT
+	var/list/misc = ROLES_MISC
+	var/list/mp = ROLES_POLICE
+	var/list/eng = ROLES_ENGINEERING
+	var/list/req = ROLES_REQUISITION
+	var/list/med = ROLES_MEDICAL
+	var/list/marines_by_squad = ROLES_SQUAD_ALL
 	for(var/squad_name in marines_by_squad)
-		marines_by_squad[squad_name] = ROLES_MARINES.Copy()
+		marines_by_squad[squad_name] = ROLES_MARINES
 	var/list/isactive = new()
 
 // If we need not the HTML table, but list
@@ -33,7 +33,7 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 		departments += marines_by_squad
 		var/list/manifest_out = list()
 		for(var/datum/data/record/t in GLOB.data_core.general)
-			if(t.fields["mob_faction"] != FACTION_MARINE) //we process only USCM humans
+			if(t.fields["mob_faction"] != faction.name)
 				continue
 			var/name = t.fields["name"]
 			var/rank = t.fields["rank"]
@@ -82,11 +82,11 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 	var/even = 0
 
 	// sort mobs
-	var/dept_flags = NO_FLAGS //Is there anybody in the department?.
-	var/list/squad_sublists = ROLES_SQUAD_ALL.Copy() //Are there any marines in the squad?
+	var/dept_flags = NO_FLAGS
+	var/list/squad_sublists = ROLES_SQUAD_ALL
 
 	for(var/datum/data/record/t in GLOB.data_core.general)
-		if(t.fields["mob_faction"] != FACTION_MARINE) //we process only USCM humans
+		if(t.fields["mob_faction"] != faction.name)
 			continue
 
 		var/name = t.fields["name"]
@@ -204,7 +204,7 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 
 		var/list/jobs_to_check = ROLES_CIC + ROLES_AUXIL_SUPPORT + ROLES_MISC + ROLES_POLICE + ROLES_ENGINEERING + ROLES_REQUISITION + ROLES_MEDICAL + ROLES_MARINES
 		for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
-			if(is_admin_level(H.z))
+			if(H.statistic_exempt)
 				continue
 			if(H.job in jobs_to_check)
 				manifest_inject(H)
@@ -249,23 +249,23 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 
 	//General Record
 	var/datum/data/record/G = new()
-	G.fields["id"] = id
-	G.fields["name"] = H.real_name
-	G.fields["real_rank"] = H.job
-	G.fields["rank"] = assignment
-	G.fields["squad"] = H.assigned_squad ? H.assigned_squad.name : null
-	G.fields["age"] = H.age
-	G.fields["p_stat"] = "Active"
-	G.fields["m_stat"] = "Stable"
-	G.fields["sex"] = H.gender
-	G.fields["species"] = H.get_species()
-	G.fields["origin"] = H.origin
-	G.fields["faction"] = H.personal_faction
-	G.fields["mob_faction"] = H.faction
-	G.fields["religion"] = H.religion
-	G.fields["ref"] = WEAKREF(H)
-	//G.fields["photo_front"] = front
-	//G.fields["photo_side"] = side
+	G.fields["id"]			= id
+	G.fields["name"]		= H.real_name
+	G.fields["real_rank"]	= H.job
+	G.fields["rank"]		= assignment
+	G.fields["squad"]		= H.assigned_squad ? H.assigned_squad.name : null
+	G.fields["age"]			= H.age
+	G.fields["p_stat"]		= "Active"
+	G.fields["m_stat"]		= "Stable"
+	G.fields["sex"]			= H.gender
+	G.fields["species"]		= H.get_species()
+	G.fields["origin"]		= H.origin
+	G.fields["faction"]		= H.personal_faction
+	G.fields["mob_faction"]	= H.faction.name
+	G.fields["religion"]	= H.religion
+	G.fields["ref"]			= WEAKREF(H)
+	//G.fields["photo_front"]	= front
+	//G.fields["photo_side"]	= side
 
 	if(H.gen_record && !jobban_isbanned(H, "Records"))
 		G.fields["notes"] = H.gen_record
@@ -344,12 +344,12 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 	var/e_icon
 	var/b_icon
 
-	if (!ET)
+	if(!ET)
 		e_icon = "western"
 	else
 		e_icon = ET.icon_name
 
-	if (!B)
+	if(!B)
 		b_icon = "mesomorphic"
 	else
 		b_icon = B.icon_name

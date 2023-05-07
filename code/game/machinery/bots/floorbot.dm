@@ -47,7 +47,7 @@
 
 /obj/structure/machinery/bot/floorbot/attack_hand(mob/user as mob)
 	. = ..()
-	if (.)
+	if(.)
 		return
 	usr.set_interaction(src)
 	interact(user)
@@ -60,11 +60,11 @@
 	dat += "Tiles left: [src.amount]<BR>"
 	dat += "Behvaiour controls are [src.locked ? "locked" : "unlocked"]<BR>"
 	if(!src.locked || isRemoteControlling(user))
-		dat += "Improves floors: <A href='?src=\ref[src];operation=improve'>[src.improvefloors ? "Yes" : "No"]</A><BR>"
-		dat += "Finds tiles: <A href='?src=\ref[src];operation=tiles'>[src.eattiles ? "Yes" : "No"]</A><BR>"
-		dat += "Make singles pieces of metal into tiles when empty: <A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A><BR>"
+		dat += "Improves floors: <A href='?src=\ref[src];operation=improve'>[src.improvefloors ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</A><BR>"
+		dat += "Finds tiles: <A href='?src=\ref[src];operation=tiles'>[src.eattiles ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</A><BR>"
+		dat += "Make singles pieces of metal into tiles when empty: <A href='?src=\ref[src];operation=make'>[src.maketiles ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</A><BR>"
 		var/bmode
-		if (src.targetdirection)
+		if(src.targetdirection)
 			bmode = dir2text(src.targetdirection)
 		else
 			bmode = "Disabled"
@@ -104,7 +104,7 @@
 	src.add_fingerprint(usr)
 	switch(href_list["operation"])
 		if("start")
-			if (src.on)
+			if(src.on)
 				turn_off()
 			else
 				turn_on()
@@ -134,7 +134,7 @@
 			src.updateUsrDialog()
 
 /obj/structure/machinery/bot/floorbot/process()
-	set background = 1
+	set background = TRUE
 
 	if(!src.on)
 		return
@@ -205,7 +205,7 @@
 				src.path = AStar(src.loc, src.target.loc, /turf/proc/AdjacentTurfsSpace, /turf/proc/Distance, 0, 30, id=botcard)
 			else
 				src.path = AStar(src.loc, src.target, /turf/proc/AdjacentTurfsSpace, /turf/proc/Distance, 0, 30, id=botcard)
-			if (!src.path) src.path = list()
+			if(!src.path) src.path = list()
 			if(src.path.len == 0)
 				src.oldtarget = src.target
 				src.target = null
@@ -318,16 +318,16 @@
 
 	new /obj/item/device/assembly/prox_sensor(Tsec)
 
-	if (prob(50))
+	if(prob(50))
 		new /obj/item/robot_parts/arm/l_arm(Tsec)
 
 	while (amount)//Dumps the tiles into the appropriate sized stacks
 		if(amount >= 16)
-			var/obj/item/stack/tile/plasteel/T = new (Tsec)
+			var/obj/item/stack/tile/plasteel/T = new(Tsec)
 			T.amount = 16
 			amount -= 16
 		else
-			var/obj/item/stack/tile/plasteel/T = new (Tsec)
+			var/obj/item/stack/tile/plasteel/T = new(Tsec)
 			T.amount = src.amount
 			amount = 0
 
@@ -347,7 +347,7 @@
 		return
 	for(var/mob/M in content_watchers)
 		storage_close(M)
-	if (T.use(10))
+	if(T.use(10))
 		var/obj/item/frame/toolbox_tiles/B = new /obj/item/frame/toolbox_tiles
 		user.put_in_hands(B)
 		to_chat(user, SPAN_NOTICE("You add the tiles into the empty toolbox. They protrude from the top."))

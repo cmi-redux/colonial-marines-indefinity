@@ -10,13 +10,13 @@
 #define CHECK_MULTIPLE_BITFIELDS(flagvar, flags) (((flagvar) & (flags)) == (flags))
 
 /*
-	These defines are specific to the atom/flags_1 bitmask
+	These defines are specific to the atom/flags_atom bitmask
 */
 #define ALL (~0) //For convenience.
 #define NONE 0
 
 /* Directions */
-///All the cardinal direction bitflags.
+///All the cardinals direction bitflags.
 #define ALL_CARDINALS (NORTH|SOUTH|EAST|WEST)
 
 // for /datum/var/datum_flags

@@ -65,7 +65,7 @@
 	var/list/dat = list("<center><B>Tag Menu</B></center><hr>")
 
 	dat += "<br><A href='?src=[REF(src)];[HrefToken(forceGlobal = TRUE)];show_tags=1'>Refresh</a><br>"
-	if(LAZYLEN(tagged_datums))
+	if(length(tagged_datums))
 		for(var/datum/iter_datum as anything in tagged_datums)
 			index++
 			var/specific_info

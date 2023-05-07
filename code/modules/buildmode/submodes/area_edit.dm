@@ -63,8 +63,7 @@
 	var/list/modifiers = params2list(params)
 
 	if(LAZYACCESS(modifiers, LEFT_CLICK))
-		var/choice = alert("Are you sure you want to fill area?", "Area Fill Confirmation", "Yes", "No")
-		if(choice != "Yes")
+		if(alert("Are you sure you want to fill area?", "Area Fill Confirmation", c.auto_lang(LANGUAGE_YES), c.auto_lang(LANGUAGE_NO)) != c.auto_lang(LANGUAGE_YES))
 			return
 		for(var/turf/T in block(get_turf(cornerA),get_turf(cornerB)))
 			storedarea.contents.Add(T)

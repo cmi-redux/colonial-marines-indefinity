@@ -24,12 +24,12 @@
 	var/e_icon
 	var/b_icon
 
-	if (!E)
+	if(!E)
 		e_icon = "western"
 	else
 		e_icon = E.icon_name
 
-	if (!B)
+	if(!B)
 		b_icon = "mesomorphic"
 	else
 		b_icon = B.icon_name
@@ -179,7 +179,7 @@
 				//TODO: ORGAN REMOVAL UPDATE.
 				var/obj/item/organ/brain/B = new brain_item_type(loc)
 				if(brainmob.stat != DEAD)
-					brainmob.death(create_cause_data("brain extraction", user)) //brain mob doesn't survive outside a head
+					brainmob.death(create_cause_data("изъятия мозга", user)) //brain mob doesn't survive outside a head
 				B.transfer_identity(brainmob)
 
 				brain_op_stage = 4

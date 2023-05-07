@@ -1754,7 +1754,7 @@ module.exports = (function() {
       // enable benchmarking via the --enable-benchmarking command
       // line switch in at least Chrome 7 to use chrome.Interval
       try {
-        if ((timer.ns = new (context.chrome || context.chromium).Interval)) {
+        if ((timer.ns = new(context.chrome || context.chromium).Interval)) {
           timers.push({ 'ns': timer.ns, 'res': getRes('us'), 'unit': 'us' });
         }
       } catch(e) {}

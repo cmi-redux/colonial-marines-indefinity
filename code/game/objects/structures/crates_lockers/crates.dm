@@ -15,7 +15,7 @@
 
 /obj/structure/closet/crate/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_OVER|PASS_AROUND
 
 /obj/structure/closet/crate/can_open()
@@ -98,7 +98,7 @@
 		if(rigged)
 			to_chat(user, SPAN_NOTICE("[src] is already rigged!"))
 			return
-		if (C.use(1))
+		if(C.use(1))
 			to_chat(user, SPAN_NOTICE("You rig [src]."))
 			rigged = 1
 			return

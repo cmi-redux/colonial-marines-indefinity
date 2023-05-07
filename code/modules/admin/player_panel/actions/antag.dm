@@ -9,6 +9,11 @@
 		return
 
 	var/mob/living/carbon/human/H = target
+
+	if(H.faction != GLOB.faction_datum[FACTION_MARINE])
+		to_chat(user, SPAN_WARNING("This player's faction must equal '[FACTION_MARINE]' to make them a mutineer."))
+		return
+
 	var/datum/equipment_preset/preset = GLOB.gear_path_presets_list[/datum/equipment_preset/other/mutineer]
 	if(params["leader"])
 		preset = GLOB.gear_path_presets_list[/datum/equipment_preset/other/mutineer/leader]
@@ -20,22 +25,21 @@
 	message_admins("[key_name_admin(user)] has made [key_name_admin(H)] into a [title].")
 
 // XENO
-/datum/player_action/change_hivenumber
-	action_tag = "xeno_change_hivenumber"
-	name = "Change Hivenumber"
+/datum/player_action/change_faction
+	action_tag = "xeno_change_faction"
+	name = "Change faction"
 	permissions_required = R_SPAWN
 
-/datum/player_action/change_hivenumber/act(client/user, mob/target, list/params)
-	if(!params["hivenumber"])
+/datum/player_action/change_faction/act(client/user, mob/target, list/params)
+	if(!params["faction"])
 		return
 
 	if(!isxeno(target))
 		return
 
-	var/mob/living/carbon/xenomorph/X = target
-
-	X.set_hive_and_update(params["hivenumber"])
-	message_admins("[key_name_admin(user)] changed hivenumber of [target] to [params["hivenumber"]].")
+	var/mob/living/carbon/xenomorph/xeno = target
+	xeno.set_hive_and_update(params["faction"])
+	message_admins("[key_name_admin(user)] changed faction of [target] to [params["faction"]].")
 	return TRUE
 
 /datum/player_action/make_cultist
@@ -44,7 +48,7 @@
 	permissions_required = R_ADMIN
 
 /datum/player_action/make_cultist/act(client/user, mob/target, list/params)
-	if(!params["hivenumber"])
+	if(!params["faction"])
 		return
 
 	if(!ishuman(target))
@@ -57,10 +61,10 @@
 		preset = GLOB.gear_path_presets_list[/datum/equipment_preset/other/xeno_cultist/leader]
 
 
-	preset.load_race(H, params["hivenumber"])
+	preset.load_race(H, params["faction"])
 	preset.load_status(H)
 
 	var/title = params["leader"]? "xeno cultist leader" : "cultist"
 
-	message_admins("[key_name_admin(user)] has made [target] into a [title], enslaved to hivenumber [params["hivenumber"]].")
+	message_admins("[key_name_admin(user)] has made [target] into a [title], enslaved to faction [params["faction"]].")
 	return TRUE

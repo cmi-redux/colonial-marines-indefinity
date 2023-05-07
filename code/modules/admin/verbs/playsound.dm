@@ -128,12 +128,11 @@
 	admin_sound.volume = vol
 
 	var/showtitle = FALSE
-	var/res = alert(src, "Show the title of this song to the players?",, "Yes","No", "Cancel")
-	switch(res)
-		if("Yes")
-			showtitle = TRUE
-		if("Cancel")
-			return
+	var/res = alert(src, "Show the title of this song to the players?", , auto_lang(LANGUAGE_YES), auto_lang(LANGUAGE_NO), auto_lang(LANGUAGE_CANCEL))
+	if(res == auto_lang(LANGUAGE_YES))
+		showtitle = TRUE
+	else if(res == auto_lang(LANGUAGE_CANCEL))
+		return
 
 	var/list/targets = list()
 	var/list/sound_type_list = list(

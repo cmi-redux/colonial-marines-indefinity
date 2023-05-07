@@ -92,22 +92,22 @@
 	ignores_stripdrag_flag = TRUE
 
 /datum/species/yautja/larva_impregnated(obj/item/alien_embryo/embryo)
-	var/datum/hive_status/hive = GLOB.hive_datum[embryo.hivenumber]
+	var/datum/faction/faction = embryo.faction
 
-	if(!istype(hive))
+	if(!istype(faction))
 		return
 
-	if(!(XENO_STRUCTURE_NEST in hive.hive_structure_types))
-		hive.hive_structure_types.Add(XENO_STRUCTURE_NEST)
+	if(!(XENO_STRUCTURE_NEST in faction.hive_structure_types))
+		faction.hive_structure_types.Add(XENO_STRUCTURE_NEST)
 
-	if(!(XENO_STRUCTURE_NEST in hive.hive_structures_limit))
-		hive.hive_structures_limit.Add(XENO_STRUCTURE_NEST)
-		hive.hive_structures_limit[XENO_STRUCTURE_NEST] = 0
+	if(!(XENO_STRUCTURE_NEST in faction.faction_structures_limit))
+		faction.faction_structures_limit.Add(XENO_STRUCTURE_NEST)
+		faction.faction_structures_limit[XENO_STRUCTURE_NEST] = 0
 
-	hive.hive_structure_types[XENO_STRUCTURE_NEST] = /datum/construction_template/xenomorph/nest
-	hive.hive_structures_limit[XENO_STRUCTURE_NEST]++
+	faction.hive_structure_types[XENO_STRUCTURE_NEST] = /datum/construction_template/xenomorph/nest
+	faction.faction_structures_limit[XENO_STRUCTURE_NEST]++
 
-	xeno_message(SPAN_XENOANNOUNCE("The hive senses that a headhunter has been infected! The thick resin nest is now available in the special structures list!"),hivenumber = hive.hivenumber)
+	xeno_message(SPAN_XENOANNOUNCE("The hive senses that a headhunter has been infected! The thick resin nest is now available in the special structures list!"), 3, faction)
 
 /datum/species/yautja/handle_death(mob/living/carbon/human/H, gibbed)
 	if(gibbed)

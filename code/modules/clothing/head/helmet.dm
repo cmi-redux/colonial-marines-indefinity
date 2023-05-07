@@ -43,6 +43,14 @@
 		if(H.head == src)
 			H.update_hair()
 
+/obj/item/clothing/head/helmet/skin(skin)
+	icon = 'icons/custom/items/clothings.dmi'
+	icon_state = "[icon_state]_[skin]"
+	item_state = "[item_state]_[skin]"
+	item_icons = list(
+		WEAR_HEAD = 'icons/custom/items/clothing_on_mob.dmi'
+	)
+
 /obj/item/clothing/head/helmet/riot
 	name = "riot helmet"
 	desc = "It's a helmet specifically designed to protect against close range attacks. It covers your ears."
@@ -255,16 +263,9 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 
 	// WALKMAN AND CASSETTES
 	/obj/item/device/walkman = HELMET_GARB_RELAY_ICON_STATE,
-	/obj/item/device/cassette_tape/pop1 = "cassette_blue",
-	/obj/item/device/cassette_tape/pop2 = "cassette_rainbow",
-	/obj/item/device/cassette_tape/pop3 = "cassette_orange",
-	/obj/item/device/cassette_tape/pop4 = "cassette_pink_stripe",
-	/obj/item/device/cassette_tape/heavymetal = "cassette_red_black",
-	/obj/item/device/cassette_tape/hairmetal = "cassette_red_stripe",
-	/obj/item/device/cassette_tape/indie = "cassette_rising_sun",
-	/obj/item/device/cassette_tape/hiphop = "cassette_orange_blue",
-	/obj/item/device/cassette_tape/nam = "cassette_green",
-	/obj/item/device/cassette_tape/ocean = "cassette_ocean",
+	/obj/item/device/cassette_tape/sad = "cassette_red_black",
+	/obj/item/device/cassette_tape/sovietwave = "cassette_red_stripe",
+	/obj/item/device/cassette_tape/lybe = "cassette_green",
 	/obj/item/storage/pouch/cassette = "cassette_pouch",
 
 	// PREFERENCES GEAR
@@ -370,11 +371,10 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 
 	//speciality does NOTHING if you have NO_NAME_OVERRIDE
 
-/obj/item/clothing/head/helmet/marine/New(loc,
-	new_protection[] = list(MAP_ICE_COLONY = ICE_PLANET_MIN_COLD_PROT))
+/obj/item/clothing/head/helmet/marine/New(loc, new_protection[] = list(MAP_ICE_COLONY = ICE_PLANET_MIN_COLD_PROT))
 	if(!(flags_atom & NO_NAME_OVERRIDE))
 		name = "[specialty]"
-		if(SSmapping.configs[GROUND_MAP].environment_traits[MAP_COLD])
+		if(SSmapping?.configs?[GROUND_MAP]?.environment_traits[MAP_COLD])
 			name += " snow helmet"
 		else
 			name += " helmet"
@@ -421,13 +421,13 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 		var/obj/item/ammo_magazine/M = W
 		var/ammo_level = "somewhat"
 		playsound(user, 'sound/items/trayhit1.ogg', 15, FALSE)
-		if(M.current_rounds > (M.max_rounds/2))
+		if(M.ammo_position > (M.max_rounds/2))
 			ammo_level = "more than half full."
-		if(M.current_rounds < (M.max_rounds/2))
+		if(M.ammo_position < (M.max_rounds/2))
 			ammo_level = "less than half full."
-		if(M.current_rounds < (M.max_rounds/6))
+		if(M.ammo_position < (M.max_rounds/6))
 			ammo_level = "almost empty."
-		if(M.current_rounds == 0)
+		if(M.ammo_position == 0)
 			ammo_level = "empty. Uh oh."
 		user.visible_message("[user] bashes [M] against their helmet", "You bash [M] against your helmet. It is [ammo_level]")
 		helmet_bash_cooldown = world.time + 20 SECONDS
@@ -486,16 +486,15 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	. = ..()
 	if(pockets)
 		for(var/obj/item/attachable/flashlight/F in pockets)
-			if(F.activated)
-				F.activate_attachment(src, user, TRUE)
+			F.activate_attachment_armor(src, user, TRUE)
 
 /obj/item/clothing/head/helmet/marine/dropped(mob/living/carbon/human/mob)
 	if(camera)
 		camera.c_tag = "Unknown"
 	if(pockets)
 		for(var/obj/item/attachable/flashlight/F in pockets)
-			if(F.activated)
-				F.activate_attachment(src, mob, TRUE)
+			if(F.light_on)
+				F.activate_attachment_armor(src, mob, TRUE)
 	..()
 
 /obj/item/clothing/head/helmet/marine/has_garb_overlay()
@@ -538,7 +537,7 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	set name = "Toggle Tech Helmet"
 	set src in usr
 
-	if(usr.canmove && !usr.stat && !usr.is_mob_restrained())
+	if(usr.can_action && !usr.is_mob_restrained())
 		if(protection_on)
 			vision_impair = VISION_IMPAIR_NONE
 			flags_inventory &= ~(COVEREYES|COVERMOUTH)
@@ -564,8 +563,8 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 		update_clothing_icon() //so our mob-overlays update
 
 		for(var/X in actions)
-			var/datum/action/A = X
-			A.update_button_icon()
+			var/datum/action/action = X
+			action.update_button_icon()
 
 /obj/item/clothing/head/helmet/marine/tech/tanker
 	name = "\improper M50 tanker helmet"
@@ -606,6 +605,20 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	armor_bio = CLOTHING_ARMOR_MEDIUMHIGH
 	specialty = "M11 pattern marine"
 
+/obj/item/clothing/head/helmet/marine/intel
+	name = "\improper XM12 pattern intelligence helmet"
+	desc = "An experimental brain-bucket. A dust ruffle hangs from back. Moderately better at deflecting blunt objects at the cost of humiliation. But who will be laughing at the memorial? Not you, you'll be busy getting medals for your intel work."
+	icon_state = "io"
+	item_state = "io"
+	armor_melee = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_bullet = CLOTHING_ARMOR_MEDIUM
+	armor_laser = CLOTHING_ARMOR_MEDIUMLOW
+	armor_bomb = CLOTHING_ARMOR_LOW
+	armor_bio = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_rad = CLOTHING_ARMOR_LOW
+	armor_internaldamage = CLOTHING_ARMOR_MEDIUM
+	specialty = "XM12 pattern intel"
+
 /obj/item/clothing/head/helmet/marine/rto
 	name = "\improper M12 pattern dust helmet"
 	desc = "An experimental brain-bucket. A dust ruffle hangs from back instead of the standard lobster shell design. Moderately better at deflecting blunt objects at the cost of humiliation. But who will be laughing at the memorial? Not you, you'll be busy getting medals for your IMPORTANT phone calls. Usually worn by Radio Telephone Operators."
@@ -614,11 +627,6 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	armor_melee = CLOTHING_ARMOR_MEDIUMHIGH
 	armor_bio = CLOTHING_ARMOR_MEDIUMHIGH
 	specialty = "M12 pattern"
-
-/obj/item/clothing/head/helmet/marine/rto/intel
-	name = "\improper XM12 pattern intelligence helmet"
-	desc = "An experimental brain-bucket. A dust ruffle hangs from back. Moderately better at deflecting blunt objects at the cost of humiliation. But who will be laughing at the memorial? Not you, you'll be busy getting medals for your intel work."
-	specialty = "XM12 pattern intel"
 
 /obj/item/clothing/head/helmet/marine/specialist
 	name = "\improper B18 helmet"
@@ -725,7 +733,7 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	specialty = "M10 pattern captain"
 	flags_atom = NO_SNOW_TYPE
 
-/obj/item/clothing/head/helmet/marine/MP
+/obj/item/clothing/head/helmet/marine/mp
 	name = "\improper M10 pattern MP helmet"
 	desc = "A special variant of the M10 Pattern Helmet worn by the Military Police of the USCM. Whether you're facing a crime syndicate or a mutiny, this bucket will keep your brains intact."
 	icon_state = "mp_helmet"
@@ -734,7 +742,7 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	specialty = "M10 pattern military police"
 	flags_atom = NO_SNOW_TYPE
 
-/obj/item/clothing/head/helmet/marine/MP/SO
+/obj/item/clothing/head/helmet/marine/mp/SO
 	name = "\improper M10 pattern Officer Helmet"
 	desc = "A special variant of the M10 Pattern Helmet worn by Officers of the USCM, attracting the attention of the grunts and sniper fire alike."
 	icon_state = "d_helmet"
@@ -903,7 +911,7 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	flags_marine_helmet = HELMET_GARB_OVERLAY|HELMET_DAMAGE_OVERLAY
 
 // UPP Are very powerful against bullets (marines) but middling against melee (xenos)
-/obj/item/clothing/head/helmet/marine/veteran/UPP
+/obj/item/clothing/head/helmet/marine/veteran/upp
 	name = "\improper UM4 helmet"
 	desc = "Using highly skilled manufacturing techniques this UM4 helmet manages to be very resistant to ballistics damage, at the cost of its huge weight causing an extreme stress on the occupant's head that will most likely cause neck problems."
 	icon_state = "upp_helmet"
@@ -915,7 +923,7 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	armor_internaldamage = CLOTHING_ARMOR_HIGH
 	min_cold_protection_temperature = ICE_PLANET_MIN_COLD_PROT
 
-/obj/item/clothing/head/helmet/marine/veteran/UPP/engi
+/obj/item/clothing/head/helmet/marine/veteran/upp/engi
 	name = "\improper UM4-V helmet"
 	desc = "This version of the UM4 helmet has a ballistic-glass visor, allowing for the UPP Engineers to safely weld, but by some reports hindering sight in the process."
 	icon_state = "upp_helmet_engi"
@@ -924,7 +932,7 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	armor_bomb = CLOTHING_ARMOR_HIGH
 	var/protection_on = TRUE
 
-/obj/item/clothing/head/helmet/marine/veteran/UPP/heavy
+/obj/item/clothing/head/helmet/marine/veteran/upp/heavy
 	name = "\improper UH7 helmet"
 	desc = "Like the UM4, this helmet is very resistant to ballistic damage, but both its flaws and benefits have been doubled. The few UPP Zhergeants that have lived past age 30 have all needed to retire from terminal neck problems caused from the stress of wearing this helmet."
 	icon_state = "upp_helmet_heavy"
@@ -1140,7 +1148,7 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	set name = "Toggle Helmet Welding Visor"
 	set src in usr
 
-	if(usr.canmove && !usr.stat && !usr.is_mob_restrained())
+	if(usr.can_action && !usr.is_mob_restrained())
 		if(protection_on)
 			vision_impair = VISION_IMPAIR_NONE
 			flags_inventory &= ~(COVEREYES|COVERMOUTH)
@@ -1157,13 +1165,13 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 		protection_on = !protection_on
 
 		if(ishuman(loc))
-			var/mob/living/carbon/human/H = loc
-			if(H.head == src)
-				H.update_tint()
+			var/mob/living/carbon/human/human = loc
+			if(human.head == src)
+				human.update_tint()
 
 		for(var/X in actions)
-			var/datum/action/A = X
-			A.update_button_icon()
+			var/datum/action/action = X
+			action.update_button_icon()
 
 //=============================//MEME\\==================================\\
 //=======================================================================\\
@@ -1221,7 +1229,7 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	sleep(2) //so that mobs are not knocked down before being hit by shrapnel. shrapnel might also be getting deleted by explosions?
 	apply_explosion_overlay()
 	cell_explosion(loc, 40, 18, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
-	qdel(src)
-
+	if(!QDELETED(src))
+		qdel(src)
 
 #undef HELMET_GARB_RELAY_ICON_STATE

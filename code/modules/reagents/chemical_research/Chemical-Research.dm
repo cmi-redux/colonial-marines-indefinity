@@ -27,12 +27,12 @@ var/global/datum/chemical_data/chemical_data = new /datum/chemical_data
 /datum/chemical_data/proc/save_document(obj/item/paper/research_report/R, document_type, title)
 	if(!research_documents["[document_type]"])
 		research_documents["[document_type]"] = list()
-	var/save_time = worldtime2text()
+	var/save_time = game_time_timestamp()
 
 	var/list/new_document = list(
-		"document_title"=title,
-		"time"=save_time,
-		"document"=R
+		"document_title"  =title,
+		"time" = save_time,
+		"document" = R
 	)
 	research_documents["[document_type]"] += list(new_document)
 
@@ -47,12 +47,12 @@ var/global/datum/chemical_data/chemical_data = new /datum/chemical_data
 /datum/chemical_data/proc/publish_document(obj/item/paper/research_report/R, document_type, title)
 	if(!research_publications["[document_type]"])
 		research_publications["[document_type]"] = list()
-	var/save_time = worldtime2text()
+	var/save_time = game_time_timestamp()
 
 	var/list/new_document = list(
-		"document_title"=title,
-		"time"=save_time,
-		"document"=R
+		"document_title" = title,
+		"time" = save_time,
+		"document" = R
 	)
 	research_publications["[document_type]"] += list(new_document)
 
@@ -89,7 +89,7 @@ var/global/datum/chemical_data/chemical_data = new /datum/chemical_data
 		property_names += P.name
 	for(var/name in research_property_data)
 		property_names -= name
-	if(LAZYLEN(property_names))
+	if(length(property_names))
 		has_new_properties = TRUE
 		for(var/name in property_names)
 			var/datum/chem_property/ref = chemical_properties_list[name]
@@ -123,8 +123,8 @@ var/global/datum/chemical_data/chemical_data = new /datum/chemical_data
 	SSobjectives.statistics["chemicals_completed"]++
 	SSobjectives.statistics["chemicals_total_points_earned"] += S.objective_value
 
-	var/datum/techtree/tree = GET_TREE(TREE_MARINE)
-	tree.add_points(S.objective_value)
+	var/datum/objectives_datum/objectives_controller = GLOB.objective_controller[FACTION_MARINE]
+	objectives_controller.add_defcon_points(S.objective_value)
 
 
 /datum/chemical_data/proc/add_chemical_objective(datum/reagent/S)

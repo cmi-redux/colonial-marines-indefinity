@@ -93,9 +93,9 @@ YOU TO 200 DAMAGE. I ASK NOT FOR MY OWN MEDIC EGOSTROKING, BUT FOR THE GOOD OF T
 		if(0) //No datum.
 			//Stitch in 10 damage increments. Balance between flexibility, spam, performance, and opportunities for people to mess about during do_afters.
 			if(suture_brute)
-				suturable_damage += min(10, target_limb.brute_dam * 0.5)
+				suturable_damage += min(10, target_limb.brute_dam * 0.8)
 			if(suture_burn)
-				suturable_damage += min(10, target_limb.burn_dam * 0.5)
+				suturable_damage += min(10, target_limb.burn_dam * 0.8)
 			if(!suturable_damage) //This stuff would be much tidier if datum stuff is moved to the limb.
 				to_chat(user, SPAN_WARNING("There are no [description_wounds] on [user == target ? "your" : "\the [target]'s"] [target_limb.display_name]."))
 				return
@@ -155,7 +155,7 @@ YOU TO 200 DAMAGE. I ASK NOT FOR MY OWN MEDIC EGOSTROKING, BUT FOR THE GOOD OF T
 	//Add the sutures.
 	var/added_sutures = SEND_SIGNAL(target_limb, COMSIG_LIMB_ADD_SUTURES, suture_brute, suture_burn)
 	if(!added_sutures) //No suture datum to answer the signal
-		new /datum/suture_handler(target_limb)
+		new /datum/suture_handler(target_limb, suturing_item, user, target)
 		added_sutures = SEND_SIGNAL(target_limb, COMSIG_LIMB_ADD_SUTURES, suture_brute, suture_burn) //This time, with feeling.
 
 	if(added_sutures & SUTURED_FULLY)
@@ -181,8 +181,15 @@ YOU TO 200 DAMAGE. I ASK NOT FOR MY OWN MEDIC EGOSTROKING, BUT FOR THE GOOD OF T
 	var/remaining_brute
 	var/remaining_burn
 
-/datum/suture_handler/New(obj/limb/target_limb)
+	var/obj/suturing_item
+	var/mob/healing
+	var/mob/healed
+
+/datum/suture_handler/New(obj/limb/target_limb, obj/item, mob/user, mob/target)
 	. = ..()
+	suturing_item = item
+	healing = user
+	healed = target
 	remaining_brute = target_limb.brute_dam
 	remaining_burn = target_limb.burn_dam
 	RegisterSignal(target_limb, COMSIG_LIMB_TAKEN_DAMAGE, PROC_REF(update_sutures))
@@ -233,9 +240,9 @@ YOU TO 200 DAMAGE. I ASK NOT FOR MY OWN MEDIC EGOSTROKING, BUT FOR THE GOOD OF T
 	if(!repeat) //Don't need to update again if we're doing it immediately after adding stitches.
 		update_sutures(target_limb, previous_brute = target_limb.brute_dam, previous_burn = target_limb.burn_dam, pre_add = TRUE)
 	if(suture_brute)
-		. += clamp(0, (remaining_brute - sutured_brute) * 0.5, 10)
+		. += clamp(0, (remaining_brute - sutured_brute) * 0.8, 10)
 	if(suture_burn)
-		. += clamp(0, (remaining_burn - sutured_burn) * 0.5, 10)
+		. += clamp(0, (remaining_burn - sutured_burn) * 0.8, 10)
 	if(. <= 0.1) //to distinguish with 0 from send_signal() not getting any return value. Uses <= to prevent floating point errors.
 		if(suture_brute && sutured_brute || suture_burn && sutured_burn)
 			return FULLY_SUTURED
@@ -252,7 +259,7 @@ maximum_heal = total amount of each damage type that can be healed - IE TRUE/TRU
 	var/brute_to_heal
 	var/burn_to_heal
 	if(suture_brute)
-		brute_to_heal = min(maximum_heal, (remaining_brute - sutured_brute) * 0.5)
+		brute_to_heal = min(maximum_heal, (remaining_brute - sutured_brute) * 0.8)
 		sutured_brute += brute_to_heal
 		remaining_brute -= brute_to_heal
 		if(remaining_brute - sutured_brute <= 0)
@@ -264,7 +271,7 @@ maximum_heal = total amount of each damage type that can be healed - IE TRUE/TRU
 				W.bandaged |= WOUND_SUTURED
 
 	if(suture_burn)
-		burn_to_heal = min(maximum_heal, (remaining_burn - sutured_burn) * 0.5)
+		burn_to_heal = min(maximum_heal, (remaining_burn - sutured_burn) * 0.8)
 		sutured_burn += burn_to_heal
 		remaining_burn -= burn_to_heal
 		if(remaining_burn - sutured_burn <= 0)
@@ -276,6 +283,7 @@ maximum_heal = total amount of each damage type that can be healed - IE TRUE/TRU
 					W.salved |= WOUND_SUTURED
 
 	target_limb.heal_damage(brute_to_heal, burn_to_heal)
+	healing.track_heal_damage(initial(suturing_item.name), healed, brute_to_heal + burn_to_heal)
 
 	if(!suture_brute && !suture_burn)
 		return SUTURED_FULLY

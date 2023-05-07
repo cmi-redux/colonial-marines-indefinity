@@ -51,7 +51,7 @@
 	new /obj/item/device/radio/headset( src )
 
 /obj/structure/closet/secure_closet/personal/attackby(obj/item/W as obj, mob/user as mob)
-	if (src.opened)
+	if(src.opened)
 		return ..()
 	if(istype(W, /obj/item/card/id))
 		if(src.broken)
@@ -78,16 +78,16 @@
 	set src in oview(1) // One square distance
 	set category = "Object"
 	set name = "Reset Lock"
-	if(!usr.canmove || usr.stat || usr.is_mob_restrained()) // Don't use it if you're not able to! Checks for stuns, ghost and restrain
+	if(!usr.can_action || usr.is_mob_restrained()) // Don't use it if you're not able to! Checks for stuns, ghost and restrain
 		return
 	if(ishuman(usr))
 		src.add_fingerprint(usr)
-		if (src.locked || !src.registered_name)
+		if(src.locked || !src.registered_name)
 			to_chat(usr, SPAN_DANGER("You need to unlock it first."))
-		else if (src.broken)
+		else if(src.broken)
 			to_chat(usr, SPAN_DANGER("It appears to be broken."))
 		else
-			if (src.opened)
+			if(src.opened)
 				if(!src.close())
 					return
 			src.locked = 1

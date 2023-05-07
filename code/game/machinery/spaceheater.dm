@@ -15,7 +15,7 @@
 
 /obj/structure/machinery/space_heater/Initialize()
 	. = ..()
-	cell = new (src)
+	cell = new(src)
 	cell.charge += 500
 	update_icon()
 
@@ -117,9 +117,9 @@
 	. = ..()
 	if(.)
 		return
-	if (usr.stat)
+	if(usr.stat)
 		return
-	if ((in_range(src, usr) && istype(src.loc, /turf)) || (isRemoteControlling(usr)))
+	if((in_range(src, usr) && istype(src.loc, /turf)) || (isRemoteControlling(usr)))
 		usr.set_interaction(src)
 
 		switch(href_list["op"])

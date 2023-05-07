@@ -13,11 +13,11 @@ GLOBAL_LIST_FILE_LOAD(custom_items, "config/custom_items.txt")
 		for(var/i = 1 to Entry.len)
 			Entry[i] = trim(Entry[i])
 
-		if(Entry.len < 3)
+		if(Entry.len < 2)
 			continue;
 
-		if(Entry[1] == M.ckey && Entry[2] == M.real_name)
-			var/list/Paths = splittext(Entry[3], ",")
+		if(Entry[1] == M.ckey)
+			var/list/Paths = splittext(Entry[2], ",")
 			for(var/P in Paths)
 				var/ok = 0  // 1 if the item was placed successfully
 				P = trim(P)
@@ -49,9 +49,9 @@ GLOBAL_LIST_FILE_LOAD(custom_items, "config/custom_items.txt")
 						break
 				else
 					for(var/obj/item/storage/S in M.contents) // Try to place it in any item that can store stuff, on the mob.
-						if (S.handle_item_insertion(Item, TRUE))
+						if(S.handle_item_insertion(Item, TRUE))
 							ok = 1
 							break
 
-				if (ok == 0) // Finally, since everything else failed, place it on the ground
+				if(ok == 0) // Finally, since everything else failed, place it on the ground
 					Item.forceMove(get_turf(M.loc))

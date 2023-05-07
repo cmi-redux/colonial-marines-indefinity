@@ -5,7 +5,7 @@
 		var/obj/structure/reagent_dispensers/fueltank/custom/C = new(usr.loc, volume, target)
 		C.reagents.add_reagent(target, volume)
 
-		if(alert(usr, "Do you want to set the explosive capabilities on your fueltank? (This will disallow transferring to and from the tank)", "", "Yes", "No") == "Yes")
+		if(alert(usr, "Do you want to set the explosive capabilities on your fueltank? (This will disallow transferring to and from the tank)", , usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) == usr.client.auto_lang(LANGUAGE_YES))
 			var/explosive_power = tgui_input_number(usr,"Power")
 			var/falloff = tgui_input_number(usr, "Base Falloff")
 
@@ -21,10 +21,10 @@
 	else if(volume > 120)
 		var/obj/item/reagent_container/glass/beaker/bluespace/C = new /obj/item/reagent_container/glass/beaker/bluespace(usr.loc)
 		C.reagents.add_reagent(target,volume)
-	else if (volume > 60)
+	else if(volume > 60)
 		var/obj/item/reagent_container/glass/beaker/large/C = new /obj/item/reagent_container/glass/beaker/large(usr.loc)
 		C.reagents.add_reagent(target,volume)
-	else if (volume > 30)
+	else if(volume > 30)
 		var/obj/item/reagent_container/glass/beaker/C = new /obj/item/reagent_container/glass/beaker(usr.loc)
 		C.reagents.add_reagent(target,volume)
 	else
@@ -155,7 +155,7 @@
 					else
 						break
 			//See what we want to do last
-			if(alert(usr,"Spawn container with reagent?","Custom reagent [target]","Yes","No") != "Yes")
+			if(alert(usr, "Spawn container with reagent?", "Custom reagent [target]", usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 				return
 			var/volume = tgui_input_number(usr,"How much? An appropriate container will be selected.")
 			if(volume <= 0)
@@ -224,16 +224,15 @@
 			chemical_reagents_list[target] = R
 			message_admins("[key_name_admin(usr)] has created a custom reagent: [target].")
 			//See what we want to do last
-			response = alert(usr,"Spawn container with reagent?","Custom reagent [target]","Yes","No, show me the reagent","No, I'm all done")
-			switch(response)
-				if("Yes")
-					var/volume = tgui_input_number(usr,"How much? An appropriate container will be selected.")
-					if(volume <= 0)
-						return
+			response = alert(usr,"Spawn container with reagent?","Custom reagent [target]", usr.client.auto_lang(LANGUAGE_YES), "No, show me the reagent", "No, I'm all done")
+			if(response == usr.client.auto_lang(LANGUAGE_YES))
+				var/volume = tgui_input_number(usr,"How much? An appropriate container will be selected.")
+				if(volume <= 0)
+					return
 
-					spawn_reagent(target, volume)
-				if("No, show me the reagent")
-					usr.client.debug_variables(chemical_reagents_list[target])
+				spawn_reagent(target, volume)
+			else if(response == "No, show me the reagent")
+				usr.client.debug_variables(chemical_reagents_list[target])
 			return
 		//For creating a custom reaction
 		if("create_custom_reaction")

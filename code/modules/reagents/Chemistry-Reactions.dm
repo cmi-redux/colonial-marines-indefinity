@@ -3,8 +3,8 @@
 	var/id = null
 	var/result = null
 	var/gen_tier = 0 //used for generation purposes
-	var/list/required_reagents = new/list()
-	var/list/required_catalysts = new/list()
+	var/list/required_reagents = list()
+	var/list/required_catalysts = list()
 
 	var/mob_react = TRUE //Determines if a chemical reaction can occur inside a mob
 

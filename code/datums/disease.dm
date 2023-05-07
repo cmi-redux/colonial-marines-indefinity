@@ -1,4 +1,3 @@
-
 /*
 
 IMPORTANT NOTE: Please delete the diseases by using cure() proc or del() instruction.
@@ -93,8 +92,8 @@ var/list/diseases = typesof(/datum/disease) - /datum/disease
 /datum/disease/proc/spread_by_touch()
 	switch(spread_type)
 		if(CONTACT_FEET, CONTACT_HANDS, CONTACT_GENERAL)
-			return 1
-	return 0
+			return TRUE
+	return FALSE
 
 /datum/disease/proc/spread(atom/source=null, airborne_range = 2, force_spread)
 
@@ -183,8 +182,8 @@ var/list/diseases = typesof(/datum/disease) - /datum/disease
 
 /datum/disease/proc/IsSame(datum/disease/D)
 	if(istype(src, D.type))
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 /datum/disease/proc/Copy(process = TRUE)
 	return new type(process)

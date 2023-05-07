@@ -365,12 +365,12 @@
 		index++
 
 		sentry_holder["area"] = get_area(defense)
-		sentry_holder["active"] = defense.turned_on
+		sentry_holder["active"] = defense.light_on
 		sentry_holder["nickname"] = defense.nickname
 		sentry_holder["camera_available"] = defense.has_camera && defense.placed
 		sentry_holder["selection_state"] = list()
 		sentry_holder["kills"] = defense.kills
-		sentry_holder["iff_status"] = defense.faction_group
+		sentry_holder["iff_status"] = defense.iff_status
 		sentry_holder["health"] = defense.health
 
 		for(var/category in defense.selected_categories)
@@ -453,7 +453,7 @@
 
 	// Is this camera located in or attached to a living thing, Vehicle or helmet? If so, assume the camera's loc is the living (or non) thing.
 	var/cam_location = current
-	if(isliving(current.loc) || isVehicle(current.loc))
+	if(isliving(current.loc) || isvehicle(current.loc))
 		cam_location = current.loc
 	else if(istype(current.loc, /obj/item/clothing/head/helmet/marine))
 		var/obj/item/clothing/head/helmet/marine/helmet = current.loc
@@ -478,8 +478,7 @@
 
 	for(var/turf/visible_turf in guncamera_zone)
 		range_turfs += visible_turf
-		var/area/visible_area = visible_turf.loc
-		if(!visible_area.lighting_use_dynamic || visible_turf.lighting_lumcount >= 1)
+		if(visible_turf.dynamic_lumcount >= 1)
 			visible_turfs += visible_turf
 
 	var/list/bbox = get_bbox_of_atoms(visible_turfs)

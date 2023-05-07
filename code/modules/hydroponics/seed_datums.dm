@@ -608,7 +608,10 @@ var/global/list/gene_tag_masks = list()   // Gene obfuscation for delicious tria
 				product.desc += " On second thought, something about this one looks strange."
 
 			if(biolum)
-				product.SetLuminosity(biolum)
+				if(biolum_colour)
+					product.set_light(biolum, l_color = biolum_colour)
+				else
+					product.set_light(biolum)
 
 			//Handle spawning in living, mobile products (like dionaea).
 			if(istype(product,/mob/living))

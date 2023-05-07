@@ -209,7 +209,7 @@
 
 			/*Some duplication from punch code due to attack message and damage stats.
 			This does cut damage and awarding multiple medals like this to the same person will cause bleeding.*/
-			H.last_damage_data = create_cause_data("macho bullshit", user)
+			H.last_damage_data = create_cause_data("заовнили [src]", user)
 			user.animation_attack_on(H)
 			user.flick_attack_overlay(H, "punch")
 			playsound(user.loc, "punch", 25, 1)
@@ -399,15 +399,15 @@
 	. = ..()
 
 /obj/item/clothing/accessory/storage/attack_hand(mob/user as mob, mods)
-	if (!isnull(hold) && hold.handle_attack_hand(user, mods))
+	if(!isnull(hold) && hold.handle_attack_hand(user, mods))
 		..(user)
 	return TRUE
 
 /obj/item/clothing/accessory/storage/MouseDrop(obj/over_object as obj)
-	if (has_suit || hold)
+	if(has_suit || hold)
 		return
 
-	if (hold.handle_mousedrop(usr, over_object))
+	if(hold.handle_mousedrop(usr, over_object))
 		..(over_object)
 
 /obj/item/clothing/accessory/storage/attackby(obj/item/W, mob/user)

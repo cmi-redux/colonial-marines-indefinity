@@ -29,8 +29,6 @@
 
 	minimum_evolve_time = 9 MINUTES
 
-	minimap_icon = "warrior"
-
 /mob/living/carbon/xenomorph/warrior
 	caste_type = XENO_CASTE_WARRIOR
 	name = XENO_CASTE_WARRIOR
@@ -60,6 +58,14 @@
 	icon_xenonid = 'icons/mob/xenonids/warrior.dmi'
 
 	var/lunging = FALSE // whether or not the warrior is currently lunging (holding) a target
+
+	balance_formulas = list(BALANCE_FORMULA_XENO_FIGHTER)
+
+/mob/living/carbon/xenomorph/warrior/Initialize(mapload, mob/living/carbon/xenomorph/old_xeno, datum/faction/hive_to_set)
+	. = ..()
+
+	AddComponent(/datum/component/footstep, FOOTSTEP_XENO_MEDIUM)
+
 /mob/living/carbon/xenomorph/warrior/throw_item(atom/target)
 	toggle_throw_mode(THROW_MODE_OFF)
 
@@ -72,7 +78,7 @@
 	return ..()
 
 /mob/living/carbon/xenomorph/warrior/start_pulling(atom/movable/AM, lunge)
-	if (!check_state() || agility)
+	if(!check_state() || agility)
 		return FALSE
 
 	if(!isliving(AM))

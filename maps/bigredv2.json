@@ -2,8 +2,9 @@
     "map_name": "Solaris Ridge",
     "map_path": "map_files/BigRed",
     "map_file": "BigRed.dmm",
-    "webmap_url": "Solaris",
-    "weather_holder": "/datum/weather_ss_map_holder/big_red",
+    "weather": [
+        "weather_dust"
+    ],
     "survivor_types": [
         "/datum/equipment_preset/survivor/scientist/solaris",
         "/datum/equipment_preset/survivor/doctor/solaris",
@@ -15,31 +16,47 @@
         "/datum/equipment_preset/survivor/clf",
         "/datum/equipment_preset/survivor/civilian"
     ],
-    "defcon_triggers": [
-        4750,
-        3500,
-        2000,
-        1000,
-        0.0
-    ],
-    "map_item_type": "/obj/item/map/big_red_map",
-    "announce_text": "We've lost contact with Weyland-Yutani's research facility, Solaris Ridge. The ###SHIPNAME### has been dispatched to assist.",
+    "announce_text": "We've lost contact with the Weyland-Yutani's research facility, Solaris Ridge. The ###SHIPNAME### has been dispatched to assist.",
     "monkey_types": [
         "neaera"
     ],
-    "traits": [{ "Ground": true }],
+    "traits": [
+        {
+            "Ground": true,
+            "Up": 1
+        },
+        {
+            "Ground": true,
+            "Down": -1,
+            "Baseturf": "/turf/open/openspace"
+        }
+   ],
     "nightmare_path": "maps/Nightmare/maps/BigRed/",
     "xvx_hives": {
-        "xeno_hive_alpha": 0,
-        "xeno_hive_bravo": 0,
-        "xeno_hive_charlie": 0,
-        "xeno_hive_delta": 100
+        "alpha_xenomorph": 0,
+        "bravo_xenomorph": 0,
+        "charlie_xenomorph": 0,
+        "delta_xenomorph": 100
     },
     "gamemodes": [
         "Distress Signal",
+        "Crash",
         "Hunter Games",
         "Hive Wars",
         "Faction Clash",
         "Infection"
-    ]
+    ],
+    "map_day_night_modificator": {
+        "Midnight": 864000,
+        "Night": 72000,
+        "Dawn": 144000,
+        "Sunrise": 216000,
+        "Sunrise-Morning": 252000,
+        "Morning": 288000,
+        "Daytime": 360000,
+        "Evening": 576000,
+        "Sunset": 684000,
+        "Dusk": 792000
+    },
+    "custom_time_rate_multiplier": 5
 }

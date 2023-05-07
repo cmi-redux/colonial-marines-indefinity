@@ -1,14 +1,14 @@
 /area/shuttle
 	name = "Shuttle"
-	requires_power = FALSE
+	requires_power = TRUE
 	always_unpowered = FALSE
 	icon_state = "shuttle"
 	ceiling_muffle = TRUE
+	flags_atom = AREA_NOTUNNEL
+	power_light = TRUE
 
 	// Loading the same shuttle map at a different time will produce distinct area instances.
 	unique = FALSE
-	lighting_use_dynamic = FALSE
-
 
 ///area/shuttle/Initialize()
 // if(!canSmoothWithAreas)
@@ -38,6 +38,32 @@
 	desc = "Weeeeee"
 	ambience_exterior = 'sound/ambience/shuttle_fly_loop.ogg'
 
+/area/shuttle/uss_heart_of_gold
+	name = "USS Heart Of Gold"
+
+/area/shuttle/sky_scraper_elevator
+	name = "'S95 v2' Elevator"
+	ambience_exterior = 'sound/ambience/elevator_music.ogg'
+
+/area/shuttle/distress
+	unique = TRUE
+	flags_atom = AREA_ALLOW_XENO_JOIN
+
+/area/shuttle/distress/glob
+	name = "Distress Shuttle"
+
+/area/shuttle/distress/uscm
+	name = "Distress Shuttle USCM"
+
+/area/shuttle/distress/pmc
+	name = "Distress Shuttle PMC"
+
+/area/shuttle/distress/upp
+	name = "Distress Shuttle UPP"
+
+/area/shuttle/distress/big
+	name = "Distress Shuttle Big"
+
 /area/shuttle/vehicle_elevator
 	name = "Vehicle ASRS"
 
@@ -54,6 +80,13 @@
 	playsound_area(src, 'sound/effects/escape_pod_launch.ogg', 50, 1)
 
 /area/shuttle/lifeboat
-	icon = 'icons/turf/area_almayer.dmi'
-	icon_state = "lifeboat"
-	flags_atom = AREA_NOTUNNEL
+	unique = TRUE
+
+/area/shuttle/lifeboat/starboard
+	name = "Starboard Lifeboat"
+
+/area/shuttle/lifeboat/port
+	name = "Port Lifeboat"
+
+/area/shuttle/evacuation_pod
+	name = "Evacuation Pod"

@@ -4,7 +4,7 @@
 	name = "Fun - Big Game Hunter (solo)"
 	mob_max = 1
 	mob_min = 1
-	probability = 0
+	probability = 1
 	objectives = "Get some good trophies. The more dangerous, the better!"
 	hostility = TRUE
 
@@ -12,14 +12,15 @@
 	. = ..()
 	arrival_message = "Incoming Transmission: 'Heard your distress call, [MAIN_SHIP_NAME]. It had best be something which will look good on my wall, eh? Tally ho!'"
 
-/datum/emergency_call/van_bandolier/create_member(datum/mind/M, turf/override_spawn_loc)
+/datum/emergency_call/van_bandolier/create_member(datum/mind/mind, turf/override_spawn_loc)
 	var/turf/spawn_loc = override_spawn_loc ? override_spawn_loc : get_spawn_point()
 
 	if(!istype(spawn_loc))
 		return //Didn't find a useable spawn point.
 
 	var/mob/living/carbon/human/H = new(spawn_loc)
-	M.transfer_to(H, TRUE)
+	mind.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 
 	arm_equipment(H, /datum/equipment_preset/fun/van_bandolier, FALSE, TRUE)
 

@@ -5,6 +5,8 @@
 	opacity = TRUE
 	density = TRUE
 
+	antipierce = 3
+
 	damage_cap = HEALTH_WALL_REINFORCED
 	max_temperature = 6000
 
@@ -16,12 +18,12 @@
 	if(hull)
 		return
 
-	if (!(istype(user, /mob/living/carbon/human) || isrobot(user) || SSticker) && SSticker.mode.name != "monkey")
+	if(!(istype(user, /mob/living/carbon/human) || isrobot(user) || SSticker) && SSticker.mode.name != "monkey")
 		to_chat(user, SPAN_WARNING("You don't have the dexterity to do this!"))
 		return
 
 	//get the user's location
-	if( !istype(user.loc, /turf) ) return //can't do this stuff whilst inside objects and such
+	if(!istype(user.loc, /turf)) return //can't do this stuff whilst inside objects and such
 
 	//THERMITE related stuff. Calls src.thermitemelt() which handles melting walls and the relevant effects
 	if(thermite)
@@ -116,7 +118,7 @@
 //vv OK, we weren't performing a valid deconstruction step or igniting thermite,let's check the other possibilities vv
 
 	//DRILLING
-	if (istype(W, /obj/item/tool/pickaxe/diamonddrill))
+	if(istype(W, /obj/item/tool/pickaxe/diamonddrill))
 
 		to_chat(user, SPAN_NOTICE("You begin to drill though the wall."))
 
@@ -190,14 +192,14 @@
 /turf/closed/wall/r_wall/dense
 	icon_state = "iron0"
 	walltype = WALL_REINFORCED_IRON
-	hull = 1
+	hull = TRUE
 
 /turf/closed/wall/r_wall/unmeltable
 	name = "heavy reinforced wall"
 	desc = "A huge chunk of ultra-reinforced metal used to separate rooms. Looks virtually indestructible."
 	icon_state = "heavy_r_wall_mapicon"
 	walltype = WALL_REINFORCED
-	hull = 1
+	hull = TRUE
 
 /turf/closed/wall/r_wall/unmeltable/attackby() //This should fix everything else. No cables, etc
 	return
@@ -228,6 +230,13 @@
 	icon_state = "bunker"
 	walltype = WALL_REINFORCED_BUNKER
 
+/turf/closed/wall/r_wall/bunker/heavy
+	name = "bunker wall"
+	icon = 'icons/turf/walls/bunker.dmi'
+	icon_state = "bunker"
+	walltype = WALL_REINFORCED_BUNKER
+	unacidable = TRUE
+
 //Prison
 
 /turf/closed/wall/r_wall/prison
@@ -242,7 +251,7 @@
 	icon = 'icons/turf/walls/prison.dmi'
 	icon_state = "hwall"
 	walltype = WALL_REINFORCED
-	hull = 1
+	hull = TRUE
 
 /turf/closed/wall/r_wall/prison_unmeltable/ex_act(severity) //Should make it indestructible
 		return
@@ -265,7 +274,7 @@
 	name = "heavy reinforced wall"
 	desc = "A huge chunk of ultra-reinforced metal used to separate rooms. Looks virtually indestructible."
 	icon_state = "h_dome"
-	hull = 1
+	hull = TRUE
 
 /turf/closed/wall/r_wall/biodome/biodome_unmeltable/ex_act(severity) //Should make it indestructible
 		return

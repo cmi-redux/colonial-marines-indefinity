@@ -1,11 +1,10 @@
 /obj/vehicle
 	name = "vehicle"
 	icon = 'icons/obj/vehicles/vehicles.dmi'
-	layer = ABOVE_MOB_LAYER //so it sits above objects including mobs
+	layer = VEHICLE_LAYER //so it sits above objects including mobs
 	density = TRUE
 	anchored = TRUE
 	animate_movement = 1
-	luminosity = 2
 	can_buckle = TRUE
 
 	// The mobs that are in each position/seat of the vehicle
@@ -14,7 +13,7 @@
 	)
 
 	var/attack_log = null
-	var/on = 0
+	var/on = 1
 	health = 100
 	var/maxhealth = 100
 	var/fire_dam_coeff = 1
@@ -29,14 +28,25 @@
 	var/obj/item/cell/cell
 	var/charge_use = 5 //set this to adjust the amount of power the vehicle uses per move
 	can_block_movement = TRUE
+	faction_to_get = FACTION_MARINE
+
+	light_system = MOVABLE_LIGHT
+	light_power = 0.75
+	light_range = 3
 
 //-------------------------------------------
 // Standard procs
 //-------------------------------------------
 
+/obj/vehicle/Initialize(mapload, datum/faction/faction_to_set)
+	. = ..()
+
+	if(faction_to_set)
+		faction = faction_to_set
+
 /obj/vehicle/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_HIGH_OVER_ONLY|PASS_OVER_THROW_ITEM
 
 /obj/vehicle/relaymove(mob/user, direction)
@@ -144,14 +154,12 @@
 		return 0
 	if(powered && cell.charge < charge_use)
 		return 0
-	on = 1
-	SetLuminosity(initial(luminosity))
+	set_light_on(TRUE)
 	update_icon()
 	return 1
 
 /obj/vehicle/proc/turn_off()
-	on = 0
-	SetLuminosity(0)
+	set_light_on(FALSE)
 	update_icon()
 
 /obj/vehicle/proc/explode()
@@ -240,10 +248,6 @@
 /obj/vehicle/unbuckle()
 	. = ..()
 	seats[VEHICLE_DRIVER] = null
-
-/obj/vehicle/Destroy()
-	SetLuminosity(0)
-	. = ..()
 
 //-------------------------------------------------------
 // Stat update procs

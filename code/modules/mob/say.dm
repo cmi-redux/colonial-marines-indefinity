@@ -104,31 +104,31 @@
 		langchat_speech(message, langchat_listeners, GLOB.all_languages, skip_language_check = TRUE)
 
 /mob/proc/say_understands(mob/other, datum/language/speaking = null)
-	if (src.stat == 2) //Dead
-		return 1
+	if(stat == 2) //Dead
+		return TRUE
 
 	//Universal speak makes everything understandable, for obvious reasons.
-	else if(src.universal_speak || src.universal_understand)
-		return 1
+	else if(universal_speak || universal_understand)
+		return TRUE
 
 	//Languages are handled after.
-	if (!speaking)
+	if(!speaking)
 		if(!other)
-			return 1
+			return TRUE
 		if(other.universal_speak)
-			return 1
+			return TRUE
 		if(isAI(src))
-			return 1
-		if (istype(other, src.type) || istype(src, other.type))
-			return 1
-		return 0
+			return TRUE
+		if(istype(other, type) || istype(src, other.type))
+			return TRUE
+		return FALSE
 
 	//Language check.
-	for(var/datum/language/L in src.languages)
+	for(var/datum/language/L in languages)
 		if(speaking.name == L.name)
-			return 1
+			return TRUE
 
-	return 0
+	return FALSE
 
 /*
 ***Deprecated***
@@ -159,9 +159,9 @@ for it but just ignore it.
 
 /mob/proc/say_test(text)
 	var/ending = copytext(text, length(text))
-	if (ending == "?")
+	if(ending == "?")
 		return "1"
-	else if (ending == "!")
+	else if(ending == "!")
 		return "2"
 	return "0"
 
@@ -184,7 +184,7 @@ for it but just ignore it.
 	if(length(message) >= 2)
 		var/language_prefix = lowertext(copytext(message, 1 ,3))
 		var/datum/language/L = GLOB.all_languages[GLOB.language_keys[language_prefix]]
-		if (can_speak(L))
+		if(can_speak(L))
 			return L
 
 	return null

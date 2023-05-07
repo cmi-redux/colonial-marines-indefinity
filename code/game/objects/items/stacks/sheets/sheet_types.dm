@@ -262,14 +262,12 @@ var/global/list/datum/stack_recipe/cardboard_recipes = list ( \
 		new/datum/stack_recipe("empty 45-70 bullets box (Trackers)", /obj/item/ammo_box/magazine/lever_action/tracker/empty), \
 		new/datum/stack_recipe("empty 45-70 bullets box (Marksman)", /obj/item/ammo_box/magazine/lever_action/marksman/empty), \
 		null, \
-		new/datum/stack_recipe("empty .458 bullets box", /obj/item/ammo_box/magazine/lever_action/xm88/empty), \
-		null, \
-		new/datum/stack_recipe("empty smg ammo box (10x20mm)", /obj/item/ammo_box/rounds/smg/empty), \
+		new/datum/stack_recipe("empty smg ammo box", /obj/item/ammo_box/rounds/smg/empty), \
 		new/datum/stack_recipe("empty smg ammo box (10x20mm AP)", /obj/item/ammo_box/rounds/smg/ap/empty), \
 		new/datum/stack_recipe("empty smg ammo box (10x20mm Incen)", /obj/item/ammo_box/rounds/smg/incen/empty), \
 		new/datum/stack_recipe("empty smg ammo box (10x20mm LE)", /obj/item/ammo_box/rounds/smg/le/empty), \
 		null, \
-		new/datum/stack_recipe("empty rifle ammo box (10x24mm)", /obj/item/ammo_box/rounds/empty), \
+		new/datum/stack_recipe("empty rifle ammo box", /obj/item/ammo_box/rounds/empty), \
 		new/datum/stack_recipe("empty rifle ammo box (10x24mm AP)", /obj/item/ammo_box/rounds/ap/empty), \
 		new/datum/stack_recipe("empty rifle ammo box (10x24mm Incen)", /obj/item/ammo_box/rounds/incen/empty), \
 		new/datum/stack_recipe("empty rifle ammo box (10x24mm LE)", /obj/item/ammo_box/rounds/le/empty), \

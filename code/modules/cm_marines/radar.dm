@@ -189,9 +189,10 @@
 /datum/radar/lifeline
 	var/faction
 
-/datum/radar/lifeline/New(atom/holder, faction)
+/datum/radar/lifeline/New(atom/holder, faction_to_set)
 	. = ..()
-	src.faction = faction
+
+	faction = faction_to_set
 
 /datum/radar/lifeline/find_atom()
 	return locate(selected) in GLOB.human_mob_list

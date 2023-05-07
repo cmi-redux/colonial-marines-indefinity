@@ -56,7 +56,7 @@
 			else
 				T.amount = "[amount]"
 			T.date = current_date_string
-			T.time = worldtime2text()
+			T.time = game_time_timestamp()
 			T.source_terminal = terminal_id
 			D.transaction_log.Add(T)
 

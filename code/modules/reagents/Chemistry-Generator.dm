@@ -16,9 +16,9 @@
 */
 
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 //***************************************Recipe Generator**********************************************/
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/chemical_reaction/proc/generate_recipe(list/complexity)
 	//Determine modifier for uneven recipe balance
@@ -112,7 +112,7 @@
 						chem_id = pick(chemical_gen_classes_list["C5"])
 				else
 					if(!required_reagents || is_catalyst)//first component is more likely to be special in chems tier 4 or higher, catalysts are always special in tier 4 or higher
-						if (prob(50))
+						if(prob(50))
 							chem_id = pick(chemical_gen_classes_list["C5"])
 						else
 							chem_id = pick(chemical_gen_classes_list["C4"])
@@ -151,9 +151,9 @@
 
 	return chem_id
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 //****************************************Name Generator***********************************************/
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/reagent/proc/generate_name()
 	/*We can't make use of this currently because reagents are initialised before reactions. Might fix this at a later date.
@@ -176,9 +176,9 @@
 	name = gen_name
 	return name
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 //***********************************Reagent Generator*************************************************/
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/reagent/proc/generate_stats(no_properties)
 	//Properties
@@ -195,7 +195,7 @@
 			else if(gen_tier < 3)
 				gen_value += add_property(0,0, gen_tier - gen_value - 1,FALSE,TRUE) //add property based on our offset from the prefered balance
 			else gen_value += add_property(0,0, gen_tier - gen_value - 1)
-		while(LAZYLEN(properties) < gen_tier + 1) //We lost properties somewhere to conflicts, so add a random one until we're full
+		while(length(properties) < gen_tier + 1) //We lost properties somewhere to conflicts, so add a random one until we're full
 			add_property()
 
 	//OD ratios
@@ -263,28 +263,28 @@
 			if(1)
 				if(roll<=20)
 					property = pick(chemical_properties_list["negative"])
-				else if (roll<=50)
+				else if(roll<=50)
 					property = pick(chemical_properties_list["neutral"])
 				else
 					property = pick(chemical_properties_list["positive"])
 			if(2)
 				if(roll<=25)
 					property = pick(chemical_properties_list["negative"])
-				else if (roll<=45)
+				else if(roll<=45)
 					property = pick(chemical_properties_list["neutral"])
 				else
 					property = pick(chemical_properties_list["positive"])
 			if(3)
 				if(roll<=15)
 					property = pick(chemical_properties_list["negative"])
-				else if (roll<=40)
+				else if(roll<=40)
 					property = pick(chemical_properties_list["neutral"])
 				else
 					property = pick(chemical_properties_list["positive"])
 			else
 				if(roll<=15)
 					property = pick(chemical_properties_list["negative"])
-				else if (roll<=40)
+				else if(roll<=40)
 					property = pick(chemical_properties_list["neutral"])
 				else
 					property = pick(chemical_properties_list["positive"])
@@ -314,9 +314,9 @@
 	insert_property(property, level)
 	return new_value
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 //***********************************Generator Helper Procs********************************************/
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/reagent/proc/insert_property(property, level)
 	//The list below defines what properties should override each other.
@@ -373,7 +373,7 @@
 				if(property == C && P.name == conflicting_properties[C])
 					match = P
 					break
-				else if (property == conflicting_properties[C] && C == P.name)
+				else if(property == conflicting_properties[C] && C == P.name)
 					match = P
 					break
 		if(match)
@@ -432,16 +432,15 @@
 //Returns false if a property has been generated in a previous reagent and all properties of that category haven't been generated yet.
 /datum/reagent/proc/check_generated_properties(datum/chem_property/P)
 	if(LAZYISIN(chemical_properties_list["positive"], P))
-		if(LAZYISIN(GLOB.generated_properties["positive"], P) && LAZYLEN(GLOB.generated_properties["positive"]) < LAZYLEN(chemical_properties_list["positive"]))
+		if(LAZYISIN(GLOB.generated_properties["positive"], P) && length(GLOB.generated_properties["positive"]) < length(chemical_properties_list["positive"]))
 			return FALSE
 		GLOB.generated_properties["positive"] += P
 	else if(LAZYISIN(chemical_properties_list["negative"], P))
-		if(LAZYISIN(GLOB.generated_properties["negative"], P) && LAZYLEN(GLOB.generated_properties["negative"]) < LAZYLEN(chemical_properties_list["negative"]))
+		if(LAZYISIN(GLOB.generated_properties["negative"], P) && length(GLOB.generated_properties["negative"]) < length(chemical_properties_list["negative"]))
 			return FALSE
 		GLOB.generated_properties["negative"] += P
 	else if(LAZYISIN(chemical_properties_list["neutral"], P))
-		if(LAZYISIN(GLOB.generated_properties["neutral"], P) && LAZYLEN(GLOB.generated_properties["neutral"]) < LAZYLEN(chemical_properties_list["neutral"]))
+		if(LAZYISIN(GLOB.generated_properties["neutral"], P) && length(GLOB.generated_properties["neutral"]) < length(chemical_properties_list["neutral"]))
 			return FALSE
 		GLOB.generated_properties["neutral"] += P
 	return TRUE
-

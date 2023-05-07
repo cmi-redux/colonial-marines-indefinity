@@ -26,8 +26,6 @@
 
 	minimum_evolve_time = 5 MINUTES
 
-	minimap_icon = "runner"
-
 /mob/living/carbon/xenomorph/runner
 	caste_type = XENO_CASTE_RUNNER
 	name = XENO_CASTE_RUNNER
@@ -65,8 +63,9 @@
 	icon_xeno = 'icons/mob/xenos/runner.dmi'
 	icon_xenonid = 'icons/mob/xenonids/runner.dmi'
 
+	balance_formulas = list(BALANCE_FORMULA_XENO_FIGHTER)
 
 /mob/living/carbon/xenomorph/runner/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_pass = PASS_FLAGS_CRAWLER

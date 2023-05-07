@@ -1,6 +1,7 @@
 //LV624 AREAS--------------------------------------//
 /area/lv624
 	icon_state = "lv-626"
+	background_planet_sounds = TRUE
 	can_build_special = TRUE
 	powernet_name = "ground"
 	ambience_exterior = AMBIENCE_JUNGLE

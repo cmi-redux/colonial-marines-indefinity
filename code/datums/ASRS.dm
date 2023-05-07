@@ -23,11 +23,6 @@
 	group = "ASRS"
 	cost = ASRS_LOW_WEIGHT
 
-/datum/supply_packs/ammo_rounds_box_xm88/asrs
-	buyable = 0
-	group = "ASRS"
-	cost = ASRS_LOW_WEIGHT
-
 //===================================
 // Magazines
 /datum/supply_packs/gun/ammo_hpr/asrs

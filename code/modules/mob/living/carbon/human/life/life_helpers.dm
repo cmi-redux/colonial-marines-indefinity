@@ -302,7 +302,8 @@
 
 /mob/living/carbon/human/proc/handle_revive()
 	SEND_SIGNAL(src, COMSIG_HUMAN_REVIVED)
-	track_revive(job)
+	track_revive()
+	SSautobalancer.balance_action(src, "revive")
 	GLOB.alive_mob_list += src
 	if(!issynth(src) && !isyautja(src))
 		GLOB.alive_human_list += src

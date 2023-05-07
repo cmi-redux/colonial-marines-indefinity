@@ -13,19 +13,19 @@
 /obj/structure/displaycase/ex_act(severity)
 	switch(severity)
 		if(0 to EXPLOSION_THRESHOLD_LOW)
-			if (prob(50))
-				src.health -= 5
-				src.healthcheck()
+			if(prob(50))
+				health -= 5
+				healthcheck()
 		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
-			if (prob(50))
-				src.health -= 15
-				src.healthcheck()
+			if(prob(50))
+				health -= 15
+				healthcheck()
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
 			deconstruct(FALSE)
 
 /obj/structure/displaycase/deconstruct(disassembled = TRUE)
 	if(!disassembled)
-		new /obj/item/shard(src.loc)
+		new /obj/item/shard(loc)
 	if (occupied)
 		occupied = 0
 	return ..()
@@ -33,48 +33,48 @@
 /obj/structure/displaycase/bullet_act(obj/item/projectile/Proj)
 	health -= Proj.ammo.damage
 	..()
-	src.healthcheck()
+	healthcheck()
 	return 1
 
 /obj/structure/displaycase/proc/healthcheck()
-	if (src.health <= 0)
-		if (!( src.destroyed ))
-			src.density = FALSE
-			src.destroyed = 1
-			new /obj/item/shard( src.loc )
+	if(health <= 0)
+		if (!(destroyed))
+			density = FALSE
+			destroyed = 1
+			new /obj/item/shard(loc)
 			playsound(src, "windowshatter", 25, 1)
 			update_icon()
 	else
-		playsound(src.loc, 'sound/effects/Glasshit.ogg', 25, 1)
+		playsound(loc, 'sound/effects/Glasshit.ogg', 25, 1)
 	return
 
 /obj/structure/displaycase/update_icon()
-	if(src.destroyed)
-		src.icon_state = "glassboxb[src.occupied]"
+	if(destroyed)
+		icon_state = "glassboxb[occupied]"
 	else
-		src.icon_state = "glassbox[src.occupied]"
+		icon_state = "glassbox[occupied]"
 	return
 
 
 /obj/structure/displaycase/attackby(obj/item/W as obj, mob/user as mob)
-	src.health -= W.force
-	src.healthcheck()
+	health -= W.force
+	healthcheck()
 	..()
 	return
 
 /obj/structure/displaycase/attack_hand(mob/user as mob)
-	if (src.destroyed && src.occupied)
+	if(destroyed && occupied)
 		to_chat(user, "\b You deactivate the hover field built into the case.")
-		src.occupied = 0
-		src.add_fingerprint(user)
+		occupied = 0
+		add_fingerprint(user)
 		update_icon()
 		return
 	else
 		to_chat(user, SPAN_NOTICE("You kick the display case."))
 		for(var/mob/O in oviewers())
-			if ((O.client && !( O.blinded )))
+			if((O.client && !( O.blinded )))
 				to_chat(O, SPAN_DANGER("[user] kicks the display case."))
-		src.health -= 2
+		health -= 2
 		healthcheck()
 		return
 

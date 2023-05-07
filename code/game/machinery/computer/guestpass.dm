@@ -11,23 +11,23 @@
 	var/reason = "NOT SPECIFIED"
 
 /obj/item/card/id/guest/GetAccess()
-	if (world.time > expiration_time)
+	if(world.time > expiration_time)
 		return access
 	else
 		return temp_access
 
 /obj/item/card/id/guest/get_examine_text(mob/user)
 	. = ..()
-	if (world.time < expiration_time)
-		. += SPAN_NOTICE("This pass expires at [worldtime2text(expiration_time)].")
+	if(world.time < expiration_time)
+		. += SPAN_NOTICE("This pass expires at [game_time_timestamp(expiration_time)].")
 	else
-		. += SPAN_WARNING("It expired at [worldtime2text(expiration_time)].")
+		. += SPAN_WARNING("It expired at [game_time_timestamp(expiration_time)].")
 
 /obj/item/card/id/guest/read()
-	if (world.time > expiration_time)
-		to_chat(usr, SPAN_NOTICE("This pass expired at [worldtime2text(expiration_time)]."))
+	if(world.time > expiration_time)
+		to_chat(usr, SPAN_NOTICE("This pass expired at [game_time_timestamp(expiration_time)]."))
 	else
-		to_chat(usr, SPAN_NOTICE("This pass expires at [worldtime2text(expiration_time)]."))
+		to_chat(usr, SPAN_NOTICE("This pass expires at [game_time_timestamp(expiration_time)]."))
 
 	to_chat(usr, SPAN_NOTICE("It grants access to following areas:"))
 	for (var/A in temp_access)
@@ -74,7 +74,7 @@
 	user.set_interaction(src)
 	var/dat
 
-	if (mode == 1) //Logs
+	if(mode == 1) //Logs
 		dat += "<h3>Activity log</h3><br>"
 		for (var/entry in internal_log)
 			dat += "[entry]<br><hr>"
@@ -88,10 +88,10 @@
 		dat += "Reason:  <a href='?src=\ref[src];choice=reason'>[reason]</a><br>"
 		dat += "Duration (minutes):  <a href='?src=\ref[src];choice=duration'>[duration] m</a><br>"
 		dat += "Access to areas:<br>"
-		if (giver && giver.access)
+		if(giver && giver.access)
 			for (var/A in giver.access)
 				var/area = get_access_desc(A)
-				if (A in accesses)
+				if(A in accesses)
 					area = "<b>[area]</b>"
 				dat += "<a href='?src=\ref[src];choice=access;access=[A]'>[area]</a><br>"
 		dat += "<br><a href='?src=\ref[src];action=issue'>Issue pass</a><br>"
@@ -104,36 +104,36 @@
 	if(..())
 		return
 	usr.set_interaction(src)
-	if (href_list["mode"])
+	if(href_list["mode"])
 		mode = text2num(href_list["mode"])
 
-	if (href_list["choice"])
+	if(href_list["choice"])
 		switch(href_list["choice"])
-			if ("giv_name")
+			if("giv_name")
 				var/nam = stripped_input("Person pass is issued to", "Name", giv_name)
-				if (nam)
+				if(nam)
 					giv_name = nam
-			if ("reason")
+			if("reason")
 				var/reas = stripped_input(usr,"Reason why pass is issued", "Reason", reason)
 				if(reas)
 					reason = reas
-			if ("duration")
+			if("duration")
 				var/dur = tgui_input_number(usr, "Duration (in minutes) during which pass is valid (up to 30 minutes).", "Duration", 5, 30, 1)
-				if (dur)
-					if (dur > 0 && dur <= 30)
+				if(dur)
+					if(dur > 0 && dur <= 30)
 						duration = dur
 					else
 						to_chat(usr, SPAN_WARNING("Invalid duration."))
-			if ("access")
+			if("access")
 				var/A = text2num(href_list["access"])
-				if (A in accesses)
+				if(A in accesses)
 					accesses.Remove(A)
 				else
 					accesses.Add(A)
-	if (href_list["action"])
+	if(href_list["action"])
 		switch(href_list["action"])
-			if ("id")
-				if (giver)
+			if("id")
+				if(giver)
 					if(ishuman(usr))
 						giver.forceMove(usr.loc)
 						if(!usr.get_active_hand())
@@ -145,13 +145,13 @@
 					accesses.Cut()
 				else
 					var/obj/item/I = usr.get_active_hand()
-					if (istype(I, /obj/item/card/id))
+					if(istype(I, /obj/item/card/id))
 						if(usr.drop_held_item())
 							I.forceMove(src)
 							giver = I
 				updateUsrDialog()
 
-			if ("print")
+			if("print")
 				var/dat = "<h3>Activity log of guest pass terminal</h3><br>"
 				for (var/entry in internal_log)
 					dat += "[entry]<br><hr>"
@@ -161,22 +161,22 @@
 				P.name = "activity log"
 				P.info = dat
 
-			if ("issue")
-				if (giver)
+			if("issue")
+				if(giver)
 					var/number = add_zero("[rand(0,9999)]", 4)
-					var/entry = "\[[worldtime2text()]\] Pass #[number] issued by [giver.registered_name] ([giver.assignment]) to [giv_name]. Reason: [reason]. Grants access to following areas: "
+					var/entry = "\[[game_time_timestamp()]\] Pass #[number] issued by [giver.registered_name] ([giver.assignment]) to [giv_name]. Reason: [reason]. Grants access to following areas: "
 					for (var/i=1 to accesses.len)
 						var/A = accesses[i]
-						if (A)
+						if(A)
 							var/area = get_access_desc(A)
 							entry += "[i > 1 ? ", [area]" : "[area]"]"
-					entry += ". Expires at [worldtime2text(world.time + duration*10*60)]."
+					entry += ". Expires at [game_time_timestamp(world.time + duration*120*60)]."
 					internal_log.Add(entry)
 
 					var/obj/item/card/id/guest/pass = new(src.loc)
 					pass.temp_access = accesses.Copy()
 					pass.registered_name = giv_name
-					pass.expiration_time = world.time + duration*10*60
+					pass.expiration_time = world.time + duration*120*60
 					pass.reason = reason
 					pass.name = "guest pass #[number]"
 				else

@@ -13,11 +13,11 @@
 	return FALSE
 
 /mob/living/carbon/xenomorph/proc/can_destroy_special()
-	if(hive)
+	if(faction)
 		if(IS_XENO_LEADER(src))
-			if(hive.destruction_allowed == NORMAL_XENO || hive.destruction_allowed == XENO_LEADER)
+			if(faction.destruction_allowed == NORMAL_XENO || faction.destruction_allowed == XENO_LEADER)
 				return TRUE
-		if(hive.destruction_allowed == NORMAL_XENO && isxeno_builder(src))
+		if(faction.destruction_allowed == NORMAL_XENO && isxeno_builder(src))
 			return TRUE
 		if(isqueen(src))
 			return TRUE
@@ -36,7 +36,7 @@
 
 //These don't do much currently. Or anything? Only around for legacy code.
 /mob/living/carbon/xenomorph/is_mob_restrained()
-	return 0
+	return FALSE
 
 // Count how many xenos are in the same area as you. Used in hijacking.
 /mob/living/carbon/xenomorph/proc/count_hivemember_same_area()
@@ -44,7 +44,7 @@
 	var/count = 0
 
 	// Compare the areas.
-	for(var/mob/living/carbon/xenomorph/X in hive.totalXenos)
+	for(var/mob/living/carbon/xenomorph/X in faction.totalMobs)
 		if(!(X in GLOB.living_xeno_list))
 			continue
 

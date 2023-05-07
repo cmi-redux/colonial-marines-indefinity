@@ -2,7 +2,6 @@
     "map_name": "Fiorina Science Annex",
     "map_path": "map_files/FOP_v3_Sciannex",
     "map_file": "Fiorina_SciAnnex.dmm",
-    "webmap_url": "Fiorina",
     "survivor_types": [
         "/datum/equipment_preset/survivor/scientist/florina",
         "/datum/equipment_preset/survivor/doctor/florina",
@@ -16,22 +15,14 @@
         "/datum/equipment_preset/survivor/clf",
         "/datum/equipment_preset/survivor/civilian"
     ],
-    "defcon_triggers": [
-        3750,
-        2600,
-        1450,
-        875,
-        0.0
-    ],
     "survivor_message": "You are a survivor of the attack on Fiorina Orbital Penitentiary. You worked or lived on the prison station, and managed to avoid the alien attacks... until now.",
-    "map_item_type": "/obj/item/map/FOP_map_v3",
     "announce_text": "An automated distress signal has been received from maximum-security prison \"Fiorina Orbital Penitentiary\". A response team from the ###SHIPNAME### will be dispatched shortly to investigate.",
     "traits": [{ "Ground": true }],
     "nightmare_path": "maps/Nightmare/maps/FOP_v3_Sciannex/",
     "xvx_hives": {
-        "xeno_hive_alpha": 0,
-        "xeno_hive_bravo": 0,
-        "xeno_hive_charlie": 0
+        "alpha_xenomorph": 0,
+        "bravo_xenomorph": 0,
+        "charlie_xenomorph": 0
     },
     "gamemodes": [
         "Distress Signal",
@@ -39,5 +30,18 @@
         "Hive Wars",
         "Faction Clash",
         "Infection"
-    ]
+    ],
+    "map_day_night_modificator": {
+        "Midnight": 864000,
+        "Night": 72000,
+        "Dawn": 144000,
+        "Sunrise": 216000,
+        "Sunrise-Morning": 252000,
+        "Morning": 288000,
+        "Daytime": 360000,
+        "Evening": 576000,
+        "Sunset": 684000,
+        "Dusk": 792000
+    },
+    "custom_time_rate_multiplier": 24
 }

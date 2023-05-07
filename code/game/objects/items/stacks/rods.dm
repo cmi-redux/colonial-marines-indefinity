@@ -22,7 +22,7 @@
 	recipes = GLOB.rod_recipes
 
 /obj/item/stack/rods/attackby(obj/item/W as obj, mob/user as mob)
-	if (!iswelder(W))
+	if(!iswelder(W))
 		return ..()
 
 	if(!HAS_TRAIT(W, TRAIT_TOOL_BLOWTORCH))
@@ -83,7 +83,7 @@ GLOBAL_LIST_INIT(rod_recipes, list (
 	if(M.amount >= 10 && do_after(user, 1 SECONDS, INTERRUPT_ALL, BUSY_ICON_BUILD))
 		if(!M.use(10))
 			return
-		var/obj/item/device/m56d_post_frame/PF = new(get_turf(user))
+		var/obj/item/device/mounted_defence/tripod_frame/PF = new(get_turf(user))
 		to_chat(user, SPAN_NOTICE("You create \a [PF]."))
 		var/replace = (user.get_inactive_hand()==src)
 		use(5)

@@ -53,8 +53,8 @@
 	set category = "Object"
 	set src in usr
 
-	if(!usr.canmove || usr.stat || usr.is_mob_restrained())
-		return 0
+	if(!usr.can_action || usr.is_mob_restrained())
+		return FALSE
 
 	if(src.buttoned == TRUE)
 		src.icon_state = "[initial_icon_state]_o"

@@ -24,11 +24,10 @@
 	icon_state = "capcap"
 	flags_inventory = NO_FLAGS
 	flags_inv_hide = NO_FLAGS
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 	flags_cold_protection = BODY_FLAG_HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROT
 	siemens_coefficient = 0.9
-	flags_armor_protection = 0
 
 //Cult
 /obj/item/clothing/head/cultist_hood
@@ -137,7 +136,7 @@
 	armor_rad = CLOTHING_ARMOR_LOW
 	armor_internaldamage = CLOTHING_ARMOR_MEDIUM
 	siemens_coefficient = 0.9
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 
 /obj/item/clothing/head/det_hat/black
 	icon_state = "detective2"

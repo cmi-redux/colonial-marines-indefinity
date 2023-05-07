@@ -5,7 +5,26 @@ import { Window } from '../layouts';
 export const SquadMod = (props, context) => {
   const { act, data } = useBackend(context);
   const { squads = [], human, id_name, has_id } = data;
-  const COLORS_SPECTRUM = ['red', 'yellow', 'purple', 'teal', 'brown', 'grey'];
+  const COLORS_SPECTRUM = [
+    'red',
+    'yellow',
+    'purple',
+    'teal',
+    'brown',
+    'grey',
+    'red',
+    'yellow',
+    'purple',
+    'teal',
+    'brown',
+    'grey',
+    'red',
+    'yellow',
+    'purple',
+    'teal',
+    'brown',
+    'grey',
+  ];
   return (
     <Window width={400} height={300}>
       <Window.Content>

@@ -17,7 +17,6 @@
 	var/map_path = "map_files/LV624"
 	var/map_file = "LV624.dmm"
 
-	var/webmap_url
 	var/short_name
 
 	var/traits = null
@@ -25,6 +24,10 @@
 	var/list/environment_traits = list()
 	var/armor_style = "default"
 	var/list/gamemodes = list()
+
+	var/list/map_day_night_modificator = list()
+	var/list/custom_day_night_colors = list()
+	var/custom_time_rate_multiplier = list()
 
 	var/allow_custom_shuttles = TRUE
 	var/shuttles = list()
@@ -43,11 +46,7 @@
 
 	var/list/CO_survivor_types
 
-	var/list/defcon_triggers = list(5150, 4225, 2800, 1000, 0.0)
-
 	var/survivor_message = "You are a survivor of the attack on the colony. You worked or lived in the archaeology colony, and managed to avoid the alien attacks... until now."
-
-	var/map_item_type
 
 	var/force_mode
 
@@ -57,7 +56,9 @@
 
 	var/list/monkey_types = list(/mob/living/carbon/human/monkey)
 
-	var/list/xvx_hives = list(XENO_HIVE_ALPHA = 0, XENO_HIVE_BRAVO = 0)
+	var/list/xvx_hives = list(FACTION_XENOMORPH_ALPHA = 0, FACTION_XENOMORPH_BRAVO = 0)
+
+	var/list/weather = list()
 
 	var/vote_cycle = 1
 
@@ -148,37 +149,36 @@
 	CHECK_EXISTS("map_path")
 	map_path = json["map_path"]
 
-	webmap_url = json["webmap_url"]
 	short_name = json["short_name"]
 
 	map_file = json["map_file"]
 	// "map_file": "BoxStation.dmm"
-	if (istext(map_file))
-		if (!fexists("maps/[map_path]/[map_file]"))
+	if(istext(map_file))
+		if(!fexists("maps/[map_path]/[map_file]"))
 			log_world("Map file ([map_file]) does not exist!")
 			return
 	// "map_file": ["Lower.dmm", "Upper.dmm"]
-	else if (islist(map_file))
+	else if(islist(map_file))
 		for (var/file in map_file)
-			if (!fexists("maps/[map_path]/[file]"))
+			if(!fexists("maps/[map_path]/[file]"))
 				log_world("Map file ([file]) does not exist!")
 				return
 	else
 		log_world("map_file missing from json!")
 		return
 
-	if (islist(json["shuttles"]))
+	if(islist(json["shuttles"]))
 		var/list/L = json["shuttles"]
 		for(var/key in L)
 			var/value = L[key]
 			shuttles[key] = value
-	else if ("shuttles" in json)
+	else if("shuttles" in json)
 		log_world("map_config shuttles is not a list!")
 		return
 
-	if (islist(json["survivor_types"]))
+	if(islist(json["survivor_types"]))
 		survivor_types = json["survivor_types"]
-	else if ("survivor_types" in json)
+	else if("survivor_types" in json)
 		log_world("map_config survivor_types is not a list!")
 		return
 
@@ -241,7 +241,7 @@
 		pathed_CO_survivor_types += CO_survivor_typepath
 	CO_survivor_types = pathed_CO_survivor_types.Copy()
 
-	if (islist(json["monkey_types"]))
+	if(islist(json["monkey_types"]))
 		monkey_types = list()
 		for(var/monkey in json["monkey_types"])
 			switch(monkey)
@@ -258,35 +258,34 @@
 				else
 					log_world("map_config monkey_types has invalid name!")
 					return
-	else if ("monkey_types" in json)
+	else if("monkey_types" in json)
 		log_world("map_config monkey_types is not a list!")
 		return
 
-	if (islist(json["xvx_hives"]))
+	if(islist(json["xvx_hives"]))
 		xvx_hives = json["xvx_hives"]
-	else if ("xvx_hives" in json)
+	else if(!isnull(json["xvx_hives"]))
 		log_world("map_config xvx_hives is not a list!")
 		return
 
-	if (islist(json["defcon_triggers"]))
-		defcon_triggers = json["defcon_triggers"]
-	else if ("defcon_triggers" in json)
-		log_world("map_config defcon_triggers is not a list!")
-		return
-
-	traits = json["traits"]
-	if(islist(traits))
-		for(var/list/ztraits in traits) // Defaults to ground map if not specified
-			if(!ztraits[ZTRAIT_GROUND] && !ztraits[ZTRAIT_MARINE_MAIN_SHIP])
-				ztraits[ZTRAIT_GROUND] = TRUE
-	else if(traits)
+	if(islist(json["traits"]))
+		var/list/traits_to_set = json["traits"]
+		for(var/list/traits_set in traits_to_set)
+			if(traits_set["Zlevels"])
+				var/potential_zlevels = traits_set["Zlevels"]
+				traits_set.Cut(1, 2)
+				for(var/i=0;i<potential_zlevels;i++)
+					traits += list(traits_set)
+			else
+				traits += list(traits_set)
+	else if(!isnull(json["traits"]))
 		log_world("map_config traits is not a list!")
 		return
 
 	var/temp = json["space_empty_levels"]
-	if (isnum(temp))
+	if(isnum(temp))
 		space_empty_levels = temp
-	else if (!isnull(temp))
+	else if(!isnull(temp))
 		log_world("map_config space_empty_levels is not a number!")
 		return
 
@@ -320,17 +319,11 @@
 	if(json["announce_text"])
 		announce_text = json["announce_text"]
 
-	if(json["weather_holder"])
-		weather_holder = text2path(json["weather_holder"])
-		if(!weather_holder)
-			log_world("map_config weather_holder is not a proper typepath!")
-			return
-
-	if(json["map_item_type"])
-		map_item_type = text2path(json["map_item_type"])
-		if(!map_item_type)
-			log_world("map_config map_item_type is not a proper typepath!")
-			return
+	if(islist(json["weather"]))
+		weather = json["weather"]
+	else if(!isnull(json["weather"]))
+		log_world("map_config weather is not a list!")
+		return
 
 	if(json["nightmare_path"])
 		nightmare_path = json["nightmare_path"]
@@ -351,10 +344,10 @@
 			if(!(g in gamemode_names))
 				log_world("map_config has an invalid gamemode name!")
 				return
-			if(g == "Extended") // always allow extended
+			if(g == MODE_NAME_EXTENDED) // always allow extended
 				continue
 			gamemodes += g
-		gamemodes += "Extended"
+		gamemodes += MODE_NAME_EXTENDED
 	else if(!isnull(json["gamemodes"]))
 		log_world("map_config gamemodes is not a list!")
 		return
@@ -363,12 +356,29 @@
 			var/datum/game_mode/G = a
 			gamemodes += initial(G.config_tag)
 
+	if(islist(json["map_day_night_modificator"]))
+		if(!islist(json["map_day_night_modificator"]))
+			log_world("map_config custom day/night modificator is not a list!")
+			return
+		map_day_night_modificator = json["map_day_night_modificator"]
+
+	if(islist(json["custom_day_night_colors"]))
+		if(!islist(json["custom_day_night_colors"]))
+			log_world("map_config custom day/night colors is not a list!")
+			return
+		custom_day_night_colors = json["custom_day_night_colors"]
+
+	if(json["custom_time_rate_multiplier"])
+		custom_time_rate_multiplier = json["custom_time_rate_multiplier"]
+	else
+		custom_time_rate_multiplier = 1
+
 	defaulted = FALSE
 	return TRUE
 #undef CHECK_EXISTS
 
 /datum/map_config/proc/GetFullMapPaths()
-	if (istext(map_file))
+	if(istext(map_file))
 		return list("maps/[map_path]/[map_file]")
 	. = list()
 	for (var/file in map_file)

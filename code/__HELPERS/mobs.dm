@@ -1,5 +1,4 @@
 #define isdeaf(A) (ismob(A) && ((A?:sdisabilities & DISABILITY_DEAF) || A?:ear_deaf))
-#define xeno_hivenumber(A) (isxeno(A) ? A?:hivenumber : FALSE)
 
 /proc/random_ethnicity()
 	return pick(GLOB.ethnicities_list)

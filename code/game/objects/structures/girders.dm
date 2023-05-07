@@ -16,6 +16,7 @@
 	icon_state = "girder"
 	anchored = TRUE
 	density = TRUE
+	plane = WALL_PLANE
 	layer = OBJ_LAYER
 	unacidable = FALSE
 	debris = list(/obj/item/stack/sheet/metal, /obj/item/stack/sheet/metal)
@@ -27,12 +28,12 @@
 
 /obj/structure/girder/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_THROUGH|PASS_HIGH_OVER_ONLY
 
 /obj/structure/girder/get_examine_text(mob/user)
 	. = ..()
-	if (health <= 0)
+	if(health <= 0)
 		. += "It's broken, but can be mended by welding it."
 		return
 
@@ -348,7 +349,7 @@
 	update_state()
 
 /obj/structure/girder/proc/update_state()
-	if (health <= 0)
+	if(health <= 0)
 		icon_state = "[icon_state]_damaged"
 		density = FALSE
 	else

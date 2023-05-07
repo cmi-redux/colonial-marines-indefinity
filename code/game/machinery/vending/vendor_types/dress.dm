@@ -74,7 +74,7 @@
 				if(uniform_path in vended_items)
 					can_vend = FALSE
 				var/name = sanitize(initial(O.name))
-				var/flags = can_vend ? NO_FLAGS : MARINE_CAN_BUY_ALL
+				var/flags = can_vend ? NO_FLAGS : VENDOR_CAN_BUY_ALL
 				display_list += list(
 					list(name, 0, uniform_path, flags, VENDOR_ITEM_REGULAR)
 				)
@@ -130,7 +130,7 @@
 				to_chat(H, SPAN_WARNING("Wrong ID card owner detected."))
 				return
 
-			if(LAZYLEN(vendor_role) && !vendor_role.Find(id_card.rank))
+			if(length(vendor_role) && !vendor_role.Find(id_card.rank))
 				to_chat(H, SPAN_WARNING("This machine isn't for you."))
 				return
 
@@ -161,9 +161,9 @@
 	name = "\improper Super Snowflake Vendor"
 	desc = "WARNING: The quantity of items contained within can slow down reality."
 	icon_state = "snowflake"
-	use_points = TRUE //"use points", but everything is free
+	type_used_points = USING_BASE_POINTS
 	show_points = FALSE
-	use_snowflake_points = FALSE
+
 	vendor_theme = VENDOR_THEME_COMPANY
 	vend_flags = VEND_CLUTTER_PROTECTION | VEND_TO_HAND
 	vend_delay = 1 SECONDS
@@ -173,10 +173,10 @@
 /obj/structure/machinery/cm_vending/clothing/super_snowflake/get_listed_products(mob/user)
 	//If we don't have an object type, we ask the user to supply it
 	if(!item_types)
-		var/obj/item/chosen = get_item_category_from_user()
-		if(!chosen)
+		var/obj/item/choice = get_item_category_from_user()
+		if(!choice)
 			return
-		item_types = list(chosen)
+		item_types = list(choice)
 
 	if(!items)
 		items = list()
@@ -200,14 +200,14 @@
 	if(matches.len==0)
 		return
 
-	var/obj/item/chosen
+	var/obj/item/choice
 	if(matches.len==1)
-		chosen = matches[1]
+		choice = matches[1]
 	else
 		//If we have multiple options, let them select which one they meant
-		chosen = tgui_input_list(usr, "Select an object type", "Select Object", matches)
+		choice = tgui_input_list(usr, "Select an object type", "Select Object", matches)
 
-	return chosen
+	return choice
 
 /obj/structure/machinery/cm_vending/clothing/super_snowflake/proc/add_items(obj/item/item_type)
 	for(var/obj/item/I as anything in typesof(item_type))
@@ -231,13 +231,13 @@
 		to_chat(usr, SPAN_WARNING("This option isn't for you."))
 		return
 
-	var/obj/item/chosen = get_item_category_from_user()
-	if(!chosen)
+	var/obj/item/choice = get_item_category_from_user()
+	if(!choice)
 		return
-	add_items(chosen)
+	add_items(choice)
 
-	log_admin("[key_name(usr)] added an item [chosen] to [src].")
-	msg_admin_niche("[key_name(usr)] added an item [chosen] to [src].")
+	log_admin("[key_name(usr)] added an item [choice] to [src].")
+	msg_admin_niche("[key_name(usr)] added an item [choice] to [src].")
 
 //Vendor types
 

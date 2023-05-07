@@ -56,7 +56,7 @@
 		if(3)
 			if(istype(P, /obj/item/stack/cable_coil))
 				var/obj/item/stack/cable_coil/A = P
-				if (A.use(5))
+				if(A.use(5))
 					to_chat(user, SPAN_NOTICE("You insert the cables."))
 					construct_op--
 					stat &= ~BROKEN // the machine's not borked anymore!
@@ -129,7 +129,7 @@
 		if(hide) dat += "<br>Shadow Link: ACTIVE</a>"
 
 		//Show additional options for certain machines.
-		dat += Options_Menu()
+		dat += Options_Menu(user)
 
 		dat += "<br>Linked Network Entities: <ol>"
 
@@ -179,8 +179,8 @@
 		return 1
 	else if(is_admin_level(position.z))
 		src.listening_level = TELECOMM_GROUND_Z
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 // Returns a multitool from a user depending on their mobtype.
 
@@ -203,7 +203,7 @@
 // Additional Options for certain machines. Use this when you want to add an option to a specific machine.
 // Example of how to use below.
 
-/obj/structure/machinery/telecomms/proc/Options_Menu()
+/obj/structure/machinery/telecomms/proc/Options_Menu(mob/user as mob)
 	return ""
 
 /*
@@ -227,12 +227,12 @@
 
 // RELAY
 
-/obj/structure/machinery/telecomms/relay/Options_Menu()
+/obj/structure/machinery/telecomms/relay/Options_Menu(mob/user as mob)
 	var/dat = ""
 	if(is_admin_level(z))
 		dat += "<br>Signal Locked to Station: <A href='?src=\ref[src];change_listening=1'>[listening_level == TELECOMM_GROUND_Z ? "TRUE" : "FALSE"]</a>"
-	dat += "<br>Broadcasting: <A href='?src=\ref[src];broadcast=1'>[broadcasting ? "YES" : "NO"]</a>"
-	dat += "<br>Receiving: <A href='?src=\ref[src];receive=1'>[receiving ? "YES" : "NO"]</a>"
+	dat += "<br>Broadcasting: <A href='?src=\ref[src];broadcast=1'>[broadcasting ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</a>"
+	dat += "<br>Receiving: <A href='?src=\ref[src];receive=1'>[receiving ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</a>"
 	return dat
 
 /obj/structure/machinery/telecomms/relay/Options_Topic(href, href_list)
@@ -254,8 +254,8 @@
 
 // BUS
 
-/obj/structure/machinery/telecomms/bus/Options_Menu()
-	var/dat = "<br>Change Signal Frequency: <A href='?src=\ref[src];change_freq=1'>[change_frequency ? "YES ([change_frequency])" : "NO"]</a>"
+/obj/structure/machinery/telecomms/bus/Options_Menu(mob/user as mob)
+	var/dat = "<br>Change Signal Frequency: <A href='?src=\ref[src];change_freq=1'>[change_frequency ? "YES ([change_frequency])" : user.client.auto_lang(LANGUAGE_NO)]</a>"
 	return dat
 
 /obj/structure/machinery/telecomms/bus/Options_Topic(href, href_list)
@@ -281,7 +281,7 @@
 		return
 	if(!ishighersilicon(usr))
 		var/obj/item/held_item = usr.get_held_item()
-		if (!held_item || !HAS_TRAIT(held_item, TRAIT_TOOL_MULTITOOL))
+		if(!held_item || !HAS_TRAIT(held_item, TRAIT_TOOL_MULTITOOL))
 			return
 
 	if(inoperable())
@@ -362,5 +362,5 @@
 
 /obj/structure/machinery/telecomms/proc/canAccess(mob/user)
 	if(isRemoteControlling(user) || in_range(user, src))
-		return 1
-	return 0
+		return TRUE
+	return FALSE

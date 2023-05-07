@@ -2,7 +2,7 @@
 "ai" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "ak" = (
 /obj/effect/spawner/random/tool,
 /turf/template_noop,
@@ -11,28 +11,28 @@
 /obj/structure/surface/table,
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "am" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 5
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "an" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "ao" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 10
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "aq" = (
 /turf/closed/wall/solaris/reinforced,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "as" = (
 /turf/open/mars,
 /area/bigredv2/outside/s)
@@ -43,48 +43,48 @@
 /obj/structure/surface/table,
 /obj/effect/spawner/random/toolbox,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "aE" = (
 /obj/structure/surface/table,
 /obj/effect/spawner/random/tool,
 /obj/effect/spawner/random/technology_scanner,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "aF" = (
 /obj/structure/window/framed/solaris,
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "aT" = (
 /obj/structure/reagent_dispensers/fueltank,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "aU" = (
 /obj/structure/surface/rack,
 /obj/item/device/camera_film,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "aV" = (
 /obj/structure/surface/rack,
 /obj/item/device/analyzer,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "aW" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 6
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "aY" = (
 /obj/structure/pipes/standard/manifold/fourway/hidden/green,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "aZ" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "ba" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -92,14 +92,14 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/item/device/lightreplacer,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bb" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
 /obj/item/stack/sheet/metal,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bc" = (
 /obj/structure/machinery/light{
 	dir = 1
@@ -108,49 +108,50 @@
 	dir = 4
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bd" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
 /obj/effect/landmark/hunter_secondary,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "be" = (
 /obj/structure/pipes/standard/manifold/hidden/green,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bf" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
 /obj/effect/decal/cleanable/liquid_fuel,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bg" = (
 /obj/structure/pipes/standard/manifold/hidden/green{
 	dir = 4
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bi" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/clothing/mask/breath,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bj" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/item/stack/sheet/metal,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bk" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/machinery/alarm{
 	dir = 1;
-	pixel_y = -30
+	pixel_y = -30;
+	tag = "icon-alarm0 (NORTH)"
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bl" = (
 /obj/effect/decal/cleanable/liquid_fuel,
 /obj/structure/machinery/door_control{
@@ -159,7 +160,7 @@
 	pixel_y = -32
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bm" = (
 /obj/structure/bed/chair{
 	dir = 4
@@ -167,42 +168,43 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/landmark/crap_item,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bn" = (
 /obj/structure/surface/table,
 /obj/effect/decal/cleanable/dirt,
 /obj/item/clothing/glasses/welding,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bo" = (
 /obj/structure/bed/chair{
 	dir = 8
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bp" = (
 /obj/item/folder/yellow,
 /obj/structure/pipes/standard/manifold/hidden/green{
 	dir = 8
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bq" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
-/obj/structure/machinery/door/airlock/almayer/engineering/colony{
-	name = "\improper Engineering Workshop"
+/obj/structure/machinery/door/airlock/almayer/engineering{
+	name = "\improper Engineering Workshop";
+	req_one_access = null
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "br" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bs" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/pipes/standard/simple/hidden/green{
@@ -211,48 +213,49 @@
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bu" = (
-/obj/structure/machinery/door/airlock/almayer/engineering/colony{
+/obj/structure/machinery/door/airlock/almayer/engineering{
 	dir = 1;
-	name = "\improper Engine Reactor Control"
+	name = "\improper Engine Reactor Control";
+	req_one_access = null
 	},
 /turf/open/floor,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "bv" = (
 /obj/structure/bed/chair{
 	dir = 4
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bw" = (
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bx" = (
 /obj/structure/machinery/computer/arcade,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "by" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bz" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/stack/sheet/metal,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bA" = (
 /obj/structure/surface/table,
 /obj/effect/spawner/random/toolbox,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bB" = (
 /obj/item/stack/sheet/glass,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bC" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/storage/firstaid/rad,
@@ -262,7 +265,7 @@
 /obj/structure/window_frame/solaris/reinforced,
 /obj/effect/decal/cleanable/molten_item,
 /turf/open/floor/plating,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "bE" = (
 /obj/structure/surface/table,
 /obj/structure/machinery/light{
@@ -270,19 +273,19 @@
 	},
 /obj/effect/spawner/random/technology_scanner,
 /turf/open/floor,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "bF" = (
 /obj/structure/machinery/camera/autoname,
 /turf/open/floor,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "bG" = (
 /turf/open/floor,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "bH" = (
 /obj/structure/surface/table,
 /obj/effect/decal/cleanable/ash,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bJ" = (
 /obj/structure/bed/chair{
 	dir = 8
@@ -291,46 +294,46 @@
 	dir = 4
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bK" = (
 /obj/item/folder/yellow,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bL" = (
 /obj/structure/machinery/vending/cigarette/colony,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bM" = (
 /obj/structure/machinery/vending/snack,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bN" = (
 /obj/structure/machinery/vending/cola,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bO" = (
 /obj/structure/bed/chair/office/light{
 	dir = 4
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bP" = (
 /obj/structure/surface/table,
 /obj/effect/spawner/random/powercell,
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bQ" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bR" = (
 /obj/structure/machinery/light{
 	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bS" = (
 /obj/structure/bed/chair/office/light{
 	dir = 8
@@ -339,13 +342,13 @@
 	dir = 6
 	},
 /turf/open/floor,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "bT" = (
 /obj/structure/pipes/vents/pump{
 	dir = 8
 	},
 /turf/open/floor,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "bU" = (
 /obj/item/device/radio/intercom{
 	freerange = 1;
@@ -354,21 +357,21 @@
 	pixel_x = 30
 	},
 /turf/open/floor,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "bV" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 5
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bX" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 9
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bY" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/stack/sheet/metal{
@@ -376,19 +379,19 @@
 	},
 /obj/effect/landmark/crap_item,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "bZ" = (
 /obj/structure/surface/table,
 /obj/effect/decal/cleanable/dirt,
 /obj/item/tool/pen,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "ca" = (
 /obj/structure/sign/safety/hazard{
 	pixel_y = -32
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "ce" = (
 /obj/item/tool/lighter/random,
 /obj/structure/pipes/vents/pump{
@@ -396,74 +399,76 @@
 	},
 /obj/effect/decal/cleanable/ash,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cf" = (
 /obj/item/stack/sheet/metal,
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cg" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "ch" = (
 /obj/effect/landmark/crap_item,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "ck" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/clothing/suit/radiation,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cl" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/clothing/head/welding,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cm" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/blood/oil,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cn" = (
-/obj/structure/machinery/door/airlock/almayer/secure/colony{
+/obj/structure/machinery/door/airlock/almayer/secure{
 	dir = 1;
-	name = "\improper Engine Reactor"
+	name = "\improper Engine Reactor";
+	req_access = null
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "co" = (
 /obj/structure/closet/radiation,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cp" = (
 /obj/item/folder/yellow,
 /obj/effect/landmark/crap_item,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cq" = (
 /obj/effect/decal/cleanable/ash,
 /obj/structure/machinery/power/breakerbox,
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "cr" = (
 /obj/effect/decal/cleanable/molten_item,
 /turf/open/floor,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "cs" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
-/obj/structure/machinery/door/airlock/almayer/engineering/colony{
-	name = "\improper Engine Reactor Control"
+/obj/structure/machinery/door/airlock/almayer/engineering{
+	name = "\improper Engine Reactor Control";
+	req_one_access = null
 	},
 /turf/open/floor,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "ct" = (
 /obj/structure/machinery/door_control{
 	desc = "A remote control-switch for opening the engines blast doors.";
@@ -475,13 +480,14 @@
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "cv" = (
-/obj/structure/machinery/door/airlock/almayer/engineering/colony{
-	name = "\improper Engine Reactor Control"
+/obj/structure/machinery/door/airlock/almayer/engineering{
+	name = "\improper Engine Reactor Control";
+	req_one_access = null
 	},
 /turf/open/floor,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "cw" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 5
@@ -489,24 +495,24 @@
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cx" = (
 /obj/structure/machinery/constructable_frame{
 	icon_state = "box_1"
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cy" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/machinery/constructable_frame,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cz" = (
 /obj/structure/surface/table,
 /obj/structure/machinery/light,
 /obj/effect/spawner/random/tool,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cA" = (
 /obj/structure/surface/table,
 /obj/effect/spawner/random/tool,
@@ -514,7 +520,7 @@
 	amount = 30
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cB" = (
 /obj/structure/machinery/light{
 	dir = 4
@@ -523,7 +529,7 @@
 	pixel_x = 32
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cC" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -531,11 +537,11 @@
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cD" = (
 /obj/structure/machinery/computer/area_atmos,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cE" = (
 /obj/structure/machinery/light{
 	dir = 8
@@ -544,12 +550,12 @@
 	pixel_x = -32
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cF" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/reagent_dispensers/fueltank,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cG" = (
 /obj/structure/window/framed/solaris/reinforced,
 /obj/structure/machinery/door/poddoor/shutters/almayer{
@@ -557,7 +563,7 @@
 	name = "\improper Engineering Shutters"
 	},
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cH" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/remains/human,
@@ -565,7 +571,7 @@
 	broken_on_spawn = 1
 	},
 /turf/open/floor,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "cI" = (
 /obj/structure/sign/safety/hazard{
 	pixel_y = -32
@@ -573,38 +579,41 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/item/tool/extinguisher,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cK" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/molten_item,
 /turf/open/floor,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "cM" = (
 /turf/open/mars,
 /area/bigredv2/outside/lz2_south_cas)
 "cN" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_11"
+	icon_state = "mars_dirt_11";
+	tag = "icon-mars_dirt_11"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "cO" = (
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_4"
+	icon_state = "mars_dirt_4";
+	tag = "icon-mars_dirt_4"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "cP" = (
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cR" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cS" = (
 /turf/open/gm/river,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cT" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_13"
+	icon_state = "mars_dirt_13";
+	tag = "icon-mars_dirt_13"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "cX" = (
@@ -616,47 +625,51 @@
 	name = "\improper Engineering Complex"
 	},
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "cY" = (
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_5"
+	icon_state = "mars_dirt_5";
+	tag = "icon-mars_dirt_5"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "da" = (
 /turf/closed/wall/mineral/uranium,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "db" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/tool/extinguisher,
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "dc" = (
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_7"
+	icon_state = "mars_dirt_7";
+	tag = "icon-mars_dirt_7"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "dd" = (
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_6"
+	icon_state = "mars_dirt_6";
+	tag = "icon-mars_dirt_6"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "de" = (
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars_cave{
-	icon_state = "mars_cave_19"
+	icon_state = "mars_cave_19";
+	tag = "icon-mars_cave_19"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "df" = (
 /obj/structure/machinery/power/port_gen/pacman,
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "di" = (
 /obj/structure/machinery/light{
 	dir = 8
 	},
 /obj/effect/decal/cleanable/ash,
 /turf/open/floor,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "dj" = (
 /obj/effect/decal/cleanable/dirt{
 	acid_damage = 1;
@@ -665,14 +678,15 @@
 	name = "glowing goo"
 	},
 /turf/open/gm/river,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "dk" = (
 /obj/structure/girder,
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "dl" = (
 /turf/open/mars_cave{
-	icon_state = "mars_cave_17"
+	icon_state = "mars_cave_17";
+	tag = "icon-mars_cave_17"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "dn" = (
@@ -683,14 +697,14 @@
 	dir = 1
 	},
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "dp" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/machinery/light_construct{
 	dir = 8
 	},
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "dq" = (
 /obj/item/bananapeel,
 /obj/effect/decal/cleanable/dirt{
@@ -700,23 +714,24 @@
 	name = "glowing goo"
 	},
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "dr" = (
 /obj/structure/machinery/door/poddoor/almayer{
 	id = "rad_door";
 	name = "\improper Radiation Shielding"
 	},
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "dt" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_13"
+	icon_state = "mars_dirt_13";
+	tag = "icon-mars_dirt_13"
 	},
 /area/bigredv2/outside/s)
 "dv" = (
 /obj/structure/machinery/power/turbine,
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "dx" = (
 /obj/effect/decal/cleanable/dirt{
 	acid_damage = 1;
@@ -727,46 +742,50 @@
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "dy" = (
 /obj/structure/machinery/power/geothermal{
 	name = "Reactor Turbine";
 	power_generation_max = 1e+006
 	},
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "dz" = (
 /obj/structure/machinery/light_construct,
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "dA" = (
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_4"
+	icon_state = "mars_dirt_4";
+	tag = "icon-mars_dirt_4"
 	},
 /area/bigredv2/outside/s)
 "dC" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_10"
+	icon_state = "mars_dirt_10";
+	tag = "icon-mars_dirt_10"
 	},
 /area/bigredv2/outside/s)
 "dE" = (
 /obj/structure/window_frame/solaris/reinforced,
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "dF" = (
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_7"
+	icon_state = "mars_dirt_7";
+	tag = "icon-mars_dirt_7"
 	},
 /area/bigredv2/outside/s)
 "dG" = (
 /obj/structure/machinery/power/port_gen/pacman,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "dJ" = (
 /obj/effect/landmark/hunter_primary,
 /turf/open/mars_cave{
-	icon_state = "mars_cave_2"
+	icon_state = "mars_cave_2";
+	tag = "icon-mars_cave_2"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "dK" = (
@@ -775,20 +794,23 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "dO" = (
 /turf/open/mars_cave{
-	icon_state = "mars_cave_6"
+	icon_state = "mars_cave_6";
+	tag = "icon-mars_cave_6"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "dR" = (
 /turf/open/mars_cave{
-	icon_state = "mars_cave_2"
+	icon_state = "mars_cave_2";
+	tag = "icon-mars_cave_2"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "dS" = (
 /turf/open/mars_cave{
-	icon_state = "mars_cave_7"
+	icon_state = "mars_cave_7";
+	tag = "icon-mars_cave_7"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "dT" = (
@@ -797,23 +819,26 @@
 "dU" = (
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars_cave{
-	icon_state = "mars_cave_10"
+	icon_state = "mars_cave_10";
+	tag = "icon-mars_cave_10"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "dV" = (
 /turf/open/mars_cave{
-	icon_state = "mars_cave_5"
+	icon_state = "mars_cave_5";
+	tag = "icon-mars_cave_5"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "dW" = (
 /turf/open/mars_cave{
-	icon_state = "mars_cave_23"
+	icon_state = "mars_cave_23";
+	tag = "icon-mars_cave_23"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "dX" = (
 /obj/structure/girder/reinforced,
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "dY" = (
 /obj/effect/decal/cleanable/dirt{
 	acid_damage = 1;
@@ -824,7 +849,7 @@
 /turf/open/floor{
 	icon_state = "wall_thermite"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "dZ" = (
 /obj/effect/decal/cleanable/dirt{
 	acid_damage = 1;
@@ -833,7 +858,7 @@
 	name = "glowing goo"
 	},
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "eb" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt{
@@ -845,21 +870,21 @@
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "ec" = (
 /obj/structure/catwalk/bigred,
 /turf/open/gm/river/desert/shallow/covered,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "ee" = (
 /obj/effect/decal/cleanable/molten_item,
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "ef" = (
 /obj/structure/machinery/light_construct{
 	dir = 4
 	},
 /turf/open/gm/river,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "eh" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt{
@@ -869,7 +894,7 @@
 	name = "glowing goo"
 	},
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "ei" = (
 /obj/structure/machinery/compressor{
 	dir = 1
@@ -877,7 +902,7 @@
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "ej" = (
 /obj/structure/machinery/light_construct{
 	dir = 4
@@ -885,7 +910,7 @@
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "ek" = (
 /obj/structure/machinery/camera/autoname{
 	dir = 4
@@ -894,24 +919,24 @@
 	dir = 8
 	},
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "el" = (
 /obj/structure/machinery/light_construct{
 	dir = 8
 	},
 /turf/open/gm/river,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "em" = (
 /obj/structure/machinery/light_construct{
 	dir = 1
 	},
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "en" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/girder,
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "eo" = (
 /obj/effect/decal/cleanable/dirt{
 	acid_damage = 1;
@@ -921,41 +946,42 @@
 	},
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars_cave{
-	icon_state = "mars_cave_7"
+	icon_state = "mars_cave_7";
+	tag = "icon-mars_cave_7"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "ep" = (
 /obj/item/tool/extinguisher,
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "eq" = (
 /obj/effect/decal/cleanable/molten_item,
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "er" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/molten_item,
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "et" = (
 /obj/structure/bed/chair/office/light,
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "ev" = (
 /obj/structure/machinery/light_construct,
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "ew" = (
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "ex" = (
 /obj/effect/decal/cleanable/molten_item,
 /obj/effect/decal/cleanable/dirt{
@@ -967,20 +993,20 @@
 /turf/open/floor{
 	icon_state = "wall_thermite"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "ey" = (
 /obj/structure/machinery/light_construct{
 	dir = 4
 	},
 /obj/effect/decal/cleanable/ash,
 /turf/open/floor/plating,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "ez" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "eA" = (
 /obj/structure/machinery/light_construct{
 	dir = 1
@@ -988,7 +1014,7 @@
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "eB" = (
 /obj/effect/decal/cleanable/dirt{
 	acid_damage = 1;
@@ -1005,27 +1031,27 @@
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "eD" = (
 /obj/structure/surface/table,
 /obj/effect/decal/cleanable/ash,
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "eE" = (
 /obj/structure/computerframe,
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "eF" = (
 /obj/structure/surface/table,
 /obj/item/device/analyzer,
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "eG" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt{
@@ -1037,23 +1063,23 @@
 /turf/open/floor{
 	icon_state = "wall_thermite"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "eH" = (
 /obj/effect/decal/cleanable/molten_item,
 /turf/open/floor{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "eI" = (
 /obj/effect/decal/cleanable/ash,
 /turf/open/floor,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "eJ" = (
 /obj/effect/decal/cleanable/molten_item,
 /turf/open/floor{
 	icon_state = "wall_thermite"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "eK" = (
 /obj/effect/decal/cleanable/molten_item,
 /obj/effect/decal/cleanable/dirt{
@@ -1063,13 +1089,13 @@
 	name = "glowing goo"
 	},
 /turf/open/gm/river,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "eL" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
 	icon_state = "wall_thermite"
 	},
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "eM" = (
 /obj/effect/decal/cleanable/dirt{
 	acid_damage = 1;
@@ -1079,7 +1105,7 @@
 	},
 /obj/effect/decal/cleanable/molten_item,
 /turf/open/gm/river,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "eN" = (
 /obj/effect/decal/cleanable/dirt{
 	acid_damage = 1;
@@ -1088,16 +1114,18 @@
 	name = "glowing goo"
 	},
 /turf/open/mars_cave{
-	icon_state = "mars_cave_5"
+	icon_state = "mars_cave_5";
+	tag = "icon-mars_cave_5"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "eO" = (
 /turf/closed/wall/mineral/uranium/leaking,
-/area/bigredv2/outside/engineering)
+/area/bigredv2/outside/building/engineering)
 "jr" = (
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_5"
+	icon_state = "mars_dirt_5";
+	tag = "icon-mars_dirt_5"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "kN" = (
@@ -1110,16 +1138,17 @@
 	name = "\improper Radiation Shielding"
 	},
 /turf/open/floor/plating,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "sU" = (
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_6"
+	icon_state = "mars_dirt_6";
+	tag = "icon-mars_dirt_6"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "vs" = (
 /turf/closed/wall/solaris/reinforced,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "vu" = (
 /obj/structure/machinery/power/apc/fully_broken{
 	dir = 4
@@ -1127,7 +1156,7 @@
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "yH" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -1135,7 +1164,7 @@
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "Ah" = (
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars,
@@ -1143,7 +1172,7 @@
 "Bo" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "CA" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/pipes/standard/simple/hidden/green{
@@ -1152,44 +1181,47 @@
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "IE" = (
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars_cave{
-	icon_state = "mars_cave_7"
+	icon_state = "mars_cave_7";
+	tag = "icon-mars_cave_7"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "KJ" = (
 /obj/structure/window_frame/solaris/reinforced,
 /turf/open/floor/plating,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "LE" = (
 /obj/effect/decal/cleanable/ash,
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "NX" = (
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars{
-	icon_state = "mars_dirt_11"
+	icon_state = "mars_dirt_11";
+	tag = "icon-mars_dirt_11"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "Ph" = (
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_4"
+	icon_state = "mars_dirt_4";
+	tag = "icon-mars_dirt_4"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "RN" = (
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 "Uo" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor,
-/area/bigredv2/outside/telecomm/engi)
+/area/bigredv2/outside/building/telecomm/engi)
 
 (1,1,1) = {"
 au

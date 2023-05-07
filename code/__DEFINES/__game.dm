@@ -30,23 +30,21 @@ block( \
 #define MAP_BIG_RED "Solaris Ridge"
 #define MAP_PRISON_STATION "Fiorina Cellblocks"
 #define MAP_PRISON_STATION_V3 "Fiorina Science Annex"
-#define MAP_WHISKEY_OUTPOST "Whiskey Outpost" // Unused
+#define MAP_WHISKEY_OUTPOST MODE_NAME_WISKEY_OUTPOST // Unused
 #define MAP_DESERT_DAM "Trijent Dam"  // Highpop only
 #define MAP_SOROKYNE_STRATA "Sorokyne Strata"
 #define MAP_CORSAT "CORSAT" // Highpop only
 #define MAP_KUTJEVO "Kutjevo Refinery"
 #define MAP_ICE_COLONY_V3 "Shivas Snowball" //Ice Rework, low pop enabled.
+#define MAP_SKY_SCRAPER "Sky Scraper"
 #define MAP_RUNTIME "USS Runtime"
 #define MAP_LV522_CHANCES_CLAIM "LV-522 Chance's Claim" // Highpop Only
 #define MAP_NEW_VARADERO "New Varadero"//ice colony underground but as its own map
+#define MAP_RAVENUE_5 "Ravenue 5"
 
-#define GAMEMODE_WHISKEY_OUTPOST "Whiskey Outpost"
-#define GAMEMODE_HIVE_WARS "Hive Wars"
+#define PLAYERCOUNT_LOWPOP_MAP_LIMIT 60 // number of players before we switch to lowpop maps only (LV, BR, Prison)
 
-/// Number of players before we switch to lowpop maps only (LV, BR, Prison).
-#define PLAYERCOUNT_LOWPOP_MAP_LIMIT 130
-/// Time before the round starts.
-#define PREROUND_TIME 360
+#define PREROUND_TIME 300 // time before the round starts
 
 //A set of constants used to determine which type of mute an admin wishes to apply:
 //Please read and understand the muting/automuting stuff before changing these. MUTE_IC_AUTO etc = (MUTE_IC << 1)
@@ -277,30 +275,11 @@ block( \
 #define CEILING_RESIN 4.4
 #define CEILING_MAX 4.5
 
-// Helpers
-/// Only use the CEILING_PROTECTION_TIER_X defines for `protection_level`
-#define CEILING_IS_PROTECTED(ceiling, protection_level) (ceiling >= protection_level)
-
-
 // Default font settings
 #define FONT_SIZE "5pt"
 #define DEFAULT_FONT_COLOR "#09f"
 #define FONT_STYLE "Arial Black"
 #define SCROLL_SPEED 2
-
-#define WEAPON_DELAY_NO_EFFECT 0
-#define WEAPON_DELAY_NO_FIRE 1
-#define WEAPON_DELAY_SCATTER 2
-#define WEAPON_DELAY_ACCURACY 4
-#define WEAPON_DELAY_SCATTER_AND_ACCURACY 6
-
-#define WEAPON_GUARANTEED_DELAY 0.1
-
-// Defines for M56D states
-#define M56D_DMG_NONE 0
-#define M56D_DMG_SLIGHT 1
-#define M56D_DMG_MODERATE 2
-#define M56D_DMG_HEAVY 3
 
 // Defines for barricade states
 #define BARRICADE_DMG_NONE 0
@@ -483,13 +462,6 @@ block( \
 #define MIDSHIP "Midship"
 #define AFTSHIP "Aftship"
 
-// Turf protection levels
-
-#define TURF_PROTECTION_NONE 0
-#define TURF_PROTECTION_MORTAR 1
-#define TURF_PROTECTION_CAS 2
-#define TURF_PROTECTION_OB 3
-
 // Anything above the deck boundary is the upper deck, anything below is the lower deck
 // This is exclusive, so anything ON the boundary is an edge case that's neither on the upper nor the lower deck
 #define ALMAYER_DECK_BOUNDARY 101
@@ -536,5 +508,5 @@ block( \
 #define PERF_TOGGLE_ATTACKLOGS (1<<2)
 /// Disables loading/ticking shuttle controllers
 #define PERF_TOGGLE_SHUTTLES (1<<3)
-/// Disables loading Techwebs and additional Z-Levels
-#define PERF_TOGGLE_TECHWEBS (1<<4)
+/// Disables loading Defcons
+#define PERF_TOGGLE_DEFCON (1<<4)

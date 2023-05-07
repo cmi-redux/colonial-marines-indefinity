@@ -95,9 +95,9 @@ Non-USCM items, from CLF, UPP, colonies, etc. Mostly combat-related.
 			new /obj/item/clothing/gloves/marine/veteran(src)
 			new /obj/item/storage/backpack/lightpack/five_slot(src)
 		if(4) //upp
-			new /obj/item/clothing/head/helmet/marine/veteran/UPP(src)
-			new /obj/item/clothing/under/marine/veteran/UPP(src)
-			new /obj/item/clothing/suit/storage/marine/faction/UPP(src)
+			new /obj/item/clothing/head/helmet/marine/veteran/upp(src)
+			new /obj/item/clothing/under/marine/veteran/upp(src)
+			new /obj/item/clothing/suit/storage/marine/faction/upp(src)
 			new /obj/item/clothing/shoes/marine/upp(src)
 			new /obj/item/clothing/gloves/marine/veteran(src)
 			new /obj/item/storage/backpack/lightpack/five_slot(src)
@@ -707,8 +707,7 @@ USCM spare items, miscellaneous gear that's too niche and distant (or restricted
 		/obj/item/weapon/melee/baton/cattleprod,
 		/obj/item/ammo_magazine/shotgun/beanbag,
 		/obj/item/storage/box/packet/m15/rubber,
-		/obj/item/storage/box/guncase/m79,
-		/obj/item/clothing/head/helmet/marine/MP,
+		/obj/item/clothing/head/helmet/marine/mp,
 		/obj/item/prop/helmetgarb/riot_shield,
 	)
 	dollar_cost = 55

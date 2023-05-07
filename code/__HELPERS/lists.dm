@@ -13,17 +13,17 @@
 //Returns a list in plain english as a string
 /proc/english_list(list/input, nothing_text = "nothing", and_text = " and ", comma_text = ", ", final_comma_text = "" )
 	var/total = input.len
-	if (!total)
+	if(!total)
 		return "[nothing_text]"
-	else if (total == 1)
+	else if(total == 1)
 		return "[input[1]]"
-	else if (total == 2)
+	else if(total == 2)
 		return "[input[1]][and_text][input[2]]"
 	else
 		var/output = ""
 		var/index = 1
 		while (index < total)
-			if (index == total - 1)
+			if(index == total - 1)
 				comma_text = final_comma_text
 
 			output += "[input[index]][comma_text]"
@@ -45,8 +45,8 @@
 /proc/is_type_in_list(atom/A, list/L)
 	for(var/type in L)
 		if(istype(A, type))
-			return 1
-	return 0
+			return TRUE
+	return FALSE
 
 //Removes any null entries from the list
 /proc/listclearnulls(list/list)
@@ -92,14 +92,14 @@
 	var/total = 0
 	var/item
 	for (item in L)
-		if (!L[item])
+		if(!L[item])
 			L[item] = 1
 		total += L[item]
 
 	total = rand(1, total)
 	for (item in L)
 		total -=L [item]
-		if (total <= 0)
+		if(total <= 0)
 			return item
 	return null
 
@@ -157,8 +157,10 @@
 		var/i
 		while(L_o.len)
 			i = pick(L_o)
-			if(!ref) L_n += i
-			else L_n[i] = L_o[i]
+			if(!ref)
+				L_n += i
+			else
+				L_n[i] = L_o[i]
 			L_o -= i
 
 //Return a list with no duplicate entries
@@ -198,7 +200,7 @@
 	if(isnull(L) || L.len < 2)
 		return L
 	var/startIndex = 1
-	var/list/atom/M = new/list()
+	var/list/atom/M = list()
 	for(var/atom/mob in L)
 		if(istype(mob))
 			M.Add(mob)

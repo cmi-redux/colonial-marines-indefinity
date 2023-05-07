@@ -1,7 +1,8 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "c" = (
 /obj/structure/bed/chair/comfy{
-	dir = 1
+	dir = 1;
+	tag = "icon-comfychair (NORTH)"
 	},
 /obj/effect/landmark/interior/spawn/entrance{
 	dir = 8;
@@ -10,6 +11,7 @@
 	pixel_x = -32;
 	tag = "back_right"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/vehicle{
 	icon_state = "floor_1_10"
 	},
@@ -19,22 +21,26 @@
 	icon_state = "background_1"
 	},
 /obj/effect/vehicle_roof/van,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/void/vehicle,
 /area/space)
 "f" = (
 /obj/structure/interior_wall/van{
 	icon_state = "front_2"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/void/vehicle,
 /area/space)
 "h" = (
 /obj/structure/bed/chair/comfy{
-	dir = 1
+	dir = 1;
+	tag = "icon-comfychair (NORTH)"
 	},
 /obj/effect/landmark/interior/spawn/interior_viewport/simple{
 	alpha = 100;
 	pixel_y = -2
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/vehicle{
 	icon_state = "floor_1_1"
 	},
@@ -43,6 +49,7 @@
 /obj/structure/interior_wall/van{
 	icon_state = "front_1"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/void/vehicle,
 /area/space)
 "j" = (
@@ -52,6 +59,7 @@
 /obj/effect/vehicle_roof/van{
 	icon_state = "roof_2"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/void/vehicle,
 /area/space)
 "n" = (
@@ -61,6 +69,7 @@
 	layer = 5.2;
 	pixel_y = 32
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/void/vehicle,
 /area/space)
 "o" = (
@@ -68,6 +77,7 @@
 /obj/effect/vehicle_roof/van{
 	icon_state = "roof_3"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/vehicle{
 	icon_state = "floor_1_8"
 	},
@@ -79,6 +89,7 @@
 /obj/effect/vehicle_roof/van{
 	icon_state = "roof_3"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/void/vehicle,
 /area/space)
 "s" = (
@@ -91,6 +102,7 @@
 	pixel_x = -32;
 	tag = "back_left"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/vehicle{
 	icon_state = "floor_1_7"
 	},
@@ -112,6 +124,7 @@
 /obj/effect/landmark/interior/spawn/interior_viewport/simple/windshield{
 	icon_state = "windshield_viewport_bottom"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/vehicle{
 	icon_state = "floor_3_11"
 	},
@@ -124,18 +137,21 @@
 	icon_state = "front_roof_1"
 	},
 /obj/effect/landmark/interior/spawn/interior_viewport/simple/windshield,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/void/vehicle,
 /area/space)
 "w" = (
 /obj/structure/interior_wall/van{
 	icon_state = "front_3"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/void/vehicle,
 /area/space)
 "x" = (
 /obj/structure/interior_wall/van{
 	icon_state = "back_2"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/void/vehicle,
 /area/space)
 "y" = (
@@ -149,6 +165,7 @@
 	dir = 4;
 	icon_state = "comfychair"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/vehicle{
 	icon_state = "floor_3_12"
 	},
@@ -157,12 +174,14 @@
 /obj/structure/interior_wall/van{
 	icon_state = "back_1"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/void/vehicle,
 /area/space)
 "E" = (
 /obj/structure/interior_wall/van{
 	icon_state = "back_3"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/void/vehicle,
 /area/space)
 "F" = (
@@ -172,12 +191,15 @@
 	layer = 5.2;
 	pixel_y = 32
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/void/vehicle,
 /area/space)
 "G" = (
 /obj/structure/bed/chair/comfy{
-	dir = 1
+	dir = 1;
+	tag = "icon-comfychair (NORTH)"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/vehicle{
 	icon_state = "floor_1_9"
 	},
@@ -189,6 +211,7 @@
 	layer = 5.2;
 	pixel_y = 32
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/void/vehicle,
 /area/space)
 "M" = (
@@ -199,11 +222,13 @@
 /obj/effect/vehicle_roof/van{
 	icon_state = "roof_2"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/vehicle{
 	icon_state = "floor_1_2"
 	},
 /area/vehicle/van)
 "O" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/void/vehicle,
 /area/space)
 "V" = (
@@ -213,6 +238,7 @@
 	layer = 5.2;
 	pixel_y = 32
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/void/vehicle,
 /area/space)
 

@@ -7,9 +7,10 @@
 	name = XENO_STRUCTURE_PYLON
 	desc = "A towering spike of resin. Its base pulsates with large tendrils."
 	icon_state = "pylon"
+
 	health = 1800
-	luminosity = 2
 	block_range = 0
+
 	var/cover_range = WEED_RANGE_PYLON
 	var/node_type = /obj/effect/alien/weeds/node/pylon
 	var/linked_turfs = list()
@@ -18,30 +19,36 @@
 	var/plasma_stored = 0
 	var/plasma_required_to_repair = 1000
 
-	var/protection_level = TURF_PROTECTION_CAS
+	var/protection_level = 10
 
 	plane = FLOOR_PLANE
+
+	light_on = TRUE
+	light_range = 3
+	light_power = 0.2
+	light_system = STATIC_LIGHT
+	light_color = COLOR_VIBRANT_LIME
 
 /obj/effect/alien/resin/special/pylon/Initialize(mapload, hive_ref)
 	. = ..()
 
 	place_node()
-	for(var/turf/A in range(round(cover_range*PYLON_COVERAGE_MULT), loc))
-		LAZYADD(A.linked_pylons, src)
-		linked_turfs += A
+	for(var/turf/turf in range(round(cover_range*COVERAGE_MULT), loc))
+		LAZYADD(turf.linked_pylons, src)
+		linked_turfs += turf
 
 /obj/effect/alien/resin/special/pylon/Destroy()
-	for(var/turf/A as anything in linked_turfs)
-		LAZYREMOVE(A.linked_pylons, src)
+	for(var/turf/turf as anything in linked_turfs)
+		LAZYREMOVE(turf.linked_pylons, src)
 
-	var/obj/effect/alien/weeds/node/pylon/W = locate() in loc
-	if(W)
-		qdel(W)
+	var/obj/effect/alien/weeds/node/pylon/pylon = locate() in loc
+	if(pylon)
+		qdel(pylon)
 	. = ..()
 
-/obj/effect/alien/resin/special/pylon/attack_alien(mob/living/carbon/xenomorph/M)
-	if(isxeno_builder(M) && M.a_intent == INTENT_HELP && M.hivenumber == linked_hive.hivenumber)
-		do_repair(M) //This handles the delay itself.
+/obj/effect/alien/resin/special/pylon/attack_alien(mob/living/carbon/xenomorph/xeno)
+	if(isxeno_builder(xeno) && xeno.a_intent == INTENT_HELP && xeno.faction == faction)
+		do_repair(xeno) //This handles the delay itself.
 		return XENO_NO_DELAY_ACTION
 	else
 		return ..()
@@ -73,30 +80,49 @@
 	plasma_stored = 0
 	health = initial(health)
 
-	var/obj/effect/alien/weeds/node/pylon/N = locate() in loc
-	if(!N)
+	var/obj/effect/alien/weeds/node/pylon/pylon = locate() in loc
+	if(!pylon)
 		return
-	for(var/obj/effect/alien/weeds/W in N.children)
-		if(get_dist(N, W) >= N.node_range)
+	for(var/obj/effect/alien/weeds/weeds in pylon.children)
+		if(get_dist(pylon, weeds) >= pylon.node_range)
 			continue
-		if(istype(W, /obj/effect/alien/weeds/weedwall))
+		if(istype(weeds, /obj/effect/alien/weeds/weedwall))
 			continue
-		addtimer(CALLBACK(W, TYPE_PROC_REF(/obj/effect/alien/weeds, weed_expand), N), PYLON_WEEDS_REGROWTH_TIME, TIMER_UNIQUE)
+		addtimer(CALLBACK(weeds, TYPE_PROC_REF(/obj/effect/alien/weeds, weed_expand), pylon), PYLON_WEEDS_REGROWTH_TIME, TIMER_UNIQUE)
 
 	to_chat(xeno, SPAN_XENONOTICE("You have successfully repaired \the [name]."))
 	playsound(loc, "alien_resin_build", 25)
 
 /obj/effect/alien/resin/special/pylon/proc/place_node()
-	var/obj/effect/alien/weeds/node/pylon/W = new node_type(loc, null, null, linked_hive)
-	W.resin_parent = src
+	var/obj/effect/alien/weeds/node/pylon/pylon = new node_type(loc, null, null, faction)
+	pylon.resin_parent = src
+
+/obj/effect/alien/resin/special/pylon/cluster
+	name = XENO_STRUCTURE_CLUSTER
+	desc = "A large clump of gooey mass. It rhythmically pulses, as if its pumping something into the weeds below..."
+	icon = 'icons/mob/xenos/structures48x48.dmi'
+	icon_state = "hive_cluster_idle"
+
+	pixel_x = -8
+	pixel_y = -8
+
+	health = 1200
+	block_range = 0
+
+	node_type = /obj/effect/alien/weeds/node/pylon/cluster
+
+	damaged = FALSE
+	plasma_stored = 0
+	plasma_required_to_repair = 300
+
+	protection_level = 5
 
 //Hive Core - Generates strong weeds, supports other buildings
 /obj/effect/alien/resin/special/pylon/core
 	name = XENO_STRUCTURE_CORE
 	desc = "A giant pulsating mound of mass. It looks very much alive."
 	icon_state = "core"
-	health = 1200
-	luminosity = 4
+	health = 2000
 	cover_range = WEED_RANGE_CORE
 	node_type = /obj/effect/alien/weeds/node/pylon/core
 	var/hardcore = FALSE
@@ -112,35 +138,35 @@
 	var/spawn_cooldown = 30 SECONDS
 	var/surge_cooldown = 90 SECONDS
 	var/surge_incremental_reduction = 3 SECONDS
+	var/crash_mode = FALSE
 
-	protection_level = TURF_PROTECTION_OB
+	protection_level = 20
 
+	light_on = TRUE
+	light_range = 4
+	light_power = 0.3
+	light_system = STATIC_LIGHT
+	light_color = COLOR_PURPLE_GRAY
 
-/obj/effect/alien/resin/special/pylon/core/Initialize(mapload, datum/hive_status/hive_ref)
+/obj/effect/alien/resin/special/pylon/core/Initialize(mapload, datum/faction/faction_to_set)
 	. = ..()
 
-	// Pick the closest xeno resource activator
+	if(faction_to_set)
+		faction = faction_to_set
+		faction_to_set.set_faction_location(src)
 
-	update_minimap_icon()
-
-	if(hive_ref)
-		hive_ref.set_hive_location(src, linked_hive.hivenumber)
-
-/obj/effect/alien/resin/special/pylon/core/proc/update_minimap_icon()
-	SSminimaps.remove_marker(src)
-	SSminimaps.add_marker(src, z, MINIMAP_FLAG_XENO, "core[health < (initial(health) * 0.5) ? "_warn" : "_passive"]")
+	faction.hive_location = src
+	SSmapview.add_marker(src, "hive_core")
 
 /obj/effect/alien/resin/special/pylon/core/process()
-	update_minimap_icon()
-
 	// Handle spawning larva if core is connected to a hive
-	if(linked_hive)
-		for(var/mob/living/carbon/xenomorph/larva/L in range(2, src))
-			if(!L.ckey && L.burrowable && !QDELETED(L))
-				visible_message(SPAN_XENODANGER("[L] quickly burrows into \the [src]."))
-				linked_hive.stored_larva++
-				linked_hive.hive_ui.update_burrowed_larva()
-				qdel(L)
+	if(faction)
+		for(var/mob/living/carbon/xenomorph/larva/larva in range(2, src))
+			if(!larva.ckey && larva.burrowable && !QDELETED(larva))
+				visible_message(SPAN_XENODANGER("[larva] quickly burrows into \the [src]."))
+				faction.stored_larva++
+				faction.faction_ui.update_burrowed_larva()
+				qdel(larva)
 
 		if((last_larva_time + spawn_cooldown) < world.time && can_spawn_larva()) // every minute
 			last_larva_time = world.time
@@ -148,9 +174,10 @@
 			if(players_with_xeno_pref && players_with_xeno_pref.len && can_spawn_larva())
 				spawn_burrowed_larva(pick(players_with_xeno_pref))
 
-		if(linked_hive.hijack_burrowed_surge && (last_surge_time + surge_cooldown) < world.time)
+		if((faction.hijack_burrowed_surge || crash_mode) && (last_surge_time + surge_cooldown) < world.time)
 			last_surge_time = world.time
-			linked_hive.stored_larva++
+			faction.stored_larva++
+			faction.faction_ui.update_burrowed_larva()
 			announce_dchat("The hive has gained another burrowed larva! Use the Join As Xeno verb to take it.", src)
 			if(surge_cooldown > 30 SECONDS) //mostly for sanity purposes
 				surge_cooldown = surge_cooldown - surge_incremental_reduction //ramps up over time
@@ -161,14 +188,14 @@
 		last_healed = world.time + heal_interval
 
 /obj/effect/alien/resin/special/pylon/core/proc/can_spawn_larva()
-	if(linked_hive.hardcore)
+	if(faction.hardcore)
 		return FALSE
 
-	return linked_hive.stored_larva
+	return faction.stored_larva
 
 /obj/effect/alien/resin/special/pylon/core/proc/spawn_burrowed_larva(mob/xeno_candidate)
 	if(can_spawn_larva() && xeno_candidate)
-		var/mob/living/carbon/xenomorph/larva/new_xeno = spawn_hivenumber_larva(loc, linked_hive.hivenumber)
+		var/mob/living/carbon/xenomorph/larva/new_xeno = spawn_faction_larva(loc, faction)
 		if(isnull(new_xeno))
 			return FALSE
 
@@ -176,7 +203,7 @@
 		SPAN_XENODANGER("You emerge from [src] and awaken from your slumber. For the Hive!"))
 		msg_admin_niche("[key_name(new_xeno)] emerged from \a [src]. (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>)")
 		playsound(new_xeno, 'sound/effects/xeno_newlarva.ogg', 50, 1)
-		if(!SSticker.mode.transfer_xeno(xeno_candidate, new_xeno))
+		if(!SSticker.mode.transfer_xenomorph(xeno_candidate, new_xeno))
 			qdel(new_xeno)
 			return FALSE
 		to_chat(new_xeno, SPAN_XENOANNOUNCE("You are a xenomorph larva awakened from slumber!"))
@@ -185,8 +212,8 @@
 			if(new_xeno.client?.prefs.toggles_flashing & FLASH_POOLSPAWN)
 				window_flash(new_xeno.client)
 
-		linked_hive.stored_larva--
-		linked_hive.hive_ui.update_burrowed_larva()
+		faction.stored_larva--
+		faction.faction_ui.update_burrowed_larva()
 
 		return TRUE
 	return FALSE
@@ -204,7 +231,7 @@
 	if(carbon_mob.buckled)
 		to_chat(user, SPAN_XENOWARNING("Unbuckle first!"))
 		return
-	if(!linked_hive || carbon_mob.stat != DEAD)
+	if(!faction || carbon_mob.stat != DEAD)
 		return
 
 	if(SSticker.mode && !(SSticker.mode.flags_round_type & MODE_XVX))
@@ -215,7 +242,7 @@
 
 	// Makes attacking hives very profitable if they can successfully wipe them out without suffering any significant losses
 	var/mob/living/carbon/xenomorph/xeno = carbon_mob
-	if(xeno.hivenumber != linked_hive.hivenumber)
+	if(xeno.faction != faction)
 		if(isqueen(xeno))
 			larva_amount = 5
 		else
@@ -230,82 +257,69 @@
 	playsound(src, "alien_resin_build", 25, 1)
 	qdel(xeno)
 
-	linked_hive.stored_larva += larva_amount
-	linked_hive.hive_ui.update_burrowed_larva()
+	faction.stored_larva += larva_amount
+	faction.faction_ui.update_burrowed_larva()
 
-/obj/effect/alien/resin/special/pylon/core/attack_alien(mob/living/carbon/xenomorph/M)
-	if(M.a_intent != INTENT_HELP && M.can_destroy_special() && M.hivenumber == linked_hive.hivenumber)
+/obj/effect/alien/resin/special/pylon/core/attack_alien(mob/living/carbon/xenomorph/xeno)
+	if(xeno.a_intent != INTENT_HELP && xeno.can_destroy_special() && xeno.faction == faction)
 		if(!hardcore && last_attempt + 6 SECONDS > world.time)
-			to_chat(M,SPAN_WARNING("You have attempted to destroy \the [src] too recently! Wait a bit!")) // no spammy
-			return XENO_NO_DELAY_ACTION
+			to_chat(xeno,SPAN_WARNING("You have attempted to destroy \the [src] too recently! Wait a bit!")) // no spammy
+		else
+			if((alert(xeno, xeno.client.auto_lang(LANGUAGE_HIVE_CORE_COLDOWN), xeno.client.auto_lang(LANGUAGE_CONFIRM), xeno.client.auto_lang(LANGUAGE_YES), xeno.client.auto_lang(LANGUAGE_NO)) != xeno.client.auto_lang(LANGUAGE_YES)))
+				INVOKE_ASYNC(src, PROC_REF(startDestroying), xeno)
+		return XENO_NO_DELAY_ACTION
 
-		else if(warn && world.time > XENOMORPH_PRE_SETUP_CUTOFF)
-			if((alert(M, "Are you sure that you want to destroy the hive core? (There will be a 5 minute cooldown before you can build another one.)", , "Yes", "No") != "Yes"))
-				return XENO_NO_DELAY_ACTION
-
-			INVOKE_ASYNC(src, PROC_REF(startDestroying),M)
-			return XENO_NO_DELAY_ACTION
-
-		else if(world.time < XENOMORPH_PRE_SETUP_CUTOFF)
-			if((alert(M, "Are you sure that you want to remove the hive core? No cooldown will be applied.", , "Yes", "No") != "Yes"))
-				return XENO_NO_DELAY_ACTION
-
-			INVOKE_ASYNC(src, PROC_REF(startDestroying),M)
-			return XENO_NO_DELAY_ACTION
-
-	if(linked_hive)
+	if(faction)
 		var/current_health = health
-		if(hardcore && HIVE_ALLIED_TO_HIVE(M.hivenumber, linked_hive.hivenumber))
+		if(hardcore && (xeno.faction == faction || xeno.faction.faction_is_ally(faction)))
 			return XENO_NO_DELAY_ACTION
 		. = ..()
-
 		if(hardcore && last_attacked_message < world.time && current_health > health)
-			xeno_message(SPAN_XENOANNOUNCE("The hive core is under attack!"), 2, linked_hive.hivenumber)
+			xeno_message(SPAN_XENOANNOUNCE(xeno.client.auto_lang(LANGUAGE_HIVE_CORE_UNDER_ATTACK)), 2, faction)
 			last_attacked_message = world.time + next_attacked_message
 	else
 		. = ..()
 
 /obj/effect/alien/resin/special/pylon/core/Destroy()
-	if(linked_hive)
+	if(faction)
 		visible_message(SPAN_XENOHIGHDANGER("The resin roof withers away as \the [src] dies!"), max_distance = WEED_RANGE_CORE)
-		linked_hive.hive_location = null
+		faction.faction_location = null
 		if(world.time < XENOMORPH_PRE_SETUP_CUTOFF && !hardcore)
 			. = ..()
 			return
-		linked_hive.hivecore_cooldown = TRUE
-		INVOKE_ASYNC(src, PROC_REF(cooldownFinish),linked_hive) // start cooldown
+		faction.hivecore_cooldown = TRUE
+		INVOKE_ASYNC(src, PROC_REF(cooldownFinish), faction) // start cooldown
 		if(hardcore)
-			xeno_message(SPAN_XENOANNOUNCE("You can no longer gain new sisters or another Queen. Additionally, you are unable to heal if your Queen is dead"), 2, linked_hive.hivenumber)
-			linked_hive.hardcore = TRUE
-			linked_hive.allow_queen_evolve = FALSE
-			linked_hive.hive_structures_limit[XENO_STRUCTURE_CORE] = 0
-			linked_hive.hive_structures_limit[XENO_STRUCTURE_POOL] = 0
-			xeno_announcement("\The [linked_hive.name] has lost their hive core!", "everything", HIGHER_FORCE_ANNOUNCE)
+			xeno_message(SPAN_XENOANNOUNCE("You can no longer gain new sisters or another Queen. Additionally, you are unable to heal if your Queen is dead"), 2, faction)
+			faction.hardcore = TRUE
+			faction.allow_queen_evolve = FALSE
+			faction.faction_structures_limit[XENO_STRUCTURE_CORE] = 0
+			faction.faction_structures_limit[XENO_STRUCTURE_POOL] = 0
+			xeno_announcement("\The [faction.name] has lost their hive core!", "everything", HIGHER_FORCE_ANNOUNCE)
 
-		if(linked_hive.hijack_burrowed_surge)
+		if(faction.hijack_burrowed_surge)
 			visible_message(SPAN_XENODANGER("You hear something resembling a scream from [src] as it's destroyed!"))
-			xeno_message(SPAN_XENOANNOUNCE("Psychic pain storms throughout the hive as [src] is destroyed! You will no longer gain burrowed larva over time."), 3, linked_hive.hivenumber)
-			linked_hive.hijack_burrowed_surge = FALSE
+			xeno_message(SPAN_XENOANNOUNCE("Psychic pain storms throughout the hive as [src] is destroyed! You will no longer gain burrowed larva over time."), 3, faction)
+			faction.hijack_burrowed_surge = FALSE
 
-	SSminimaps.remove_marker(src)
 	. = ..()
 
-/obj/effect/alien/resin/special/pylon/core/proc/startDestroying(mob/living/carbon/xenomorph/M)
-	xeno_message(SPAN_XENOANNOUNCE("[M] is destroying \the [src]!"), 3, linked_hive.hivenumber)
-	visible_message(SPAN_DANGER("[M] starts destroying \the [src]!"))
+/obj/effect/alien/resin/special/pylon/core/proc/startDestroying(mob/living/carbon/xenomorph/xeno)
+	xeno_message(SPAN_XENOANNOUNCE("[xeno] is destroying \the [src]!"), 3, faction)
+	visible_message(SPAN_DANGER("[xeno] starts destroying \the [src]!"))
 	last_attempt = world.time //spamcheck
-	if(!do_after(M, 5 SECONDS , INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_HOSTILE))
-		to_chat(M,SPAN_WARNING("You stop destroying \the [src]."))
-		visible_message(SPAN_WARNING("[M] stops destroying \the [src]."))
+	if(!do_after(xeno, 5 SECONDS , INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_HOSTILE))
+		to_chat(xeno,SPAN_WARNING("You stop destroying \the [src]."))
+		visible_message(SPAN_WARNING("[xeno] stops destroying \the [src]."))
 		last_attempt = world.time // update the spam check
 		return XENO_NO_DELAY_ACTION
 	qdel(src)
 
-/obj/effect/alien/resin/special/pylon/core/proc/cooldownFinish(datum/hive_status/linked_hive)
+/obj/effect/alien/resin/special/pylon/core/proc/cooldownFinish(datum/faction/faction)
 	sleep(HIVECORE_COOLDOWN)
-	if(linked_hive.hivecore_cooldown) // check if its true so we don't double set it.
-		linked_hive.hivecore_cooldown = FALSE
-		xeno_message(SPAN_XENOANNOUNCE("The weeds have recovered! A new hive core can be built!"), 3, linked_hive.hivenumber)
+	if(faction.hivecore_cooldown) // check if its true so we don't double set it.
+		faction.hivecore_cooldown = FALSE
+		xeno_message(SPAN_XENOANNOUNCE("The weeds have recovered! A new hive core can be built!"), 3, faction)
 	else
 		log_admin("Hivecore cooldown reset proc aborted due to hivecore cooldown var being set to false before the cooldown has finished!")
 		// Tell admins that this condition is reached so they know what has happened if it fails somehow

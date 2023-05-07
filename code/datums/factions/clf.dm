@@ -1,6 +1,8 @@
 /datum/faction/clf
-	name = "Colonial Liberation Front"
-	faction_tag = FACTION_CLF
+	name = NAME_FACTION_CLF
+	faction_name = FACTION_CLF
+	faction_tag = SIDE_FACTION_CLF
+	relations_pregen = RELATIONS_FACTION_CLF
 
 /datum/faction/clf/modify_hud_holder(image/holder, mob/living/carbon/human/human)
 	var/hud_icon_state

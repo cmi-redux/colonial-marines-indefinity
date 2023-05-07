@@ -23,8 +23,8 @@
 	user.update_inv_shoes() //so our mob-overlays update
 
 	for(var/X in actions)
-		var/datum/action/A = X
-		A.update_button_icon()
+		var/datum/action/action = X
+		action.update_button_icon()
 
 
 /obj/item/clothing/shoes/magboots/get_examine_text(mob/user)

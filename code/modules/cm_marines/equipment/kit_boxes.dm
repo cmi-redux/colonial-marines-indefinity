@@ -12,9 +12,9 @@
 	foldable = null
 
 /obj/item/storage/box/spec/update_icon()
-	if(LAZYLEN(overlays))
+	if(length(overlays))
 		overlays.Cut()
-	if(LAZYLEN(contents))
+	if(length(contents))
 		icon_state = "kit_case"
 		overlays += image(icon, kit_overlay)
 	else
@@ -159,11 +159,11 @@
 	desc = "A paper box. Open it and get a specialist kit."
 	icon = 'icons/obj/items/storage.dmi'
 	icon_state = "spec_kit"
-	var/list/allowed_roles_list = list(JOB_SQUAD_SPECIALIST, JOB_WO_SQUAD_SPECIALIST, JOB_WO_CREWMAN)
+	var/list/allowed_roles_list = JOB_SQUAD_NORMAL_LIST
 
 //this one is delivered via ASRS as a reward for DEFCON/techwebs/whatever else we will have
 /obj/item/spec_kit/asrs
-	allowed_roles_list = list(JOB_SQUAD_MARINE, JOB_WO_SQUAD_MARINE)
+	allowed_roles_list = JOB_SQUAD_NORMAL_LIST
 
 /obj/item/spec_kit/get_examine_text(mob/user)
 	. = ..()
@@ -291,47 +291,41 @@
 	new /obj/item/ammo_magazine/shotgun/flechette(src)
 	new /obj/item/storage/belt/shotgun(src)
 
-/obj/item/storage/box/kit/r4t_scout
-	name = "\improper R4T Environment Scouting Kit"
-
-/obj/item/storage/box/kit/r4t_scout/New()
-	..()
-	pro_case_overlay = "r4t"
-
-/obj/item/storage/box/kit/r4t_scout/fill_preset_inventory()
-	new /obj/item/weapon/gun/lever_action/r4t(src)
-	new /obj/item/attachable/stock/r4t(src)
-	new /obj/item/attachable/magnetic_harness/lever_sling(src)
-	new /obj/item/ammo_magazine/lever_action(src)
-	new /obj/item/ammo_magazine/lever_action(src)
-	new /obj/item/storage/belt/shotgun/lever_action(src)
-	new /obj/item/storage/belt/gun/m44/lever_action/attach_holster(src)
-	new /obj/item/ammo_magazine/lever_action/training(src)
-
-/obj/item/storage/box/kit/machinegunner
-	name = "\improper M2C Heavy Gunner Kit"
-	pro_case_overlay = "hmg"
-
-/obj/item/storage/box/kit/machinegunner/fill_preset_inventory()
-	new /obj/item/storage/box/m56d/m2c(src)
-	new /obj/item/storage/belt/marine/m2c(src)
-	new /obj/item/clothing/head/helmet/marine/tech(src)
-	new /obj/item/storage/pouch/tools/tank(src)
-	new /obj/item/explosive/plastic(src)
-	new /obj/item/explosive/plastic(src)
-	new /obj/item/pamphlet/skill/machinegunner(src)
-
-/obj/item/storage/box/kit/defensegunner
+/obj/item/storage/box/kit/mounted
 	name = "\improper M56D Defense Gunner Kit"
 	icon_state = "pro_case_large"
 	pro_case_overlay = "m56d"
 
-/obj/item/storage/box/kit/defensegunner/fill_preset_inventory()
+/obj/item/storage/box/kit/mounted/fill_preset_inventory()
 	new /obj/item/storage/box/m56d_hmg(src)
-	new /obj/item/storage/belt/marine/m2c(src)
+	new /obj/item/storage/belt/marine/mounted(src)
 	new /obj/item/clothing/head/helmet/marine/tech(src)
 	new /obj/item/explosive/mine(src)
 	new /obj/item/explosive/mine(src)
+	new /obj/item/pamphlet/skill/machinegunner(src)
+
+/obj/item/storage/box/kit/mounted/rct
+	name = "\improper RCT Rocket Coustic Toushala Kit"
+
+/obj/item/storage/box/kit/mounted/rct/fill_preset_inventory()
+	new /obj/item/storage/box/rct(src)
+	new /obj/item/clothing/head/helmet/marine/tech(src)
+	new /obj/item/storage/pouch/tools/tank(src)
+	new /obj/item/storage/belt/marine/mounted(src)
+	new /obj/item/explosive/plastic(src)
+	new /obj/item/explosive/plastic(src)
+	new /obj/item/pamphlet/skill/machinegunner(src)
+
+/obj/item/storage/box/kit/mounted/sgl2
+	name = "\improper SGL2 Heavy Grenadier Gunner Kit"
+
+/obj/item/storage/box/kit/mounted/sgl2/fill_preset_inventory()
+	new /obj/item/storage/box/sgl2(src)
+	new /obj/item/clothing/head/helmet/marine/tech(src)
+	new /obj/item/storage/pouch/tools/tank(src)
+	new /obj/item/storage/belt/marine/mounted(src)
+	new /obj/item/explosive/plastic(src)
+	new /obj/item/explosive/plastic(src)
 	new /obj/item/pamphlet/skill/machinegunner(src)
 
 
@@ -402,6 +396,8 @@
 	new /obj/item/explosive/mine(src)
 	new /obj/item/explosive/plastic(src)
 	new /obj/item/explosive/plastic(src)
+	new /obj/item/weapon/gun/mounted/m56d_gun(src)
+	new /obj/item/device/mounted_defence/tripod_frame(src)
 
 
 /obj/item/storage/box/kit/mini_medic
@@ -471,7 +467,7 @@
 	storage_slots = 2
 
 /obj/item/storage/box/kit/cryo_self_defense/update_icon()
-	if(LAZYLEN(contents))
+	if(length(contents))
 		icon_state = initial(icon_state)
 	else
 		icon_state = "[initial(icon_state)]_e"

@@ -35,7 +35,9 @@
 	non_null_damage_mult = 2
 	armor_full_deflection_mult = 2
 	//Marine unga armor is made of pure unganite. Unbreakable completely
-	armor_ignore_integrity = 1
+	armor_ignore_integrity = 0
+	//Marine has higher randomness of armor
+	armor_random_range = 20
 
 //Marine Ranged (basically "hello HvH")
 /datum/combat_configuration/marine/ranged
@@ -89,10 +91,12 @@
 	armor_minimal_efficiency = 0.05
 	armor_effective_health = 0.1
 	armor_steps = 5
-	non_null_damage_mult = 4
+	non_null_damage_mult = 1.5
 	armor_full_deflection_mult = 2
-	armor_integrity_damage_mult = 4
-	armor_ignore_integrity = TRUE
+	armor_integrity_damage_mult = 2
+	//Xeno has low randomness of armor
+	armor_random_range = 10
+	armor_ignore_integrity = FALSE
 
 /datum/combat_configuration/xeno/ranged
 
@@ -104,11 +108,11 @@
 /datum/combat_configuration/xeno/explosive
 	armor_steps = 10
 	armor_minimal_efficiency = 0
-	damage_initial_multiplier = 2
-	armor_integrity_damage_mult = 4
+	damage_initial_multiplier = 1.5
+	armor_integrity_damage_mult = 2
 
 /datum/combat_configuration/xeno/explosive/small
-	armor_ignore_integrity = 1
+	armor_ignore_integrity = 0
 
 /datum/combat_configuration/xeno/fire
 	armor_minimal_efficiency = 1

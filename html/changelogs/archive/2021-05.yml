@@ -326,7 +326,7 @@
   Vanagandr:
   - tweak: Being shot while wearing a ceramic plate now has the impact flash effect.
   - bugfix: The nailgun can now PB-staple mobs to surfaces or inflict superslow at
-      angles other than the cardinal, and detects those surfaces much more consistently.
+      angles other than the  GLOB.cardinals, and detects those surfaces much more consistently.
       Anything bigger than a T1 was and is exempt.
   - tweak: Modified PB backend a bit for efficiency, shouldn't have any visible effect.
       Any issues would probably be with the under-extinguisher failing to fire, but

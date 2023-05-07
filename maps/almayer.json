@@ -2,7 +2,16 @@
     "map_name": "USS Almayer",
     "map_path": "map_files/USS_Almayer",
     "map_file": "USS_Almayer.dmm",
-    "webmap_url": "Almayer",
-    "traits": [{"Marine Main Ship": true}],
+    "traits": [
+        {
+            "Marine Main Ship": true,
+            "Up": 1
+        },
+        {
+            "Marine Main Ship": true,
+            "Down": -1,
+            "Baseturf": "/turf/open/openspace"
+        }
+   ],
     "nightmare_path": "maps/Nightmare/maps/USS_Almayer/"
 }

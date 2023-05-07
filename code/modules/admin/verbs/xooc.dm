@@ -11,12 +11,14 @@
 	if(!msg)
 		return
 
+	msg = emoji_parse(src, msg)
+
 	log_admin("XOOC: [key_name(src)] : [msg]")
 
 	msg = process_chat_markup(msg, list("*"))
 
 	for(var/mob/living/carbon/M in GLOB.alive_mob_list)
-		if(M.client && M.hivenumber && (!M.client.admin_holder || !(M.client.admin_holder.rights & R_MOD))) // Send to xenos who are non-staff
+		if(M?.faction.faction_tag == SIDE_FACTION_XENOMORPH && (!M.client.admin_holder || !(M.client.admin_holder.rights & R_MOD)))
 			to_chat(M, SPAN_XOOC("XOOC: [src.key]([src.admin_holder.rank]): [msg]"))
 
 	for(var/mob/dead/observer/M in GLOB.observer_list)

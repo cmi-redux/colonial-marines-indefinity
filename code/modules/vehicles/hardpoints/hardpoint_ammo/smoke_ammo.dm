@@ -4,9 +4,9 @@
 	caliber = "grenade"
 	icon_state = "slauncher_1"
 	w_class = SIZE_LARGE
-	default_ammo = /datum/ammo/grenade_container/smoke
+	ammo_preset = list(/datum/ammo/grenade_container/smoke)
 	max_rounds = 10
 	gun_type = /obj/item/hardpoint/holder/tank_turret
 
 /obj/item/ammo_magazine/hardpoint/turret_smoke/update_icon()
-	icon_state = "slauncher_[current_rounds <= 0 ? "0" : "1"]"
+	icon_state = "slauncher_[ammo_position <= 0 ? "0" : "1"]"

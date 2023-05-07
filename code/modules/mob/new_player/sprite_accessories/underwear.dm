@@ -33,13 +33,13 @@ GLOBAL_LIST_INIT_TYPED(underwear_f, /datum/sprite_accessory/underwear, setup_und
 	var/selected_icon_state = icon_state
 	if(camo_conforming)
 		switch(SSmapping.configs[GROUND_MAP].map_name) // maploader TODO: json
-			if(MAP_PRISON_STATION, MAP_PRISON_STATION_V3, MAP_LV522_CHANCES_CLAIM)
+			if(MAP_PRISON_STATION, MAP_PRISON_STATION_V3, MAP_SKY_SCRAPER, MAP_LV522_CHANCES_CLAIM)
 				selected_icon_state = "c_" + selected_icon_state
 			if(MAP_LV_624, MAP_RUNTIME, MAP_NEW_VARADERO)
 				selected_icon_state = "j_" + selected_icon_state
 			if(MAP_WHISKEY_OUTPOST, MAP_DESERT_DAM, MAP_BIG_RED, MAP_KUTJEVO)
 				selected_icon_state = "d_" + selected_icon_state
-			if(MAP_CORSAT, MAP_SOROKYNE_STRATA, MAP_ICE_COLONY, MAP_ICE_COLONY_V3)
+			if(MAP_CORSAT, MAP_SOROKYNE_STRATA, MAP_ICE_COLONY, MAP_ICE_COLONY_V3, MAP_RAVENUE_5)
 				selected_icon_state = "s_" + selected_icon_state
 	if(gender == PLURAL)
 		selected_icon_state += mob_gender == MALE ? "_m" : "_f"

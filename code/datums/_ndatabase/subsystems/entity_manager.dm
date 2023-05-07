@@ -35,8 +35,6 @@ var/datum/controller/subsystem/entity_manager/SSentity_manager
 
 	var/list/datum/entity_meta/currentrun
 
-	var/ready = FALSE
-
 /datum/controller/subsystem/entity_manager/New()
 	tables = list()
 	tables_unsorted = list()
@@ -65,7 +63,7 @@ var/datum/controller/subsystem/entity_manager/SSentity_manager
 	NEW_SS_GLOBAL(SSentity_manager)
 
 /datum/controller/subsystem/entity_manager/Initialize()
-	set waitfor=0
+	set waitfor = FALSE
 	UNTIL(SSdatabase.connection.connection_ready())
 	adapter = SSdatabase.connection.get_adapter()
 	prepare_tables()
@@ -79,7 +77,7 @@ var/datum/controller/subsystem/entity_manager/SSentity_manager
 			view.root_entity_meta = tables[view.root_record_type]
 			adapter.prepare_view(view)
 
-	ready = TRUE
+	initialized = TRUE
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/entity_manager/proc/prepare_tables()
@@ -95,7 +93,7 @@ var/datum/controller/subsystem/entity_manager/SSentity_manager
 
 
 /datum/controller/subsystem/entity_manager/fire(resumed = FALSE)
-	if (!resumed)
+	if(!resumed)
 		currentrun = tables_unsorted.Copy()
 	if(!SSdatabase.connection.connection_ready())
 		return
@@ -106,7 +104,7 @@ var/datum/controller/subsystem/entity_manager/SSentity_manager
 		do_update(Q)
 		do_delete(Q)
 		currentrun.len--
-		if (MC_TICK_CHECK)
+		if(MC_TICK_CHECK)
 			return
 
 

@@ -1,10 +1,14 @@
 /mob
 	density = TRUE
+	vis_flags = VIS_INHERIT_PLANE|VIS_INHERIT_LAYER
+	plane = GAME_PLANE
 	layer = MOB_LAYER
 	animate_movement = 2
 	rebounds = TRUE
+	animate_movement = SLIDE_STEPS
 	var/mob_flags = NO_FLAGS
 	var/datum/mind/mind
+	var/start_time_que = 0
 
 	var/icon_size = 32
 
@@ -31,6 +35,8 @@
 	var/list/observers //The list of people observing this mob.
 	var/zone_selected = "chest"
 
+	var/is_ventcrawling = 0
+
 	var/use_me = 1 //Allows all mobs to use the me verb by default, will have to manually specify they cannot
 	var/damageoverlaytemp = 0
 	var/computer_id = null //to track the players
@@ -38,7 +44,6 @@
 	var/atom/movable/interactee //the thing that the mob is currently interacting with (e.g. a computer, another mob (stripping a mob), manning a hmg)
 	var/sdisabilities = 0 //Carbon
 	var/disabilities = 0 //Carbon
-	var/atom/movable/pulling = null
 	var/next_move = null
 	var/next_move_slowdown = 0 // Amount added during the next movement_delay(), then is reset.
 	var/speed = 0 //Speed that modifies the movement delay of a given mob
@@ -96,8 +101,9 @@
 
 	var/gibbing = FALSE
 	var/lying = FALSE
-	var/lying_prev = 0
-	var/canmove = 1
+	var/lying_prev = FALSE
+	var/canmove = TRUE
+	var/can_action = TRUE
 	var/lastpuke = 0
 	unacidable = FALSE
 	var/mob_size = MOB_SIZE_HUMAN
@@ -168,8 +174,6 @@
 
 	var/job = null // Internal job title used when mob is spawned. Preds are "Predator", Xenos are "Xenomorph", Marines have their actual job title
 	var/comm_title = ""
-	var/faction = FACTION_NEUTRAL
-	var/faction_group
 
 	var/looc_overhead = FALSE
 
@@ -179,7 +183,7 @@
 
 	var/list/viruses = list() //List of active diseases
 
-//Monkey/infected mode
+	///Monkey/infected mode
 	var/list/resistances = list()
 
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
@@ -189,7 +193,7 @@
 	var/area/lastarea = null
 	var/obj/control_object //Used by admins to possess objects. All mobs should have this var
 
-	//Whether or not mobs can understand other mobtypes. These stay in /mob so that ghosts can hear everything.
+	///Whether or not mobs can understand other mobtypes. These stay in /mob so that ghosts can hear everything.
 	var/universal_speak = 0 // Set to 1 to enable the mob to speak to everyone -- TLE
 	var/universal_understand = 0 // Set to 1 to enable the mob to understand everyone, not necessarily speak
 
@@ -228,7 +232,7 @@
 	var/list/datum/action/actions = list()
 
 	can_block_movement = TRUE
-
+	faction_to_get = FACTION_NEUTRAL
 	appearance_flags = TILE_BOUND
 	var/mouse_icon = null
 
@@ -256,6 +260,8 @@
 
 	/// Used for tracking last uses of emotes for cooldown purposes
 	var/list/emotes_used
+
+	var/balance_formulas = list()
 
 	///the icon currently used for the typing indicator's bubble
 	var/mutable_appearance/active_typing_indicator
@@ -295,7 +301,7 @@
 		if(!check_rights(R_DEBUG|R_ADMIN|R_VAREDIT))
 			return
 
-		if(!LAZYLEN(usr.client.stored_matrices))
+		if(!length(usr.client.stored_matrices))
 			to_chat(usr, "You don't have any matrices stored!")
 			return
 

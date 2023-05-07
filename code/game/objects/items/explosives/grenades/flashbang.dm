@@ -19,7 +19,7 @@
 
 /obj/item/explosive/grenade/flashbang/Initialize()
 	if(type == /obj/item/explosive/grenade/flashbang) // ugly but we only want to change base level flashbangs
-		if(SSticker.mode && MODE_HAS_FLAG(MODE_FACTION_CLASH))
+		if(SSticker.mode && MODE_HAS_FLAG(MODE_HVH_BALANCE))
 			new /obj/item/explosive/grenade/flashbang/noskill(loc)
 			return INITIALIZE_HINT_QDEL
 		else if(SSticker.current_state < GAME_STATE_PLAYING)
@@ -27,7 +27,7 @@
 	return ..()
 
 /obj/item/explosive/grenade/flashbang/proc/replace_flashbang()
-	if(MODE_HAS_FLAG(MODE_FACTION_CLASH))
+	if(MODE_HAS_FLAG(MODE_HVH_BALANCE))
 		new /obj/item/explosive/grenade/flashbang/noskill(loc)
 		qdel(src)
 	UnregisterSignal(SSdcs, COMSIG_GLOB_MODE_PRESETUP)
@@ -144,19 +144,19 @@
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		var/datum/internal_organ/eyes/E = H.internal_organs_by_name["eyes"]
-		if (E && E.damage >= E.min_bruised_damage)
+		if(E && E.damage >= E.min_bruised_damage)
 			to_chat(M, SPAN_WARNING("Your eyes start to burn badly!"))
 			if(!no_damage)
-				if (E.damage >= E.min_broken_damage)
+				if(E.damage >= E.min_broken_damage)
 					to_chat(M, SPAN_WARNING("You can't see anything!"))
-	if (M.ear_damage >= 15)
+	if(M.ear_damage >= 15)
 		to_chat(M, SPAN_WARNING("Your ears start to ring badly!"))
 		if(!no_damage)
-			if (prob(M.ear_damage - 10 + 5))
+			if(prob(M.ear_damage - 10 + 5))
 				to_chat(M, SPAN_WARNING("You can't hear anything!"))
 				M.sdisabilities |= DISABILITY_DEAF
 	else
-		if (M.ear_damage >= 5)
+		if(M.ear_damage >= 5)
 			to_chat(M, SPAN_WARNING("Your ears start to ring!"))
 
 //Created by Polymorph, fixed by Sieve
@@ -336,7 +336,7 @@
 	var/datum/internal_organ/eyes/E = H.internal_organs_by_name["eyes"]
 	if(E && E.damage >= E.min_bruised_damage)
 		to_chat(H, SPAN_WARNING("Your eyes start to burn badly!"))
-		if (E.damage >= E.min_broken_damage)
+		if(E.damage >= E.min_broken_damage)
 			to_chat(H, SPAN_WARNING("You can't see anything!"))
 	if(H.ear_damage >= 15)
 		to_chat(H, SPAN_WARNING("Your ears start to ring badly!"))

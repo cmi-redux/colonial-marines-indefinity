@@ -434,7 +434,7 @@
 /obj/structure/machinery/chem_simulator/proc/calculate_creation_cost()
 	creation_cost = 0
 	min_creation_cost = 5 //min cost of 5
-	var/slots_used = LAZYLEN(creation_template)
+	var/slots_used = length(creation_template)
 	creation_cost += slots_used * 3 - 6 //3 cost for each slot after the 2nd
 	min_creation_cost += slots_used - 2
 	for(var/datum/chem_property/P in creation_template)
@@ -472,10 +472,10 @@
 	var/list/old_reaction = O.required_reagents.Copy()
 	var/datum/chemical_reaction/generated/R = new /datum/chemical_reaction/generated()
 	R.required_reagents = old_reaction.Copy()
-	while(LAZYLEN(recipe_targets) < 3)
+	while(length(recipe_targets) < 3)
 		var/list/target_elevated[0]
 		for(var/i = 0 to 5) //5 attempts at modifying the recipe before elevating recipe length
-			if(LAZYLEN(R.required_reagents) > 2)
+			if(length(R.required_reagents) > 2)
 				LAZYREMOVE(R.required_reagents, pick(R.required_reagents))
 			var/new_component_id = R.add_component(tier = max(min(target.data.chemclass, CHEM_CLASS_COMMON), target.data.gen_tier, 1))
 			var/datum/reagent/new_component = chemical_reagents_list[new_component_id]
@@ -551,10 +551,10 @@
 						status_bar = "REFERENCE PROPERTY CAN NOT BE SIMULATED"
 						return FALSE
 	if(mode == MODE_CREATE)
-		if(!LAZYLEN(creation_template))
+		if(!length(creation_template))
 			status_bar = "TEMPLATE IS EMPTY"
 			return FALSE
-		if(LAZYLEN(creation_name) < 2)
+		if(length(creation_name) < 2)
 			status_bar = "NAME NOT SET"
 			return FALSE
 		if(creation_cost > chemical_data.rsc_credits)
@@ -576,7 +576,7 @@
 	report.name = "Simulation result for [D.name]"
 	report.info += "<center><img src = wylogo.png><HR><I><B>Official Company Document</B><BR>Simulated Synthesis Report</I><HR><H2>Result for [D.name]</H2></center>"
 	report.generate(D)
-	report.info += "<BR><HR><font size = \"1\"><I>This report was automatically printed by the Synthesis Simulator.<BR>The [MAIN_SHIP_NAME], [time2text(world.timeofday, "MM/DD")]/[game_year], [worldtime2text()]</I></font><BR>\n<span class=\"paper_field\"></span>"
+	report.info += "<BR><HR><font size = \"1\"><I>This report was automatically printed by the Synthesis Simulator.<BR>The [MAIN_SHIP_NAME], [time2text(world.timeofday, "MM/DD")]/[game_year], [game_time_timestamp()]</I></font><BR>\n<span class=\"paper_field\"></span>"
 	playsound(loc, 'sound/machines/twobeep.ogg', 15, 1)
 	if(is_new)
 		chemical_data.save_document(report, "Synthesis Simulations", report.name)
@@ -632,7 +632,7 @@
 /obj/structure/machinery/chem_simulator/proc/create(datum/reagent/generated/C)
 	C.chemclass = CHEM_CLASS_RARE
 	C.name = creation_name
-	if(LAZYLEN(C.name) < 2) //Don't know how this would even happen, but here's a safety
+	if(length(C.name) < 2) //Don't know how this would even happen, but here's a safety
 		C.generate_name()
 	C.id = C.name
 	C.properties = list()

@@ -80,7 +80,7 @@ log transactions
 			T.amount = I:worth
 			T.source_terminal = machine_id
 			T.date = current_date_string
-			T.time = worldtime2text()
+			T.time = game_time_timestamp()
 			authenticated_account.transaction_log.Add(T)
 
 			to_chat(user, SPAN_INFO("You insert [I] into [src]."))
@@ -213,7 +213,7 @@ log transactions
 							T.purpose = transfer_purpose
 							T.source_terminal = machine_id
 							T.date = current_date_string
-							T.time = worldtime2text()
+							T.time = game_time_timestamp()
 							T.amount = "([transfer_amount])"
 							authenticated_account.transaction_log.Add(T)
 						else
@@ -255,7 +255,7 @@ log transactions
 									T.purpose = "Unauthorised login attempt"
 									T.source_terminal = machine_id
 									T.date = current_date_string
-									T.time = worldtime2text()
+									T.time = game_time_timestamp()
 									failed_account.transaction_log.Add(T)
 							else
 								to_chat(usr, SPAN_DANGER("[icon2html(src, usr)] Incorrect pin/account combination entered, [max_pin_attempts - number_incorrect_tries] attempts remaining."))
@@ -275,7 +275,7 @@ log transactions
 						T.purpose = "Remote terminal access"
 						T.source_terminal = machine_id
 						T.date = current_date_string
-						T.time = worldtime2text()
+						T.time = game_time_timestamp()
 						authenticated_account.transaction_log.Add(T)
 
 						to_chat(usr, SPAN_NOTICE(" [icon2html(src, usr)] Access granted. Welcome user '[authenticated_account.owner_name].'"))
@@ -307,7 +307,7 @@ log transactions
 						T.amount = "([amount])"
 						T.source_terminal = machine_id
 						T.date = current_date_string
-						T.time = worldtime2text()
+						T.time = game_time_timestamp()
 						authenticated_account.transaction_log.Add(T)
 						withdrawal_timer = world.time + 20
 					else
@@ -338,7 +338,7 @@ log transactions
 						T.amount = "([amount])"
 						T.source_terminal = machine_id
 						T.date = current_date_string
-						T.time = worldtime2text()
+						T.time = game_time_timestamp()
 						authenticated_account.transaction_log.Add(T)
 						withdrawal_timer = world.time + 20
 					else
@@ -352,7 +352,7 @@ log transactions
 					R.info += "<i>Account holder:</i> [authenticated_account.owner_name]<br>"
 					R.info += "<i>Account number:</i> [authenticated_account.account_number]<br>"
 					R.info += "<i>Balance:</i> $[authenticated_account.money]<br>"
-					R.info += "<i>Date and time:</i> [worldtime2text()], [current_date_string]<br><br>"
+					R.info += "<i>Date and time:</i> [game_time_timestamp()], [current_date_string]<br><br>"
 					R.info += "<i>Service terminal ID:</i> [machine_id]<br>"
 
 					//stamp the paper
@@ -368,14 +368,14 @@ log transactions
 					playsound(loc, 'sound/items/polaroid1.ogg', 15, 1)
 				else
 					playsound(loc, 'sound/items/polaroid2.ogg', 15, 1)
-			if ("print_transaction")
+			if("print_transaction")
 				if(authenticated_account)
 					var/obj/item/paper/R = new(src.loc)
 					R.name = "Transaction logs: [authenticated_account.owner_name]"
 					R.info = "<b>Transaction logs</b><br>"
 					R.info += "<i>Account holder:</i> [authenticated_account.owner_name]<br>"
 					R.info += "<i>Account number:</i> [authenticated_account.account_number]<br>"
-					R.info += "<i>Date and time:</i> [worldtime2text()], [current_date_string]<br><br>"
+					R.info += "<i>Date and time:</i> [game_time_timestamp()], [current_date_string]<br><br>"
 					R.info += "<i>Service terminal ID:</i> [machine_id]<br>"
 					R.info += "<table border=1 style='width:100%'>"
 					R.info += "<tr>"
@@ -414,7 +414,7 @@ log transactions
 			if("insert_card")
 				if(!held_card)
 					var/obj/item/I = usr.get_active_hand()
-					if (istype(I, /obj/item/card/id))
+					if(istype(I, /obj/item/card/id))
 						usr.drop_held_item()
 						I.forceMove(src)
 						held_card = I
@@ -443,7 +443,7 @@ log transactions
 					T.purpose = "Remote terminal access"
 					T.source_terminal = machine_id
 					T.date = current_date_string
-					T.time = worldtime2text()
+					T.time = game_time_timestamp()
 					authenticated_account.transaction_log.Add(T)
 
 					view_screen = NO_SCREEN
@@ -464,7 +464,8 @@ log transactions
 	set name = "Eject ID Card"
 	set src in view(1)
 
-	if(!usr || usr.stat || usr.lying) return
+	if(!usr || usr.stat || usr.lying)
+		return
 
 	if(ishuman(usr) && held_card)
 		to_chat(usr, "You remove \the [held_card] from \the [src].")

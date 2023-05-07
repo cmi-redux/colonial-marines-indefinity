@@ -5,12 +5,12 @@
 	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/uscm.dmi'
 	icon_state = "cupola_1"
 	w_class = SIZE_LARGE
-	default_ammo = /datum/ammo/bullet/smartgun
+	ammo_preset = list(/datum/ammo/bullet/smartgun)
 	max_rounds = 500
 	gun_type = /obj/item/hardpoint/secondary/m56cupola
 
 /obj/item/ammo_magazine/hardpoint/m56_cupola/update_icon()
-	icon_state = "cupola_[current_rounds <= 0 ? "0" : "1"]"
+	icon_state = "cupola_[ammo_position <= 0 ? "0" : "1"]"
 
 /obj/item/ammo_magazine/hardpoint/m56_cupola/frontal_cannon
 	name = "RE-RE700 Frontal Cannon magazine"
@@ -19,4 +19,4 @@
 	icon_state = "frontal_1"
 
 /obj/item/ammo_magazine/hardpoint/m56_cupola/frontal_cannon/update_icon()
-	icon_state = "frontal_[current_rounds <= 0 ? "0" : "1"]"
+	icon_state = "frontal_[ammo_position <= 0 ? "0" : "1"]"

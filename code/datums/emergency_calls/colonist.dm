@@ -11,7 +11,7 @@
 	var/preset = /datum/equipment_preset/colonist
 
 
-/datum/emergency_call/colonist/create_member(datum/mind/M, turf/override_spawn_loc) //Blank ERT with only basic items.
+/datum/emergency_call/colonist/create_member(datum/mind/mind, turf/override_spawn_loc) //Blank ERT with only basic items.
 	set waitfor = 0
 	var/turf/T = override_spawn_loc ? override_spawn_loc : get_spawn_point()
 
@@ -19,7 +19,8 @@
 		return FALSE
 
 	var/mob/living/carbon/human/H = new(T)
-	M.transfer_to(H, TRUE)
+	mind.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 	arm_equipment(H, preset, TRUE, TRUE)
 
 	sleep(20)

@@ -3,8 +3,6 @@
 	faction = FACTION_WY
 	rank = FACTION_WY
 	idtype = /obj/item/card/id/silver/cl
-	faction = FACTION_WY
-	faction_group = list(FACTION_WY)
 	languages = list(LANGUAGE_ENGLISH, LANGUAGE_JAPANESE)
 
 /datum/equipment_preset/goon/New()
@@ -62,10 +60,10 @@
 	assignment = JOB_WY_GOON
 	rank = JOB_WY_GOON
 	paygrade = "WEY-GOON"
-	skills = /datum/skills/MP
+	skills = /datum/skills/mp
 
 /datum/equipment_preset/goon/standard/load_gear(mob/living/carbon/human/H)
-	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/WY, WEAR_L_EAR)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/wy, WEAR_L_EAR)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/veteran/pmc/corporate, WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/veteran/pmc/light/corporate, WEAR_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine/veteran, WEAR_HANDS)
@@ -95,10 +93,10 @@
 	assignment = JOB_WY_GOON_LEAD
 	rank = JOB_WY_GOON_LEAD
 	paygrade = "WEY-GOON-L"
-	skills = /datum/skills/MP
+	skills = /datum/skills/mp
 
 /datum/equipment_preset/goon/lead/load_gear(mob/living/carbon/human/H)
-	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/WY, WEAR_L_EAR)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/wy, WEAR_L_EAR)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/veteran/pmc/corporate/lead, WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/veteran/pmc/light/corporate/lead, WEAR_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine/veteran, WEAR_HANDS)

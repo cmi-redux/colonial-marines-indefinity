@@ -6,11 +6,11 @@
 	desc = "A square metal surface resting on four legs."
 	icon = 'icons/obj/structures/props/platforms.dmi'
 	icon_state = "platform"
+	layer = OBJ_LAYER
 	climbable = TRUE
 	anchored = TRUE
 	density = TRUE
 	throwpass = TRUE //You can throw objects over this, despite its density.
-	layer = OBJ_LAYER
 	breakable = FALSE
 	flags_atom = ON_BORDER
 	unacidable = TRUE
@@ -29,21 +29,22 @@
 	var/image/I = image(icon, src, "platform_overlay", LADDER_LAYER, dir)//ladder layer puts us just above weeds.
 	switch(dir)
 		if(SOUTH)
-			layer = ABOVE_MOB_LAYER+0.1
 			I.pixel_y = -16
+			layer = WALL_OBJ_LAYER
 		if(NORTH)
 			I.pixel_y = 16
+			layer = OBJ_LAYER
 		if(EAST)
 			I.pixel_x = 16
-			layer = ABOVE_MOB_LAYER+0.1
+			layer = WALL_OBJ_LAYER
 		if(WEST)
 			I.pixel_x = -16
-			layer = ABOVE_MOB_LAYER+0.1
+			layer = WALL_OBJ_LAYER
 	overlays += I
 
 /obj/structure/platform/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_OVER
 
 /obj/structure/platform/Collided(atom/movable/AM)
@@ -94,18 +95,18 @@
 /obj/structure/platform_decoration/Initialize()
 	. = ..()
 	switch(dir)
-		if (NORTH)
+		if(NORTH)
 			layer = ABOVE_MOB_LAYER+0.2
-		if (SOUTH)
+		if(SOUTH)
 			layer = ABOVE_MOB_LAYER+0.2
-		if (SOUTHEAST)
+		if(SOUTHEAST)
 			layer = ABOVE_MOB_LAYER+0.2
-		if (SOUTHWEST)
+		if(SOUTHWEST)
 			layer = ABOVE_MOB_LAYER+0.2
 
 /obj/structure/platform_decoration/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_OVER
 
 /obj/structure/platform_decoration/ex_act()

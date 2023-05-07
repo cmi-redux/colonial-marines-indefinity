@@ -30,7 +30,7 @@
 
 //The base miss chance for the different defence zones
 var/list/global/base_miss_chance = list(
-	"head" = 10,
+	"head" = 30,
 	"chest" = 0,
 	"groin" = 5,
 	"l_leg" = 10,
@@ -39,10 +39,10 @@ var/list/global/base_miss_chance = list(
 	"r_arm" = 10,
 	"l_hand" = 15,
 	"r_hand" = 15,
-	"l_foot" = 40,
-	"r_foot" = 40,
-	"eyes" = 20,
-	"mouth" = 15,
+	"l_foot" = 20,
+	"r_foot" = 20,
+	"eyes" = 25,
+	"mouth" = 20,
 )
 
 //Used to weight organs when an organ is hit randomly (i.e. not a directed, aimed attack).
@@ -91,9 +91,9 @@ var/global/list/limb_types_by_name = list(
 // Returns zone with a certain probability. If the probability fails, or no zone is specified, then a random body part is chosen.
 // Do not use this if someone is intentionally trying to hit a specific body part.
 /proc/rand_zone(zone, probability)
-	if (zone)
+	if(zone)
 		zone = check_zone(zone)
-		if (prob(probability))
+		if(prob(probability))
 			return zone
 
 	var/rand_zone = zone
@@ -115,12 +115,12 @@ var/global/list/limb_types_by_name = list(
 	return rand_zone
 
 /proc/stars(n, pr)
-	if (pr == null)
+	if(pr == null)
 		pr = 25
-	if (pr <= 0)
+	if(pr <= 0)
 		return null
 	else
-		if (pr >= 100)
+		if(pr >= 100)
 			return n
 	var/te = n
 	var/t = ""
@@ -128,66 +128,58 @@ var/global/list/limb_types_by_name = list(
 	var/p = null
 	p = 1
 	while(p <= n)
-		if ((copytext(te, p, p + 1) == " " || prob(pr)))
+		if((copytext(te, p, p + 1) == " " || prob(pr)))
 			t = text("[][]", t, copytext(te, p, p + 1))
 		else
 			t = text("[]*", t)
 		p++
 	return t
 
+// This is temporary effect, often caused by alcohol
 /proc/slur(phrase)
 	phrase = html_decode(phrase)
-	var/leng=length(phrase)
-	var/counter=length(phrase)
-	var/newphrase=""
-	var/newletter=""
-	while(counter>=1)
-		newletter=copytext(phrase,(leng-counter)+1,(leng-counter)+2)
-		if(rand(1,3)==3)
-			if(lowertext(newletter)=="o") newletter="u"
-			if(lowertext(newletter)=="s") newletter="ch"
-			if(lowertext(newletter)=="a") newletter="ah"
-			if(lowertext(newletter)=="c") newletter="k"
-		switch(rand(1,7))
-			if(1,3,5) newletter="[lowertext(newletter)]"
-			if(2,4,6) newletter="[uppertext(newletter)]"
-			if(7) newletter+="'"
-			//if(9,10) newletter="<b>[newletter]</b>"
-			//if(11,12) newletter="<big>[newletter]</big>"
-			//if(13) newletter="<small>[newletter]</small>"
-		newphrase+="[newletter]";counter-=1
-	return newphrase
+	var/new_phrase = ""
+	var/list/replacements_consonants = list(
+		"s" = "ch", "c" = "k",
+		"г" = "х", "к" = "х", "з" = "с", "ц" = "с", "ч" = "щ", "щ" = "шш", "п" = "б"
+		)
+	var/list/replacements_vowels = list(
+		"o" = "u",
+		"ы" = "'", "а" = "'", "е" = "э", "ё" = "'", "и" = "'", "о" = "'", "у" = "'", "ю" = "'"
+		)
+	for(var/i = 1, i <= length_char(phrase), i++)
+		var/letter = copytext_char(phrase, i, i + 1)
+		if(lowertext(letter) in replacements_consonants)
+			if(prob(40))
+				letter = replacements_consonants[lowertext(letter)]
+		else if(lowertext(letter) in replacements_vowels)
+			if(prob(12))
+				letter = replacements_vowels[lowertext(letter)]
+		new_phrase += pick(
+			65; letter,
+			20; lowertext(letter),
+			15; uppertext(letter),
+			)
+	return html_encode(new_phrase)
 
-/proc/stutter(n)
-	var/te = html_decode(n)
-	var/t = ""//placed before the message. Not really sure what it's for.
-	n = length(n)//length of the entire word
-	var/p = null
-	p = 1//1 is the start of any word
-	while(p <= n)//while P, which starts at 1 is less or equal to N which is the length.
-		var/n_letter = copytext(te, p, p + 1)//copies text from a certain distance. In this case, only one letter at a time.
-		if (prob(80) && (ckey(n_letter) in alphabet_lowercase))
-			if (prob(10))
-				n_letter = text("[n_letter]-[n_letter]-[n_letter]-[n_letter]")//replaces the current letter with this instead.
-			else
-				if (prob(20))
-					n_letter = text("[n_letter]-[n_letter]-[n_letter]")
-				else
-					if (prob(5))
-						n_letter = null
-					else
-						n_letter = text("[n_letter]-[n_letter]")
-		t = text("[t][n_letter]")//since the above is ran through for each letter, the text just adds up back to the original word.
-		p++//for each letter p is increased to find where the next letter will be.
-	return strip_html(t)
+/proc/stutter(phrase)
+	phrase = html_decode(phrase)
+	var/new_phrase = ""
+	for(var/i = 1, i <= length_char(phrase), i++)
+		var/letter = copytext_char(phrase, i, i + 1)
+		new_phrase += letter
+		if(lowertext(letter) in list("б", "г", "д", "к", "п", "т", "ц", "ч", "b", "c", "d", "f", "g", "j", "k", "p", "q", "t", "x"))
+			while(prob(45))
+				new_phrase += "-[letter]"
+	return html_encode(new_phrase)
 
 
 /proc/Gibberish(t, p)//t is the inputted message, and any value higher than 70 for p will cause letters to be replaced instead of added
 	/* Turn text into complete gibberish! */
 	var/returntext = ""
-	for(var/i = 1, i <= length(t), i++)
+	for(var/i = 1, i <= length_char(t), i++)
 
-		var/letter = copytext(t, i, i+1)
+		var/letter = copytext_char(t, i, i+1)
 		if(prob(50))
 			if(p >= 70)
 				letter = ""
@@ -244,7 +236,7 @@ var/global/list/limb_types_by_name = list(
 
 /proc/findname(msg)
 	for(var/mob/M in GLOB.mob_list)
-		if (M.real_name == text("[msg]"))
+		if(M.real_name == text("[msg]"))
 			return TRUE
 	return FALSE
 
@@ -425,6 +417,9 @@ var/global/list/limb_types_by_name = list(
 				return DURATION_MULTIPLIER_TIER_1
 
 
+/mob/living/carbon/human/proc/disable_lights()
+	SEND_SIGNAL(src, COMSIG_ATOM_OFF_LIGHT)
+	to_chat(src, SPAN_NOTICE("Your sources of light fizzle out."))
 
 /mob/proc/check_view_change(new_size, atom/source)
 	return new_size
@@ -452,7 +447,7 @@ var/global/list/limb_types_by_name = list(
 	set name = "Pick Up"
 	set category = "Object"
 
-	if(!canmove || stat || is_mob_restrained() || !Adjacent(pickupify))
+	if(!can_action || is_mob_restrained() || !Adjacent(pickupify))
 		return
 
 	if(world.time <= next_move)

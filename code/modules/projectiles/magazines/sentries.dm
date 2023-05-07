@@ -6,28 +6,27 @@
 	icon_state = "ua571c"
 	w_class = SIZE_MEDIUM
 	flags_magazine = NO_FLAGS //can't be refilled or emptied by hand
-	caliber = "10x28mm"
+	caliber = CALIBER_10X24MM
 	max_rounds = 500
-	default_ammo = /datum/ammo/bullet/turret
+	ammo_preset = list(/datum/ammo/bullet/turret)
 	gun_type = null
+	transfer_delay = 0.6 SECONDS
 
 /obj/item/ammo_magazine/sentry/dropped
 	max_rounds = 100
-	max_inherent_rounds = 500
 
 /obj/item/ammo_magazine/sentry/premade
 	max_rounds = 99999
-	current_rounds = 99999
 
 /obj/item/ammo_magazine/sentry/premade/dumb
-	default_ammo = /datum/ammo/bullet/turret/dumb
+	ammo_preset = list(/datum/ammo/bullet/turret/dumb)
 
 /obj/item/ammo_magazine/sentry/shotgun
 	name = "12g buckshot drum"
 	desc = "An ammo drum of 50 12g buckshot drums for the UA 12-G Shotgun Sentry. Just feed it into the sentry gun's ammo port when its ammo is depleted."
-	caliber = "12g"
+	caliber = CALIBER_12G
 	max_rounds = 50
-	default_ammo = /datum/ammo/bullet/shotgun/buckshot
+	ammo_preset = list(/datum/ammo/bullet/shotgun/buckshot)
 
 // FLAMER Sentry
 /obj/item/ammo_magazine/sentry_flamer
@@ -39,15 +38,15 @@
 	flags_magazine = NO_FLAGS
 	caliber = "Napalm B"
 	max_rounds = 100
-	default_ammo = /datum/ammo/flamethrower/sentry_flamer
+	ammo_preset = list(/datum/ammo/flamethrower/sentry_flamer)
 	gun_type = null
 
 /obj/item/ammo_magazine/sentry_flamer/glob
 	name = "plasma sentry incinerator tank"
 	desc = "A fuel tank of compressed Ultra Thick Napthal Fuel, used in the UA 60-FP."
-	default_ammo = /datum/ammo/flamethrower/sentry_flamer/glob
+	ammo_preset = list(/datum/ammo/flamethrower/sentry_flamer/glob)
 
 /obj/item/ammo_magazine/sentry_flamer/mini
 	name = "mini sentry incinerator tank"
 	desc = "A fuel tank of Ultra Thick Napthal Fuel, used in the UA 45-FM."
-	default_ammo = /datum/ammo/flamethrower/sentry_flamer/mini
+	ammo_preset = list(/datum/ammo/flamethrower/sentry_flamer/mini)

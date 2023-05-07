@@ -1,20 +1,25 @@
 /obj/item/hardpoint/armor/snowplow
 	name = "Snowplow"
-	desc = "Clears a path in the snow for friendlies"
+	desc = "Clears road for friendlies."
 
 	icon_state = "snowplow"
 	disp_icon = "tank"
 	disp_icon_state = "snowplow"
 
-	health = 600
+	health = 1600
 	activatable = 1
+
+	type_multipliers = list(
+		"blunt" = 0.2,
+		"all" = 0.8
+	)
 
 /obj/item/hardpoint/armor/snowplow/livingmob_interact(mob/living/M)
 	var/turf/targ = get_step(M, owner.dir)
 	targ = get_step(M, owner.dir)
 	targ = get_step(M, owner.dir)
-	M.throw_atom(targ, 4, SPEED_FAST, src, 1)
-	M.apply_damage(7 + rand(0, 3), BRUTE)
+	M.throw_atom(targ, 4, SPEED_VERY_FAST, src, 1)
+	M.apply_damage(40 + rand(0, 100), BRUTE)
 
 /obj/item/hardpoint/armor/snowplow/on_move(turf/old, turf/new_turf, move_dir)
 	if(health <= 0)
@@ -40,5 +45,13 @@
 				continue
 			new /obj/item/stack/snow(S, S.bleed_layer)
 			S.changing_layer(0)
+		if(istype(T.snow))
+			var/obj/structure/snow/snow = T.snow
+			if(!snow)
+				continue
+			new /obj/item/stack/snow(snow.loc, snow.bleed_layer)
+			snow.changing_layer(0)
+		else if(istype(T.weeds))
+			T.weeds.Destroy()
 		else
 			continue

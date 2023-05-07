@@ -19,6 +19,8 @@
 	wrenchable = TRUE
 	var/list/allowed_types = list(/obj/item/paper, /obj/item/folder, /obj/item/clipboard, /obj/item/photo, /obj/item/paper_bundle, /obj/item/pamphlet)
 
+	var/objective_spawn = TRUE
+
 /obj/structure/filingcabinet/proc/dump_contents()
 	for(var/obj/I in src)
 		I.forceMove(loc)
@@ -41,6 +43,18 @@
 
 /obj/structure/filingcabinet/Initialize()
 	. = ..()
+	//make sure to load landmarks for defcons
+	var/turf/T = get_turf(src)
+	if(objective_spawn && is_ground_level(T.z))
+		var/chance = rand(1,100)
+		if(chance < CLUE_CLOSE)
+			new /obj/effect/landmark/objective_landmark/close(loc)
+		else if(chance < CLUE_MEDIUM)
+			new /obj/effect/landmark/objective_landmark/medium(loc)
+		else if(chance < CLUE_FAR)
+			new /obj/effect/landmark/objective_landmark/far(loc)
+		else if(chance < CLUE_SCIENCE)
+			new /obj/effect/landmark/objective_landmark/science(loc)
 	for(var/obj/item/I in loc)
 		for(var/allowed_type in allowed_types)
 			if(istype(I, allowed_type))

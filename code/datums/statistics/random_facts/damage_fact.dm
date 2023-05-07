@@ -1,18 +1,18 @@
 /datum/random_fact/damage/announce()
 	var/death_damage_taken = 0
 	var/living_damage_taken = 0
-	var/datum/entity/statistic/death/death_to_report = null
+	var/datum/entity/statistic_death/death_to_report = null
 	var/mob/mob_to_report = null
 
-	if(round_statistics && length(round_statistics.death_stats_list))
-		for(var/datum/entity/statistic/death/death in round_statistics.death_stats_list)
-			if(!check_human && !death.is_xeno)
+	if(SSticker.mode.round_statistics && length(SSticker.mode.round_statistics.death_stats_list))
+		for(var/datum/entity/statistic_death/Dlog in SSticker.mode.round_statistics.death_stats_list)
+			if(!check_human && (Dlog.faction_name in NAME_FACTION_LIST_HUMANOID))
 				continue
-			if(!check_xeno && death.is_xeno)
+			if(!check_xeno && (Dlog.faction_name in NAME_FACTION_LIST_XENOMORPH))
 				continue
-			if(death_damage_taken < death.total_damage_taken)
-				death_to_report = death
-				death_damage_taken = death.total_damage_taken
+			if(death_damage_taken < Dlog.total_damage_taken)
+				death_to_report = Dlog
+				death_damage_taken = Dlog.total_damage_taken
 
 	var/list/list_to_check = list()
 	if(check_human) list_to_check += GLOB.alive_human_list

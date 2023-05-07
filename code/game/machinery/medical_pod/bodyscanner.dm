@@ -7,7 +7,7 @@
 
 	use_power = USE_POWER_IDLE
 	idle_power_usage = 60
-	active_power_usage = 10000 //10 kW. It's a big all-body scanner.
+	active_power_usage = 10000	//10 kW. It's a big all-body scanner.
 
 	push_in_timer = null
 
@@ -199,7 +199,7 @@
 		return
 	var/mob/living/carbon/human/H = occupant
 	var/list/occupant_data = list(
-		"stationtime" = worldtime2text(),
+		"stationtime" = game_time_timestamp(),
 		"stat" = H.stat,
 		"health" = H.health,
 		"bruteloss" = H.getBruteLoss(),

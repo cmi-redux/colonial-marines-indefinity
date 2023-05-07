@@ -1,17 +1,15 @@
-/datum/xeno_mutator/praetorian_warden
-	// i mean so basically im braum
-	name = "STRAIN: Praetorian - Warden"
-	description = "You trade your acid ball, acid spray, dash, and a small bit of your slash damage and speed to become an effective medic. You gain the ability to emit strong pheromones, an ability that retrieves endangered, knocked-down or sitting allies and pulls them to your location, and you gain an internal hitpoint pool that fills with every slash against your enemies, which can be spent to aid your allies and yourself by healing them or curing their ailments."
-	flavor_description = "Only in death does your sisters' service to the Queen end. They will be untouched by plague or disease; no sickness will blight them."
-	cost = MUTATOR_COST_EXPENSIVE
-	individual_only = TRUE
-	caste_whitelist = list(XENO_CASTE_PRAETORIAN) // Only bae
-	mutator_actions_to_remove = list(
+/datum/xeno_mutation/strain/praetorian_warden
+	name = LANGUAGE_STRAIN_WARDEN
+	description = LANGUAGE_STRAIN_DESC_WARDEN
+	flavor_description = LANGUAGE_STRAIN_FLAV_DESC_WARDEN
+	cost = MUTATOR_COST_CHEAP
+	caste_whitelist = list(XENO_CASTE_PRAETORIAN)
+	mutation_actions_to_remove = list(
 		/datum/action/xeno_action/activable/pounce/base_prae_dash,
 		/datum/action/xeno_action/activable/prae_acid_ball,
 		/datum/action/xeno_action/activable/spray_acid/base_prae_spray_acid,
 	)
-	mutator_actions_to_add = list(
+	mutation_actions_to_add = list(
 		/datum/action/xeno_action/activable/spray_acid/prae_warden,
 		/datum/action/xeno_action/activable/warden_heal,
 		/datum/action/xeno_action/activable/prae_retrieve,
@@ -21,16 +19,16 @@
 	behavior_delegate_type = /datum/behavior_delegate/praetorian_warden
 	keystone = TRUE
 
-/datum/xeno_mutator/praetorian_warden/apply_mutator(datum/mutator_set/individual_mutators/mutator_set)
+/datum/xeno_mutation/strain/praetorian_warden/apply_mutator(datum/mutator_set/individual_mutations/mutator_set)
 	. = ..()
-	if (. == 0)
+	if(. == 0)
 		return
 
 	var/mob/living/carbon/xenomorph/praetorian/praetorian = mutator_set.xeno
 
 	// Make a 'halftank'
 	praetorian.speed_modifier += XENO_SPEED_SLOWMOD_TIER_5
-	praetorian.damage_modifier -= XENO_DAMAGE_MOD_SMALL
+	praetorian.damage_modifier += XENO_DAMAGE_MOD_SMALL
 
 	mutator_update_actions(praetorian)
 	mutator_set.recalculate_actions(description, flavor_description)
@@ -84,8 +82,8 @@
 		add_internal_hitpoints(internal_hitpoints_per_attack)
 
 /datum/behavior_delegate/praetorian_warden/proc/add_internal_hitpoints(amount)
-	if (amount > 0)
-		if (internal_hitpoints >= internal_hitpoints_max)
+	if(amount > 0)
+		if(internal_hitpoints >= internal_hitpoints_max)
 			return
 		to_chat(bound_xeno, SPAN_XENODANGER("You feel your internal health reserves increase!"))
 	internal_hitpoints = Clamp(internal_hitpoints + amount, 0, internal_hitpoints_max)
@@ -94,7 +92,7 @@
 	add_internal_hitpoints(-1*amount)
 
 /datum/behavior_delegate/praetorian_warden/proc/use_internal_hp_ability(cost)
-	if (cost > internal_hitpoints)
+	if(cost > internal_hitpoints)
 		to_chat(bound_xeno, SPAN_XENODANGER("Your health reserves are insufficient! You need at least [cost] to do that!"))
 		return FALSE
 	else

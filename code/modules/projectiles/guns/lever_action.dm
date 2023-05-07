@@ -146,23 +146,11 @@ their unique feature is that a direct hit will buff your damage and firerate
 /obj/item/weapon/gun/lever_action/proc/replace_internal_mag(number_to_replace)
 	if(!current_mag)
 		return
-	current_mag.chamber_contents = list()
-	current_mag.chamber_contents.len = current_mag.max_rounds
+	current_mag.current_rounds = list()
+	current_mag.current_rounds.len = current_mag.max_rounds
 	for(var/i = 1 to current_mag.max_rounds) //We want to make sure to populate the internal_mag.
-		current_mag.chamber_contents[i] = i > number_to_replace ? "empty" : current_mag.default_ammo
-	current_mag.chamber_position = current_mag.current_rounds //The position is always in the beginning [1]. It can move from there.
-
-/obj/item/weapon/gun/lever_action/proc/add_to_internal_mag(mob/user,selection) //bullets are added forward.
-	if(!current_mag)
-		return
-	current_mag.chamber_position++ //We move the position up when loading ammo. New rounds are always fired next, in order loaded.
-	current_mag.chamber_contents[current_mag.chamber_position] = selection //Just moves up one, unless the mag is full.
-	if(current_mag.current_rounds == 1 && !in_chamber) //The previous proc in the reload() cycle adds ammo, so the best workaround here,
-		update_icon() //This is not needed for now. Maybe we'll have loaded sprites at some point, but I doubt it. Also doesn't play well with double barrel.
-		ready_in_chamber()
-		cock_gun(user)
-	if(user) playsound(user, reload_sound, 25, TRUE)
-	return TRUE
+		current_mag.current_rounds[i] = i > number_to_replace ? "empty" : new current_mag.default_projectile(current_mag, null, pick(current_mag.default_ammo), current_mag.caliber)
+	current_mag.ammo_position = current_mag.current_rounds //The position is always in the beginning [1]. It can move from there.
 
 /obj/item/weapon/gun/lever_action/proc/empty_chamber(mob/user)
 	if(!current_mag)
@@ -181,18 +169,14 @@ their unique feature is that a direct hit will buff your damage and firerate
 	if(!current_mag.current_rounds && !in_chamber) update_icon()
 
 /obj/item/weapon/gun/lever_action/proc/unload_bullet(mob/user)
-	if(isnull(current_mag) || !length(current_mag.chamber_contents))
+	if(isnull(current_mag) || !current_mag.ammo_position)
 		return
-	var/obj/item/ammo_magazine/handful/new_handful = retrieve_bullet(current_mag.chamber_contents[current_mag.chamber_position])
-
+	var/obj/item/projectile/proj = current_mag.retrieve_ammo(1, user)
 	if(user)
-		user.put_in_hands(new_handful)
+		user.put_in_hands(proj)
 		playsound(user, reload_sound, 25, TRUE)
-	else new_handful.forceMove(get_turf(src))
-
-	current_mag.current_rounds--
-	current_mag.chamber_contents[current_mag.chamber_position] = "empty"
-	current_mag.chamber_position--
+	else
+		proj.forceMove(get_turf(src))
 	return TRUE
 
 /obj/item/weapon/gun/lever_action/proc/retrieve_bullet(selection)
@@ -201,37 +185,20 @@ their unique feature is that a direct hit will buff your damage and firerate
 	return new_handful
 
 /obj/item/weapon/gun/lever_action/reload(mob/user, obj/item/ammo_magazine/magazine)
-
 	if(!magazine || !istype(magazine,/obj/item/ammo_magazine/handful)) //Can only reload with handfuls.
 		to_chat(user, SPAN_WARNING("You can't use that to reload!"))
 		return
 
-	var/mag_caliber = magazine.default_ammo //Handfuls can get deleted, so we need to keep this on hand for later.
-	if(current_mag.transfer_ammo(magazine,user,1))
-		add_to_internal_mag(user,mag_caliber) //This will check the other conditions.
-
-/obj/item/weapon/gun/lever_action/proc/ready_lever_action_internal_mag()
-	if(isnull(current_mag) || !length(current_mag.chamber_contents))
-		return
-	if(current_mag.current_rounds > 0)
-		ammo = GLOB.ammo_list[current_mag.chamber_contents[current_mag.chamber_position]]
-		in_chamber = create_bullet(ammo, initial(name))
-		current_mag.current_rounds--
-		current_mag.chamber_contents[current_mag.chamber_position] = "empty"
-		current_mag.chamber_position--
-		return in_chamber
-
-/obj/item/weapon/gun/lever_action/ready_in_chamber()
-	return ready_lever_action_internal_mag()
+	current_mag.transfer_ammo(magazine, 1, user)
 
 /obj/item/weapon/gun/lever_action/reload_into_chamber(mob/user)
+	if(!current_mag)
+		return
 	if(!active_attachable)
+		levered = FALSE //It was fired, so let's unlock the lever.
 		in_chamber = null
-
-		//Time to move the internal_mag position.
-		ready_in_chamber() //We're going to try and reload. If we don't get anything, icon change.
-		if(!current_mag.current_rounds && !in_chamber) //No rounds, nothing chambered.
-			update_icon()
+		if(!current_mag.ammo_position && !in_chamber)
+			update_icon() //No rounds, nothing chambered.
 
 	return TRUE
 
@@ -240,14 +207,6 @@ their unique feature is that a direct hit will buff your damage and firerate
 
 /obj/item/weapon/gun/lever_action/ready_in_chamber()
 	return
-
-/obj/item/weapon/gun/lever_action/add_to_internal_mag(mob/user, selection) //Load it on the go, nothing chambered.
-	if(!current_mag)
-		return
-	current_mag.chamber_position++
-	current_mag.chamber_contents[current_mag.chamber_position] = selection
-	playsound(user, reload_sound, 25, TRUE)
-	return TRUE
 
 /obj/item/weapon/gun/lever_action/proc/work_lever(mob/living/carbon/human/user)
 	if(world.time < (recent_lever + lever_delay))
@@ -261,8 +220,6 @@ their unique feature is that a direct hit will buff your damage and firerate
 		in_chamber = null
 		var/obj/item/ammo_magazine/handful/new_handful = retrieve_bullet(ammo.type)
 		new_handful.forceMove(get_turf(src))
-
-	ready_lever_action_internal_mag()
 
 	recent_lever = world.time
 	if(in_chamber)

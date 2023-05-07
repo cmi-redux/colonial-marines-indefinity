@@ -145,25 +145,29 @@
 	name = "laser"
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_ICON
-	luminosity = 2
 	icon = 'icons/obj/items/weapons/projectiles.dmi'
 	icon_state = "laser_target_coordinate"
 	effect_duration = 600
 	var/obj/item/device/binoculars/range/designator/source_binoc
+
+	light_system = STATIC_LIGHT
+	light_range = 2
+	light_power = 0.2
+	light_color = COLOR_SOFT_RED
+	light_on = TRUE
 
 /obj/effect/overlay/temp/laser_coordinate/Destroy()
 	if(source_binoc)
 		source_binoc.laser_cooldown = world.time + source_binoc.cooldown_duration
 		source_binoc.coord = null
 		source_binoc = null
-	SetLuminosity(0)
+	set_light_on(FALSE)
 	. = ..()
 
 /obj/effect/overlay/temp/laser_target
 	name = "laser"
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_ICON
-	luminosity = 2
 	icon = 'icons/obj/items/weapons/projectiles.dmi'
 	icon_state = "laser_target2"
 	effect_duration = 600
@@ -172,22 +176,28 @@
 	var/datum/cas_signal/signal
 	var/mob/living/carbon/human/user
 
+	light_system = STATIC_LIGHT
+	light_range = 2
+	light_power = 0.2
+	light_color = COLOR_SOFT_RED
+	light_on = TRUE
+
 /obj/effect/overlay/temp/laser_target/New(loc, squad_name, _user, tracking_id)
 	..()
 	user = _user
 	if(squad_name)
 		name = "[squad_name] laser"
-	if(user && user.faction && cas_groups[user.faction])
+	if(user && user.faction && cas_groups[user.faction.faction_name])
 		signal = new(src)
 		signal.name = name
 		signal.target_id = tracking_id
 		signal.linked_cam = new(loc, name)
-		cas_groups[user.faction].add_signal(signal)
+		cas_groups[user.faction.faction_name].add_signal(signal)
 
 
 /obj/effect/overlay/temp/laser_target/Destroy()
 	if(signal)
-		cas_groups[user.faction].remove_signal(signal)
+		cas_groups[user.faction.faction_name].remove_signal(signal)
 		if(signal.linked_cam)
 			qdel(signal.linked_cam)
 			signal.linked_cam = null
@@ -198,7 +208,7 @@
 		source_binoc.laser = null
 		source_binoc = null
 
-	SetLuminosity(0)
+	set_light_on(FALSE)
 	. = ..()
 
 /obj/effect/overlay/temp/laser_target/ex_act(severity) //immune to explosions
@@ -214,14 +224,19 @@
 /obj/effect/overlay/temp/blinking_laser
 	name = "blinking laser"
 	anchored = TRUE
-	luminosity = 2
 	effect_duration = 10
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	icon = 'icons/obj/items/weapons/projectiles.dmi'
 	icon_state = "laser_target3"
 
+	light_system = STATIC_LIGHT
+	light_range = 2
+	light_power = 0.2
+	light_color = COLOR_SOFT_RED
+	light_on = TRUE
+
 /obj/effect/overlay/temp/blinking_laser/Destroy()
-	SetLuminosity(0)
+	set_light_on(FALSE)
 	. = ..()
 
 /obj/effect/overlay/temp/emp_sparks
@@ -231,7 +246,7 @@
 	effect_duration = 10
 
 /obj/effect/overlay/temp/emp_sparks/New(loc)
-	setDir(pick(cardinal))
+	setDir(pick(GLOB.cardinals))
 	..()
 
 /obj/effect/overlay/temp/emp_pulse

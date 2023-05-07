@@ -205,7 +205,7 @@
 
 	for(var/obj/W in T)
 		//Different classes of items give different commodities.
-		if (istype(W,/obj/item/trash/cigbutt))
+		if(istype(W,/obj/item/trash/cigbutt))
 			stored_comms["plastic"]++
 		else if(istype(W,/obj/effect/spider/spiderling))
 			stored_comms["wood"]++
@@ -235,7 +235,7 @@
 			stored_comms["metal"]++
 			stored_comms["glass"]++
 			stored_comms["glass"]++
-		else if(istype(W,/obj/item/ammo_casing))
+		else if(istype(W,/obj/item/ammo_parts))
 			stored_comms["metal"]++
 		else if(istype(W,/obj/item/shard/shrapnel))
 			stored_comms["metal"]++
@@ -252,7 +252,7 @@
 			stored_comms["wood"]++
 		else if(istype(W,/obj/item/ammo_magazine))
 			var/obj/item/ammo_magazine/AM = W
-			if(AM.current_rounds)
+			if(AM.ammo_position)
 				continue
 			stored_comms["metal"]++
 		else

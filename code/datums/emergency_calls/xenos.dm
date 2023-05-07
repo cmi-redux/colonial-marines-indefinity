@@ -18,23 +18,24 @@
 	if(istype(drop_spawn))
 		new /obj/effect/alien/weeds/node(drop_spawn) //drop some weeds for xeno plasma regen.
 
-/datum/emergency_call/xenos/create_member(datum/mind/M, turf/override_spawn_loc)
+/datum/emergency_call/xenos/create_member(datum/mind/mind, turf/override_spawn_loc)
 	var/turf/spawn_loc = override_spawn_loc ? override_spawn_loc : get_spawn_point()
 
 	if(!istype(spawn_loc))
 		return //Didn't find a useable spawn point.
 
-	var/mob/current_mob = M.current
+	var/mob/current_mob = mind.current
 
+	var/datum/faction/faction = GLOB.faction_datum[pick(FACTION_LIST_XENOMORPH)]
 	var/mob/living/carbon/xenomorph/new_xeno
 	if(!leader)
-		new_xeno = new /mob/living/carbon/xenomorph/ravager(spawn_loc)
+		new_xeno = new /mob/living/carbon/xenomorph/ravager(spawn_loc, null, faction)
 		leader = new_xeno
 	else
 		var/picked = pick(/mob/living/carbon/xenomorph/drone, /mob/living/carbon/xenomorph/spitter, /mob/living/carbon/xenomorph/lurker)
-		new_xeno = new picked(spawn_loc)
+		new_xeno = new picked(spawn_loc, null, faction)
 
-	M.transfer_to(new_xeno, TRUE)
+	mind.transfer_to(new_xeno, TRUE)
 
 	QDEL_NULL(current_mob)
 

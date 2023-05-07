@@ -29,7 +29,7 @@
 
 //Disperses river, doing so gradually.
 /datum/game_mode/proc/disperse_river()
-	set waitfor = 0
+	set waitfor = FALSE
 	flags_round_type &= ~MODE_FOG_ACTIVATED
 	var/i
 	for(i in round_toxic_river)
@@ -151,7 +151,7 @@ var/global/east_riverstart = 0
 		cause_damage(M)
 		START_PROCESSING(SSobj, src)
 		return
-	else if(isVehicleMultitile(A))
+	else if(isvehiclemultitile(A))
 		var/obj/vehicle/multitile/V = A
 
 		//various colony vehicles and trucks take damage from toxic water. Military-grade armored vehicles don't
@@ -186,10 +186,11 @@ var/global/east_riverstart = 0
 	if(targets_present < 1)
 		STOP_PROCESSING(SSobj, src)
 
+
 /obj/effect/blocker/toxic_water/proc/cause_damage(mob/living/M)
 	if(M.stat == DEAD)
 		return
-	M.last_damage_data = create_cause_data("toxic water")
+	M.last_damage_data = create_cause_data("токсичной реки")
 	if(islarva(M))
 		M.apply_damage(2,BURN)
 	else if(isxeno(M) && !islarva(M))
@@ -219,7 +220,7 @@ var/global/east_riverstart = 0
 	if(dispersing || !toxic)
 		return
 
-	for(var/direction in alldirs)
+	for(var/direction in GLOB.alldirs)
 		if(direction == from_dir) continue //doesn't check backwards
 
 		var/effective_spread_delay
@@ -304,7 +305,7 @@ var/global/east_riverstart = 0
 	//A.ambience_exterior = 'sound/ambience/ambiatm1.ogg'
 
 	for(var/obj/structure/machinery/dispersal_initiator/M in machines)
-		if (M.id == src.id)
+		if(M.id == src.id)
 			M.initiate()
 
 	sleep(50)

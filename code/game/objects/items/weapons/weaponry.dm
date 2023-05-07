@@ -195,7 +195,7 @@
 	if(flags_item & NOBLUDGEON)
 		return
 
-	if (!istype(M)) // not sure if this is the right thing...
+	if(!istype(M)) // not sure if this is the right thing...
 		return 0
 
 	if( (M in already_dead) || (M.stat == DEAD) )
@@ -260,7 +260,7 @@
 		M.apply_effect(kill_delay/15, STUN)
 
 
-	for (var/mob/O in hearers(world_view_size, M))
+	for(var/mob/O in hearers(world_view_size, M))
 		O << sound('sound/effects/Heart Beat.ogg', repeat = 1, wait = 0, volume = 100, channel = 2) //play on same channel as ambience
 		spawn(kill_delay)
 			O << sound(, , , , channel = 2) //cut sound
@@ -274,8 +274,11 @@
 			var/def_zone = pick("head","l_leg","l_foot","r_leg","r_foot","l_arm","l_hand","r_arm","r_hand")
 			switch(damtype)
 				if("brute")
-					M.apply_damage(power,BRUTE,def_zone)
+					M.apply_damage(power, BRUTE, def_zone)
 				if("fire")
-					M.apply_damage(power,BURN,def_zone)
+					M.apply_damage(power, BURN, def_zone)
+			user.track_damage(initial(name), M, power)
+			if(user.faction == M.faction)
+				user.track_friendly_damage(initial(name), M, power)
 
 	return 1

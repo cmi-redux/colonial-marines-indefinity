@@ -25,7 +25,7 @@
 #define DB_FILTER_LOCAL SSentity_manager.filter_local
 #define DB_META SSentity_manager.tables
 #define DB_VIEW SSentity_manager.view_meta
-#define WAIT_DB_READY while(!SSentity_manager.ready) {stoplag();}
+#define WAIT_DB_READY while(!SSentity_manager.initialized) {stoplag();}
 
 // MODIFY THESE TO ENABLE OR DISABLE DB ENGINES
 #define NDATABASE_BSQL_SUPPORT TRUE

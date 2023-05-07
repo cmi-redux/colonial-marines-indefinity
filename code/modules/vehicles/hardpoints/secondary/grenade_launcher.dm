@@ -46,7 +46,7 @@
 	return TRUE
 
 /obj/item/hardpoint/secondary/grenade_launcher/fire_projectile(mob/user, atom/A)
-	set waitfor = 0
+	set waitfor = FALSE
 
 	var/turf/origin_turf = get_turf(src)
 	origin_turf = locate(origin_turf.x + origins[1], origin_turf.y + origins[2], origin_turf.z)
@@ -56,11 +56,9 @@
 	if(range > max_range)
 		range = max_range
 
-	var/obj/item/projectile/P = generate_bullet(user, origin_turf)
-	SEND_SIGNAL(P, COMSIG_BULLET_USER_EFFECTS, owner.seats[VEHICLE_GUNNER])
-	P.fire_at(A, owner.seats[VEHICLE_GUNNER], src, P.ammo.max_range, P.ammo.shell_speed)
+	var/obj/item/projectile/projectile = generate_bullet(user, origin_turf)
+	SEND_SIGNAL(projectile, COMSIG_BULLET_USER_EFFECTS, owner.seats[VEHICLE_GUNNER])
+	projectile.fire_at(A, owner.seats[VEHICLE_GUNNER], src, projectile.ammo.max_range, projectile.ammo.shell_speed)
 
 	if(use_muzzle_flash)
 		muzzle_flash(Get_Angle(owner, A))
-
-	ammo.current_rounds--

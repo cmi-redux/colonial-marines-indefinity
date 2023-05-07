@@ -5,7 +5,7 @@ GLOBAL_VAR_INIT(perf_flags, NO_FLAGS)
 
 GLOBAL_LIST_INIT(bitflags, list((1<<0), (1<<1), (1<<2), (1<<3), (1<<4), (1<<5), (1<<6), (1<<7), (1<<8), (1<<9), (1<<10), (1<<11), (1<<12), (1<<13), (1<<14), (1<<15), (1<<16), (1<<17), (1<<18), (1<<19), (1<<20), (1<<21), (1<<22), (1<<23)))
 
-GLOBAL_VAR_INIT(master_mode, "Distress Signal")
+GLOBAL_VAR_INIT(master_mode, MODE_NAME_DISTRESS_SIGNAL)
 
 GLOBAL_VAR_INIT(timezoneOffset, 0)
 
@@ -14,16 +14,14 @@ GLOBAL_LIST_INIT(pill_icon_mappings, map_pill_icons())
 /// In-round override to default OOC color
 GLOBAL_VAR(ooc_color_override)
 
-/// List of roles that can be setup for each gamemode
-GLOBAL_LIST_INIT(gamemode_roles, list())
+GLOBAL_VAR_INIT(last_time_qued, 0)
 
-GLOBAL_VAR_INIT(minimum_exterior_lighting_alpha, 255)
+GLOBAL_VAR(xenomorph_attack_delay)
+
+GLOBAL_VAR_INIT(ship_hc_delay, setup_hc_delay())
 
 GLOBAL_DATUM_INIT(item_to_box_mapping, /datum/item_to_box_mapping, init_item_to_box_mapping())
 
-/// Offset for the Operation time
-GLOBAL_VAR_INIT(time_offset, setup_offset())
-
-/// Sets the offset 2 lines above.
-/proc/setup_offset()
-	return rand(10 MINUTES, 24 HOURS)
+/proc/setup_hc_delay()
+	var/value = rand(3000, 36000)
+	return value

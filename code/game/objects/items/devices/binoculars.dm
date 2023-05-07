@@ -15,6 +15,7 @@
 	/// If FALSE won't change icon_state to a camo marine bino.
 	var/uses_camo = TRUE
 
+	faction_to_get = FACTION_MARINE
 
 	//matter = list("metal" = 50,"glass" = 50)
 
@@ -74,7 +75,7 @@
 
 /obj/item/device/binoculars/range/get_examine_text(mob/user)
 	. = ..()
-	. += SPAN_NOTICE(FONT_SIZE_LARGE("The rangefinder reads: LONGITUDE [last_x], LATITUDE [last_y]."))
+	. += SPAN_NOTICE(FONT_SIZE_LARGE("Данные: ДОЛГОТА [last_x], ШИРОТА [last_y]."))
 
 /obj/item/device/binoculars/range/verb/toggle_rangefinder_popup()
 	set name = "Toggle Rangefinder Display"
@@ -113,8 +114,8 @@
 			return FALSE
 		if(user.sight & SEE_TURFS)
 			var/list/turf/path = getline2(user, A, include_from_atom = FALSE)
-			for(var/turf/T in path)
-				if(T.opacity)
+			for(var/turf/turf in path)
+				if(turf.opacity)
 					to_chat(user, SPAN_WARNING("There is something in the way of the laser!"))
 					return FALSE
 		acquire_target(A, user)
@@ -124,16 +125,16 @@
 /obj/item/device/binoculars/range/proc/stop_targeting(mob/living/carbon/human/user)
 	if(coord)
 		QDEL_NULL(coord)
-		to_chat(user, SPAN_WARNING("You stop lasing."))
+		to_chat(user, SPAN_WARNING("Вы перестаете наводиться."))
 
 /obj/item/device/binoculars/range/proc/acquire_target(atom/A, mob/living/carbon/human/user)
-	set waitfor = 0
+	set waitfor = FALSE
 
 	if(coord)
-		to_chat(user, SPAN_WARNING("You're already targeting something."))
+		to_chat(user, SPAN_WARNING("Вы уже навелись на что-то."))
 		return
 	if(world.time < laser_cooldown)
-		to_chat(user, SPAN_WARNING("[src]'s laser battery is recharging."))
+		to_chat(user, SPAN_WARNING("[src]'s батарея лазера перезаряжается."))
 		return
 
 	var/acquisition_time = target_acquisition_delay
@@ -154,10 +155,10 @@
 	if(!istype(TU) || user.action_busy)
 		return
 	playsound(src, 'sound/effects/nightvision.ogg', 35)
-	to_chat(user, SPAN_NOTICE("INITIATING LASER TARGETING. Stand still."))
+	to_chat(user, SPAN_NOTICE("ИНИЦИАЦИЯ ЛАЗЕРНОЙ НАВОДКИ. Стойте на месте."))
 	if(!do_after(user, acquisition_time, INTERRUPT_ALL, BUSY_ICON_GENERIC) || world.time < laser_cooldown)
 		return
-	var/obj/effect/overlay/temp/laser_coordinate/LT = new (TU, las_name, user)
+	var/obj/effect/overlay/temp/laser_coordinate/LT = new(TU, las_name, user)
 	coord = LT
 	last_x = obfuscate_x(coord.x)
 	last_y = obfuscate_y(coord.y)
@@ -234,7 +235,7 @@
 	..()
 	if(laser)
 		QDEL_NULL(laser)
-		to_chat(user, SPAN_WARNING("You stop lasing."))
+		to_chat(user, SPAN_WARNING("Вы перестаете наводиться."))
 
 /obj/item/device/binoculars/range/designator/verb/toggle_mode()
 	set category = "Object"
@@ -264,14 +265,14 @@
 			qdel(coord)
 
 /obj/item/device/binoculars/range/designator/acquire_target(atom/A, mob/living/carbon/human/user)
-	set waitfor = 0
+	set waitfor = FALSE
 
 	if(laser || coord)
-		to_chat(user, SPAN_WARNING("You're already targeting something."))
+		to_chat(user, SPAN_WARNING("Вы уже навелись на что-то."))
 		return
 
 	if(world.time < laser_cooldown)
-		to_chat(user, SPAN_WARNING("[src]'s laser battery is recharging."))
+		to_chat(user, SPAN_WARNING("[src]'s батарея лазера перезаряжается."))
 		return
 
 	var/acquisition_time = target_acquisition_delay
@@ -291,31 +292,21 @@
 	if(A.z == 0)
 		return
 
-	var/turf/TU = get_turf(A)
-	var/area/targ_area = get_area(A)
-	if(!istype(TU)) return
-	var/is_outside = FALSE
-	switch(targ_area.ceiling)
-		if(CEILING_NONE)
-			is_outside = TRUE
-		if(CEILING_GLASS)
-			is_outside = TRUE
-
-	if (protected_by_pylon(TURF_PROTECTION_CAS, TU))
-		is_outside = FALSE
-
-	if(!is_outside && !range_mode) //rangefinding works regardless of ceiling
-		to_chat(user, SPAN_WARNING("INVALID TARGET: target must be visible from high altitude."))
+	var/turf/target_turf = get_turf(A)
+	if(!istype(target_turf))
+		return
+	if(target_turf.can_air_strike(0, target_turf.get_real_roof()) != target_turf && !range_mode)
+		to_chat(user, SPAN_WARNING("НЕПРАВИЛЬНАЯ ЦЕЛЬ: цель должна быть видна с большой дистанции."))
 		return
 	if(user.action_busy)
 		return
 	playsound(src, 'sound/effects/nightvision.ogg', 35)
-	to_chat(user, SPAN_NOTICE("INITIATING LASER TARGETING. Stand still."))
+	to_chat(user, SPAN_NOTICE("ИНИЦИАЦИЯ ЛАЗЕРНОЙ НАВОДКИ. Стойте на месте."))
 	if(!do_after(user, acquisition_time, INTERRUPT_ALL, BUSY_ICON_GENERIC) || world.time < laser_cooldown || laser)
 		return
 	if(range_mode)
-		var/obj/effect/overlay/temp/laser_coordinate/LT = new (TU, las_name, user)
-		coord = LT
+		var/obj/effect/overlay/temp/laser_coordinate/laser_coordinate = new(target_turf, las_name, user)
+		coord = laser_coordinate
 		last_x = obfuscate_x(coord.x)
 		last_y = obfuscate_y(coord.y)
 		show_coords(user)
@@ -325,13 +316,13 @@
 				QDEL_NULL(coord)
 				break
 	else
-		to_chat(user, SPAN_NOTICE("TARGET ACQUIRED. LASER TARGETING IS ONLINE. DON'T MOVE."))
-		var/obj/effect/overlay/temp/laser_target/LT = new (TU, las_name, user, tracking_id)
-		laser = LT
+		to_chat(user, SPAN_NOTICE("ЦЕЛЬ ПОЛУЧЕНА. ЛАЗЕРНАЯ НАВОДКА ВКЛЮЧЕНА. НЕ ДВИГАЙТЕСЬ."))
+		var/obj/effect/overlay/temp/laser_target/laser_target = new(target_turf, las_name, user, tracking_id)
+		laser = laser_target
 
 		var/turf/userloc = get_turf(user)
-		msg_admin_niche("Laser target [las_name] has been designated by [key_name(user, 1)] at ([TU.x], [TU.y], [TU.z]). (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[userloc.x];Y=[userloc.y];Z=[userloc.z]'>JMP SRC</a>) (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[TU.x];Y=[TU.y];Z=[TU.z]'>JMP LOC</a>)")
-		log_game("Laser target [las_name] has been designated by [key_name(user, 1)] at ([TU.x], [TU.y], [TU.z]).")
+		msg_admin_niche("Laser target [las_name] has been designated by [key_name(user, 1)] at ([target_turf.x], [target_turf.y], [target_turf.z]). (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[userloc.x];Y=[userloc.y];Z=[userloc.z]'>JMP SRC</a>) (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[target_turf.x];Y=[target_turf.y];Z=[target_turf.z]'>JMP LOC</a>)")
+		log_game("Laser target [las_name] has been designated by [key_name(user, 1)] at ([target_turf.x], [target_turf.y], [target_turf.z]).")
 
 		playsound(src, 'sound/effects/binoctarget.ogg', 35)
 		while(laser)
@@ -391,27 +382,27 @@
 /datum/action/item_action/specialist/spotter_target/action_activate()
 	if(!ishuman(owner))
 		return
-	var/mob/living/carbon/human/human = owner
-	if(human.selected_ability == src)
-		to_chat(human, "You will no longer use [name] with \
-			[human.client && human.client.prefs && human.client.prefs.toggle_prefs & TOGGLE_MIDDLE_MOUSE_CLICK ? "middle-click" : "shift-click"].")
+	var/mob/living/carbon/human/H = owner
+	if(H.selected_ability == src)
+		to_chat(H, "You will no longer use [name] with \
+			[H.client && H.client.prefs && H.client.prefs.toggle_prefs & TOGGLE_MIDDLE_MOUSE_CLICK ? "middle-click" : "shift-click"].")
 		button.icon_state = "template"
-		human.selected_ability = null
+		H.selected_ability = null
 	else
-		to_chat(human, "You will now use [name] with \
-			[human.client && human.client.prefs && human.client.prefs.toggle_prefs & TOGGLE_MIDDLE_MOUSE_CLICK ? "middle-click" : "shift-click"].")
-		if(human.selected_ability)
-			human.selected_ability.button.icon_state = "template"
-			human.selected_ability = null
+		to_chat(H, "You will now use [name] with \
+			[H.client && H.client.prefs && H.client.prefs.toggle_prefs & TOGGLE_MIDDLE_MOUSE_CLICK ? "middle-click" : "shift-click"].")
+		if(H.selected_ability)
+			H.selected_ability.button.icon_state = "template"
+			H.selected_ability = null
 		button.icon_state = "template_on"
-		human.selected_ability = src
+		H.selected_ability = src
 
 /datum/action/item_action/specialist/spotter_target/can_use_action()
-	var/mob/living/carbon/human/human = owner
-	if(!(GLOB.character_traits[/datum/character_trait/skills/spotter] in human.traits))
-		to_chat(human, SPAN_WARNING("You have no idea how to use this!"))
+	var/mob/living/carbon/human/H = owner
+	if(!(GLOB.character_traits[/datum/character_trait/skills/spotter] in H.traits))
+		to_chat(H, SPAN_WARNING("You have no idea how to use this!"))
 		return FALSE
-	if(istype(human) && !human.is_mob_incapacitated() && !human.lying && (holder_item == human.r_hand || holder_item || human.l_hand))
+	if(istype(H) && !H.is_mob_incapacitated() && H.can_action && (holder_item == H.r_hand || holder_item || H.l_hand))
 		return TRUE
 
 /datum/action/item_action/specialist/spotter_target/proc/use_ability(atom/targetted_atom)
@@ -532,17 +523,17 @@
 	switch(las_mode)
 		if(0) //Actually adding descriptions so you can tell what the hell you've selected now.
 			las_mode = 1
-			to_chat(usr, SPAN_WARNING("IR Laser enabled! You will now designate airstrikes!"))
+			to_chat(usr, SPAN_WARNING("IR Лазер включен! Теперь вы наводите авиаудары!"))
 			update_icon()
 			return
 		if(1)
 			las_mode = 2
-			to_chat(usr, SPAN_WARNING("UV Laser enabled! You will now designate mortars!"))
+			to_chat(usr, SPAN_WARNING("UV Лазер включен! Теперь вы наводите минометы!"))
 			update_icon()
 			return
 		if(2)
 			las_mode = 0
-			to_chat(usr, SPAN_WARNING(" System offline, now this is just a pair of binoculars but heavier."))
+			to_chat(usr, SPAN_WARNING(" Система выключена, теперь это как обычная пара биноклев, ничего более."))
 			update_icon()
 			return
 	return
@@ -585,27 +576,27 @@
 	if(modifiers["middle"] || modifiers["shift"] || modifiers["alt"] || modifiers["ctrl"])
 		return FALSE
 
-	var/turf/SS = get_turf(src) //Stand Still, not what you're thinking.
-	var/turf/T = get_turf(A)
+	var/turf/source_turf = get_turf(src) //Stand Still, not what you're thinking.
+	var/turf/target_turf = get_turf(A)
 
 	if(!las_mode)
-		to_chat(user, SPAN_WARNING("The Laser Designator is currently off!"))
+		to_chat(user, SPAN_WARNING("Лазерная наводка в данный момент выключена!"))
 		return 0
 
 	if(las_r || las_b) //Make sure we don't spam strikes
-		to_chat(user, SPAN_WARNING("The laser is currently cooling down. Please wait roughly 5 minutes from lasing the target."))
+		to_chat(user, SPAN_WARNING("Лазер в настоящее время остывает. Пожалуйста, подождите примерно 10 минут после того, как ЛАЗЕР будет активирован."))
 		return 0
 
 	to_chat(user, SPAN_BOLDNOTICE(" You start lasing the target area."))
-	message_admins("ALERT: [user] ([user.key]) IS CURRENTLY LASING A TARGET: CURRENT MODE [las_mode], at ([T.x],[T.y],[T.z]) (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>).") // Alert all the admins to this asshole. Added the jmp command from the explosion code.
-	var/obj/effect/las_target/lasertarget = new(T.loc)
+	message_admins("ALERT: [user] ([user.key]) IS CURRENTLY LASING A TARGET: CURRENT MODE [las_mode], at ([target_turf.x],[target_turf.y],[target_turf.z]) (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[target_turf.x];Y=[target_turf.y];Z=[target_turf.z]'>JMP</a>).")
+	var/obj/effect/las_target/lasertarget = new(target_turf.loc, faction)
 	if(las_mode == 1 && !las_r) // Heres our IR bomb code.
 		lasing = TRUE
 		lasertarget.icon_state = "las_r"
 		las_r = 2
 		playsound(src, 'sound/effects/nightvision.ogg', 35)
 		sleep(50)
-		if(SS != get_turf(src)) //Don't move.
+		if(source_turf != get_turf(src)) //Don't move.
 			lasing = FALSE
 			las_r = 0
 			return 0
@@ -616,12 +607,12 @@
 			offset_x = 4
 		if(plane_toggle)
 			offset_y = 4
-		var/turf/target = locate(T.x + offset_x,T.y + offset_y,T.z) //Three napalm rockets are launched
-		var/turf/target_2 = locate(T.x,T.y,T.z)
-		var/turf/target_3 = locate(T.x - offset_x,T.y - offset_y,T.z)
-		var/turf/target_4 = locate(T.x - (offset_x*2),T.y - (offset_y*2),T.z)
+		var/turf/target = locate(target_turf.x + offset_x,target_turf.y + offset_y,target_turf.z) //Three napalm rockets are launched
+		var/turf/target_2 = locate(target_turf.x,target_turf.y,target_turf.z)
+		var/turf/target_3 = locate(target_turf.x - offset_x,target_turf.y - offset_y,target_turf.z)
+		var/turf/target_4 = locate(target_turf.x - (offset_x*2),target_turf.y - (offset_y*2),target_turf.z)
 		sleep(50) //AWW YEAH
-		var/datum/cause_data/cause_data = create_cause_data("artillery fire", user)
+		var/datum/cause_data/cause_data = create_cause_data("артилериским огнем", user)
 		flame_radius(cause_data, 3, target, , , , , )
 		explosion(target,  -1, 2, 3, 5, , , , cause_data)
 		flame_radius(cause_data, 3, target_2, , , , , )
@@ -642,7 +633,7 @@
 		las_b = 2
 		playsound(src, 'sound/effects/nightvision.ogg', 35)
 		sleep(50)
-		if(SS != get_turf(src)) //Don't move.
+		if(source_turf != get_turf(src)) //Don't move.
 			lasing = FALSE
 			las_b = 0
 			return 0
@@ -655,12 +646,12 @@
 		else
 			con_power = 3
 			HE_power = 3
-		var/turf/target = locate(T.x + rand(-2,2),T.y + rand(-2,2),T.z)
-		var/turf/target_2 = locate(T.x + rand(-2,2),T.y + rand(-2,2),T.z)
-		var/turf/target_3 = locate(T.x + rand(-2,2),T.y + rand(-2,2),T.z)
+		var/turf/target = locate(target_turf.x + rand(-2,2),target_turf.y + rand(-2,2),target_turf.z)
+		var/turf/target_2 = locate(target_turf.x + rand(-2,2),target_turf.y + rand(-2,2),target_turf.z)
+		var/turf/target_3 = locate(target_turf.x + rand(-2,2),target_turf.y + rand(-2,2),target_turf.z)
 		if(target && istype(target))
 			qdel(lasertarget)
-			var/datum/cause_data/cause_data = create_cause_data("artillery fire", user)
+			var/datum/cause_data/cause_data = create_cause_data("артилериским огнем", user)
 			explosion(target, -1, HE_power, con_power, con_power, , , , cause_data) //Kaboom!
 			sleep(rand(15,30)) //This is all better done in a for loop, but I am mad lazy
 			explosion(target_2, -1, HE_power, con_power, con_power, , , , cause_data)
@@ -683,3 +674,10 @@
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	unacidable = TRUE
+	var/tcmp_color = COLOR_LASER_TCMP
+
+/obj/effect/las_target/Initialize(mapload, datum/faction/faction_to_set)
+	. = ..()
+
+	faction = faction_to_set
+	SSmapview.add_marker(src, "laser", custom_color = tcmp_color)

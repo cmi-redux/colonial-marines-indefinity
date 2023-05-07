@@ -8,6 +8,7 @@
 	opacity = TRUE
 	density = TRUE
 	throwpass = 0
+	plane = WALL_PLANE
 	layer = DOOR_OPEN_LAYER
 	minimap_color = MINIMAP_DOOR
 	var/open_layer = DOOR_OPEN_LAYER
@@ -49,13 +50,13 @@
 /obj/structure/machinery/door/Destroy()
 	. = ..()
 	if(filler && width > 1)
-		filler.SetOpacity(0)// Ehh... let's hope there are no walls there. Must fix this
+		filler.set_opacity(FALSE)// Ehh... let's hope there are no walls there. Must fix this
 		filler = null
 	density = FALSE
 
 /obj/structure/machinery/door/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = NONE
 
 /obj/structure/machinery/door/proc/handle_multidoor()
@@ -64,12 +65,12 @@
 			bound_width = width * world.icon_size
 			bound_height = world.icon_size
 			filler = get_step(src,EAST)
-			filler.SetOpacity(opacity)
+			filler.set_opacity(opacity)
 		else
 			bound_width = world.icon_size
 			bound_height = width * world.icon_size
 			filler = get_step(src,NORTH)
-			filler.SetOpacity(opacity)
+			filler.set_opacity(opacity)
 
 //process()
 	//return
@@ -84,7 +85,8 @@
 	if(panel_open || operating) return
 	if(ismob(AM))
 		var/mob/M = AM
-		if(world.time - M.last_bumped <= openspeed) return //Can bump-open one airlock per second. This is to prevent shock spam.
+		if(world.time - M.last_bumped <= openspeed)
+			return	//Can bump-open one airlock per second. This is to prevent shock spam.
 		M.last_bumped = world.time
 		if(!M.is_mob_restrained() && M.mob_size > MOB_SIZE_SMALL)
 			bumpopen(M)
@@ -213,7 +215,7 @@
 	return
 
 
-/obj/structure/machinery/door/proc/open(forced=0)
+/obj/structure/machinery/door/proc/open(forced = 0)
 	if(!density)
 		return TRUE
 	if(operating || !loc)
@@ -222,9 +224,9 @@
 	operating = TRUE
 	do_animate("opening")
 	icon_state = "door0"
-	SetOpacity(FALSE)
+	set_opacity(FALSE)
 	if(filler)
-		filler.SetOpacity(opacity)
+		filler.set_opacity(opacity)
 	addtimer(CALLBACK(src, PROC_REF(finish_open)), openspeed)
 	return TRUE
 
@@ -248,17 +250,17 @@
 
 	operating = TRUE
 	CHECK_TICK
-	src.density = TRUE
-	src.layer = closed_layer
+	density = TRUE
+	layer = closed_layer
 	do_animate("closing")
 	addtimer(CALLBACK(src, PROC_REF(finish_close)), openspeed)
 
 /obj/structure/machinery/door/proc/finish_close()
 	update_icon()
 	if(visible && !glass)
-		SetOpacity(TRUE)
+		set_opacity(TRUE)
 		if(filler)
-			filler.SetOpacity(opacity)
+			filler.set_opacity(opacity)
 	operating = FALSE
 
 /obj/structure/machinery/door/proc/requiresID()
@@ -274,21 +276,21 @@
 		close()
 	return
 
-/obj/structure/machinery/door/Move(new_loc, new_dir)
+/obj/structure/machinery/door/Move(atom/NewLoc, direction)
 	. = ..()
 	if(width > 1)
 		if(dir in list(EAST, WEST))
 			bound_width = width * world.icon_size
 			bound_height = world.icon_size
-			filler.SetOpacity(0)
+			filler.set_opacity(FALSE)
 			filler = (get_step(src,EAST)) //Find new turf
-			filler.SetOpacity(opacity)
+			filler.set_opacity(opacity)
 		else
 			bound_width = world.icon_size
 			bound_height = width * world.icon_size
-			filler.SetOpacity(0)
+			filler.set_opacity(FALSE)
 			filler = (get_step(src,NORTH)) //Find new turf
-			filler.SetOpacity(opacity)
+			filler.set_opacity(opacity)
 
 
 /obj/structure/machinery/door/morgue

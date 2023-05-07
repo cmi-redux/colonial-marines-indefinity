@@ -26,8 +26,8 @@ var/global/list/pipe_colors = list("grey" = PIPE_COLOR_GREY, "red" = PIPE_COLOR_
 		return 1
 	for(var/C in pipe_colors)
 		if(color == pipe_colors[C])
-			return 1
-	return 0
+			return TRUE
+	return FALSE
 
 //--------------------------------------------
 // Icon cache generation
@@ -94,13 +94,13 @@ var/global/list/pipe_colors = list("grey" = PIPE_COLOR_GREY, "red" = PIPE_COLOR_
 			I.color = pipe_colors[pipe_color]
 			pipe_icons[state + "[pipe_colors[pipe_color]]"] = I
 
-	pipe = new ('icons/obj/pipes/heat.dmi')
+	pipe = new('icons/obj/pipes/heat.dmi')
 	for(var/state in pipe.IconStates())
 		if(!state || findtext(state, "map"))
 			continue
 		pipe_icons["hepipe" + state] = image('icons/obj/pipes/heat.dmi', icon_state = state)
 
-	pipe = new ('icons/obj/pipes/junction.dmi')
+	pipe = new('icons/obj/pipes/junction.dmi')
 	for(var/state in pipe.IconStates())
 		if(!state || findtext(state, "map"))
 			continue
@@ -170,7 +170,7 @@ var/global/list/pipe_colors = list("grey" = PIPE_COLOR_GREY, "red" = PIPE_COLOR_
 
 		var/cache_name = state
 
-		for(var/D in cardinal)
+		for(var/D in GLOB.cardinals)
 			var/image/I = image('icons/obj/pipes/pipe_underlays.dmi', icon_state = state, dir = D)
 			underlays[cache_name + "[D]"] = I
 			for(var/pipe_color in pipe_colors)
@@ -202,7 +202,7 @@ var/global/list/pipe_colors = list("grey" = PIPE_COLOR_GREY, "red" = PIPE_COLOR_
 		if(state == "")
 			continue
 
-		for(var/D in cardinal)
+		for(var/D in  GLOB.cardinals)
 			var/image/I = image('icons/atmos/pipe_underlays.dmi', icon_state = state, dir = D)
 			switch(state)
 				if("intact")

@@ -14,6 +14,7 @@
 
 	var/list/modes // allowed modes
 	var/list/gamemode_cache
+	var/list/votable_modes // votable modes
 	var/list/mode_names
 
 	var/motd
@@ -284,6 +285,7 @@
 	gamemode_cache = typecacheof(/datum/game_mode, TRUE)
 	modes = list()
 	mode_names = list()
+	votable_modes = list()
 	for(var/T in gamemode_cache)
 		// I wish I didn't have to instance the game modes in order to look up
 		// their information, but it is the only way (at least that I know of).
@@ -292,7 +294,10 @@
 			if(!(M.config_tag in modes)) //Ensure each mode is added only once
 				modes += M.config_tag
 				mode_names[M.config_tag] = M.name
-		GLOB.gamemode_roles[M.name] = M.get_roles_list()
+				if(M.votable)
+					if(modes == MODE_NAME_CRASH && GLOB.clients.len >= CRASH_POP_LOCK)
+						continue
+					votable_modes += M.config_tag
 		qdel(M)
 
 /datum/controller/configuration/proc/pick_mode(mode_name)

@@ -33,7 +33,7 @@
 
 /obj/structure/machinery/part_fabricator/power_change()
 	..()
-	if (stat & NOPOWER)
+	if(stat & NOPOWER)
 		icon_state = "drone_fab_nopower"
 
 /obj/structure/machinery/part_fabricator/process()
@@ -51,7 +51,7 @@
 		add_to_point_store()
 
 /obj/structure/machinery/part_fabricator/proc/build_part(part_type, cost, mob/user)
-	set waitfor = 0
+	set waitfor = FALSE
 	if(stat & NOPOWER) return
 	if(get_point_store() < cost)
 		to_chat(user, SPAN_WARNING("You don't have enough points to build that."))
@@ -68,7 +68,7 @@
 	new part_type(get_step(src, SOUTHEAST))
 	icon_state = "drone_fab_idle"
 
-/obj/structure/machinery/part_fabricator/ui_act(action, params)
+/obj/structure/machinery/part_fabricator/ui_act(action, list/params)
 	. = ..()
 	if(.)
 		return
@@ -82,15 +82,15 @@
 		var/cost = text2num(params["cost"])
 		var/exploiting = TRUE
 
-		if (valid_parts && ispath(produce, valid_parts))
+		if(valid_parts && ispath(produce, valid_parts))
 			exploiting = FALSE
-		else if (valid_ammo && ispath(produce, valid_ammo))
+		else if(valid_ammo && ispath(produce, valid_ammo))
 			exploiting = FALSE
 
-		if (cost < 0)
+		if(cost < 0)
 			exploiting = TRUE
 
-		if (exploiting)
+		if(exploiting)
 			log_admin("Bad topic: [usr] may be trying to HREF exploit [src] with [produce], [cost]")
 			return
 

@@ -335,7 +335,7 @@
 		if(tank.reagents.has_reagent("water", launcher_cost))
 			tank.reagents.remove_reagent("water", launcher_cost)
 			tank.launcher_cooldown = world.time + 50
-			var/obj/effect/resin_container/A = new (get_turf(src))
+			var/obj/effect/resin_container/A = new(get_turf(src))
 			playsound(src,'sound/items/syringeproj.ogg',40,TRUE)
 			//projectile movement
 			for(var/i in 1 to 5)

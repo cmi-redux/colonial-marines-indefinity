@@ -65,6 +65,11 @@
 //#define EFFECT_FLAG_XENOMORPH
 //#define EFFECT_FLAG_CHEMICAL
 
+DEFINE_BITFIELD(effect_flag_flags, list(
+	"LIFE" = EFFECT_FLAG_LIFE,
+	"DEFAULT" = EFFECT_FLAG_DEFAULT,
+))
+
 /mob/proc/apply_effect()
 	return FALSE
 

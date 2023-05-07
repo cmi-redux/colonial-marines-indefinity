@@ -19,14 +19,14 @@
 	icon = 'icons/obj/structures/props/smoothlattice.dmi'
 	icon_state = "latticeblank"
 	updateOverlays()
-	for (var/dir in cardinal)
+	for (var/dir in  GLOB.cardinals)
 		var/obj/structure/lattice/L
 		if(locate(/obj/structure/lattice, get_step(src, dir)))
 			L = locate(/obj/structure/lattice, get_step(src, dir))
 			L.updateOverlays()
 
 /obj/structure/lattice/Destroy()
-	for (var/dir in cardinal)
+	for (var/dir in  GLOB.cardinals)
 		var/obj/structure/lattice/L
 		if(locate(/obj/structure/lattice, get_step(src, dir)))
 			L = locate(/obj/structure/lattice, get_step(src, dir))
@@ -48,11 +48,11 @@
 
 /obj/structure/lattice/attackby(obj/item/C as obj, mob/user as mob)
 
-	if (istype(C, /obj/item/stack/tile/plasteel))
+	if(istype(C, /obj/item/stack/tile/plasteel))
 		var/turf/T = get_turf(src)
 		T.attackby(C, user) //BubbleWrap - hand this off to the underlying turf instead
 		return
-	if (iswelder(C))
+	if(iswelder(C))
 		if(!HAS_TRAIT(C, TRAIT_TOOL_BLOWTORCH))
 			to_chat(user, SPAN_WARNING("You need a stronger blowtorch!"))
 			return
@@ -75,7 +75,7 @@
 
 		var/dir_sum = 0
 
-		for (var/direction in cardinal)
+		for (var/direction in  GLOB.cardinals)
 			if(locate(/obj/structure/lattice, get_step(src, direction)))
 				dir_sum += direction
 			else

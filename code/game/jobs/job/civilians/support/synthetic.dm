@@ -2,14 +2,15 @@
 	title = JOB_SYNTH
 	total_positions = 2
 	spawn_positions = 1
-	allow_additional = 1
-	scaled = 1
+	allow_additional = TRUE
+	scaled = TRUE
 	supervisors = "the acting commanding officer"
 	selection_class = "job_synth"
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT|ROLE_ADMIN_NOTIFY|ROLE_WHITELISTED|ROLE_CUSTOM_SPAWN
+	flags_startup_parameters = ROLE_ADMIN_NOTIFY|ROLE_WHITELISTED|ROLE_CUSTOM_SPAWN
 	flags_whitelist = WHITELIST_SYNTHETIC
 	gear_preset = /datum/equipment_preset/synth/uscm
 	entry_message_body = "You are a <a href='"+URL_WIKI_SYN_GUIDE+"'>Synthetic!</a> You are held to a higher standard and are required to obey not only the Server Rules but Marine Law and Synthetic Rules. Failure to do so may result in your White-list Removal. Your primary job is to support and assist all USCM Departments and Personnel on-board. In addition, being a Synthetic gives you knowledge in every field and specialization possible on-board the ship. As a Synthetic you answer to the acting commanding officer. Special circumstances may change this!"
+	balance_formulas = list(BALANCE_FORMULA_COMMANDING, BALANCE_FORMULA_MISC, BALANCE_FORMULA_ENGINEER, BALANCE_FORMULA_SUPPORT, BALANCE_FORMULA_OPERATIONS, BALANCE_FORMULA_MEDIC)
 
 /datum/job/civilian/synthetic/New()
 	. = ..()
@@ -37,7 +38,7 @@
 /datum/job/civilian/synthetic/get_total_positions(latejoin = 0)
 	var/positions = spawn_positions
 	if(latejoin)
-		positions = synth_slot_formula(get_total_marines())
+		positions = synth_slot_formula(get_total_population(FACTION_MARINE))
 		if(positions <= total_positions_so_far)
 			positions = total_positions_so_far
 		else

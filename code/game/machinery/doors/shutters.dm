@@ -25,7 +25,7 @@
 			icon_state = "shutter0"
 			sleep(15)
 			density = FALSE
-			SetOpacity(0)
+			set_opacity(FALSE)
 			operating = 0
 			return
 	return
@@ -41,7 +41,7 @@
 	sleep(10)
 	density = FALSE
 	layer = open_layer
-	SetOpacity(0)
+	set_opacity(FALSE)
 
 	if(operating == 1) //emag again
 		operating = 0
@@ -58,7 +58,7 @@
 	layer = closed_layer
 	density = TRUE
 	if(visible)
-		SetOpacity(1)
+		set_opacity(TRUE)
 	playsound(loc, 'sound/machines/blastdoor.ogg', 25)
 
 	sleep(10)
@@ -82,6 +82,7 @@
 
 /obj/structure/machinery/door/poddoor/shutters/almayer/containment
 	unacidable = TRUE
+	var/xeno_overridable = TRUE
 
 /obj/structure/machinery/door/poddoor/shutters/almayer/containment/attack_alien(mob/living/carbon/xenomorph/M)
 	if(isqueen(M) && density && !operating)
@@ -92,12 +93,38 @@
 
 /obj/structure/machinery/door/poddoor/shutters/almayer/containment/pry_open(mob/living/carbon/xenomorph/X, time = 4 SECONDS)
 	. = ..()
-	if(. && !(stat & BROKEN))
+	if(. && !(stat & BROKEN) && xeno_overridable)
 		stat |= BROKEN
 		addtimer(CALLBACK(src, PROC_REF(unbreak_doors)), 10 SECONDS)
 
 /obj/structure/machinery/door/poddoor/shutters/almayer/containment/proc/unbreak_doors()
 	stat &= ~BROKEN
+
+/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper
+	name = "Floor Lockdown"
+	desc = "Safety shutters to prevent on lockdown any movements"
+	var/lock_type = "stairs"
+	density = FALSE
+	xeno_overridable = FALSE
+
+/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/Initialize()
+	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/LateInitialize()
+	. = ..()
+	if(!GLOB.skyscrapers_sec_comps["[z]"])
+		CRASH("[src] located on zlevel without skyscraper sec_comp")
+	var/obj/structure/machinery/computer/security_blocker/blocker = GLOB.skyscrapers_sec_comps["[z]"]
+	if(lock_type == "stairs")
+		blocker.stairs_doors += src
+	else if(lock_type == "elevator")
+		blocker.elevator_doors += src
+	else if(lock_type == "move_lock")
+		blocker.move_lock_doors += src
+		if(GLOB.skyscrapers_sec_comps["[z+1]"])
+			var/obj/structure/machinery/computer/security_blocker/upper_blocker = GLOB.skyscrapers_sec_comps["[z+1]"]
+			upper_blocker.move_lock_doors += src
 
 //transit shutters used by marine dropships
 /obj/structure/machinery/door/poddoor/shutters/transit

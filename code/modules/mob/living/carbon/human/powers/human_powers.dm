@@ -131,14 +131,14 @@
 		var/mob/living/carbon/human/H = G.grabbed_thing
 		H.apply_damage(50,BRUTE)
 		if(H.stat == 2)
-			H.gib(create_cause_data("gutting", usr))
+			H.gib(create_cause_data("потрошения", usr))
 	else
 		var/mob/living/M = G.grabbed_thing
 		if(!istype(M))
 			return //wut
 		M.apply_damage(50,BRUTE)
 		if(M.stat == 2)
-			M.gib(create_cause_data("gutting", usr))
+			M.gib(create_cause_data("потрошения", usr))
 
 /mob/living/carbon/human/proc/commune()
 	set category = "Abilities"

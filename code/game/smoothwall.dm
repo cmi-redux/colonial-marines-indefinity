@@ -13,7 +13,7 @@
 	var/j //second iterator
 	var/k //third iterator (I know, that's a lot, but I'm trying to make this modular, so bear with me)
 
-	for(i in cardinal) //For all cardinal dir turfs
+	for(i in  GLOB.cardinals) //For all cardinals dir turfs
 		T = get_step(src, i)
 		if(!istype(T)) continue
 		for(j in tiles_with) //And for all types that we tile with
@@ -34,7 +34,7 @@
 	var/j //second iterator
 	var/atom/k //third iterator (I know, that's a lot, but I'm trying to make this modular, so bear with me)
 
-	for(i in cardinal) //For all cardinal dir turfs
+	for(i in  GLOB.cardinals) //For all cardinals dir turfs
 		T = get_step(src, i)
 		if(!istype(T)) continue
 		for(j in tiles_with) //And for all types that we tile with
@@ -61,7 +61,7 @@
 	var/j
 	var/k
 
-	for(i in cardinal)
+	for(i in  GLOB.cardinals)
 		T = get_step(src, i)
 		if(!istype(T)) continue
 		for(j in tiles_with)
@@ -93,7 +93,7 @@
 	var/j
 	var/k
 
-	for(i in cardinal)
+	for(i in  GLOB.cardinals)
 		T = get_step(src, i)
 		if(!istype(T)) continue
 		for(j in tiles_with)
@@ -120,7 +120,7 @@
 	var/atom/k
 	var/j
 
-	if (dir == SOUTH)
+	if(dir == SOUTH)
 		T = locate(x, y+2, z)
 		for(j in tiles_with)
 			if(istype(T, j))
@@ -141,7 +141,7 @@
 					k.relativewall()
 					break
 
-	else if (dir == EAST)
+	else if(dir == EAST)
 		T = locate(x+2, y, z)
 		for(j in tiles_with)
 			if(istype(T, j))
@@ -217,7 +217,7 @@
 	var/j //second iterator
 	var/k //third iterator (I know, that's a lot, but I'm trying to make this modular, so bear with me)
 
-	for(i in alldirs) //For all cardinal dir turfs
+	for(i in GLOB.alldirs) //For all cardinals dir turfs
 		T = get_step(src, i)
 		if(!istype(T)) continue
 		for(j in tiles_with) //And for all types that we tile with
@@ -239,7 +239,7 @@
 	var/j //second iterator
 	var/k //third iterator (I know, that's a lot, but I'm trying to make this modular, so bear with me)
 
-	for(i in alldirs) //For all cardinal dir turfs
+	for(i in GLOB.alldirs) //For all cardinals dir turfs
 		T = get_step(src, i)
 		if(!istype(T)) continue
 		for(j in tiles_with) //And for all types that we tile with

@@ -5,7 +5,9 @@
 	icon_state = "window"
 	density = TRUE
 	anchored = TRUE
+	plane = GAME_PLANE
 	layer = WINDOW_LAYER
+	vis_flags = VIS_INHERIT_ID | VIS_INHERIT_PLANE
 	flags_atom = ON_BORDER|FPRINT
 	health = 15
 	var/state = 2
@@ -48,7 +50,7 @@
 
 /obj/structure/window/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_HIGH_OVER_ONLY|PASS_GLASS
 
 /obj/structure/window/proc/set_constructed_window(start_dir)
@@ -81,7 +83,7 @@
 		junction = 0
 		if(anchored)
 			var/turf/TU
-			for(var/dirn in cardinal)
+			for(var/dirn in  GLOB.cardinals)
 				TU = get_step(src, dirn)
 				var/obj/structure/window/W = locate() in TU
 				if(W && W.anchored && W.density && W.legacy_full) //Only counts anchored, non-destroyed, legacy full-tile windows.
@@ -105,7 +107,7 @@
 		return
 	if(health <= 0)
 		if(user && istype(user))
-			user.count_niche_stat(STATISTICS_NICHE_DESTRUCTION_WINDOWS, 1)
+			user.count_statistic_stat(STATISTICS_DESTRUCTION_WINDOWS, 1)
 			SEND_SIGNAL(user, COMSIG_MOB_DESTROY_WINDOW, src)
 			user.visible_message(SPAN_DANGER("[user] smashes through [src][AM ? " with [AM]":""]!"))
 			if(is_mainship_level(z))
@@ -146,7 +148,7 @@
 		create_shrapnel(location, rand(1,5), explosion_direction, shrapnel_type = /datum/ammo/bullet/shrapnel/light/glass, cause_data = cause_data)
 
 	if(M)
-		M.count_niche_stat(STATISTICS_NICHE_DESTRUCTION_WINDOWS, 1)
+		M.count_statistic_stat(STATISTICS_DESTRUCTION_WINDOWS, 1)
 		SEND_SIGNAL(M, COMSIG_MOB_WINDOW_EXPLODED, src)
 
 	handle_debris(severity, explosion_direction)
@@ -353,7 +355,7 @@
 //This proc is used to update the icons of nearby windows.
 /obj/structure/window/proc/update_nearby_icons()
 	update_icon()
-	for(var/direction in cardinal)
+	for(var/direction in  GLOB.cardinals)
 		for(var/obj/structure/window/W in get_step(src, direction))
 			W.update_icon()
 
@@ -483,15 +485,19 @@
 
 /obj/structure/window/framed
 	name = "theoretical window"
+	plane = WALL_PLANE
 	layer = TABLE_LAYER
 	static_frame = 1
 	flags_atom = FPRINT
 	var/window_frame //For perspective windows,so the window frame doesn't magically dissapear
-	var/list/tiles_special = list(/obj/structure/machinery/door/airlock,
+
+	tiles_with = list(
+		/turf/closed/wall)
+	var/tiles_special = list(
+		/obj/structure/machinery/door/airlock,
 		/obj/structure/window/framed,
 		/obj/structure/girder,
 		/obj/structure/window_frame)
-	tiles_with = list(/turf/closed/wall)
 
 /obj/structure/window/framed/Initialize()
 	. = ..()
@@ -505,7 +511,7 @@
 
 /obj/structure/window/framed/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_GLASS
 
 /obj/structure/window/framed/update_nearby_icons()
@@ -526,7 +532,7 @@
 		return
 
 	if(M)
-		M.count_niche_stat(STATISTICS_NICHE_DESTRUCTION_WINDOWS, 1)
+		M.count_statistic_stat(STATISTICS_DESTRUCTION_WINDOWS, 1)
 		SEND_SIGNAL(M, COMSIG_MOB_EXPLODE_W_FRAME, src)
 
 	if(health >= -3000)
@@ -567,15 +573,6 @@
 	unacidable = TRUE
 	health = 1000000 //Failsafe, shouldn't matter
 
-/obj/structure/window/framed/almayer/hull/hijack_bustable //I exist to explode after hijack, that is all.
-
-/obj/structure/window/framed/almayer/hull/hijack_bustable/Initialize()
-	. = ..()
-	GLOB.hijack_bustable_windows += src
-
-/obj/structure/window/framed/almayer/hull/hijack_bustable/Destroy()
-	GLOB.hijack_bustable_windows -= src
-	return ..()
 /obj/structure/window/framed/almayer/white
 	icon_state = "white_rwindow0"
 	basestate = "white_rwindow"
@@ -839,7 +836,7 @@
 		return
 	else
 		triggered = 1
-	for(var/direction in cardinal)
+	for(var/direction in  GLOB.cardinals)
 		if(direction == from_dir) continue //doesn't check backwards
 		for(var/obj/structure/window/framed/prison/reinforced/hull/W in get_step(src,direction) )
 			W.spawn_shutters(turn(direction,180))
@@ -923,7 +920,7 @@
 		return
 
 	triggered = 1
-	for(var/direction in cardinal)
+	for(var/direction in  GLOB.cardinals)
 		if(direction == from_dir)
 			continue //doesn't check backwards
 

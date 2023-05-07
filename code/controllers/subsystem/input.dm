@@ -1,6 +1,6 @@
 SUBSYSTEM_DEF(input)
 	name = "Input"
-	wait = 1 //SS_TICKER means this runs every tick
+	wait = 0.1 SECONDS
 	init_order = SS_INIT_INPUT
 	init_stage = INITSTAGE_EARLY
 	flags = SS_TICKER

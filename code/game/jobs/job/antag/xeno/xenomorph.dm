@@ -4,7 +4,7 @@
 /datum/job/antag/xenos
 	title = JOB_XENOMORPH
 	role_ban_alternative = "Alien"
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT|ROLE_CUSTOM_SPAWN
+	flags_startup_parameters = ROLE_CUSTOM_SPAWN
 	supervisors = "Queen"
 	selection_class = "job_xeno"
 	// Unlimited for the precount purposes, later set_spawn_positions gets called and sets
@@ -23,12 +23,10 @@
 	. = ..()
 	var/mob/living/carbon/human/H = .
 
-	transform_to_xeno(H, XENO_HIVE_NORMAL)
+	transform_to_xeno(H, FACTION_XENOMORPH_NORMAL)
 
-/datum/job/antag/xenos/proc/transform_to_xeno(mob/living/carbon/human/H, hive_index)
-	var/datum/mind/new_xeno = H.mind
-	new_xeno.setup_xeno_stats()
-	var/datum/hive_status/hive = GLOB.hive_datum[hive_index]
+/datum/job/antag/xenos/proc/transform_to_xeno(mob/living/carbon/human/H, faction_index)
+	var/datum/faction/faction = GLOB.faction_datum[faction_index]
 
 	H.first_xeno = TRUE
 	H.set_stat(UNCONSCIOUS)
@@ -59,7 +57,7 @@
 
 	var/obj/item/alien_embryo/embryo = new /obj/item/alien_embryo(H) //Put the initial larva in a host
 	embryo.stage = 5 //Give the embryo a head-start (make the larva burst instantly)
-	embryo.hivenumber = hive.hivenumber
+	embryo.faction = faction
 
 /datum/job/antag/xenos/equip_job(mob/living/M)
 	return

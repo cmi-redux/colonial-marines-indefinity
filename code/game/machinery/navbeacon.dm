@@ -113,11 +113,11 @@
 
 		updateicon()
 
-	else if (istype(I, /obj/item/card/id))
+	else if(istype(I, /obj/item/card/id))
 		if(open)
-			if (src.allowed(user))
-				src.locked = !src.locked
-				to_chat(user, "Controls are now [src.locked ? "locked." : "unlocked."]")
+			if(allowed(user))
+				locked = !locked
+				to_chat(user, "Controls are now [locked ? "locked." : "unlocked."]")
 			else
 				to_chat(user, SPAN_DANGER("Access denied."))
 			updateDialog()
@@ -187,7 +187,7 @@ Transponder Codes:<UL>"}
 		if(open && !locked)
 			usr.set_interaction(src)
 
-			if (href_list["freq"])
+			if(href_list["freq"])
 				freq = sanitize_frequency(freq + text2num(href_list["freq"]))
 				updateDialog()
 

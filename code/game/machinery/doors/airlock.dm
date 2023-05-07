@@ -120,7 +120,7 @@ GLOBAL_LIST_INIT(airlock_wire_descriptions, list(
 
 	if(damage >= damage_cap)
 		if(M && istype(M))
-			M.count_niche_stat(STATISTICS_NICHE_DESTRUCTION_DOORS, 1)
+			M.count_statistic_stat(STATISTICS_DESTRUCTION_DOORS, 1)
 			SEND_SIGNAL(M, COMSIG_MOB_DESTROY_AIRLOCK, src)
 		to_chat(loc, SPAN_DANGER("[src] blows apart!"))
 		deconstruct(FALSE)
@@ -450,7 +450,7 @@ GLOBAL_LIST_INIT(airlock_wire_descriptions, list(
 
 /obj/structure/machinery/door/airlock/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
-	if (!ui)
+	if(!ui)
 		ui = new(user, src, "Wires", "[name] Wires")
 		ui.open()
 
@@ -471,7 +471,7 @@ GLOBAL_LIST_INIT(airlock_wire_descriptions, list(
 	. = list()
 	.["wire_descs"] = GLOB.airlock_wire_descriptions
 
-/obj/structure/machinery/door/airlock/ui_act(action, params)
+/obj/structure/machinery/door/airlock/ui_act(action, list/params)
 	. = ..()
 
 	if(. )//|| !interactable(usr))
@@ -492,7 +492,7 @@ GLOBAL_LIST_INIT(airlock_wire_descriptions, list(
 		switch(action)
 			if("cut")
 				var/obj/item/held_item = usr.get_held_item()
-				if (!held_item || !HAS_TRAIT(held_item, TRAIT_TOOL_WIRECUTTERS))
+				if(!held_item || !HAS_TRAIT(held_item, TRAIT_TOOL_WIRECUTTERS))
 					to_chat(usr, SPAN_WARNING("You need wirecutters!"))
 					return TRUE
 
@@ -507,7 +507,7 @@ GLOBAL_LIST_INIT(airlock_wire_descriptions, list(
 				. = TRUE
 			if("pulse")
 				var/obj/item/held_item = usr.get_held_item()
-				if (!held_item || !HAS_TRAIT(held_item, TRAIT_TOOL_MULTITOOL))
+				if(!held_item || !HAS_TRAIT(held_item, TRAIT_TOOL_MULTITOOL))
 					to_chat(usr, SPAN_WARNING("You need a multitool!"))
 					return TRUE
 
@@ -754,8 +754,6 @@ GLOBAL_LIST_INIT(airlock_wire_descriptions, list(
 	for(var/turf/turf in locs)
 		for(var/mob/living/M in turf)
 			if(isborg(M))
-				M.apply_damage(DOOR_CRUSH_DAMAGE, BRUTE)
-			else if(HAS_TRAIT(M, TRAIT_SUPER_STRONG))
 				M.apply_damage(DOOR_CRUSH_DAMAGE, BRUTE)
 			else
 				M.apply_damage(DOOR_CRUSH_DAMAGE, BRUTE)

@@ -10,7 +10,6 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 	var/list/ignore = list(
 		//Never meant to be created, errors out the ass for mobcode reasons
 		/mob/living/carbon,
-		/obj/effect/node,
 		/obj/item/seeds/cutting,
 	)
 	//This turf existing is an error in and of itself

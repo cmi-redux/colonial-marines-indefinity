@@ -13,20 +13,22 @@
 	block_range = 1
 
 	var/datum/construction_template/xenomorph/template //What we're building
-	var/datum/hive_status/linked_hive //Who gets what we build
 
-/obj/effect/alien/resin/construction/Initialize(mapload, hive_ref)
+/obj/effect/alien/resin/construction/Initialize(mapload, datum/faction/faction_to_set)
 	. = ..()
-	linked_hive = hive_ref
-	if (linked_hive?.color)
-		color = linked_hive.color
+
+	if(faction_to_set)
+		faction = faction_to_set
+
+	set_hive_data(src, faction)
 
 /obj/effect/alien/resin/construction/Destroy()
-	if(template && linked_hive && (template.crystals_stored < template.crystals_required))
-		linked_hive.crystal_stored += template.crystals_stored
-		linked_hive.remove_construction(src)
+	if(template && faction && (template.crystals_stored < template.crystals_required))
+		faction.crystal_stored += template.crystals_stored
+		faction.remove_construction(src)
+
 	template = null
-	linked_hive = null
+	faction = null
 	return ..()
 
 /obj/effect/alien/resin/construction/update_icon()
@@ -41,24 +43,26 @@
 
 /obj/effect/alien/resin/construction/get_examine_text(mob/user)
 	. = ..()
-	if((isxeno(user) || isobserver(user)) && linked_hive)
+	if((isxeno(user) || isobserver(user)) && faction)
 		var/message = "A [template.name] construction is designated here. It requires [template.crystals_required - template.crystals_stored] more [MATERIAL_CRYSTAL]."
 		. += message
 
-/obj/effect/alien/resin/construction/attack_alien(mob/living/carbon/xenomorph/M)
-	if(!linked_hive || (linked_hive && (M.hivenumber != linked_hive.hivenumber)) || (M.a_intent == INTENT_HARM && M.can_destroy_special()))
+/obj/effect/alien/resin/construction/attack_alien(mob/living/carbon/xenomorph/xeno)
+	if(!faction || (faction && (xeno.faction != faction)) || (xeno.a_intent == INTENT_HARM && xeno.can_destroy_special()))
 		return ..()
+
 	if(!template)
-		to_chat(M, SPAN_XENOWARNING("There is no template!"))
+		to_chat(xeno, SPAN_XENOWARNING("There is no template!"))
 	else
-		template.add_crystal(M) //This proc handles attack delay itself.
+		template.add_crystal(xeno) //This proc handles attack delay itself.
 	return XENO_NO_DELAY_ACTION
 
 /obj/effect/alien/resin/construction/proc/set_template(datum/construction_template/xenomorph/new_template)
-	if(!istype(new_template) || !linked_hive)
+	if(!istype(new_template) || !faction)
 		return
+
 	template = new_template
 	template.owner = src
 	template.build_loc = get_turf(src)
-	template.hive_ref = linked_hive
+	template.faction = faction
 	update_icon()

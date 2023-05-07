@@ -30,7 +30,7 @@
 		to_chat(src, "Only administrators may use this command.")
 		return
 
-	if(alert("This will free ALL mobs within your view range. Are you sure?",,"Yes","Cancel") == "Cancel")
+	if(alert("This will free ALL mobs within your view range. Are you sure?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 
 	for(var/mob/living/M in view())

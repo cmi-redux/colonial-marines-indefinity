@@ -46,7 +46,7 @@ var/list/alldepartments = list()
 
 /obj/structure/machinery/faxmachine/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_HIGH_OVER_ONLY|PASS_AROUND|PASS_OVER_THROW_ITEM
 
 
@@ -87,7 +87,8 @@ var/list/alldepartments = list()
 	set name = "Eject ID Card"
 	set src in view(1)
 
-	if(!usr || usr.stat || usr.lying) return
+	if(!usr || usr.stat || usr.lying)
+		return
 
 	if(ishuman(usr) && scan)
 		to_chat(usr, "You remove \the [scan] from \the [src].")
@@ -174,9 +175,22 @@ var/list/alldepartments = list()
 				else
 					general_fax(src, tofax.info, tofax.name, usr)
 					fax_cooldown = 600
-
 				COOLDOWN_START(src, send_cooldown, fax_cooldown)
 				SendFax(tofax.info, tofax.name, usr, target_department, network, src)
+
+				var/datum/discord_embed/embed = new()
+				embed.title = "Факс"
+				embed.description = "[usr.client.ckey] отправил факс"
+				embed.fields = list(
+					"ИМЯ ОТПРАВИТЕЛЯ" = usr,
+					"НАЗВАНИЕ" = tofax.name,
+					"ОТДЕЛ" = "[network], [target_department]",
+					"СООБЩЕНИЕ" = tofax.info,
+					"АДМИНИСТРАЦИЯ" = length(GLOB.admins),
+				)
+				embed.color = COLOR_WEBHOOK_DEFAULT
+				send2adminchat_webhook(embed)
+
 				to_chat(usr, "Message transmitted successfully.")
 				. = TRUE
 
@@ -221,8 +235,8 @@ var/list/alldepartments = list()
 			. = TRUE
 
 		if("auth")
-			if ( (!( authenticated ) && (scan)) )
-				if (check_access(scan))
+			if( (!( authenticated ) && (scan)) )
+				if(check_access(scan))
 					authenticated = TRUE
 					playsound(src, 'sound/machines/terminal_on.ogg', 20, FALSE)
 				. = TRUE
@@ -278,13 +292,13 @@ var/list/alldepartments = list()
 	var/faxcontents = "[sent]"
 	GLOB.fax_contents += faxcontents
 	var/msg_admin = SPAN_NOTICE("<b><font color='#1F66A0'>WEYLAND-YUTANI FAX: </font>[key_name(Sender, 1)] ")
-	msg_admin += "(<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];ccmark=\ref[Sender]'>Mark</A>) (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayeropts=\ref[Sender]'>PP</A>) "
+	msg_admin += "(<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];ccmark=\ref[Sender]'>ПОМЕТИТЬ</A>) (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayeropts=\ref[Sender]'>PP</A>) "
 	msg_admin += "(<A HREF='?_src_=vars;Vars=\ref[Sender]'>VV</A>) (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];subtlemessage=\ref[Sender]'>SM</A>) "
-	msg_admin += "(<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservejump=\ref[Sender]'>JMP</A>) "
-	msg_admin += "(<a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];CLFaxReply=\ref[Sender];originfax=\ref[originfax]'>RPLY</a>)</b>: "
-	msg_admin += "Receiving '[sentname]' via secure connection ... <a href='?FaxView=\ref[faxcontents]'>view message</a>"
+	msg_admin += "(<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservejump=\ref[Sender]'>НАБЛЮДАТЬ</A>) "
+	msg_admin += "(<a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];CLFaxReply=\ref[Sender];originfax=\ref[originfax]'>ОТВЕТИТЬ</a>)</b>: "
+	msg_admin += "Получен '[sentname]' по защищенному соединению ... <a href='?FaxView=\ref[faxcontents]'>Просмотреть сообщение</a>"
 	var/msg_ghost = SPAN_NOTICE("<b><font color='#1F66A0'>WEYLAND-YUTANI FAX: </font></b>")
-	msg_ghost += "Receiving '[sentname]' via secure connection ... <a href='?FaxView=\ref[faxcontents]'>view message</a>"
+	msg_ghost += "Получен '[sentname]' по защищенному соединению ... <a href='?FaxView=\ref[faxcontents]'>Просмотреть сообщение</a>"
 	GLOB.WYFaxes.Add("<a href='?FaxView=\ref[faxcontents]'>\[view message at [world.timeofday]\]</a> <a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];CLFaxReply=\ref[Sender];originfax=\ref[originfax]'>REPLY</a>")
 	announce_fax(msg_admin, msg_ghost)
 
@@ -317,7 +331,7 @@ var/list/alldepartments = list()
 /proc/SendFax(sent, sentname, mob/Sender, target_department, network, obj/structure/machinery/faxmachine/origin)
 	for(var/obj/structure/machinery/faxmachine/F in allfaxes)
 		if(F != origin && F.department == target_department)
-			if(! (F.inoperable() ) )
+			if(!(F.inoperable()))
 
 				flick("faxreceive", F)
 

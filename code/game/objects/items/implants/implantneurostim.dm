@@ -31,7 +31,7 @@
 		activate(0)
 
 /obj/item/implant/neurostim/activate(accidental = 0)
-	set waitfor = 0
+	set waitfor = FALSE
 
 	if(malfunction == MALFUNCTION_PERMANENT)
 		return
@@ -105,9 +105,9 @@
 
 
 /obj/item/implant/neurostim/emp_act(severity)
-	if (malfunction)
+	if(malfunction)
 		return
-	if (prob(80))
+	if(prob(80))
 		activate(1)
 	else
 		meltdown()

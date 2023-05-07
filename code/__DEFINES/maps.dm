@@ -28,7 +28,6 @@ require only minor tweaks.
 #define ZTRAIT_AWAY  "Away"
 #define ZTRAIT_LOWORBIT "LowOrbit"
 #define ZTRAIT_INTERIORS "Interiors"
-#define ZTRAIT_TECHTREE "TechTree"
 
 #define ZTRAIT_FOG "Fog"
 #define ZTRAIT_LOCKDOWN "Lockdown"
@@ -62,6 +61,9 @@ require only minor tweaks.
 
 // string - type path of the z-level's baseturf (defaults to space)
 #define ZTRAIT_BASETURF "Baseturf"
+
+///boolean - does this z disable parallax?
+#define ZTRAIT_NOPARALLAX "No Parallax"
 
 // default trait definitions, used by SSmapping
 #define ZTRAITS_MAIN_SHIP list(ZTRAIT_MARINE_MAIN_SHIP = TRUE)
@@ -104,6 +106,13 @@ require only minor tweaks.
 #define PLACE_LAVA_RUIN "lavaland"
 
 
+#define ADMIN_ZONE_Z 1
+#define LOW_ORBIT_Z 2
+#define GROUND_MAP_Z 3
+#define SHIP_MAP_Z 4
+#define ALL_MAPVIEW_MAPTYPES_TO_GENERATE list(GROUND_MAP_Z, SHIP_MAP_Z, LOW_ORBIT_Z, ADMIN_ZONE_Z)
+#define ALL_MAPVIEW_MAPTYPES list(GROUND_MAP_Z, SHIP_MAP_Z)
+
 #define GROUND_MAP "ground_map"
 #define SHIP_MAP "ship_map"
 #define ALL_MAPTYPES list(GROUND_MAP, SHIP_MAP)
@@ -118,8 +127,7 @@ require only minor tweaks.
 #define MAP_ARMOR_STYLE_JUNGLE "jungle"
 #define MAP_ARMOR_STYLE_PRISON "prison"
 
-//turf-only flags
-#define NOJAUNT_1 (1<<0)
-#define UNUSED_RESERVATION_TURF (1<<1)
-/// If a turf can be made dirty at roundstart. This is also used in areas.
-#define CAN_BE_DIRTY_1 (1<<2)
+/////////////////////
+//DAY-NIGHT EFFECTS//
+/////////////////////
+#define MAP_LIGHT_STEPS list("Midnight", "Night", "Dawn", "Sunrise", "Sunrise-Morning", "Morning", "Daytime", "Evening", "Sunset", "Dusk")

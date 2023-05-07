@@ -300,7 +300,7 @@
 		decloak(user)
 	..()
 
-/obj/item/clothing/gloves/yautja/hunter/on_enter_storage(obj/item/storage/S)
+/obj/item/clothing/gloves/yautja/hunter/on_enter_storage(obj/item/storage/storage)
 	if(ishuman(loc))
 		var/mob/living/carbon/human/human = loc
 		if(cloaked)
@@ -360,7 +360,7 @@
 	. = wristblades_internal(usr, FALSE)
 
 /obj/item/clothing/gloves/yautja/hunter/proc/wristblades_internal(mob/living/carbon/human/caller, forced = FALSE)
-	if(!caller.loc || !caller.canmove || caller.stat || !ishuman(caller))
+	if(!caller.loc || !caller.can_action || !ishuman(caller))
 		return
 
 	. = check_random_function(caller, forced)
@@ -595,7 +595,7 @@
 	. = caster_internal(usr, FALSE)
 
 /obj/item/clothing/gloves/yautja/hunter/proc/caster_internal(mob/living/carbon/human/caller, forced = FALSE)
-	if(!caller.loc || !caller.canmove || caller.stat || !ishuman(caller))
+	if(!caller.loc || !caller.can_action || !ishuman(caller))
 		return
 
 	. = check_random_function(caller, forced)
@@ -625,9 +625,9 @@
 
 
 /obj/item/clothing/gloves/yautja/hunter/proc/explode(mob/living/carbon/victim)
-	set waitfor = 0
+	set waitfor = FALSE
 
-	if (exploding)
+	if(exploding)
 		return
 
 	exploding = 1
@@ -705,14 +705,14 @@
 			if(isspeciesyautja(victim))
 				message = "Are you sure you want to send this [victim.species] into the great hunting grounds?"
 			if(istype(bracer))
-				if(forced || alert(message,"Explosive Bracers", "Yes", "No") == "Yes")
+				if(forced || alert(message,"Explosive Bracers", M.client.auto_lang(LANGUAGE_YES), M.client.auto_lang(LANGUAGE_NO)) == M.client.auto_lang(LANGUAGE_YES))
 					if(M.get_active_hand() == G && victim && victim.gloves == bracer && !bracer.exploding)
 						var/area/A = get_area(M)
 						var/turf/T = get_turf(M)
 						if(A)
 							message_admins(FONT_SIZE_HUGE("ALERT: [M] ([M.key]) triggered the predator self-destruct sequence of [victim] ([victim.key]) in [A.name] (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)</font>"))
 							log_attack("[key_name(M)] triggered the predator self-destruct sequence of [victim] ([victim.key]) in [A.name]")
-						if (!bracer.exploding)
+						if(!bracer.exploding)
 							bracer.explode(victim)
 						M.visible_message(SPAN_WARNING("[M] presses a few buttons on [victim]'s wrist bracer."),SPAN_DANGER("You activate the timer. May [victim]'s final hunt be swift."))
 						message_all_yautja("[M.real_name] has triggered [victim.real_name]'s bracer's self-destruction sequence.")
@@ -724,7 +724,7 @@
 		return
 
 	if(exploding)
-		if(forced || alert("Are you sure you want to stop the countdown?","Bracers", "Yes", "No") == "Yes")
+		if(forced || alert("Are you sure you want to stop the countdown?","Bracers", M.client.auto_lang(LANGUAGE_YES), M.client.auto_lang(LANGUAGE_NO)) == M.client.auto_lang(LANGUAGE_YES))
 			if(M.gloves != src)
 				return
 			if(M.stat == DEAD)
@@ -740,7 +740,7 @@
 	if(istype(M.wear_mask,/obj/item/clothing/mask/facehugger) || (M.status_flags & XENO_HOST))
 		to_chat(M, SPAN_WARNING("Strange...something seems to be interfering with your bracer functions..."))
 		return
-	if(forced || alert("Detonate the bracers? Are you sure?","Explosive Bracers", "Yes", "No") == "Yes")
+	if(forced || alert("Detonate the bracers? Are you sure?","Explosive Bracers", M.client.auto_lang(LANGUAGE_YES), M.client.auto_lang(LANGUAGE_NO)) == M.client.auto_lang(LANGUAGE_YES))
 		if(M.gloves != src)
 			return
 		if(M.stat == DEAD)

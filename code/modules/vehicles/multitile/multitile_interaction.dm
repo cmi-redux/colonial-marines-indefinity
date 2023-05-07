@@ -30,7 +30,7 @@
 			return
 
 		//only can clamp friendly vehicles
-		if(!get_target_lock(user.faction_group))
+		if(!ally(user.faction))
 			to_chat(user, SPAN_WARNING("You can attach clamp to vehicles of your faction only."))
 			return
 
@@ -209,7 +209,7 @@
 		to_chat(user, SPAN_NOTICE("Hull integrity is at [SPAN_HELPFUL(100.0*health/max_hp)]%."))
 
 	health = initial(health)
-	SetLuminosity(initial(luminosity))
+	set_light_on(TRUE)
 	toggle_cameras_status(TRUE)
 	update_icon()
 	user.visible_message(SPAN_NOTICE("[user] finishes [repair_message] on \the [src]."), SPAN_NOTICE("You finish [repair_message] on \the [src]. Hull integrity is at [SPAN_HELPFUL(100.0*health/max_hp)]%. "))
@@ -255,7 +255,7 @@
 
 	var/damage_mult = 1
 	//Ravs, as designated vehicles fighters do a heckin double damage
-	//Queen, being Queen, does x2 damage to discourage blocking her
+	//queen, being Queen, does x2 damage to discourage blocking her
 	if(X.caste == XENO_CASTE_RAVAGER || X.caste == XENO_CASTE_QUEEN)
 		damage_mult = 2
 
@@ -292,7 +292,7 @@
 
 	//IFF bullets magically stop themselves short of hitting friendly vehicles,
 	//because both sentries and smartgun users keep trying to shoot through them
-	if(P.runtime_iff_group && get_target_lock(P.runtime_iff_group))
+	if(P.runtime_iff_group && ally(P.runtime_iff_group))
 		return
 
 	if(ammo_flags & AMMO_ANTISTRUCT)
@@ -315,14 +315,15 @@
 	healthcheck()
 
 //to handle IFF bullets
-/obj/vehicle/multitile/proc/get_target_lock(access_to_check)
-	if(isnull(access_to_check) || !vehicle_faction)
+/obj/vehicle/multitile/proc/ally(datum/faction/ally_faction)
+	var/list/factions = list()
+	factions += ally_faction
+	for(var/datum/faction/i in ally_faction.allies)
+		factions += i
+	if(isnull(factions) || !faction)
 		return FALSE
 
-	if(!islist(access_to_check))
-		return access_to_check == vehicle_faction
-
-	return vehicle_faction in access_to_check
+	return faction in factions
 
 /obj/vehicle/multitile/ex_act(severity)
 	take_damage_type(severity * 0.5, "explosive")
@@ -424,9 +425,9 @@
 	else
 		if(door_locked && health > 0) //check if lock on and actually works
 			if(ishuman(M))
-				var/mob/living/carbon/human/user = M
-				if(!allowed(user) || !get_target_lock(user.faction_group)) //if we are human, we check access and faction
-					to_chat(user, SPAN_WARNING("\The [src] is locked!"))
+				var/mob/living/carbon/human/human = M
+				if(!allowed(human) || !ally(human.faction))	//if we are human, we check access and faction
+					to_chat(human, SPAN_WARNING("\The [src] is locked!"))
 					return
 			else
 				to_chat(M, SPAN_WARNING("\The [src] is locked!")) //animals are not allowed inside without supervision
@@ -492,7 +493,7 @@
 /obj/vehicle/multitile/proc/handle_fitting_pulled_atom(mob/living/carbon/human/user, atom/dragged_atom)
 	if(!ishuman(user))
 		return
-	if(door_locked && health > 0 && (!allowed(user) || !get_target_lock(user.faction_group)))
+	if(door_locked && health > 0 && (!allowed(user) || !ally(user.faction)))
 		to_chat(user, SPAN_WARNING("\The [src] is locked!"))
 		return
 

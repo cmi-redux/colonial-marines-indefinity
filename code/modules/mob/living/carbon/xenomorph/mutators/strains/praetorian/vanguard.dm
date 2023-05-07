@@ -1,18 +1,17 @@
-/datum/xeno_mutator/vanguard
-	name = "STRAIN: Praetorian - Vanguard"
-	description = "You forfeit all of your acid-based abilities and some health for some extra speed and a rechargable shield that can block one attack. Use your Pierce from up to three paces away to stab through talls, while stabbing through several will completely recharge your shield. Use your charge to plow through enemies and use it again to unleash a powerful AoE slash that reaches up to three paces. You also have a Cleave ability, amplified by your shield, which you can toggle to either immobilize or fling a target away."
-	flavor_description = "They are my bulwark against the tallhosts. They are my Vanguard and they shall know no fear."
-	cost = MUTATOR_COST_EXPENSIVE
-	individual_only = TRUE
+/datum/xeno_mutation/strain/vanguard
+	name = LANGUAGE_STRAIN_VANGUARD
+	description = LANGUAGE_STRAIN_DESC_VANGUARD
+	flavor_description = LANGUAGE_STRAIN_FLAV_DESC_VANGUARD
+	cost = MUTATOR_COST_MODERATE
 	caste_whitelist = list(XENO_CASTE_PRAETORIAN) //Only praetorian.
-	mutator_actions_to_remove = list(
+	mutation_actions_to_remove = list(
 		/datum/action/xeno_action/activable/xeno_spit,
 		/datum/action/xeno_action/activable/pounce/base_prae_dash,
 		/datum/action/xeno_action/activable/prae_acid_ball,
 		/datum/action/xeno_action/activable/spray_acid/base_prae_spray_acid,
 		/datum/action/xeno_action/activable/corrosive_acid,
 	)
-	mutator_actions_to_add = list(
+	mutation_actions_to_add = list(
 		/datum/action/xeno_action/activable/pierce,
 		/datum/action/xeno_action/activable/pounce/prae_dash,
 		/datum/action/xeno_action/activable/cleave,
@@ -21,14 +20,14 @@
 	behavior_delegate_type = /datum/behavior_delegate/praetorian_vanguard
 	keystone = TRUE
 
-/datum/xeno_mutator/vanguard/apply_mutator(datum/mutator_set/individual_mutators/mutator_set)
+/datum/xeno_mutation/strain/vanguard/apply_mutator(datum/mutator_set/individual_mutations/mutator_set)
 	. = ..()
-	if (. == 0)
+	if(. == 0)
 		return
 
 	var/mob/living/carbon/xenomorph/praetorian/praetorian = mutator_set.xeno
 	praetorian.speed_modifier += XENO_SPEED_FASTMOD_TIER_3
-	praetorian.health_modifier -= XENO_HEALTH_MOD_MED
+	praetorian.health_modifier += XENO_HEALTH_MOD_MED
 	praetorian.claw_type = CLAW_TYPE_SHARP
 	mutator_update_actions(praetorian)
 	mutator_set.recalculate_actions(description, flavor_description)
@@ -52,7 +51,7 @@
 	var/last_shield_regen_time = 0
 
 /datum/behavior_delegate/praetorian_vanguard/on_life()
-	if (last_shield_regen_time <= last_combat_time &&  last_combat_time + shield_recharge_time <= world.time)
+	if(last_shield_regen_time <= last_combat_time &&  last_combat_time + shield_recharge_time <= world.time)
 		regen_shield()
 
 
@@ -66,29 +65,29 @@
 	last_combat_time = world.time
 
 /datum/behavior_delegate/praetorian_vanguard/proc/next_pierce_spin()
-	var/datum/action/xeno_action/activable/pierce/pAction = get_xeno_action_by_type(bound_xeno, /datum/action/xeno_action/activable/pierce)
-	if (istype(pAction))
-		pAction.should_spin_instead = TRUE
+	var/datum/action/xeno_action/activable/pierce/pierce_action = get_xeno_action_by_type(bound_xeno, /datum/action/xeno_action/activable/pierce)
+	if(istype(pierce_action))
+		pierce_action.should_spin_instead = TRUE
 
 	addtimer(CALLBACK(src, PROC_REF(next_pierce_normal)), pierce_spin_time)
 	return
 
 /datum/behavior_delegate/praetorian_vanguard/proc/next_pierce_normal()
-	var/datum/action/xeno_action/activable/pierce/pAction = get_xeno_action_by_type(bound_xeno, /datum/action/xeno_action/activable/pierce)
-	if (istype(pAction))
-		pAction.should_spin_instead = FALSE
+	var/datum/action/xeno_action/activable/pierce/pierce_action = get_xeno_action_by_type(bound_xeno, /datum/action/xeno_action/activable/pierce)
+	if(istype(pierce_action))
+		pierce_action.should_spin_instead = FALSE
 	return
 
 /datum/behavior_delegate/praetorian_vanguard/proc/regen_shield()
 	var/mob/living/carbon/xenomorph/praetorian = bound_xeno
 	var/datum/xeno_shield/vanguard/found_shield = null
 	last_shield_regen_time = world.time
-	for (var/datum/xeno_shield/vanguard/vanguard_shield in praetorian.xeno_shields)
-		if (vanguard_shield.shield_source == XENO_SHIELD_SOURCE_VANGUARD_PRAE)
-			found_shield = vanguard_shield
+	for (var/datum/xeno_shield/vanguard/xeno_shield in praetorian.xeno_shields)
+		if(xeno_shield.shield_source == XENO_SHIELD_SOURCE_VANGUARD_PRAE)
+			found_shield = xeno_shield
 			break
 
-	if (found_shield)
+	if(found_shield)
 		qdel(found_shield)
 
 		praetorian.add_xeno_shield(800, XENO_SHIELD_SOURCE_VANGUARD_PRAE, /datum/xeno_shield/vanguard)

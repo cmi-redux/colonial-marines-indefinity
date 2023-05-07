@@ -73,7 +73,7 @@
 	desc = "A pair of rather plain, wooden sandals."
 	name = "sandals"
 	icon_state = "wizard"
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 
 /obj/item/clothing/shoes/sandal/marisa
 	desc = "A pair of magic, black shoes."

@@ -1,6 +1,8 @@
-/proc/emoji_parse(text) //turns :ai: into an emoji in text.
+/proc/emoji_parse(client/C, text) //turns :ai: into an emoji in text.
 	. = text
 	if(!CONFIG_GET(flag/emojis))
+		return
+	if(!check_rights(0, FALSE, C) || !C.donator_info.patreon_function_available("emoji"))
 		return
 	var/static/list/emojis = icon_states(icon(EMOJI_SET))
 	var/parsed = ""

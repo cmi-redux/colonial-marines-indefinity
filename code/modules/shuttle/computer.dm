@@ -282,19 +282,21 @@
 
 /obj/structure/machinery/computer/shuttle/lifeboat/attack_hand(mob/user)
 	. = ..()
-	var/obj/docking_port/mobile/lifeboat/lifeboat = SSshuttle.getShuttle(shuttleId)
-	if(lifeboat.status == LIFEBOAT_LOCKED)
+	var/obj/docking_port/mobile/lifeboat/L = SSshuttle.getShuttle(shuttleId)
+	if(L.status == LIFEBOAT_LOCKED)
 		to_chat(user, SPAN_WARNING("\The [src] flickers with error messages."))
-	else if(lifeboat.status == LIFEBOAT_INACTIVE)
-		to_chat(user, SPAN_NOTICE("\The [src]'s screen says \"Awaiting evacuation order\"."))
-	else if(lifeboat.status == LIFEBOAT_ACTIVE)
-		switch(lifeboat.mode)
+	else if(L.status == LIFEBOAT_INACTIVE)
+		to_chat(user, SPAN_NOTICE("\The [src]'s screen says \"Awaiting for evacuation order.\"."))
+	else if(L.status == LIFEBOAT_ACTIVE)
+		switch(L.mode)
+			if(SHUTTLE_RECHARGING)
+				to_chat(user, SPAN_NOTICE("\The [src]'s screen says \"Refueling. Estimated time left: [L.getTimerStr()].\"."))
 			if(SHUTTLE_IDLE)
-				to_chat(user, SPAN_NOTICE("\The [src]'s screen says \"Awaiting confirmation of the evacuation order\"."))
+				to_chat(user, SPAN_NOTICE("\The [src]'s screen says \"Ready to launch. Please follow the manual decouple procedure.\"."))
 			if(SHUTTLE_IGNITING)
-				to_chat(user, SPAN_NOTICE("\The [src]'s screen says \"Engines firing\"."))
+				to_chat(user, SPAN_NOTICE("\The [src]'s screen says \"Engines firing.\"."))
 			if(SHUTTLE_CALL)
-				to_chat(user, SPAN_NOTICE("\The [src] has flight information scrolling across the screen. The autopilot is working correctly."))
+				to_chat(user, SPAN_NOTICE("\The [src] shows some various flight information. Autopilot is working and carrying you away, that is what matters."))
 
 /obj/structure/machinery/computer/shuttle/lifeboat/attack_alien(mob/living/carbon/xenomorph/xeno)
 	if(xeno.caste && xeno.caste.is_intelligent)
@@ -309,7 +311,7 @@
 				lifeboat.status = LIFEBOAT_LOCKED
 				lifeboat.available = FALSE
 				lifeboat.set_mode(SHUTTLE_IDLE)
-				xeno_message(SPAN_XENOANNOUNCE("We have wrested away control of one of the metal birds! They shall not escape!"), 3, xeno.hivenumber)
+				xeno_message(SPAN_XENOANNOUNCE("We have wrested away control of the metal bird! They shall not escape!"), 3, xeno.faction)
 		return XENO_NO_DELAY_ACTION
 	else
 		return ..()

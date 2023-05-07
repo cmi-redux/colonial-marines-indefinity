@@ -9,6 +9,8 @@
 	// Holds the client's current mentorhelp thread
 	var/datum/mentorhelp/current_mhelp = null
 
+	var/datum/donator_info/donator_info
+
 	var/last_message = "" //Contains the last message sent by this client - used to protect against copy-paste spamming.
 	var/last_message_count = 0 //contins a number of how many times a message identical to last_message was sent.
 	var/talked = 0
@@ -27,7 +29,6 @@
 	var/area = null
 	var/time_died_as_mouse = null //when the client last died as a mouse
 
-	var/donator = 0
 	var/adminhelped = 0
 
 	var/datum/click_intercept = null
@@ -70,7 +71,10 @@
 	var/xeno_postfix = ""
 	var/xeno_name_ban = FALSE
 
-	var/datum/entity/player_entity/player_entity = null
+	var/datum/entity/player/player_data = null
+	var/datum/player_entity/player_entity = null
+	var/datum/entity/discord/discord = null
+	var/datum/skins/skins = null
 
 	//Asset cache
 	// List of all asset filenames sent to this client by the asset cache, along with their assoicated md5s
@@ -126,8 +130,27 @@
 	///lazylist of screen_texts for this client, first in this list is the one playing
 	var/list/atom/movable/screen/text/screen_text/screen_texts
 
+	var/list/parallax_layers
+	var/list/parallax_layers_cached
+	///this is the last recorded client eye by SSparallax/fire()
+	var/atom/movable/movingmob
+	var/turf/previous_turf
+	///world.time of when we can state animate()ing parallax again
+	var/dont_animate_parallax
+	/// Direction our current area wants to move parallax
+	var/parallax_movedir = 0
+	/// How many parallax layers to show our client
+	var/parallax_layers_max = 4
+	/// Timer for the area directional animation
+	var/parallax_animate_timer
+	/// Do we want to do parallax animations at all?
+	/// Exists to prevent laptop fires
+	var/do_parallax_animations = TRUE
+
 	/// Does this client have typing indicators enabled?
 	var/typing_indicators = TRUE
 
 	///datum that controls the displaying and hiding of tooltips
 	var/datum/tooltip/tooltips
+
+	var/language = "Russian"

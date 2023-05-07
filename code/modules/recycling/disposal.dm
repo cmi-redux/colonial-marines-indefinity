@@ -65,7 +65,7 @@
 
 /obj/structure/machinery/disposal/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_HIGH_OVER_ONLY|PASS_AROUND
 
 ///Attack by item places it in to disposal
@@ -392,8 +392,8 @@
 
 	if(H)
 		H.init(src) //Copy the contents of disposer to holder
-
 		H.start(src) //Start the holder processing movement
+
 	flushing = FALSE
 	//Now reset disposal state
 	flush = 0
@@ -424,9 +424,9 @@
 		qdel(H)
 
 /obj/structure/machinery/disposal/hitby(atom/movable/mover)
-	if (!istype(mover, /obj/item))
+	if(!istype(mover, /obj/item))
 		return
-	if (prob(75))
+	if(prob(75))
 		mover.forceMove(src)
 		visible_message(SPAN_NOTICE("[mover] lands into [src]."))
 		//Something to flush, start processing!
@@ -599,7 +599,8 @@
 	health = 10 //Health points 0-10
 	plane = FLOOR_PLANE
 	layer = DISPOSAL_PIPE_LAYER //Slightly lower than wires and other pipes
-	var/base_icon_state //Initial icon state on map
+	plane = FLOOR_PLANE
+	var/base_icon_state	//Initial icon state on map
 
 	//New pipe, set the icon_state as on map
 /obj/structure/disposalpipe/Initialize(mapload, ...)
@@ -720,7 +721,7 @@
 //Remains : set to leave broken pipe pieces in place
 /obj/structure/disposalpipe/deconstruct(disassembled = TRUE)
 	if(disassembled)
-		for(var/D in cardinal)
+		for(var/D in GLOB.cardinals)
 			if(D & dpdir)
 				var/obj/structure/disposalpipe/broken/P = new(loc)
 				P.setDir(D)
@@ -850,178 +851,7 @@
 		dpdir = dir|turn(dir, -90)
 	update()
 
-//Z-Level stuff
-/obj/structure/disposalpipe/up
-	icon_state = "pipe-u"
 
-/obj/structure/disposalpipe/up/Initialize(mapload, ...)
-	. = ..()
-	dpdir = dir
-	update()
-
-/obj/structure/disposalpipe/up/nextdir(fromdir)
-	var/nextdir
-	if(fromdir == 11)
-		nextdir = dir
-	else
-		nextdir = 12
-	return nextdir
-
-/obj/structure/disposalpipe/up/transfer(obj/structure/disposalholder/H)
-	var/nextdir = nextdir(H.dir)
-	H.setDir(nextdir)
-
-	var/turf/T
-	var/obj/structure/disposalpipe/P
-
-	if(nextdir == 12)
-		H.forceMove(loc)
-		return
-
-	else
-		T = get_step(loc, H.dir)
-		P = H.findpipe(T)
-
-	if(P)
-		//Find other holder in next loc, if inactive merge it with current
-		var/obj/structure/disposalholder/H2 = locate() in P
-		if(H2 && !H2.active)
-			H.merge(H2)
-
-		H.forceMove(P)
-	else //If wasn't a pipe, then set loc to turf
-		H.forceMove(T)
-		return null
-	return P
-
-/obj/structure/disposalpipe/down
-	icon_state = "pipe-d"
-
-/obj/structure/disposalpipe/down/Initialize(mapload, ...)
-	. = ..()
-	dpdir = dir
-	update()
-
-/obj/structure/disposalpipe/down/nextdir(fromdir)
-	var/nextdir
-	if(fromdir == 12)
-		nextdir = dir
-	else
-		nextdir = 11
-	return nextdir
-
-/obj/structure/disposalpipe/down/transfer(obj/structure/disposalholder/H)
-	var/nextdir = nextdir(H.dir)
-	H.setDir(nextdir)
-
-	var/turf/T
-	var/obj/structure/disposalpipe/P
-
-	if(nextdir == 11)
-		H.forceMove(loc)
-		return
-
-	else
-		T = get_step(loc, H.dir)
-		P = H.findpipe(T)
-
-	if(P)
-		//Find other holder in next loc, if inactive merge it with current
-		var/obj/structure/disposalholder/H2 = locate() in P
-		if(H2 && !H2.active)
-			H.merge(H2)
-
-		H.forceMove(P)
-	else //If wasn't a pipe, then set loc to turf
-		H.forceMove(T)
-		return null
-	return P
-
-// *** special cased almayer stuff because it's all one z level ***
-
-/obj/structure/disposalpipe/up/almayer
-	var/id
-
-/obj/structure/disposalpipe/up/almayer/Initialize(mapload, ...)
-	. = ..()
-	GLOB.disposalpipe_up_list += src
-
-/obj/structure/disposalpipe/up/almayer/Destroy()
-	GLOB.disposalpipe_up_list -= src
-	return ..()
-
-/obj/structure/disposalpipe/down/almayer
-	var/id
-
-/obj/structure/disposalpipe/down/almayer/Initialize(mapload, ...)
-	. = ..()
-	GLOB.disposalpipe_down_list += src
-
-/obj/structure/disposalpipe/down/almayer/Destroy()
-	GLOB.disposalpipe_down_list -= src
-	return ..()
-
-/obj/structure/disposalpipe/up/almayer/transfer(obj/structure/disposalholder/H)
-	var/nextdir = nextdir(H.dir)
-	H.setDir(nextdir)
-
-	var/turf/T
-	var/obj/structure/disposalpipe/P
-
-	if(nextdir == 12)
-		for(var/i in GLOB.disposalpipe_down_list)
-			var/obj/structure/disposalpipe/down/almayer/F = i
-			if(id == F.id)
-				P = F
-				break // stop at first found match
-	else
-		T = get_step(loc, H.dir)
-		P = H.findpipe(T)
-
-	if(P)
-		//Find other holder in next loc, if inactive merge it with current
-		var/obj/structure/disposalholder/H2 = locate() in P
-		if(H2 && !H2.active)
-			H.merge(H2)
-
-		H.forceMove(P)
-	else //If wasn't a pipe, then set loc to turf
-		H.forceMove(loc)
-		return null
-	return P
-
-/obj/structure/disposalpipe/down/almayer/transfer(obj/structure/disposalholder/H)
-	var/nextdir = nextdir(H.dir)
-	H.setDir(nextdir)
-
-	var/turf/T
-	var/obj/structure/disposalpipe/P
-
-	if(nextdir == 11)
-		for(var/i in GLOB.disposalpipe_up_list)
-			var/obj/structure/disposalpipe/up/almayer/F = i
-			if(id == F.id)
-				P = F
-				break // stop at first found match
-	else
-		T = get_step(loc, H.dir)
-		P = H.findpipe(T)
-
-	if(P)
-		//Find other holder in next loc, if inactive merge it with current
-		var/obj/structure/disposalholder/H2 = locate() in P
-		if(H2 && !H2.active)
-			H.merge(H2)
-
-		H.forceMove(P)
-	else //If wasn't a pipe, then set loc to turf
-		H.forceMove(loc)
-		return null
-	return P
-
-// *** end special cased almayer stuff ***
-
-//Z-Level stuff
 //A three-way junction with dir being the dominant direction
 /obj/structure/disposalpipe/junction
 	icon_state = "pipe-j1"
@@ -1431,7 +1261,7 @@
 	if(direction)
 		dirs = list( direction, turn(direction, -45), turn(direction, 45))
 	else
-		dirs = alldirs.Copy()
+		dirs = GLOB.alldirs.Copy()
 
 	INVOKE_ASYNC(streak(dirs))
 
@@ -1440,7 +1270,7 @@
 	if(direction)
 		dirs = list( direction, turn(direction, -45), turn(direction, 45))
 	else
-		dirs = alldirs.Copy()
+		dirs = GLOB.alldirs.Copy()
 
 	INVOKE_ASYNC(streak(dirs))
 

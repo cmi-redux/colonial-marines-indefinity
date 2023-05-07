@@ -5,7 +5,8 @@
 	icon_state = "supply_elevator_lowered"
 	unacidable = TRUE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	layer = ABOVE_TURF_LAYER
+	layer = TURF_LAYER
+	plane = FLOOR_PLANE
 	appearance_flags = KEEP_TOGETHER
 
 /obj/effect/elevator/supply/ex_act(severity)
@@ -22,3 +23,4 @@
 /obj/effect/elevator/animation_overlay
 	blend_mode = BLEND_INSET_OVERLAY
 	appearance_flags = KEEP_TOGETHER
+	plane = FLOOR_PLANE

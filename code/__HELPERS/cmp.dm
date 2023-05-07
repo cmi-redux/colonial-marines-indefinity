@@ -1,14 +1,17 @@
-/proc/cmp_numeric_dsc(a,b)
+/proc/cmp_numeric_dsc(a, b)
 	return b - a
 
-/proc/cmp_numeric_asc(a,b)
+/proc/cmp_numeric_asc(a, b)
 	return a - b
 
-/proc/cmp_text_asc(a,b)
-	return sorttext(b,a)
+/proc/cmp_text_asc(a, b)
+	return sorttext(b, a)
 
-/proc/cmp_text_dsc(a,b)
-	return sorttext(a,b)
+/proc/cmp_text_dsc(a, b)
+	return sorttext(a, b)
+
+/proc/cmp_typepaths_asc(a, b)
+	return sorttext("[b]","[a]")
 
 /proc/cmp_name_asc(atom/a, atom/b)
 	return sorttext(b.name, a.name)
@@ -46,14 +49,11 @@ var/cmp_field = "name"
 
 /proc/cmp_qdel_item_time(datum/qdel_item/A, datum/qdel_item/B)
 	. = B.hard_delete_time - A.hard_delete_time
-	if (!.)
+	if(!.)
 		. = B.destroy_time - A.destroy_time
-	if (!.)
+	if(!.)
 		. = B.failures - A.failures
-	if (!.)
+	if(!.)
 		. = B.qdels - A.qdels
 
-var/atom/cmp_dist_origin=null
-
-/proc/cmp_typepaths_asc(A, B)
-	return sorttext("[B]","[A]")
+var/atom/cmp_dist_origin = null

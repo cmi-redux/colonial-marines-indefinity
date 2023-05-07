@@ -1,15 +1,36 @@
-#define HIJACK_EXPLOSION_COUNT 5
+/proc/Check_DS()
+	if(SSticker.mode == MODE_NAME_DISTRESS_SIGNAL || GLOB.master_mode == MODE_NAME_DISTRESS_SIGNAL)
+		return TRUE
+	return FALSE
 
 /datum/game_mode/colonialmarines
-	name = "Distress Signal"
-	config_tag = "Distress Signal"
-	required_players = 1 //Need at least one player, but really we need 2.
-	xeno_required_num = 1 //Need at least one xeno.
+	name = MODE_NAME_DISTRESS_SIGNAL
+	config_tag = MODE_NAME_DISTRESS_SIGNAL
+	required_players = 2
+	xeno_required_num = 1
 	monkey_amount = 5
 	corpses_to_spawn = 0
 	flags_round_type = MODE_INFESTATION|MODE_FOG_ACTIVATED|MODE_NEW_SPAWN
 	static_comms_amount = 1
 	var/round_status_flags
+	round_end_states = list(MODE_INFESTATION_X_MAJOR, MODE_INFESTATION_M_MAJOR, MODE_INFESTATION_X_MINOR, MODE_INFESTATION_M_MINOR, MODE_INFESTATION_DRAW_DEATH)
+
+	faction_result_end_state = list(
+		FACTION_MARINE = list(
+			MODE_INFESTATION_M_MAJOR = list("marine_major", list('sound/music/round_end/winning_triumph1.ogg', 'sound/music/round_end/winning_triumph2.ogg'), list('sound/music/round_end/issomebodysinging.ogg')),
+			MODE_INFESTATION_M_MINOR = list("marine_major", list('sound/music/round_end/neutral_hopeful1.ogg', 'sound/music/round_end/neutral_hopeful2.ogg'), list()),
+			MODE_INFESTATION_X_MINOR = list("marine_minor", list('sound/music/round_end/neutral_melancholy1.ogg', 'sound/music/round_end/neutral_melancholy2.ogg'), list('sound/music/round_end/bluespace.ogg')),
+			MODE_INFESTATION_X_MAJOR = list("marine_minor", list('sound/music/round_end/sad_loss1.ogg', 'sound/music/round_end/sad_loss2.ogg'), list('sound/music/round_end/end.ogg')),
+			MODE_GENERIC_DRAW_NUKE =  list("draw", list('sound/music/round_end/nuclear_detonation1.ogg', 'sound/music/round_end/nuclear_detonation2.ogg'), list()),
+		),
+		FACTION_XENOMORPH_NORMAL = list(
+			MODE_INFESTATION_X_MAJOR = list("xeno_major", list('sound/music/round_end/winning_triumph1.ogg', 'sound/music/round_end/winning_triumph2.ogg'), list()),
+			MODE_INFESTATION_X_MINOR = list("xeno_major", list('sound/music/round_end/neutral_hopeful1.ogg', 'sound/music/round_end/neutral_hopeful2.ogg'), list()),
+			MODE_INFESTATION_M_MINOR = list("xeno_minor", list('sound/music/round_end/neutral_melancholy1.ogg', 'sound/music/round_end/neutral_melancholy2.ogg'), list('sound/music/round_end/bluespace.ogg')),
+			MODE_INFESTATION_M_MAJOR = list("xeno_minor", list('sound/music/round_end/sad_loss1.ogg', 'sound/music/round_end/sad_loss2.ogg'), list('sound/music/round_end/end.ogg')),
+			MODE_GENERIC_DRAW_NUKE =  list("draw", list('sound/music/round_end/nuclear_detonation1.ogg', 'sound/music/round_end/nuclear_detonation2.ogg'), list()),
+		)
+	)
 
 	var/research_allocation_interval = 10 MINUTES
 	var/next_research_allocation = 0
@@ -25,7 +46,7 @@
 	return TRUE
 
 /datum/game_mode/colonialmarines/announce()
-	to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDHEADER("The current map is - [SSmapping.configs[GROUND_MAP].map_name]!"))
+	to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDHEADER("В данный момент карта - [SSmapping.configs[GROUND_MAP].map_name]!"))
 
 ////////////////////////////////////////////////////////////////////////////////////////
 //Temporary, until we sort this out properly.
@@ -70,21 +91,13 @@
 	QDEL_LIST(GLOB.crap_items)
 	QDEL_LIST(GLOB.good_items)
 
-	// Spawn gamemode-specific map items
-	if(SSmapping.configs[GROUND_MAP].map_item_type)
-		var/type_to_spawn = SSmapping.configs[GROUND_MAP].map_item_type
-		for(var/i in GLOB.map_items)
-			var/turf/T = get_turf(i)
-			qdel(i)
-			new type_to_spawn(T)
-
-	if(!round_fog.len)
+	if(!length(round_fog))
 		round_fog = null //No blockers?
 	else
 		flags_round_type |= MODE_FOG_ACTIVATED
 
 	//desert river test
-	if(!round_toxic_river.len)
+	if(!length(round_toxic_river))
 		round_toxic_river = null //No tiles?
 	else
 		round_time_river = rand(-100,100)
@@ -95,7 +108,7 @@
 	var/obj/structure/tunnel/T
 	var/i = 0
 	var/turf/t
-	while(GLOB.xeno_tunnels.len && i++ < 3)
+	while(length(GLOB.xeno_tunnels) && i++ < 3)
 		t = get_turf(pick_n_take(GLOB.xeno_tunnels))
 		T = new(t)
 		T.id = "hole[i]"
@@ -141,14 +154,14 @@
 		new monkey_to_spawn(T)
 
 /datum/game_mode/colonialmarines/proc/ares_online()
-	var/name = "ARES Online"
-	var/input = "ARES. Online. Good morning, marines."
+	var/name = "[MAIN_AI_SYSTEM]"
+	var/input = "Включен. Доброе утро, экипаж."
 	shipwide_ai_announcement(input, name, 'sound/AI/ares_online.ogg')
 
 /datum/game_mode/colonialmarines/proc/map_announcement()
 	if(SSmapping.configs[GROUND_MAP].announce_text)
 		var/rendered_announce_text = replacetext(SSmapping.configs[GROUND_MAP].announce_text, "###SHIPNAME###", MAIN_SHIP_NAME)
-		marine_announcement(rendered_announce_text, "[MAIN_SHIP_NAME]")
+		faction_announcement(rendered_announce_text, "[MAIN_SHIP_NAME]")
 
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -159,8 +172,9 @@
 //This is processed each tick, but check_win is only checked 5 ticks, so we don't go crazy with scanning for mobs.
 /datum/game_mode/colonialmarines/process()
 	. = ..()
-	if(--round_started > 0)
-		return FALSE //Initial countdown, just to be safe, so that everyone has a chance to spawn before we check anything.
+	if(round_started > 0)
+		round_started--
+		return FALSE
 
 	if(is_in_endgame)
 		check_hijack_explosions()
@@ -170,14 +184,16 @@
 		next_research_allocation = world.time + research_allocation_interval
 
 	if(!round_finished)
-		var/datum/hive_status/hive
-		for(var/hivenumber in GLOB.hive_datum)
-			hive = GLOB.hive_datum[hivenumber]
-			if(!hive.xeno_queen_timer)
+		for(var/faction_to_get in FACTION_LIST_ALL)
+			var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
+			if(!faction.xeno_queen_timer)
 				continue
 
-			if(!hive.living_xeno_queen && hive.xeno_queen_timer < world.time)
-				xeno_message("The Hive is ready for a new Queen to evolve.", 3, hive.hivenumber)
+			if(!faction.living_xeno_queen && faction.xeno_queen_timer < world.time)
+				xeno_message("Улей готов для эволюции новой королевы.", 3, faction)
+
+		if(SSevacuation.ship_operation_stage_status == OPERATION_DECRYO && world.time > decryo_stage_timer)
+			SSevacuation.ship_operation_stage_status = OPERATION_BRIEFING
 
 		if(!active_lz && world.time > lz_selection_timer)
 			select_lz(locate(/obj/structure/machinery/computer/shuttle/dropship/flight/lz1))
@@ -193,17 +209,15 @@
 			if(!(round_status_flags & ROUNDSTATUS_PODDOORS_OPEN))
 				if(SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_LOCKDOWN])
 					if(world.time >= (PODLOCKS_OPEN_WAIT + round_time_lobby))
-
 						round_status_flags |= ROUNDSTATUS_PODDOORS_OPEN
-
-						var/input = "Security lockdown will be lifting in 30 seconds per automated lockdown protocol."
+						var/input = "Защитная блокировка будет снята через 30 секунд согласно автоматическому протоколу."
 						var/name = "Automated Security Authority Announcement"
-						marine_announcement(input, name, 'sound/AI/commandreport.ogg')
+						faction_announcement(input, name, 'sound/AI/commandreport.ogg')
 						for(var/i in GLOB.living_xeno_list)
 							var/mob/M = i
 							sound_to(M, sound(get_sfx("queen"), wait = 0, volume = 50))
 							to_chat(M, SPAN_XENOANNOUNCE("The Queen Mother reaches into your mind from worlds away."))
-							to_chat(M, SPAN_XENOANNOUNCE("To my children and their Queen. I sense the large doors that trap us will open in 30 seconds."))
+							to_chat(M, SPAN_XENOANNOUNCE("Для моих детей и их Королевы. Я чувствую что большие двери ловушки откроются через 30 секунд."))
 						addtimer(CALLBACK(src, PROC_REF(open_podlocks), "map_lockdown"), 300)
 
 			if(round_should_check_for_win)
@@ -211,13 +225,13 @@
 			round_checkwin = 0
 
 		if(!evolution_ovipositor_threshold && world.time >= SSticker.round_start_time + round_time_evolution_ovipositor)
-			for(var/hivenumber in GLOB.hive_datum)
-				hive = GLOB.hive_datum[hivenumber]
-				hive.evolution_without_ovipositor = FALSE
-				if(hive.living_xeno_queen && !hive.living_xeno_queen.ovipositor)
-					to_chat(hive.living_xeno_queen, SPAN_XENODANGER("It is time to settle down and let your children grow."))
+			for(var/faction_to_get in FACTION_LIST_ALL)
+				var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
+				faction.evolution_without_ovipositor = FALSE
+				if(faction.living_xeno_queen && !faction.living_xeno_queen.ovipositor)
+					to_chat(faction.living_xeno_queen, SPAN_XENODANGER("Время сесть на яйцеклад и дать эволюцию детям."))
 			evolution_ovipositor_threshold = TRUE
-			msg_admin_niche("Xenomorphs now require the queen's ovipositor for evolution progress.")
+			msg_admin_niche("Ксеноморфам требуется Королева на яйцекладе.")
 
 		if(!GLOB.resin_lz_allowed && world.time >= SSticker.round_start_time + round_time_resin)
 			set_lz_resin_allowed(TRUE)
@@ -234,7 +248,7 @@
 		return
 
 	var/list/shortly_exploding_pipes = list()
-	for(var/i = 1 to HIJACK_EXPLOSION_COUNT)
+	for(var/i = 1 to 5)
 		shortly_exploding_pipes += pick(GLOB.mainship_pipes)
 
 	for(var/obj/structure/pipes/exploding_pipe as anything in shortly_exploding_pipes)
@@ -257,11 +271,21 @@
 #undef FOG_DELAY_INTERVAL
 #undef PODLOCKS_OPEN_WAIT
 
-// Resource Towers
-
 /datum/game_mode/colonialmarines/ds_first_drop(obj/docking_port/mobile/marine_dropship)
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(show_blurb_uscm)), DROPSHIP_DROP_MSG_DELAY)
 	add_current_round_status_to_end_results("First Drop")
+
+/datum/game_mode/colonialmarines/ds_first_landed(obj/docking_port/mobile/marine_dropship)
+	SSevacuation.ship_operation_stage_status = OPERATION_IN_PROGRESS
+	if(world.time - GLOB.xenomorph_attack_delay > 15 MINUTES)
+		GLOB.xenomorph_attack_delay = GLOB.xenomorph_attack_delay - (world.time - GLOB.xenomorph_attack_delay - 15 MINUTES)
+	var/name = "[MAIN_AI_SYSTEM] Стадия Операции"
+	var/input = "Операция [uppertext(round_statistics.round_name)]\n\n[game_time_timestamp("hhmm hrs")] (время в зоне операции [planet_game_time_timestamp("hh:mm:ss")]), [uppertext(time2text(REALTIMEOFDAY, "DD-MMM-[game_year]"))]\n\n\
+				[SSmapping.configs[GROUND_MAP].map_name]\n\n\
+				НАЧАТА\n\n\n\n\
+				Примерное время до получение трансляции Командыванием USCM через [duration2text_hour_min_sec(GLOB.ship_hc_delay, "hh:mm:ss")]"
+	faction_announcement(input, name)
+	. = ..()
 
 ///////////////////////////
 //Checks to see who won///
@@ -270,17 +294,17 @@
 	if(SSticker.current_state != GAME_STATE_PLAYING)
 		return
 
-	var/living_player_list[] = count_humans_and_xenos(EvacuationAuthority.get_affected_zlevels())
+	var/living_player_list[] = count_humans_and_xenos(SSevacuation.get_affected_zlevels())
 	var/num_humans = living_player_list[1]
 	var/num_xenos = living_player_list[2]
 
 	if(force_end_at && world.time > force_end_at)
 		round_finished = MODE_INFESTATION_X_MINOR
-	if(EvacuationAuthority.dest_status == NUKE_EXPLOSION_FINISHED)
+	if(SSevacuation.dest_status == NUKE_EXPLOSION_FINISHED)
 		round_finished = MODE_GENERIC_DRAW_NUKE //Nuke went off, ending the round.
-	if(EvacuationAuthority.dest_status == NUKE_EXPLOSION_GROUND_FINISHED)
+	if(SSevacuation.dest_status == NUKE_EXPLOSION_GROUND_FINISHED)
 		round_finished = MODE_INFESTATION_M_MINOR //Nuke went off, ending the round.
-	if(EvacuationAuthority.dest_status < NUKE_EXPLOSION_IN_PROGRESS) //If the nuke ISN'T in progress. We do not want to end the round before it detonates.
+	if(SSevacuation.dest_status < NUKE_EXPLOSION_IN_PROGRESS) //If the nuke ISN'T in progress. We do not want to end the round before it detonates.
 		if(!num_humans && num_xenos) //No humans remain alive.
 			round_finished = MODE_INFESTATION_X_MAJOR //Evacuation did not take place. Everyone died.
 		else if(num_humans && !num_xenos)
@@ -291,19 +315,24 @@
 		else if(!num_humans && !num_xenos)
 			round_finished = MODE_INFESTATION_DRAW_DEATH //Both were somehow destroyed.
 
-/datum/game_mode/colonialmarines/check_queen_status(hivenumber)
-	set waitfor = 0
-	if(!(flags_round_type & MODE_INFESTATION)) return
+/datum/game_mode/colonialmarines/check_queen_status(datum/faction/faction)
+	set waitfor = FALSE
+	if(!(flags_round_type & MODE_INFESTATION))
+		return
 	xeno_queen_deaths++
 	var/num_last_deaths = xeno_queen_deaths
 	sleep(QUEEN_DEATH_COUNTDOWN)
 	//We want to make sure that another queen didn't die in the interim.
 
 	if(xeno_queen_deaths == num_last_deaths && !round_finished)
-		var/datum/hive_status/HS
-		for(var/HN in GLOB.hive_datum)
-			HS = GLOB.hive_datum[HN]
-			if(HS.living_xeno_queen && !is_admin_level(HS.living_xeno_queen.loc.z))
+		if(!faction)
+			for(var/faction_to_get in FACTION_LIST_ALL)
+				faction = GLOB.faction_datum[faction_to_get]
+				if(faction.living_xeno_queen && !is_admin_level(faction.living_xeno_queen.loc.z))
+					//Some Queen is alive, we shouldn't end the game yet
+					return
+		else
+			if(faction.living_xeno_queen && !is_admin_level(faction.living_xeno_queen.loc.z))
 				//Some Queen is alive, we shouldn't end the game yet
 				return
 		round_finished = MODE_INFESTATION_M_MINOR
@@ -312,56 +341,14 @@
 //Checks if the round is over//
 ///////////////////////////////
 /datum/game_mode/colonialmarines/check_finished()
-	if(round_finished) return 1
+	if(round_finished)
+		return TRUE
 
 //////////////////////////////////////////////////////////////////////
 //Announces the end of the game with all relevant information stated//
 //////////////////////////////////////////////////////////////////////
 /datum/game_mode/colonialmarines/declare_completion()
-	announce_ending()
-	var/musical_track
-	var/end_icon = "draw"
-	switch(round_finished)
-		if(MODE_INFESTATION_X_MAJOR)
-			musical_track = pick('sound/theme/sad_loss1.ogg','sound/theme/sad_loss2.ogg')
-			end_icon = "xeno_major"
-			if(round_statistics && round_statistics.current_map)
-				round_statistics.current_map.total_xeno_victories++
-				round_statistics.current_map.total_xeno_majors++
-		if(MODE_INFESTATION_M_MAJOR)
-			musical_track = pick('sound/theme/winning_triumph1.ogg','sound/theme/winning_triumph2.ogg')
-			end_icon = "marine_major"
-			if(round_statistics && round_statistics.current_map)
-				round_statistics.current_map.total_marine_victories++
-				round_statistics.current_map.total_marine_majors++
-		if(MODE_INFESTATION_X_MINOR)
-			musical_track = pick('sound/theme/neutral_melancholy1.ogg','sound/theme/neutral_melancholy2.ogg')
-			end_icon = "xeno_minor"
-			if(round_statistics && round_statistics.current_map)
-				round_statistics.current_map.total_xeno_victories++
-		if(MODE_INFESTATION_M_MINOR)
-			musical_track = pick('sound/theme/neutral_hopeful1.ogg','sound/theme/neutral_hopeful2.ogg')
-			end_icon = "marine_minor"
-			if(round_statistics && round_statistics.current_map)
-				round_statistics.current_map.total_marine_victories++
-		if(MODE_INFESTATION_DRAW_DEATH)
-			end_icon = "draw"
-			musical_track = pick('sound/theme/nuclear_detonation1.ogg','sound/theme/nuclear_detonation2.ogg')
-			if(round_statistics && round_statistics.current_map)
-				round_statistics.current_map.total_draws++
-	var/sound/S = sound(musical_track, channel = SOUND_CHANNEL_LOBBY)
-	S.status = SOUND_STREAM
-	sound_to(world, S)
-	if(round_statistics)
-		round_statistics.game_mode = name
-		round_statistics.round_length = world.time
-		round_statistics.round_result = round_finished
-		round_statistics.end_round_player_population = GLOB.clients.len
-
-		round_statistics.log_round_statistics()
-
-	calculate_end_statistics()
-	show_end_statistics(end_icon)
+	. = ..()
 
 	declare_completion_announce_fallen_soldiers()
 	declare_completion_announce_xenomorphs()
@@ -372,7 +359,7 @@
 	add_current_round_status_to_end_results("Round End")
 	handle_round_results_statistics_output()
 
-	return 1
+	return TRUE
 
 // for the toolbox
 /datum/game_mode/colonialmarines/end_round_message()
@@ -390,144 +377,70 @@
 	return "Round has ended in a strange way."
 
 /datum/game_mode/colonialmarines/proc/add_current_round_status_to_end_results(special_round_status as text)
-	var/players = GLOB.clients
-	var/list/counted_humans = list(
-		"Squad Marines" = list(),
-		"Auxiliary Marines" = list(),
-		"Non-Standard Humans" = list()
-	)
+	var/list/counted_mobs = list()
+	for(var/faction_to_get in FACTION_LIST_ALL)
+		var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
+		if(!length(faction.totalMobs) && !length(faction.totalDeadMobs))
+			continue
+		var/list/faction_payload = list("alive mobs" = list(), "dead mobs" = list())
+		for(var/mob/mob in faction.totalMobs)
+			if(istype(mob, /mob/living/carbon/xenomorph))
+				var/mob/living/carbon/xenomorph/xeno = mob
+				faction_payload["alive mobs"] += list(xeno.name, "as [xeno.mutation_type]")
+			else
+				if(istype(mob, /mob/living/carbon/human))
+					var/mob/living/carbon/human/human = mob
+					if(human.spawned_corpse)
+						continue
+				faction_payload["alive mobs"] += list(mob.name, "as [mob.job]")
+		for(var/mob/mob in faction.totalDeadMobs)
+			if(istype(mob, /mob/living/carbon/xenomorph))
+				var/mob/living/carbon/xenomorph/xeno = mob
+				faction_payload["dead mobs"] += list(xeno.name, "as [xeno.mutation_type]")
+			else
+				if(istype(mob, /mob/living/carbon/human))
+					var/mob/living/carbon/human/human = mob
+					if(human.spawned_corpse)
+						continue
+				faction_payload["dead mobs"] += list(mob.name, "as [mob.job]")
+		counted_mobs[faction.name] = faction_payload
 
-	//organize our jobs in a readable and standard way
-	for(var/job in ROLES_MARINES)
-		counted_humans["Squad Marines"][job] = 0
-	for(var/job in ROLES_REGULAR_ALL - ROLES_XENO - ROLES_MARINES - ROLES_WHITELISTED - ROLES_SPECIAL)
-		counted_humans["Auxiliary Marines"][job] = 0
-	for(var/job in ROLES_SPECIAL)
-		counted_humans["Non-Standard Humans"][job] = 0
-
-	var/list/counted_xenos = list()
-
-	//organize our hives and castes in a readable and standard way | don't forget our pooled larva
-	for(var/hive in ALL_XENO_HIVES)
-		counted_xenos[hive] = list()
-		for(var/caste in ALL_XENO_CASTES)
-			counted_xenos[hive][caste] = 0
-		counted_xenos[hive]["Pooled Larva"] = GLOB.hive_datum[hive].stored_larva
-
-	//Run through all our clients
-	//add up our marines by job type, surv numbers, and non-standard humans we don't care too much about
-	//add up our xenos by hive and caste
-	for(var/client/player_client in players)
-		if(player_client.mob && player_client.mob.stat != DEAD)
-			if(ishuman(player_client.mob))
-				if(player_client.mob.faction == FACTION_MARINE)
-					if(player_client.mob.job in (ROLES_MARINES))
-						counted_humans["Squad Marines"][player_client.mob.job]++
-					else
-						counted_humans["Auxiliary Marines"][player_client.mob.job]++
-				else
-					counted_humans["Non-Standard Humans"][player_client.mob.job]++
-			else if(isxeno(player_client.mob))
-				var/mob/living/carbon/xenomorph/xeno = player_client.mob
-				counted_xenos[xeno.hivenumber][xeno.caste_type]++
-
-	var/list/total_data = list("special round status" = special_round_status, "round time" = duration2text(), "counted humans" = counted_humans, "counted xenos" = counted_xenos)
+	var/list/total_data = list("special round status" = special_round_status, "round time" = duration2text(), "counted faction mobs" = counted_mobs)
 	running_round_stats = running_round_stats + list(total_data)
 
 /datum/game_mode/colonialmarines/proc/handle_round_results_statistics_output()
-	var/webhook = CONFIG_GET(string/round_results_webhook_url)
+	if(world.port != 1400)
+		return FALSE
 
+	var/webhook = CONFIG_GET(string/new_round_webhook_url)
 	if(!webhook)
 		return
 
-	var/datum/discord_embed/embed = new()
-	embed.title = "[SSperf_logging.round?.id]"
-	embed.description = "[round_stats.round_name]\n[round_stats.map_name]\n[end_round_message()]"
-
-	var/list/webhook_info = list()
-	webhook_info["embeds"] = list(embed.convert_to_list())
-
 	var/list/headers = list()
 	headers["Content-Type"] = "application/json"
-
 	var/list/requests = list()
-
-	var/datum/http_request/beginning_request = new()
-	beginning_request.prepare(RUSTG_HTTP_METHOD_POST, webhook, json_encode(webhook_info), headers, "tmp/response.json")
-
-	requests += beginning_request
-
 	for(var/list/round_status_report in running_round_stats)
 		var/special_status = round_status_report["special round status"]
 		var/round_time = round_status_report["round time"]
 
 		var/field_name = "[special_status ? "[round_time] - [special_status]" : "[round_time]"]"
 
-		var/total_marines = 0
-		var/total_squad_marines = 0
-
-		var/squad_marine_job_text = ""
-		var/list/squad_marines_job_report = round_status_report["counted humans"]["Squad Marines"]
-		var/incrementer = 0
-		for(var/job_type in squad_marines_job_report)
-			squad_marine_job_text += "[job_type]: [squad_marines_job_report[job_type]]"
-			total_marines += squad_marines_job_report[job_type]
-			total_squad_marines += squad_marines_job_report[job_type]
-			incrementer++
-			if(incrementer < squad_marines_job_report.len)
-				squad_marine_job_text += ", "
-
-		var/auxiliary_marine_job_text = ""
-		var/list/auxiliary_marines_job_report = round_status_report["counted humans"]["Auxiliary Marines"]
-		incrementer = 0
-		for(var/job_type in auxiliary_marines_job_report)
-			auxiliary_marine_job_text += "[job_type]: [auxiliary_marines_job_report[job_type]]"
-			total_marines += auxiliary_marines_job_report[job_type]
-			incrementer++
-			if(incrementer < auxiliary_marines_job_report.len)
-				auxiliary_marine_job_text += ", "
-
-		var/total_non_standard = 0
-		var/non_standard_job_text = ""
-		incrementer = 0
-		var/list/non_standard_job_report = round_status_report["counted humans"]["Non-Standard Humans"]
-		for(var/job_type in non_standard_job_report)
-			non_standard_job_text += "[job_type]: [non_standard_job_report[job_type]]"
-			total_non_standard += non_standard_job_report[job_type]
-			incrementer++
-			if(incrementer < non_standard_job_report.len)
-				non_standard_job_text += ", "
-
-		var/list/hive_xeno_numbers = list()
-		var/list/hive_caste_texts = list()
-		for(var/hive in round_status_report["counted xenos"])
-			var/hive_amount = 0
-			var/hive_caste_text = ""
-			incrementer = 0
-			var/list/per_hive_status = round_status_report["counted xenos"][hive]
-			for(var/hive_caste in per_hive_status)
-				hive_caste_text += "[hive_caste]: [per_hive_status[hive_caste]]"
-				hive_amount += per_hive_status[hive_caste]
-				incrementer++
-				if(incrementer < per_hive_status.len)
-					hive_caste_text += ", "
-			if(hive_amount)
-				hive_xeno_numbers[hive] = hive_amount
-				hive_caste_texts[hive] = hive_caste_text
-
-		var/final_text = "Marines: [total_marines]\nSquad Marines: [total_squad_marines]\n\n"
-		final_text += "Marine jobs:\n[auxiliary_marine_job_text], [squad_marine_job_text]\n\n"
-
-		if(total_non_standard)
-			final_text += "Non-standard jobs:\n[non_standard_job_text]\n\n"
-
-		for(var/hive in hive_xeno_numbers)
-			final_text += "[hive]\nXenos: [hive_xeno_numbers[hive]]\n\n"
-			final_text += "Xeno castes:\n[hive_caste_texts[hive]]\n"
+		var/job_final_text = ""
+		var/list/job_report = round_status_report["counted faction mobs"]
+		for(var/faction in job_report)
+			job_final_text += "\n\n**[faction]**\n"
+			job_final_text += "\ntotal alive mobs ([length(job_report[faction]["alive mobs"])]):\n"
+			var/list/alive_mob_report = job_report[faction]["alive mobs"]
+			for(var/mob_info in alive_mob_report)
+				job_final_text += "[mob_info] [alive_mob_report[mob_info]]\n"
+			job_final_text += "\ntotal dead mobs ([length(job_report[faction]["dead mobs"])]):\n"
+			var/list/dead_mob_report = job_report[faction]["dead mobs"]
+			for(var/mob_info in dead_mob_report)
+				job_final_text += "[mob_info] [dead_mob_report[mob_info]]\n"
 
 		var/datum/discord_embed/per_report_embed = new()
 		per_report_embed.title = "[field_name]"
-		per_report_embed.description = "[final_text]"
+		per_report_embed.description = "[job_final_text]"
 
 		var/list/per_report_webhook_info = list()
 		per_report_webhook_info["embeds"] = list(per_report_embed.convert_to_list())
@@ -540,5 +453,3 @@
 	for(var/datum/http_request/request in requests)
 		addtimer(CALLBACK(request, TYPE_PROC_REF(/datum/http_request, begin_async)), (2 * incrementer) SECONDS)
 		incrementer++
-
-#undef HIJACK_EXPLOSION_COUNT

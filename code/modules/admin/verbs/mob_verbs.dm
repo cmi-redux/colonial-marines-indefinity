@@ -6,7 +6,7 @@
 /client/proc/change_ckey(mob/M in GLOB.mob_list, a_ckey = null)
 	var/new_ckey = a_ckey
 
-	if (!admin_holder || !(admin_holder.rights & R_MOD))
+	if(!admin_holder || !(admin_holder.rights & R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
 
@@ -18,7 +18,7 @@
 
 	if(!new_ckey)
 		return
-	if (M.client)
+	if(M.client)
 		M.ghostize(FALSE)
 	M.aghosted = FALSE //Incase you ckey into an aghosted body.
 	message_admins("[key_name_admin(usr)] modified [key_name(M)]'s ckey to [new_ckey]", 1)
@@ -37,7 +37,7 @@
 /client/proc/cmd_admin_ghostchange(mob/living/M, mob/dead/observer/O)
 	if(!istype(O) || (!check_rights(R_ADMIN|R_DEBUG, 0))) //Let's add a few extra sanity checks.
 		return
-	if(alert("Do you want to possess this mob?", "Switch Ckey", "Yes", "No") == "Yes")
+	if(alert("Do you want to possess this mob?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) == usr.client.auto_lang(LANGUAGE_YES))
 		if(!M || !O) //Extra check in case the mob was deleted while we were transfering.
 			return
 		change_ckey(M, O.ckey)
@@ -91,8 +91,8 @@
 
 	if(!check_rights(R_ADMIN)) return
 
-	var/confirm = alert(src, "You sure?", "Confirm", "Yes", "No")
-	if(confirm != "Yes") return
+	if(alert(src, "You sure?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
+		return
 	//Due to the delay here its easy for something to have happened to the mob
 	if(!M) return
 
@@ -126,7 +126,7 @@
 
 	if(!ismob(M))
 		return
-	if (!admin_holder || !(admin_holder.rights & R_MOD))
+	if(!admin_holder || !(admin_holder.rights & R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
 
@@ -142,7 +142,7 @@
 
 	var/msg = input("Contents of the message", text("Subtle PM to [M.key]")) as text
 
-	if (!msg)
+	if(!msg)
 		return
 
 	switch(message_option)
@@ -176,32 +176,31 @@
 
 	if(!ismob(M))
 		return
-	if (!CLIENT_IS_STAFF(src))
+	if(!CLIENT_IS_STAFF(src))
 		to_chat(src, "Only administrators may use this command.")
 		return
 
-	var/res = alert(src, "Do you wish to send an admin alert to this user?",,"Yes","No","Custom")
-	switch(res)
-		if("Yes")
-			var/message = "An admin is trying to talk to you!<br>Check your chat window and click their name to respond or you may be banned!"
+	var/res = alert(src, "Do you wish to send an admin alert to this user?", , usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO), usr.client.auto_lang(LANGUAGE_CUSTOM))
+	if(res == usr.client.auto_lang(LANGUAGE_YES))
+		var/message = "An admin is trying to talk to you!<br>Check your chat window and click their name to respond or you may be banned!"
 
-			show_blurb(M, 15, message, null, "center", "center", COLOR_RED, null, null, 1)
-			log_admin("[key_name(src)] sent a default admin alert to [key_name(M)].")
-			message_admins("[key_name(src)] sent a default admin alert to [key_name(M)].")
-		if("Custom")
-			var/message = input(src, "Input your custom admin alert text:", "Message") as text|null
-			if(!message)
-				return
-
-			var/new_color = input(src, "Input your message color:", "Color Selector") as color|null
-			if(!new_color)
-				return
-
-			show_blurb(M, 15, message, null, "center", "center", new_color, null, null, 1)
-			log_admin("[key_name(src)] sent an admin alert to [key_name(M)] with custom message [message].")
-			message_admins("[key_name(src)] sent an admin alert to [key_name(M)] with custom message [message].")
-		else
+		show_blurb(M, 15, message, null, "center", "center", COLOR_RED, null, null, 1)
+		log_admin("[key_name(src)] sent a default admin alert to [key_name(M)].")
+		message_admins("[key_name(src)] sent a default admin alert to [key_name(M)].")
+	if(res == usr.client.auto_lang(LANGUAGE_CUSTOM))
+		var/message = input(src, "Input your custom admin alert text:", "Message") as text|null
+		if(!message)
 			return
+
+		var/new_color = input(src, "Input your message color:", "Color Selector") as color|null
+		if(!new_color)
+			return
+
+		show_blurb(M, 15, message, null, "center", "center", new_color, null, null, 1)
+		log_admin("[key_name(src)] sent an admin alert to [key_name(M)] with custom message [message].")
+		message_admins("[key_name(src)] sent an admin alert to [key_name(M)] with custom message [message].")
+	else
+		return
 
 /client/proc/cmd_admin_object_narrate(obj/selected)
 	set name = "Object Narrate"
@@ -260,7 +259,7 @@
 	set name = "Attack Log"
 	set category = null
 
-	if (!CLIENT_IS_STAFF(src))
+	if(!CLIENT_IS_STAFF(src))
 		to_chat(src, "Only administrators may use this command.")
 		return
 
@@ -272,7 +271,7 @@
 	set name = "Possess Obj"
 	set category = null
 
-	if (!CLIENT_IS_STAFF(src))
+	if(!CLIENT_IS_STAFF(src))
 		to_chat(src, "Only administrators may use this command.")
 		return
 
@@ -296,7 +295,7 @@
 	set name = "Release Obj"
 	set category = null
 
-	if (!CLIENT_IS_STAFF(src))
+	if(!CLIENT_IS_STAFF(src))
 		to_chat(src, "Only administrators may use this command.")
 		return
 
@@ -320,8 +319,7 @@
 		to_chat(src, "Only administrators may use this command.")
 		return
 
-	var/confirm = alert(src, "Make [M] drop everything?", "Message", "Yes", "No")
-	if(confirm != "Yes")
+	if(alert(src, "Make [M] drop everything?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 
 	for(var/obj/item/W in M)
@@ -330,19 +328,21 @@
 
 	message_admins("[key_name_admin(usr)] made [key_name_admin(M)] drop everything!")
 
-/client/proc/cmd_admin_change_their_hivenumber(mob/living/carbon/H)
-	set name = "Change Hivenumber"
+/client/proc/cmd_admin_change_their_faction(mob/living/carbon/H)
+	set name = "Change Faction"
 	set category = null
 
 	if(!istype(H))
 		return
 
-	var/list/hives = list()
-	for(var/hivenumber in GLOB.hive_datum)
-		var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
-		hives += list("[hive.name]" = hive.hivenumber)
+	var/list/factions = list()
+	for(var/faction_to_get in FACTION_LIST_ALL)
+		var/datum/faction/faction_to_set = GLOB.faction_datum[faction_to_get]
+		LAZYSET(factions, faction_to_set.name, faction_to_set)
 
-	var/newhive = tgui_input_list(src,"Select a hive.", "Change Hivenumber", hives, theme="hive_status")
+	var/choice = tgui_input_list(src, "Select a faction.", "Change Faction", factions)
+	if(!choice)
+		return FALSE
 
 	if(!H)
 		to_chat(usr, "This mob no longer exists")
@@ -350,24 +350,20 @@
 
 	if(isxeno(H))
 		var/mob/living/carbon/xenomorph/X = H
-		X.set_hive_and_update(hives[newhive])
+		X.set_hive_and_update(factions[choice])
 	else
 		var/was_leader = FALSE
-		if(H.hivenumber)
-			var/datum/hive_status/hive = GLOB.hive_datum[H.hivenumber]
-			if(H == hive.leading_cult_sl)
+		if(H.faction)
+			if(H == H.faction.leading_cult_sl)
 				was_leader = TRUE
-			hive.leading_cult_sl = null
+			H.faction.leading_cult_sl = null
 
-		H.hivenumber = hives[newhive]
+		GLOB.faction_datum[choice].add_mob(H)
 
-		var/datum/hive_status/hive = GLOB.hive_datum[H.hivenumber]
-		H.faction = hive.internal_faction
+		if(was_leader && (!H.faction.leading_cult_sl || H.faction.leading_cult_sl.stat == DEAD))
+			H.faction.leading_cult_sl = H
 
-		if(was_leader && (!hive.leading_cult_sl || hive.leading_cult_sl.stat == DEAD))
-			hive.leading_cult_sl = H
-
-	message_admins("[key_name(src)] changed hivenumber of [H] to [H.hivenumber].")
+	message_admins("[key_name(src)] changed faction of [H] to [choice].")
 
 
 /client/proc/cmd_admin_change_their_name(mob/living/carbon/X)
@@ -400,7 +396,7 @@
 
 	if(!check_rights(0)) return
 
-	if (M.sleeping > 0) //if they're already slept, set their sleep to zero and remove the icon
+	if(M.sleeping > 0) //if they're already slept, set their sleep to zero and remove the icon
 		M.sleeping = 0
 		M.RemoveSleepingIcon()
 	else

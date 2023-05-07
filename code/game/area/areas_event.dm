@@ -14,16 +14,14 @@
 
 structure:
 	CEILING_GLASS
-		lighting_use_dynamic = FALSE
+		powered
+		not powered
+		lit
 			powered
 			not powered
-		lighting_use_dynamic = TRUE
-			lit
-				powered
-				not powered
-			not lit
-				powered
-				not powered
+		not lit
+			powered
+			not powered
 
 	CEILING_METAL
 		...
@@ -49,7 +47,6 @@ structure:
 
 	//no dynamic lighting
 	exterior_light = 0
-	lighting_use_dynamic = FALSE
 
 	//always powered
 	requires_power = FALSE
@@ -59,7 +56,7 @@ structure:
 	. = ..()
 	if(exterior_light)
 		for(var/turf/T in contents)
-			T.update_lumcount(exterior_light)
+			T.set_light(exterior_light)
 
 //no dynamic lighting, unpowered.
 /area/event/unpowered
@@ -75,7 +72,6 @@ structure:
 	icon_state = "event_dyn"
 	requires_power = TRUE
 	unlimited_power = TRUE
-	lighting_use_dynamic = TRUE
 
 //no dynamic lighting, unpowered.
 /area/event/dynamic/unpowered
@@ -122,7 +118,6 @@ structure:
 	icon_state = "metal_dyn"
 	requires_power = TRUE
 	unlimited_power = TRUE
-	lighting_use_dynamic = TRUE
 
 //no dynamic lighting, unpowered.
 /area/event/metal/dynamic/unpowered
@@ -176,7 +171,6 @@ structure:
 	icon_state = "under_dyn"
 	requires_power = TRUE
 	unlimited_power = TRUE
-	lighting_use_dynamic = TRUE
 
 //no dynamic lighting, unpowered.
 /area/event/underground/dynamic/unpowered
@@ -232,7 +226,6 @@ structure:
 	icon_state = "undercas_dyn"
 	requires_power = TRUE
 	unlimited_power = TRUE
-	lighting_use_dynamic = TRUE
 
 //no dynamic lighting, unpowered.
 /area/event/underground_no_CAS/dynamic/unpowered
@@ -286,7 +279,6 @@ structure:
 	icon_state = "deep_dyn"
 	requires_power = TRUE
 	unlimited_power = TRUE
-	lighting_use_dynamic = TRUE
 
 //no dynamic lighting, unpowered.
 /area/event/deep_underground/dynamic/unpowered

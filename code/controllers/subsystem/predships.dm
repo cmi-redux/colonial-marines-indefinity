@@ -1,7 +1,7 @@
 SUBSYSTEM_DEF(predships)
-	name   = "PredShips"
-	init_order = SS_INIT_PREDSHIPS
-	flags  = SS_NO_FIRE
+	name		= "PredShips"
+	init_order	= SS_INIT_PREDSHIPS
+	flags		= SS_NO_FIRE
 
 	var/datum/map_template/ship_template // Current ship template in use
 	var/list/list/managed_z   // Maps initating clan id to list(datum/space_level, list/turf(spawns))

@@ -22,17 +22,21 @@
 	)
 	angle = 60
 	use_dir = TRUE
-	var/iff_signal = FACTION_MARINE
+	faction_to_get = FACTION_MARINE
 	var/triggered = FALSE
 	var/hard_iff_lock = FALSE
 	var/obj/effect/mine_tripwire/tripwire
 
 	var/map_deployed = FALSE
 
-/obj/item/explosive/mine/Initialize()
+/obj/item/explosive/mine/Initialize(mapload, datum/faction/faction_to_set)
 	. = ..()
+
 	if(map_deployed)
 		deploy_mine(null)
+
+	if(faction_to_set)
+		faction = faction_to_set
 
 /obj/item/explosive/mine/Destroy()
 	QDEL_NULL(tripwire)
@@ -70,6 +74,13 @@
 	if(active || user.action_busy)
 		return
 
+	if(!faction)
+		faction = user.faction
+
+	else if(user.ally(faction) || (user.faction != faction && hard_iff_lock))
+		visible_message(SPAN_NOTICE("[src] blinks red."))
+		return
+
 	user.visible_message(SPAN_NOTICE("[user] starts deploying [src]."), \
 		SPAN_NOTICE("You start deploying [src]."))
 	if(!do_after(user, 40, INTERRUPT_NO_NEEDHAND, BUSY_ICON_HOSTILE))
@@ -90,7 +101,7 @@
 
 /obj/item/explosive/mine/proc/deploy_mine(mob/user)
 	if(!hard_iff_lock && user)
-		iff_signal = user.faction
+		faction = user.faction
 
 	cause_data = create_cause_data(initial(name), user)
 	anchored = TRUE
@@ -104,25 +115,28 @@
 
 //Disarming
 /obj/item/explosive/mine/attackby(obj/item/W, mob/user)
+	var/disarm_timer = 3 SECONDS
+	if(user.faction == faction)
+		disarm_timer = 1 SECONDS
 	if(HAS_TRAIT(W, TRAIT_TOOL_MULTITOOL))
 		if(active)
 			if(user.action_busy)
 				return
-			if(user.faction == iff_signal)
+			if(user.faction == faction)
 				user.visible_message(SPAN_NOTICE("[user] starts disarming [src]."), \
 				SPAN_NOTICE("You start disarming [src]."))
 			else
 				user.visible_message(SPAN_NOTICE("[user] starts fiddling with \the [src], trying to disarm it."), \
 				SPAN_NOTICE("You start disarming [src], but you don't know its IFF data. This might end badly..."))
-			if(!do_after(user, 30, INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY))
+			if(!do_after(user, disarm_timer, INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY))
 				user.visible_message(SPAN_WARNING("[user] stops disarming [src]."), \
 					SPAN_WARNING("You stop disarming [src]."))
 				return
-			if(user.faction != iff_signal) //ow!
+			if(user.faction != faction) //ow!
 				if(prob(75))
 					triggered = TRUE
 					if(tripwire)
-						var/direction = reverse_dir[src.dir]
+						var/direction =  GLOB.reverse_dir[src.dir]
 						var/step_direction = get_step(src, direction)
 						tripwire.forceMove(step_direction)
 					prime()
@@ -130,14 +144,15 @@
 				return
 			user.visible_message(SPAN_NOTICE("[user] finishes disarming [src]."), \
 			SPAN_NOTICE("You finish disarming [src]."))
-			disarm()
+			disarm(user)
 
 	else
 		return ..()
 
-/obj/item/explosive/mine/proc/disarm()
+/obj/item/explosive/mine/proc/disarm(mob/user)
 	if(customizable)
 		activate_sensors()
+	faction = user.faction
 	anchored = FALSE
 	active = FALSE
 	triggered = FALSE
@@ -196,7 +211,7 @@
 		return
 	if(L.stat == DEAD)
 		return
-	if(L.get_target_lock(iff_signal) || isrobot(L))
+	if(L.ally(faction) || isrobot(L))
 		return
 	L.visible_message(SPAN_DANGER("[icon2html(src, viewers(src))] The [name] clicks as [L] moves in front of it."), \
 	SPAN_DANGER("[icon2html(src, L)] The [name] clicks as you move in front of it."), \
@@ -210,7 +225,7 @@
 
 //Note : May not be actual explosion depending on linked method
 /obj/item/explosive/mine/prime()
-	set waitfor = 0
+	set waitfor = FALSE
 
 	if(!customizable)
 		create_shrapnel(loc, 12, dir, angle, , cause_data)
@@ -235,10 +250,10 @@
 		SPAN_DANGER("You slash [src]!"))
 	playsound(loc, 'sound/weapons/slice.ogg', 25, 1)
 
-	//We move the tripwire randomly in either of the four cardinal directions
+	//We move the tripwire randomly in either of the four cardinals directions
 	triggered = TRUE
 	if(tripwire)
-		var/direction = pick(cardinal)
+		var/direction = pick( GLOB.cardinals)
 		var/step_direction = get_step(src, direction)
 		tripwire.forceMove(step_direction)
 	prime()
@@ -287,18 +302,18 @@
 	map_deployed = TRUE
 
 /obj/item/explosive/mine/no_iff
-	iff_signal = null
+	faction_to_get = null
 
 /obj/item/explosive/mine/active/no_iff
-	iff_signal = null
+	faction_to_get = null
 
 
 /obj/item/explosive/mine/pmc
 	name = "\improper M20P Claymore anti-personnel mine"
 	desc = "The M20P Claymore is a directional proximity triggered anti-personnel mine designed by Armat Systems for use by the United States Colonial Marines. It has been modified for use by the Wey-Yu PMC forces."
 	icon_state = "m20p"
-	iff_signal = FACTION_PMC
-	hard_iff_lock = TRUE
+	faction_to_get = FACTION_WY
+
 
 /obj/item/explosive/mine/pmc/active
 	icon_state = "m20p_active"

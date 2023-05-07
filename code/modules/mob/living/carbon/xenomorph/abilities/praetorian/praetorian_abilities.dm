@@ -81,7 +81,7 @@
 /datum/action/xeno_action/onclick/toggle_cleave/use_ability(atom/A)
 	var/mob/living/carbon/xenomorph/X = owner
 
-	if (!istype(X))
+	if(!istype(X))
 		return
 
 	if(!X.check_state(1))
@@ -89,13 +89,13 @@
 
 	var/datum/action/xeno_action/activable/cleave/cAction = get_xeno_action_by_type(X, /datum/action/xeno_action/activable/cleave)
 
-	if (!istype(cAction))
+	if(!istype(cAction))
 		return
 
 	cAction.root_toggle = !cAction.root_toggle
 
 	var/action_icon_result
-	if (cAction.root_toggle)
+	if(cAction.root_toggle)
 		action_icon_result = "prae_cleave_root"
 		to_chat(X, SPAN_WARNING("You will now root marines with your cleave."))
 	else
@@ -332,10 +332,10 @@
 		return
 
 	var/datum/action/xeno_action/activable/warden_heal/WH = get_xeno_action_by_type(X, /datum/action/xeno_action/activable/warden_heal)
-	if (!istype(WH))
+	if(!istype(WH))
 		return
 
-	if (WH.curr_effect_type == WARDEN_HEAL_HP)
+	if(WH.curr_effect_type == WARDEN_HEAL_HP)
 		action_icon_result = "warden_rejuvenate"
 		WH.curr_effect_type = WARDEN_HEAL_DEBUFFS
 		to_chat(X, SPAN_XENOWARNING("You will now aid your allies by curing their ailments!"))

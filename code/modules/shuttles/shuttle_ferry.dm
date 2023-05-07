@@ -18,6 +18,7 @@
 	var/last_dock_attempt_time = 0
 	var/alerts_allowed = 1 //NOT A BOOLEAN. Number of alerts allowed on this particular shuttle, so only once
 	var/locked = 0
+	var/escape_locked = 0
 	var/queen_locked = 0 //If the Queen locked the ship by interacting with its onboard console. If this happens, Marines lose control of the ship permanently
 	var/last_locked = 0 //world.time value to determine if it can be contested
 	var/door_override = 0 //similar to queen_locked, but only affects doors
@@ -53,8 +54,8 @@
 /datum/shuttle/ferry/move(area/origin, area/destination)
 	..(origin, destination)
 
-	if (destination == area_station) location = 0
-	if (destination == area_offsite) location = 1
+	if(destination == area_station) location = 0
+	if(destination == area_offsite) location = 1
 	//if this is a long_jump retain the location we were last at until we get to the new one
 
 /datum/shuttle/ferry/dock()
@@ -62,10 +63,10 @@
 	last_dock_attempt_time = world.time
 
 /datum/shuttle/ferry/proc/get_location_area(location_id = null)
-	if (isnull(location_id))
+	if(isnull(location_id))
 		location_id = location
 
-	if (!location_id)
+	if(!location_id)
 		return area_station
 	return area_offsite
 
@@ -82,41 +83,41 @@
 /datum/shuttle/ferry/process()
 
 	switch(process_state)
-		if (WAIT_LAUNCH)
+		if(WAIT_LAUNCH)
 			if(!preflight_checks())
 				announce_preflight_failure()
 				process_state = SHUTTLE_IDLE
 				return .
-			if (skip_docking_checks() || docking_controller.can_launch())
-				if (move_time && area_transition)
+			if(skip_docking_checks() || docking_controller.can_launch())
+				if(move_time && area_transition)
 					long_jump(interim=area_transition, travel_time=move_time, direction=transit_direction)
 				else
 					short_jump()
 
 				process_state = WAIT_ARRIVE
 
-		if (FORCE_LAUNCH)
-			if (move_time && area_transition)
+		if(FORCE_LAUNCH)
+			if(move_time && area_transition)
 				long_jump(interim=area_transition, travel_time=move_time, direction=transit_direction)
 			else
 				short_jump()
 
 			process_state = WAIT_ARRIVE
 
-		if (WAIT_ARRIVE)
-			if (moving_status == SHUTTLE_IDLE)
+		if(WAIT_ARRIVE)
+			if(moving_status == SHUTTLE_IDLE)
 				dock()
 				in_use = null //release lock
 				process_state = WAIT_FINISH
 
-		if (WAIT_FINISH)
-			if (skip_docking_checks() || docking_controller.docked() || world.time > last_dock_attempt_time + DOCK_ATTEMPT_TIMEOUT)
+		if(WAIT_FINISH)
+			if(skip_docking_checks() || docking_controller.docked() || world.time > last_dock_attempt_time + DOCK_ATTEMPT_TIMEOUT)
 				process_state = IDLE_STATE
 				arrived()
 
 /datum/shuttle/ferry/current_dock_target()
 	var/dock_target
-	if (!location) //station
+	if(!location)	//station
 		dock_target = dock_target_station
 	else
 		dock_target = dock_target_offsite
@@ -124,29 +125,32 @@
 
 
 /datum/shuttle/ferry/proc/launch(user)
-	if (!can_launch()) return
+	if(!can_launch())
+		return
 
 	in_use = user //obtain an exclusive lock on the shuttle
-	locked = 1
+	locked = TRUE
 
 	process_state = WAIT_LAUNCH
 	undock()
 
 /datum/shuttle/ferry/proc/force_launch(user)
-	if (!can_force()) return
+	if(!can_force())
+		return
 
 	in_use = user //obtain an exclusive lock on the shuttle
 
 	process_state = FORCE_LAUNCH
 
 /datum/shuttle/ferry/proc/cancel_launch(user)
-	if (!can_cancel()) return
+	if(!can_cancel())
+		return
 
 	moving_status = SHUTTLE_IDLE
 	process_state = WAIT_FINISH
 	in_use = null
 
-	if (docking_controller && !docking_controller.undocked())
+	if(docking_controller && !docking_controller.undocked())
 		docking_controller.force_undock()
 
 	addtimer(CALLBACK(src, PROC_REF(dock)), 10)
@@ -159,19 +163,19 @@
 	return TRUE
 
 /datum/shuttle/ferry/proc/can_force()
-	if (moving_status == SHUTTLE_IDLE && process_state == WAIT_LAUNCH)
-		return 1
-	return 0
+	if(moving_status == SHUTTLE_IDLE && process_state == WAIT_LAUNCH)
+		return TRUE
+	return FALSE
 
 /datum/shuttle/ferry/proc/can_cancel()
-	if (moving_status == SHUTTLE_WARMUP || process_state == WAIT_LAUNCH || process_state == FORCE_LAUNCH)
-		return 1
-	return 0
+	if(moving_status == SHUTTLE_WARMUP || process_state == WAIT_LAUNCH || process_state == FORCE_LAUNCH)
+		return TRUE
+	return FALSE
 
 /datum/shuttle/ferry/proc/can_optimize()
 	if(!(moving_status == SHUTTLE_WARMUP || process_state == WAIT_LAUNCH || process_state == FORCE_LAUNCH) && !transit_optimized && !recharging)
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 //returns 1 if the shuttle is getting ready to move, but is not in transit yet
 /datum/shuttle/ferry/proc/is_launching()

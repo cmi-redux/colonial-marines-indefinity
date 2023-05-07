@@ -12,7 +12,7 @@
 	if(!current_turf)
 		return
 
-	if (!check_and_use_plasma_owner())
+	if(!check_and_use_plasma_owner())
 		return
 
 	xeno.visible_message(SPAN_XENOWARNING("[xeno] spits at [target]!"), \
@@ -47,7 +47,7 @@
 	if(!current_turf)
 		return
 
-	if (!check_and_use_plasma_owner())
+	if(!check_and_use_plasma_owner())
 		return
 
 	xeno.visible_message(SPAN_XENOWARNING("[xeno] spits at [target]!"), \
@@ -68,20 +68,20 @@
 /datum/action/xeno_action/onclick/paralyzing_slash/use_ability(atom/target)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
-	if (!istype(xeno))
+	if(!istype(xeno))
 		return
 
-	if (!action_cooldown_check())
+	if(!action_cooldown_check())
 		return
 
-	if (!check_and_use_plasma_owner())
+	if(!check_and_use_plasma_owner())
 		return
 
-	if (xeno.mutation_type != SENTINEL_NORMAL)
+	if(xeno.mutation_type != SENTINEL_NORMAL)
 		return
 
 	var/datum/behavior_delegate/sentinel_base/behavior = xeno.behavior_delegate
-	if (istype(behavior))
+	if(istype(behavior))
 		behavior.next_slash_buffed = TRUE
 
 	to_chat(xeno, SPAN_XENOHIGHDANGER("Your next slash will apply neurotoxin!"))
@@ -95,12 +95,12 @@
 
 /datum/action/xeno_action/onclick/paralyzing_slash/proc/unbuff_slash()
 	var/mob/living/carbon/xenomorph/xeno = owner
-	if (!istype(xeno))
+	if(!istype(xeno))
 		return
 	var/datum/behavior_delegate/sentinel_base/behavior = xeno.behavior_delegate
-	if (istype(behavior))
+	if(istype(behavior))
 		// In case slash has already landed
-		if (!behavior.next_slash_buffed)
+		if(!behavior.next_slash_buffed)
 			return
 		behavior.next_slash_buffed = FALSE
 

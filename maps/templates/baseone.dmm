@@ -884,7 +884,6 @@
 /mob/living/simple_animal/chicken{
 	desc = "A chubby and friendly chicken, often sticking to the person being on kitchen duty. She looks somewhat lonely.";
 	emote_see = list("pecks at the ground","flaps its wings","clucks happily");
-	faction = list("CLF","UPP");
 	name = "\improper Charlie";
 	voice_name = "chicken"
 	},

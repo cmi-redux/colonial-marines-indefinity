@@ -13,8 +13,8 @@
 /obj/item/robot/upgrade/proc/action(mob/living/silicon/robot/R)
 	if(R.stat == DEAD)
 		to_chat(usr, SPAN_DANGER("The [src] will not function on a deceased robot."))
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 
 /obj/item/robot/upgrade/reset

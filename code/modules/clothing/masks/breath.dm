@@ -4,7 +4,7 @@
 	icon_state = "breath"
 	item_state = "breath"
 	flags_inventory = COVERMOUTH|ALLOWINTERNALS
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 	w_class = SIZE_SMALL
 	gas_transfer_coefficient = 0.10
 	permeability_coefficient = 0.50
@@ -16,7 +16,7 @@
 	set name = "Adjust mask"
 	set src in usr
 
-	if(usr.canmove && !usr.stat && !usr.is_mob_restrained())
+	if(usr.can_action && !usr.is_mob_restrained())
 		if(!src.hanging)
 			src.hanging = !src.hanging
 			gas_transfer_coefficient = 1 //gas is now escaping to the turf and vice versa
@@ -49,7 +49,7 @@
 	icon_state = "rebreather"
 	item_state = "rebreather"
 	w_class = SIZE_SMALL
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 	flags_inventory = COVERMOUTH|ALLOWREBREATH
 	flags_inv_hide = HIDELOWHAIR
 

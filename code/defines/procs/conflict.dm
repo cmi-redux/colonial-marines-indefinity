@@ -5,7 +5,7 @@
 //pen_armor_punch - how much armor breaking will be done per point of penetration. This is for weapons that penetrate with their shape (like needle bullets)
 //damage_armor_punch - how much armor breaking is done by sheer weapon force. This is for big blunt weapons
 //armor_integrity - how effective in % armor is at the moment
-/proc/armor_damage_reduction(datum/combat_configuration/c_config, damage, armor=0, penetration=0, pen_armor_punch=0, damage_armor_punch=0, armor_integrity = 100)
+/proc/armor_damage_reduction(datum/combat_configuration/c_config, damage, armor = 0, penetration = 0, pen_armor_punch = 0, damage_armor_punch = 0, armor_integrity = 100)
 	//c_config.critical_chance - used instead of two vars. Just our chance to crit
 	//c_config.armor_effective_health - how much of an increase in %/100 we have per armor "level"
 	//c_config.armor_minimal_efficiency = 4 - how much armor you can have if it is completely broken. Also how much armor we count on crit
@@ -23,8 +23,12 @@
 
 	armor_integrity = max(armor_integrity, 0)
 	damage = damage * c_config.damage_initial_multiplier
-	penetration = penetration > 0 || armor > 0 ? penetration : 0
-	armor -= penetration
+	var/ap_calculation_damage
+	if(penetration < ARMOR_PENETRATION_TIER_3)
+		ap_calculation_damage = max(damage-armor*(armor_integrity/100),damage/2)*0.5
+	else
+		ap_calculation_damage = max(penetration+min(armor*(armor_integrity/100)-penetration*2, 0)-max(armor*(armor_integrity/100)-penetration, 0),damage/2)*0.5
+	penetration = penetration > 0 && armor > 0 ? penetration : 0
 	var/is_crit_hit = prob(c_config.critical_chance)
 	var/minimal_efficiency = c_config.armor_effective_health*c_config.armor_minimal_efficiency //lets not repeat ourselves
 	var/armor_effect = c_config.armor_effective_health
@@ -42,6 +46,7 @@
 
 
 	damage /= armor_deflection_total
+	damage += ap_calculation_damage
 
 	if(damage < armor * c_config.armor_full_deflection_mult * effective_deflection)
 		var/damage_with_armor = damage*c_config.non_null_damage_mult - armor * effective_deflection
@@ -56,7 +61,7 @@
 	return damage
 
 
-/proc/armor_break_calculation(datum/combat_configuration/c_config, damage, armor=0, penetration=0, pen_armor_punch=0, damage_armor_punch=0, armor_integrity = 100)
+/proc/armor_break_calculation(datum/combat_configuration/c_config, damage, armor = 0, penetration = 0, pen_armor_punch = 0, damage_armor_punch = 0, armor_integrity = 100)
 	//c_config.critical_chance - used instead of two vars. Just our chance to crit
 	//c_config.armor_effective_health - how much of an increase in %/100 we have per armor "level"
 	//c_config.armor_minimal_efficiency = 4 - how much armor you can have if it is completely broken. Also how much armor we count on crit

@@ -115,8 +115,8 @@
 	if(src.l_arm && src.r_arm)
 		if(src.l_leg && src.r_leg)
 			if(src.chest && src.head)
-				return 1
-	return 0
+				return TRUE
+	return FALSE
 
 /obj/item/robot_parts/robot_suit/attackby(obj/item/W as obj, mob/user as mob)
 	..()
@@ -223,9 +223,9 @@
 
 	if (HAS_TRAIT(W, TRAIT_TOOL_PEN))
 		var/t = stripped_input(user, "Enter new robot name", src.name, src.created_name, MAX_NAME_LEN)
-		if (!t)
+		if(!t)
 			return
-		if (!in_range(src, usr) && src.loc != usr)
+		if(!in_range(src, usr) && src.loc != usr)
 			return
 
 		src.created_name = t

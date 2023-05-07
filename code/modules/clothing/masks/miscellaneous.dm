@@ -4,7 +4,7 @@
 	icon_state = "muzzle"
 	item_state = "muzzle"
 	flags_inventory = COVERMOUTH
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 	w_class = SIZE_SMALL
 	gas_transfer_coefficient = 0.90
 
@@ -15,7 +15,7 @@
 	item_state = "sterile"
 	w_class = SIZE_SMALL
 	flags_inventory = COVERMOUTH
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 	gas_transfer_coefficient = 0.90
 	permeability_coefficient = 0.01
 	armor_melee = CLOTHING_ARMOR_NONE
@@ -32,14 +32,14 @@
 	desc = "Warning: moustache is fake."
 	icon_state = "fake-moustache"
 	flags_inv_hide = HIDEFACE
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 
 /obj/item/clothing/mask/snorkel
 	name = "Snorkel"
 	desc = "For the Swimming Savant."
 	icon_state = "snorkel"
 	flags_inv_hide = HIDEFACE
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 
 /obj/item/clothing/mask/pig
 	name = "pig mask"

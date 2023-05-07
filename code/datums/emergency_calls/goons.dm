@@ -1,7 +1,7 @@
 /datum/emergency_call/goon
 	name = "Weyland-Yutani Corporate Security (Squad)"
 	mob_max = 6
-	probability = 0
+	probability = 1
 	shuttle_id = "Distress_PMC"
 	name_of_spawn = /obj/effect/landmark/ert_spawns/distress_pmc
 	item_spawn = /obj/effect/landmark/ert_spawns/distress_pmc/item
@@ -11,14 +11,15 @@
 	arrival_message = "[MAIN_SHIP_NAME], this is a Weyland-Yutani Corporate Security shuttle inbound to your distress beacon. We are coming to help."
 	objectives = "Secure the Corporate Liaison and the [MAIN_SHIP_NAME]'s Commanding Officer, and eliminate any hostile threats. Do not damage Wey-Yu property."
 
-/datum/emergency_call/goon/create_member(datum/mind/M, turf/override_spawn_loc)
+/datum/emergency_call/goon/create_member(datum/mind/mind, turf/override_spawn_loc)
 	var/turf/spawn_loc = override_spawn_loc ? override_spawn_loc : get_spawn_point()
 
 	if(!istype(spawn_loc))
 		return //Didn't find a useable spawn point.
 
 	var/mob/living/carbon/human/mob = new(spawn_loc)
-	M.transfer_to(mob, TRUE)
+	mind.transfer_to(mob, TRUE)
+	GLOB.ert_mobs += mob
 
 	if(!leader && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(mob.client, JOB_SQUAD_LEADER, time_required_for_job))
 		leader = mob

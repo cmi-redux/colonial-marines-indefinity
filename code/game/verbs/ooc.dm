@@ -51,12 +51,14 @@
 			display_colour = CONFIG_GET(string/ooc_color_admin)
 		if(admin_holder.rights & R_COLOR)
 			display_colour = prefs.ooccolor
-	else if(donator)
+	else if(donator_info.patreon_function_available("ooc_color"))
 		display_colour = prefs.ooccolor
 	if(!display_colour) // if invalid R_COLOR choice
 		display_colour = CONFIG_GET(string/ooc_color_default)
 
 	msg = process_chat_markup(msg, list("*"))
+
+	msg = emoji_parse(src, msg)
 
 	for(var/client/C in GLOB.clients)
 		if(C.prefs.toggles_chat & CHAT_OOC)
@@ -68,13 +70,13 @@
 			if(CONFIG_GET(flag/ooc_country_flags))
 				if(prefs.toggle_prefs & TOGGLE_OOC_FLAG)
 					display_name = "[country2chaticon(src.country, GLOB.clients)][display_name]"
-			to_chat(C, "<font color='[display_colour]'><span class='ooc linkify'>[src.donator ? "\[D\] " : ""]<span class='prefix'>OOC: [display_name]</span>: <span class='message'>[msg]</span></span></font>")
+			to_chat(C, "<font color='[display_colour]'><span class='ooc linkify'>[C.donator_info.patreon_function_available("ooc_color") ? "\[D\] " : ""]<span class='prefix'>OOC: [display_name]</span>: <span class='message'>[msg]</span></span></font>")
+
 /client/proc/set_ooc_color_global(newColor as color)
 	set name = "OOC Text Color - Global"
 	set desc = "Set to yellow for eye burning goodness."
 	set category = "OOC.OOC"
 	GLOB.ooc_color_override = newColor
-
 
 /client/verb/looc(msg as text)
 	set name = "LOOC" //Gave this shit a shorter name so you only have to time out "ooc" rather than "ooc message" to use it --NeoFite
@@ -125,12 +127,14 @@
 
 	msg = process_chat_markup(msg, list("*"))
 
+	msg = emoji_parse(src, msg)
+
 	// Handle non-admins
 	for(var/mob/M in heard)
 		if(!M.client)
 			continue
 		var/client/C = M.client
-		if (C.admin_holder && (C.admin_holder.rights & R_MOD))
+		if(C.admin_holder && (C.admin_holder.rights & R_MOD))
 			continue //they are handled after that
 
 		if(C.prefs.toggles_chat & CHAT_LOOC)
@@ -151,7 +155,7 @@
 
 		if(C.prefs.toggles_chat & CHAT_LOOC)
 			var/prefix = "(R)LOOC"
-			if (C.mob in heard)
+			if(C.mob in heard)
 				prefix = "LOOC"
 			to_chat(C, "<font color='#f557b8'><span class='ooc linkify'><span class='prefix'>[prefix]:</span> <EM>[display_name]:</EM> <span class='message'>[msg]</span></span></font>")
 
@@ -159,7 +163,7 @@
 	set name = "Current Map" //Gave this shit a shorter name so you only have to time out "ooc" rather than "ooc message" to use it --NeoFite
 	set desc = "Information about the current round"
 	set category = "OOC"
-	to_chat_spaced(usr, html = FONT_SIZE_LARGE(SPAN_NOTICE("The current map is [SSmapping.configs[GROUND_MAP].map_name]")))
+	to_chat_spaced(usr, html = FONT_SIZE_LARGE(SPAN_NOTICE("В данный момент карта [SSmapping.configs[GROUND_MAP].map_name]")))
 
 // Sometimes the game fails to close NanoUIs, seemingly at random. This makes it impossible to open new ones
 // If this happens, let the player manually close them all
@@ -180,6 +184,14 @@
 	var/closed_windows = SStgui.close_user_uis(usr)
 
 	to_chat(mob, SPAN_NOTICE("<b>All interfaces have been forcefully closed. Please try re-opening them. (Closed [closed_windows] windows)</b>"))
+
+/client/verb/fix_hotkeys()
+	set name = "Fix hotkeys"
+	set category = "OOC.Fix"
+	set desc = "Fixes broken hotkeys"
+
+	if(alert(usr, "Are you sure? You have to switch to the English keyboard layout first.", "Fix hotkeys", usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) == usr.client.auto_lang(LANGUAGE_YES))
+		update_special_keybinds()
 
 /client/verb/fit_viewport()
 	set name = "Fit Viewport"

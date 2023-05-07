@@ -197,7 +197,7 @@
 //Weyland-Yutani Keys
 
 ///For CL and their Marine goons
-/obj/item/device/encryptionkey/WY
+/obj/item/device/encryptionkey/wy
 	name = "\improper Weyland-Yutani encryption key"
 	icon_state = "wy_key"
 	channels = list(RADIO_CHANNEL_WY = TRUE)
@@ -272,7 +272,7 @@
 /obj/item/device/encryptionkey/highcom
 	name = "\improper USCM High Command Radio Encryption Key"
 	icon_state = "binary_key"
-	channels = list(RADIO_CHANNEL_HIGHCOM = TRUE, SQUAD_SOF = TRUE, RADIO_CHANNEL_COMMAND = TRUE, RADIO_CHANNEL_MP = TRUE, SQUAD_MARINE_1 = TRUE, SQUAD_MARINE_2 = TRUE, SQUAD_MARINE_3 = TRUE, SQUAD_MARINE_4 = TRUE, SQUAD_MARINE_5 = TRUE, SQUAD_MARINE_CRYO = FALSE, RADIO_CHANNEL_ENGI = TRUE, RADIO_CHANNEL_MEDSCI = TRUE, RADIO_CHANNEL_REQ = TRUE, RADIO_CHANNEL_JTAC = TRUE, RADIO_CHANNEL_INTEL = TRUE)
+	channels = list(RADIO_CHANNEL_HIGHCOM = TRUE, SQUAD_MARINE_SOF = TRUE, RADIO_CHANNEL_COMMAND = TRUE, RADIO_CHANNEL_MP = TRUE, SQUAD_MARINE_1 = TRUE, SQUAD_MARINE_2 = TRUE, SQUAD_MARINE_3 = TRUE, SQUAD_MARINE_4 = TRUE, SQUAD_MARINE_5 = TRUE, SQUAD_MARINE_CRYO = FALSE, RADIO_CHANNEL_ENGI = TRUE, RADIO_CHANNEL_MEDSCI = TRUE, RADIO_CHANNEL_REQ = TRUE, RADIO_CHANNEL_JTAC = TRUE, RADIO_CHANNEL_INTEL = TRUE)
 
 /obj/item/device/encryptionkey/contractor
 	name = "\improper Vanguard's Arrow Incorporated Radio Encryption Key"

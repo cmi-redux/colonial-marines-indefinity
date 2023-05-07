@@ -30,29 +30,29 @@
 				var/mob/living/carbon/human/victim = target
 
 				var/obj/item/safe_thing = null
-				if( victim.wear_mask )
-					if ( victim.wear_mask.flags_inventory & COVEREYES )
+				if(victim.wear_mask)
+					if(victim.wear_mask.flags_inventory & COVEREYES)
 						safe_thing = victim.wear_mask
-				if( victim.head )
-					if ( victim.head.flags_inventory & COVEREYES )
+				if(victim.head)
+					if (victim.head.flags_inventory & COVEREYES)
 						safe_thing = victim.head
 				if(victim.glasses)
-					if ( !safe_thing )
+					if(!safe_thing)
 						safe_thing = victim.glasses
 
 				if(safe_thing)
 					if(!safe_thing.reagents)
 						safe_thing.create_reagents(100)
-					trans = src.reagents.trans_to(safe_thing, amount_per_transfer_from_this)
+					trans = reagents.trans_to(safe_thing, amount_per_transfer_from_this)
 
 					for(var/mob/O in viewers(world_view_size, user))
 						O.show_message(SPAN_DANGER("<B>[user] tries to squirt something into [target]'s eyes, but fails!</B>"), SHOW_MESSAGE_VISIBLE)
 					spawn(5)
-						src.reagents.reaction(safe_thing, TOUCH)
+						reagents.reaction(safe_thing, TOUCH)
 
 
 					to_chat(user, SPAN_NOTICE(" You transfer [trans] units of the solution."))
-					if (src.reagents.total_volume<=0)
+					if(reagents.total_volume<=0)
 						filled = 0
 						icon_state = "dropper[filled]"
 					return
@@ -60,21 +60,21 @@
 
 			for(var/mob/O in viewers(world_view_size, user))
 				O.show_message(SPAN_DANGER("<B>[user] squirts something into [target]'s eyes!</B>"), SHOW_MESSAGE_VISIBLE)
-			src.reagents.reaction(target, TOUCH)
+			reagents.reaction(target, TOUCH)
 
 			var/mob/M = target
 			var/list/injected = list()
-			for(var/datum/reagent/R in src.reagents.reagent_list)
+			for(var/datum/reagent/R in reagents.reagent_list)
 				injected += R.name
 			var/contained = english_list(injected)
-			M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been squirted with [src.name] by [user.name] ([user.ckey]). Reagents: [contained]</font>")
-			user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to squirt [M.name] ([M.key]). Reagents: [contained]</font>")
-			msg_admin_attack("[user.name] ([user.ckey]) squirted [M.name] ([M.key]) with [src.name] (REAGENTS: [contained]) (INTENT: [uppertext(intent_text(user.a_intent))]) in [get_area(user)] ([user.loc.x],[user.loc.y],[user.loc.z]).", user.loc.x, user.loc.y, user.loc.z)
+			M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been squirted with [name] by [user.name] ([user.ckey]). Reagents: [contained]</font>")
+			user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [name] to squirt [M.name] ([M.key]). Reagents: [contained]</font>")
+			msg_admin_attack("[user.name] ([user.ckey]) squirted [M.name] ([M.key]) with [name] (REAGENTS: [contained]) (INTENT: [uppertext(intent_text(user.a_intent))]) in [get_area(user)] ([user.loc.x],[user.loc.y],[user.loc.z]).", user.loc.x, user.loc.y, user.loc.z)
 
 
-		trans = src.reagents.trans_to(target, amount_per_transfer_from_this)
+		trans = reagents.trans_to(target, amount_per_transfer_from_this)
 		to_chat(user, SPAN_NOTICE(" You transfer [trans] units of the solution."))
-		if (src.reagents.total_volume<=0)
+		if(reagents.total_volume<=0)
 			filled = 0
 			icon_state = "dropper[filled]"
 

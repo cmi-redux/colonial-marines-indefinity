@@ -25,7 +25,6 @@
 	tacklestrength_max = 4
 
 	behavior_delegate_type = /datum/behavior_delegate/sentinel_base
-	minimap_icon = "sentinel"
 
 	minimum_evolve_time = 5 MINUTES
 
@@ -57,6 +56,13 @@
 	icon_xeno = 'icons/mob/xenos/sentinel.dmi'
 	icon_xenonid = 'icons/mob/xenonids/sentinel.dmi'
 
+	balance_formulas = list(BALANCE_FORMULA_XENO_ABILITER, BALANCE_FORMULA_XENO_FIGHTER)
+
+/mob/living/carbon/xenomorph/sentinel/Initialize(mapload, mob/living/carbon/xenomorph/old_xeno, datum/faction/hive_to_set)
+	. = ..()
+
+	AddComponent(/datum/component/footstep, FOOTSTEP_MOB_BAREFOOT)
+
 /datum/behavior_delegate/sentinel_base
 	name = "Base Sentinel Behavior Delegate"
 
@@ -66,10 +72,10 @@
 #define NEURO_TOUCH_DELAY 4 SECONDS
 
 /datum/behavior_delegate/sentinel_base/melee_attack_modify_damage(original_damage, mob/living/carbon/carbon_target)
-	if (!next_slash_buffed)
+	if(!next_slash_buffed)
 		return original_damage
 
-	if (!isxeno_human(carbon_target))
+	if(!isxeno_human(carbon_target))
 		return original_damage
 
 	if(skillcheck(carbon_target, SKILL_ENDURANCE, SKILL_ENDURANCE_MAX ))
@@ -82,7 +88,7 @@
 			human.visible_message(SPAN_DANGER("[human] shrugs off the neurotoxin!"))
 			next_slash_buffed = FALSE
 			return //species like zombies or synths are immune to neurotoxin
-	if (next_slash_buffed)
+	if(next_slash_buffed)
 		to_chat(bound_xeno, SPAN_XENOHIGHDANGER("You add neurotoxin into your attack, [carbon_target] is about to fall over paralyzed!"))
 		to_chat(carbon_target, SPAN_XENOHIGHDANGER("You feel like you're about to fall over, as [bound_xeno] slashes you with its neurotoxin coated claws!"))
 		carbon_target.sway_jitter(times = 3, steps = round(NEURO_TOUCH_DELAY/3))
@@ -91,7 +97,7 @@
 		next_slash_buffed = FALSE
 	if(!next_slash_buffed)
 		var/datum/action/xeno_action/onclick/paralyzing_slash/ability = get_xeno_action_by_type(bound_xeno, /datum/action/xeno_action/onclick/paralyzing_slash)
-		if (ability && istype(ability))
+		if(ability && istype(ability))
 			ability.button.icon_state = "template"
 	return original_damage
 

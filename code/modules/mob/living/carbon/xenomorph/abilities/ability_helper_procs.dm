@@ -79,7 +79,7 @@
 					var/turf/closed/wall/wall_south_turf = get_step(W, SOUTH)
 					var/turf/closed/wall/wall_east_turf = get_step(W, EAST)
 					var/turf/closed/wall/wall_west_turf = get_step(W, WEST)
-					// When wall is passable from all cardinal directions...
+					// When wall is passable from all cardinals directions...
 					if(!istype(wall_north_turf) && !istype(wall_south_turf) && !istype(wall_east_turf) && !istype(wall_west_turf))
 						// ...don't make an acid hole
 						to_chat(src, ambiguous_dir_msg)
@@ -161,7 +161,7 @@
 	playsound(loc, "sound/bullets/acid_impact1.ogg", 25)
 
 /proc/unroot_human(mob/living/carbon/H)
-	if (!isxeno_human(H))
+	if(!isxeno_human(H))
 		return
 
 	H.frozen = 0
@@ -173,14 +173,14 @@
 	to_chat(H, SPAN_XENOHIGHDANGER("You can move again!"))
 
 /proc/xeno_throw_human(mob/living/carbon/H, mob/living/carbon/xenomorph/X, direction, distance, shake_camera = TRUE)
-	if (!istype(H) || !istype(X) ||  !direction || !distance)
+	if(!istype(H) || !istype(X) ||  !direction || !distance)
 		return
 
 	var/turf/T = get_turf(H)
 	var/turf/temp = get_turf(H)
 	for (var/x in 0 to distance)
 		temp = get_step(T, direction)
-		if (!temp)
+		if(!temp)
 			break
 		T = temp
 
@@ -202,20 +202,18 @@
 		return
 	is_zoomed = 1
 	client.change_view(viewsize)
-	var/viewoffset = 32 * tileoffset
+
+	var/viewoffset = tileoffset * 32
+	var/zoom_offset_time = 4*((viewoffset/32)/7)
 	switch(dir)
 		if(NORTH)
-			client.pixel_x = 0
-			client.pixel_y = viewoffset
+			animate(client, pixel_x = 0, pixel_y = viewoffset, time = zoom_offset_time)
 		if(SOUTH)
-			client.pixel_x = 0
-			client.pixel_y = -viewoffset
+			animate(client, pixel_x = 0, pixel_y = -viewoffset, time = zoom_offset_time)
 		if(EAST)
-			client.pixel_x = viewoffset
-			client.pixel_y = 0
+			animate(client, pixel_x = viewoffset, pixel_y = 0, time = zoom_offset_time)
 		if(WEST)
-			client.pixel_x = -viewoffset
-			client.pixel_y = 0
+			animate(client, pixel_x = -viewoffset, pixel_y = 0, time = zoom_offset_time)
 
 /mob/living/carbon/xenomorph/proc/zoom_out()
 	if(!client)
@@ -226,7 +224,7 @@
 	is_zoomed = 0
 	// Since theres several ways we can get here, we need to update the ability button state
 	for (var/datum/action/xeno_action/action in actions)
-		if (istype(action, /datum/action/xeno_action/onclick/toggle_long_range))
+		if(istype(action, /datum/action/xeno_action/onclick/toggle_long_range))
 			action.button.icon_state = "template"
 			break;
 
@@ -246,7 +244,7 @@
 			AM.acid_spray_act(src)
 			return
 		T = next_turf
-		var/obj/effect/xenomorph/spray/S = new spray_type(T, create_cause_data(initial( caste_type), src), hivenumber)
+		var/obj/effect/xenomorph/spray/S = new spray_type(T, create_cause_data(initial(caste_type), src), faction)
 		do_acid_spray_cone_normal(T, i, facing, S, spray_type)
 		sleep(2)
 
@@ -280,7 +278,7 @@
 				normal_density_flag = TRUE
 			else
 				normal_turf = next_normal_turf
-				left_S = new spray_type(normal_turf, create_cause_data(initial(caste_type), src), hivenumber)
+				left_S = new spray_type(normal_turf, create_cause_data(initial(caste_type), src), faction)
 
 
 		if(!inverse_normal_density_flag)
@@ -292,7 +290,7 @@
 				inverse_normal_density_flag = TRUE
 			else
 				inverse_normal_turf = next_inverse_normal_turf
-				right_S = new spray_type(inverse_normal_turf, create_cause_data(initial(caste_type), src), hivenumber)
+				right_S = new spray_type(inverse_normal_turf, create_cause_data(initial(caste_type), src), faction)
 
 
 /mob/living/carbon/xenomorph/proc/do_acid_spray_line(list/turflist, spray_path = /obj/effect/xenomorph/spray, distance_max = 5)
@@ -321,7 +319,7 @@
 			break
 
 		prev_turf = T
-		new spray_path(T, create_cause_data(initial(caste_type), src), hivenumber)
+		new spray_path(T, create_cause_data(initial(caste_type), src), faction)
 		sleep(2)
 
 

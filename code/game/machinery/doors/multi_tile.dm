@@ -10,6 +10,20 @@
 
 	return ..()
 
+/obj/structure/machinery/door/airlock/multi_tile/proc/force_open()
+	if(!density)
+		return
+	unlock()
+	open()
+	lock()
+
+/obj/structure/machinery/door/airlock/multi_tile/proc/force_close()
+	if(density)
+		return
+	unlock()
+	close()
+	lock()
+
 /obj/structure/machinery/door/airlock/multi_tile/glass
 	name = "Glass Airlock"
 	icon = 'icons/obj/structures/doors/Door2x1glass.dmi'
@@ -235,11 +249,11 @@
 //We have to find these again since these doors are used on shuttles a lot so the turfs changes
 /obj/structure/machinery/door/airlock/multi_tile/almayer/proc/update_filler_turfs()
 	for(var/turf/T in multi_filler)
-		T.SetOpacity(null)
+		T.set_opacity(null)
 
 	multi_filler = list()
 	for(var/turf/T in get_filler_turfs())
-		T.SetOpacity(opacity)
+		T.set_opacity(opacity)
 		multi_filler += list(T)
 
 /obj/structure/machinery/door/airlock/multi_tile/proc/get_filler_turfs()
@@ -307,7 +321,77 @@
 	icon = 'icons/obj/structures/doors/almayerblastdoor.dmi'
 	desc = "A heavyset bulkhead door. Built to withstand explosions, gunshots, and extreme pressure. Chances are you're not getting through this."
 
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat
+
+
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator
+	name = "'S95 v2' Elevator Door"
+	desc = "A heavyset bulkhead for a elevator."
+	icon = 'icons/obj/structures/doors/scielevatorblastdoor.dmi'
+	safe = FALSE
+	autoclose = FALSE
+	locked = TRUE
+	opacity = FALSE
+	glass = TRUE
+
+	/// Direction in which to throw or space things. WEEEEE
+	var/throw_dir = SOUTH
+
+	var/floor
+	var/obj/docking_port/mobile/sselevator/elevator
+
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/Initialize(mapload, ...)
+	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/LateInitialize()
+	. = ..()
+	spawn()
+		UNTIL(SSshuttle.sky_scraper_elevator)
+		elevator = SSshuttle.sky_scraper_elevator
+		if(floor != "control")
+			floor = src.z
+			elevator.doors["[floor]"] = src
+
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/try_to_activate_door(mob/user)
+	return
+
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/bumpopen(mob/user as mob)
+	return
+
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/proc/close_and_lock()
+	unlock()
+	close()
+	lock(TRUE)
+
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/proc/unlock_and_open()
+	unlock()
+	open()
+	lock(TRUE)
+
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/close()
+	. = ..()
+	for(var/turf/self_turf as anything in locs)
+		var/turf/projected = get_ranged_target_turf(self_turf, throw_dir, 1)
+		for(var/atom/movable/AM in self_turf)
+			if(ismob(AM) && !isobserver(AM))
+				var/mob/M = AM
+				M.KnockDown(5)
+				to_chat(M, SPAN_HIGHDANGER("\The [src] shoves you out!"))
+			else if(isobj(AM))
+				var/obj/O = AM
+				if(O.anchored)
+					continue
+			else
+				continue
+			INVOKE_ASYNC(AM, TYPE_PROC_REF(/atom/movable, throw_atom), projected, 1, SPEED_FAST, null, FALSE)
+
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock, idnum, override)
+	. = ..()
+	if(istype(port, /obj/docking_port/mobile/sselevator))
+		var/obj/docking_port/mobile/sselevator/L = port
+		L.door = src
+
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat
 	name = "lifeboat docking hatch"
 	icon = 'icons/obj/structures/doors/lifeboatdoors.dmi'
 	desc = "A heavyset bulkhead for a lifeboat."
@@ -318,23 +402,23 @@
 	glass = TRUE
 	var/throw_dir = EAST
 
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat/try_to_activate_door(mob/user)
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/try_to_activate_door(mob/user)
 	return
 
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat/bumpopen(mob/user as mob)
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/bumpopen(mob/user as mob)
 	return
 
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat/proc/close_and_lock()
-	unlock(TRUE)
-	close(TRUE)
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/proc/close_and_lock()
+	unlock()
+	close()
 	lock(TRUE)
 
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat/proc/unlock_and_open()
-	unlock(TRUE)
-	open(TRUE)
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/proc/unlock_and_open()
+	unlock()
+	open()
 	lock(TRUE)
 
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat/close()
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/close()
 	. = ..()
 	for(var/turf/self_turf as anything in locs)
 		var/turf/projected = get_ranged_target_turf(self_turf, throw_dir, 1)
@@ -351,30 +435,30 @@
 				continue
 			INVOKE_ASYNC(atom_movable, TYPE_PROC_REF(/atom/movable, throw_atom), projected, 1, SPEED_FAST, null, FALSE)
 
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock, idnum, override)
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock, idnum, override)
 	. = ..()
 	if(istype(port, /obj/docking_port/mobile/lifeboat))
-		var/obj/docking_port/mobile/lifeboat/lifeboat = port
-		lifeboat.doors += src
+		var/obj/docking_port/mobile/lifeboat/L = port
+		L.doors += src
 
 /// External airlock that is part of the lifeboat dock
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat/blastdoor
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/blastdoor
 	name = "bulkhead blast door"
-	desc = "A heavyset bulkhead door. Built to withstand explosions, gunshots, and extreme pressure. Chances are you're not getting through this."
 	icon = 'icons/obj/structures/doors/almayerblastdoor.dmi'
+	desc = "A heavyset bulkhead door. Built to withstand explosions, gunshots, and extreme pressure. Chances are you're not getting through this."
 	safe = FALSE
 	/// ID of the related stationary docking port operating this
 	var/linked_dock
 
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat/blastdoor/Initialize(mapload, ...)
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/blastdoor/Initialize(mapload, ...)
 	GLOB.lifeboat_doors += src
 	return ..()
 
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat/blastdoor/Destroy()
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/blastdoor/Destroy()
 	GLOB.lifeboat_doors -= src
 	return ..()
 
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat/blastdoor/proc/vacate_premises()
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/blastdoor/proc/vacate_premises()
 	for(var/turf/self_turf as anything in locs)
 		var/turf/near_turf = get_step(self_turf, throw_dir)
 		var/turf/projected = get_ranged_target_turf(near_turf, throw_dir, 50)
@@ -391,9 +475,9 @@
 				continue
 			INVOKE_ASYNC(atom_movable, TYPE_PROC_REF(/atom/movable, throw_atom), projected, 50, SPEED_FAST, null, TRUE)
 
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat/blastdoor/proc/bolt_explosion()
-	var/turf/turf = get_step(src, throw_dir|dir)
-	cell_explosion(turf, 150, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("lifeboat explosive bolt"))
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/blastdoor/proc/bolt_explosion()
+	var/turf/T = get_step(src, throw_dir|dir)
+	cell_explosion(T, 150, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, "lifeboat explosive bolt")
 
 // Elevator door
 /obj/structure/machinery/door/airlock/multi_tile/elevator
@@ -582,4 +666,3 @@
 	icon = 'icons/obj/structures/doors/2x1almayerdoor_glass.dmi'
 	opacity = FALSE
 	glass = TRUE
-

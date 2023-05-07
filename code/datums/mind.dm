@@ -10,12 +10,11 @@
 
 	var/memory
 
-	var/datum/entity/player_entity/player_entity = null
-
 	//put this here for easier tracking ingame
 	var/datum/money_account/initial_account
 
 	// List of objectives you have knowledge about
+	var/datum/faction_task_ui/task_interface
 	var/datum/objective_memory_storage/objective_memory
 	var/datum/objective_memory_interface/objective_interface
 	var/datum/research_objective_memory_interface/research_objective_interface
@@ -23,12 +22,13 @@
 /datum/mind/New(key, ckey)
 	src.key = key
 	src.ckey = ckey
-	player_entity = setup_player_entity(ckey)
+	task_interface = new()
 	objective_memory = new()
 	objective_interface = new()
 	research_objective_interface = new()
 
 /datum/mind/Destroy()
+	QDEL_NULL(task_interface)
 	QDEL_NULL(objective_memory)
 	QDEL_NULL(objective_interface)
 	QDEL_NULL(research_objective_interface)
@@ -69,7 +69,7 @@
 					if(ui.allowed_user_stat == -1)
 						ui.close()
 						continue
-			player_entity = setup_player_entity(ckey)
+			new_character.client.player_data.setup_statistics()
 
 	new_character.refresh_huds(current) //inherit the HUDs from the old body
 	new_character.aghosted = FALSE //reset aghost and away timer
@@ -88,33 +88,16 @@
 	if(!check_rights(R_ADMIN))
 		return
 
-	else if (href_list["memory_edit"])
+	else if(href_list["memory_edit"])
 		var/new_memo = copytext(sanitize(input("Write new memory", "Memory", memory) as null|message),1,MAX_MESSAGE_LEN)
-		if (isnull(new_memo)) return
+		if(isnull(new_memo)) return
 		memory = new_memo
 
-	else if (href_list["common"])
+	else if(href_list["common"])
 		switch(href_list["common"])
 			if("undress")
 				for(var/obj/item/W in current)
 					current.drop_inv_item_on_ground(W)
-
-/datum/mind/proc/setup_human_stats()
-	if(!player_entity)
-		player_entity = setup_player_entity(ckey)
-		if(!player_entity)
-			return
-	return player_entity.setup_human_stats()
-
-/datum/mind/proc/setup_xeno_stats()
-	if(!player_entity)
-		player_entity = setup_player_entity(ckey)
-		if(!player_entity)
-			return
-	return player_entity.setup_xeno_stats()
-
-/datum/mind/proc/wipe_entity()
-	player_entity = null
 
 //Initialisation procs
 /mob/proc/mind_initialize()
@@ -128,6 +111,13 @@
 	if(!mind.name) mind.name = real_name
 	mind.current = src
 
+//Faction tasks
+/datum/mind/proc/view_task_interface(mob/recipient)
+	if(!task_interface)
+		return
+
+	task_interface.tgui_interact(current)
+
 //this is an objective that the player has just completed
 //and we want to store the objective clues generated based on it -spookydonut
 /datum/mind/proc/store_objective(datum/cm_objective/O)
@@ -139,8 +129,6 @@
 		return
 
 	objective_memory.synchronize_objectives()
-
-	objective_interface.holder = GET_TREE(TREE_MARINE)
 	objective_interface.tgui_interact(current)
 
 /datum/mind/proc/view_research_objective_memories(mob/recipient)

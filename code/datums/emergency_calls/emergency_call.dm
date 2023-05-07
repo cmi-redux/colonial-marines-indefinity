@@ -37,7 +37,8 @@
 	var/auto_shuttle_launch = FALSE
 	var/spawn_max_amount = FALSE
 
-	var/ert_message = "An emergency beacon has been activated"
+	var/assigned_squad = null
+	var/ert_message = "Аварийный маяк активирован"
 
 	var/time_required_for_job = 5 HOURS
 
@@ -93,12 +94,12 @@
 	if(!mob_max || !SSticker.mode) //Just a supply drop, don't bother.
 		return
 
-	for(var/mob/dead/observer/M in GLOB.observer_list)
-		if(M.client)
-			to_chat(M, SPAN_WARNING(FONT_SIZE_LARGE("\n[ert_message]. &gt; <a href='?src=\ref[M];joinresponseteam=1;'><b>Join Response Team</b></a> &lt; </span>")))
-			to_chat(M, SPAN_WARNING(FONT_SIZE_LARGE("You cannot join if you have Ghosted recently. Click the link in chat, or use the verb in the ghost tab to join.</span>\n")))
+	for(var/mob/dead/observer/mob in GLOB.observer_list)
+		if(mob.client)
+			to_chat(mob, SPAN_WARNING(FONT_SIZE_LARGE("\n[ert_message]. &gt; <a href='?src=\ref[mob];joinresponseteam=1;'><b>Join Response Team</b></a> &lt; </span>")))
+			to_chat(mob, SPAN_WARNING(FONT_SIZE_LARGE("You cannot join if you have Ghosted recently. Click the link in chat, or use the verb in the ghost tab to join.</span>\n")))
 
-			give_action(M, /datum/action/join_ert, src)
+			give_action(mob, /datum/action/join_ert, src)
 
 /datum/game_mode/proc/activate_distress()
 	var/datum/emergency_call/random_call = get_random_call()
@@ -191,7 +192,7 @@
 	message_admins("Distress beacon: '[name]' activated [src.hostility? "[SPAN_WARNING("(THEY ARE HOSTILE)")]":"(they are friendly)"]. Looking for candidates.")
 
 	if(announce)
-		marine_announcement("A distress beacon has been launched from the [MAIN_SHIP_NAME].", "Priority Alert", 'sound/AI/distressbeacon.ogg')
+		faction_announcement("A distress beacon has been launched from the [MAIN_SHIP_NAME].", "Priority Alert", 'sound/AI/distressbeacon.ogg', GLOB.faction_datum[FACTION_MARINE])
 
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/datum/emergency_call, spawn_candidates), announce, override_spawn_loc), 30 SECONDS)
 
@@ -207,7 +208,7 @@
 		candidates = list()
 
 		if(announce)
-			marine_announcement("The distress signal has not received a response, the launch tubes are now recalibrating.", "Distress Beacon")
+			faction_announcement("The distress signal has not received a response, the launch tubes are now recalibrating.", "Distress Beacon", GLOB.faction_datum[FACTION_MARINE])
 		return
 
 	//We've got enough!
@@ -216,20 +217,20 @@
 	if(mob_max > 0)
 		var/mob_count = 0
 		while (mob_count < mob_max && candidates.len)
-			var/datum/mind/M = pick(candidates) //Get a random candidate, then remove it from the candidates list.
-			if(!istype(M))//Something went horrifically wrong
-				candidates.Remove(M)
+			var/datum/mind/mob = pick(candidates) //Get a random candidate, then remove it from the candidates list.
+			if(!istype(mob))//Something went horrifically wrong
+				candidates.Remove(mob)
 				continue //Lets try this again
-			if(!GLOB.directory[M.ckey])
-				candidates -= M
+			if(!GLOB.directory[mob.ckey])
+				candidates -= mob
 				continue
-			if(M.current && M.current.stat != DEAD)
-				candidates.Remove(M) //Strip them from the list, they aren't dead anymore.
+			if(mob.current && mob.current.stat != DEAD)
+				candidates.Remove(mob) //Strip them from the list, they aren't dead anymore.
 				if(!candidates.len)
 					break //NO picking from empty lists
 				continue
-			picked_candidates.Add(M)
-			candidates.Remove(M)
+			picked_candidates.Add(mob)
+			candidates.Remove(mob)
 			mob_count++
 		if(candidates.len)
 			for(var/datum/mind/I in candidates)
@@ -237,14 +238,14 @@
 					to_chat(I.current, SPAN_WARNING("You didn't get selected to join the distress team. Better luck next time!"))
 
 	if(announce)
-		marine_announcement(dispatch_message, "Distress Beacon", 'sound/AI/distressreceived.ogg') //Announcement that the Distress Beacon has been answered, does not hint towards the chosen ERT
+		faction_announcement(dispatch_message, "Distress Beacon", 'sound/AI/distressreceived.ogg', GLOB.faction_datum[FACTION_MARINE]) //Announcement that the Distress Beacon has been answered, does not hint towards the chosen ERT
 
 	message_admins("Distress beacon: [src.name] finalized, setting up candidates.")
 
 	//Let the deadchat know what's up since they are usually curious
-	for(var/mob/dead/observer/M in GLOB.observer_list)
-		if(M.client)
-			to_chat(M, SPAN_NOTICE("Distress beacon: [src.name] finalized."))
+	for(var/mob/dead/observer/mob in GLOB.observer_list)
+		if(mob.client)
+			to_chat(mob, SPAN_NOTICE("Distress beacon: [src.name] finalized."))
 
 	var/obj/docking_port/mobile/shuttle = SSshuttle.getShuttle(shuttle_id)
 
@@ -275,12 +276,12 @@
 
 	var/i = 0
 	if(picked_candidates.len)
-		for(var/datum/mind/M in picked_candidates)
-			members += M
+		for(var/datum/mind/mob in picked_candidates)
+			members += mob
 			i++
 			if(i > mob_max)
 				break //Some logic. Hopefully this will never happen..
-			create_member(M, override_spawn_loc)
+			create_member(mob, override_spawn_loc)
 
 
 	if(spawn_max_amount && i < mob_max)
@@ -289,16 +290,16 @@
 
 	candidates = list()
 
-/datum/emergency_call/proc/add_candidate(mob/M)
-	if(!M.client || (M.mind && (M.mind in candidates)) || istype(M, /mob/living/carbon/xenomorph))
+/datum/emergency_call/proc/add_candidate(mob/mob)
+	if(!mob.client || (mob.mind && (mob.mind in candidates)) || istype(mob, /mob/living/carbon/xenomorph))
 		return FALSE //Not connected or already there or something went wrong.
-	if(M.mind)
-		candidates += M.mind
+	if(mob.mind)
+		candidates += mob.mind
 	else
-		if(M.key)
-			M.mind = new /datum/mind(M.key, M.ckey)
-			M.mind_initialize()
-			candidates += M.mind
+		if(mob.key)
+			mob.mind = new /datum/mind(mob.key, mob.ckey)
+			mob.mind_initialize()
+			candidates += mob.mind
 	return TRUE
 
 /datum/emergency_call/proc/get_spawn_point(is_for_items)
@@ -309,7 +310,7 @@
 		landmark = SAFEPICK(GLOB.ert_spawns[name_of_spawn])
 	return landmark ? get_turf(landmark) : null
 
-/datum/emergency_call/proc/create_member(datum/mind/M, turf/override_spawn_loc) //This is the parent, each type spawns its own variety.
+/datum/emergency_call/proc/create_member(datum/mind/mob, turf/override_spawn_loc) //This is the parent, each type spawns its own variety.
 	return
 
 //Spawn various items around the shuttle area thing.
@@ -317,5 +318,9 @@
 	return
 
 
-/datum/emergency_call/proc/print_backstory(mob/living/carbon/human/M)
+/datum/emergency_call/proc/print_backstory(mob/living/carbon/human/mob)
+	return
+
+/datum/emergency_call/proc/assigned_to_squads(mob/living/carbon/human/mob)
+	mob.assigned_squad = assigned_squad
 	return

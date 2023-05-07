@@ -6,35 +6,40 @@
 	icon_state = "flood00"
 	density = TRUE
 	anchored = TRUE
-	var/on = 0
 	var/obj/item/cell/cell = null
 	var/use = 0
 	var/unlocked = 0
 	var/open = 0
-	var/brightness_on = 7 //can't remember what the maxed out value is
 	unslashable = TRUE
 	unacidable = TRUE
+
+	light_system = STATIC_LIGHT
+	light_range = 7
+	light_power = 0.4
+	light_on = FALSE
 
 /obj/structure/machinery/floodlight/Initialize(mapload, ...)
 	. = ..()
 	cell = new /obj/item/cell(src)
+	if(light_on)
+		updateicon()
+		update_light()
 
 /obj/structure/machinery/floodlight/Destroy()
 	QDEL_NULL(cell)
-	SetLuminosity(0)
+	set_light_on(FALSE)
 	return ..()
 
 /obj/structure/machinery/floodlight/proc/updateicon()
-	icon_state = "flood[open ? "o" : ""][open && cell ? "b" : ""]0[on]"
+	icon_state = "flood[open ? "o" : ""][open && cell ? "b" : ""]0[light_on]"
 /*
 /obj/structure/machinery/floodlight/process()
-	if(on && cell)
+	if(light_on && cell)
 		if(cell.charge >= use)
 			cell.use(use)
 		else
-			on = 0
+			set_light_on(FALSE)
 			updateicon()
-			SetLuminosity(0)
 			src.visible_message(SPAN_WARNING("[src] shuts down due to lack of power!"))
 			return
 */
@@ -55,10 +60,9 @@
 		updateicon()
 		return
 
-	if(on)
-		on = 0
+	if(light_on)
 		to_chat(user, SPAN_NOTICE(" You turn off the light."))
-		SetLuminosity(0)
+		set_light_on(FALSE)
 		unslashable = TRUE
 		unacidable = TRUE
 	else
@@ -66,9 +70,8 @@
 			return
 		if(cell.charge <= 0)
 			return
-		on = 1
 		to_chat(user, SPAN_NOTICE(" You turn on the light."))
-		SetLuminosity(brightness_on)
+		set_light_on(TRUE)
 		unacidable = FALSE
 
 	updateicon()
@@ -79,15 +82,15 @@
 		return
 
 	if (HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
-		if (!anchored)
+		if(!anchored)
 			anchored = TRUE
 			to_chat(user, "You anchor the [src] in place.")
 		else
 			anchored = FALSE
 			to_chat(user, "You remove the bolts from the [src].")
 
-	if (HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
-		if (!open)
+	if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
+		if(!open)
 			if(unlocked)
 				unlocked = 0
 				to_chat(user, "You screw the battery panel in place.")
@@ -95,7 +98,7 @@
 				unlocked = 1
 				to_chat(user, "You unscrew the battery panel.")
 
-	if (HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
+	if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 		if(unlocked)
 			if(open)
 				open = 0
@@ -106,7 +109,7 @@
 					open = 1
 					to_chat(user, "You remove the battery panel.")
 
-	if (istype(W, /obj/item/cell))
+	if(istype(W, /obj/item/cell))
 		if(open)
 			if(cell)
 				to_chat(user, "There is a power cell already installed.")
@@ -121,9 +124,8 @@
 	name = "Landing Light"
 	desc = "A powerful light stationed near landing zones to provide better visibility."
 	icon_state = "flood01"
-	on = 1
 	in_use = 1
-	luminosity = 6
+	light_on = TRUE
 	use_power = USE_POWER_NONE
 
 /obj/structure/machinery/floodlight/landing/attack_hand()

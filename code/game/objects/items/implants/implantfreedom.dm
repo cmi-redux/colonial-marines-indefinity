@@ -9,16 +9,17 @@
 
 
 /obj/item/implant/freedom/New()
-	src.activation_emote = pick("blink", "blink_r", "eyebrow", "chuckle", "twitch_s", "frown", "nod", "blush", "giggle", "grin", "groan", "shrug", "smile", "pale", "sniff", "whimper", "wink")
-	src.uses = rand(1, 5)
+	activation_emote = pick("blink", "blink_r", "eyebrow", "chuckle", "twitch_s", "frown", "nod", "blush", "giggle", "grin", "groan", "shrug", "smile", "pale", "sniff", "whimper", "wink")
+	uses = rand(1, 5)
 	..()
 	return
 
 
 /obj/item/implant/freedom/trigger(emote, mob/living/carbon/source as mob)
-	if (src.uses < 1) return 0
-	if (emote == src.activation_emote)
-		src.uses--
+	if(uses < 1)
+		return 0
+	if(emote == activation_emote)
+		uses--
 		to_chat(source, "You feel a faint click.")
 		if (source.handcuffed)
 			var/obj/item/W = source.handcuffed

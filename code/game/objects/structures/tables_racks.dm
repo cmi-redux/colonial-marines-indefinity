@@ -16,6 +16,7 @@
 	icon_state = "table"
 	density = TRUE
 	anchored = TRUE
+	plane = WALL_PLANE
 	layer = TABLE_LAYER
 	throwpass = 1 //You can throw objects over this, despite it's density.")
 	climbable = 1
@@ -50,7 +51,7 @@
 
 /obj/structure/surface/table/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_OVER|PASS_AROUND|PASS_TYPE_CRAWLER|PASS_CRUSHER_CHARGE
 	flags_can_pass_all_temp = PASS_UNDER
 
@@ -101,7 +102,7 @@
 		var/tabledirs = 0
 		for(var/direction in list(turn(dir, 90), turn(dir, -90)) )
 			var/obj/structure/surface/table/T = locate(/obj/structure/surface/table, get_step(src, direction))
-			if (T && T.flipped && T.dir == dir)
+			if(T && T.flipped && T.dir == dir)
 				ttype++
 				tabledirs |= direction
 
@@ -143,7 +144,7 @@
 						dir_sum += 128
 
 	var/table_type = 0 //stand_alone table
-	if((dir_sum%16) in cardinal)
+	if((dir_sum%16) in  GLOB.cardinals)
 		table_type = 1 //endtable
 		dir_sum %= 16
 	if((dir_sum%16) in list(3, 12))
@@ -252,7 +253,7 @@
 		do_flip()
 
 /obj/structure/surface/table/MouseDrop_T(obj/item/I, mob/user)
-	if (!istype(I) || user.get_active_hand() != I)
+	if(!istype(I) || user.get_active_hand() != I)
 		return ..()
 	if(isrobot(user))
 		return
@@ -539,7 +540,7 @@
 	return 0 //No, just no. It's a full desk, you can't flip that
 
 /obj/structure/surface/table/reinforced/attackby(obj/item/W as obj, mob/user as mob)
-	if (iswelder(W))
+	if(iswelder(W))
 		if(!HAS_TRAIT(W, TRAIT_TOOL_BLOWTORCH))
 			to_chat(user, SPAN_WARNING("You need a stronger blowtorch!"))
 			return
@@ -549,7 +550,7 @@
 				user.visible_message(SPAN_NOTICE("[user] starts weakening [src]."),
 				SPAN_NOTICE("You start weakening [src]"))
 				playsound(src.loc, 'sound/items/Welder.ogg', 25, 1)
-				if (do_after(user, 50 * user.get_skill_duration_multiplier(SKILL_CONSTRUCTION), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
+				if(do_after(user, 50 * user.get_skill_duration_multiplier(SKILL_CONSTRUCTION), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 					if(!src || !WT.isOn()) return
 					user.visible_message(SPAN_NOTICE("[user] weakens [src]."),
 					SPAN_NOTICE("You weaken [src]"))
@@ -641,7 +642,7 @@
 
 /obj/structure/surface/rack/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_OVER|PASS_AROUND|PASS_UNDER|PASS_THROUGH|PASS_CRUSHER_CHARGE
 
 /obj/structure/surface/rack/BlockedPassDirs(atom/movable/mover, target_dir)
@@ -652,7 +653,7 @@
 	return ..()
 
 /obj/structure/surface/rack/MouseDrop_T(obj/item/I, mob/user)
-	if (!istype(I) || user.get_active_hand() != I)
+	if(!istype(I) || user.get_active_hand() != I)
 		return ..()
 	if(isrobot(user))
 		return

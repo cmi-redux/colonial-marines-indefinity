@@ -66,7 +66,7 @@
 	for(var/obj/item/hardpoint/special/firing_port_weapon/FPW in SG_seat.vehicle.hardpoints)
 		if(FPW.allowed_seat == SG_seat.seat)
 			if(FPW.ammo)
-				. += SPAN_NOTICE("The [FPW.name]'s ammo count is: [SPAN_HELPFUL(FPW.ammo.current_rounds)]/[SPAN_WARNING(FPW.ammo.max_rounds)].")
+				. += SPAN_NOTICE("The [FPW.name]'s ammo count is: [SPAN_HELPFUL(FPW.ammo.ammo_position)]/[SPAN_WARNING(FPW.ammo.max_rounds)].")
 				break
 	. += SPAN_HELPFUL("Clicking on the [name] while being adjacent to support gunner seat will buckle you in and give you the control of the M56 FPW.")
 
@@ -83,7 +83,7 @@
 		for(var/obj/item/hardpoint/special/firing_port_weapon/FPW in SG_seat.vehicle.hardpoints)
 			if(FPW.allowed_seat == SG_seat.seat)
 				if(FPW.ammo)
-					to_chat(H, SPAN_NOTICE("The [FPW.name]'s ammo count is: [SPAN_HELPFUL(FPW.ammo.current_rounds)]/[SPAN_WARNING(FPW.ammo.max_rounds)]."))
+					to_chat(H, SPAN_NOTICE("The [FPW.name]'s ammo count is: [SPAN_HELPFUL(FPW.ammo.ammo_position)]/[SPAN_WARNING(FPW.ammo.max_rounds)]."))
 					break
 		return
 

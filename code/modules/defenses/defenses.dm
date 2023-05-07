@@ -10,9 +10,7 @@
 	use_power = USE_POWER_NONE
 	stat = DEFENSE_FUNCTIONAL
 	health = 200
-	var/list/faction_group
 	var/health_max = 200
-	var/turned_on = FALSE
 	var/mob/owner_mob = null
 	var/defense_icon = "uac_sentry"
 	var/handheld_type = /obj/item/defenses/handheld
@@ -23,7 +21,14 @@
 	var/composite_icon = TRUE
 	var/display_additional_stats = FALSE
 
-	var/defense_check_range = 2
+	var/iff_status = 1 // 0 no iff, 1 faction, 2 faction + ally
+
+	light_system = STATIC_LIGHT
+	light_range = 7
+	light_power = 0.5
+	light_on = FALSE
+
+	var/defense_check_range = 1
 	var/can_be_near_defense = FALSE
 
 	var/shots = 0
@@ -44,31 +49,26 @@
 	var/list/selected_categories = list()
 
 
-/obj/structure/machinery/defenses/Initialize()
+/obj/structure/machinery/defenses/Initialize(mapload, datum/faction/faction_to_set, obj/item/defenses/handheld/handheld_ref)
 	. = ..()
+
+	if(faction_to_set)
+		faction = faction_to_set
+
+	if(handheld_ref)
+		HD = handheld_ref
+	else
+		HD = new handheld_type(src, faction, src)
+
+	if(light_on)
+		power_on_action()
+
 	update_icon()
-	connect()
-
-/obj/structure/machinery/defenses/Destroy()
-	if(!QDESTROYING(HD))
-		QDEL_NULL(HD)
-	return ..()
-
-/obj/structure/machinery/defenses/proc/connect()
-	if(static)
-		return FALSE
-	if(placed && !HD)
-		HD = new handheld_type
-		if(!HD.TR)
-			HD.TR = src
-			return TRUE
-		return TRUE
-	return FALSE
 
 /obj/structure/machinery/defenses/update_icon()
 	if(!composite_icon)
 		icon_state = null
-	else if(turned_on)
+	else if(light_on)
 		icon_state = "defense_base"
 	else
 		icon_state = "defense_base_off"
@@ -97,12 +97,10 @@
 	if(!(placed||static))
 		return FALSE
 
-	turned_on = TRUE
 	power_on_action()
 	update_icon()
 
 /obj/structure/machinery/defenses/proc/power_off()
-	turned_on = FALSE
 	power_off_action()
 	update_icon()
 
@@ -117,7 +115,6 @@
 		selected_categories[category] = selection
 		switch(category)
 			if(SENTRY_CATEGORY_IFF)
-				handle_iff(selection)
 				return TRUE
 		return FALSE
 
@@ -127,21 +124,6 @@
 			message_admins("[key_name_admin(user)] has labelled structure to [nickname]", user.x, user.y, user.z)
 			return TRUE
 	return FALSE
-
-/**
- * Update the IFF status of this structure.
- * @param selection: faction selection string.
- */
-/obj/structure/machinery/defenses/proc/handle_iff(selection)
-	switch(selection)
-		if(FACTION_USCM)
-			faction_group = FACTION_LIST_MARINE
-		if(FACTION_WEYLAND)
-			faction_group = FACTION_LIST_MARINE_WY
-		if(FACTION_HUMAN)
-			faction_group = FACTION_LIST_HUMANOID
-		if(FACTION_COLONY)
-			faction_group = list(FACTION_MARINE, FACTION_COLONIST)
 
 
 /obj/structure/machinery/defenses/start_processing()
@@ -162,17 +144,15 @@
 	if(owner_mob && owner_mob != src)
 		owner_mob.track_shot(initial(name))
 
-/obj/structure/machinery/defenses/proc/friendly_faction(factions)
-	if(factions in faction_group)
-		return TRUE
-	return FALSE
+/obj/structure/machinery/defenses/proc/friendly_faction(mob/living/carbon/C)
+	return C.ally(faction)
 
 /obj/structure/machinery/defenses/attackby(obj/item/O as obj, mob/user as mob)
 	if(QDELETED(O))
 		return
 
 	if(HAS_TRAIT(O, TRAIT_TOOL_MULTITOOL))
-		if(!friendly_faction(user.faction))
+		if(!friendly_faction(user))
 			to_chat(user, SPAN_WARNING("This doesn't seem safe..."))
 			var/additional_shock = 1
 			if(!do_after(user, hack_time * user.get_skill_duration_multiplier(SKILL_CONSTRUCTION), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD, src))
@@ -180,7 +160,7 @@
 			if(prob(50))
 				var/mob/living/carbon/human/H = user
 				if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_TRAINED))
-					if(turned_on)
+					if(light_on)
 						additional_shock++
 					H.electrocute_act(40, src, additional_shock)//god damn Hans...
 					setDir(get_dir(src, H))//Make sure he died
@@ -192,9 +172,7 @@
 					return
 			if(additional_shock >= 2)
 				return
-			LAZYCLEARLIST(faction_group)
-			for(var/i in user.faction_group)
-				LAZYADD(faction_group, i)
+			faction = user.faction
 			to_chat(user, SPAN_WARNING("You've hacked \the [src], it's now ours!"))
 			return
 
@@ -273,10 +251,11 @@
 
 		playsound(loc, 'sound/mecha/mechmove04.ogg', 30, 1)
 		var/turf/T = get_turf(src)
-		if(!faction_group) //Littly trolling for stealing marines turrets, bad boys!
-			for(var/i in user.faction_group)
-				LAZYADD(faction_group, i)
+		if(!faction) //Littly trolling for stealing marines turrets, bad boys!
+			faction = user.faction
+
 		power_off()
+		SSmapview.remove_marker(src)
 		HD.forceMove(T)
 		transfer_label_component(HD)
 		HD.dropped = 1
@@ -288,7 +267,7 @@
 
 	if(HAS_TRAIT(O, TRAIT_TOOL_WRENCH))
 		if(anchored)
-			if(turned_on)
+			if(light_on)
 				to_chat(user, SPAN_WARNING("[src] is currently active. The motors will prevent you from unanchoring it safely."))
 				return
 
@@ -351,7 +330,7 @@
 
 	add_fingerprint(user)
 
-	if(!friendly_faction(user.faction))
+	if(!friendly_faction(user))
 		return
 
 	if(!anchored)
@@ -362,15 +341,15 @@
 		if(locked)
 			to_chat(user, SPAN_WARNING("The control panel on [src] is locked to non-engineers."))
 			return
-		user.visible_message(SPAN_NOTICE("[user] begins switching the [src] [turned_on? "off" : "on"]."), SPAN_NOTICE("You begin switching the [src] [turned_on? "off" : "on"]."))
+		user.visible_message(SPAN_NOTICE("[user] begins switching the [src] [light_on? "off" : "on"]."), SPAN_NOTICE("You begin switching the [src] [light_on? "off" : "on"]."))
 		if(!(do_after(user, 20, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_FRIENDLY, src)))
 			return
 
-	if(!turned_on)
+	if(!light_on)
 		if(!can_be_near_defense)
 			for(var/obj/structure/machinery/defenses/def in urange(defense_check_range, loc))
-				if(def != src && def.turned_on && !def.can_be_near_defense)
-					to_chat(user, SPAN_WARNING("This is too close to a [def]!"))
+				if(def != src && def.light_on && !def.can_be_near_defense)
+					to_chat(user, SPAN_WARNING("This is too close to a [def.name]!"))
 					return
 
 		power_on()
@@ -416,7 +395,7 @@
 
 	sleep(5)
 
-	cell_explosion(loc, 10, 10, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("defense explosion"))
+	cell_explosion(loc, 10, 10, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("взрыва защитного устройства"))
 	if(!QDELETED(src))
 		qdel(src)
 
@@ -424,17 +403,17 @@
 	if(health < health_max * 0.15)
 		visible_message(SPAN_DANGER("[icon2html(src, viewers(src))] The [name] cracks and breaks apart!"))
 		stat |= DEFENSE_DAMAGED
-		turned_on = FALSE
+		light_on = FALSE
 
 /obj/structure/machinery/defenses/emp_act(severity)
-	if(turned_on)
+	if(light_on)
 		if(prob(50))
 			visible_message("[icon2html(src, viewers(src))] <span class='danger'>[src] beeps and buzzes wildly, flashing odd symbols on its screen before shutting down!</span>")
 			playsound(loc, 'sound/mecha/critdestrsyndi.ogg', 25, 1)
 			for(var/i = 1 to 6)
 				setDir(pick(1, 2, 3, 4))
 				sleep(2)
-			turned_on = FALSE
+			power_off()
 	if(health > 0)
 		update_health(25)
 	return
@@ -462,7 +441,8 @@
 /obj/structure/machinery/defenses/Destroy()
 	if(owner_mob)
 		owner_mob = null
-	HD = null // FIXME: Might also need to delete. Unsure.
+	if(!QDESTROYING(HD))
+		QDEL_NULL(HD)
 	if(linked_laptop)
 		linked_laptop.unpair_sentry(src)
 		linked_laptop = null
@@ -477,7 +457,7 @@
 		return
 	if(!ishuman(usr))
 		return
-	if(!friendly_faction(usr.faction))
+	if(!friendly_faction(usr))
 		return
 	if(!skillcheck(usr, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
 		to_chat(usr, SPAN_WARNING("You don't have the training to do this."))

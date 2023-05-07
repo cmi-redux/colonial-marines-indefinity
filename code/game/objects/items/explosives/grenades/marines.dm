@@ -14,22 +14,17 @@
 	icon_state = "grenade"
 	det_time = 40
 	item_state = "grenade_hedp"
+	hud_state = "grenade_he"
 	dangerous = TRUE
 	underslug_launchable = TRUE
 	var/explosion_power = 100
 	var/explosion_falloff = 25
 	var/shrapnel_count = 0
 	var/shrapnel_type = /datum/ammo/bullet/shrapnel
-	var/fire_resistance = 30 //to prevent highly controlled massive explosions
 	falloff_mode = EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL
 
-/obj/item/explosive/grenade/high_explosive/New()
-	..()
-
-	fire_resistance = rand(GRENADE_FIRE_RESISTANCE_MIN, GRENADE_FIRE_RESISTANCE_MAX)
-
 /obj/item/explosive/grenade/high_explosive/prime()
-	set waitfor = 0
+	set waitfor = FALSE
 	if(shrapnel_count)
 		create_shrapnel(loc, shrapnel_count, , ,shrapnel_type, cause_data)
 	apply_explosion_overlay()
@@ -44,17 +39,12 @@
 	flick("grenade", O)
 	QDEL_IN(O, 7)
 
-/obj/item/explosive/grenade/high_explosive/flamer_fire_act(damage, flame_cause_data)
-	fire_resistance--
-	if(fire_resistance<=0)
-		cause_data = flame_cause_data
-		prime()
-
 /obj/item/explosive/grenade/high_explosive/super
 	name = "\improper M40/2 HEDP grenade"
 	desc = "High-Explosive Dual-Purpose. A small, but deceptively strong blast grenade that has been phasing out the M15 HE grenades alongside the M40 HEFA. This version is stronger."
 	icon_state = "m40_2"
 	item_state = "grenade_hedp2"
+	hud_state = "grenade_he2"
 	explosion_power = 150
 	explosion_falloff = 40
 
@@ -63,15 +53,29 @@
 	desc = "A high-explosive grenade produced for private security firms. It explodes around 3 seconds after the pin has been pulled."
 	icon_state = "grenade_pmc"
 	item_state = "grenade_ex"
+	hud_state = "grenade_m12"
 	underslug_launchable = FALSE
 	explosion_power = 200
 	falloff_mode = EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL_HALF
+
+/obj/item/explosive/grenade/high_explosive/tank
+	name = "\improper M41 blast grenade"
+	desc = "A high-explosive grenade produced for tanks. It explodes 3 seconds after the pin has been pulled."
+	icon_state = "grenade_ex"
+	item_state = "grenade_ex"
+	underslug_launchable = FALSE
+	explosion_power = 200
+	explosion_falloff = 60
+	shrapnel_count = 32
+	falloff_mode = EXPLOSION_FALLOFF_SHAPE_LINEAR
+
 
 /obj/item/explosive/grenade/high_explosive/stick
 	name = "\improper Webley Mk15 stick grenade"
 	desc = "A blast grenade produced in the colonies, most commonly using old designs and schematics. It explodes 3 seconds after the pin has been pulled."
 	icon_state = "grenade_stick"
 	item_state = "grenade_stick"
+	hud_state = "grenade_stick"
 	force = 10
 	w_class = SIZE_SMALL
 	throwforce = 15
@@ -92,6 +96,7 @@
 	desc = "High-Explosive Fragmenting-Antipersonnel. A small, but deceptively strong fragmentation grenade that has been phasing out the M15 fragmentation grenades alongside the M40 HEDP. Capable of being loaded in the M92 Launcher, or thrown by hand."
 	icon_state = "grenade_hefa"
 	item_state = "grenade_hefa"
+	hud_state = "grenade_hefa"
 	explosion_power = 40
 	shrapnel_count = 48
 	falloff_mode = EXPLOSION_FALLOFF_SHAPE_LINEAR
@@ -109,6 +114,7 @@
 	desc = "An outdated USCM Fragmentation Grenade. With decades of service in the USCM, the old M15 Fragmentation Grenade is slowly being replaced by the slightly safer M40-series grenades. It is set to detonate in 4 seconds."
 	icon_state = "grenade_ex"
 	item_state = "grenade_ex"
+	hud_state = "grenade_m15"
 	throw_speed = SPEED_FAST
 	throw_range = 6
 	underslug_launchable = FALSE
@@ -123,6 +129,7 @@
 	desc = "A fragmentation grenade found within the ranks of the UPP. Designed to explode into shrapnel and rupture the bodies of opponents. It explodes 3 seconds after the pin has been pulled."
 	icon_state = "grenade_upp"
 	item_state = "grenade_upp"
+	hud_state = "grenade_t6"
 	throw_speed = SPEED_FAST
 	throw_range = 6
 	underslug_launchable = FALSE
@@ -141,6 +148,7 @@
 	desc = "M74 - Airburst Grenade Munition - Fragmentation. This grenade must be launched with a grenade launcher, and detonates once it reaches its destination. It disperses jagged shrapnel in a cone in front of itself, tearing through sinews and armor alike. Dispersion pattern is optimized against large target. Suffers from overpenetration on a direct hit."
 	icon_state = "grenade_m74_airburst_f"
 	item_state = "grenade_m74_airburst_f_active"
+	hud_state = "grenade_agm_f"
 	explosion_power = 0
 	explosion_falloff = 25
 	shrapnel_count = 16
@@ -207,6 +215,7 @@
 	icon_state = "grenade_fire"
 	det_time = 40
 	item_state = "grenade_fire"
+	hud_state = "grenade_fire"
 	flags_equip_slot = SLOT_WAIST
 	dangerous = TRUE
 	underslug_launchable = TRUE
@@ -240,10 +249,11 @@
 	new /obj/flamer_fire(T, cause_data, R, R.rangefire, null, flameshape, target, , , fire_type)
 
 /obj/item/explosive/grenade/incendiary/molotov
-	name = "\improper improvised firebomb"
+	name = "improvised firebomb"
 	desc = "A potent, improvised firebomb, coupled with a pinch of gunpowder. Cheap, very effective, and deadly in confined spaces. Commonly found in the hands of rebels and terrorists. It can be difficult to predict how many seconds you have before it goes off, so be careful. Chances are, it might explode in your face."
 	icon_state = "molotov"
 	item_state = "molotov"
+	hud_state = "unknown"
 	arm_sound = 'sound/items/Welder2.ogg'
 	underslug_launchable = FALSE
 	fire_type = FIRE_VARIANT_DEFAULT
@@ -265,10 +275,11 @@
 */
 // M74 are the launcher-only variant. Flag with hand_throwable = FALSE.
 /obj/item/explosive/grenade/incendiary/airburst
-	name = "\improper M74 AGM-I 40mm Grenade"
+	name = "M74 AGM-I 40mm Grenade"
 	desc = "M74 - Airburst Grenade Munition - Incendiary. This grenade must be launched with a grenade launcher, and detonates once it reaches its destination. It disperses a cone of lingering flames in a small area in front of it. The warped pieces of the grenade can also set fire as they fly away."
 	icon_state = "grenade_m74_airburst_i"
 	item_state = "grenade_m74_airburst_i_active"
+	hud_state = "grenade_agm_i"
 	det_time = 0 // Unused, because we don't use prime.
 	hand_throwable = FALSE
 	flame_level = 15
@@ -315,6 +326,7 @@
 	icon_state = "grenade_smoke"
 	det_time = 20
 	item_state = "grenade_smoke"
+	hud_state = "grenade_smoke"
 	underslug_launchable = TRUE
 	harmful = FALSE
 	antigrief_protection = FALSE
@@ -342,6 +354,7 @@
 	icon_state = "grenade_phos"
 	det_time = 20
 	item_state = "grenade_phos"
+	hud_state = "grenade_phos"
 	underslug_launchable = TRUE
 	var/datum/effect_system/smoke_spread/phosphorus/smoke
 	dangerous = TRUE
@@ -376,12 +389,14 @@
 	desc = "A deadly gas grenade found within the ranks of the UPP. Designed to spill white phosphorus on the target. It explodes 2 seconds after the pin has been pulled."
 	icon_state = "grenade_upp_wp"
 	item_state = "grenade_upp_wp"
+	hud_state = "grenade_t8"
 
 /obj/item/explosive/grenade/phosphorus/clf
 	name = "\improper improvised phosphorus bomb"
 	desc = "An improvised version of gas grenade designed to spill white phosphorus on the target. It explodes 2 seconds after the pin has been pulled."
 	icon_state = "grenade_phos_clf"
 	item_state = "grenade_phos_clf"
+	hud_state = "unknown"
 
 /*
 //================================================
@@ -466,7 +481,7 @@
 	icon_state = inactive_icon
 
 /obj/item/explosive/grenade/slug/proc/impact_mob(mob/living/M)
-	var/direction = Get_Angle(src,M)
+	var/direction = Get_Angle(src, M)
 	var/target_turf = get_angle_target_turf(src,direction,throw_max)
 	var/fling = rand(throw_min,throw_max) //WEEEEEEEEEEEEEEEEEEEE What is going to be put into throw_atom
 	var/random_tile = 0 //random tile for bounce
@@ -520,6 +535,7 @@
 	desc = "A harmless reusable version of the M40 HEDP, used for training. Capable of being loaded in the M92 Launcher, or thrown by hand."
 	icon_state = "training_grenade"
 	item_state = "grenade_training"
+	hud_state = "grenade_dummy"
 	dangerous = FALSE
 	harmful = FALSE
 	antigrief_protection = FALSE
@@ -534,15 +550,15 @@
 		throw_range = initial(throw_range)
 		w_class = initial(w_class)
 
-/obj/item/explosive/grenade/high_explosive/training/flamer_fire_act()
-	return
-
+/obj/item/explosive/grenade/high_explosive/training/explosing_check()
+	return FALSE
 
 /obj/item/explosive/grenade/high_explosive/m15/rubber
 	name = "\improper M15 rubber pellet grenade"
 	desc = "A relatively harmless version of the M15 grenade designed for riot control and combat exercises."
 	icon_state = "rubber_grenade"
 	item_state = "rubber_grenade"
+	hud_state = "grenade_m15_dummy"
 	explosion_power = 0
 	shrapnel_type = /datum/ammo/bullet/shrapnel/rubber
 	antigrief_protection = FALSE
@@ -556,15 +572,15 @@
 	hand_throwable = FALSE
 	antigrief_protection = FALSE
 
-
-/obj/item/explosive/grenade/baton/flamer_fire_act()
-	return
+/obj/item/explosive/grenade/baton/explosing_check()
+	return FALSE
 
 /obj/item/explosive/grenade/high_explosive/holy_hand_grenade
 	name = "\improper Holy Hand Grenade of Antioch"
 	desc = "And Saint Attila raised the hand grenade up on high, saying, \"O LORD, bless this Thy hand grenade that with it Thou mayest blow Thine enemies to tiny bits, in Thy mercy.\" And the LORD did grin and the people did feast upon the lambs and sloths and carp and anchovies... And the LORD spake, saying, \"First shalt thou take out the Holy Pin, then shalt thou count to three, no more, no less. Three shall be the number thou shalt count, and the number of the counting shall be three. Four shalt thou not count, neither count thou two, excepting that thou then proceed to three. Five is right out. Once the number three, being the third number, be reached, then lobbest thou thy Holy Hand Grenade of Antioch towards thy foe, who, being naughty in My sight, shall snuff it.\""
 	icon_state = "grenade_antioch"
 	item_state = "grenade_antioch"
+	hud_state = "grenade_antioch"
 	throw_speed = SPEED_VERY_FAST
 	throw_range = 10
 	underslug_launchable = FALSE

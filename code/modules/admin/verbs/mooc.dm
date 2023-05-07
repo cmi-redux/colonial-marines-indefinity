@@ -11,6 +11,8 @@
 	if(!msg)
 		return
 
+	msg = emoji_parse(src, msg)
+
 	log_admin("MOOC: [key_name(src)]: [msg]")
 
 	msg = process_chat_markup(msg, list("*"))

@@ -11,7 +11,7 @@
 	foldable = /obj/item/stack/sheet/mineral/plastic//it makes sense
 
 /obj/item/storage/box/guncase/update_icon()
-	if(LAZYLEN(contents))
+	if(length(contents))
 		icon_state = "guncase"
 	else
 		icon_state = "guncase_e"
@@ -79,20 +79,6 @@
 	new /obj/item/ammo_magazine/rifle/m41aMK1(src)
 
 //------------
-//M79 grenade launcher
-/obj/item/storage/box/guncase/m79
-	name = "\improper M79 grenade launcher case"
-	desc = "A gun case containing the modernized M79 grenade launcher. Comes with 3 baton slugs, 3 hornet shells and 3 star shell grenades."
-	storage_slots = 4
-	can_hold = list(/obj/item/weapon/gun/launcher/grenade/m81/m79, /obj/item/storage/box/packet)
-
-/obj/item/storage/box/guncase/m79/fill_preset_inventory()
-	new /obj/item/weapon/gun/launcher/grenade/m81/m79(src)
-	new /obj/item/storage/box/packet/flare(src)
-	new /obj/item/storage/box/packet/baton_slug(src)
-	new /obj/item/storage/box/packet/hornet(src)
-
-//------------
 //R4T lever action rifle
 /obj/item/storage/box/guncase/r4t_scout
 	name = "\improper R4T lever action rifle case"
@@ -109,20 +95,6 @@
 	new /obj/item/storage/belt/shotgun/lever_action(src)
 	new /obj/item/storage/belt/gun/m44/lever_action/attach_holster(src)
 
-/obj/item/storage/box/guncase/xm88
-	name = "\improper XM88 heavy rifle case"
-	desc = "A gun case containing the XM88 Heavy Rifle, a prototype weapon designed for use against heavily armored infantry targets and light vehicles. Contains an ammunition belt, two boxes of ammunition, the XS-9 Targeting Relay attachment, and the stock for the rifle."
-	storage_slots = 6
-	can_hold = list(/obj/item/weapon/gun/lever_action/xm88, /obj/item/attachable/stock/xm88, /obj/item/attachable/scope/mini/xm88, /obj/item/ammo_magazine/lever_action/xm88, /obj/item/storage/belt/shotgun/xm88)
-
-/obj/item/storage/box/guncase/xm88/fill_preset_inventory()
-	new /obj/item/weapon/gun/lever_action/xm88(src)
-	new /obj/item/attachable/stock/xm88(src)
-	new /obj/item/attachable/scope/mini/xm88(src)
-	new /obj/item/ammo_magazine/lever_action/xm88(src)
-	new /obj/item/ammo_magazine/lever_action/xm88(src)
-	new /obj/item/storage/belt/shotgun/xm88(src)
-
 //------------
 /obj/item/storage/box/guncase/flamer
 	name = "\improper M240 incinerator case"
@@ -137,39 +109,6 @@
 	new /obj/item/attachable/attached_gun/extinguisher(src)
 
 //------------
-/obj/item/storage/box/guncase/m56d
-	name = "\improper M56D heavy machine gun case"
-	desc = "A gun case containing the M56D heavy machine gun. You'll need to order resupplies from requisitions or scavenge them on the field. How do they fit all this into a case? Wouldn't you need a crate."
-	storage_slots = 8
-	can_hold = list(/obj/item/device/m56d_gun, /obj/item/ammo_magazine/m56d, /obj/item/device/m56d_post, /obj/item/tool/wrench, /obj/item/tool/screwdriver, /obj/item/ammo_magazine/m56d, /obj/item/pamphlet/skill/machinegunner, /obj/item/storage/belt/marine/m2c)
-
-/obj/item/storage/box/guncase/m56d/fill_preset_inventory()
-	new /obj/item/device/m56d_gun(src)
-	new /obj/item/ammo_magazine/m56d(src)
-	new /obj/item/ammo_magazine/m56d(src)
-	new /obj/item/device/m56d_post(src)
-	new /obj/item/tool/wrench(src)
-	new /obj/item/tool/screwdriver(src)
-	new /obj/item/pamphlet/skill/machinegunner(src)
-	new /obj/item/storage/belt/marine/m2c(src)
-
-//------------
-/obj/item/storage/box/guncase/m2c
-	name = "\improper M2C heavy machine gun case"
-	desc = "A gun case containing the M2C heavy machine gun. It doesn't come loaded, but it does have spare ammunition. You'll have to order extras from requisitions."
-	storage_slots = 7
-	can_hold = list(/obj/item/pamphlet/skill/machinegunner, /obj/item/device/m2c_gun, /obj/item/ammo_magazine/m2c, /obj/item/storage/belt/marine/m2c, /obj/item/pamphlet/skill/machinegunner)
-
-/obj/item/storage/box/guncase/m2c/fill_preset_inventory()
-	new /obj/item/pamphlet/skill/machinegunner(src)
-	new /obj/item/device/m2c_gun(src)
-	new /obj/item/ammo_magazine/m2c(src)
-	new /obj/item/ammo_magazine/m2c(src)
-	new /obj/item/ammo_magazine/m2c(src)
-	new /obj/item/ammo_magazine/m2c(src)
-	new /obj/item/storage/belt/marine/m2c(src)
-
-//------------
 /obj/item/storage/box/guncase/m41a
 	name = "\improper M41A pulse rifle MK2 case"
 	desc = "A gun case containing the M41A pulse rifle MK2."
@@ -180,7 +119,6 @@
 	new /obj/item/weapon/gun/rifle/m41a(src)
 	for(var/i = 1 to 4)
 		new /obj/item/ammo_magazine/rifle(src)
-
 
 //------------
 /obj/item/storage/box/guncase/pumpshotgun
@@ -200,6 +138,57 @@
 				new /obj/item/ammo_magazine/shotgun/flechette(src)
 			if(3)
 				new /obj/item/ammo_magazine/shotgun/slugs(src)
+
+/obj/item/storage/box/guncase/m56d
+	name = "\improper M56D heavy machine gun case"
+	desc = "A gun case containing the M56D heavy machine gun. You'll need to order resupplies from requisitions or scavenge them on the field. How do they fit all this into a case? Wouldn't you need a crate."
+	storage_slots = 8
+	can_hold = list(/obj/item/weapon/gun/mounted/m56d_gun, /obj/item/ammo_magazine/m56d, /obj/item/device/mounted_defence/tripod_frame, /obj/item/tool/wrench, /obj/item/tool/screwdriver, /obj/item/ammo_magazine/m56d, /obj/item/pamphlet/skill/machinegunner, /obj/item/storage/belt/marine/mounted)
+
+/obj/item/storage/box/guncase/m56d/fill_preset_inventory()
+	new /obj/item/weapon/gun/mounted/m56d_gun(src)
+	new /obj/item/device/mounted_defence/tripod_frame(src)
+	new /obj/item/ammo_magazine/m56d(src)
+	new /obj/item/ammo_magazine/m56d(src)
+	new /obj/item/tool/wrench(src)
+	new /obj/item/tool/screwdriver(src)
+	new /obj/item/pamphlet/skill/machinegunner(src)
+	new /obj/item/storage/belt/marine/mounted(src)
+
+//------------
+/obj/item/storage/box/guncase/sgl2
+	name = "\improper SGL2 heavy grenade launcher gun case"
+	desc = "A gun case containing the  'SGL2, heavy grenade launcher', seems to be fairly heavy to hold. Contains a deadly SGL2 Heavy Grenade Launching System and its ammunition."
+	storage_slots = 8
+	can_hold = list(/obj/item/weapon/gun/launcher/grenade/mounted/sgl2_gun, /obj/item/explosive/grenade/incendiary/airburst, /obj/item/device/mounted_defence/tripod_frame, /obj/item/tool/wrench, /obj/item/tool/screwdriver, /obj/item/explosive/grenade/incendiary/airburst, /obj/item/pamphlet/skill/machinegunner, /obj/item/storage/belt/marine/mounted)
+
+/obj/item/storage/box/guncase/sgl2/fill_preset_inventory()
+	..()
+
+	new /obj/item/weapon/gun/launcher/grenade/mounted/sgl2_gun(src) //gun itself
+	new /obj/item/device/mounted_defence/tripod_frame(src) //tripod
+	new /obj/item/explosive/grenade/incendiary/airburst(src) //ammo for the gun
+	new /obj/item/explosive/grenade/incendiary/airburst(src)
+	new /obj/item/tool/wrench(src)
+	new /obj/item/tool/screwdriver(src)
+	new /obj/item/storage/belt/marine/mounted(src)
+
+//------------
+/obj/item/storage/box/guncase/rct
+	name = "\improper RCT heavy rocket launcher gun case"
+	desc = "A gun case containing the  'RCT, heavy rocket launcher', seems to be fairly heavy to hold. Contains stationary rocket launcher, can be used with all types rockets. likely to destroy enemy heavy machines."
+	storage_slots = 8
+	can_hold = list(/obj/item/weapon/gun/launcher/rocket/mounted/rct_gun, /obj/item/ammo_magazine/rocket/ap, /obj/item/device/mounted_defence/tripod_frame, /obj/item/tool/wrench, /obj/item/tool/screwdriver, /obj/item/ammo_magazine/rocket/ap, /obj/item/pamphlet/skill/machinegunner, /obj/item/storage/belt/marine/mounted)
+
+/obj/item/storage/box/guncase/rct/fill_preset_inventory()
+	. = ..()
+	new /obj/item/weapon/gun/launcher/rocket/mounted/rct_gun(src) //gun itself
+	new /obj/item/device/mounted_defence/tripod_frame(src) //tripod
+	new /obj/item/ammo_magazine/rocket/ap(src) //ammo for the gun
+	new /obj/item/ammo_magazine/rocket/ap(src)
+	new /obj/item/tool/wrench(src)
+	new /obj/item/tool/screwdriver(src)
+	new /obj/item/storage/belt/marine/mounted(src)
 
 /obj/item/storage/box/guncase/mk45_automag
 	name = "\improper MK-45 Automagnum case"

@@ -1,8 +1,8 @@
 SUBSYSTEM_DEF(admin)
-	name   = "Admin"
-	wait   = 5 MINUTES
-	flags   = SS_NO_INIT | SS_KEEP_TIMING
-	runlevels = RUNLEVELS_DEFAULT|RUNLEVEL_LOBBY
+	name		= "Admin"
+	wait		= 5 MINUTES
+	flags		= SS_NO_INIT|SS_KEEP_TIMING
+	runlevels	= RUNLEVELS_DEFAULT|RUNLEVEL_LOBBY
 	var/list/currentrun = list()
 	var/times_repeated = 0
 
@@ -11,7 +11,7 @@ SUBSYSTEM_DEF(admin)
 	return ..()
 
 /datum/controller/subsystem/admin/fire(resumed = FALSE)
-	if (!resumed)
+	if(!resumed)
 		currentrun = unansweredAhelps.Copy()
 
 	if(!currentrun.len)
@@ -24,12 +24,12 @@ SUBSYSTEM_DEF(admin)
 		var/ahelp_msg = currentrun[currentrun.len]
 		currentrun.len--
 
-		if (!ahelp_msg)
+		if(!ahelp_msg)
 			continue
 
 		msg += unansweredAhelps[ahelp_msg] + "\n"
 
-		if (MC_TICK_CHECK)
+		if(MC_TICK_CHECK)
 			return
 
 	for(var/client/C in GLOB.admins)

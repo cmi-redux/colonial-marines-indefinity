@@ -35,8 +35,6 @@
 
 	minimum_evolve_time = 3 MINUTES
 
-	minimap_icon = "hivelord"
-
 /datum/caste_datum/hivelord/New()
 	. = ..()
 
@@ -79,6 +77,13 @@
 	icon_xeno = 'icons/mob/xenos/hivelord.dmi'
 	icon_xenonid = 'icons/mob/xenonids/hivelord.dmi'
 
+	balance_formulas = list(BALANCE_FORMULA_XENO_ABILITER, BALANCE_FORMULA_XENO_BUILDER)
+
+/mob/living/carbon/xenomorph/hivelord/Initialize(mapload, mob/living/carbon/xenomorph/old_xeno, datum/faction/hive_to_set)
+	. = ..()
+
+	AddComponent(/datum/component/footstep, FOOTSTEP_XENO_MEDIUM)
+
 /datum/behavior_delegate/hivelord_base
 	name = "Base Hivelord Behavior Delegate"
 
@@ -103,7 +108,7 @@
 	if(!turf_weeds)
 		return
 
-	if(turf_weeds.linked_hive.hivenumber == bound_xeno.hivenumber)
+	if(turf_weeds.faction == bound_xeno.faction)
 		speed_data["speed"] += weed_speed_increase
 
 /datum/behavior_delegate/hivelord_base/on_life()

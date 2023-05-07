@@ -91,13 +91,13 @@
 /obj/structure/machinery/prop/almayer/computer/ex_act(severity)
 	switch(severity)
 		if(0 to EXPLOSION_THRESHOLD_LOW)
-			if (prob(25))
+			if(prob(25))
 				set_broken()
 		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
-			if (prob(25))
+			if(prob(25))
 				deconstruct(FALSE)
 				return
-			if (prob(50))
+			if(prob(50))
 				set_broken()
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
 			deconstruct(FALSE)
@@ -138,37 +138,48 @@
 /obj/structure/machinery/prop/almayer/CICmap
 	name = "map table"
 	desc = "A table that displays a map of the current target location"
+	unacidable = TRUE
+	density = 1
+	anchored = 1
+	use_power = USE_POWER_IDLE
+	idle_power_usage = 20
+	var/list/current_mapviewer = list()
+
 	icon = 'icons/obj/structures/machinery/computer.dmi'
 	icon_state = "maptable"
-	anchored = TRUE
-	use_power = USE_POWER_IDLE
-	density = TRUE
-	idle_power_usage = 2
-	///flags that we want to be shown when you interact with this table
-	var/datum/tacmap/map
-	var/minimap_type = MINIMAP_FLAG_USCM
+
+	faction_to_get = FACTION_MARINE
+
+	var/minimap_name = "Marine Tactical Map"
+	var/map_viewing = FALSE
+	var/datum/ui_minimap/minimap
 
 /obj/structure/machinery/prop/almayer/CICmap/Initialize()
 	. = ..()
-	map = new(src, minimap_type)
+	link_minimap()
 
-/obj/structure/machinery/prop/almayer/CICmap/Destroy()
-	QDEL_NULL(map)
-	return ..()
+/obj/structure/machinery/prop/almayer/CICmap/proc/link_minimap()
+	set waitfor = FALSE
+	WAIT_MAPVIEW_READY
+	minimap = SSmapview.get_minimap_ui(faction, GROUND_MAP_Z, minimap_name)
 
-/obj/structure/machinery/prop/almayer/CICmap/attack_hand(mob/user)
-	. = ..()
-
-	map.tgui_interact(user)
+/obj/structure/machinery/prop/almayer/CICmap/examine(mob/living/user)
+	if((ishuman(user) && get_dist(src,user) < 3 && powered()) || !Adjacent(user))
+		minimap.tgui_interact(user)
+	..()
 
 /obj/structure/machinery/prop/almayer/CICmap/upp
-	minimap_type = MINIMAP_FLAG_UPP
+	minimap_name = "UPP Tactical Map"
+	faction_to_get = FACTION_UPP
 
 /obj/structure/machinery/prop/almayer/CICmap/clf
-	minimap_type = MINIMAP_FLAG_CLF
+	minimap_name = "CLF Tactical Map"
+	faction_to_get = FACTION_CLF
 
-/obj/structure/machinery/prop/almayer/CICmap/pmc
-	minimap_type = MINIMAP_FLAG_PMC
+/obj/structure/machinery/prop/almayer/CICmap/wy
+	minimap_name = "W-Y Tactical Map"
+	faction_to_get = FACTION_WY
+
 
 //Nonpower using props
 
@@ -365,7 +376,7 @@
 //What is this even doing? Why is it making a new item?
 /obj/structure/machinery/cryobag_recycler/attackby(obj/item/W, mob/user) //Hope this works. Don't see why not.
 	..()
-	if (istype(W, /obj/item))
+	if(istype(W, /obj/item))
 		if(W.name == "used stasis bag") //possiblity for abuse, but fairly low considering its near impossible to rename something without VV
 			var/obj/item/bodybag/cryobag/R = new /obj/item/bodybag/cryobag //lets give them the bag considering having it unfolded would be a pain in the ass.
 			R.add_fingerprint(user)

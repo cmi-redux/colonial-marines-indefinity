@@ -30,8 +30,6 @@
 
 	minimum_evolve_time = 15 MINUTES
 
-	minimap_icon = "praetorian"
-
 /mob/living/carbon/xenomorph/praetorian
 	caste_type = XENO_CASTE_PRAETORIAN
 	name = XENO_CASTE_PRAETORIAN
@@ -61,13 +59,20 @@
 	icon_xeno = 'icons/mob/xenos/praetorian.dmi'
 	icon_xenonid = 'icons/mob/xenonids/praetorian.dmi'
 
+	balance_formulas = list(BALANCE_FORMULA_XENO_ABILITER, BALANCE_FORMULA_XENO_FIGHTER)
+
+/mob/living/carbon/xenomorph/praetorian/Initialize(mapload, mob/living/carbon/xenomorph/old_xeno, datum/faction/hive_to_set)
+	. = ..()
+
+	AddComponent(/datum/component/footstep, FOOTSTEP_XENO_HEAVY)
+
 /datum/behavior_delegate/praetorian_base
 	name = "Base Praetorian Behavior Delegate"
 	///reward for hitting shots instead of spamming acid ball
 	var/reward_shield = 15
 
 /datum/behavior_delegate/praetorian_base/ranged_attack_additional_effects_target(atom/A)
-	if (!ishuman(A))
+	if(!ishuman(A))
 		return
 
 	var/mob/living/carbon/human/H = A
@@ -77,7 +82,7 @@
 		PAS = prae_acid_stacks
 		break
 
-	if (PAS == null)
+	if(PAS == null)
 		new /datum/effects/prae_acid_stacks(H)
 		return
 	else

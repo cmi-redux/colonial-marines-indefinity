@@ -112,6 +112,14 @@ There are several things that need to be remembered:
 	else
 		apply_transform(M)
 
+	for(var/datum/effects/overlay_effect in effects_list)
+		if(!istype(overlay_effect, /datum/effects/mob_overlay_effect))
+			continue
+		update_effects()
+		var/turf/gotten_turf = get_turf(src)
+		gotten_turf.Entered(src, loc)
+		break
+
 /mob/living/carbon/human/UpdateDamageIcon()
 	for(var/obj/limb/O in limbs)
 		if(!(O.status & LIMB_DESTROYED))
@@ -121,17 +129,17 @@ There are several things that need to be remembered:
 	return
 
 /mob/living/carbon/human/AddSleepingIcon()
-	var/image/SL
-	SL = new /image('icons/mob/hud/hud.dmi', "slept_icon")
-	overlays += SL
+	var/image/sl
+	sl = new /image('icons/mob/hud/hud.dmi', "slept_icon")
+	overlays += sl
 
 /mob/proc/RemoveSleepingIcon()
 	return
 
 /mob/living/carbon/human/RemoveSleepingIcon()
-	var/image/SL
-	SL = new /image('icons/mob/hud/hud.dmi', "slept_icon")
-	overlays -= SL
+	var/image/sl
+	sl = new /image('icons/mob/hud/hud.dmi', "slept_icon")
+	overlays -= sl
 
 //BASE MOB SPRITE
 /mob/living/carbon/human/proc/update_body()
@@ -526,7 +534,7 @@ Applied by gun suicide and high impact bullet executions, removed by rejuvenate,
 
 		if(istype(wear_suit, /obj/item/clothing/suit/storage/marine))
 			var/obj/item/clothing/suit/storage/marine/marine_armor = wear_suit
-			if(marine_armor.flags_marine_armor & ARMOR_SQUAD_OVERLAY)
+			if(marine_armor.flags_armor_features & ARMOR_SQUAD_OVERLAY)
 				if(assigned_squad)
 					var/datum/squad/S = assigned_squad
 					var/leader = S.squad_leader == src
@@ -725,13 +733,13 @@ Applied by gun suicide and high impact bullet executions, removed by rejuvenate,
 /mob/living/carbon/human/proc/update_effects()
 	remove_overlay(EFFECTS_LAYER)
 
-	var/image/I
+	var/mutable_appearance/I
 	for(var/datum/effects/E in effects_list)
 		if(E.icon_path && E.mob_icon_state_path)
 			if(!I)
-				I = image("icon" = E.icon_path, "icon_state" = E.mob_icon_state_path, "layer"= -EFFECTS_LAYER)
+				I = mutable_appearance("icon" = E.icon_path, "icon_state" = E.mob_icon_state_path, "layer"= -EFFECTS_LAYER)
 			else
-				I.overlays += image("icon" = E.icon_path, "icon_state" = E.mob_icon_state_path, "layer"= -EFFECTS_LAYER)
+				I.overlays += mutable_appearance("icon" = E.icon_path, "icon_state" = E.mob_icon_state_path, "layer"= -EFFECTS_LAYER)
 	if(!I)
 		return
 	overlays_standing[EFFECTS_LAYER] = I

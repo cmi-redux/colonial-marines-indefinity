@@ -9,7 +9,6 @@
 	icon_state = "varadero"
 	can_build_special = TRUE //T-Comms structure
 	temperature = TROPICAL_TEMP
-	lighting_use_dynamic = TRUE
 	minimap_color = MINIMAP_AREA_COLONY
 
 //shuttle stuff
@@ -18,7 +17,6 @@
 	name = "New Varadero - Dropship Alamo Landing Zone"
 	icon_state = "shuttle"
 	icon = 'icons/turf/area_varadero.dmi'
-	lighting_use_dynamic = TRUE
 	is_resin_allowed = FALSE
 	minimap_color = MINIMAP_AREA_LZ
 
@@ -27,7 +25,6 @@
 	name = "New Varadero - Dropship Normandy Landing Zone"
 	icon_state = "shuttle2"
 	icon = 'icons/turf/area_varadero.dmi'
-	lighting_use_dynamic = TRUE
 	is_resin_allowed = FALSE
 	minimap_color = MINIMAP_AREA_LZ
 
@@ -35,21 +32,18 @@
 
 /area/varadero/exterior
 	name = "New Varadero - Exterior"
-	ceiling = CEILING_NONE
 	ambience_exterior = AMBIENCE_LV624
 	//soundscape_playlist
 	sound_environment = SOUND_ENVIRONMENT_MOUNTAINS
 
 /area/varadero/interior
 	name = "New Varadero - Interior"
-	ceiling = CEILING_UNDERGROUND_ALLOW_CAS
 	ambience_exterior = AMBIENCE_PRISON
 	//soundscape_playlist
 	sound_environment = SOUND_ENVIRONMENT_ROOM
 
 /area/varadero/interior_protected
 	name = "New Varadero - Interior"
-	ceiling = CEILING_DEEP_UNDERGROUND
 	icon_state = "NV_no_OB"
 
 /area/varadero/interior/comms1
@@ -82,7 +76,6 @@
 
 /area/varadero/interior/oob
 	name = "New Varadero - Out Of Bounds"
-	ceiling = CEILING_MAX
 	icon_state = "oob"
 	is_resin_allowed = FALSE
 	flags_area = AREA_NOTUNNEL
@@ -237,7 +230,6 @@
 	power_equip = FALSE
 	power_environ = FALSE
 	luminosity = 0
-	lighting_use_dynamic = 1
 	minimap_color = MINIMAP_AREA_CAVES
 
 /area/varadero/interior/caves/north_research
@@ -256,7 +248,6 @@
 	power_equip = FALSE
 	power_environ = FALSE
 	luminosity = 0
-	lighting_use_dynamic = 1
 	minimap_color = MINIMAP_AREA_RESEARCH_CAVE
 
 

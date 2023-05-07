@@ -21,7 +21,7 @@
 
 /datum/equipment_preset/yautja/load_id(mob/living/carbon/human/H)
 	H.job = rank
-	H.faction = faction
+	GLOB.faction_datum[faction].add_mob(H)
 
 /datum/equipment_preset/yautja/load_vanity(mob/living/carbon/human/H)
 	return //No vanity items for Yautja!

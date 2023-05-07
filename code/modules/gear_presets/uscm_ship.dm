@@ -1,7 +1,6 @@
 /datum/equipment_preset/uscm_ship
 	name = "USCM (ship roles)"
 	faction = FACTION_MARINE
-	faction_group = FACTION_LIST_MARINE
 	minimum_age = 20
 	languages = list(LANGUAGE_ENGLISH)
 
@@ -22,10 +21,11 @@
 	dress_gloves = list(/obj/item/clothing/gloves/marine/dress)
 	dress_shoes = list(/obj/item/clothing/shoes/dress)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/liaison
 	name = "USCM Corporate Liaison (CL)"
+	faction = FACTION_WY
 	flags = EQUIPMENT_PRESET_START_OF_ROUND
 
 	idtype = /obj/item/card/id/silver/cl
@@ -49,9 +49,7 @@
 	paygrade = "WYC2"
 	role_comm_title = "CL"
 	skills = /datum/skills/civilian
-
-	minimap_icon = "cl"
-	minimap_background = MINIMAP_ICON_BACKGROUND_CIVILIAN
+	languages = ALL_HUMAN_LANGUAGES
 
 	utility_under = list(/obj/item/clothing/under/liaison_suit/outing)
 	utility_hat = list()
@@ -73,7 +71,7 @@
 /datum/equipment_preset/uscm_ship/liaison/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/satchel/lockable/liaison
 	//There is no suitable backpack for a CL really...
-	//if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	//if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		//backItem = /obj/item/storage/backpack
 
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mcl(H), WEAR_L_EAR)
@@ -95,7 +93,7 @@
 				return paygrade
 	return paygrade
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/chief_engineer
 	name = "USCM Chief Engineer (CE)"
@@ -120,14 +118,11 @@
 	minimum_age = 27
 	skills = /datum/skills/CE
 
-	minimap_icon = list("engi" = MINIMAP_ICON_COLOR_HEAD)
-	minimap_background = MINIMAP_ICON_BACKGROUND_CIC
-
 	utility_under = list(/obj/item/clothing/under/marine/officer/ce)
 
 /datum/equipment_preset/uscm_ship/chief_engineer/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel/tech
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine/tech
 
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/ce(H), WEAR_L_EAR)
@@ -138,7 +133,7 @@
 	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/electronics(H), WEAR_R_STORE)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/maint
 	name = "USCM Maintenance Technician (MT)"
@@ -155,13 +150,11 @@
 	role_comm_title = "MT"
 	skills = /datum/skills/MT
 
-	minimap_icon = "engi"
-
 	utility_under = list(/obj/item/clothing/under/marine/officer/engi)
 
 /datum/equipment_preset/uscm_ship/maint/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel/tech
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine/tech
 
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mt(H), WEAR_L_EAR)
@@ -181,7 +174,7 @@
 			return "ME1"
 	return paygrade
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/ordn
 	name = "USCM Ordnance Technician (OT)"
@@ -200,17 +193,15 @@
 	role_comm_title = "OT"
 	skills = /datum/skills/OT
 
-	minimap_icon = "ot"
-
 	utility_under = list(/obj/item/clothing/under/marine/officer/engi)
 
 /datum/equipment_preset/uscm_ship/ordn/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel/tech
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine/tech
 
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mt(H), WEAR_L_EAR)
-	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/officer/engi/OT(H), WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/officer/engi/ot(H), WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/yellow(H), WEAR_HANDS)
 	H.equip_to_slot_or_del(new /obj/item/storage/belt/utility/full(H), WEAR_WAIST)
@@ -218,7 +209,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/medium(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/device/demo_scanner(H), WEAR_L_STORE)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/ro
 	name = "USCM Requisitions Officer (RO)"
@@ -244,14 +235,11 @@
 	minimum_age = 27
 	skills = /datum/skills/RO
 
-	minimap_background = MINIMAP_ICON_BACKGROUND_CIC
-	minimap_icon = list("ct" = MINIMAP_ICON_COLOR_HEAD)
-
 	utility_under = list(/obj/item/clothing/under/rank/ro_suit)
 
 /datum/equipment_preset/uscm_ship/ro/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel/tech
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/industrial
 
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/ro(H), WEAR_L_EAR)
@@ -263,7 +251,7 @@
 	H.equip_to_slot_or_del(new /obj/item/device/flash(H), WEAR_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/large(H), WEAR_R_STORE)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/cargo
 	name = "USCM Cargo Technician (CT)"
@@ -276,13 +264,11 @@
 	role_comm_title = "CT"
 	skills = /datum/skills/CT
 
-	minimap_icon = "ct"
-
 	utility_under = list(/obj/item/clothing/under/rank/cargotech)
 
 /datum/equipment_preset/uscm_ship/cargo/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel/tech
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/industrial
 
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/ct(H), WEAR_L_EAR)
@@ -300,7 +286,7 @@
 			return "ME1"
 	return paygrade
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/commander
 	name = "USCM Commanding Officer (CO)"
@@ -313,9 +299,6 @@
 	role_comm_title = "CO"
 	minimum_age = 30
 	skills = /datum/skills/commander
-
-	minimap_icon = list("cic" = MINIMAP_ICON_COLOR_COMMANDER)
-	minimap_background = MINIMAP_ICON_BACKGROUND_CIC
 
 	utility_under = list(/obj/item/clothing/under/marine,/obj/item/clothing/under/marine/officer/command)
 	utility_hat = list(/obj/item/clothing/head/cmcap,/obj/item/clothing/head/beret/cm/tan)
@@ -377,7 +360,7 @@
 	if(kit)
 		H.equip_to_slot_or_del(new kit(H), WEAR_IN_BACK)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/commander/council
 	name = "USCM Commanding Officer (CO+)"
@@ -403,7 +386,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/beret/marine/commander/councilchief(H), WEAR_HEAD)
 	. = ..()
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/xo
 	name = "USCM Executive Officer (XO)"
@@ -417,9 +400,6 @@
 	minimum_age = 35
 	skills = /datum/skills/XO
 
-	minimap_icon = list("cic" = MINIMAP_ICON_COLOR_HEAD)
-	minimap_background = MINIMAP_ICON_BACKGROUND_CIC
-
 	dress_extra = list(/obj/item/storage/large_holster/ceremonial_sword/full)
 
 /datum/equipment_preset/uscm_ship/xo/New()
@@ -428,7 +408,7 @@
 
 /datum/equipment_preset/uscm_ship/xo/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/satchel
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine
 
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mcom/cdrcom(H), WEAR_L_EAR)
@@ -441,7 +421,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/large(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/device/binoculars/range(H), WEAR_L_STORE)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/so
 	name = "USCM Staff Officer (SO)"
@@ -456,12 +436,9 @@
 	minimum_age = 25
 	skills = /datum/skills/SO
 
-	minimap_icon = list("cic" = MINIMAP_ICON_COLOR_BRONZE)
-	minimap_background = MINIMAP_ICON_BACKGROUND_CIC
-
 /datum/equipment_preset/uscm_ship/so/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/satchel
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine
 
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mcom(H), WEAR_L_EAR)
@@ -474,7 +451,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/large(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/device/binoculars/range(H), WEAR_L_HAND)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/sea
 	name = "USCM Senior Enlisted Advisor (SEA)"
@@ -489,8 +466,6 @@
 	minimum_age = 40
 	skills = /datum/skills/SEA
 
-	minimap_icon = "sea"
-
 	service_hat = list(/obj/item/clothing/head/cmcap, /obj/item/clothing/head/drillhat)
 
 /datum/equipment_preset/uscm_ship/sea/New()
@@ -499,7 +474,7 @@
 
 /datum/equipment_preset/uscm_ship/sea/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/satchel
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine
 	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
 
@@ -532,7 +507,7 @@
 			return grade8
 	return paygrade
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/po
 	name = "USCM Pilot (DP) (Cryo)"
@@ -546,8 +521,6 @@
 	role_comm_title = "DP"
 	skills = /datum/skills/pilot
 
-	minimap_icon = "pilot"
-
 /datum/equipment_preset/uscm_ship/po/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/satchel
 	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
@@ -558,7 +531,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/officer/pilot(H), WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/po/full
 	name = "USCM Pilot Officer (PO)"
@@ -582,7 +555,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/pilot(H), WEAR_HEAD)
 	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses(H), WEAR_EYES)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/dcc
 	name = "USCM Dropship Crew Chief (DCC) (Cryo)"
@@ -596,8 +569,6 @@
 	role_comm_title = "DCC"
 	skills = /datum/skills/crew_chief
 
-	minimap_icon = "dcc"
-
 /datum/equipment_preset/uscm_ship/dcc/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/satchel
 	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
@@ -608,7 +579,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/officer/pilot/dcc(H), WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/dcc/full
 	name = "USCM Dropship Crew Chief (DCC)"
@@ -632,7 +603,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/cmcap(H), WEAR_HEAD)
 	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses(H), WEAR_EYES)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/officer
 	name = "USCM Officer (USCM Command)"
@@ -673,7 +644,7 @@
 	H.equip_if_possible(new /obj/item/clothing/glasses/sunglasses(H), WEAR_EYES)
 	H.equip_if_possible(new /obj/item/storage/pouch/general/large(H), WEAR_R_STORE)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/chef
 	name = "USCM Mess Technician (MST)"
@@ -686,13 +657,11 @@
 	role_comm_title = "MST"
 	skills = /datum/skills/mess_technician
 
-	minimap_icon = "mst"
-
 	utility_under = list(/obj/item/clothing/under/marine/chef)
 
 /datum/equipment_preset/uscm_ship/chef/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine
 
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/chefhat(H), WEAR_HEAD)

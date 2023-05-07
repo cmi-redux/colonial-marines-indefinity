@@ -4,12 +4,15 @@
 	icon = 'icons/obj/vehicles/vehicles.dmi'
 	icon_state = "cargo_engine"
 	on = 0
-	luminosity = 5 //Pretty strong because why not
 	powered = 1
 	locked = 0
 	charge_use = 15
 
-	var/car_limit = 3 //how many cars an engine can pull before performance degrades
+	light_system = MOVABLE_LIGHT
+	light_range = 5
+	light_power = 1
+
+	var/car_limit = 3		//how many cars an engine can pull before performance degrades
 	active_engines = 1
 	var/obj/item/key/cargo_train/key
 
@@ -24,7 +27,7 @@
 	name = "cargo train trolley"
 	icon = 'icons/obj/vehicles/vehicles.dmi'
 	icon_state = "cargo_trailer"
-	luminosity = 0
+	light_range = 0
 	anchored = FALSE
 	locked = 0
 	can_buckle = FALSE
@@ -88,6 +91,7 @@
 	else
 		..()
 		update_stats()
+		set_light_on(TRUE)
 
 		verbs -= /obj/vehicle/train/cargo/engine/verb/stop_engine
 		verbs -= /obj/vehicle/train/cargo/engine/verb/start_engine
@@ -105,6 +109,7 @@
 
 	if(!on)
 		verbs += /obj/vehicle/train/cargo/engine/verb/start_engine
+		set_light_on(FALSE)
 	else
 		verbs += /obj/vehicle/train/cargo/engine/verb/stop_engine
 
@@ -142,10 +147,10 @@
 		return
 
 	turn_on()
-	if (on)
+	if(on)
 		to_chat(usr, "You start [src]'s engine.")
 	else
-		if (cell)
+		if(cell)
 			if(cell.charge < charge_use)
 				to_chat(usr, "[src] is out of power.")
 			else
@@ -166,7 +171,7 @@
 		return
 
 	turn_off()
-	if (!on)
+	if(!on)
 		to_chat(usr, "You stop [src]'s engine.")
 
 /obj/vehicle/train/cargo/engine/verb/remove_key()

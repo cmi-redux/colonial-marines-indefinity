@@ -145,13 +145,13 @@
 	new /obj/item/explosive/grenade/flashbang(src)
 	new /obj/item/explosive/grenade/flashbang(src)
 	new /obj/item/explosive/grenade/flashbang(src)
-	if(SSticker.mode && MODE_HAS_FLAG(MODE_FACTION_CLASH))
+	if(SSticker.mode && MODE_HAS_FLAG(MODE_HVH_BALANCE))
 		handle_delete_clash_contents()
 	else if(SSticker.current_state < GAME_STATE_PLAYING)
 		RegisterSignal(SSdcs, COMSIG_GLOB_MODE_PRESETUP, PROC_REF(handle_delete_clash_contents))
 
 /obj/item/storage/box/flashbangs/proc/handle_delete_clash_contents()
-	if(MODE_HAS_FLAG(MODE_FACTION_CLASH))
+	if(MODE_HAS_FLAG(MODE_HVH_BALANCE))
 		var/grenade_count = 0
 		var/grenades_desired = 4
 		for(var/grenade in contents)
@@ -598,7 +598,6 @@
 	storage_slots = 25
 	max_storage_space = 50
 	can_hold = list(/obj/item/explosive/grenade/high_explosive)
-	var/base_icon
 	var/grenade_type = /obj/item/explosive/grenade/high_explosive
 	has_gamemode_skin = TRUE
 
@@ -668,13 +667,13 @@
 
 /obj/item/storage/box/nade_box/tear_gas/fill_preset_inventory()
 	..()
-	if(SSticker.mode && MODE_HAS_FLAG(MODE_FACTION_CLASH))
+	if(SSticker.mode && MODE_HAS_FLAG(MODE_HVH_BALANCE))
 		handle_delete_clash_contents()
 	else if(SSticker.current_state < GAME_STATE_PLAYING)
 		RegisterSignal(SSdcs, COMSIG_GLOB_MODE_PRESETUP, PROC_REF(handle_delete_clash_contents))
 
 /obj/item/storage/box/nade_box/tear_gas/proc/handle_delete_clash_contents()
-	if(MODE_HAS_FLAG(MODE_FACTION_CLASH))
+	if(MODE_HAS_FLAG(MODE_HVH_BALANCE))
 		var/grenade_count = 0
 		var/grenades_desired = 6
 		for(var/grenade in contents)

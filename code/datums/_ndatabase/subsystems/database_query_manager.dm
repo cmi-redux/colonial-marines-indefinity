@@ -57,7 +57,7 @@ var/datum/controller/subsystem/database_query_manager/SSdatabase
 	NEW_SS_GLOBAL(SSdatabase)
 
 /datum/controller/subsystem/database_query_manager/Initialize()
-	set waitfor=0
+	set waitfor = FALSE
 	connection = settings.create_connection()
 	connection.keep()
 	return SS_INIT_SUCCESS
@@ -183,7 +183,7 @@ var/datum/controller/subsystem/database_query_manager/SSdatabase
 		t = trim(t)
 		if(length(t) == 0)
 			continue
-		else if (copytext(t, 1, 2) == "#")
+		else if(copytext(t, 1, 2) == "#")
 			continue
 
 		var/pos = findtext(t, " ")

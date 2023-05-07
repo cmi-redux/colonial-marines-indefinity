@@ -44,7 +44,7 @@
 	if(!is_reinforced)
 		if(istype(W,/obj/item/stack/cable_coil))
 			var/obj/item/stack/cable_coil/CC = W
-			if (get_amount() < 1 || CC.get_amount() < 5)
+			if(get_amount() < 1 || CC.get_amount() < 5)
 				to_chat(user, SPAN_WARNING("You need five lengths of coil and one sheet of glass to make wired glass."))
 				return
 
@@ -54,11 +54,11 @@
 			to_chat(user, SPAN_NOTICE("You attach wire to the [name]."))
 		else if(istype(W, /obj/item/stack/rods))
 			var/obj/item/stack/rods/V  = W
-			if (V.get_amount() < 1 || get_amount() < 1)
+			if(V.get_amount() < 1 || get_amount() < 1)
 				to_chat(user, SPAN_WARNING("You need one rod and one sheet of glass to make reinforced glass."))
 				return
 
-			var/obj/item/stack/sheet/glass/reinforced/RG = new (user.loc)
+			var/obj/item/stack/sheet/glass/reinforced/RG = new(user.loc)
 			RG.add_fingerprint(user)
 			RG.add_to_stacks(user)
 			var/obj/item/stack/sheet/glass/G = src
@@ -66,7 +66,7 @@
 			var/replace = (user.get_inactive_hand()==G)
 			V.use(1)
 			G.use(1)
-			if (!G && replace)
+			if(!G && replace)
 				user.put_in_hands(RG)
 
 /obj/item/stack/sheet/glass/proc/construct_window(mob/user)
@@ -92,7 +92,7 @@
 		if(istype(X, /obj/structure/machinery/defenses))
 			fail = TRUE
 			break
-		else if(istype(X, /obj/structure/machinery/m56d_hmg))
+		else if(istype(X, /obj/structure/machinery/mounted_defence))
 			fail = TRUE
 			break
 	if(fail)
@@ -100,13 +100,15 @@
 		return
 	switch(to_build)
 		if("One Direction")
-			if(!src) return TRUE
-			if(src.loc != user) return TRUE
-			var/obj/structure/blocker/anti_cade/AC = locate(/obj/structure/blocker/anti_cade) in T // for M2C HMG, look at smartgun_mount.dm
+			if(!src)
+				return TRUE
+			if(src.loc != user)
+				return TRUE
+			var/obj/structure/blocker/anti_cade/AC = locate(/obj/structure/blocker/anti_cade) in T
 			if(AC)
 				to_chat(usr, SPAN_WARNING("\The [src] cannot be built here!"))
 				return TRUE
-			var/list/directions = new/list(cardinal)
+			var/list/directions = list(GLOB.cardinals)
 			var/i = 0
 			for (var/obj/structure/window/win in user.loc)
 				i++
@@ -114,11 +116,11 @@
 					to_chat(user, SPAN_DANGER("There are too many windows in this location."))
 					return TRUE
 				directions-=win.dir
-				if(!(win.dir in cardinal))
+				if(!(win.dir in  GLOB.cardinals))
 					to_chat(user, SPAN_DANGER("Can't let you do that."))
 					return TRUE
 
-			//Determine the direction. It will first check in the direction the person making the window is facing, if it finds an already made window it will try looking at the next cardinal direction, etc.
+			//Determine the direction. It will first check in the direction the person making the window is facing, if it finds an already made window it will try looking at the next cardinals direction, etc.
 			var/dir_to_set = 2
 			for(var/direction in list( user.dir, turn(user.dir,90), turn(user.dir,180), turn(user.dir,270) ))
 				var/found = 0
@@ -209,7 +211,7 @@
 	..()
 	if( istype(W, /obj/item/stack/rods) )
 		var/obj/item/stack/rods/V  = W
-		var/obj/item/stack/sheet/glass/phoronrglass/RG = new (user.loc)
+		var/obj/item/stack/sheet/glass/phoronrglass/RG = new(user.loc)
 		RG.add_fingerprint(user)
 		RG.add_to_stacks(user)
 		V.use(1)
@@ -217,7 +219,7 @@
 		src = null
 		var/replace = (user.get_inactive_hand()==G)
 		G.use(1)
-		if (!G && !RG && replace)
+		if(!G && !RG && replace)
 			user.put_in_hands(RG)
 	else
 		return ..()

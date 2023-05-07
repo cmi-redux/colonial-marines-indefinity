@@ -36,13 +36,13 @@
 /obj/effect/particle_effect/smoke/Destroy()
 	. = ..()
 	if(opacity)
-		SetOpacity(0)
+		set_opacity(FALSE)
 	active_smoke_effects -= src
 	cause_data = null
 
 /obj/effect/particle_effect/smoke/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_pass = PASS_FLAGS_SMOKE
 
 /obj/effect/particle_effect/smoke/process()
@@ -53,7 +53,7 @@
 	else if(time_to_live == 1)
 		alpha = 180
 		amount = 0
-		SetOpacity(0)
+		set_opacity(FALSE)
 
 	apply_smoke_effect(get_turf(src))
 
@@ -74,12 +74,12 @@
 		affect(L)
 
 /obj/effect/particle_effect/smoke/proc/spread_smoke(direction)
-	set waitfor = 0
+	set waitfor = FALSE
 	sleep(spread_speed)
 	if(QDELETED(src)) return
 	var/turf/U = get_turf(src)
 	if(!U) return
-	for(var/i in cardinal)
+	for(var/i in  GLOB.cardinals)
 		if(direction && i != direction)
 			continue
 		var/turf/T = get_step(U, i)
@@ -92,7 +92,7 @@
 			else
 				continue
 		var/obj/effect/particle_effect/smoke/S = new type(T, amount, cause_data)
-		S.setDir(pick(cardinal))
+		S.setDir(pick( GLOB.cardinals))
 		S.time_to_live = time_to_live
 		if(S.amount>0)
 			S.spread_smoke()
@@ -113,9 +113,9 @@
 
 
 /obj/effect/particle_effect/smoke/proc/affect(mob/living/carbon/M)
-	if (istype(M))
-		return 0
-	return 1
+	if(istype(M))
+		return FALSE
+	return TRUE
 
 /////////////////////////////////////////////
 // Bad smoke
@@ -132,7 +132,7 @@
 
 /obj/effect/particle_effect/smoke/bad/affect(mob/living/carbon/M)
 	..()
-	if (M.internal != null && M.wear_mask && (M.wear_mask.flags_inventory & ALLOWINTERNALS))
+	if(M.internal != null && M.wear_mask && (M.wear_mask.flags_inventory & ALLOWINTERNALS))
 		return
 	else
 		if(prob(20))
@@ -157,7 +157,7 @@
 		affect(M)
 
 /obj/effect/particle_effect/smoke/sleepy/affect(mob/living/carbon/M as mob )
-	if (!..())
+	if(!..())
 		return 0
 
 	M.drop_held_item()
@@ -201,8 +201,8 @@
 	time_to_live = 3
 	smokeranking = SMOKE_RANK_MED
 	var/next_cough = 2 SECONDS
-	var/burn_damage = 40
-	var/applied_fire_stacks = 5
+	var/burn_damage = 70
+	var/applied_fire_stacks = 8
 	var/xeno_yautja_reduction = 0.75
 
 /obj/effect/particle_effect/smoke/phosphorus/weak
@@ -220,7 +220,7 @@
 	..()
 	burn_damage = 40
 	if(ishuman(M))
-		if (M.internal != null && M.wear_mask && (M.wear_mask.flags_inventory & ALLOWINTERNALS))
+		if(M.internal != null && M.wear_mask && (M.wear_mask.flags_inventory & ALLOWINTERNALS))
 			return
 		else
 			if(prob(20))
@@ -266,31 +266,33 @@
 	spread_speed = 6
 	smokeranking = SMOKE_RANK_BOILER
 
-	var/hivenumber = XENO_HIVE_NORMAL
+	faction_to_get = FACTION_XENOMORPH_NORMAL
 	var/gas_damage = 20
 
 /obj/effect/particle_effect/smoke/xeno_burn/Initialize(mapload, amount, datum/cause_data/cause_data)
 	var/mob/living/carbon/xenomorph/xeno = cause_data?.resolve_mob()
-	if (istype(xeno) && xeno.hivenumber)
-		hivenumber = xeno.hivenumber
-
-		set_hive_data(src, hivenumber)
+	if(istype(xeno) && xeno.faction)
+		faction = xeno.faction
 
 	. = ..()
+
+	set_hive_data(src, faction)
 
 
 /obj/effect/particle_effect/smoke/xeno_burn/apply_smoke_effect(turf/T)
 	..()
 	for(var/obj/structure/barricade/B in T)
-		B.take_acid_damage(XENO_ACID_GAS_BARRICADE_DAMAGE)
+		B.take_acid_damage(XENO_ACID_BARRICADE_DAMAGE)
 		if(prob(75)) // anti sound spam
 			playsound(src, pick("acid_sizzle", "acid_hit"), 25)
 
 	for(var/obj/vehicle/multitile/R in T)
 		R.take_damage_type(15, "acid")
 
-	for(var/obj/structure/machinery/m56d_hmg/auto/H in T)
-		H.update_health(XENO_ACID_HMG_DAMAGE)
+	for(var/obj/structure/machinery/mounted_defence/H in T)
+		H.update_health(XENO_ACID_STATIONAR_DAMAGE)
+	for(var/obj/structure/machinery/defenses/D in T)
+		D.update_health(XENO_ACID_STATIONAR_DAMAGE)
 
 //No effect when merely entering the smoke turf, for balance reasons
 /obj/effect/particle_effect/smoke/xeno_burn/Crossed(mob/living/carbon/M as mob)
@@ -299,7 +301,7 @@
 /obj/effect/particle_effect/smoke/xeno_burn/affect(mob/living/carbon/M)
 	..()
 
-	if(M.ally_of_hivenumber(hivenumber))
+	if(M.ally(faction))
 		return
 
 	if(isyautja(M) && prob(75))
@@ -431,7 +433,7 @@
 		else
 			moob.emote("gasp")
 		addtimer(VARSET_CALLBACK(moob, coughedtime, 0), 1.5 SECONDS)
-	if (prob(20))
+	if(prob(20))
 		moob.apply_effect(1, WEAKEN)
 
 	//Topical damage (neurotoxin on exposed skin)
@@ -444,12 +446,12 @@
 		Human.recalculate_move_delay = TRUE
 
 /obj/effect/particle_effect/smoke/xeno_weak_fire/spread_smoke(direction)
-	set waitfor = 0
+	set waitfor = FALSE
 	sleep(spread_speed)
 	if(QDELETED(src)) return
 	var/turf/U = get_turf(src)
 	if(!U) return
-	for(var/i in cardinal)
+	for(var/i in  GLOB.cardinals)
 		if(direction && i != direction)
 			continue
 		var/turf/T = get_step(U, i)
@@ -464,13 +466,13 @@
 		var/obj/effect/particle_effect/smoke/S = new type(T, amount, cause_data)
 
 		for (var/atom/A in T)
-			if (istype(A, /mob/living))
+			if(istype(A, /mob/living))
 				var/mob/living/M = A
 				M.ExtinguishMob()
 			if(istype(A, /obj/flamer_fire))
 				qdel(A)
 
-		S.setDir(pick(cardinal))
+		S.setDir(pick( GLOB.cardinals))
 		S.time_to_live = time_to_live
 		if(S.amount>0)
 			S.spread_smoke()
@@ -545,7 +547,7 @@
 	var/obj/effect/particle_effect/smoke/S = new smoke_type(location, amount+1, cause_data)
 
 	for (var/atom/A in location)
-		if (istype(A, /mob/living))
+		if(istype(A, /mob/living))
 			var/mob/living/M = A
 			M.ExtinguishMob()
 		if(istype(A, /obj/flamer_fire))

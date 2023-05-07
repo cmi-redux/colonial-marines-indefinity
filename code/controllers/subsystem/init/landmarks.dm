@@ -13,22 +13,22 @@ SUBSYSTEM_DEF(landmark_init)
 
 		var/curr_pool_name = L.pool_name
 
-		if (!curr_pool_name)
+		if(!curr_pool_name)
 			log_debug("Item pool spawner [L] has a no pool name populated. Code: ITEM_POOL_1")
 			message_admins("Item pool spawner [L] has a no pool name populated. Tell the devs. Code: ITEM_POOL_1")
 			continue
 
-		if (!pools[curr_pool_name])
+		if(!pools[curr_pool_name])
 			pools[curr_pool_name] = new /datum/item_pool_holder(L.pool_name)
 
 		var/datum/item_pool_holder/item_pool_holder = pools[L.pool_name]
 
 		item_pool_holder.turfs += get_turf(L)
 
-		if (L.type_to_spawn)
+		if(L.type_to_spawn)
 			item_pool_holder.type_to_spawn = L.type_to_spawn
 
-		if (L.quota)
+		if(L.quota)
 			item_pool_holder.quota = L.quota
 
 		qdel(L)
@@ -37,17 +37,17 @@ SUBSYSTEM_DEF(landmark_init)
 
 		var/datum/item_pool_holder/pool = pools[pool_key]
 
-		if (!istype(pool))
+		if(!istype(pool))
 			log_debug("Item pool incorrectly initialized by pool spawner landmarks. Code: ITEM_POOL_2")
 			message_admins("Item pool incorrectly initialized by pool spawner landmarks. Tell the devs. Code: ITEM_POOL_2")
 			continue
 
-		if (!pool.quota || !pool.type_to_spawn)
+		if(!pool.quota || !pool.type_to_spawn)
 			log_debug("Item pool [pool.pool_name] has no master landmark, aborting item spawns. Code: ITEM_POOL_3")
 			message_admins("Item pool [pool.pool_name] has no master landmark, aborting item spawns. Tell the devs. Code: ITEM_POOL_3")
 			continue
 
-		if (pool.quota > pool.turfs.len)
+		if(pool.quota > pool.turfs.len)
 			log_debug("Item pool [pool.pool_name] wants to spawn more items than it has landmarks for. Spawning [turfs.len] instances of [pool.type_to_spawn] instead. Code: ITEM_POOL_4")
 			message_admins("Item pool [pool.pool_name] wants to spawn more items than it has landmarks for. Spawning [turfs.len] instances of [pool.type_to_spawn] instead. Tell the devs. Code: ITEM_POOL_4")
 			pool.quota = pool.turfs.len

@@ -3,13 +3,14 @@
 	title = JOB_DOCTOR
 	total_positions = 5
 	spawn_positions = 5
-	allow_additional = 1
-	scaled = 1
+	allow_additional = TRUE
+	scaled = TRUE
 	supervisors = "the chief medical officer"
 	selection_class = "job_doctor"
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT
+	flags_startup_parameters = NO_FLAGS
 	gear_preset = /datum/equipment_preset/uscm_ship/uscm_medical/doctor
 	entry_message_body = "You're a commissioned officer of the USCM, though you are not in the ship's chain of command. <a href='"+URL_WIKI_DOC_GUIDE+"'>You are tasked with keeping the marines healthy and strong, usually in the form of surgery.</a> You are also an expert when it comes to medication and treatment. If you do not know what you are doing, mentorhelp so a mentor can assist you."
+	balance_formulas = list("support", BALANCE_FORMULA_OPERATIONS, BALANCE_FORMULA_MEDIC)
 
 /datum/job/civilian/doctor/set_spawn_positions(count)
 	spawn_positions = doc_slot_formula(count)
@@ -17,7 +18,7 @@
 /datum/job/civilian/doctor/get_total_positions(latejoin = 0)
 	var/positions = spawn_positions
 	if(latejoin)
-		positions = doc_slot_formula(get_total_marines())
+		positions = doc_slot_formula(get_total_population(FACTION_MARINE))
 		if(positions <= total_positions_so_far)
 			positions = total_positions_so_far
 		else

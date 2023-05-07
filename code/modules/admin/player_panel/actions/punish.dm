@@ -31,15 +31,14 @@
 
 	var/mins = 0
 	var/reason = ""
-	switch(alert("Are you sure you want to EORG ban [target.ckey]?", , "Yes", "No"))
-		if("Yes")
-			mins = 180
-			reason = "EORG"
-		if("No")
-			return
+	if(alert("Are you sure you want to EORG ban [target.ckey]?", user.auto_lang(LANGUAGE_CONFIRM), user.auto_lang(LANGUAGE_YES), user.auto_lang(LANGUAGE_NO)) == user.auto_lang(LANGUAGE_YES))
+		mins = 180
+		reason = "EORG"
+	else
+		return
 
 	var/datum/entity/player/P = get_player_from_key(target.ckey) // you may not be logged in, but I will find you and I will ban you
-	if(P.is_time_banned && alert(user, "Ban already exists. Proceed?", "Confirmation", "Yes", "No") != "Yes")
+	if(P.is_time_banned && alert(user, "Ban already exists. Proceed?", user.auto_lang(LANGUAGE_CONFIRM), user.auto_lang(LANGUAGE_YES), user.auto_lang(LANGUAGE_NO)) != user.auto_lang(LANGUAGE_YES))
 		return
 	P.add_timed_ban(reason, mins)
 
@@ -79,7 +78,7 @@
 		to_chat(user, SPAN_WARNING("[target.name] is not a xeno!"))
 		return
 
-	if(alert(user, "Are you sure you want to reset xeno name for [X.ckey]?", , "Yes", "No") != "Yes")
+	if(alert(user, "Are you sure you want to reset xeno name for [X.ckey]?", , user.auto_lang(LANGUAGE_YES), user.auto_lang(LANGUAGE_NO)) != user.auto_lang(LANGUAGE_YES))
 		return
 
 	if(!X.ckey)
@@ -112,7 +111,7 @@
 	var/client/targetClient = target.client
 
 	if(targetClient.xeno_name_ban)
-		if(alert(user, "Are you sure you want to UNBAN [target.ckey] and let them use xeno name?", ,"Yes", "No") != "Yes")
+		if(alert(user, "Are you sure you want to UNBAN [target.ckey] and let them use xeno name?", , user.auto_lang(LANGUAGE_YES), user.auto_lang(LANGUAGE_NO)) != user.auto_lang(LANGUAGE_YES))
 			return
 		targetClient.xeno_name_ban = FALSE
 		targetClient.prefs.xeno_name_ban = FALSE
@@ -128,7 +127,7 @@
 		to_chat(user, SPAN_DANGER("Target is not a xenomorph. Aborting."))
 		return
 
-	if(alert("Are you sure you want to BAN [target.ckey] from ever using any xeno name?", , "Yes", "No") != "Yes")
+	if(alert(user, "Are you sure you want to BAN [target.ckey] from ever using any xeno name?", , user.auto_lang(LANGUAGE_YES), user.auto_lang(LANGUAGE_NO)) != user.auto_lang(LANGUAGE_YES))
 		return
 
 	if(!target.ckey)
@@ -176,20 +175,20 @@
 		to_chat(user, SPAN_DANGER("Warning: Mob ckey for [target_mob.name] not found."))
 		return
 
-	if(alert(user, "Are you sure you want to reset name for [target_mob.ckey]?", "Confirmation", "Yes", "No") != "Yes")
+	if(alert(user, "Are you sure you want to reset name for [target_mob.ckey]?", user.auto_lang(LANGUAGE_CONFIRM), user.auto_lang(LANGUAGE_YES), user.auto_lang(LANGUAGE_NO)) != user.auto_lang(LANGUAGE_YES))
 		return
 
 	var/new_name
 
-	switch(alert(user, "Do you want to manually set the name for [target_mob.ckey]?", "Confirmation", "Yes", "No", "Cancel"))
-		if("Cancel")
-			return
-		if("No")
-			new_name = random_name(target_mob.gender)
-		if("Yes")
-			var/raw_name = input(user, "Choose the new name:", "Name Input")  as text|null
-			if(!isnull(raw_name)) // Check to ensure that the user entered text (rather than cancel.)
-				new_name = reject_bad_name(raw_name)
+	var/choce = alert(user, "Do you want to manually set the name for [target_mob.ckey]?", user.auto_lang(LANGUAGE_CONFIRM), user.auto_lang(LANGUAGE_YES), user.auto_lang(LANGUAGE_NO), user.auto_lang(LANGUAGE_CANCEL))
+	if(choce == user.auto_lang(LANGUAGE_CANCEL))
+		return
+	else if(choce == user.auto_lang(LANGUAGE_NO))
+		new_name = random_name(target_mob.gender)
+	else if(choce == user.auto_lang(LANGUAGE_YES))
+		var/raw_name = input(user, "Choose the new name:", "Name Input")  as text|null
+		if(!isnull(raw_name)) // Check to ensure that the user entered text (rather than cancel.)
+			new_name = reject_bad_name(raw_name)
 
 	if(!new_name)
 		to_chat(user, SPAN_NOTICE("Invalid name. The name should be at least 2 and at most [MAX_NAME_LEN] characters long. It may only contain the characters A-Z, a-z, -, ' and ."))
@@ -236,7 +235,7 @@
 	var/client/target_client = target.client
 
 	if(target_client.human_name_ban)
-		if(alert(user, "Are you sure you want to UNBAN [target.ckey] and let them use human names?", "Confirmation", "Yes", "No") != "Yes")
+		if(alert(user, "Are you sure you want to UNBAN [target.ckey] and let them use human names?", user.auto_lang(LANGUAGE_CONFIRM), user.auto_lang(LANGUAGE_YES), user.auto_lang(LANGUAGE_NO)) != user.auto_lang(LANGUAGE_YES))
 			return
 
 		if(!target.client || !target.ckey)
@@ -255,7 +254,7 @@
 		return
 
 
-	if(alert("Are you sure you want to BAN [target.ckey] from ever using any human names?", "Confirmation", "Yes", "No") != "Yes")
+	if(alert(user, "Are you sure you want to BAN [target.ckey] from ever using any human names?", user.auto_lang(LANGUAGE_CONFIRM), user.auto_lang(LANGUAGE_YES), user.auto_lang(LANGUAGE_NO)) != user.auto_lang(LANGUAGE_YES))
 		return
 
 	if(!target.client || !target.ckey)

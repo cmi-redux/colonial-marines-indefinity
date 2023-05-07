@@ -80,32 +80,32 @@
 
 
 /obj/structure/machinery/implantchair/proc/go_out(mob/M)
-	if(!( src.occupant ))
+	if(!(occupant ))
 		return
 	if(M == occupant) // so that the guy inside can't eject himself -Agouri
 		return
-	if (src.occupant.client)
-		src.occupant.client.eye = src.occupant.client.mob
-		src.occupant.client.perspective = MOB_PERSPECTIVE
-	src.occupant.forceMove(src.loc)
+	if (occupant.client)
+		occupant.client.eye = occupant.client.mob
+		occupant.client.perspective = MOB_PERSPECTIVE
+	occupant.forceMove(loc)
 	if(injecting)
-		implant(src.occupant)
+		implant(occupant)
 		injecting = 0
-	src.occupant = null
+	occupant = null
 	icon_state = "implantchair"
 	return
 
 
 /obj/structure/machinery/implantchair/proc/put_mob(mob/living/carbon/M as mob)
 	if(!iscarbon(M))
-		to_chat(usr, SPAN_DANGER("<B>The [src.name] cannot hold this!</B>"))
+		to_chat(usr, SPAN_DANGER("<B>The [name] cannot hold this!</B>"))
 		return
-	if(src.occupant)
-		to_chat(usr, SPAN_DANGER("<B>The [src.name] is already occupied!</B>"))
+	if(occupant)
+		to_chat(usr, SPAN_DANGER("<B>The [name] is already occupied!</B>"))
 		return
 	M.forceMove(src)
-	src.occupant = M
-	src.add_fingerprint(usr)
+	occupant = M
+	add_fingerprint(usr)
 	icon_state = "implantchair_on"
 	return 1
 

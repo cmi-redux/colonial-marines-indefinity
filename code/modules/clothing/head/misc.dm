@@ -6,14 +6,14 @@
 	desc = "It's good to be emperor."
 	item_state = "centhat"
 	siemens_coefficient = 0.9
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 
 /obj/item/clothing/head/hairflower
 	name = "hair flower pin"
 	icon_state = "hairflower"
 	desc = "Smells nice."
 	item_state = "hairflower"
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 
 /obj/item/clothing/head/powdered_wig
 	name = "powdered wig"
@@ -27,19 +27,19 @@
 	icon_state = "tophat"
 	item_state = "that"
 	siemens_coefficient = 0.9
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 
 /obj/item/clothing/head/redcoat
 	name = "redcoat's hat"
 	icon_state = "redcoat"
 	desc = "<i>'I guess it's a redhead.'</i>"
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 
 /obj/item/clothing/head/mailman
 	name = "station cap"
 	icon_state = "mailman"
 	desc = "<i>Choo-choo</i>!"
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 
 /obj/item/clothing/head/plaguedoctorhat
 	name = "plague doctor's hat"
@@ -47,7 +47,7 @@
 	icon_state = "plaguedoctor"
 	permeability_coefficient = 0.01
 	siemens_coefficient = 0.9
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 
 /obj/item/clothing/head/hasturhood
 	name = "hastur's hood"
@@ -62,7 +62,7 @@
 	desc = "It allows quick identification of trained medical personnel."
 	icon_state = "nursehat"
 	siemens_coefficient = 0.9
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 
 /obj/item/clothing/head/syndicatefake
 	name = "red space-helmet replica"
@@ -82,7 +82,7 @@
 	flags_inventory = COVEREYES|COVERMOUTH
 	flags_inv_hide = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEALLHAIR
 	item_state="cueball"
-	flags_inventory = 0
+	flags_inventory = NO_FLAGS
 	flags_armor_protection = BODY_FLAG_HEAD|BODY_FLAG_FACE|BODY_FLAG_EYES
 
 /obj/item/clothing/head/greenbandana
@@ -92,7 +92,7 @@
 	item_state = "greenbandana"
 	flags_inventory = NO_FLAGS
 	flags_inv_hide = NO_FLAGS
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 
 /obj/item/clothing/head/cardborg
 	name = "cardborg helmet"
@@ -139,14 +139,14 @@
 	desc = "Yarr."
 	icon_state = "pirate"
 	item_state = "pirate"
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 
 /obj/item/clothing/head/hgpiratecap
 	name = "pirate hat"
 	desc = "Yarr."
 	icon_state = "hgpiratecap"
 	item_state = "hgpiratecap"
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 	armor_melee = CLOTHING_ARMOR_MEDIUMHIGH
 	armor_bullet = CLOTHING_ARMOR_MEDIUMLOW
 	armor_laser = CLOTHING_ARMOR_LOW
@@ -167,7 +167,7 @@
 	desc = "Gentleman, elite aboard!"
 	icon_state = "bowler"
 	item_state = "bowler"
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 
 //stylish bs12 hats
 
@@ -176,7 +176,7 @@
 	icon_state = "bowler_hat"
 	item_state = "bowler_hat"
 	desc = "For the gentleman of distinction."
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 
 /obj/item/clothing/head/director
 	name = "director's hat"

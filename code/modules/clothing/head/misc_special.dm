@@ -45,7 +45,7 @@
 	set name = "Adjust welding mask"
 	set src in usr
 
-	if(usr.canmove && !usr.stat && !usr.is_mob_restrained())
+	if(usr.can_action && !usr.is_mob_restrained())
 		if(up)
 			vision_impair = VISION_IMPAIR_MAX
 			flags_inventory |= COVEREYES|COVERMOUTH|BLOCKSHARPOBJ
@@ -70,8 +70,8 @@
 		update_clothing_icon() //so our mob-overlays update
 
 		for(var/X in actions)
-			var/datum/action/A = X
-			A.update_button_icon()
+			var/datum/action/action = X
+			action.update_button_icon()
 
 /*
  * Cakehat
@@ -99,7 +99,7 @@
 		return
 
 	onfire = !onfire
-	if (onfire)
+	if(onfire)
 		force = 3
 		damtype = "fire"
 		icon_state = "cake1"
@@ -121,7 +121,6 @@
 	flags_inventory = COVEREYES|COVERMOUTH
 	flags_inv_hide = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEALLHAIR
 	flags_armor_protection = BODY_FLAG_HEAD|BODY_FLAG_EYES
-	var/brightness_on = 2 //luminosity when on
 	var/on = 0
 	w_class = SIZE_MEDIUM
 	anti_hug = 1
@@ -136,25 +135,6 @@
 	icon_state = "hardhat[on]_pumpkin"
 
 	if(on)
-		user.SetLuminosity(brightness_on, FALSE, src)
+		set_light_on(TRUE)
 	else
-		user.SetLuminosity(0, FALSE, src)
-
-/obj/item/clothing/head/pumpkinhead/pickup(mob/user)
-	..()
-	if(on)
-		user.SetLuminosity(brightness_on, FALSE, src)
-	SetLuminosity(0)
-
-/obj/item/clothing/head/pumpkinhead/dropped(mob/user)
-	..()
-	if(on)
-		user.SetLuminosity(0, FALSE, src)
-		SetLuminosity(brightness_on)
-
-/obj/item/clothing/head/pumpkinhead/Destroy()
-	if(ismob(src.loc))
-		src.loc.SetLuminosity(0, FALSE, src)
-	else
-		SetLuminosity(0)
-	return ..()
+		set_light_on(FALSE)

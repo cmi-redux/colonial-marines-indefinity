@@ -8,5 +8,6 @@
 
 	type_multipliers = list(
 		"acid" = 0.67,
+		"weather" = 0.70,
 		"all" = 0.9
 	)

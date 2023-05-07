@@ -80,7 +80,8 @@
 /area/varadero/interior/electrical)
 "afg" = (
 /turf/closed/wall/r_wall/elevator{
-	dir = 8
+	dir = 8;
+	tag = "icon-wall (WEST)"
 	},
 /area/varadero/interior/hall_N)
 "afi" = (
@@ -96,8 +97,12 @@
 /obj/structure/machinery/light{
 	dir = 4
 	},
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice8";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -108,7 +113,8 @@
 /area/varadero/interior/hall_SE)
 "afR" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -150,11 +156,13 @@
 /area/varadero/interior_protected/vessel)
 "ahK" = (
 /obj/structure/machinery/landinglight/ds2/delaytwo{
-	dir = 4
+	dir = 4;
+	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "aii" = (
@@ -176,7 +184,8 @@
 	pixel_x = -24
 	},
 /turf/open/floor/plating/icefloor{
-	icon_state = "warnplate"
+	icon_state = "warnplate";
+	tag = "icon-warnplate"
 	},
 /area/varadero/exterior/lz1_near)
 "akd" = (
@@ -186,7 +195,8 @@
 	},
 /obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
-	icon_state = "freezerfloor"
+	icon_state = "freezerfloor";
+	tag = "icon-freezerfloor"
 	},
 /area/varadero/interior/cargo)
 "akf" = (
@@ -268,7 +278,8 @@
 	dir = 4
 	},
 /obj/structure/machinery/light/small{
-	dir = 1
+	dir = 1;
+	tag = "icon-bulb1 (NORTH)"
 	},
 /turf/open/floor/plating/icefloor{
 	icon_state = "asteroidplating"
@@ -353,7 +364,8 @@
 /area/varadero/interior/security)
 "aqb" = (
 /obj/structure/machinery/light{
-	dir = 4
+	dir = 4;
+	tag = "icon-tube1 (EAST)"
 	},
 /turf/open/floor/shiva{
 	dir = 4;
@@ -404,10 +416,6 @@
 	icon_state = "floor6"
 	},
 /area/varadero/interior_protected/vessel)
-"asi" = (
-/obj/structure/blocker/forcefield/multitile_vehicles,
-/turf/closed/wall/r_wall,
-/area/varadero/interior/caves/east)
 "asx" = (
 /turf/open/floor/plating/icefloor{
 	icon_state = "asteroidplating"
@@ -557,7 +565,8 @@
 	dir = 4
 	},
 /turf/open/floor{
-	icon_state = "freezerfloor"
+	icon_state = "freezerfloor";
+	tag = "icon-freezerfloor"
 	},
 /area/varadero/interior/cargo)
 "aBB" = (
@@ -576,7 +585,7 @@
 /obj/structure/flora/bush/ausbushes/var3/brflowers{
 	icon_state = "brflowers_3"
 	},
-/turf/open/gm/grass/weedable,
+/turf/open/gm/grass,
 /area/varadero/interior_protected/caves/central)
 "aCl" = (
 /obj/structure/machinery/door/airlock/strata/autoname{
@@ -628,7 +637,8 @@
 /obj/structure/closet/toolcloset,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "aDu" = (
@@ -716,16 +726,6 @@
 	icon_state = "multi_tiles"
 	},
 /area/varadero/interior_protected/vessel)
-"aED" = (
-/obj/structure/prop/invuln/lattice_prop{
-	icon_state = "lattice12";
-	pixel_x = 16;
-	pixel_y = -8
-	},
-/turf/open/floor/shiva{
-	icon_state = "floor3"
-	},
-/area/varadero/interior/hall_SE)
 "aFg" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -770,7 +770,8 @@
 /obj/structure/machinery/door/window/brigdoor/westleft{
 	dir = 4;
 	icon_state = "leftsecure";
-	id = "brg"
+	id = "brg";
+	tag = "icon-leftsecure (EAST)"
 	},
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -782,7 +783,8 @@
 "aGX" = (
 /obj/structure/closet/firecloset/full,
 /obj/structure/machinery/light{
-	dir = 8
+	dir = 8;
+	tag = "icon-tube1 (WEST)"
 	},
 /obj/structure/machinery/alarm{
 	dir = 4;
@@ -810,7 +812,8 @@
 /obj/effect/decal/cleanable/blood/oil,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "aHM" = (
@@ -926,6 +929,16 @@
 	icon_state = "multi_tiles"
 	},
 /area/varadero/interior/hall_SE)
+"aLV" = (
+/obj/structure/machinery/light{
+	dir = 4;
+	tag = "icon-tube1 (EAST)"
+	},
+/turf/open/floor/shiva{
+	dir = 8;
+	icon_state = "redfull"
+	},
+/area/varadero/interior/hall_SE)
 "aMp" = (
 /obj/structure/machinery/photocopier,
 /turf/open/floor/shiva{
@@ -940,7 +953,7 @@
 /turf/open/floor/plating,
 /area/varadero/interior/cargo)
 "aOg" = (
-/turf/open/gm/grass/weedable,
+/turf/open/gm/grass,
 /area/varadero/interior_protected/caves/central)
 "aOi" = (
 /turf/open/floor/shiva{
@@ -965,7 +978,8 @@
 "aPw" = (
 /obj/structure/closet/crate/freezer,
 /turf/open/floor{
-	icon_state = "freezerfloor"
+	icon_state = "freezerfloor";
+	tag = "icon-freezerfloor"
 	},
 /area/varadero/interior/cargo)
 "aPU" = (
@@ -1025,7 +1039,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "aTc" = (
@@ -1064,7 +1079,8 @@
 /area/varadero/interior_protected/maintenance/south)
 "aTS" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /obj/effect/landmark/survivor_spawner,
 /turf/open/floor/shiva{
@@ -1113,7 +1129,7 @@
 	},
 /area/varadero/interior/mess)
 "aVQ" = (
-/obj/structure/machinery/cm_vending/sorted/medical/wall_med/limited,
+/obj/structure/machinery/cm_vending/sorted/medical/wall_med,
 /turf/closed/wall,
 /area/varadero/interior/hall_N)
 "aWz" = (
@@ -1130,7 +1146,8 @@
 "aWP" = (
 /turf/open/floor{
 	dir = 8;
-	icon_state = "darkgreencorners2"
+	icon_state = "darkgreencorners2";
+	tag = "icon-darkgreencorners2 (WEST)"
 	},
 /area/varadero/interior/hall_SE)
 "aXm" = (
@@ -1208,10 +1225,17 @@
 	},
 /area/varadero/interior/maintenance/research)
 "bak" = (
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
 	pixel_x = -14;
-	pixel_y = 13
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
 /turf/open/floor/shiva{
 	icon_state = "snow_mat"
@@ -1261,7 +1285,8 @@
 	pixel_x = -8
 	},
 /obj/structure/machinery/light{
-	dir = 8
+	dir = 8;
+	tag = "icon-tube1 (WEST)"
 	},
 /obj/effect/decal/strata_decals/grime/grime3{
 	dir = 4
@@ -1295,7 +1320,7 @@
 	dir = 8;
 	icon_state = "beachcorner"
 	},
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "bfg" = (
 /obj/structure/surface/table,
 /obj/item/ashtray/plastic,
@@ -1486,7 +1511,8 @@
 	req_access_txt = "100"
 	},
 /turf/open/floor{
-	icon_state = "dark2"
+	icon_state = "dark2";
+	tag = "icon-dark2"
 	},
 /area/varadero/interior/morgue)
 "bkG" = (
@@ -1508,7 +1534,8 @@
 "bkU" = (
 /turf/open/floor/plating/icefloor{
 	dir = 8;
-	icon_state = "warnplate"
+	icon_state = "warnplate";
+	tag = "icon-warnplate (WEST)"
 	},
 /area/varadero/exterior/lz1_near)
 "bmt" = (
@@ -1736,11 +1763,13 @@
 /area/varadero/interior/hall_NW)
 "bwP" = (
 /obj/structure/machinery/landinglight/ds2{
-	dir = 1
+	dir = 1;
+	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "bxc" = (
@@ -1793,7 +1822,8 @@
 /area/varadero/interior_protected/caves/digsite)
 "bzn" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "E"
+	icon_state = "E";
+	tag = "icon-E"
 	},
 /turf/open/floor/shiva{
 	dir = 1;
@@ -1809,7 +1839,8 @@
 "bAT" = (
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/interior/comms3)
 "bBt" = (
@@ -1818,13 +1849,16 @@
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "N";
-	pixel_y = 1
+	pixel_y = 1;
+	tag = "icon-N"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S"
+	icon_state = "S";
+	tag = "icon-S"
 	},
 /turf/open/floor/plating,
 /area/varadero/interior_protected/caves/digsite)
@@ -1937,6 +1971,16 @@
 	},
 /turf/closed/wall,
 /area/varadero/exterior/lz1_near)
+"bGR" = (
+/obj/structure/machinery/light{
+	dir = 4;
+	tag = "icon-tube1 (EAST)"
+	},
+/turf/open/floor/shiva{
+	dir = 4;
+	icon_state = "wred"
+	},
+/area/varadero/interior/medical)
 "bHc" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -2010,16 +2054,24 @@
 	},
 /area/varadero/interior_protected/maintenance/south)
 "bIQ" = (
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
-	pixel_y = 13
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
 /turf/open/gm/dirt,
 /area/varadero/interior/maintenance/north)
 "bJH" = (
 /obj/item/tool/warning_cone,
 /obj/effect/decal/warning_stripes{
-	icon_state = "S"
+	icon_state = "S";
+	tag = "icon-S"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/caves/digsite)
@@ -2119,12 +2171,14 @@
 /area/varadero/interior_protected/vessel)
 "bNN" = (
 /obj/structure/machinery/landinglight/ds2/delayone{
-	dir = 4
+	dir = 4;
+	tag = "icon-landingstripe (EAST)"
 	},
 /obj/item/prop/almayer/comp_open,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "bOZ" = (
@@ -2177,9 +2231,7 @@
 	},
 /area/varadero/interior_protected/vessel)
 "bQx" = (
-/obj/docking_port/stationary/marine_dropship/lz1{
-	dwidth = 1
-	},
+/obj/docking_port/stationary/marine_dropship/lz1,
 /turf/open/floor/plating/icefloor,
 /area/varadero/exterior/lz1_near)
 "bQH" = (
@@ -2204,7 +2256,8 @@
 "bRo" = (
 /obj/structure/reagent_dispensers/beerkeg/alt_dark,
 /turf/open/floor{
-	icon_state = "freezerfloor"
+	icon_state = "freezerfloor";
+	tag = "icon-freezerfloor"
 	},
 /area/varadero/interior/cargo)
 "bRp" = (
@@ -2241,7 +2294,7 @@
 /area/varadero/interior_protected/vessel)
 "bTm" = (
 /obj/structure/pipes/standard/simple/hidden/green,
-/obj/item/weapon/gun/rifle/m4ra,
+/obj/item/weapon/gun/rifle/l42a,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -2295,7 +2348,8 @@
 /area/varadero/interior/medical)
 "bVu" = (
 /obj/structure/pipes/standard/simple/visible{
-	dir = 5
+	dir = 5;
+	tag = "icon-intact (NORTHEAST)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "red"
@@ -2321,7 +2375,8 @@
 /obj/structure/reagent_dispensers/watertank,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/interior/maintenance/north)
 "bZD" = (
@@ -2411,7 +2466,8 @@
 /obj/effect/landmark/static_comms/net_two,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/interior/comms3)
 "ccf" = (
@@ -2432,7 +2488,8 @@
 	dir = 8
 	},
 /obj/structure/bed/chair/office/dark{
-	dir = 4
+	dir = 4;
+	tag = "icon-officechair_dark (EAST)"
 	},
 /turf/open/floor/plating/icefloor{
 	icon_state = "asteroidplating"
@@ -2493,14 +2550,16 @@
 /area/varadero/interior/mess)
 "cgA" = (
 /obj/structure/machinery/landinglight/ds2/delayone{
-	dir = 4
+	dir = 4;
+	tag = "icon-landingstripe (EAST)"
 	},
 /obj/structure/machinery/floodlight/landing/floor{
 	pixel_x = -1
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "cgB" = (
@@ -2528,7 +2587,8 @@
 /area/varadero/interior_protected/maintenance/south)
 "chU" = (
 /obj/structure/shuttle/engine/propulsion/burst{
-	dir = 4
+	dir = 4;
+	tag = "icon-propulsion (EAST)"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/vessel)
@@ -2653,7 +2713,8 @@
 /obj/item/reagent_container/food/drinks/bottle/sake,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "cmU" = (
@@ -2663,7 +2724,8 @@
 /obj/structure/surface/table,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "cnW" = (
@@ -2767,7 +2829,8 @@
 "crO" = (
 /obj/structure/toilet,
 /obj/structure/machinery/light/small{
-	dir = 1
+	dir = 1;
+	tag = "icon-bulb1 (NORTH)"
 	},
 /obj/effect/landmark/corpsespawner/miner,
 /obj/effect/decal/cleanable/blood,
@@ -2775,9 +2838,6 @@
 	icon_state = "white"
 	},
 /area/varadero/interior/toilets)
-"crY" = (
-/turf/open/auto_turf/sand_white/layer0,
-/area/varadero/interior_protected/caves)
 "csb" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/structure/bed/sofa/vert/grey/bot,
@@ -2843,11 +2903,6 @@
 /area/varadero/interior/security)
 "cvW" = (
 /obj/structure/closet/secure_closet/freezer/kitchen,
-/obj/structure/prop/invuln/lattice_prop{
-	icon_state = "lattice12";
-	pixel_x = 16;
-	pixel_y = -8
-	},
 /turf/open/floor/shiva{
 	dir = 8;
 	icon_state = "green"
@@ -2969,7 +3024,8 @@
 "cDk" = (
 /obj/structure/filingcabinet,
 /obj/structure/machinery/light/small{
-	dir = 8
+	dir = 8;
+	tag = "icon-bulb1 (WEST)"
 	},
 /obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/shiva{
@@ -3091,13 +3147,15 @@
 /area/varadero/interior/research)
 "cGV" = (
 /turf/closed/wall/r_wall/elevator{
-	dir = 10
+	dir = 10;
+	tag = "icon-wall (SOUTHWEST)"
 	},
 /area/varadero/interior/records)
 "cHf" = (
 /obj/structure/filingcabinet,
 /obj/structure/machinery/light/small{
-	dir = 8
+	dir = 8;
+	tag = "icon-bulb1 (WEST)"
 	},
 /turf/open/floor/shiva{
 	dir = 8;
@@ -3110,10 +3168,12 @@
 	icon_state = "phoronrwindow"
 	},
 /obj/structure/shuttle/engine/heater{
-	dir = 4
+	dir = 4;
+	tag = "icon-heater (EAST)"
 	},
 /obj/structure/shuttle/engine/heater{
-	dir = 8
+	dir = 8;
+	tag = "icon-heater (WEST)"
 	},
 /obj/item/device/flashlight/slime,
 /obj/structure/window/phoronreinforced{
@@ -3126,7 +3186,8 @@
 /obj/effect/landmark/hunter_primary,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "cIB" = (
@@ -3200,7 +3261,8 @@
 "cLD" = (
 /obj/structure/bed/chair/office/dark{
 	dir = 4;
-	icon_state = "chair"
+	icon_state = "chair";
+	tag = "icon-chair (EAST)"
 	},
 /obj/structure/machinery/light{
 	dir = 8
@@ -3297,7 +3359,8 @@
 /area/varadero/interior_protected/maintenance/south)
 "cNF" = (
 /obj/structure/machinery/light{
-	dir = 4
+	dir = 4;
+	tag = "icon-tube1 (EAST)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "floor3"
@@ -3397,7 +3460,12 @@
 /turf/open/gm/river,
 /area/varadero/interior_protected/caves)
 "cRn" = (
-/obj/item/prop/alien/hugger,
+/obj/item/clothing/mask/facehugger{
+	desc = "It has some sort of a tube at the end of its tail. What the hell is this thing?";
+	icon_state = "facehugger_impregnated";
+	name = "????";
+	stat = 2
+	},
 /turf/open/shuttle{
 	icon_state = "floor6"
 	},
@@ -3420,7 +3488,7 @@
 /obj/structure/flora/bush/ausbushes/var3/ywflowers{
 	icon_state = "ywflowers_3"
 	},
-/turf/open/gm/grass/weedable,
+/turf/open/gm/grass,
 /area/varadero/interior_protected/caves/central)
 "cSb" = (
 /obj/structure/surface/rack,
@@ -3539,12 +3607,14 @@
 /area/varadero/interior/security)
 "cYr" = (
 /obj/structure/machinery/landinglight/ds2/delaytwo{
-	dir = 4
+	dir = 4;
+	tag = "icon-landingstripe (EAST)"
 	},
 /obj/item/stack/cable_coil/cut,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "cYB" = (
@@ -3561,10 +3631,13 @@
 /turf/open/floor/plating,
 /area/varadero/interior/court)
 "cYZ" = (
-/obj/structure/machinery/landinglight/ds2,
+/obj/structure/machinery/landinglight/ds2{
+	tag = "icon-landingstripe"
+	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "cZN" = (
@@ -3749,7 +3822,7 @@
 	dir = 8;
 	icon_state = "beachcorner"
 	},
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "dkl" = (
 /turf/open/floor/shiva{
 	icon_state = "snow_mat"
@@ -3796,7 +3869,8 @@
 /area/varadero/interior/electrical)
 "dmN" = (
 /turf/closed/wall/r_wall/elevator{
-	dir = 5
+	dir = 5;
+	tag = "icon-wall (NORTHEAST)"
 	},
 /area/varadero/interior/records)
 "dmS" = (
@@ -3840,7 +3914,8 @@
 /obj/structure/prop/rock/brown,
 /obj/effect/decal/warning_stripes{
 	icon_state = "N";
-	pixel_y = 1
+	pixel_y = 1;
+	tag = "icon-N"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/caves/digsite)
@@ -3877,7 +3952,8 @@
 /area/varadero/interior/security)
 "dpZ" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S"
+	icon_state = "S";
+	tag = "icon-S"
 	},
 /turf/open/floor/shiva{
 	dir = 8;
@@ -3904,7 +3980,8 @@
 	pixel_y = 24
 	},
 /turf/open/floor{
-	icon_state = "freezerfloor"
+	icon_state = "freezerfloor";
+	tag = "icon-freezerfloor"
 	},
 /area/varadero/interior/cargo)
 "drK" = (
@@ -4010,14 +4087,6 @@
 	icon_state = "snow_mat"
 	},
 /area/varadero/interior/maintenance)
-"dxy" = (
-/obj/structure/window_frame/colony/reinforced,
-/obj/item/shard,
-/obj/structure/blocker/forcefield/multitile_vehicles,
-/turf/open/floor/plating/icefloor{
-	icon_state = "asteroidplating"
-	},
-/area/varadero/interior/caves/east)
 "dxK" = (
 /obj/structure/prop/rock/brown,
 /turf/open/auto_turf/sand_white/layer0,
@@ -4095,7 +4164,7 @@
 	dir = 8;
 	icon_state = "beachcorner"
 	},
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "dFd" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -4154,13 +4223,15 @@
 	dir = 8
 	},
 /obj/structure/holohoop{
-	dir = 4
+	dir = 4;
+	tag = "icon-hoop (NORTH)"
 	},
 /turf/open/floor/wood,
 /area/varadero/interior/court)
 "dIk" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "NW-out"
+	icon_state = "NW-out";
+	tag = "icon-NW-out"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/caves/digsite)
@@ -4382,7 +4453,8 @@
 /obj/effect/landmark/static_comms/net_one,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/interior/comms1)
 "dQT" = (
@@ -4482,7 +4554,8 @@
 /area/varadero/interior/administration)
 "dXd" = (
 /turf/closed/wall/r_wall/elevator{
-	dir = 5
+	dir = 5;
+	tag = "icon-wall (NORTHEAST)"
 	},
 /area/varadero/interior/hall_N)
 "dXJ" = (
@@ -4593,8 +4666,12 @@
 /area/varadero/interior/technical_storage)
 "edp" = (
 /obj/structure/pipes/standard/simple/hidden/green,
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice8";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -4646,11 +4723,13 @@
 /area/varadero/interior/maintenance/research)
 "efU" = (
 /obj/structure/machinery/landinglight/ds2{
-	dir = 4
+	dir = 4;
+	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "egj" = (
@@ -4756,7 +4835,9 @@
 /turf/open/floor/wood,
 /area/varadero/interior/records)
 "epm" = (
-/obj/item/weapon/gun/energy/rxfm5_eva,
+/obj/item/weapon/gun/energy/rxfm5_eva{
+	icon_state = "rxfm5_eva_stripped"
+	},
 /turf/open/floor/wood,
 /area/varadero/interior/hall_SE)
 "epr" = (
@@ -4814,7 +4895,8 @@
 /area/varadero/interior/research)
 "eqB" = (
 /obj/structure/bed/chair{
-	dir = 8
+	dir = 8;
+	tag = "icon-chair (WEST)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "floor3"
@@ -4875,7 +4957,8 @@
 /area/varadero/interior_protected/caves)
 "esO" = (
 /obj/structure/machinery/light{
-	dir = 1
+	dir = 1;
+	tag = "icon-tube1 (NORTH)"
 	},
 /turf/open/floor{
 	icon_state = "wood"
@@ -4915,7 +4998,8 @@
 /obj/item/tank/emergency_oxygen,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "euM" = (
@@ -4938,11 +5022,13 @@
 /area/varadero/interior/hall_N)
 "evX" = (
 /obj/structure/machinery/landinglight/ds2/delaytwo{
-	dir = 1
+	dir = 1;
+	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "ewn" = (
@@ -4993,10 +5079,17 @@
 /turf/open/floor/interior/plastic,
 /area/varadero/interior_protected/caves/digsite)
 "ezc" = (
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
 	pixel_x = -14;
-	pixel_y = 13
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
 /turf/open/floor/shiva{
 	dir = 4;
@@ -5060,7 +5153,8 @@
 "ezW" = (
 /obj/structure/disposalpipe/segment{
 	dir = 1;
-	icon_state = "pipe-c"
+	icon_state = "pipe-c";
+	tag = "icon-pipe-c (NORTH)"
 	},
 /obj/structure/pipes/standard/manifold/hidden/green,
 /turf/open/floor/shiva{
@@ -5108,12 +5202,14 @@
 /area/varadero/interior/maintenance)
 "eBs" = (
 /turf/closed/wall/r_wall/elevator{
-	dir = 9
+	dir = 9;
+	tag = "icon-wall (NORTHWEST)"
 	},
 /area/varadero/interior/records)
 "eBG" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S"
+	icon_state = "S";
+	tag = "icon-S"
 	},
 /turf/open/floor/shiva{
 	icon_state = "floor3"
@@ -5121,7 +5217,8 @@
 /area/varadero/interior/cargo)
 "eBL" = (
 /turf/open/floor{
-	icon_state = "freezerfloor"
+	icon_state = "freezerfloor";
+	tag = "icon-freezerfloor"
 	},
 /area/varadero/interior/cargo)
 "eBS" = (
@@ -5371,7 +5468,8 @@
 /area/varadero/interior/security)
 "ePb" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "E"
+	icon_state = "E";
+	tag = "icon-E"
 	},
 /turf/open/floor/shiva{
 	dir = 1
@@ -5452,7 +5550,7 @@
 /turf/open/gm/coast{
 	icon_state = "beachcorner"
 	},
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "eSg" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -5568,13 +5666,6 @@
 	icon_state = "purple"
 	},
 /area/varadero/interior/research)
-"eXv" = (
-/obj/structure/largecrate/random,
-/obj/structure/blocker/forcefield/multitile_vehicles,
-/turf/open/floor/plating/icefloor{
-	icon_state = "asteroidplating"
-	},
-/area/varadero/interior/caves/east)
 "eXT" = (
 /obj/structure/machinery/light,
 /obj/structure/noticeboard{
@@ -5612,7 +5703,8 @@
 "eZk" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "N";
-	pixel_y = 1
+	pixel_y = 1;
+	tag = "icon-N"
 	},
 /turf/open/floor/shiva{
 	icon_state = "floor3"
@@ -5699,15 +5791,9 @@
 /obj/effect/landmark/crap_item,
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/vessel)
-"fdf" = (
-/obj/structure/blocker/forcefield/multitile_vehicles,
-/turf/open/floor/plating/icefloor{
-	icon_state = "asteroidplating"
-	},
-/area/varadero/interior/caves/east)
 "fdn" = (
 /obj/structure/pipes/standard/simple/hidden/green,
-/obj/structure/machinery/cm_vending/sorted/medical/wall_med/limited{
+/obj/structure/machinery/cm_vending/sorted/medical/wall_med{
 	pixel_x = -28
 	},
 /turf/open/floor/plating/icefloor{
@@ -5785,7 +5871,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "ffx" = (
@@ -6056,7 +6143,8 @@
 /area/varadero/interior/hall_SE)
 "fqY" = (
 /obj/structure/disposalpipe/segment{
-	dir = 8
+	dir = 8;
+	tag = "icon-pipe-s (WEST)"
 	},
 /obj/structure/machinery/light,
 /turf/open/floor/shiva{
@@ -6083,7 +6171,8 @@
 "ftm" = (
 /obj/structure/fence,
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /turf/open/floor/plating,
 /area/varadero/interior_protected/caves/digsite)
@@ -6273,7 +6362,8 @@
 /area/varadero/interior/hall_SE)
 "fEu" = (
 /turf/open/floor{
-	icon_state = "bcircuit"
+	icon_state = "bcircuit";
+	tag = "icon-bcircuit"
 	},
 /area/varadero/interior/electrical)
 "fEI" = (
@@ -6289,7 +6379,8 @@
 /obj/structure/disposalpipe/segment,
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/structure/machinery/light{
-	dir = 4
+	dir = 4;
+	tag = "icon-tube1 (EAST)"
 	},
 /turf/open/floor/shiva{
 	dir = 4;
@@ -6337,7 +6428,8 @@
 /area/varadero/interior/oob)
 "fFI" = (
 /obj/structure/bed/chair/office/dark{
-	dir = 8
+	dir = 8;
+	tag = "icon-officechair_dark (WEST)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "floor3"
@@ -6400,7 +6492,8 @@
 	},
 /obj/structure/disposalpipe/segment{
 	dir = 1;
-	icon_state = "pipe-c"
+	icon_state = "pipe-c";
+	tag = "icon-pipe-c (NORTH)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "multi_tiles"
@@ -6421,9 +6514,22 @@
 	},
 /area/varadero/interior/maintenance/north)
 "fJb" = (
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice4";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = -16;
+	pixel_y = 24
+	},
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
+	icon_state = "lattice12";
+	layer = 5.1;
+	name = "overhead lattice";
+	pixel_x = 16;
 	pixel_y = 24
 	},
 /turf/open/floor/shiva{
@@ -6464,7 +6570,8 @@
 /obj/structure/machinery/door/window/brigdoor/westleft{
 	dir = 1;
 	icon_state = "leftsecure";
-	id = "brg"
+	id = "brg";
+	tag = "icon-leftsecure (NORTH)"
 	},
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/shiva{
@@ -6487,7 +6594,7 @@
 /area/varadero/interior_protected/maintenance/south)
 "fLS" = (
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "fLV" = (
 /obj/structure/stairs/perspective{
 	color = "#b29082";
@@ -6501,14 +6608,11 @@
 /area/varadero/exterior/pontoon_beach)
 "fLY" = (
 /turf/open/gm/coast{
-	dir = 6
+	dir = 6;
+	tag = "icon-beach (SOUTHEAST)"
 	},
 /area/varadero/exterior/pontoon_beach)
 "fMq" = (
-/obj/item/device/cassette_tape/heavymetal{
-	pixel_x = -3;
-	pixel_y = 3
-	},
 /obj/item/clothing/ears/earmuffs{
 	icon_state = "earmuffs2";
 	pixel_x = 5;
@@ -6522,21 +6626,11 @@
 "fNn" = (
 /turf/open/auto_turf/sand_white/layer0,
 /area/varadero/interior/maintenance/security)
-"fND" = (
-/obj/structure/prop/invuln/lattice_prop{
-	icon_state = "lattice12";
-	pixel_x = 16;
-	pixel_y = -8
-	},
-/turf/open/floor/plating/icefloor{
-	icon_state = "asteroidplating"
-	},
-/area/varadero/interior/maintenance/research)
 "fOA" = (
 /turf/open/gm/coast{
 	dir = 1
 	},
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "fOW" = (
 /obj/structure/platform/kutjevo/smooth,
 /turf/open/gm/coast{
@@ -6567,7 +6661,7 @@
 /obj/structure/flora/bush/ausbushes/var3/ywflowers{
 	icon_state = "ywflowers_2"
 	},
-/turf/open/gm/grass/weedable,
+/turf/open/gm/grass,
 /area/varadero/interior_protected/caves/central)
 "fPv" = (
 /obj/structure/machinery/power/apc{
@@ -6633,11 +6727,13 @@
 /area/varadero/interior/technical_storage)
 "fUF" = (
 /obj/structure/machinery/landinglight/ds2/delaythree{
-	dir = 8
+	dir = 8;
+	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "fUJ" = (
@@ -6661,7 +6757,8 @@
 /area/varadero/interior/disposals)
 "fVw" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S"
+	icon_state = "S";
+	tag = "icon-S"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/vessel)
@@ -6742,10 +6839,13 @@
 /turf/open/floor/wood,
 /area/varadero/interior/hall_SE)
 "fXH" = (
-/obj/structure/machinery/landinglight/ds2/delaythree,
+/obj/structure/machinery/landinglight/ds2/delaythree{
+	tag = "icon-landingstripe"
+	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "fXR" = (
@@ -6753,8 +6853,12 @@
 	dir = 1
 	},
 /obj/structure/platform/kutjevo/rock,
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice12";
+	layer = 2;
+	name = "structural lattice";
 	pixel_y = -3
 	},
 /turf/open/gm/river,
@@ -6894,7 +6998,8 @@
 "gbG" = (
 /obj/structure/bed/chair/office/dark{
 	dir = 1;
-	icon_state = "chair"
+	icon_state = "chair";
+	tag = "icon-chair (NORTH)"
 	},
 /turf/open/floor/shiva{
 	dir = 8;
@@ -7001,7 +7106,8 @@
 /area/varadero/interior/maintenance/security)
 "ggk" = (
 /turf/closed/wall/r_wall/elevator{
-	dir = 8
+	dir = 8;
+	tag = "icon-wall (WEST)"
 	},
 /area/varadero/interior/records)
 "ghb" = (
@@ -7060,15 +7166,29 @@
 /area/varadero/interior/comms2)
 "gja" = (
 /obj/structure/pipes/standard/simple/hidden/green,
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
 	pixel_x = -16;
-	pixel_y = 13
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
 	pixel_x = 12;
-	pixel_y = 13
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
 /turf/open/floor/plating/icefloor{
 	icon_state = "asteroidplating"
@@ -7133,7 +7253,7 @@
 	},
 /obj/structure/flora/bush/ausbushes/var3/sparsegrass,
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "gkF" = (
 /obj/structure/sign/safety/airlock{
 	pixel_x = 8
@@ -7276,7 +7396,7 @@
 /area/varadero/interior/maintenance/north)
 "gsm" = (
 /obj/structure/prop/rock/brown,
-/turf/open/gm/grass/weedable,
+/turf/open/gm/grass,
 /area/varadero/interior_protected/caves/central)
 "gsq" = (
 /obj/structure/machinery/vending/coffee,
@@ -7294,7 +7414,7 @@
 	},
 /obj/structure/prop/rock/brown,
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "gte" = (
 /obj/structure/surface/rack,
 /obj/item/tool/pickaxe,
@@ -7498,13 +7618,6 @@
 	},
 /turf/open/floor/plating,
 /area/varadero/interior/administration)
-"gCH" = (
-/obj/item/ammo_casing{
-	dir = 6;
-	icon_state = "casing_5"
-	},
-/turf/open/floor/wood,
-/area/varadero/interior/hall_SE)
 "gDh" = (
 /obj/structure/largecrate/random,
 /turf/open/floor/plating/icefloor{
@@ -7585,13 +7698,15 @@
 /area/varadero/interior/administration)
 "gFY" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "SW-out"
+	icon_state = "SW-out";
+	tag = "icon-SW-out"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/caves/digsite)
 "gHH" = (
 /obj/structure/machinery/light{
-	dir = 4
+	dir = 4;
+	tag = "icon-tube1 (EAST)"
 	},
 /turf/open/floor/shiva{
 	dir = 8;
@@ -7654,10 +7769,6 @@
 	icon_state = "asteroidplating"
 	},
 /area/varadero/interior/maintenance/research)
-"gKH" = (
-/obj/structure/prop/rock/brown,
-/turf/open/gm/dirt,
-/area/varadero/interior_protected/caves/digsite)
 "gKR" = (
 /obj/structure/platform/kutjevo/smooth{
 	dir = 1
@@ -7780,7 +7891,8 @@
 /area/varadero/exterior/lz1_near)
 "gPZ" = (
 /obj/structure/bed/chair/office/light{
-	dir = 4
+	dir = 4;
+	tag = "icon-officechair_white (EAST)"
 	},
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -7829,7 +7941,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "gTe" = (
@@ -7933,7 +8046,7 @@
 	dir = 8
 	},
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "haq" = (
 /obj/structure/machinery/firealarm{
 	dir = 8;
@@ -7989,7 +8102,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "hcT" = (
@@ -8084,7 +8198,7 @@
 /area/varadero/interior/mess)
 "hiE" = (
 /obj/structure/flora/bush/ausbushes/var3/brflowers,
-/turf/open/gm/grass/weedable,
+/turf/open/gm/grass,
 /area/varadero/interior_protected/caves/central)
 "hjj" = (
 /obj/item/ammo_magazine/handful/shotgun/buckshot{
@@ -8150,20 +8264,14 @@
 "hmg" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "NW-out";
-	pixel_y = 1
+	pixel_y = 1;
+	tag = "icon-NW-out"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/caves/digsite)
 "hmm" = (
 /obj/structure/machinery/light,
 /obj/structure/surface/table,
-/obj/item/device/cassette_tape/pop2{
-	pixel_x = 5;
-	pixel_y = 11
-	},
-/obj/item/device/cassette_tape/pop3{
-	pixel_y = 7
-	},
 /obj/item/tool/kitchen/utensil/pfork{
 	pixel_x = -6;
 	pixel_y = 7
@@ -8177,7 +8285,7 @@
 	dir = 8;
 	icon_state = "beachcorner"
 	},
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "hni" = (
 /obj/structure/sign/safety/fire_haz{
 	pixel_y = 7
@@ -8233,9 +8341,6 @@
 "hqL" = (
 /turf/open/floor/carpet,
 /area/varadero/exterior/lz1_near)
-"hre" = (
-/turf/open/gm/dirt,
-/area/varadero/interior_protected/caves/digsite)
 "hrG" = (
 /turf/open/floor/shiva{
 	dir = 6;
@@ -8252,7 +8357,8 @@
 "hsl" = (
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/interior/maintenance/north)
 "hst" = (
@@ -8307,7 +8413,8 @@
 /obj/structure/closet/secure_closet/engineering_electrical,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "huz" = (
@@ -8326,10 +8433,6 @@
 	icon_state = "multi_tiles"
 	},
 /area/varadero/interior/hall_SE)
-"huD" = (
-/obj/item/stack/sheet/metal,
-/turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
 "huF" = (
 /turf/closed/wall/r_wall/unmeltable,
 /area/varadero/interior/oob)
@@ -8369,7 +8472,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/interior/comms1)
 "hwN" = (
@@ -8421,14 +8525,28 @@
 	},
 /area/varadero/interior/maintenance/north)
 "hyN" = (
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
-	pixel_y = 13
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
 	pixel_x = -16;
-	pixel_y = 13
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
 /turf/open/gm/dirt,
 /area/varadero/interior/maintenance/north)
@@ -8444,7 +8562,7 @@
 /obj/structure/flora/bush/ausbushes/var3/ywflowers{
 	icon_state = "ywflowers_4"
 	},
-/turf/open/gm/grass/weedable,
+/turf/open/gm/grass,
 /area/varadero/interior_protected/caves/central)
 "hza" = (
 /obj/effect/decal/cleanable/blood/oil,
@@ -8531,7 +8649,8 @@
 	req_one_access = null
 	},
 /turf/open/floor{
-	icon_state = "dark2"
+	icon_state = "dark2";
+	tag = "icon-dark2"
 	},
 /area/varadero/interior/hall_N)
 "hGm" = (
@@ -8569,20 +8688,6 @@
 /obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/river/ocean,
 /area/varadero/interior/oob)
-"hHt" = (
-/obj/structure/machinery/light{
-	dir = 8
-	},
-/obj/structure/prop/invuln/lattice_prop{
-	icon_state = "lattice12";
-	pixel_x = 16;
-	pixel_y = -8
-	},
-/turf/open/floor/shiva{
-	dir = 4;
-	icon_state = "green"
-	},
-/area/varadero/interior/hall_SE)
 "hHA" = (
 /turf/open/floor/shiva{
 	dir = 4;
@@ -8630,8 +8735,12 @@
 "hJQ" = (
 /obj/structure/surface/table,
 /obj/item/tool/kitchen/utensil/fork,
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice8";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -8641,7 +8750,8 @@
 /area/varadero/interior/mess)
 "hKe" = (
 /obj/structure/bed/chair/office/dark{
-	dir = 1
+	dir = 1;
+	tag = "icon-officechair_dark (NORTH)"
 	},
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/shiva{
@@ -8663,15 +8773,29 @@
 /area/varadero/interior/mess)
 "hLF" = (
 /obj/structure/pipes/standard/simple/hidden/green,
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
 	pixel_x = 12;
-	pixel_y = 13
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
 	pixel_x = -16;
-	pixel_y = 13
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
 /turf/open/floor/shiva{
 	dir = 4;
@@ -8841,10 +8965,12 @@
 /area/varadero/interior/electrical)
 "hTO" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S"
+	icon_state = "S";
+	tag = "icon-S"
 	},
 /turf/open/floor/plating,
 /area/varadero/interior_protected/vessel)
@@ -8876,7 +9002,7 @@
 	},
 /obj/effect/overlay/palmtree_r,
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "hUs" = (
 /obj/structure/closet/hydrant{
 	pixel_y = 32
@@ -8904,7 +9030,8 @@
 /area/varadero/interior/maintenance/security)
 "hUU" = (
 /obj/structure/machinery/requests_console{
-	icon_state = "req_comp_open"
+	icon_state = "req_comp_open";
+	tag = "icon-req_comp_open"
 	},
 /turf/closed/wall,
 /area/varadero/interior/cargo)
@@ -8959,7 +9086,8 @@
 /obj/structure/largecrate/random/mini,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/interior/comms3)
 "hYf" = (
@@ -9033,18 +9161,25 @@
 /area/varadero/interior/oob)
 "iaO" = (
 /turf/closed/wall/r_wall/elevator{
-	dir = 9
+	dir = 9;
+	tag = "icon-wall (NORTHWEST)"
 	},
 /area/varadero/interior/hall_N)
 "ibo" = (
-/obj/structure/prop/broken_arcade,
+/obj/structure{
+	desc = "You can't see anything behind the screen, it looks half human and half machine.";
+	icon = 'icons/obj/structures/machinery/computer.dmi';
+	icon_state = "arcadeb";
+	name = "Spirit Phone, The Game, The Movie: II"
+	},
 /turf/open/floor{
 	icon_state = "wood"
 	},
 /area/varadero/interior/library)
 "iby" = (
 /obj/structure/machinery/light{
-	dir = 4
+	dir = 4;
+	tag = "icon-tube1 (EAST)"
 	},
 /obj/structure/machinery/chem_dispenser,
 /turf/open/floor/shiva{
@@ -9086,7 +9221,8 @@
 /area/varadero/interior/maintenance/research)
 "icM" = (
 /obj/structure/bed/chair{
-	dir = 8
+	dir = 8;
+	tag = "icon-chair (WEST)"
 	},
 /turf/open/floor/shiva{
 	dir = 4;
@@ -9162,7 +9298,8 @@
 	dir = 1
 	},
 /obj/structure/flora/pottedplant{
-	icon_state = "pottedplant_21"
+	icon_state = "pottedplant_21";
+	tag = null
 	},
 /turf/open/floor/wood,
 /area/varadero/exterior/lz1_near)
@@ -9233,7 +9370,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/interior/comms1)
 "ihG" = (
@@ -9324,7 +9462,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "ioc" = (
@@ -9420,15 +9559,6 @@
 /obj/item/frame/apc,
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior/maintenance)
-"irc" = (
-/obj/item/ammo_casing{
-	dir = 2;
-	icon_state = "casing_5"
-	},
-/turf/open/floor/shiva{
-	icon_state = "floor3"
-	},
-/area/varadero/interior/bunks)
 "irj" = (
 /turf/open/floor/shiva{
 	dir = 8;
@@ -9436,10 +9566,13 @@
 	},
 /area/varadero/interior/security)
 "irk" = (
-/obj/structure/machinery/landinglight/ds2/delayone,
+/obj/structure/machinery/landinglight/ds2/delayone{
+	tag = "icon-landingstripe"
+	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "irw" = (
@@ -9472,7 +9605,8 @@
 /area/varadero/interior/administration)
 "itP" = (
 /turf/closed/wall/r_wall/elevator{
-	dir = 6
+	dir = 6;
+	tag = "icon-wall (SOUTHEAST)"
 	},
 /area/varadero/interior/hall_N)
 "itT" = (
@@ -9519,7 +9653,8 @@
 	dir = 4
 	},
 /obj/structure/disposalpipe/junction{
-	dir = 8
+	dir = 8;
+	tag = "icon-pipe-j1 (WEST)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "multi_tiles"
@@ -9636,15 +9771,18 @@
 "iyd" = (
 /turf/open/floor{
 	dir = 9;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (NORTHWEST)"
 	},
 /area/varadero/exterior/lz1_near)
 "iyk" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S"
+	icon_state = "S";
+	tag = "icon-S"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/vessel)
@@ -9734,9 +9872,22 @@
 /obj/structure/machinery/microwave{
 	pixel_y = 6
 	},
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice4";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = -16;
+	pixel_y = 24
+	},
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
+	icon_state = "lattice12";
+	layer = 5.1;
+	name = "overhead lattice";
+	pixel_x = 16;
 	pixel_y = 24
 	},
 /turf/open/floor/shiva{
@@ -9992,13 +10143,14 @@
 /area/varadero/interior/mess)
 "iLL" = (
 /turf/open/gm/coast{
-	dir = 6
+	dir = 6;
+	tag = "icon-beach (SOUTHEAST)"
 	},
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "iLN" = (
 /obj/structure/platform/kutjevo/smooth,
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "iLR" = (
 /obj/structure/platform/kutjevo/smooth{
 	dir = 4
@@ -10011,7 +10163,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/interior/comms1)
 "iMi" = (
@@ -10067,8 +10220,12 @@
 	},
 /area/varadero/interior/security)
 "iNE" = (
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice12";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -10132,7 +10289,8 @@
 /obj/structure/surface/table,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "iQN" = (
@@ -10223,7 +10381,8 @@
 /area/varadero/interior/maintenance/north)
 "iTd" = (
 /obj/structure/morgue{
-	dir = 8
+	dir = 8;
+	tag = "icon-morgue1 (WEST)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "floor3"
@@ -10238,7 +10397,8 @@
 /area/varadero/interior/hall_SE)
 "iTO" = (
 /obj/structure/disposalpipe/segment{
-	dir = 8
+	dir = 8;
+	tag = "icon-pipe-s (WEST)"
 	},
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	name = "\improper Underground Security";
@@ -10259,7 +10419,8 @@
 	pixel_x = -8
 	},
 /obj/structure/machinery/light{
-	dir = 8
+	dir = 8;
+	tag = "icon-tube1 (WEST)"
 	},
 /obj/item/storage/pill_bottle/bicaridine/skillless{
 	pixel_x = 6
@@ -10273,7 +10434,8 @@
 "iUx" = (
 /obj/structure/machinery/constructable_frame,
 /obj/structure/machinery/light{
-	dir = 8
+	dir = 8;
+	tag = "icon-tube1 (WEST)"
 	},
 /turf/open/floor/shiva{
 	dir = 8;
@@ -10290,7 +10452,9 @@
 	pixel_x = -14;
 	pixel_y = 2
 	},
-/obj/item/weapon/gun/energy/rxfm5_eva,
+/obj/item/weapon/gun/energy/rxfm5_eva{
+	icon_state = "rxfm5_eva_stripped"
+	},
 /turf/open/floor/shiva{
 	icon_state = "blue"
 	},
@@ -10311,7 +10475,8 @@
 "iWK" = (
 /obj/structure/disposalpipe/segment{
 	dir = 1;
-	icon_state = "pipe-c"
+	icon_state = "pipe-c";
+	tag = "icon-pipe-c (NORTH)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "floor3"
@@ -10321,7 +10486,8 @@
 /obj/structure/bed/chair/office/dark{
 	dir = 8;
 	pixel_x = -13;
-	pixel_y = 11
+	pixel_y = 11;
+	tag = "icon-officechair_dark (WEST)"
 	},
 /turf/open/floor/plating/icefloor{
 	icon_state = "asteroidplating"
@@ -10338,7 +10504,8 @@
 /area/varadero/interior/chapel)
 "iYb" = (
 /obj/structure/machinery/light{
-	dir = 1
+	dir = 1;
+	tag = "icon-tube1 (NORTH)"
 	},
 /obj/structure/largecrate/random/mini/med{
 	pixel_x = -10;
@@ -10351,7 +10518,8 @@
 /area/varadero/interior/research)
 "iYi" = (
 /turf/closed/wall/r_wall/elevator{
-	dir = 1
+	dir = 1;
+	tag = "icon-wall (NORTH)"
 	},
 /area/varadero/interior/records)
 "iYE" = (
@@ -10452,7 +10620,8 @@
 /obj/structure/bed/chair/office/dark{
 	dir = 8;
 	pixel_x = -6;
-	pixel_y = 3
+	pixel_y = 3;
+	tag = "icon-officechair_dark (WEST)"
 	},
 /turf/open/floor/plating/icefloor{
 	icon_state = "asteroidplating"
@@ -10496,12 +10665,14 @@
 "jgL" = (
 /turf/open/floor{
 	dir = 6;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (NORTHWEST)"
 	},
 /area/varadero/exterior/lz1_near)
 "jgQ" = (
 /obj/structure/bed/chair/office/light{
-	dir = 8
+	dir = 8;
+	tag = "icon-officechair_white (EAST)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "wredfull"
@@ -10629,10 +10800,12 @@
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "NW-out";
-	pixel_y = 1
+	pixel_y = 1;
+	tag = "icon-NW-out"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "SW-out"
+	icon_state = "SW-out";
+	tag = "icon-SW-out"
 	},
 /turf/open/floor/plating,
 /area/varadero/interior_protected/caves/digsite)
@@ -10664,7 +10837,8 @@
 	},
 /turf/open/floor/plating/icefloor{
 	dir = 1;
-	icon_state = "warnplate"
+	icon_state = "warnplate";
+	tag = "icon-warnplate (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "joO" = (
@@ -10700,9 +10874,6 @@
 /obj/structure/prop/rock/brown,
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior/caves/east)
-"jrK" = (
-/turf/open/gm/river,
-/area/varadero/exterior/eastbeach)
 "jsh" = (
 /obj/structure/disposalpipe/segment,
 /obj/structure/pipes/standard/manifold/hidden/green{
@@ -10733,7 +10904,7 @@
 "jtw" = (
 /obj/effect/overlay/palmtree_r,
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "jty" = (
 /obj/effect/landmark/hunter_primary,
 /turf/open/floor/shiva{
@@ -10781,11 +10952,6 @@
 /area/varadero/interior/oob)
 "juL" = (
 /obj/structure/surface/table/reinforced/prison,
-/obj/structure/prop/invuln/lattice_prop{
-	icon_state = "lattice12";
-	pixel_x = 16;
-	pixel_y = -8
-	},
 /turf/open/floor/shiva{
 	dir = 8;
 	icon_state = "green"
@@ -10827,11 +10993,13 @@
 /area/varadero/interior/maintenance)
 "jyq" = (
 /obj/structure/machinery/landinglight/ds2/delaytwo{
-	dir = 8
+	dir = 8;
+	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "jyw" = (
@@ -10912,8 +11080,12 @@
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice2";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -10921,6 +11093,15 @@
 	icon_state = "asteroidplating"
 	},
 /area/varadero/interior/maintenance/research)
+"jBY" = (
+/obj/structure/machinery/light{
+	dir = 1;
+	tag = "icon-tube1 (NORTH)"
+	},
+/turf/open/floor/shiva{
+	icon_state = "green"
+	},
+/area/varadero/interior/hall_N)
 "jCr" = (
 /turf/open/floor/shiva{
 	icon_state = "floor3"
@@ -11024,7 +11205,8 @@
 /obj/structure/bed/chair,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "jKg" = (
@@ -11100,13 +11282,6 @@
 "jNT" = (
 /obj/structure/pipes/vents/pump,
 /obj/structure/surface/table/woodentable,
-/obj/item/weapon/melee/pole{
-	anchored = 1;
-	desc = "It only plays auto chess. Gross.";
-	icon = 'icons/obj/items/items.dmi';
-	icon_state = "game_kit";
-	name = "Thick Art LTD Gamepad"
-	},
 /obj/item/prop/helmetgarb/raincover{
 	pixel_x = -8;
 	pixel_y = 9
@@ -11155,7 +11330,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/interior/comms1)
 "jPC" = (
@@ -11255,7 +11431,8 @@
 /obj/item/tool/pickaxe/jackhammer,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/interior/comms1)
 "jSX" = (
@@ -11321,7 +11498,7 @@
 /area/varadero/interior/hall_N)
 "jVw" = (
 /turf/open/gm/coast,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "jVK" = (
 /obj/structure/pipes/standard/manifold/hidden/green{
 	dir = 1
@@ -11394,7 +11571,8 @@
 /area/varadero/interior/technical_storage)
 "jZw" = (
 /obj/structure/machinery/light/small{
-	dir = 8
+	dir = 8;
+	tag = "icon-bulb1 (WEST)"
 	},
 /obj/structure/pipes/vents/pump,
 /obj/structure/flora/pottedplant{
@@ -11494,11 +11672,13 @@
 /area/varadero/interior_protected/maintenance/south)
 "kdV" = (
 /obj/structure/machinery/light{
-	dir = 4
+	dir = 4;
+	tag = "icon-tube1 (EAST)"
 	},
 /turf/open/floor/plating/icefloor{
 	dir = 1;
-	icon_state = "warnplate"
+	icon_state = "warnplate";
+	tag = "icon-warnplate (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "keo" = (
@@ -11531,7 +11711,8 @@
 /area/varadero/interior/maintenance/security)
 "kfj" = (
 /obj/structure/pipes/standard/simple/visible{
-	dir = 5
+	dir = 5;
+	tag = "icon-intact (NORTHEAST)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "multi_tiles"
@@ -11618,10 +11799,17 @@
 /area/varadero/interior_protected/vessel)
 "kjJ" = (
 /obj/structure/machinery/light/small,
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
 	pixel_x = -14;
-	pixel_y = 13
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
 /turf/open/floor/shiva{
 	icon_state = "snow_mat"
@@ -11678,9 +11866,22 @@
 /obj/structure/machinery/light{
 	dir = 8
 	},
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice4";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = -16;
+	pixel_y = 24
+	},
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
+	icon_state = "lattice12";
+	layer = 5.1;
+	name = "overhead lattice";
+	pixel_x = 16;
 	pixel_y = 24
 	},
 /turf/open/floor/shiva{
@@ -11695,9 +11896,6 @@
 	icon_state = "asteroidplating"
 	},
 /area/varadero/interior/maintenance)
-"kmy" = (
-/turf/open/gm/river,
-/area/varadero/exterior/eastocean)
 "knW" = (
 /obj/structure/surface/rack,
 /obj/item/ammo_magazine/shotgun/slugs,
@@ -11755,7 +11953,8 @@
 /area/varadero/interior/administration)
 "krP" = (
 /obj/structure/disposalpipe/segment{
-	dir = 8
+	dir = 8;
+	tag = "icon-pipe-s (WEST)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "red"
@@ -11869,14 +12068,16 @@
 /area/varadero/interior/technical_storage)
 "kvQ" = (
 /obj/structure/machinery/landinglight/ds2/delaythree{
-	dir = 8
+	dir = 8;
+	tag = "icon-landingstripe (WEST)"
 	},
 /obj/structure/machinery/floodlight/landing/floor{
 	pixel_x = 1
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "kvS" = (
@@ -11949,6 +12150,29 @@
 	icon_state = "multi_tiles"
 	},
 /area/varadero/interior/hall_SE)
+"kyx" = (
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
+	icon_state = "lattice4";
+	layer = 5.1;
+	name = "overhead lattice";
+	pixel_x = -16;
+	pixel_y = 24
+	},
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
+	icon_state = "lattice12";
+	layer = 5.1;
+	name = "overhead lattice";
+	pixel_x = 16;
+	pixel_y = 24
+	},
+/turf/open/floor/plating/icefloor{
+	icon_state = "asteroidplating"
+	},
+/area/varadero/interior/maintenance)
 "kyG" = (
 /turf/closed/wall,
 /area/varadero/interior/disposals)
@@ -12089,7 +12313,7 @@
 /turf/open/gm/coast{
 	dir = 4
 	},
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "kDF" = (
 /obj/structure/disposalpipe/segment{
 	dir = 1;
@@ -12179,14 +12403,6 @@
 	icon_state = "doubleside"
 	},
 /area/varadero/interior/chapel)
-"kHJ" = (
-/obj/item/ammo_casing/shell{
-	icon_state = "cartridge_10"
-	},
-/turf/open/floor/plating/icefloor{
-	icon_state = "asteroidplating"
-	},
-/area/varadero/interior_protected/caves)
 "kIb" = (
 /obj/structure/pipes/vents/pump{
 	dir = 1
@@ -12206,14 +12422,16 @@
 	pixel_x = -8
 	},
 /obj/structure/machinery/light{
-	dir = 8
+	dir = 8;
+	tag = "icon-tube1 (WEST)"
 	},
 /turf/open/floor/wood,
 /area/varadero/interior/bunks)
 "kIJ" = (
 /turf/open/floor{
 	dir = 10;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (NORTHWEST)"
 	},
 /area/varadero/exterior/lz1_near)
 "kIK" = (
@@ -12223,14 +12441,28 @@
 	},
 /area/varadero/interior/maintenance)
 "kIV" = (
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
 	pixel_x = -16;
-	pixel_y = 13
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
-	pixel_y = 13
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
 /turf/open/floor/plating/icefloor{
 	icon_state = "asteroidplating"
@@ -12273,7 +12505,8 @@
 /area/varadero/interior/security)
 "kMi" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "E"
+	icon_state = "E";
+	tag = "icon-E"
 	},
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -12288,7 +12521,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "kMN" = (
@@ -12383,7 +12617,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "kSJ" = (
@@ -12434,10 +12669,6 @@
 	icon_state = "white"
 	},
 /area/varadero/interior/security)
-"kTX" = (
-/obj/structure/prop/rock/brown,
-/turf/open/gm/river/ocean,
-/area/varadero/exterior/eastocean)
 "kVp" = (
 /turf/open/floor/shiva{
 	dir = 9;
@@ -12447,16 +12678,6 @@
 "kWB" = (
 /turf/open/shuttle/elevator/grating,
 /area/varadero/interior/records)
-"kWZ" = (
-/obj/structure/prop/invuln/lattice_prop{
-	icon_state = "lattice12";
-	pixel_x = 16;
-	pixel_y = -8
-	},
-/turf/open/floor/plating/icefloor{
-	icon_state = "asteroidplating"
-	},
-/area/varadero/interior/maintenance)
 "kXn" = (
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/shiva{
@@ -12476,7 +12697,8 @@
 "kXZ" = (
 /obj/structure/disposalpipe/segment{
 	dir = 1;
-	icon_state = "pipe-c"
+	icon_state = "pipe-c";
+	tag = "icon-pipe-c (NORTH)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "blue"
@@ -12489,16 +12711,6 @@
 	icon_state = "red"
 	},
 /area/varadero/interior/security)
-"kYN" = (
-/obj/structure/prop/invuln/lattice_prop{
-	icon_state = "lattice1";
-	pixel_x = -16;
-	pixel_y = -8
-	},
-/turf/open/floor/plating/icefloor{
-	icon_state = "asteroidplating"
-	},
-/area/varadero/interior/maintenance/research)
 "kZg" = (
 /obj/structure/closet/emcloset,
 /turf/open/floor/shiva{
@@ -12627,7 +12839,8 @@
 /obj/item/stack/cable_coil/cut,
 /turf/open/floor{
 	dir = 8;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (WEST)"
 	},
 /area/varadero/exterior/lz1_near)
 "leU" = (
@@ -12852,7 +13065,8 @@
 /obj/structure/closet/emcloset,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "loW" = (
@@ -12874,13 +13088,15 @@
 	pixel_x = -11
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S"
+	icon_state = "S";
+	tag = "icon-S"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/caves/digsite)
 "lqM" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/caves/digsite)
@@ -12957,7 +13173,8 @@
 	pixel_x = -20
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "SW-out"
+	icon_state = "SW-out";
+	tag = "icon-SW-out"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/caves/digsite)
@@ -13145,8 +13362,12 @@
 "lEc" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/structure/disposalpipe/segment,
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice12";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -13166,15 +13387,10 @@
 "lEB" = (
 /obj/structure/closet/secure_closet/personal/patient,
 /obj/item/clothing/accessory/medal/gold/captain,
-/obj/item/weapon/melee/pole/wooden_cane,
 /turf/open/floor/shiva{
 	icon_state = "multi_tiles"
 	},
 /area/varadero/interior/bunks)
-"lEP" = (
-/obj/structure/prop/rock/brown,
-/turf/open/gm/river,
-/area/varadero/exterior/eastocean)
 "lEY" = (
 /obj/structure/machinery/alarm{
 	dir = 8;
@@ -13345,7 +13561,8 @@
 "lMB" = (
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/interior/comms1)
 "lMP" = (
@@ -13357,7 +13574,8 @@
 /area/varadero/interior/cargo)
 "lMY" = (
 /obj/structure/shuttle/engine/router{
-	dir = 4
+	dir = 4;
+	tag = "icon-router (EAST)"
 	},
 /turf/open/floor/strata{
 	color = "#5e5d5d";
@@ -13381,10 +13599,17 @@
 	},
 /area/varadero/interior/hall_N)
 "lOc" = (
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
 	pixel_x = -14;
-	pixel_y = 13
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
 /turf/open/floor/plating/icefloor{
 	icon_state = "asteroidplating"
@@ -13441,12 +13666,6 @@
 	icon_state = "green"
 	},
 /area/varadero/interior/mess)
-"lRz" = (
-/obj/item/ammo_casing{
-	icon_state = "casing_7_1"
-	},
-/turf/open/floor/carpet,
-/area/varadero/interior/hall_SE)
 "lRU" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -13459,7 +13678,8 @@
 /obj/structure/lz_sign/new_varadero,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "lSD" = (
@@ -13488,13 +13708,15 @@
 	pixel_y = 19
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/caves/digsite)
 "lUe" = (
 /obj/structure/machinery/light/small{
-	dir = 1
+	dir = 1;
+	tag = "icon-bulb1 (NORTH)"
 	},
 /turf/open/floor/plating/icefloor{
 	icon_state = "asteroidplating"
@@ -13532,7 +13754,8 @@
 	pixel_x = -9
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "SW-out"
+	icon_state = "SW-out";
+	tag = "icon-SW-out"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/caves/digsite)
@@ -13552,7 +13775,7 @@
 /area/varadero/interior/hall_NW)
 "lVQ" = (
 /obj/structure/flora/bush/ausbushes/var3/fernybush,
-/turf/open/gm/grass/weedable,
+/turf/open/gm/grass,
 /area/varadero/interior_protected/caves/central)
 "lVW" = (
 /obj/structure/desertdam/decals/road_edge{
@@ -13686,10 +13909,6 @@
 	},
 /area/varadero/exterior/lz1_near)
 "lZU" = (
-/obj/item/ammo_casing/shell{
-	dir = 10;
-	icon_state = "bshell_"
-	},
 /obj/effect/landmark/survivor_spawner,
 /turf/open/floor/carpet,
 /area/varadero/interior/security)
@@ -13766,14 +13985,12 @@
 	icon_state = "red"
 	},
 /area/varadero/interior/security)
-"mcm" = (
-/turf/open/gm/river/ocean,
-/area/varadero/exterior/eastbeach)
 "mcr" = (
 /obj/structure/machinery/light,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "mcX" = (
@@ -13864,11 +14081,13 @@
 /area/varadero/interior/hall_SE)
 "miF" = (
 /obj/structure/machinery/landinglight/ds2/delayone{
-	dir = 1
+	dir = 1;
+	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "miP" = (
@@ -13890,7 +14109,8 @@
 /obj/item/stool,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "miU" = (
@@ -13902,13 +14122,6 @@
 	icon_state = "asteroidplating"
 	},
 /area/varadero/interior/maintenance/research)
-"mje" = (
-/obj/item/stack/sheet/metal,
-/obj/structure/blocker/forcefield/multitile_vehicles,
-/turf/open/floor/plating/icefloor{
-	icon_state = "asteroidplating"
-	},
-/area/varadero/interior/caves/east)
 "mjA" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -14016,7 +14229,8 @@
 "mmq" = (
 /obj/structure/fence,
 /obj/effect/decal/warning_stripes{
-	icon_state = "S"
+	icon_state = "S";
+	tag = "icon-S"
 	},
 /turf/open/floor/plating,
 /area/varadero/interior_protected/caves/digsite)
@@ -14072,14 +14286,28 @@
 /area/varadero/interior/hall_N)
 "moH" = (
 /obj/structure/largecrate/random/case/double,
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
-	pixel_y = 13
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
 	pixel_x = 12;
-	pixel_y = 13
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
 /turf/open/gm/dirt,
 /area/varadero/interior/maintenance/north)
@@ -14151,7 +14379,8 @@
 /area/varadero/interior/hall_N)
 "mrC" = (
 /turf/open/floor{
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (WEST)"
 	},
 /area/varadero/exterior/lz1_near)
 "mrF" = (
@@ -14161,7 +14390,8 @@
 "mrP" = (
 /obj/structure/disposalpipe/segment{
 	dir = 1;
-	icon_state = "pipe-c"
+	icon_state = "pipe-c";
+	tag = "icon-pipe-c (NORTH)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "multi_tiles"
@@ -14193,7 +14423,8 @@
 "muE" = (
 /obj/structure/machinery/disposal,
 /obj/structure/disposalpipe/trunk{
-	dir = 8
+	dir = 8;
+	tag = "icon-pipe-t (WEST)"
 	},
 /turf/open/floor/shiva{
 	dir = 6;
@@ -14256,7 +14487,7 @@
 	id = "undergroundhangarsouth";
 	name = "Underground Hangar"
 	},
-/turf/open/auto_turf/sand_white/layer1,
+/turf/open/floor/plating/icefloor,
 /area/varadero/exterior/lz1_near)
 "mxn" = (
 /obj/structure/window/reinforced{
@@ -14324,7 +14555,8 @@
 /area/varadero/interior/research)
 "myo" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "N"
+	icon_state = "N";
+	tag = "icon-N"
 	},
 /turf/open/floor/shiva{
 	dir = 1;
@@ -14401,13 +14633,15 @@
 	dir = 4
 	},
 /turf/open/floor{
-	icon_state = "freezerfloor"
+	icon_state = "freezerfloor";
+	tag = "icon-freezerfloor"
 	},
 /area/varadero/interior/cargo)
 "mAm" = (
 /obj/structure/filingcabinet,
 /obj/structure/machinery/light{
-	dir = 4
+	dir = 4;
+	tag = "icon-tube1 (EAST)"
 	},
 /turf/open/floor/shiva{
 	dir = 4;
@@ -14462,9 +14696,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 8;
 	icon_state = "pipe-c"
-	},
-/obj/item/ammo_casing{
-	icon_state = "casing_10_1"
 	},
 /turf/open/floor/carpet,
 /area/varadero/interior/hall_SE)
@@ -14772,7 +15003,8 @@
 /area/varadero/interior/hall_NW)
 "mVN" = (
 /obj/structure/machinery/light{
-	dir = 4
+	dir = 4;
+	tag = "icon-tube1 (EAST)"
 	},
 /turf/open/floor/shiva{
 	dir = 8;
@@ -14851,12 +15083,6 @@
 	icon_state = "multi_tiles"
 	},
 /area/varadero/interior/electrical)
-"mYR" = (
-/obj/item/facepaint/sunscreen_stick,
-/turf/open/floor/plating/icefloor{
-	icon_state = "asteroidplating"
-	},
-/area/varadero/exterior/lz1_near)
 "mYW" = (
 /turf/open/floor/shiva{
 	dir = 1;
@@ -14865,13 +15091,15 @@
 /area/varadero/interior/cargo)
 "mZC" = (
 /obj/structure/surface/table/woodentable{
-	icon_state = "reinf_table"
+	icon_state = "reinf_table";
+	tag = "icon-reinf_table"
 	},
 /obj/structure/machinery/door/window/brigdoor/westleft{
 	dir = 1;
 	icon_state = "leftsecure";
 	id = null;
-	name = "Requesitions Desk"
+	name = "Requesitions Desk";
+	tag = "icon-leftsecure (NORTH)"
 	},
 /obj/structure/machinery/door/window/northright{
 	dir = 2;
@@ -14901,13 +15129,6 @@
 	dir = 1
 	},
 /area/varadero/interior/electrical)
-"nap" = (
-/obj/structure/window_frame/colony/reinforced,
-/obj/structure/blocker/forcefield/multitile_vehicles,
-/turf/open/floor/plating/icefloor{
-	icon_state = "asteroidplating"
-	},
-/area/varadero/interior/caves/east)
 "nau" = (
 /obj/structure/platform_decoration/kutjevo{
 	dir = 8
@@ -14939,7 +15160,8 @@
 "ncg" = (
 /obj/structure/machinery/light,
 /obj/structure/flora/pottedplant{
-	icon_state = "pottedplant_22"
+	icon_state = "pottedplant_22";
+	tag = "icon-pottedplant_10"
 	},
 /turf/open/floor/shiva{
 	dir = 8;
@@ -14952,10 +15174,12 @@
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "N";
-	pixel_y = 1
+	pixel_y = 1;
+	tag = "icon-N"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S"
+	icon_state = "S";
+	tag = "icon-S"
 	},
 /turf/open/floor/plating,
 /area/varadero/interior_protected/caves/digsite)
@@ -14997,7 +15221,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "neC" = (
@@ -15022,7 +15247,8 @@
 "neD" = (
 /obj/structure/fence,
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /obj/structure/sign/safety/electronics{
 	pixel_x = 12
@@ -15046,7 +15272,7 @@
 /turf/open/gm/coast{
 	dir = 1
 	},
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "nfX" = (
 /obj/item/reagent_container/glass/bucket{
 	pixel_x = -11;
@@ -15059,7 +15285,8 @@
 "nfZ" = (
 /obj/structure/machinery/conveyor_switch,
 /obj/effect/decal/warning_stripes{
-	icon_state = "E"
+	icon_state = "E";
+	tag = "icon-E"
 	},
 /turf/open/floor/shiva{
 	dir = 1
@@ -15070,8 +15297,12 @@
 /obj/structure/pipes/standard/manifold/hidden/green{
 	dir = 4
 	},
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice12";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -15170,11 +15401,13 @@
 	pixel_x = -11
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "N";
-	pixel_y = 1
+	pixel_y = 1;
+	tag = "icon-N"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/caves/digsite)
@@ -15255,7 +15488,8 @@
 	pixel_x = -8
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "SW-out"
+	icon_state = "SW-out";
+	tag = "icon-SW-out"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/vessel)
@@ -15278,7 +15512,7 @@
 	icon_state = "palm2"
 	},
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "nsa" = (
 /obj/structure/platform_decoration/kutjevo,
 /turf/open/gm/river/ocean,
@@ -15444,7 +15678,8 @@
 /area/varadero/interior/medical)
 "nAQ" = (
 /turf/open/floor{
-	icon_state = "bcircuit"
+	icon_state = "bcircuit";
+	tag = "icon-bcircuit"
 	},
 /area/varadero/exterior/lz1_near)
 "nBj" = (
@@ -15469,8 +15704,12 @@
 "nBD" = (
 /obj/structure/surface/table,
 /obj/item/reagent_container/food/snacks/cheeseburger,
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice8";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -15517,7 +15756,8 @@
 /area/varadero/interior_protected/vessel)
 "nEY" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "SE-out"
+	icon_state = "SE-out";
+	tag = "icon-SE-out"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/caves/digsite)
@@ -15927,15 +16167,29 @@
 /area/varadero/interior/oob)
 "nVk" = (
 /obj/structure/pipes/standard/simple/hidden/green,
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
 	pixel_x = 12;
-	pixel_y = 13
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
 	pixel_x = -16;
-	pixel_y = 13
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
 /turf/open/floor/shiva{
 	icon_state = "snow_mat"
@@ -15989,11 +16243,13 @@
 /area/varadero/interior/records)
 "nXR" = (
 /obj/structure/machinery/landinglight/ds2{
-	dir = 8
+	dir = 8;
+	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "nXY" = (
@@ -16016,7 +16272,8 @@
 /area/varadero/interior/maintenance)
 "nYL" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "N"
+	icon_state = "N";
+	tag = "icon-N"
 	},
 /turf/open/floor/shiva{
 	dir = 1
@@ -16073,7 +16330,8 @@
 "oam" = (
 /obj/structure/disposalpipe/segment{
 	dir = 1;
-	icon_state = "pipe-c"
+	icon_state = "pipe-c";
+	tag = "icon-pipe-c (NORTH)"
 	},
 /obj/structure/pipes/standard/manifold/hidden/green{
 	dir = 8
@@ -16150,11 +16408,6 @@
 	icon_state = "yellow"
 	},
 /area/varadero/interior/cargo)
-"oei" = (
-/turf/open/shuttle{
-	icon_state = "floor6"
-	},
-/area/varadero/interior_protected/vessel)
 "oeF" = (
 /obj/structure/barricade/wooden{
 	dir = 8
@@ -16185,12 +16438,6 @@
 	icon_state = "asteroidplating"
 	},
 /area/varadero/interior/comms2)
-"ofu" = (
-/obj/item/shard,
-/turf/open/floor/plating/icefloor{
-	icon_state = "asteroidplating"
-	},
-/area/varadero/interior/caves/east)
 "oga" = (
 /obj/structure/bed/chair{
 	dir = 8
@@ -16229,7 +16476,7 @@
 /area/varadero/interior/hall_SE)
 "ogX" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_door,
-/obj/structure/blocker/forcefield/multitile_vehicles,
+/obj/structure/blocker/forcefield/vehicles,
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/caves/digsite)
 "ohi" = (
@@ -16330,7 +16577,8 @@
 "olD" = (
 /turf/open/floor{
 	dir = 4;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (WEST)"
 	},
 /area/varadero/exterior/lz1_near)
 "olU" = (
@@ -16349,23 +16597,39 @@
 /area/varadero/interior/maintenance/north)
 "onr" = (
 /obj/structure/machinery/landinglight/ds2/delayone{
-	dir = 4
+	dir = 4;
+	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "ooe" = (
 /obj/structure/surface/rack,
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
-	pixel_y = 13
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
 	pixel_x = 12;
-	pixel_y = 13
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
 /turf/open/floor/plating/icefloor{
 	icon_state = "asteroidplating"
@@ -16383,7 +16647,8 @@
 /area/varadero/interior/comms3)
 "opW" = (
 /obj/structure/machinery/light{
-	dir = 1
+	dir = 1;
+	tag = "icon-tube1 (NORTH)"
 	},
 /obj/structure/surface/table/woodentable/fancy,
 /obj/item/stack/sheet/wood{
@@ -16572,7 +16837,8 @@
 /obj/structure/machinery/door/window/brigdoor/westleft{
 	dir = 4;
 	icon_state = "leftsecure";
-	id = "brg"
+	id = "brg";
+	tag = "icon-leftsecure (EAST)"
 	},
 /obj/structure/machinery/door/window/brigdoor/westleft{
 	id = "brg"
@@ -16598,7 +16864,8 @@
 /area/varadero/interior/hall_SE)
 "oAm" = (
 /obj/structure/toilet{
-	dir = 1
+	dir = 1;
+	tag = "icon-toilet00 (NORTH)"
 	},
 /obj/structure/machinery/light/small,
 /turf/open/floor{
@@ -16653,8 +16920,12 @@
 /obj/structure/bed/chair{
 	icon_state = "chair_alt"
 	},
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice8";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -16691,7 +16962,8 @@
 	dir = 4
 	},
 /obj/structure/window/reinforced/tinted{
-	dir = 8
+	dir = 8;
+	tag = "icon-twindow (WEST)"
 	},
 /obj/structure/surface/table/reinforced/prison,
 /turf/open/floor/shiva{
@@ -16776,7 +17048,8 @@
 "oFd" = (
 /obj/structure/bed/chair/office/dark{
 	dir = 4;
-	icon_state = "chair"
+	icon_state = "chair";
+	tag = "icon-chair (EAST)"
 	},
 /turf/open/floor/shiva{
 	dir = 8;
@@ -16838,7 +17111,8 @@
 /obj/structure/machinery/light,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "oKo" = (
@@ -16883,7 +17157,8 @@
 /obj/item/trash/barcardine,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "oLM" = (
@@ -16931,10 +17206,6 @@
 "oNy" = (
 /turf/open/shuttle/elevator,
 /area/varadero/interior/hall_N)
-"oOg" = (
-/obj/structure/prop/rock/brown,
-/turf/open/gm/river,
-/area/varadero/exterior/eastbeach)
 "oOF" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/shiva{
@@ -16984,7 +17255,6 @@
 /turf/open/floor/plating,
 /area/varadero/interior/maintenance/security)
 "oRj" = (
-/obj/item/facepaint/sunscreen_stick,
 /turf/open/gm/dirt{
 	icon_state = "desert0"
 	},
@@ -17051,10 +17321,12 @@
 	icon_state = "1-2"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "E"
+	icon_state = "E";
+	tag = "icon-E"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /turf/open/floor/plating,
 /area/varadero/interior_protected/caves/digsite)
@@ -17094,7 +17366,8 @@
 /area/varadero/interior/comms1)
 "oVr" = (
 /obj/structure/disposalpipe/segment{
-	dir = 8
+	dir = 8;
+	tag = "icon-pipe-s (WEST)"
 	},
 /turf/open/floor/shiva{
 	dir = 8;
@@ -17164,8 +17437,12 @@
 /area/varadero/interior_protected/caves/digsite)
 "oXE" = (
 /obj/structure/surface/table,
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice12";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -17209,9 +17486,16 @@
 	},
 /area/varadero/interior/hall_N)
 "oZA" = (
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
-	pixel_y = 13
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
 /turf/open/floor/plating/icefloor{
 	icon_state = "asteroidplating"
@@ -17255,7 +17539,8 @@
 "pbp" = (
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (WEST)"
 	},
 /area/varadero/exterior/lz1_near)
 "pbt" = (
@@ -17280,7 +17565,8 @@
 	pixel_y = -24
 	},
 /obj/structure/machinery/power/terminal{
-	dir = 8
+	dir = 8;
+	tag = "icon-term (WEST)"
 	},
 /turf/open/floor/plating/icefloor{
 	icon_state = "asteroidplating"
@@ -17388,7 +17674,8 @@
 "pfR" = (
 /obj/structure/reagent_dispensers/beerkeg/alt,
 /turf/open/floor{
-	icon_state = "freezerfloor"
+	icon_state = "freezerfloor";
+	tag = "icon-freezerfloor"
 	},
 /area/varadero/interior/cargo)
 "phd" = (
@@ -17403,11 +17690,24 @@
 /obj/structure/flora/bush/ausbushes/var3/brflowers{
 	icon_state = "brflowers_2"
 	},
-/turf/open/gm/grass/weedable,
+/turf/open/gm/grass,
 /area/varadero/interior_protected/caves/central)
 "pie" = (
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
+	icon_state = "lattice12";
+	layer = 5.1;
+	name = "overhead lattice";
+	pixel_x = 16;
+	pixel_y = 24
+	},
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice4";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = -16;
 	pixel_y = 24
 	},
@@ -17445,7 +17745,8 @@
 "pjz" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/tool/stamp{
-	icon_state = "stamp-ce"
+	icon_state = "stamp-ce";
+	tag = "icon-stamp-ce"
 	},
 /obj/structure/machinery/firealarm{
 	dir = 4;
@@ -17490,7 +17791,8 @@
 "pkT" = (
 /obj/structure/machinery/power/port_gen/pacman,
 /turf/open/floor{
-	icon_state = "bcircuit"
+	icon_state = "bcircuit";
+	tag = "icon-bcircuit"
 	},
 /area/varadero/interior/electrical)
 "pkX" = (
@@ -17515,7 +17817,8 @@
 /obj/structure/machinery/light,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/interior/comms1)
 "plN" = (
@@ -17528,8 +17831,8 @@
 /area/varadero/interior/cargo)
 "plT" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_door,
+/obj/structure/blocker/forcefield/vehicles,
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
-/obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/caves/digsite)
 "pmy" = (
@@ -17587,17 +17890,6 @@
 	icon_state = "asteroidplating"
 	},
 /area/varadero/interior/oob)
-"pot" = (
-/obj/structure/prop/invuln/lattice_prop{
-	icon_state = "lattice12";
-	pixel_x = 16;
-	pixel_y = -8
-	},
-/turf/open/floor/shiva{
-	dir = 4;
-	icon_state = "green"
-	},
-/area/varadero/interior/hall_SE)
 "poC" = (
 /obj/item/reagent_container/food/snacks/eat_bar,
 /obj/item/reagent_container/food/snacks/eat_bar{
@@ -17627,7 +17919,8 @@
 /area/varadero/interior/caves/east)
 "poU" = (
 /obj/structure/disposalpipe/segment{
-	dir = 8
+	dir = 8;
+	tag = "icon-pipe-s (WEST)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "floor3"
@@ -17646,7 +17939,7 @@
 	dir = 4
 	},
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "pqj" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -17754,10 +18047,6 @@
 	icon_state = "multi_tiles"
 	},
 /area/varadero/interior/hall_SE)
-"puq" = (
-/obj/item/lightstick/variant/planted,
-/turf/open/auto_turf/sand_white/layer1,
-/area/varadero/interior_protected/caves/digsite)
 "puK" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/structure/machinery/door/airlock/almayer/medical/glass{
@@ -17796,7 +18085,8 @@
 /area/varadero/interior_protected/vessel)
 "pxg" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S"
+	icon_state = "S";
+	tag = "icon-S"
 	},
 /turf/open/floor/shiva{
 	dir = 1
@@ -17833,7 +18123,8 @@
 "pAp" = (
 /turf/open/floor/plating/icefloor{
 	dir = 1;
-	icon_state = "warnplate"
+	icon_state = "warnplate";
+	tag = "icon-warnplate (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "pAu" = (
@@ -17849,7 +18140,8 @@
 	amount = 32
 	},
 /turf/open/floor{
-	icon_state = "bcircuit"
+	icon_state = "bcircuit";
+	tag = "icon-bcircuit"
 	},
 /area/varadero/interior/electrical)
 "pBb" = (
@@ -17898,7 +18190,7 @@
 	},
 /area/varadero/interior/research)
 "pCj" = (
-/obj/structure/machinery/cm_vending/sorted/medical/wall_med/limited,
+/obj/structure/machinery/cm_vending/sorted/medical/wall_med,
 /turf/closed/wall/r_wall,
 /area/varadero/exterior/lz1_near)
 "pCp" = (
@@ -17920,7 +18212,8 @@
 /obj/structure/surface/rack,
 /obj/item/stack/sheet/mineral/phoron/medium_stack,
 /turf/open/floor{
-	icon_state = "bcircuit"
+	icon_state = "bcircuit";
+	tag = "icon-bcircuit"
 	},
 /area/varadero/interior/electrical)
 "pCV" = (
@@ -18049,8 +18342,12 @@
 	},
 /area/varadero/interior/electrical)
 "pJA" = (
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice8";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -18089,7 +18386,8 @@
 	pixel_x = -24
 	},
 /obj/structure/machinery/light{
-	dir = 8
+	dir = 8;
+	tag = "icon-tube1 (WEST)"
 	},
 /turf/open/floor/shiva{
 	dir = 4;
@@ -18249,7 +18547,8 @@
 /area/varadero/interior_protected/vessel)
 "pTO" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S"
+	icon_state = "S";
+	tag = "icon-S"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/caves/digsite)
@@ -18360,8 +18659,9 @@
 	},
 /area/varadero/interior/hall_N)
 "pYn" = (
-/turf/closed/wall,
-/area/varadero/interior/records)
+/obj/structure/window/framed/colony/reinforced,
+/turf/open/floor/plating,
+/area/varadero/interior/hall_SE)
 "pYv" = (
 /turf/open/floor/shiva{
 	icon_state = "floor3"
@@ -18396,9 +18696,22 @@
 /area/varadero/interior/bunks)
 "pYV" = (
 /obj/structure/pipes/vents/pump,
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice4";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = -16;
+	pixel_y = 24
+	},
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
+	icon_state = "lattice12";
+	layer = 5.1;
+	name = "overhead lattice";
+	pixel_x = 16;
 	pixel_y = 24
 	},
 /turf/open/floor/shiva{
@@ -18598,8 +18911,21 @@
 	},
 /area/varadero/interior/laundry)
 "qlj" = (
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
+	icon_state = "lattice1";
+	layer = 5.1;
+	name = "overhead lattice";
+	pixel_x = 16;
+	pixel_y = -8
+	},
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice3";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -18661,7 +18987,8 @@
 "qoE" = (
 /turf/open/floor{
 	dir = 5;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (NORTHWEST)"
 	},
 /area/varadero/exterior/lz1_near)
 "qoS" = (
@@ -18715,7 +19042,8 @@
 /area/varadero/interior/maintenance)
 "qsc" = (
 /obj/structure/shuttle/engine/heater{
-	dir = 8
+	dir = 8;
+	tag = "icon-heater (WEST)"
 	},
 /obj/structure/window/phoronreinforced{
 	dir = 4;
@@ -18730,7 +19058,8 @@
 "qsh" = (
 /obj/structure/closet/secure_closet/security,
 /obj/structure/machinery/light{
-	dir = 4
+	dir = 4;
+	tag = "icon-tube1 (EAST)"
 	},
 /obj/structure/machinery/firealarm{
 	dir = 4;
@@ -18850,6 +19179,15 @@
 	icon_state = "floor3"
 	},
 /area/varadero/interior/hall_SE)
+"qye" = (
+/obj/structure/machinery/light/small{
+	dir = 4;
+	tag = "icon-bulb1 (EAST)"
+	},
+/turf/open/floor/plating/icefloor{
+	icon_state = "asteroidplating"
+	},
+/area/varadero/interior_protected/maintenance/south)
 "qyk" = (
 /obj/structure/machinery/light{
 	dir = 8
@@ -19003,8 +19341,12 @@
 	},
 /area/varadero/interior/oob)
 "qDh" = (
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice2";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -19080,7 +19422,8 @@
 "qFC" = (
 /turf/open/floor{
 	dir = 8;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (WEST)"
 	},
 /area/varadero/exterior/lz1_near)
 "qFO" = (
@@ -19201,7 +19544,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/interior/comms1)
 "qMr" = (
@@ -19220,15 +19564,6 @@
 /area/varadero/interior/medical)
 "qMD" = (
 /obj/structure/surface/table/reinforced/prison,
-/obj/item/device/cassette_tape/nam{
-	pixel_x = 3;
-	pixel_y = 9
-	},
-/obj/item/device/cassette_tape/ocean{
-	pixel_x = 6;
-	pixel_y = 4
-	},
-/obj/item/device/cassette_tape/pop2,
 /turf/open/floor/shiva{
 	dir = 8;
 	icon_state = "purplefull"
@@ -19390,8 +19725,12 @@
 	},
 /area/varadero/interior/maintenance)
 "qQN" = (
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice8";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -19534,7 +19873,8 @@
 /area/varadero/interior/mess)
 "qXM" = (
 /obj/structure/machinery/light{
-	dir = 4
+	dir = 4;
+	tag = "icon-tube1 (EAST)"
 	},
 /obj/structure/sink{
 	dir = 1;
@@ -19583,7 +19923,8 @@
 "qZH" = (
 /obj/structure/machinery/conveyor_switch,
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /turf/open/floor/shiva{
 	dir = 8;
@@ -19600,7 +19941,7 @@
 	icon_state = "sparsegrass_3"
 	},
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "rbd" = (
 /obj/item/stack/sheet/wood/small_stack,
 /turf/open/floor/plating/icefloor{
@@ -19633,12 +19974,13 @@
 	},
 /area/varadero/interior_protected/vessel)
 "rcq" = (
-/obj/structure/machinery/cm_vending/sorted/medical/wall_med/limited,
+/obj/structure/machinery/cm_vending/sorted/medical/wall_med,
 /turf/closed/wall,
 /area/varadero/interior/medical)
 "rcA" = (
 /obj/structure/bed/chair/office/light{
-	dir = 4
+	dir = 4;
+	tag = "icon-officechair_white (EAST)"
 	},
 /turf/open/floor/shiva{
 	dir = 6;
@@ -19688,7 +20030,8 @@
 /area/varadero/interior_protected/vessel)
 "reG" = (
 /turf/closed/wall/r_wall/elevator{
-	dir = 10
+	dir = 10;
+	tag = "icon-wall (SOUTHWEST)"
 	},
 /area/varadero/interior/hall_N)
 "rfn" = (
@@ -19746,7 +20089,8 @@
 /obj/structure/surface/table,
 /turf/open/floor{
 	dir = 4;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (WEST)"
 	},
 /area/varadero/exterior/lz1_near)
 "ria" = (
@@ -19779,7 +20123,8 @@
 /area/varadero/interior/oob)
 "rjn" = (
 /turf/closed/wall/r_wall/elevator{
-	dir = 6
+	dir = 6;
+	tag = "icon-wall (SOUTHEAST)"
 	},
 /area/varadero/interior/records)
 "rjo" = (
@@ -19941,12 +20286,6 @@
 	icon_state = "asteroidplating"
 	},
 /area/varadero/interior/electrical)
-"rpT" = (
-/obj/item/ammo_casing/shell{
-	icon_state = "shell_9_1"
-	},
-/turf/open/floor/wood,
-/area/varadero/interior/security)
 "rqe" = (
 /obj/structure/sign/safety/bulkhead_door,
 /obj/structure/machinery/door_control/brbutton{
@@ -19984,17 +20323,20 @@
 "rrp" = (
 /obj/item/paper_bin,
 /obj/item/tool/stamp{
-	icon_state = "stamp-ce"
+	icon_state = "stamp-ce";
+	tag = "icon-stamp-ce"
 	},
 /obj/structure/surface/table/reinforced/prison,
 /obj/structure/window/reinforced/tinted{
-	dir = 8
+	dir = 8;
+	tag = "icon-twindow (WEST)"
 	},
 /turf/open/floor/wood,
 /area/varadero/interior/records)
 "rrr" = (
 /obj/structure/machinery/power/terminal{
-	dir = 4
+	dir = 4;
+	tag = "icon-term (EAST)"
 	},
 /turf/open/floor/plating/icefloor{
 	icon_state = "asteroidplating"
@@ -20002,7 +20344,8 @@
 /area/varadero/interior/electrical)
 "rrA" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /turf/open/floor/shiva{
 	dir = 1;
@@ -20101,8 +20444,12 @@
 /obj/structure/pipes/vents/pump{
 	dir = 4
 	},
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice12";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -20150,10 +20497,12 @@
 /area/varadero/interior/maintenance)
 "rwh" = (
 /obj/structure/bed/chair/office/dark{
-	dir = 4
+	dir = 4;
+	tag = "icon-officechair_dark (EAST)"
 	},
 /obj/structure/window/reinforced/tinted{
-	dir = 8
+	dir = 8;
+	tag = "icon-twindow (WEST)"
 	},
 /obj/structure/machinery/light,
 /turf/open/floor/shiva{
@@ -20187,8 +20536,12 @@
 	},
 /area/varadero/interior/medical)
 "rwV" = (
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice12";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -20227,10 +20580,6 @@
 	icon_state = "wred"
 	},
 /area/varadero/interior/medical)
-"rxO" = (
-/obj/structure/prop/rock/brown,
-/turf/open/gm/river/ocean,
-/area/varadero/exterior/eastbeach)
 "ryD" = (
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior/maintenance/security)
@@ -20304,7 +20653,7 @@
 "rBz" = (
 /obj/structure/prop/rock/brown_degree,
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "rBP" = (
 /turf/open/floor/shiva{
 	dir = 8;
@@ -20331,9 +20680,6 @@
 "rDz" = (
 /obj/structure/bed/chair/comfy/orange{
 	dir = 8
-	},
-/obj/item/ammo_casing/shell{
-	icon_state = "cartridge_3_1"
 	},
 /turf/open/floor/plating/icefloor{
 	icon_state = "asteroidplating"
@@ -20362,10 +20708,6 @@
 	icon_state = "wred"
 	},
 /area/varadero/interior/medical)
-"rFd" = (
-/obj/structure/blocker/forcefield/multitile_vehicles,
-/turf/open/auto_turf/sand_white/layer1,
-/area/varadero/interior/caves/east)
 "rFD" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/paper_bin{
@@ -20418,7 +20760,8 @@
 /area/varadero/interior/hall_N)
 "rHQ" = (
 /obj/structure/machinery/light{
-	dir = 8
+	dir = 8;
+	tag = "icon-tube1 (WEST)"
 	},
 /turf/open/floor/shiva{
 	dir = 8;
@@ -20658,7 +21001,8 @@
 /obj/effect/decal/cleanable/blood/drip,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "rSI" = (
@@ -20727,7 +21071,8 @@
 /area/varadero/interior/electrical)
 "rTT" = (
 /obj/structure/disposaloutlet{
-	dir = 4
+	dir = 4;
+	tag = "icon-outlet (EAST)"
 	},
 /obj/structure/disposalpipe/trunk{
 	dir = 1
@@ -20751,16 +21096,6 @@
 	icon_state = "floor3"
 	},
 /area/varadero/interior/administration)
-"rVZ" = (
-/obj/structure/prop/invuln/lattice_prop{
-	icon_state = "lattice4";
-	pixel_x = -16;
-	pixel_y = 24
-	},
-/turf/open/floor/plating/icefloor{
-	icon_state = "asteroidplating"
-	},
-/area/varadero/interior/maintenance)
 "rWx" = (
 /obj/structure/sink{
 	dir = 1;
@@ -20785,7 +21120,7 @@
 /area/varadero/interior/research)
 "rWN" = (
 /obj/structure/flora/bush/ausbushes/var3/ywflowers,
-/turf/open/gm/grass/weedable,
+/turf/open/gm/grass,
 /area/varadero/interior_protected/caves/central)
 "rWX" = (
 /obj/structure/pipes/standard/simple/hidden/green{
@@ -20825,15 +21160,29 @@
 "rZA" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/structure/barricade/wooden,
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
 	pixel_x = 12;
-	pixel_y = 13
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
-/obj/structure/prop/invuln/overhead_pipe{
+/obj/structure{
 	dir = 4;
+	health = 150;
+	icon = 'icons/obj/pipes/pipes.dmi';
+	icon_state = "intact-scrubbers";
+	indestructible = 1;
+	layer = 4.5;
 	pixel_x = -16;
-	pixel_y = 13
+	pixel_y = 13;
+	projectile_coverage = 0;
+	unacidable = 1
 	},
 /turf/open/floor/shiva{
 	icon_state = "snow_mat"
@@ -21011,7 +21360,7 @@
 	icon_state = "sparsegrass_2"
 	},
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "sgq" = (
 /obj/structure/pipes/vents/pump{
 	dir = 4
@@ -21061,11 +21410,13 @@
 "shO" = (
 /obj/structure/fence,
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "N";
-	pixel_y = 1
+	pixel_y = 1;
+	tag = "icon-N"
 	},
 /turf/open/floor/plating,
 /area/varadero/interior_protected/caves/digsite)
@@ -21236,11 +21587,12 @@
 "sqZ" = (
 /obj/structure/flora/bush/ausbushes/var3/sparsegrass,
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "sre" = (
 /obj/structure/filingcabinet,
 /obj/structure/machinery/light/small{
-	dir = 8
+	dir = 8;
+	tag = "icon-bulb1 (WEST)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "floor3"
@@ -21276,7 +21628,8 @@
 /area/varadero/exterior/lz1_near)
 "srW" = (
 /turf/closed/wall/r_wall/elevator{
-	dir = 4
+	dir = 4;
+	tag = "icon-wall (EAST)"
 	},
 /area/varadero/interior/hall_N)
 "srX" = (
@@ -21319,11 +21672,13 @@
 "ssv" = (
 /obj/effect/landmark/hunter_secondary,
 /obj/structure/machinery/landinglight/ds2/delaythree{
-	dir = 4
+	dir = 4;
+	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "stv" = (
@@ -21337,7 +21692,8 @@
 "stC" = (
 /obj/structure/bigDelivery,
 /turf/open/floor{
-	icon_state = "freezerfloor"
+	icon_state = "freezerfloor";
+	tag = "icon-freezerfloor"
 	},
 /area/varadero/interior/cargo)
 "stV" = (
@@ -21470,7 +21826,8 @@
 /area/varadero/interior/technical_storage)
 "szh" = (
 /turf/closed/wall/r_wall/elevator{
-	dir = 4
+	dir = 4;
+	tag = "icon-wall (EAST)"
 	},
 /area/varadero/interior/records)
 "szw" = (
@@ -21661,10 +22018,13 @@
 	},
 /area/varadero/interior/maintenance)
 "sHV" = (
-/obj/structure/machinery/landinglight/ds2/delaytwo,
+/obj/structure/machinery/landinglight/ds2/delaytwo{
+	tag = "icon-landingstripe"
+	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "sIf" = (
@@ -21756,7 +22116,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "darkgreencorners2"
+	icon_state = "darkgreencorners2";
+	tag = "icon-darkgreencorners2 (NORTH)"
 	},
 /area/varadero/interior/hall_SE)
 "sJZ" = (
@@ -21926,7 +22287,8 @@
 /obj/structure/surface/table,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "sSZ" = (
@@ -22005,7 +22367,7 @@
 	dir = 8
 	},
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "tbN" = (
 /obj/structure/prop/invuln/minecart_tracks{
 	dir = 1
@@ -22025,7 +22387,8 @@
 "tbQ" = (
 /obj/structure/reagent_dispensers/water_cooler,
 /obj/structure/machinery/light{
-	dir = 1
+	dir = 1;
+	tag = "icon-tube1 (NORTH)"
 	},
 /turf/open/floor/shiva{
 	dir = 1;
@@ -22053,7 +22416,8 @@
 /area/varadero/interior/technical_storage)
 "tcS" = (
 /obj/structure/machinery/light{
-	dir = 4
+	dir = 4;
+	tag = "icon-tube1 (EAST)"
 	},
 /obj/structure/pipes/vents/pump,
 /turf/open/floor{
@@ -22064,7 +22428,8 @@
 /obj/structure/largecrate/random/mini/chest,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/interior/comms3)
 "tdy" = (
@@ -22159,7 +22524,8 @@
 "tju" = (
 /obj/structure/fence,
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /obj/structure/sign/safety/high_voltage{
 	pixel_x = 11
@@ -22385,7 +22751,8 @@
 "tvv" = (
 /obj/structure/disposalpipe/segment{
 	dir = 1;
-	icon_state = "pipe-c"
+	icon_state = "pipe-c";
+	tag = "icon-pipe-c (NORTH)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "multi_tiles"
@@ -22420,7 +22787,7 @@
 /turf/open/gm/coast{
 	icon_state = "beachcorner"
 	},
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "tyc" = (
 /obj/structure/platform_decoration/kutjevo,
 /turf/open/gm/river,
@@ -22477,7 +22844,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "tBC" = (
@@ -22486,7 +22854,7 @@
 	icon_state = "sparsegrass_3"
 	},
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "tCG" = (
 /obj/structure/surface/rack,
 /obj/effect/spawner/random/toolbox,
@@ -22527,7 +22895,8 @@
 	dir = 4
 	},
 /turf/open/floor{
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (WEST)"
 	},
 /area/varadero/interior/comms1)
 "tEH" = (
@@ -22566,7 +22935,8 @@
 /area/varadero/interior/medical)
 "tGV" = (
 /turf/closed/wall/r_wall/elevator{
-	dir = 1
+	dir = 1;
+	tag = "icon-wall (NORTH)"
 	},
 /area/varadero/interior/hall_N)
 "tIT" = (
@@ -22584,7 +22954,8 @@
 	dir = 2;
 	icon_state = "leftsecure";
 	id = "brg";
-	name = "Security Desk"
+	name = "Security Desk";
+	tag = "icon-leftsecure (NORTH)"
 	},
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/structure/machinery/door/window/northright{
@@ -22609,10 +22980,12 @@
 "tKr" = (
 /obj/structure/machinery/light,
 /obj/structure/bed/chair/office/dark{
-	dir = 4
+	dir = 4;
+	tag = "icon-officechair_dark (EAST)"
 	},
 /obj/structure/window/reinforced/tinted{
-	dir = 8
+	dir = 8;
+	tag = "icon-twindow (WEST)"
 	},
 /turf/open/floor/shiva{
 	dir = 8;
@@ -22687,7 +23060,8 @@
 	pixel_x = -8
 	},
 /obj/structure/machinery/light{
-	dir = 8
+	dir = 8;
+	tag = "icon-tube1 (WEST)"
 	},
 /obj/effect/decal/strata_decals/grime/grime3{
 	dir = 4
@@ -22751,7 +23125,8 @@
 "tPL" = (
 /obj/structure/disposalpipe/segment{
 	dir = 1;
-	icon_state = "pipe-c"
+	icon_state = "pipe-c";
+	tag = "icon-pipe-c (NORTH)"
 	},
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/shiva{
@@ -22785,10 +23160,6 @@
 /area/varadero/interior/medical)
 "tQI" = (
 /obj/structure/pipes/standard/simple/hidden/green,
-/obj/item/ammo_casing{
-	dir = 8;
-	icon_state = "cartridge_2"
-	},
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -22811,8 +23182,12 @@
 /area/varadero/interior/medical)
 "tRu" = (
 /obj/structure/pipes/standard/simple/hidden/green,
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice8";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -22863,7 +23238,8 @@
 /area/varadero/interior/disposals)
 "tUd" = (
 /obj/structure/bed/chair/office/dark{
-	dir = 8
+	dir = 8;
+	tag = "icon-officechair_dark (WEST)"
 	},
 /obj/structure/window/reinforced/tinted{
 	dir = 4
@@ -22918,7 +23294,8 @@
 /area/varadero/interior/maintenance/security)
 "tXg" = (
 /obj/structure/disposalpipe/trunk{
-	dir = 8
+	dir = 8;
+	tag = "icon-pipe-t (WEST)"
 	},
 /obj/structure/machinery/disposal,
 /obj/structure/machinery/light{
@@ -22944,10 +23321,12 @@
 "tXT" = (
 /obj/structure/fence,
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S"
+	icon_state = "S";
+	tag = "icon-S"
 	},
 /turf/open/floor/plating,
 /area/varadero/interior_protected/caves/digsite)
@@ -22970,6 +23349,9 @@
 	icon_state = "asteroidplating"
 	},
 /area/varadero/interior/maintenance)
+"tZd" = (
+/turf/closed/wall/r_wall,
+/area/varadero/interior/toilets)
 "tZr" = (
 /obj/item/toy/deck/uno{
 	pixel_y = 6
@@ -22977,7 +23359,8 @@
 /obj/structure/surface/table,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "tZE" = (
@@ -22990,17 +23373,20 @@
 "uaU" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "NE-out";
-	pixel_y = 1
+	pixel_y = 1;
+	tag = "icon-NE-out"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/caves/digsite)
 "uaV" = (
 /obj/structure/machinery/landinglight/ds2/delayone{
-	dir = 8
+	dir = 8;
+	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "ubn" = (
@@ -23040,7 +23426,8 @@
 "ubT" = (
 /obj/structure/machinery/disposal,
 /obj/structure/disposalpipe/trunk{
-	dir = 8
+	dir = 8;
+	tag = "icon-pipe-t (WEST)"
 	},
 /obj/structure/machinery/firealarm{
 	pixel_y = 24
@@ -23060,9 +23447,6 @@
 	icon_state = "purple"
 	},
 /area/varadero/interior/research)
-"ucx" = (
-/turf/open/gm/river/ocean,
-/area/varadero/exterior/eastocean)
 "udg" = (
 /obj/structure/closet/secure_closet/engineering_welding,
 /obj/effect/landmark/objective_landmark/medium,
@@ -23121,7 +23505,8 @@
 /obj/structure/surface/table,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "ufH" = (
@@ -23173,7 +23558,8 @@
 /obj/item/trash/boonie,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "uhW" = (
@@ -23474,7 +23860,8 @@
 	req_access_txt = "100"
 	},
 /turf/open/floor{
-	icon_state = "dark2"
+	icon_state = "dark2";
+	tag = "icon-dark2"
 	},
 /area/varadero/interior/morgue)
 "uvB" = (
@@ -23488,8 +23875,12 @@
 "uvG" = (
 /obj/structure/surface/table,
 /obj/item/tool/kitchen/utensil/knife,
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice12";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -23655,7 +24046,8 @@
 /area/varadero/interior/hall_N)
 "uDQ" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /turf/open/floor/shiva{
 	icon_state = "multi_tiles"
@@ -23711,11 +24103,13 @@
 "uFE" = (
 /obj/effect/decal/cleanable/blood/oil,
 /obj/structure/machinery/landinglight/ds2/delaythree{
-	dir = 4
+	dir = 4;
+	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "uFI" = (
@@ -23733,7 +24127,8 @@
 /area/varadero/interior/security)
 "uGf" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "N"
+	icon_state = "N";
+	tag = "icon-N"
 	},
 /turf/open/floor/shiva{
 	dir = 4;
@@ -23808,7 +24203,9 @@
 /obj/structure/barricade/handrail/wire{
 	layer = 3.1
 	},
-/obj/item/ammo_magazine/handful/shotgun/incendiary,
+/obj/item/ammo_magazine/handful/shotgun/incendiary{
+	unacidable = 1
+	},
 /turf/open/floor/wood,
 /area/varadero/interior/bunks)
 "uIl" = (
@@ -23930,7 +24327,8 @@
 /obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "uNJ" = (
@@ -24023,7 +24421,7 @@
 	dir = 1
 	},
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "uRU" = (
 /turf/closed/wall/r_wall/elevator,
 /area/varadero/interior/hall_N)
@@ -24056,7 +24454,8 @@
 /area/varadero/interior/medical)
 "uTZ" = (
 /obj/structure/pipes/standard/manifold/visible{
-	dir = 1
+	dir = 1;
+	tag = "icon-map (NORTH)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "multi_tiles"
@@ -24102,9 +24501,22 @@
 	},
 /area/varadero/interior/medical)
 "uVo" = (
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice4";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = -16;
+	pixel_y = 24
+	},
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
+	icon_state = "lattice12";
+	layer = 5.1;
+	name = "overhead lattice";
+	pixel_x = 16;
 	pixel_y = 24
 	},
 /turf/open/floor/plating/icefloor{
@@ -24114,7 +24526,8 @@
 "uVu" = (
 /obj/structure/disposalpipe/segment{
 	dir = 1;
-	icon_state = "pipe-c"
+	icon_state = "pipe-c";
+	tag = "icon-pipe-c (NORTH)"
 	},
 /turf/open/floor/carpet,
 /area/varadero/interior/hall_SE)
@@ -24200,7 +24613,8 @@
 /area/varadero/interior/hall_SE)
 "uZa" = (
 /obj/structure/machinery/light{
-	dir = 4
+	dir = 4;
+	tag = "icon-tube1 (EAST)"
 	},
 /turf/open/floor/plating/icefloor{
 	icon_state = "asteroidplating"
@@ -24237,7 +24651,7 @@
 /turf/open/gm/coast{
 	dir = 1
 	},
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "vaV" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/device/flashlight/lamp/green{
@@ -24369,7 +24783,8 @@
 	pixel_y = -16
 	},
 /obj/structure/holohoop{
-	dir = 8
+	dir = 8;
+	tag = "icon-hoop (NORTH)"
 	},
 /obj/structure/desertdam/decals/road_edge{
 	pixel_x = 16
@@ -24379,17 +24794,7 @@
 	},
 /turf/open/floor/wood,
 /area/varadero/interior/court)
-"vfG" = (
-/obj/effect/landmark/railgun_camera_pos,
-/turf/open/floor{
-	dir = 8;
-	icon_state = "asteroidwarning"
-	},
-/area/varadero/exterior/lz1_near)
 "vfS" = (
-/obj/item/ammo_casing/shell{
-	icon_state = "cartridge_1_1"
-	},
 /obj/item/weapon/gun/pistol/m1911,
 /turf/open/floor/plating/icefloor{
 	icon_state = "asteroidplating"
@@ -24429,7 +24834,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "vio" = (
@@ -24476,7 +24882,8 @@
 "vjv" = (
 /obj/structure/closet/crate/freezer/rations,
 /turf/open/floor{
-	icon_state = "freezerfloor"
+	icon_state = "freezerfloor";
+	tag = "icon-freezerfloor"
 	},
 /area/varadero/interior/cargo)
 "vjA" = (
@@ -24485,7 +24892,8 @@
 	dir = 8
 	},
 /turf/open/floor{
-	icon_state = "freezerfloor"
+	icon_state = "freezerfloor";
+	tag = "icon-freezerfloor"
 	},
 /area/varadero/interior/cargo)
 "vku" = (
@@ -24591,7 +24999,8 @@
 /area/varadero/interior/security)
 "vqw" = (
 /obj/structure/bed/chair/office/dark{
-	dir = 1
+	dir = 1;
+	tag = "icon-officechair_dark (NORTH)"
 	},
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/shiva{
@@ -24632,7 +25041,7 @@
 "vrp" = (
 /obj/structure/prop/rock/brown,
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "vrw" = (
 /obj/structure/machinery/conveyor,
 /turf/open/floor/plating,
@@ -24643,7 +25052,7 @@
 	},
 /obj/structure/platform/kutjevo/smooth,
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "vsJ" = (
 /obj/structure/machinery/light{
 	dir = 4
@@ -24692,7 +25101,8 @@
 /area/varadero/interior/security)
 "vui" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /obj/effect/landmark/corpsespawner/colonist/random/burst,
 /turf/open/floor/shiva{
@@ -24726,8 +25136,21 @@
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
+	icon_state = "lattice1";
+	layer = 5.1;
+	name = "overhead lattice";
+	pixel_x = 16;
+	pixel_y = -8
+	},
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice3";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -24890,10 +25313,12 @@
 /area/varadero/interior/administration)
 "vBZ" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S"
+	icon_state = "S";
+	tag = "icon-S"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/caves/digsite)
@@ -24925,7 +25350,8 @@
 "vDr" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/structure/machinery/light/small{
-	dir = 4
+	dir = 4;
+	tag = "icon-bulb1 (EAST)"
 	},
 /turf/open/floor/plating/icefloor{
 	icon_state = "asteroidplating"
@@ -25032,10 +25458,6 @@
 	pixel_x = -4;
 	pixel_y = 4
 	},
-/obj/item/tool/lighter/zippo/fluff{
-	pixel_x = 7;
-	pixel_y = 2
-	},
 /obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/shiva{
 	dir = 8;
@@ -25058,7 +25480,8 @@
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/structure/disposalpipe/segment{
 	dir = 1;
-	icon_state = "pipe-c"
+	icon_state = "pipe-c";
+	tag = "icon-pipe-c (NORTH)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "multi_tiles"
@@ -25150,7 +25573,8 @@
 /obj/item/attachable/magnetic_harness,
 /obj/item/storage/large_holster/m37/full,
 /obj/structure/machinery/light{
-	dir = 4
+	dir = 4;
+	tag = "icon-tube1 (EAST)"
 	},
 /turf/open/floor/wood,
 /area/varadero/interior/security)
@@ -25161,12 +25585,6 @@
 	icon_state = "floor3"
 	},
 /area/varadero/interior/mess)
-"vPK" = (
-/obj/item/ammo_casing{
-	icon_state = "casing_8"
-	},
-/turf/open/floor/wood,
-/area/varadero/interior/hall_SE)
 "vPY" = (
 /obj/structure/surface/table/woodentable,
 /obj/item/device/flashlight/lamp/candelabra{
@@ -25225,7 +25643,8 @@
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "NW-out";
-	pixel_y = 1
+	pixel_y = 1;
+	tag = "icon-NW-out"
 	},
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior_protected/caves/digsite)
@@ -25282,7 +25701,8 @@
 /area/varadero/interior/research)
 "vTq" = (
 /turf/open/floor/plating/icefloor{
-	icon_state = "warnplate"
+	icon_state = "warnplate";
+	tag = "icon-warnplate"
 	},
 /area/varadero/exterior/lz1_near)
 "vUi" = (
@@ -25313,7 +25733,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "vUZ" = (
@@ -25398,7 +25819,8 @@
 "vZv" = (
 /obj/structure/toilet,
 /obj/structure/machinery/light/small{
-	dir = 1
+	dir = 1;
+	tag = "icon-bulb1 (NORTH)"
 	},
 /turf/open/floor{
 	icon_state = "white"
@@ -25431,7 +25853,8 @@
 "waP" = (
 /turf/open/floor/plating/icefloor{
 	dir = 4;
-	icon_state = "warnplate"
+	icon_state = "warnplate";
+	tag = "icon-warnplate (EAST)"
 	},
 /area/varadero/exterior/lz1_near)
 "wba" = (
@@ -25512,7 +25935,8 @@
 "wdx" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/structure/bed/chair/office/light{
-	dir = 4
+	dir = 4;
+	tag = "icon-officechair_white (EAST)"
 	},
 /turf/open/floor/shiva{
 	dir = 1;
@@ -25620,7 +26044,8 @@
 /area/varadero/interior_protected/caves)
 "wjB" = (
 /turf/open/floor{
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (WEST)"
 	},
 /area/varadero/interior/comms1)
 "wjG" = (
@@ -25643,11 +26068,6 @@
 	},
 /turf/open/floor/wood,
 /area/varadero/interior/records)
-"wku" = (
-/turf/open/floor/plating/icefloor{
-	icon_state = "asteroidplating"
-	},
-/area/varadero/interior_protected/maintenance/south)
 "wkC" = (
 /obj/item/stack/cable_coil/cut{
 	pixel_x = 6;
@@ -25816,7 +26236,8 @@
 /area/varadero/interior/technical_storage)
 "wpi" = (
 /obj/structure/bed/chair/office/dark{
-	dir = 8
+	dir = 8;
+	tag = "icon-officechair_dark (WEST)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "floor3"
@@ -25928,10 +26349,12 @@
 	icon_state = "phoronrwindow"
 	},
 /obj/structure/shuttle/engine/heater{
-	dir = 4
+	dir = 4;
+	tag = "icon-heater (EAST)"
 	},
 /obj/structure/shuttle/engine/heater{
-	dir = 8
+	dir = 8;
+	tag = "icon-heater (WEST)"
 	},
 /obj/item/device/flashlight/slime,
 /obj/structure/window/phoronreinforced{
@@ -26002,7 +26425,8 @@
 /obj/structure/closet/crate/freezer,
 /obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
-	icon_state = "freezerfloor"
+	icon_state = "freezerfloor";
+	tag = "icon-freezerfloor"
 	},
 /area/varadero/interior/cargo)
 "wwd" = (
@@ -26075,7 +26499,8 @@
 /obj/structure/machinery/floodlight/landing/floor,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "wCE" = (
@@ -26105,7 +26530,8 @@
 /area/varadero/exterior/lz1_near)
 "wDG" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "W"
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /turf/open/floor/shiva{
 	dir = 1
@@ -26154,7 +26580,8 @@
 /area/varadero/interior/cargo)
 "wGV" = (
 /obj/structure/machinery/light/small{
-	dir = 8
+	dir = 8;
+	tag = "icon-bulb1 (WEST)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "floor3"
@@ -26257,7 +26684,8 @@
 "wMw" = (
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "wMx" = (
@@ -26310,8 +26738,12 @@
 /area/varadero/interior/electrical)
 "wOQ" = (
 /obj/structure/pipes/standard/simple/hidden/green,
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice8";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = 24
 	},
@@ -26462,7 +26894,8 @@
 	dir = 2;
 	icon_state = "leftsecure";
 	id = "brg";
-	name = "Security Desk"
+	name = "Security Desk";
+	tag = "icon-leftsecure (NORTH)"
 	},
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/structure/machinery/door/window/northright{
@@ -26561,7 +26994,8 @@
 	dir = 1
 	},
 /obj/structure/window/reinforced/tinted{
-	dir = 8
+	dir = 8;
+	tag = "icon-twindow (WEST)"
 	},
 /turf/open/floor/shiva{
 	icon_state = "multi_tiles"
@@ -26656,7 +27090,7 @@
 	dir = 4;
 	icon_state = "beachcorner2"
 	},
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "xgU" = (
 /obj/structure/prop/structure_lattice{
 	dir = 1;
@@ -26715,7 +27149,8 @@
 /area/varadero/interior/maintenance/security)
 "xhs" = (
 /obj/structure/machinery/light/small{
-	dir = 8
+	dir = 8;
+	tag = "icon-bulb1 (WEST)"
 	},
 /turf/open/floor/shiva{
 	dir = 8;
@@ -26876,7 +27311,8 @@
 "xqP" = (
 /obj/structure/disposalpipe/segment{
 	dir = 1;
-	icon_state = "pipe-c"
+	icon_state = "pipe-c";
+	tag = "icon-pipe-c (NORTH)"
 	},
 /obj/structure/flora/pottedplant{
 	icon_state = "pottedplant_22"
@@ -26919,11 +27355,13 @@
 /area/varadero/exterior/lz1_near)
 "xsH" = (
 /obj/structure/machinery/landinglight/ds2/delaythree{
-	dir = 1
+	dir = 1;
+	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "xtD" = (
@@ -26954,7 +27392,8 @@
 /area/varadero/interior/hall_N)
 "xuN" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S"
+	icon_state = "S";
+	tag = "icon-S"
 	},
 /turf/open/floor/shiva{
 	icon_state = "yellowcorners"
@@ -27159,16 +27598,30 @@
 /obj/structure/largecrate/random/case/small,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "xCn" = (
 /turf/open/auto_turf/sand_white/layer1,
 /area/varadero/interior/caves/north_research)
 "xCq" = (
-/obj/structure/prop/invuln/lattice_prop{
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice4";
+	layer = 5.1;
+	name = "overhead lattice";
 	pixel_x = -16;
+	pixel_y = 24
+	},
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
+	icon_state = "lattice12";
+	layer = 5.1;
+	name = "overhead lattice";
+	pixel_x = 16;
 	pixel_y = 24
 	},
 /turf/open/auto_turf/sand_white/layer1,
@@ -27245,7 +27698,7 @@
 	icon_state = "sparsegrass_3"
 	},
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "xGp" = (
 /turf/open/floor/wood{
 	icon_state = "wood-broken6"
@@ -27257,7 +27710,7 @@
 /area/varadero/interior/records)
 "xGV" = (
 /obj/structure/flora/bush/ausbushes/var3/fullgrass,
-/turf/open/gm/grass/weedable,
+/turf/open/gm/grass,
 /area/varadero/interior_protected/caves/central)
 "xHt" = (
 /obj/structure/desertdam/decals/road_edge{
@@ -27288,7 +27741,8 @@
 "xJx" = (
 /obj/structure/machinery/photocopier,
 /obj/structure/machinery/light{
-	dir = 1
+	dir = 1;
+	tag = "icon-tube1 (NORTH)"
 	},
 /turf/open/floor/shiva{
 	dir = 1;
@@ -27468,7 +27922,8 @@
 /area/varadero/exterior/lz1_near)
 "xPj" = (
 /obj/structure/machinery/light{
-	dir = 8
+	dir = 8;
+	tag = "icon-tube1 (WEST)"
 	},
 /turf/open/floor/shiva{
 	dir = 8;
@@ -27585,7 +28040,8 @@
 /obj/structure/reagent_dispensers/fueltank,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/interior/maintenance/north)
 "xWj" = (
@@ -27605,7 +28061,7 @@
 	dir = 8
 	},
 /turf/open/gm/dirt,
-/area/varadero/exterior/eastbeach)
+/area/varadero/interior/oob)
 "xWY" = (
 /turf/open/floor/shiva{
 	icon_state = "green"
@@ -27746,19 +28202,6 @@
 	icon_state = "purplefull"
 	},
 /area/varadero/interior/research)
-"ybj" = (
-/obj/structure/pipes/standard/simple/hidden/green{
-	dir = 4
-	},
-/obj/structure/prop/invuln/lattice_prop{
-	icon_state = "lattice1";
-	pixel_x = -16;
-	pixel_y = -8
-	},
-/turf/open/floor/plating/icefloor{
-	icon_state = "asteroidplating"
-	},
-/area/varadero/interior/maintenance/research)
 "ybm" = (
 /obj/structure/surface/table/woodentable,
 /obj/item/device/flashlight/lamp,
@@ -27792,7 +28235,7 @@
 /turf/open/floor/interior/plastic,
 /area/varadero/interior/security)
 "ydy" = (
-/obj/structure/machinery/cm_vending/sorted/medical/wall_med/limited,
+/obj/structure/machinery/cm_vending/sorted/medical/wall_med,
 /turf/closed/wall/r_wall/unmeltable,
 /area/varadero/exterior/lz1_near)
 "ydI" = (
@@ -27895,15 +28338,18 @@
 	icon_state = "1-4-8"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S"
+	icon_state = "S";
+	tag = "icon-S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "NW-out";
-	pixel_y = 1
+	pixel_y = 1;
+	tag = "icon-NW-out"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "NE-out";
-	pixel_y = 1
+	pixel_y = 1;
+	tag = "icon-NE-out"
 	},
 /turf/open/floor/plating,
 /area/varadero/interior_protected/caves/digsite)
@@ -27927,16 +28373,19 @@
 /obj/structure/surface/table,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "ygZ" = (
 /obj/structure/machinery/landinglight/ds2/delaythree{
-	dir = 4
+	dir = 4;
+	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/varadero/exterior/lz1_near)
 "yhy" = (
@@ -27966,7 +28415,8 @@
 "yiA" = (
 /obj/structure/disposalpipe/segment{
 	dir = 1;
-	icon_state = "pipe-c"
+	icon_state = "pipe-c";
+	tag = "icon-pipe-c (NORTH)"
 	},
 /obj/structure/pipes/standard/manifold/hidden/green{
 	dir = 8
@@ -27987,7 +28437,8 @@
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/structure/disposalpipe/segment{
 	dir = 1;
-	icon_state = "pipe-c"
+	icon_state = "pipe-c";
+	tag = "icon-pipe-c (NORTH)"
 	},
 /turf/open/floor/shiva{
 	dir = 1;
@@ -28298,30 +28749,30 @@ pGs
 pGs
 pGs
 pGs
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
 pGs
 pGs
 pGs
@@ -28480,30 +28931,30 @@ pGs
 pGs
 pGs
 pGs
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 pGs
 aFr
 pGs
@@ -28662,30 +29113,30 @@ pGs
 pGs
 pGs
 pGs
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 pGs
 pGs
 pGs
@@ -28844,30 +29295,30 @@ pGs
 pGs
 pGs
 pGs
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 pGs
 pGs
 pGs
@@ -29026,30 +29477,30 @@ pGs
 pGs
 pGs
 pGs
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 pGs
 qhd
 pGs
@@ -29208,30 +29659,30 @@ pGs
 pGs
 pGs
 pGs
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-pHX
-cBu
-cBu
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+emx
+lVM
+lVM
 pGs
 pGs
 pGs
@@ -29390,31 +29841,31 @@ pGs
 pGs
 pGs
 pGs
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-pHX
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+emx
 pGs
 pGs
 pGs
@@ -29572,32 +30023,32 @@ pGs
 pGs
 pGs
 pGs
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-pHX
-cBu
-pHX
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+emx
+lVM
+emx
 pGs
 qhd
 pGs
@@ -29754,33 +30205,33 @@ pGs
 pGs
 pGs
 pGs
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-pHX
-pHX
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+emx
+emx
 pGs
 pGs
 pGs
@@ -29936,33 +30387,33 @@ pGs
 pGs
 pGs
 pGs
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-pHX
-cBu
-cBu
-pHX
-pHX
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+emx
+lVM
+lVM
+emx
+emx
 pGs
 pGs
 pGs
@@ -29989,7 +30440,7 @@ kXQ
 efw
 kXQ
 kXQ
-fND
+efw
 xCq
 kXQ
 efw
@@ -30118,33 +30569,33 @@ pGs
 pGs
 pGs
 pGs
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-pHX
-pHX
-pHX
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+emx
+emx
+emx
 pGs
 pGs
 pGs
@@ -30300,33 +30751,33 @@ pGs
 pGs
 pGs
 pGs
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-pHX
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+emx
 pGs
 qhd
 pGs
@@ -30482,31 +30933,31 @@ pGs
 pGs
 pGs
 pGs
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
 lVM
 lVM
-pHX
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+emx
 lVM
 emx
 emx
@@ -30532,7 +30983,7 @@ qul
 qul
 yks
 efw
-kYN
+efw
 yks
 aHs
 fla
@@ -30664,27 +31115,27 @@ pGs
 pGs
 pGs
 pGs
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 lVM
 lVM
 lVM
@@ -30846,26 +31297,26 @@ pGs
 pGs
 pGs
 pGs
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
 lVM
-cBu
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 lVM
 lVM
 emx
@@ -30876,22 +31327,22 @@ jhW
 jhW
 efw
 efw
-fND
+efw
 uVo
 kXQ
 kXQ
 efw
-fND
+efw
 uVo
 kXQ
 efw
-fND
+efw
 xCq
 kXQ
 kXQ
 neJ
 efw
-fND
+efw
 uVo
 efw
 efw
@@ -31028,24 +31479,24 @@ pGs
 pGs
 pGs
 pGs
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 lVM
 lVM
 lVM
@@ -31210,23 +31661,23 @@ pGs
 pGs
 pGs
 pGs
-pHX
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
+emx
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 lVM
 lVM
 lVM
@@ -31392,21 +31843,21 @@ pGs
 pGs
 pGs
 pGs
-cBu
-pHX
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
+lVM
+emx
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 lVM
 lVM
 lVM
@@ -31574,24 +32025,24 @@ pGs
 pGs
 pGs
 pGs
-pHX
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
-cBu
+emx
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 lVM
 lVM
 woP
@@ -31756,22 +32207,22 @@ pGs
 pGs
 qhd
 pGs
-cBu
 lVM
-cBu
-cBu
 lVM
-cBu
-cBu
-cBu
-cBu
 lVM
-cBu
 lVM
-cBu
-cBu
 lVM
-cBu
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 lVM
 lVM
 lVM
@@ -31938,22 +32389,22 @@ pGs
 pGs
 pGs
 pGs
-pHX
-cBu
-lVM
-pHX
-cBu
-cBu
-lVM
-cBu
-cBu
-lVM
-cBu
+emx
 lVM
 lVM
-cBu
-cBu
-cBu
+emx
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 lVM
 lVM
 lVM
@@ -32123,15 +32574,15 @@ pGs
 lVM
 emx
 lVM
-cBu
 lVM
 lVM
 lVM
-cBu
 lVM
-cBu
 lVM
-cBu
+lVM
+lVM
+lVM
+lVM
 lVM
 lVM
 lVM
@@ -32904,7 +33355,7 @@ qul
 qul
 yks
 qMY
-kYN
+efw
 yks
 mkc
 ltW
@@ -33450,7 +33901,7 @@ qul
 uHY
 yks
 qMY
-kYN
+efw
 yks
 fay
 fay
@@ -33603,7 +34054,7 @@ ykc
 ykc
 ykc
 efw
-ybj
+qMY
 yks
 qul
 dxK
@@ -33967,7 +34418,7 @@ wGl
 uQK
 ykc
 efw
-ybj
+qMY
 yks
 dxK
 xCn
@@ -35088,7 +35539,7 @@ qul
 qul
 yks
 qMY
-kYN
+efw
 yks
 qul
 gKR
@@ -35112,7 +35563,7 @@ ebr
 ebr
 fRl
 oZl
-kHJ
+uQa
 csr
 uQa
 uQa
@@ -35853,7 +36304,7 @@ ebr
 vYW
 vYW
 hWG
-crY
+wjA
 sQN
 vYW
 vYW
@@ -38769,7 +39220,7 @@ ebr
 ksX
 ksX
 cto
-gLo
+qye
 cto
 cto
 ksX
@@ -39037,7 +39488,7 @@ leP
 qFC
 qFC
 qFC
-vfG
+qFC
 qFC
 qFC
 qFC
@@ -39080,7 +39531,7 @@ eIV
 eIV
 eIV
 pVh
-vsJ
+bGR
 eIV
 pqY
 sIf
@@ -39616,7 +40067,7 @@ aQG
 sSZ
 ncg
 epQ
-ePB
+jBY
 hvO
 bih
 rHv
@@ -41015,7 +41466,7 @@ ijy
 ijy
 xBb
 gnC
-mYR
+asx
 asx
 saj
 ijy
@@ -41811,16 +42262,16 @@ qqA
 qqA
 aQc
 qqA
-kWZ
-rVZ
+qqA
+kyx
 aQc
 qqA
 sWs
 xNY
 qqA
 aQc
-kWZ
-rVZ
+qqA
+kyx
 qqA
 qqA
 qqA
@@ -42024,7 +42475,7 @@ ueg
 sJZ
 tEJ
 cNu
-aFt
+ksX
 bsH
 bIj
 cto
@@ -42388,11 +42839,11 @@ ueg
 sJZ
 tEJ
 ouV
-aFt
-aFt
-aFt
-aFt
-aFt
+ksX
+ksX
+ksX
+ksX
+ksX
 xxk
 xxk
 xxk
@@ -42570,7 +43021,7 @@ vUM
 sJZ
 fnq
 cNu
-bkM
+nTG
 cty
 gsm
 aOg
@@ -42752,8 +43203,8 @@ xff
 sJZ
 tEJ
 cNu
-bkM
-bkM
+nTG
+nTG
 cty
 aOg
 mCF
@@ -42935,7 +43386,7 @@ sJZ
 tEJ
 cNu
 xBO
-bkM
+nTG
 cty
 aOg
 aOg
@@ -43117,7 +43568,7 @@ sJZ
 tEJ
 cNu
 qnm
-bkM
+nTG
 cty
 aOg
 aOg
@@ -43298,8 +43749,8 @@ vUM
 sJZ
 tEJ
 ciu
-bkM
-bkM
+nTG
+nTG
 aOg
 aOg
 aOg
@@ -43480,7 +43931,7 @@ vUM
 sJZ
 tEJ
 rsw
-bkM
+nTG
 gsm
 aOg
 xGV
@@ -43662,7 +44113,7 @@ vUM
 sJZ
 tEJ
 cNu
-bkM
+nTG
 cty
 aOg
 aOg
@@ -43703,7 +44154,7 @@ cto
 kDJ
 ncd
 ckG
-wku
+cto
 cto
 cto
 iDn
@@ -43844,7 +44295,7 @@ nbA
 lQA
 ptY
 uzg
-bkM
+nTG
 cty
 aOg
 aOg
@@ -44026,7 +44477,7 @@ xAD
 huz
 tEJ
 bZI
-bkM
+nTG
 cty
 gsm
 aOg
@@ -44208,13 +44659,13 @@ rMN
 mzv
 fqu
 rMN
-bkM
-bkM
-bkM
-bkM
-bkM
-bkM
-bkM
+nTG
+nTG
+nTG
+nTG
+nTG
+nTG
+nTG
 cNC
 etv
 cto
@@ -44384,12 +44835,12 @@ vNu
 qFZ
 hPd
 hPd
-irc
+hPd
 nwO
 gFx
 aFg
 umT
-gCH
+gFx
 gFx
 vrj
 mkt
@@ -44942,7 +45393,7 @@ wpm
 vDC
 tEJ
 tEJ
-bkM
+nTG
 xxk
 toU
 xxk
@@ -45117,14 +45568,14 @@ xNR
 uul
 eUH
 kIb
-vPK
+gFx
 eDF
 fFm
 eIT
 xdz
 yeG
 frQ
-bkM
+nTG
 xxk
 etv
 xxk
@@ -45306,8 +45757,8 @@ eDF
 fXG
 gFx
 gFx
-aFt
-aFt
+ksX
+ksX
 etv
 cto
 cto
@@ -45670,7 +46121,7 @@ aZv
 vZm
 xGp
 vZs
-aFt
+ksX
 cDc
 cto
 mxB
@@ -45852,7 +46303,7 @@ gFx
 bpT
 hoK
 lWJ
-aFt
+ksX
 ghs
 vTe
 vTe
@@ -45860,15 +46311,15 @@ cto
 cto
 cto
 vTe
-aFt
-aFt
-aFt
-aFt
-aFt
-aFt
-aFt
-aFt
-aFt
+ksX
+ksX
+ksX
+ksX
+ksX
+ksX
+ksX
+ksX
+ksX
 cto
 etv
 ksX
@@ -46034,15 +46485,15 @@ scD
 oKo
 laa
 gkx
-aFt
+ksX
 ghs
 cto
 cto
-gLo
+qye
 ghs
 ghs
 vTe
-aFt
+ksX
 gIB
 uLY
 oFd
@@ -46050,7 +46501,7 @@ cLD
 oFd
 tVA
 kus
-aFt
+ksX
 cto
 etv
 ksX
@@ -46216,15 +46667,15 @@ scD
 qEf
 aZv
 pNI
-aFt
-aFt
-aFt
-aFt
-aFt
-aFt
-aFt
-aFt
-aFt
+ksX
+ksX
+ksX
+ksX
+ksX
+ksX
+ksX
+ksX
+ksX
 iTF
 tEJ
 tEJ
@@ -46232,7 +46683,7 @@ tEJ
 tEJ
 tEJ
 gbG
-aFt
+ksX
 cto
 etv
 ksX
@@ -46354,7 +46805,7 @@ fkj
 tEJ
 pEE
 mux
-pot
+mvI
 kmb
 mvI
 mvI
@@ -46362,7 +46813,7 @@ mvI
 wVE
 mvI
 mvI
-hHt
+wmC
 fJb
 mvI
 wVE
@@ -46383,7 +46834,7 @@ mvI
 mvI
 mvI
 wmC
-aED
+rMN
 pie
 guE
 rgr
@@ -46406,7 +46857,7 @@ mvI
 wmC
 mvI
 uLY
-pKs
+pYn
 uLY
 tEJ
 tEJ
@@ -46414,7 +46865,7 @@ tEJ
 tEJ
 tEJ
 gbG
-aFt
+ksX
 cto
 etv
 ksX
@@ -46578,7 +47029,7 @@ umT
 umT
 umT
 kTs
-lRz
+umT
 umT
 lIT
 lCh
@@ -46596,7 +47047,7 @@ tEJ
 hgB
 tEJ
 gbG
-aFt
+ksX
 cto
 etv
 ksX
@@ -46778,7 +47229,7 @@ oGc
 ezW
 tEJ
 gbG
-aFt
+ksX
 cto
 etv
 ksX
@@ -46925,7 +47376,7 @@ dYy
 rMN
 pGi
 poU
-dYy
+aLV
 hUx
 hUx
 hUx
@@ -46952,7 +47403,7 @@ rBP
 gvE
 rBP
 uLY
-pKs
+pYn
 uLY
 uLY
 uLY
@@ -46960,7 +47411,7 @@ uLY
 iKa
 xAO
 gmT
-aFt
+ksX
 cto
 etv
 ksX
@@ -47127,22 +47578,22 @@ wqb
 wqb
 wqb
 abE
-pYn
-pYn
-pYn
-pYn
-pYn
-pYn
-pYn
-pYn
-pYn
-pYn
-pYn
+vHs
+vHs
+vHs
+vHs
+vHs
+vHs
+vHs
+vHs
+vHs
+vHs
+vHs
 uLY
 pEE
 tEJ
 buH
-aFt
+ksX
 cto
 etv
 ksX
@@ -47309,17 +47760,17 @@ kqE
 wqb
 rRq
 usB
-pYn
+vHs
 qTz
 cDk
 bjP
 sre
 bjP
-pYn
+vHs
 iIt
 xFE
 cBq
-pYn
+vHs
 uLY
 fPn
 aBB
@@ -47497,7 +47948,7 @@ jvh
 jvh
 jvh
 wot
-pYn
+vHs
 wkq
 wCE
 sMn
@@ -47506,7 +47957,7 @@ uLY
 sJZ
 tEJ
 uLY
-aFt
+ksX
 xZv
 mPT
 cto
@@ -47673,13 +48124,13 @@ xJZ
 cYB
 xJZ
 viK
-pYn
+vHs
 nXB
 jvh
 mPf
 qdd
 wot
-pYn
+vHs
 wic
 pqj
 ydI
@@ -47855,7 +48306,7 @@ iFZ
 cYB
 xJZ
 viK
-pYn
+vHs
 wkF
 jvh
 gdw
@@ -47870,7 +48321,7 @@ orT
 iKa
 tvv
 uLY
-pKs
+pYn
 hrI
 pXG
 pKs
@@ -48037,7 +48488,7 @@ viK
 xJZ
 xJZ
 viK
-pYn
+vHs
 uGZ
 aad
 sau
@@ -48047,7 +48498,7 @@ vHs
 eph
 pqj
 ydI
-pYn
+vHs
 jDW
 uVY
 sIU
@@ -48219,13 +48670,13 @@ viK
 xJZ
 mdj
 viK
-pYn
-pYn
-pYn
-pYn
-pYn
-pYn
-pYn
+vHs
+vHs
+vHs
+vHs
+vHs
+vHs
+vHs
 jjl
 nkF
 xGJ
@@ -48407,16 +48858,16 @@ lVc
 fvH
 elO
 kTx
-pYn
+vHs
 aoU
 aoU
 aoU
-pYn
+vHs
 kus
 gHH
 uLY
 uLY
-pKs
+pYn
 prY
 fkj
 pKs
@@ -48589,7 +49040,6 @@ wVf
 wVf
 wVf
 xhj
-pYn
 vHs
 vHs
 vHs
@@ -48597,8 +49047,9 @@ vHs
 vHs
 vHs
 vHs
-bkM
-bkM
+vHs
+nTG
+nTG
 cEu
 fkj
 bkM
@@ -49101,7 +49552,7 @@ kbQ
 jqw
 wVf
 wVf
-rpT
+idw
 iHh
 eRD
 jSN
@@ -50410,11 +50861,11 @@ mIG
 wVf
 viK
 xJZ
-dfi
+wqb
 eyt
 eyt
 eyt
-uXS
+tZd
 vZv
 mDW
 sGo
@@ -50592,11 +51043,11 @@ dNY
 wVf
 viK
 xJZ
-dfi
+wqb
 eyt
 eyt
 eyt
-uXS
+tZd
 uXS
 uXS
 tlG
@@ -50774,11 +51225,11 @@ pcQ
 wVf
 viK
 xJZ
-dfi
+wqb
 eyt
 kbQ
 eyt
-uXS
+tZd
 vZv
 mDW
 sGo
@@ -50960,7 +51411,7 @@ xJZ
 kbQ
 kbQ
 kbQ
-uXS
+tZd
 uXS
 uXS
 jGz
@@ -51138,11 +51589,11 @@ ocr
 wVf
 viK
 xJZ
-dfi
+wqb
 eyt
 kbQ
 kbQ
-uXS
+tZd
 crO
 mDW
 sGo
@@ -51320,11 +51771,11 @@ ptP
 wVf
 viK
 xJZ
-dfi
+wqb
 eyt
 nMJ
 kbQ
-uXS
+tZd
 uXS
 uXS
 uXS
@@ -51502,11 +51953,11 @@ wVf
 wVf
 amK
 xJZ
-dfi
+wqb
 jqw
 kbQ
 eyt
-uXS
+tZd
 vzY
 qZr
 mDW
@@ -51684,11 +52135,11 @@ wqb
 wqb
 viK
 xJZ
-dfi
+wqb
 eyt
 kbQ
 eyt
-uXS
+tZd
 vZv
 cDY
 uXS
@@ -51866,11 +52317,11 @@ wqb
 xJZ
 viK
 xJZ
-dfi
-dfi
-dfi
-dfi
-dfi
+wqb
+wqb
+wqb
+wqb
+wqb
 dfi
 dfi
 dfi
@@ -52717,8 +53168,8 @@ rBz
 vrp
 eSd
 iLL
-jrK
-jrK
+lVM
+lVM
 xgH
 hmu
 iLN
@@ -52898,10 +53349,10 @@ pGs
 fLS
 fLS
 jVw
-jrK
-jrK
-oOg
-jrK
+lVM
+lVM
+emx
+lVM
 fOA
 tBC
 oET
@@ -53080,10 +53531,10 @@ pGs
 pGs
 kDy
 iLL
-oOg
-jrK
-jrK
-jrK
+emx
+lVM
+lVM
+lVM
 fOA
 iLN
 oET
@@ -53260,12 +53711,12 @@ pGs
 pGs
 pGs
 pGs
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 fOA
 iLN
 faV
@@ -53442,12 +53893,12 @@ pGs
 pGs
 pGs
 pGs
-rxO
-mcm
-oOg
-jrK
-jrK
-jrK
+emx
+lVM
+emx
+lVM
+lVM
+lVM
 xgH
 dki
 faV
@@ -53625,12 +54076,12 @@ pGs
 pGs
 pGs
 pGs
-mcm
-jrK
-jrK
-oOg
-jrK
-jrK
+lVM
+lVM
+lVM
+emx
+lVM
+lVM
 nfD
 faV
 nxf
@@ -53806,13 +54257,13 @@ wUU
 wUU
 wUU
 wUU
-vGb
-ucx
-jrK
-oOg
-mcm
-jrK
-jrK
+hht
+lVM
+lVM
+emx
+lVM
+lVM
+lVM
 nfD
 oET
 oET
@@ -53988,13 +54439,13 @@ cLP
 cLP
 cLP
 wUU
-vGb
-kTX
-mcm
-mcm
-jrK
-jrK
-jrK
+hht
+emx
+lVM
+lVM
+lVM
+lVM
+lVM
 vaF
 vrB
 oET
@@ -54170,13 +54621,13 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 xgH
 dEN
 xGf
@@ -54352,14 +54803,14 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 xgH
 hmu
 fLS
@@ -54368,7 +54819,7 @@ fLS
 fLS
 sqZ
 jVw
-jrK
+lVM
 fOA
 fLS
 pGs
@@ -54534,15 +54985,15 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-kTX
-ucx
-rxO
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+emx
+lVM
+emx
+lVM
+lVM
+lVM
+lVM
 xgH
 kDy
 kDy
@@ -54550,7 +55001,7 @@ kDy
 kDy
 kDy
 iLL
-jrK
+lVM
 fOA
 jtw
 vrp
@@ -54716,23 +55167,23 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 fOA
 fLS
 vrp
@@ -54898,23 +55349,23 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-ucx
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 xgH
 hmu
 fLS
@@ -55080,24 +55531,24 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 xgH
 hmu
 vrp
@@ -55262,25 +55713,25 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-kmy
-kmy
-kmy
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 xgH
 hmu
 fLS
@@ -55312,13 +55763,13 @@ gZP
 gZP
 gZP
 vrB
-asi
-eXv
-fdf
-rFd
-rFd
-rFd
-rFd
+tXu
+vqG
+tVj
+kbQ
+kbQ
+kbQ
+kbQ
 pGs
 pGs
 jqw
@@ -55444,26 +55895,26 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-kmy
-kmy
-kmy
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 xgH
 hmu
 fLS
@@ -55494,8 +55945,8 @@ vrp
 vrp
 fLS
 iLN
-nap
-ofu
+vxW
+tVj
 dRI
 tVj
 tVj
@@ -55626,27 +56077,27 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-kmy
-kmy
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-oOg
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+emx
+lVM
 xgH
 kDy
 kDy
@@ -55676,7 +56127,7 @@ kDy
 hmu
 nrR
 iLN
-dxy
+vxW
 tVj
 tVj
 tVj
@@ -55808,30 +56259,30 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-oOg
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+emx
+lVM
+lVM
+lVM
 fOA
 fLS
 fLS
@@ -55844,25 +56295,25 @@ fLS
 eSd
 kDy
 iLL
-jrK
-jrK
-jrK
+lVM
+lVM
+lVM
 xgH
 kDy
 iLL
-jrK
-jrK
-jrK
-jrK
-jrK
+lVM
+lVM
+lVM
+lVM
+lVM
 fOA
 fLS
 iLN
-nap
-mje
-fdf
-asi
-asi
+vxW
+vxW
+vxW
+tXu
+tXu
 tXu
 tXu
 huF
@@ -55990,30 +56441,30 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-ucx
-mcm
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 xgH
 kDy
 kDy
@@ -56024,19 +56475,19 @@ kDy
 kDy
 kDy
 iLL
-jrK
-jrK
-jrK
-jrK
-jrK
-oOg
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
+lVM
+lVM
+lVM
+lVM
+lVM
+emx
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 xgH
 hmu
 uRL
@@ -56172,59 +56623,59 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-jrK
-mcm
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 fOA
 fLS
 rav
 fLS
-huD
+fLS
 rav
 fLS
 fLS
@@ -56354,54 +56805,54 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-ucx
-kmy
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 xgH
 kDy
 hmu
@@ -56536,56 +56987,56 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-oOg
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+emx
+lVM
+lVM
+lVM
+lVM
 fOA
 fLS
 fLS
@@ -56601,9 +57052,9 @@ pGs
 pGs
 pGs
 pGs
-bsf
-bsf
-bsf
+pGs
+pGs
+pGs
 pGs
 pGs
 pGs
@@ -56718,56 +57169,56 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-jrK
-mcm
-mcm
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 xgH
 kDy
 kDy
@@ -56782,16 +57233,16 @@ pGs
 pGs
 pGs
 pGs
-hre
-bsf
-bsf
-bsf
-hre
-bsf
-hre
-bsf
-bsf
-bsf
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
+kkv
 bsf
 bsf
 bsf
@@ -56900,59 +57351,59 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-ucx
-kmy
-kmy
-ucx
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-jrK
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 fOA
 fLS
 fLS
@@ -56963,21 +57414,21 @@ pGs
 pGs
 pGs
 pGs
-hre
-hre
-bsf
-puq
-hre
-bsf
-bsf
-bsf
-puq
-bsf
-bsf
-bsf
-bsf
-bsf
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
 kkv
+bsf
+bsf
+bsf
+bsf
 bsf
 bsf
 bsf
@@ -57082,59 +57533,59 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-ucx
-ucx
-ucx
-kmy
-ucx
-ucx
-kmy
-lEP
-kmy
-kmy
-ucx
-ucx
-kmy
-kmy
-ucx
-kmy
-kmy
-ucx
-kmy
-ucx
-kmy
-ucx
-ucx
-kmy
-ucx
-kmy
-lEP
-kmy
-jrK
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+emx
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+emx
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 xgH
 hmu
 fLS
@@ -57144,21 +57595,21 @@ fLS
 vrp
 pGs
 pGs
-hre
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
 bsf
 bsf
-hre
-hre
-hre
-hre
 bsf
 bsf
-bsf
-bsf
-hre
-bsf
-bsf
-fBB
 bsf
 bsf
 bsf
@@ -57264,85 +57715,85 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-ucx
-kmy
-ucx
-ucx
-kmy
-ucx
-kmy
-kmy
-ucx
-ucx
-ucx
-kmy
-ucx
-kmy
-kmy
-ucx
-kmy
-kmy
-ucx
-kmy
-kmy
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 fOA
 fLS
 fLS
 fLS
 fLS
 fLS
-fLS
-pGs
-hre
-hre
-hre
-hre
 pGs
 pGs
 pGs
-gKH
-hre
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
 pGs
 bsf
 bsf
 bsf
-kkv
 bsf
 bsf
-kkv
+bsf
 bsf
 bsf
 bsf
@@ -57446,71 +57897,71 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-kmy
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 fOA
 fLS
 fLS
 fLS
 vrp
 fLS
-fLS
-fLS
-hre
-bsf
-hre
+pGs
+pGs
+pGs
+pGs
+pGs
 pGs
 pGs
 pGs
@@ -57628,72 +58079,72 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-ucx
-ucx
-kmy
-mcm
-mcm
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 xgH
 hmu
 fLS
 fLS
 fLS
 fLS
-fLS
-fLS
-puq
-hre
-bsf
-kkv
+pGs
+pGs
+pGs
+pGs
+pGs
+pGs
 pGs
 pGs
 pGs
@@ -57810,70 +58261,70 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kTX
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+emx
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 fOA
 fLS
 fLS
 fLS
 fLS
-fLS
-fLS
-hre
-hre
+pGs
+pGs
+pGs
+pGs
 pGs
 pGs
 pGs
@@ -57992,61 +58443,61 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-kmy
-kmy
-jrK
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 fOA
 fLS
 fLS
@@ -58174,61 +58625,61 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-kmy
-kmy
-kmy
-jrK
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 xgH
 hmu
 fLS
@@ -58356,62 +58807,62 @@ cLP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 fOA
 fLS
 vrp
@@ -58538,62 +58989,62 @@ gsP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-kmy
-jrK
-jrK
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 fOA
 fLS
 fLS
@@ -58720,62 +59171,62 @@ gsP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-kmy
-kmy
-kmy
-kmy
-kmy
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 xgH
 hmu
 fLS
@@ -58902,63 +59353,63 @@ gsP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-ucx
-kmy
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 fOA
 fLS
 fLS
@@ -59084,63 +59535,63 @@ gsP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-ucx
-ucx
-kmy
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 fOA
 fLS
 fLS
@@ -59266,63 +59717,63 @@ gsP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-kmy
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 xgH
 hmu
 fLS
@@ -59448,64 +59899,64 @@ gsP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-ucx
-kmy
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 fOA
 fLS
 fLS
@@ -59630,64 +60081,64 @@ gsP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-kmy
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 xgH
 hmu
 fLS
@@ -59812,65 +60263,65 @@ gsP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 fOA
 fLS
 fLS
@@ -59994,65 +60445,65 @@ gsP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-ucx
-jrK
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 fOA
 fLS
 fLS
@@ -60176,65 +60627,65 @@ gsP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-mcm
-jrK
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 fOA
 fLS
 fLS
@@ -60358,65 +60809,65 @@ gsP
 cLP
 cLP
 wUU
-vGb
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-ucx
-kmy
-mcm
-mcm
-jrK
-jrK
+hht
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
+lVM
 fOA
 fLS
 fLS
@@ -60540,64 +60991,64 @@ gsP
 cLP
 cLP
 wUU
-vGb
 hht
 hht
 hht
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
-vGb
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
+hht
 hht
 xJn
 pGs
@@ -63358,7 +63809,7 @@ avD
 kEK
 kjI
 kjI
-oei
+kjI
 lDz
 oPb
 ijo

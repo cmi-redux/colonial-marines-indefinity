@@ -23,7 +23,7 @@ GLOBAL_LIST_EMPTY(cleanable_decal_cache)
 
 /obj/effect/decal/cleanable/Initialize(mapload, ...)
 	. = ..()
-	if (random_icon_states && length(src.random_icon_states) > 0)
+	if(random_icon_states && length(src.random_icon_states) > 0)
 		src.icon_state = pick(src.random_icon_states)
 	var/turf/T = loc
 
@@ -50,9 +50,9 @@ GLOBAL_LIST_EMPTY(cleanable_decal_cache)
 	return ..()
 
 /obj/effect/decal/cleanable/attackby(obj/item/W, mob/user)
-	var/obj/effect/alien/weeds/A = locate() in loc
-	if(A)
-		return A.attackby(W,user)
+	var/obj/effect/alien/weeds/weeds = locate() in loc
+	if(weeds)
+		return weeds.attackby(W,user)
 	else
 		return ..()
 

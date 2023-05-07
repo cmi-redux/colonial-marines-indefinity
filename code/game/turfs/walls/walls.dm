@@ -4,7 +4,12 @@
 	icon = 'icons/turf/walls/walls.dmi'
 	icon_state = "0"
 	opacity = TRUE
-	var/hull = 0 //1 = Can't be deconstructed by tools or thermite. Used for Sulaco walls
+	density = TRUE
+	baseturfs = /turf/open/floor/plating
+
+	antipierce = 2
+
+	var/hull = FALSE
 	var/walltype = WALL_METAL
 	var/junctiontype //when walls smooth with one another, the type of junction each wall is.
 	var/thermite = 0
@@ -72,7 +77,7 @@
 	. = ..()
 	if(.) //successful turf change
 		var/turf/T
-		for(var/i in cardinal)
+		for(var/i in  GLOB.cardinals)
 			T = get_step(src, i)
 
 			//nearby glowshrooms updated
@@ -140,7 +145,7 @@
 		return //If it's indestructable, we don't want to give the wrong impression by saying "you can decon it with a welder"
 
 	if(!damage)
-		if (acided_hole)
+		if(acided_hole)
 			. += SPAN_WARNING("It looks fully intact, except there's a large hole that could've been caused by some sort of acid.")
 		else
 			. += SPAN_NOTICE("It looks fully intact.")
@@ -153,7 +158,7 @@
 		else
 			. += SPAN_DANGER("It looks heavily damaged.")
 
-		if (acided_hole)
+		if(acided_hole)
 			. += SPAN_WARNING("There's a large hole in the wall that could've been caused by some sort of acid.")
 
 	switch(d_state)
@@ -179,10 +184,10 @@
 
 	if(damage >= damage_cap)
 		if(M && istype(M))
-			M.count_niche_stat(STATISTICS_NICHE_DESTRUCTION_WALLS, 1)
+			M.count_statistic_stat(STATISTICS_DESTRUCTION_WALLS, 1)
 			SEND_SIGNAL(M, COMSIG_MOB_DESTROY_WALL, src)
 		// Xenos used to be able to crawl through the wall, should suggest some structural damage to the girder
-		if (acided_hole)
+		if(acided_hole)
 			dismantle_wall(1)
 		else
 			dismantle_wall()
@@ -195,7 +200,7 @@
 	G.icon_state = "girder[junctiontype]"
 	G.original = src.type
 
-	if (destroyed_girder)
+	if(destroyed_girder)
 		G.dismantle()
 
 
@@ -208,7 +213,7 @@
 		return
 	if(devastated)
 		make_girder(TRUE)
-	else if (explode)
+	else if(explode)
 		make_girder(TRUE)
 	else
 		make_girder(FALSE)
@@ -224,7 +229,7 @@
 	if(cause_data)
 		mob = cause_data.resolve_mob()
 
-	if (damage + exp_damage > damage_cap*2)
+	if(damage + exp_damage > damage_cap*2)
 		if(mob)
 			SEND_SIGNAL(mob, COMSIG_MOB_EXPLODED_WALL, src)
 		dismantle_wall(FALSE, TRUE)
@@ -233,7 +238,7 @@
 	else
 		if(istype(src, /turf/closed/wall/resin))
 			exp_damage *= RESIN_EXPLOSIVE_MULTIPLIER
-		else if (prob(25))
+		else if(prob(25))
 			if(prob(50)) // prevents spam in close corridors etc
 				src.visible_message(SPAN_WARNING("The explosion causes shards to spall off of [src]!"))
 			create_shrapnel(location, rand(2,5), explosion_direction, , /datum/ammo/bullet/shrapnel/spall, cause_data)
@@ -499,7 +504,7 @@
 	var/obj/item/weapon/gun/smg/nailgun/NG = W
 	var/amount_needed = acided_hole ? 3 : 1
 
-	if(!NG.in_chamber || !NG.current_mag || NG.current_mag.current_rounds < (4*amount_needed-1))
+	if(!NG.in_chamber || !NG.current_mag || NG.current_mag.ammo_position < (4*amount_needed-1))
 		to_chat(user, SPAN_WARNING("You require at least [4*amount_needed] nails to complete this task!"))
 		return FALSE
 
@@ -541,7 +546,7 @@
 		to_chat(user, SPAN_WARNING("You seems to have misplaced the repair material!"))
 		return FALSE
 
-	if(!NG.in_chamber || !NG.current_mag || NG.current_mag.current_rounds < (4*amount_needed-1))
+	if(!NG.in_chamber || !NG.current_mag.ammo_position || NG.current_mag.ammo_position < (4*amount_needed-1))
 		to_chat(user, SPAN_WARNING("You require at least [4*amount_needed] nails to complete this task!"))
 		return FALSE
 
@@ -555,7 +560,10 @@
 		to_chat(user, SPAN_WARNING("You reinforce the fissures in [src], raising its integrity!"))
 
 	material.use(amount_needed)
-	NG.current_mag.current_rounds -= (4*amount_needed-1)
+	var/ammo_used = (4*amount_needed-1)
+	for(var/i=0;i<ammo_used;i++)
+		var/obj/item/projectile/P = NG.current_mag.transfer_bullet_out()
+		qdel(P)
 	NG.in_chamber = null
 	NG.load_into_chamber()
 	update_icon()

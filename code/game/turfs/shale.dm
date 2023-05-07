@@ -2,9 +2,7 @@
 /turf/open/shale
 	icon = 'icons/turf/floors/auto_shale.dmi'
 	icon_state = "shale_0"
-
-/turf/open/shale/is_weedable()
-	return TRUE
+	turf_flags = TURF_MULTIZ
 
 /turf/open/shale/get_dirt_type()
 	return DIRT_TYPE_SHALE
@@ -14,7 +12,7 @@
 
 /turf/open/shale/update_icon()
 	. = ..()
-	setDir(pick(NORTH,SOUTH,EAST,WEST,NORTHEAST,NORTHWEST,SOUTHEAST,SOUTHWEST))
+	setDir(pick(GLOB.alldirs))
 
 /turf/open/shale/Initialize(mapload, ...)
 	. = ..()

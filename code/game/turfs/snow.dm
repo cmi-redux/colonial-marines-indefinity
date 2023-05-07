@@ -8,6 +8,11 @@
 	icon = 'icons/turf/floors/snow2.dmi'
 	icon_state = "snow_0"
 	is_groundmap_turf = TRUE
+	shoefootstep = FOOTSTEP_SNOW
+	barefootstep = FOOTSTEP_SNOW
+	mediumxenofootstep = FOOTSTEP_SNOW
+
+	antipierce = 5
 
 	//PLACING/REMOVING/BUILDING
 /turf/open/snow/attackby(obj/item/I, mob/user)
@@ -30,7 +35,7 @@
 		L.forceMove(src)
 		L.pixel_x += rand(-5,5)
 		L.pixel_y += rand(-5,5)
-		L.SetLuminosity(2)
+		L.set_light(2)
 		playsound(user, 'sound/weapons/Genhit.ogg', 25, 1)
 
 
@@ -38,12 +43,14 @@
 //Update icon and sides on start, but skip nearby check for turfs.
 /turf/open/snow/Initialize(mapload, ...)
 	. = ..()
+	new /obj/structure/snow(src, bleed_layer)
+	bleed_layer = 0
 	update_icon(1,1)
 
-/turf/open/snow/Entered(atom/movable/AM)
+/turf/open/snow/Entered(atom/movable/arrived, old_loc)
 	if(bleed_layer > 0)
-		if(iscarbon(AM))
-			var/mob/living/carbon/C = AM
+		if(iscarbon(arrived))
+			var/mob/living/carbon/C = arrived
 			var/slow_amount = 0.75
 			var/can_stuck = 1
 			if(istype(C, /mob/living/carbon/xenomorph)||isyautja(C))
@@ -62,7 +69,7 @@
 //Update icon
 /turf/open/snow/update_icon(update_full, skip_sides)
 	icon_state = "snow_[bleed_layer]"
-	setDir(pick(NORTH,SOUTH,EAST,WEST,NORTHEAST,NORTHWEST,SOUTHEAST,SOUTHWEST))
+	setDir(pick(GLOB.alldirs))
 	switch(bleed_layer)
 		if(0)
 			name = "dirt floor"
@@ -77,7 +84,7 @@
 	if(update_full)
 		var/turf/open/T
 		if(!skip_sides)
-			for(var/dirn in alldirs)
+			for(var/dirn in GLOB.alldirs)
 				var/turf/open/snow/D = get_step(src,dirn)
 				if(istype(D))
 					//Update turfs that are near us, but only once
@@ -85,7 +92,10 @@
 
 		overlays.Cut()
 
-		for(var/dirn in alldirs)
+		if(turf_flags & TURF_WEATHER)
+			overlays += SSsunlighting.get_weather_overlay()
+
+		for(var/dirn in GLOB.alldirs)
 			T = get_step(src, dirn)
 			if(istype(T))
 				if(bleed_layer > T.bleed_layer && T.bleed_layer < 1)
@@ -136,6 +146,9 @@
 /turf/open/snow/layer0
 	icon_state = "snow_0"
 	bleed_layer = 0
+	shoefootstep = FOOTSTEP_SAND
+	barefootstep = FOOTSTEP_SAND
+	mediumxenofootstep = FOOTSTEP_SAND
 
 /turf/open/snow/layer1
 	icon_state = "snow_1"

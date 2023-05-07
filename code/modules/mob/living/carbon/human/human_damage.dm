@@ -23,8 +23,6 @@
 	med_hud_set_armor()
 	med_hud_set_status()
 
-
-
 /mob/living/carbon/human/adjustBrainLoss(amount)
 
 	if(status_flags & GODMODE)
@@ -115,42 +113,6 @@
 		take_overall_damage(0, amount)
 	else
 		heal_overall_damage(0, -amount)
-
-
-/mob/living/carbon/human/proc/adjustBruteLossByPart(amount, organ_name, obj/damage_source = null)
-	if(amount > 0)
-		var/brute_mod = get_brute_mod()
-		if(brute_mod)
-			amount *= brute_mod
-
-	for(var/X in limbs)
-		var/obj/limb/O = X
-		if(O.name == organ_name)
-			if(amount > 0)
-				O.take_damage(amount, 0, sharp=is_sharp(damage_source), edge=has_edge(damage_source), used_weapon=damage_source)
-			else
-				//if you don't want to heal robot limbs, they you will have to check that yourself before using this proc.
-				O.heal_damage(-amount, 0, O.status & (LIMB_ROBOT|LIMB_SYNTHSKIN))
-			break
-
-
-
-/mob/living/carbon/human/proc/adjustFireLossByPart(amount, organ_name, obj/damage_source = null)
-	if(amount > 0)
-		var/burn_mod = get_burn_mod()
-		if(burn_mod)
-			amount *= burn_mod
-
-	for(var/X in limbs)
-		var/obj/limb/O = X
-		if(O.name == organ_name)
-			if(amount > 0)
-				O.take_damage(0, amount, sharp=is_sharp(damage_source), edge=has_edge(damage_source), used_weapon=damage_source)
-			else
-				//if you don't want to heal robot limbs, they you will have to check that yourself before using this proc.
-				O.heal_damage(0, -amount, O.status & (LIMB_ROBOT|LIMB_SYNTHSKIN))
-			break
-
 
 
 /mob/living/carbon/human/getCloneLoss()
@@ -468,6 +430,7 @@ This function restores all limbs.
 
 	// Will set our damageoverlay icon to the next level, which will then be set back to the normal level the next mob.Life().
 	updatehealth()
+	morale = max(morale - damage/100, 0)
 	return TRUE
 
 // Heal or damage internal organs

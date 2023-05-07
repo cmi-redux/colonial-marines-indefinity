@@ -12,6 +12,29 @@
 		"jquery.min.js" = 'html/jquery.min.js',
 	)
 
+/datum/asset/simple/minimap
+	legacy = TRUE
+	keep_local_name = TRUE
+	assets = list()
+
+/datum/asset/simple/minimap/register()
+	for(var/i in SSmapview.minimaps_by_trait)
+		var/datum/tacmap/minimap/GM = SSmapview.minimaps_by_trait["[i]"]
+		for(var/level in GM.map_zlevels)
+			var/asset = GM.minimap_layers["[level]"]
+			if(!asset)
+				continue
+			var/asset_name = "minimap.[level]"
+			var/datum/asset_cache_item/ACI = SSassets.transport.register_asset(asset_name, asset)
+			if(!ACI)
+				log_asset("ERROR: Invalid asset: [type]:[asset_name]:[ACI]")
+				return
+			if(legacy)
+				ACI.legacy = legacy
+			if(keep_local_name)
+				ACI.keep_local_name = keep_local_name
+	..()
+
 /datum/asset/directory
 	var/list/common = list()
 	var/list/common_dirs = list()
@@ -122,12 +145,12 @@
 
 /datum/asset/simple/dynamic_icons/proc/register_single(asset_name)
 	var/datum/asset_cache_item/ACI = SSassets.transport.register_asset(asset_name, assets[asset_name])
-	if (!ACI)
+	if(!ACI)
 		log_asset("ERROR: Invalid asset: [type]:[asset_name]:[ACI]")
 		return
-	if (legacy)
+	if(legacy)
 		ACI.legacy = legacy
-	if (keep_local_name)
+	if(keep_local_name)
 		ACI.keep_local_name = keep_local_name
 	assets[asset_name] = ACI
 
@@ -158,7 +181,7 @@
 	for(var/path in typesof(/datum/language))
 		var/datum/language/L = path
 		var/icon = initial(L.icon)
-		if (icon != 'icons/misc/language.dmi')
+		if(icon != 'icons/misc/language.dmi')
 			var/icon_state = initial(L.icon_state)
 			Insert("language-[icon_state]", icon, icon_state=icon_state)*/
 	..()
@@ -175,14 +198,14 @@
 		var/icon_state = initial(RC.construction_name)
 		var/icon_name = replacetext(icon_state, " ", "-")
 
-		if (sprites[icon_name])
+		if(sprites[icon_name])
 			continue
 
 		var/icon_states_list = icon_states(icon_file)
 		if(!(icon_state in icon_states_list))
 			var/icon_states_string
 			for (var/an_icon_state in icon_states_list)
-				if (!icon_states_string)
+				if(!icon_states_string)
 					icon_states_string = "[json_encode(an_icon_state)](\ref[an_icon_state])"
 				else
 					icon_states_string += ", [json_encode(an_icon_state)](\ref[an_icon_state])"
@@ -243,14 +266,14 @@
 		var/icon_state = initial(RC.icon_state)
 		var/icon_name = icon_state
 
-		if (sprites[icon_name])
+		if(sprites[icon_name])
 			continue
 
 		var/icon_states_list = icon_states(icon_file)
 		if(!(icon_state in icon_states_list))
 			var/icon_states_string
 			for (var/an_icon_state in icon_states_list)
-				if (!icon_states_string)
+				if(!icon_states_string)
 					icon_states_string = "[json_encode(an_icon_state)](\ref[an_icon_state])"
 				else
 					icon_states_string += ", [json_encode(an_icon_state)](\ref[an_icon_state])"
@@ -327,7 +350,7 @@
 			if (ispath(k, /obj/effect/essentials_set))
 				var/obj/effect/essentials_set/es_set = new k()
 				var/list/spawned_list = es_set.spawned_gear_list
-				if(LAZYLEN(spawned_list))
+				if(length(spawned_list))
 					var/obj/item/target = spawned_list[1]
 					icon_file = initial(target.icon)
 					icon_state = initial(target.icon_state)
@@ -355,13 +378,13 @@
 		var/icon_state = initial(fruit.mature_icon_state)
 		var/icon_name = replacetext(icon_state, " ", "-")
 
-		if (sprites[icon_name])
+		if(sprites[icon_name])
 			continue
 
 		if(!(icon_state in icon_states_list))
 			var/icon_states_string
 			for (var/an_icon_state in icon_states_list)
-				if (!icon_states_string)
+				if(!icon_states_string)
 					icon_states_string = "[json_encode(an_icon_state)](\ref[an_icon_state])"
 				else
 					icon_states_string += ", [json_encode(an_icon_state)](\ref[an_icon_state])"

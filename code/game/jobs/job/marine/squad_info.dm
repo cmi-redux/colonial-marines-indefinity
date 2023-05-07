@@ -158,23 +158,23 @@
 		if(ID)
 			squad_info_data["fireteams"][team]["tl"] += list("paygrade" = get_paygrades(ID.paygrade, 1))
 			var/rank = ID.rank
-			switch(rank)
-				if(JOB_SQUAD_MARINE)
-					rank = "Mar"
-				if(JOB_SQUAD_ENGI)
-					rank = "Eng"
-				if(JOB_SQUAD_MEDIC)
-					rank = "Med"
-				if(JOB_SQUAD_SMARTGUN)
-					rank = "SG"
-				if(JOB_SQUAD_SPECIALIST)
-					rank = "Spc"
-				if(JOB_SQUAD_RTO)
-					rank = "RTO"
-				if(JOB_SQUAD_LEADER)
-					rank = "SL"
-				else
-					rank = ""
+			var/real_job = GET_DEFAULT_ROLE(rank)
+			if(real_job in JOB_SQUAD_NORMAL_LIST)
+				rank = "Mar"
+			else if(real_job in JOB_SQUAD_ENGI_LIST)
+				rank = "Eng"
+			else if(real_job in JOB_SQUAD_MEDIC_LIST)
+				rank = "Med"
+			else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
+				rank = "SG"
+			else if(real_job in JOB_SQUAD_SPEC_LIST)
+				rank = "Spc"
+			else if(real_job in JOB_SQUAD_SUP_LIST)
+				rank = "RTO"
+			else if(real_job in JOB_SQUAD_LEADER_LIST)
+				rank = "SL"
+			else
+				rank = ""
 			squad_info_data["fireteams"][team]["tl"] += list("rank" = rank)
 		else
 			squad_info_data["fireteams"][team]["tl"] += list("paygrade" = "N/A")
@@ -235,23 +235,23 @@
 			if(ID)
 				mar[H.real_name] += list("paygrade" = get_paygrades(ID.paygrade, 1))
 				var/rank = ID.rank
-				switch(rank)
-					if(JOB_SQUAD_MARINE)
-						rank = "Mar"
-					if(JOB_SQUAD_ENGI)
-						rank = "Eng"
-					if(JOB_SQUAD_MEDIC)
-						rank = "Med"
-					if(JOB_SQUAD_SMARTGUN)
-						rank = "SG"
-					if(JOB_SQUAD_SPECIALIST)
-						rank = "Spc"
-					if(JOB_SQUAD_RTO)
-						rank = "RTO"
-					if(JOB_SQUAD_LEADER)
-						rank = "SL"
-					else
-						rank = ""
+				var/real_job = GET_DEFAULT_ROLE(rank)
+				if(real_job in JOB_SQUAD_NORMAL_LIST)
+					rank = "Mar"
+				else if(real_job in JOB_SQUAD_ENGI_LIST)
+					rank = "Eng"
+				else if(real_job in JOB_SQUAD_MEDIC_LIST)
+					rank = "Med"
+				else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
+					rank = "SG"
+				else if(real_job in JOB_SQUAD_SPEC_LIST)
+					rank = "Spc"
+				else if(real_job in JOB_SQUAD_SUP_LIST)
+					rank = "RTO"
+				else if(real_job in JOB_SQUAD_LEADER_LIST)
+					rank = "SL"
+				else
+					rank = ""
 				if(H.rank_fallback)
 					rank = H.rank_fallback
 				mar[H.real_name] += list("rank" = rank)
@@ -282,23 +282,23 @@
 			if(ID)
 				mar[H.real_name] += list("paygrade" = get_paygrades(ID.paygrade, 1))
 				var/rank = ID.rank
-				switch(rank)
-					if(JOB_SQUAD_MARINE)
-						rank = "Mar"
-					if(JOB_SQUAD_ENGI)
-						rank = "Eng"
-					if(JOB_SQUAD_MEDIC)
-						rank = "Med"
-					if(JOB_SQUAD_SMARTGUN)
-						rank = "SG"
-					if(JOB_SQUAD_SPECIALIST)
-						rank = "Spc"
-					if(JOB_SQUAD_RTO)
-						rank = "RTO"
-					if(JOB_SQUAD_LEADER)
-						rank = "SL"
-					else
-						rank = ""
+				var/real_job = GET_DEFAULT_ROLE(rank)
+				if(real_job in JOB_SQUAD_NORMAL_LIST)
+					rank = "Mar"
+				else if(real_job in JOB_SQUAD_ENGI_LIST)
+					rank = "Eng"
+				else if(real_job in JOB_SQUAD_MEDIC_LIST)
+					rank = "Med"
+				else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
+					rank = "SG"
+				else if(real_job in JOB_SQUAD_SPEC_LIST)
+					rank = "Spc"
+				else if(real_job in JOB_SQUAD_SUP_LIST)
+					rank = "RTO"
+				else if(real_job in JOB_SQUAD_LEADER_LIST)
+					rank = "SL"
+				else
+					rank = ""
 				mar[H.real_name] += list("rank" = rank)
 			else
 				mar[H.real_name] += list("paygrade" = "N/A")

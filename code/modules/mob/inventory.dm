@@ -29,7 +29,7 @@
 
 //Puts the item into your l_hand if possible and calls all necessary triggers/updates. returns 1 on success.
 /mob/proc/put_in_l_hand(obj/item/W)
-	if(lying)
+	if(!can_action)
 		return FALSE
 	if(!istype(W))
 		return FALSE
@@ -48,7 +48,7 @@
 
 //Puts the item into your r_hand if possible and calls all necessary triggers/updates. returns 1 on success.
 /mob/proc/put_in_r_hand(obj/item/W)
-	if(lying)
+	if(!can_action)
 		return FALSE
 	if(!istype(W))
 		return FALSE
@@ -134,7 +134,7 @@
 	if(I)
 		if(I == r_hand)
 			return drop_r_hand()
-		else if (I == l_hand)
+		else if(I == l_hand)
 			return drop_l_hand()
 	else if(hand)
 		return drop_l_hand()
@@ -201,14 +201,14 @@
 	if((I.flags_item & NODROP) && !force)
 		return FALSE //u_equip() only fails if item has NODROP
 	var/slot = get_slot_by_item(I)
-	if (I == r_hand)
+	if(I == r_hand)
 		r_hand = null
 		update_inv_r_hand()
-	else if (I == l_hand)
+	else if(I == l_hand)
 		l_hand = null
 		update_inv_l_hand()
 
-	if (client)
+	if(client)
 		client.screen -= I
 	I.layer = initial(I.layer)
 	I.plane = initial(I.plane)
@@ -219,7 +219,7 @@
 			I.forceMove(newloc)
 	I.unequipped(src, slot)
 	I.dropped(src)
-	if(LAZYLEN(I.unequip_sounds))
+	if(length(I.unequip_sounds))
 		playsound_client(client, pick(I.unequip_sounds), null, ITEM_EQUIP_VOLUME)
 
 	return TRUE
@@ -232,7 +232,7 @@
 
 //Outdated but still in use apparently. This should at least be a human proc.
 /mob/proc/get_equipped_items()
-	var/list/items = new/list()
+	var/list/items = list()
 
 	if(hasvar(src,"back")) if(src:back) items += src:back
 	if(hasvar(src,"belt")) if(src:belt) items += src:belt
@@ -260,7 +260,7 @@
 			if(src:module_active)
 				return src:module_active
 	else
-		if (hand)
+		if(hand)
 			return l_hand
 		else
 			return r_hand
@@ -342,7 +342,7 @@
 				src.s_store = W
 				equipped = 1
 		if(WEAR_IN_BACK)
-			if (src.back && isstorage(src.back))
+			if(src.back && isstorage(src.back))
 				var/obj/item/storage/B = src.back
 				if(B.contents.len < B.storage_slots && W.w_class <= B.max_w_class)
 					W.forceMove(B)
@@ -411,7 +411,7 @@
 		if(src.back && W.loc != src.back)
 			W.forceMove(src)
 	else
-		if (del_on_fail)
+		if(del_on_fail)
 			qdel(W)
 	return equipped
 

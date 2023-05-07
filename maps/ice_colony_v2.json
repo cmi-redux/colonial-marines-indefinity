@@ -5,6 +5,9 @@
     "environment_traits": {
         "COLD": true
     },
+    "weather": [
+        "weather_snow"
+    ],
     "survivor_types": [
         "/datum/equipment_preset/survivor/corporate/shiva",
         "/datum/equipment_preset/survivor/doctor/shiva",
@@ -14,25 +17,27 @@
         "/datum/equipment_preset/survivor/clf",
         "/datum/equipment_preset/survivor/civilian"
     ],
-    "defcon_triggers": [
-        3300,
-        2100,
-        1450,
-        580,
-        0.0
-    ],
     "survivor_message": "You are a survivor of the attack on the ice habitat. You worked or lived on the colony, and managed to avoid the alien attacks... until now.",
-    "map_item_type": "/obj/item/map/ice_colony_map",
     "announce_text": "An automated distress signal has been received from archaeology site \"Shiva's Snowball\", on border ice world \"Ifrit\". A response team from the ###SHIPNAME### will be dispatched shortly to investigate.",
     "monkey_types": [
         "yiren"
     ],
-    "traits": [{ "Ground": true }],
+    "traits": [
+        {
+            "Ground": true,
+            "Up": 1
+        },
+        {
+            "Ground": true,
+            "Down": -1,
+            "Baseturf": "/turf/open/openspace"
+        }
+   ],
     "xvx_hives": {
-        "xeno_hive_alpha": 0,
-        "xeno_hive_bravo": 0,
-        "xeno_hive_charlie": 0,
-        "xeno_hive_delta": 0
+        "alpha_xenomorph": 0,
+        "bravo_xenomorph": 0,
+        "charlie_xenomorph": 0,
+        "delta_xenomorph": 0
     },
     "nightmare_path": "maps/Nightmare/maps/Ice_Colony_v2/",
     "gamemodes": [
@@ -41,5 +46,18 @@
         "Hive Wars",
         "Faction Clash",
         "Infection"
-    ]
+    ],
+    "map_day_night_modificator": {
+        "Midnight": 864000,
+        "Night": 90000,
+        "Dawn": 198000,
+        "Sunrise": 288000,
+        "Sunrise-Morning": 320000,
+        "Morning": 360000,
+        "Daytime": 480000,
+        "Evening": 526000,
+        "Sunset": 624000,
+        "Dusk": 752000
+    },
+    "custom_time_rate_multiplier": 1
 }

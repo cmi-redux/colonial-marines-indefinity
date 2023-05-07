@@ -95,7 +95,7 @@
 	set category = "Object"
 	set src in usr
 
-	if (alert(usr, "Are you sure you want to empty that?", "Empty Bottle:", "Yes", "No") != "Yes")
+	if(alert(usr, "Are you sure you want to empty that?", "Empty Bottle:", usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 	if(isturf(usr.loc))
 		to_chat(usr, SPAN_NOTICE("You empty \the [src] onto the floor."))

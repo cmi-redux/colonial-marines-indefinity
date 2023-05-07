@@ -237,9 +237,9 @@
 		if(JOB_SQUAD_RTO)
 			return /datum/equipment_preset/uscm/rto_equipped
 		if(JOB_CO)
-			if(length(RoleAuthority.roles_whitelist))
-				var/datum/job/J = RoleAuthority.roles_by_name[JOB_CO]
-				return J.gear_preset_whitelist["[JOB_CO][J.get_whitelist_status(RoleAuthority.roles_whitelist, owner)]"]
+			if(length(SSticker.role_authority.roles_whitelist))
+				var/datum/job/job = GET_MAPPED_ROLE(JOB_CO)
+				return job.gear_preset_whitelist["[JOB_CO][job.get_whitelist_status(SSticker.role_authority.roles_whitelist, owner)]"]
 			return /datum/equipment_preset/uscm_ship/commander
 		if(JOB_SO)
 			return /datum/equipment_preset/uscm_ship/so
@@ -254,9 +254,9 @@
 		if(JOB_CORPORATE_LIAISON)
 			return /datum/equipment_preset/uscm_ship/liaison
 		if(JOB_SYNTH)
-			if(length(RoleAuthority.roles_whitelist))
-				var/datum/job/J = RoleAuthority.roles_by_name[JOB_SYNTH]
-				return J.gear_preset_whitelist["[JOB_SYNTH][J.get_whitelist_status(RoleAuthority.roles_whitelist, owner)]"]
+			if(length(SSticker.role_authority.roles_whitelist))
+				var/datum/job/job = GET_MAPPED_ROLE(JOB_SYNTH)
+				return job.gear_preset_whitelist["[JOB_SYNTH][job.get_whitelist_status(SSticker.role_authority.roles_whitelist, owner)]"]
 			return /datum/equipment_preset/synth/uscm
 		if(JOB_WORKING_JOE)
 			return /datum/equipment_preset/synth/working_joe
@@ -303,12 +303,20 @@
 				return pick(SSmapping.configs[GROUND_MAP].CO_survivor_types)
 			return /datum/equipment_preset/uscm_ship/commander
 		if(JOB_PREDATOR)
-			if(length(RoleAuthority.roles_whitelist))
-				var/datum/job/J = RoleAuthority.roles_by_name[JOB_PREDATOR]
-				return J.gear_preset_whitelist["[JOB_PREDATOR][J.get_whitelist_status(RoleAuthority.roles_whitelist, owner)]"]
+			if(length(SSticker.role_authority.roles_whitelist))
+				var/datum/job/job = GET_MAPPED_ROLE(JOB_PREDATOR)
+				return job.gear_preset_whitelist["[JOB_PREDATOR][job.get_whitelist_status(SSticker.role_authority.roles_whitelist, owner)]"]
 			return /datum/equipment_preset/yautja/blooded
-
-	return /datum/equipment_preset/uscm/private_equipped
+		if(JOB_XENOMORPH_QUEEN)
+			return
+		if(JOB_XENOMORPH)
+			return
+		else
+			if(high_priority)
+				var/datum/job/job = SSticker.role_authority.roles_by_name[high_priority]
+				return job.gear_preset
+			else
+				return /datum/equipment_preset/uscm/private_equipped
 
 /datum/preferences/proc/clear_equipment()
 	for(var/obj/item/I in preview_dummy)

@@ -1,38 +1,4 @@
-/mob/living/carbon/xenomorph/attackby(obj/item/item, mob/user)
-	if(user.a_intent != INTENT_HELP)
-		return ..()
-	if(HAS_TRAIT(item, TRAIT_TOOL_MULTITOOL) && ishuman(user))
-		var/mob/living/carbon/human/programmer = user
-		if(!iff_tag)
-			to_chat(user, SPAN_WARNING("\The [src] doesn't have an IFF tag to reprogram."))
-			return
-		programmer.visible_message(SPAN_NOTICE("[programmer] starts reprogramming \the [src]'s IFF tag..."), SPAN_NOTICE("You start reprogramming \the [src]'s IFF tag..."), max_distance = 3)
-		if(!do_after(programmer, 5 SECONDS, INTERRUPT_ALL, BUSY_ICON_GENERIC, src, INTERRUPT_DIFF_LOC, BUSY_ICON_GENERIC))
-			return
-		if(!iff_tag)
-			to_chat(programmer, SPAN_WARNING("\The [src]'s tag got removed while you were reprogramming it!"))
-			return
-		if(!iff_tag.handle_reprogramming(programmer, src))
-			return
-		programmer.visible_message(SPAN_NOTICE("[programmer] reprograms \the [src]'s IFF tag."), SPAN_NOTICE("You reprogram \the [src]'s IFF tag."), max_distance = 3)
-		return
-	if(item.type in SURGERY_TOOLS_PINCH)
-		if(!iff_tag)
-			to_chat(user, SPAN_WARNING("\The [src] doesn't have an IFF tag to remove."))
-			return
-		user.visible_message(SPAN_NOTICE("[user] starts removing \the [src]'s IFF tag..."), SPAN_NOTICE("You start removing \the [src]'s IFF tag..."), max_distance = 3)
-		if(!do_after(user, 5 SECONDS * SURGERY_TOOLS_PINCH[item.type], INTERRUPT_ALL, BUSY_ICON_GENERIC, src, INTERRUPT_DIFF_LOC, BUSY_ICON_GENERIC))
-			return
-		if(!iff_tag)
-			to_chat(user, SPAN_WARNING("\The [src]'s tag got removed while you were removing it!"))
-			return
-		user.put_in_hands(iff_tag)
-		iff_tag = null
-		user.visible_message(SPAN_NOTICE("[user] removes \the [src]'s IFF tag."), SPAN_NOTICE("You remove \the [src]'s IFF tag."), max_distance = 3)
-		return
-	return ..()
-
-/mob/living/carbon/xenomorph/ex_act(severity, direction, datum/cause_data/cause_data, pierce=0)
+/mob/living/carbon/xenomorph/ex_act(severity, direction, datum/cause_data/cause_data, pierce = 0)
 
 	if(lying)
 		severity *= EXPLOSION_PRONE_MULTIPLIER
@@ -53,7 +19,7 @@
 
 	var/cfg = armor_deflection==0 ? GLOB.xeno_explosive_small : GLOB.xeno_explosive
 	var/total_explosive_resistance = caste != null ? caste.xeno_explosion_resistance + armor_explosive_buff : armor_explosive_buff
-	damage = armor_damage_reduction(cfg, damage, total_explosive_resistance, pierce, 1, 0.5, armor_integrity)
+	damage = armor_damage_reduction(cfg, damage, total_explosive_resistance, pierce, 1, 0.5, armor_integrity)*(damage_income_modifier)
 	var/armor_punch = armor_break_calculation(cfg, damage, total_explosive_resistance, pierce, 1, 0.5, armor_integrity)
 	apply_armorbreak(armor_punch)
 
@@ -63,12 +29,12 @@
 	for (var/datum/xeno_shield/XS in xeno_shields)
 		shieldtotal += XS.amount
 
-	if (damage >= (health + shieldtotal) && damage >= EXPLOSION_THRESHOLD_GIB)
+	if(damage >= (health + shieldtotal) && damage >= EXPLOSION_THRESHOLD_GIB)
 		var/oldloc = loc
 		gib(last_damage_data)
 		create_shrapnel(oldloc, rand(16, 24), , , /datum/ammo/bullet/shrapnel/light/xeno, last_damage_data)
 		return
-	if (damage >= 0)
+	if(damage >= 0)
 		b_loss += damage * 0.5
 		f_loss += damage * 0.5
 		apply_damage(b_loss, BRUTE)
@@ -113,11 +79,11 @@
 	SEND_SIGNAL(src, COMSIG_XENO_PRE_APPLY_ARMOURED_DAMAGE, damagedata)
 	var/modified_damage = armor_damage_reduction(armour_config, damage,
 		damagedata["armor"], damagedata["penetration"], damagedata["armour_break_pr_pen"],
-		damagedata["armour_break_flat"], damagedata["armor_integrity"])
+		damagedata["armour_break_flat"], damagedata["armor_integrity"])*(damage_income_modifier)
 
 	var/armor_punch = armor_break_calculation(armour_config, damage,
 		damagedata["armor"], damagedata["penetration"], damagedata["armour_break_pr_pen"],
-		damagedata["armour_break_flat"], damagedata["armor_integrity"])
+		damagedata["armour_break_flat"], damagedata["armor_integrity"])*(damage_income_modifier)
 
 	apply_armorbreak(armor_punch)
 
@@ -193,36 +159,32 @@
 
 /mob/living/carbon/xenomorph/var/armor_break_to_apply = 0
 /mob/living/carbon/xenomorph/proc/apply_armorbreak(armorbreak = 0)
-	if(GLOB.xeno_general.armor_ignore_integrity)
+	if(GLOB.xeno_general.armor_ignore_integrity || !armorbreak)
 		return FALSE
 
-	if(stat == DEAD) return
-
-	if(armor_deflection<=0)
-		return
-
 	//Immunity check
-	if(world.time < armor_integrity_immunity_time && world.time>armor_integrity_last_damage_time + XENO_ARMOR_BREAK_PASS_TIME)
-		return 1
+	if(world.time < armor_integrity_immunity_time && world.time > armor_integrity_last_damage_time + XENO_ARMOR_BREAK_PASS_TIME)
+		return TRUE
 
-	if(world.time>armor_integrity_immunity_time)
+	if(world.time > armor_integrity_immunity_time)
 		armor_integrity_immunity_time = world.time
 		armor_integrity_last_damage_time = world.time
 		armor_break_to_apply = 0
 		post_apply_armorbreak()
 
 	var/delay = ((armor_integrity - armorbreak / 10)/25)*XENO_ARMOR_BREAK_25PERCENT_IMMUNITY_TIME
-	armor_break_to_apply += armorbreak
+	armor_break_to_apply += armorbreak/10
 	armor_integrity_immunity_time += delay
 
 	if(armor_integrity_immunity_time - world.time > XENO_ARMOR_BREAK_25PERCENT_IMMUNITY_TIME * 4)
 		armor_integrity_immunity_time = world.time + XENO_ARMOR_BREAK_25PERCENT_IMMUNITY_TIME * 4
 
-	return 1
+	return TRUE
 
 /mob/living/carbon/xenomorph/proc/post_apply_armorbreak()
-	set waitfor = 0
-	if(!caste) return
+	set waitfor = FALSE
+	if(!caste)
+		return
 	sleep(XENO_ARMOR_BREAK_PASS_TIME)
 	if(warding_aura && armor_break_to_apply > 0) //Damage to armor reduction
 		armor_break_to_apply = round(armor_break_to_apply * ((100 - (warding_aura * 15)) / 100))
@@ -234,10 +196,11 @@
 	updatehealth()
 
 /mob/living/carbon/xenomorph/proc/check_blood_splash(damage = 0, damtype = BRUTE, chancemod = 0, radius = 1)
-	if(!damage || !acid_blood_damage || world.time < acid_splash_last + acid_splash_cooldown || SSticker?.mode?.hardcore)
+	if(!damage || !acid_blood_damage || world.time < acid_splash_last + acid_splash_cooldown || MODE_HAS_FLAG(MODE_HARDCORE))
 		return FALSE
 	var/chance = 20 //base chance
-	if(damtype == BRUTE) chance += 5
+	if(damtype == BRUTE)
+		chance += 5
 	chance += chancemod + (damage * 0.33)
 	var/turf/T = loc
 	if(!T || !istype(T))
@@ -265,6 +228,9 @@
 
 			if(splash_chance > 0 && prob(splash_chance)) //Success!
 				var/dmg = list("damage" = acid_blood_damage)
+				track_damage("Acid", victim, acid_blood_damage)
+				if(faction == victim.faction)
+					track_friendly_damage("Acid", victim, acid_blood_damage)
 				if(SEND_SIGNAL(src, COMSIG_XENO_DEAL_ACID_DAMAGE, victim, dmg) & COMPONENT_BLOCK_DAMAGE)
 					continue
 				i++
@@ -278,19 +244,6 @@
 				handle_blood_splatter(get_dir(src, victim), 1 SECONDS)
 				playsound(victim, "acid_sizzle", 25, TRUE)
 				animation_flash_color(victim, "#FF0000") //pain hit flicker
-
-/mob/living/carbon/xenomorph/get_target_lock(access_to_check)
-	if(isnull(access_to_check))
-		return
-
-	if(!iff_tag)
-		return ..()
-
-	if(!islist(access_to_check))
-		return access_to_check in iff_tag.faction_groups
-
-	var/list/overlap = iff_tag.faction_groups & access_to_check
-	return length(overlap)
 
 /mob/living/carbon/xenomorph/handle_flamer_fire(obj/flamer_fire/fire, damage, delta_time)
 	. = ..()

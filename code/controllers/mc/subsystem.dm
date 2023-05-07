@@ -123,10 +123,10 @@
 	. = SS_SLEEPING
 	fire(resumed)
 	. = state
-	if (state == SS_SLEEPING)
+	if(state == SS_SLEEPING)
 		slept_count++
 		state = SS_IDLE
-	if (state == SS_PAUSING)
+	if(state == SS_PAUSING)
 		slept_count++
 		var/QT = queued_time
 		enqueue()
@@ -190,41 +190,41 @@
 		if (queue_node_flags & (SS_TICKER|SS_BACKGROUND) == SS_TICKER)
 			if ((SS_flags & (SS_TICKER|SS_BACKGROUND)) != SS_TICKER)
 				continue
-			if (queue_node_priority < SS_priority)
+			if(queue_node_priority < SS_priority)
 				break
 
-		else if (queue_node_flags & SS_BACKGROUND)
-			if (!(SS_flags & SS_BACKGROUND))
+		else if(queue_node_flags & SS_BACKGROUND)
+			if(!(SS_flags & SS_BACKGROUND))
 				break
-			if (queue_node_priority < SS_priority)
+			if(queue_node_priority < SS_priority)
 				break
 
 		else
-			if (SS_flags & SS_BACKGROUND)
+			if(SS_flags & SS_BACKGROUND)
 				continue
-			if (SS_flags & SS_TICKER)
+			if(SS_flags & SS_TICKER)
 				break
-			if (queue_node_priority < SS_priority)
+			if(queue_node_priority < SS_priority)
 				break
 
 	queued_time = world.time
 	queued_priority = SS_priority
 	state = SS_QUEUED
-	if (SS_flags & SS_BACKGROUND) //update our running total
+	if(SS_flags & SS_BACKGROUND) //update our running total
 		Master.queue_priority_count_bg += SS_priority
 	else
 		Master.queue_priority_count += SS_priority
 
 	queue_next = queue_node
-	if (!queue_node)//we stopped at the end, add to tail
+	if(!queue_node)//we stopped at the end, add to tail
 		queue_prev = Master.queue_tail
-		if (Master.queue_tail)
+		if(Master.queue_tail)
 			Master.queue_tail.queue_next = src
 		else //empty queue, we also need to set the head
 			Master.queue_head = src
 		Master.queue_tail = src
 
-	else if (queue_node == Master.queue_head)//insert at start of list
+	else if(queue_node == Master.queue_head)//insert at start of list
 		Master.queue_head.queue_prev = src
 		Master.queue_head = src
 		queue_prev = null
@@ -235,16 +235,16 @@
 
 
 /datum/controller/subsystem/proc/dequeue()
-	if (queue_next)
+	if(queue_next)
 		queue_next.queue_prev = queue_prev
-	if (queue_prev)
+	if(queue_prev)
 		queue_prev.queue_next = queue_next
 	if (Master && (src == Master.queue_tail))
 		Master.queue_tail = queue_prev
 	if (Master && (src == Master.queue_head))
 		Master.queue_head = queue_next
 	queued_time = 0
-	if (state == SS_QUEUED)
+	if(state == SS_QUEUED)
 		state = SS_IDLE
 
 
@@ -274,15 +274,15 @@
 
 /datum/controller/subsystem/proc/state_letter()
 	switch (state)
-		if (SS_RUNNING)
+		if(SS_RUNNING)
 			. = "R"
-		if (SS_QUEUED)
+		if(SS_QUEUED)
 			. = "Q"
-		if (SS_PAUSED, SS_PAUSING)
+		if(SS_PAUSED, SS_PAUSING)
 			. = "P"
-		if (SS_SLEEPING)
+		if(SS_SLEEPING)
 			. = "S"
-		if (SS_IDLE)
+		if(SS_IDLE)
 			. = "  "
 
 /// Causes the next "cycle" fires to be missed. Effect is accumulative but can reset by calling update_nextfire(reset_time = TRUE)

@@ -7,8 +7,8 @@
 #define DELETE_TYPE_AND_SUBTYPES "Type and subtypes"
 #define DELETE_CANCEL "Cancel"
 
-#define CONFIRM_YES "Yes"
-#define CONFIRM_NO "No"
+#define CONFIRM_YES client.auto_lang(LANGUAGE_YES)
+#define CONFIRM_NO client.auto_lang(LANGUAGE_NO)
 
 /datum/buildmode_mode/delete/when_clicked(client/c, params, object)
 	var/list/modifiers = params2list(params)
@@ -29,10 +29,10 @@
 			if(action_type == DELETE_CANCEL || !action_type)
 				return
 
-			if(tgui_alert(usr,"Are you really sure you want to delete all instances of type [deleting.type]?", "Confirmation", list(CONFIRM_YES, CONFIRM_NO)) != CONFIRM_YES)
+			if(tgui_alert(usr,"Are you really sure you want to delete all instances of type [deleting.type]?", usr.client.auto_lang(LANGUAGE_CONFIRM), list(usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO))) != usr.client.auto_lang(LANGUAGE_YES))
 				return
 
-			if(tgui_alert(usr,"Second confirmation required. Delete?", "Double Confirmation", list(CONFIRM_YES, CONFIRM_NO)) != CONFIRM_YES)
+			if(tgui_alert(usr,"Second confirmation required. Delete?", usr.client.auto_lang(LANGUAGE_CONFIRM), list(usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO))) != usr.client.auto_lang(LANGUAGE_YES))
 				return
 
 			var/o_type = deleting.type

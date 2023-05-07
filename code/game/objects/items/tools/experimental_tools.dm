@@ -6,7 +6,7 @@
 	flags_equip_slot = SLOT_WAIST
 	w_class = SIZE_SMALL
 	var/datum/radar/lifeline/radar
-	var/faction = FACTION_MARINE
+	faction_to_get = FACTION_MARINE
 
 /obj/item/tool/crew_monitor/Initialize(mapload, ...)
 	. = ..()

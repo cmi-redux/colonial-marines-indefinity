@@ -31,16 +31,19 @@
 	for(var/i in gears)
 		var/obj/structure/machinery/gear/G = i
 		G.start_moving()
+	if(is_mainship_level(z))
+		for(var/i in railings)
+			var/obj/structure/machinery/door/poddoor/railing/R = i
+			INVOKE_ASYNC(R, TYPE_PROC_REF(/obj/structure/machinery/door, close))
 
 /obj/docking_port/mobile/vehicle_elevator/afterShuttleMove()
-	if(!is_mainship_level(z))
-		return
 	for(var/i in gears)
 		var/obj/structure/machinery/gear/G = i
 		G.stop_moving()
-	for(var/i in railings)
-		var/obj/structure/machinery/door/poddoor/railing/R = i
-		INVOKE_ASYNC(R, TYPE_PROC_REF(/obj/structure/machinery/door, open))
+	if(is_mainship_level(z))
+		for(var/i in railings)
+			var/obj/structure/machinery/door/poddoor/railing/R = i
+			INVOKE_ASYNC(R, TYPE_PROC_REF(/obj/structure/machinery/door, open))
 
 /obj/docking_port/stationary/vehicle_elevator
 	name = "Root Vehicle Elevator Dock"

@@ -7,7 +7,7 @@
 /obj/item/weapon/gun/rifle/sniper
 	aim_slowdown = SLOWDOWN_ADS_SPECIALIST
 	wield_delay = WIELD_DELAY_SLOW
-
+	can_jammed = FALSE
 	var/has_aimed_shot = TRUE
 	var/aiming_time = 1.25 SECONDS
 	var/aimed_shot_cooldown
@@ -275,7 +275,7 @@
 
 //Pow! Headshot.
 /obj/item/weapon/gun/rifle/sniper/M42A
-	name = "\improper M42A scoped rifle"
+	name = "M42A scoped rifle"
 	desc = "A heavy sniper rifle manufactured by Armat Systems. It has a scope system and fires armor penetrating rounds out of a 15-round magazine.\n'Peace Through Superior Firepower'"
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/uscm.dmi'
 	icon_state = "m42a"
@@ -292,6 +292,7 @@
 	starting_attachment_types = list(/obj/item/attachable/sniperbarrel)
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_AMMO_COUNTER
 	map_specific_decoration = TRUE
+	durability_tier = WEAPON_DAMAGE_VERY_BIG
 
 	flags_item = TWOHANDED|NO_CRYO_STORE
 
@@ -329,7 +330,7 @@
 	recoil = RECOIL_AMOUNT_TIER_5
 
 /obj/item/weapon/gun/rifle/sniper/xm43e1
-	name = "\improper XM43E1 experimental anti-materiel rifle"
+	name = "XM43E1 experimental anti-materiel rifle"
 	desc = "An experimental anti-materiel rifle produced by Armat Systems, recently reacquired from the deep storage of an abandoned prototyping facility. This one in particular is currently undergoing field testing. Chambered in 10x99mm Caseless."
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/uscm.dmi'
 	icon_state = "xm42b"
@@ -395,7 +396,7 @@
 */
 
 /obj/item/weapon/gun/rifle/sniper/elite
-	name = "\improper M42C anti-tank sniper rifle"
+	name = "M42C anti-tank sniper rifle"
 	desc = "A high-end superheavy magrail sniper rifle from Weyland-Armat chambered in a specialized variant of the heaviest ammo available, 10x99mm Caseless. This weapon requires a specialized armor rig for recoil mitigation in order to be used effectively."
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/wy.dmi'
 	icon_state = "m42c"
@@ -449,7 +450,7 @@
 //SVD //Based on the actual Dragunov DMR rifle.
 
 /obj/item/weapon/gun/rifle/sniper/svd
-	name = "\improper SVD Dragunov-033 designated marksman rifle"
+	name = "SVD Dragunov-033 designated marksman rifle"
 	desc = "A wannabe replica of an SVD, constructed from a MAR-40 by someone probably illiterate that thought the original SVD was built from an AK pattern. Fires 7.62x54mmR rounds."
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/upp.dmi'
 	icon_state = "svd003"
@@ -520,7 +521,7 @@
 //M4RA custom marksman rifle
 
 /obj/item/weapon/gun/rifle/m4ra_custom
-	name = "\improper M4RA custom battle rifle"
+	name = "M4RA custom battle rifle"
 	desc = "This is a further improvement upon the already rock-solid M4RA. Made by the USCM armourers on Chinook station - This variant of the M4RA has a specifically milled magazine well to accept A19 rounds. It sports a light-weight titantium-alloy frame, better responsive to the heavy kick of the tailor-made A19 rounds."
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/uscm.dmi'
 	icon_state = "m4ra_custom"
@@ -596,7 +597,7 @@
 
 /obj/item/weapon/gun/rifle/m4ra_custom/able_to_fire(mob/living/user)
 	. = ..()
-	if (. && istype(user)) //Let's check all that other stuff first.
+	if(. && istype(user)) //Let's check all that other stuff first.
 		if(!skillcheck(user, SKILL_SPEC_WEAPONS, SKILL_SPEC_ALL) && user.skills.get_skill_level(SKILL_SPEC_WEAPONS) != SKILL_SPEC_SCOUT)
 			to_chat(user, SPAN_WARNING("You don't seem to know how to use \the [src]..."))
 			return FALSE
@@ -605,6 +606,7 @@
 //HEAVY WEAPONS
 
 /obj/item/weapon/gun/launcher
+	durability_tier = WEAPON_DAMAGE_ALOT
 	gun_category = GUN_CATEGORY_HEAVY
 	has_empty_icon = FALSE
 	has_open_icon = FALSE
@@ -627,6 +629,7 @@
 	var/use_sound = null
 	///Whether clicking a held weapon with an empty hand will open its inventory or draw a munition out.
 	var/direct_draw = TRUE
+	can_jammed = FALSE
 
 /obj/item/weapon/gun/launcher/Initialize(mapload, spawn_empty) //If changing vars on init, be sure to do the parent proccall *after* the change.
 	. = ..()
@@ -669,7 +672,7 @@
 
 	aim_slowdown = SLOWDOWN_ADS_SPECIALIST
 	wield_delay = WIELD_DELAY_SLOW
-	flags_gun_features = GUN_UNUSUAL_DESIGN|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY
+	flags_gun_features = GUN_UNUSUAL_DESIGN|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_AMMO_COUNTER
 	///Can you access the storage by clicking it, put things into it, or take things out? Meant for break-actions mostly but useful for any state where you want access to be toggleable. Make sure to call cylinder.close(user) so they don't still have the screen open!
 	var/open_chamber = TRUE
 	///Does it launch its grenades in a low arc or a high? Do they strike people in their path, or fly beyond?
@@ -707,11 +710,14 @@
 
 /obj/item/weapon/gun/launcher/grenade/update_icon()
 	..()
-	var/GL_sprite = base_gun_icon
-	if(GL_has_empty_icon && cylinder && !length(cylinder.contents))
+	var/GL_sprite = gun_icon
+	if(!cylinder  || cylinder == 1)
 		GL_sprite += "_e"
 		playsound(loc, cocked_sound, 25, 1)
-	if(GL_has_open_icon && open_chamber)
+	else if(GL_has_empty_icon && !length(cylinder.contents))
+		GL_sprite += "_e"
+		playsound(loc, cocked_sound, 25, 1)
+	else if(GL_has_open_icon && open_chamber)
 		GL_sprite += "_o"
 		playsound(loc, cocked_sound, 25, 1)
 	icon_state = GL_sprite
@@ -722,7 +728,6 @@
 		return ..()
 	if(cylinder.handle_attack_hand(user))
 		..()
-
 
 /obj/item/weapon/gun/launcher/grenade/unload(mob/user, reload_override = FALSE, drop_override = FALSE, loc_override = FALSE)
 	if(!open_chamber)
@@ -748,6 +753,34 @@
 /obj/item/weapon/gun/launcher/grenade/attackby(obj/item/I, mob/user)
 	if(istype(I,/obj/item/attachable) && check_inactive_hand(user))
 		attach_to_gun(user,I)
+		return
+	else if(istype(I, /obj/item/prop/helmetgarb/gunoil))
+		if(oil)
+			to_chat(user, SPAN_NOTICE("[src] недавно смазано."))
+			return
+		var/obj/item/prop/helmetgarb/gunoil/GO = I
+		var/oil_verb = pick("lubes", "oils", "cleans", "tends to", "gently strokes")
+		if(do_after(user, 60 * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_GENERIC))
+			if(GO.remove_oil(gun_category, user))
+				user.visible_message("[user] [oil_verb] [src]. It shines like new.", "You oil up and immaculately clean [src]. It shines like new.")
+				clean_blood()
+				oil(oil_max/2,0.5)
+		else
+			return
+	else if(istype(I, /obj/item/tool/weldingtool))
+		var/obj/item/tool/weldingtool/WT = I
+		if(durability >= max_durability)
+			to_chat(user, SPAN_NOTICE("Оружие в идеальном состояние!"))
+			return
+		if(do_after(user, 60 * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD) && !broken)
+			if(WT.remove_fuel(3, user))
+				to_chat(user, SPAN_NOTICE("Вы починили повреждения [src]."))
+				durability = min(max_durability / 8 + durability, max_durability)
+				failure_probability = max(0.5, failure_probability - 0.5)
+				durability_percentage()
+				update_icon()
+			return
+		to_chat(user, SPAN_NOTICE("[src] невозможно починить, для этого требуется специальное устройство."))
 		return
 	return cylinder.attackby(I, user)
 
@@ -798,13 +831,13 @@
 			to_chat(user, SPAN_WARNING("The [name] is empty."))
 			return FALSE
 		var/obj/item/explosive/grenade/G = cylinder.contents[1]
-		if(G.antigrief_protection && user.faction == FACTION_MARINE && explosive_antigrief_check(G, user))
+		if(G.antigrief_protection && user.faction == GLOB.faction_datum[FACTION_MARINE] && explosive_antigrief_check(G, user))
 			to_chat(user, SPAN_WARNING("\The [name]'s safe-area accident inhibitor prevents you from firing!"))
 			msg_admin_niche("[key_name(user)] attempted to prime \a [G.name] in [get_area(src)] (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[src.loc.x];Y=[src.loc.y];Z=[src.loc.z]'>JMP</a>)")
 			return FALSE
 
 
-/obj/item/weapon/gun/launcher/grenade/afterattack(atom/target, mob/user, flag) //Not actually after the attack. After click, more like.
+/obj/item/weapon/gun/launcher/grenade/afterattack(atom/target, mob/user, flag, atom/operator) //Not actually after the attack. After click, more like.
 	if(able_to_fire(user))
 		if(get_dist(target,user) <= 2)
 			var/obj/item/explosive/grenade/nade = cylinder.contents[1]
@@ -812,10 +845,11 @@
 				to_chat(user, SPAN_WARNING("The grenade launcher beeps a warning noise. You are too close!"))
 				return
 		fire_grenade(target,user)
+		var/atom/movable/screen/ammo/A = user.hud_used.ammo
+		A.update_hud(user)
 
-
-/obj/item/weapon/gun/launcher/grenade/proc/fire_grenade(atom/target, mob/user)
-	set waitfor = 0
+/obj/item/weapon/gun/launcher/grenade/proc/fire_grenade(atom/target, mob/user, atom/operator)
+	set waitfor = FALSE
 	last_fired = world.time
 
 	var/to_firer = "You fire the [name]!"
@@ -824,9 +858,6 @@
 	user.visible_message(SPAN_DANGER("[user] fired a grenade!"),
 	SPAN_WARNING("[to_firer]"), message_flags = CHAT_TYPE_WEAPON_USE)
 	playsound(user.loc, fire_sound, 50, 1)
-
-	var/angle = round(Get_Angle(user,target))
-	muzzle_flash(angle,user)
 	simulate_recoil(0, user)
 
 	var/obj/item/explosive/grenade/F = cylinder.contents[1]
@@ -850,7 +881,15 @@
 	F.forceMove(get_turf(src))
 	F.throw_atom(target, 20, SPEED_VERY_FAST, user, null, NORMAL_LAUNCH, pass_flags)
 
+/obj/item/weapon/gun/launcher/grenade/get_ammo_type()
+	if(length(cylinder.contents) == 0)
+		return list("grenade_empty", "grenade_empty")
+	else
+		var/obj/item/explosive/grenade/F = cylinder.contents[1]
+		return list(F.hud_state, F.hud_state_empty)
 
+/obj/item/weapon/gun/launcher/grenade/get_ammo_count()
+	return length(cylinder.contents)
 
 //Doesn't use these. Listed for reference.
 /obj/item/weapon/gun/launcher/grenade/load_into_chamber()
@@ -899,7 +938,7 @@
 //M92 GRENADE LAUNCHER
 
 /obj/item/weapon/gun/launcher/grenade/m92
-	name = "\improper M92 grenade launcher"
+	name = "M92 grenade launcher"
 	desc = "A heavy, 6-shot grenade launcher used by the Colonial Marines for area denial and big explosions."
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/uscm.dmi'
 	icon_state = "m92"
@@ -926,7 +965,7 @@
 
 /obj/item/weapon/gun/launcher/grenade/m92/able_to_fire(mob/living/user)
 	. = ..()
-	if (. && istype(user))
+	if(. && istype(user))
 		if(!skillcheck(user, SKILL_SPEC_WEAPONS, SKILL_SPEC_ALL) && user.skills.get_skill_level(SKILL_SPEC_WEAPONS) != SKILL_SPEC_GRENADIER)
 			to_chat(user, SPAN_WARNING("You don't seem to know how to use \the [src]..."))
 			return FALSE
@@ -936,7 +975,7 @@
 //M81 GRENADE LAUNCHER
 
 /obj/item/weapon/gun/launcher/grenade/m81
-	name = "\improper M81 grenade launcher"
+	name = "M81 grenade launcher"
 	desc = "A lightweight, single-shot low-angle grenade launcher used by the Colonial Marines for area denial and big explosions."
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/colony.dmi'
 	icon_state = "m81"
@@ -957,14 +996,14 @@
 
 /obj/item/weapon/gun/launcher/grenade/m81/riot/able_to_fire(mob/living/user)
 	. = ..()
-	if (. && istype(user))
+	if(. && istype(user))
 		if(!skillcheck(user, SKILL_POLICE, SKILL_POLICE_SKILLED))
 			to_chat(user, SPAN_WARNING("You don't seem to know how to use \the [src]..."))
 			return FALSE
 
 
 /obj/item/weapon/gun/launcher/grenade/m81/riot
-	name = "\improper M81 riot grenade launcher"
+	name = "M81 riot grenade launcher"
 	desc = "A lightweight, single-shot low-angle grenade launcher to launch tear gas grenades. Used by the Colonial Marines Military Police during riots."
 	valid_munitions = list(/obj/item/explosive/grenade/custom/teargas)
 	preload = /obj/item/explosive/grenade/custom/teargas
@@ -973,7 +1012,7 @@
 //M79 Grenade Launcher subtype of the M81
 
 /obj/item/weapon/gun/launcher/grenade/m81/m79//m79 variant for marines
-	name = "\improper M79 grenade launcher"
+	name = "M79 grenade launcher"
 	desc = "A heavy, low-angle 40mm grenade launcher. It's been in use since the Vietnam War, though this version has been modernized with an IFF enabled micro-computer. The wooden furniture is, in fact, made of painted hardened polykevlon."
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/uscm.dmi'
 	icon_state = "m79"
@@ -1016,7 +1055,7 @@
 //M5 RPG
 
 /obj/item/weapon/gun/launcher/rocket
-	name = "\improper M5 RPG"
+	name = "M5 RPG"
 	desc = "The M5 RPG is the primary anti-armor weapon of the USCM. Used to take out light-tanks and enemy structures, the M5 RPG is a dangerous weapon with a variety of combat uses."
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/uscm.dmi'
 	icon_state = "m5"
@@ -1036,7 +1075,7 @@
 		/obj/item/attachable/magnetic_harness,
 	)
 
-	flags_gun_features = GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_INTERNAL_MAG
+	flags_gun_features = GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_INTERNAL_MAG|GUN_AMMO_COUNTER
 	var/datum/effect_system/smoke_spread/smoke
 
 	flags_item = TWOHANDED|NO_CRYO_STORE
@@ -1047,10 +1086,23 @@
 	smoke = new()
 	smoke.attach(src)
 
+/obj/item/weapon/gun/launcher/rocket/get_ammo_type()
+	if(!ammo)
+		return list("rocket_he", "rocket_empty")
+	else if(!in_chamber)
+		return list(ammo.hud_state, ammo.hud_state_empty)
+	else
+		return list(in_chamber.ammo.hud_state, in_chamber.ammo.hud_state_empty)
+
+/obj/item/weapon/gun/launcher/rocket/get_ammo_count()
+	if(!current_mag)
+		return 0
+	else
+		return current_mag.ammo_position
+
 /obj/item/weapon/gun/launcher/rocket/Destroy()
 	QDEL_NULL(smoke)
 	return ..()
-
 
 /obj/item/weapon/gun/launcher/rocket/set_gun_attachment_offsets()
 	attachable_offset = list("muzzle_x" = 33, "muzzle_y" = 18,"rail_x" = 6, "rail_y" = 19, "under_x" = 19, "under_y" = 14, "stock_x" = 19, "stock_y" = 14)
@@ -1070,21 +1122,21 @@
 	if(current_mag.current_rounds <= 0)
 		. += "It's not loaded."
 		return
-	if(current_mag.current_rounds > 0)
+	if(current_mag.ammo_position > 0)
 		. += "It has an 84mm [ammo.name] loaded."
 
 
 /obj/item/weapon/gun/launcher/rocket/able_to_fire(mob/living/user)
 	. = ..()
-	if (. && istype(user)) //Let's check all that other stuff first.
-		if(skill_locked && !skillcheck(user, SKILL_SPEC_WEAPONS, SKILL_SPEC_ALL) && user.skills.get_skill_level(SKILL_SPEC_WEAPONS) != SKILL_SPEC_ROCKET)
+	if(. && istype(user)) //Let's check all that other stuff first.
+		if(skill_locked && !skillcheck(user, SKILL_SPEC_WEAPONS, SKILL_SPEC_ALL) && user.skills.get_skill_level(SKILL_SPEC_WEAPONS) != SKILL_SPEC_ROCKET && !(flags_mounted_gun_features & GUN_MOUNTING))
 			to_chat(user, SPAN_WARNING("You don't seem to know how to use \the [src]..."))
 			return 0
-		if(user.faction == FACTION_MARINE && explosive_antigrief_check(src, user))
+		if(user.faction == GLOB.faction_datum[FACTION_MARINE] && explosive_antigrief_check(src, user))
 			to_chat(user, SPAN_WARNING("\The [name]'s safe-area accident inhibitor prevents you from firing!"))
 			msg_admin_niche("[key_name(user)] attempted to fire \a [name] in [get_area(src)] (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[src.loc.x];Y=[src.loc.y];Z=[src.loc.z]'>JMP</a>)")
 			return FALSE
-		if(current_mag && current_mag.current_rounds > 0)
+		if(current_mag && current_mag.ammo_position > 0)
 			make_rocket(user, 0, 1)
 
 /obj/item/weapon/gun/launcher/rocket/load_into_chamber(mob/user)
@@ -1093,14 +1145,6 @@
 
 //No such thing
 /obj/item/weapon/gun/launcher/rocket/reload_into_chamber(mob/user)
-	return TRUE
-
-/obj/item/weapon/gun/launcher/rocket/delete_bullet(obj/item/projectile/projectile_to_fire, refund = 0)
-	if(!current_mag)
-		return
-	qdel(projectile_to_fire)
-	if(refund)
-		current_mag.current_rounds++
 	return TRUE
 
 /obj/item/weapon/gun/launcher/rocket/proc/make_rocket(mob/user, drop_override = 0, empty = 1)
@@ -1124,7 +1168,7 @@
 		r = k
 
 	if(empty)
-		r.current_rounds = 0
+		r.ammo_position = 0
 	if(drop_override || !user) //If we want to drop it on the ground or there's no user.
 		r.forceMove(get_turf(src)) //Drop it on the ground.
 	else
@@ -1141,17 +1185,17 @@
 		to_chat(user, SPAN_WARNING("That's not going to fit!"))
 		return
 
-	if(current_mag.current_rounds > 0)
+	if(current_mag.ammo_position > 0)
 		to_chat(user, SPAN_WARNING("[src] is already loaded!"))
 		return
 
-	if(rocket.current_rounds <= 0)
+	if(rocket.ammo_position <= 0)
 		to_chat(user, SPAN_WARNING("That frame is empty!"))
 		return
 
 	if(user)
 		to_chat(user, SPAN_NOTICE("You begin reloading [src]. Hold still..."))
-		if(do_after(user,current_mag.reload_delay, INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
+		if(do_after(user, current_mag.transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE, BUSY_ICON_FRIENDLY))
 			qdel(current_mag)
 			user.drop_inv_item_on_ground(rocket)
 			current_mag = rocket
@@ -1174,19 +1218,19 @@
 
 /obj/item/weapon/gun/launcher/rocket/unload(mob/user,  reload_override = 0, drop_override = 0)
 	if(user && current_mag)
-		if(current_mag.current_rounds <= 0)
+		if(current_mag.ammo_position <= 0)
 			to_chat(user, SPAN_WARNING("[src] is already empty!"))
 			return
 		to_chat(user, SPAN_NOTICE("You begin unloading [src]. Hold still..."))
-		if(do_after(user,current_mag.reload_delay, INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
-			if(current_mag.current_rounds <= 0)
+		if(do_after(user, current_mag.transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE, BUSY_ICON_FRIENDLY))
+			if(current_mag.ammo_position <= 0)
 				to_chat(user, SPAN_WARNING("You have already unloaded \the [src]."))
 				return
 			playsound(user, unload_sound, 25, 1)
 			user.visible_message(SPAN_NOTICE("[user] unloads [ammo] from [src]."),
 			SPAN_NOTICE("You unload [ammo] from [src]."))
 			make_rocket(user, drop_override, 0)
-			current_mag.current_rounds = 0
+			current_mag.ammo_position = 0
 
 //Adding in the rocket backblast. The tile behind the specialist gets blasted hard enough to down and slightly wound anyone
 /obj/item/weapon/gun/launcher/rocket/apply_bullet_effects(obj/item/projectile/projectile_to_fire, mob/user, i = 1, reflex = 0)
@@ -1213,7 +1257,7 @@
 //M5 RPG'S MEAN FUCKING COUSIN
 
 /obj/item/weapon/gun/launcher/rocket/m57a4
-	name = "\improper M57-A4 'Lightning Bolt' quad thermobaric launcher"
+	name = "M57-A4 'Lightning Bolt' quad thermobaric launcher"
 	desc = "The M57-A4 'Lightning Bolt' is possibly the most destructive man-portable weapon ever made. It is a 4-barreled missile launcher capable of burst-firing 4 thermobaric missiles. Enough said."
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/event.dmi'
 	icon_state = "m57a4"
@@ -1221,7 +1265,7 @@
 
 	current_mag = /obj/item/ammo_magazine/rocket/m57a4
 	aim_slowdown = SLOWDOWN_ADS_SUPERWEAPON
-	flags_gun_features = GUN_WIELDED_FIRING_ONLY
+	flags_gun_features = GUN_WIELDED_FIRING_ONLY|GUN_AMMO_COUNTER
 
 /obj/item/weapon/gun/launcher/rocket/m57a4/set_gun_config_values()
 	..()
@@ -1335,8 +1379,8 @@
 //Flare gun. Close enough to a specialist gun?
 
 /obj/item/weapon/gun/flare
-	name = "\improper M82-F flare gun"
-	desc = "A flare gun issued to JTAC operators to use with flares. Comes with a miniscope. One shot, one... life saved?"
+	name = "M82-F flare gun"
+	desc = "A flare gun issued to JTAC operators to use with standard flares. Cannot be used with signal flares. Comes with a miniscope. One shot, one... life saved?"
 	icon_state = "m82f"
 	item_state = "m82f"
 	current_mag = /obj/item/ammo_magazine/internal/flare
@@ -1349,6 +1393,7 @@
 	flags_gun_features = GUN_INTERNAL_MAG|GUN_CAN_POINTBLANK
 	gun_category = GUN_CATEGORY_HANDGUN
 	attachable_allowed = list(/obj/item/attachable/scope/mini/flaregun)
+	var/popped_state = "m82f_e" //Icon state that represents an unloaded flare gun. The tube's just popped out.
 
 	var/last_signal_flare_name
 
@@ -1392,21 +1437,47 @@
 /obj/item/weapon/gun/flare/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/device/flashlight/flare))
 		var/obj/item/device/flashlight/flare/F = I
-		if(F.on)
+		if(F.light_on)
 			to_chat(user, SPAN_WARNING("You can't put a lit flare in [src]!"))
 			return
 		if(!F.fuel)
 			to_chat(user, SPAN_WARNING("You can't put a burnt out flare in [src]!"))
 			return
-		if(current_mag && current_mag.current_rounds == 0)
-			ammo = GLOB.ammo_list[F.ammo_datum]
+		if(current_mag && current_mag.ammo_position == 0)
 			playsound(user, reload_sound, 25, 1)
 			to_chat(user, SPAN_NOTICE("You load \the [F] into [src]."))
-			current_mag.current_rounds++
+			var/obj/item/projectile/flare = new(current_mag)
+			flare.ammo = F.ammo_datum
+			flare.caliber = current_mag.caliber
+			current_mag.ammo_position++
+			current_mag.current_rounds[current_mag.ammo_position] = flare
 			qdel(I)
 			update_icon()
 		else
 			to_chat(user, SPAN_WARNING("\The [src] is already loaded!"))
+	else if(istype(I, /obj/item/tool/weldingtool))
+		var/obj/item/tool/weldingtool/WT = I
+		if(do_after(user, 60 * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD) && !broken)
+			if(WT.remove_fuel(3, user))
+				to_chat(user, SPAN_NOTICE("Вы починили повреждения [src]."))
+				durability += max_durability / 8
+				durability_percentage()
+				failure_probability--
+			return
+		to_chat(user, SPAN_NOTICE("[src] невозможно починить, для этого требуется специальное устройство."))
+	else if(istype(I, /obj/item/prop/helmetgarb/gunoil))
+		if(oil)
+			to_chat(user, SPAN_NOTICE("[src] недавно смазано."))
+			return
+		var/obj/item/prop/helmetgarb/gunoil/GO = I
+		var/oil_verb = pick("lubes", "oils", "cleans", "tends to", "gently strokes")
+		if(do_after(user, 60 * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_GENERIC))
+			if(GO.remove_oil(gun_category, user))
+				user.visible_message("[user] [oil_verb] [src]. It shines like new.", "You oil up and immaculately clean [src]. It shines like new.")
+				clean_blood()
+				oil(oil_max/2,0.5)
+		else
+			return
 	else
 		to_chat(user, SPAN_WARNING("That's not a flare!"))
 
@@ -1421,7 +1492,8 @@
 	if(current_mag.current_rounds)
 		var/obj/item/device/flashlight/flare/unloaded_flare = new ammo.handful_type(get_turf(src))
 		playsound(user, reload_sound, 25, TRUE)
-		current_mag.current_rounds--
+		var/obj/item/projectile/flare = current_mag.transfer_bullet_out()
+		qdel(flare)
 		if(user)
 			to_chat(user, SPAN_NOTICE("You unload \the [unloaded_flare] from \the [src]."))
 			user.put_in_hands(unloaded_flare)
@@ -1432,9 +1504,8 @@
 		return
 
 	var/turf/flare_turf = user.loc
-	var/area/flare_area = flare_turf.loc
 
-	if(flare_area.ceiling > CEILING_GLASS)
+	if(!(flare_turf.turf_flags & TURF_WEATHER))
 		to_chat(user, SPAN_NOTICE("The roof above you is too dense."))
 		return
 
@@ -1448,9 +1519,8 @@
 	if(!do_after(user, 1 SECONDS, INTERRUPT_ALL, BUSY_ICON_GENERIC))
 		return
 
-	current_mag.current_rounds--
-
-	flare_turf.ceiling_debris()
+	var/obj/item/projectile/flare = current_mag.transfer_bullet_out()
+	qdel(flare)
 
 	var/datum/ammo/flare/explicit_ammo = ammo
 

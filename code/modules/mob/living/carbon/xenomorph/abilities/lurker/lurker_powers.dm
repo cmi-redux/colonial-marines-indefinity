@@ -1,13 +1,13 @@
 /datum/action/xeno_action/onclick/lurker_invisibility/use_ability(atom/targeted_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
-	if (!istype(xeno))
+	if(!istype(xeno))
 		return
 
-	if (!action_cooldown_check())
+	if(!action_cooldown_check())
 		return
 
-	if (!check_and_use_plasma_owner())
+	if(!check_and_use_plasma_owner())
 		return
 
 	animate(xeno, alpha = alpha_amount, time = 0.1 SECONDS, easing = QUAD_EASING)
@@ -16,7 +16,7 @@
 	xeno.speed_modifier -= speed_buff
 	xeno.recalculate_speed()
 
-	if (xeno.mutation_type == LURKER_NORMAL)
+	if(xeno.mutation_type == LURKER_NORMAL)
 		var/datum/behavior_delegate/lurker_base/behavior = xeno.behavior_delegate
 		behavior.on_invisibility()
 
@@ -32,12 +32,12 @@
 	if(!owner || owner.alpha == initial(owner.alpha))
 		return
 
-	if (invis_timer_id != TIMER_ID_NULL)
+	if(invis_timer_id != TIMER_ID_NULL)
 		deltimer(invis_timer_id)
 		invis_timer_id = TIMER_ID_NULL
 
 	var/mob/living/carbon/xenomorph/xeno = owner
-	if (istype(xeno))
+	if(istype(xeno))
 		animate(xeno, alpha = initial(xeno.alpha), time = 0.1 SECONDS, easing = QUAD_EASING)
 		to_chat(xeno, SPAN_XENOHIGHDANGER("You feel your invisibility end!"))
 
@@ -46,9 +46,9 @@
 		xeno.speed_modifier += speed_buff
 		xeno.recalculate_speed()
 
-		if (xeno.mutation_type == LURKER_NORMAL)
+		if(xeno.mutation_type == LURKER_NORMAL)
 			var/datum/behavior_delegate/lurker_base/behavior = xeno.behavior_delegate
-			if (istype(behavior))
+			if(istype(behavior))
 				behavior.on_invisibility_off()
 
 /datum/action/xeno_action/onclick/lurker_invisibility/ability_cooldown_over()
@@ -58,20 +58,20 @@
 /datum/action/xeno_action/onclick/lurker_assassinate/use_ability(atom/targeted_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
-	if (!istype(xeno))
+	if(!istype(xeno))
 		return
 
-	if (!action_cooldown_check())
+	if(!action_cooldown_check())
 		return
 
-	if (!check_and_use_plasma_owner())
+	if(!check_and_use_plasma_owner())
 		return
 
-	if (xeno.mutation_type != LURKER_NORMAL)
+	if(xeno.mutation_type != LURKER_NORMAL)
 		return
 
 	var/datum/behavior_delegate/lurker_base/behavior = xeno.behavior_delegate
-	if (istype(behavior))
+	if(istype(behavior))
 		behavior.next_slash_buffed = TRUE
 
 	to_chat(xeno, SPAN_XENOHIGHDANGER("Your next slash will deal increased damage!"))
@@ -85,12 +85,12 @@
 
 /datum/action/xeno_action/onclick/lurker_assassinate/proc/unbuff_slash()
 	var/mob/living/carbon/xenomorph/xeno = owner
-	if (!istype(xeno))
+	if(!istype(xeno))
 		return
 	var/datum/behavior_delegate/lurker_base/behavior = xeno.behavior_delegate
-	if (istype(behavior))
+	if(istype(behavior))
 		// In case slash has already landed
-		if (!behavior.next_slash_buffed)
+		if(!behavior.next_slash_buffed)
 			return
 		behavior.next_slash_buffed = FALSE
 

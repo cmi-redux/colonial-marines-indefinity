@@ -1,5 +1,6 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "ac" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "80"
 	},
@@ -12,15 +13,22 @@
 "aH" = (
 /obj/structure/blocker/invisible_wall,
 /obj/structure/machinery/computer/cameras/dropship/two,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/light{
+	dir = 8;
+	req_light_switch = 0
+	},
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
 /area/shuttle/drop2/sulaco)
 "bc" = (
 /obj/docking_port/mobile/marine_dropship/normandy,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent,
 /area/shuttle/drop2/sulaco)
 "bJ" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "68"
 	},
@@ -29,17 +37,20 @@
 /obj/item/device/radio/intercom/normandy{
 	pixel_y = 24
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin7"
 	},
 /area/shuttle/drop2/sulaco)
 "cj" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "6"
 	},
 /area/shuttle/drop2/sulaco)
 "do" = (
 /obj/effect/attach_point/crew_weapon/dropship2,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin3"
 	},
@@ -48,41 +59,65 @@
 /obj/effect/attach_point/fuel/dropship2{
 	pixel_x = -32
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "33"
 	},
 /area/shuttle/drop2/sulaco)
 "eu" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "75"
 	},
 /area/shuttle/drop2/sulaco)
 "fb" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "23"
 	},
 /area/shuttle/drop2/sulaco)
 "fm" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "29"
 	},
 /area/shuttle/drop2/sulaco)
+"fq" = (
+/obj/structure/bed/chair/vehicle{
+	pixel_x = 8
+	},
+/obj/structure/bed/chair/vehicle{
+	pixel_x = -8
+	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/light{
+	dir = 8;
+	req_light_switch = 0
+	},
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15"
+	},
+/area/shuttle/drop2/sulaco)
 "fx" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "69"
 	},
 /area/shuttle/drop2/sulaco)
 "fI" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "73"
 	},
 /area/shuttle/drop2/sulaco)
 "fQ" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "7"
 	},
 /area/shuttle/drop2/sulaco)
 "gD" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "38"
 	},
@@ -92,6 +127,7 @@
 	layer = 3.5;
 	pixel_x = 10
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "54"
 	},
@@ -100,6 +136,7 @@
 /obj/structure/bed/chair/dropship/pilot{
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
@@ -113,11 +150,13 @@
 	dir = 1;
 	pixel_x = -8
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
 /area/shuttle/drop2/sulaco)
 "iI" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "8"
 	},
@@ -127,16 +166,19 @@
 	layer = 3.5;
 	pixel_x = -10
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "52"
 	},
 /area/shuttle/drop2/sulaco)
 "jq" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "92"
 	},
 /area/shuttle/drop2/sulaco)
 "ko" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "15"
 	},
@@ -147,11 +189,13 @@
 	},
 /area/shuttle/drop2/sulaco)
 "kT" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "9"
 	},
 /area/shuttle/drop2/sulaco)
 "lh" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "26"
 	},
@@ -172,11 +216,17 @@
 	pixel_y = 16
 	},
 /obj/structure/blocker/invisible_wall,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/light{
+	dir = 4;
+	req_light_switch = 0
+	},
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
 /area/shuttle/drop2/sulaco)
 "lJ" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "62"
 	},
@@ -194,6 +244,7 @@
 	dir = 1;
 	pixel_x = -8
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
@@ -205,6 +256,7 @@
 	},
 /area/shuttle/drop2/sulaco)
 "nS" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "46"
 	},
@@ -220,21 +272,25 @@
 	},
 /area/shuttle/drop2/sulaco)
 "oS" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "86"
 	},
 /area/shuttle/drop2/sulaco)
 "oW" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "32"
 	},
 /area/shuttle/drop2/sulaco)
 "pU" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "50"
 	},
 /area/shuttle/drop2/sulaco)
 "qg" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin8"
 	},
@@ -243,16 +299,19 @@
 /obj/item/device/radio/intercom/normandy{
 	pixel_y = 24
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin5"
 	},
 /area/shuttle/drop2/sulaco)
 "rw" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "99"
 	},
 /area/shuttle/drop2/sulaco)
 "sk" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "22"
 	},
@@ -263,17 +322,20 @@
 	},
 /area/shuttle/drop2/sulaco)
 "vd" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin3"
 	},
 /area/shuttle/drop2/sulaco)
 "vw" = (
 /obj/effect/attach_point/fuel/dropship2,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "28"
 	},
 /area/shuttle/drop2/sulaco)
 "wX" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "83"
 	},
@@ -287,16 +349,19 @@
 	},
 /area/shuttle/drop2/sulaco)
 "xe" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "18"
 	},
 /area/shuttle/drop2/sulaco)
 "xx" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin5"
 	},
 /area/shuttle/drop2/sulaco)
 "xU" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "94"
 	},
@@ -307,11 +372,13 @@
 	},
 /area/shuttle/drop2/sulaco)
 "yl" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "82"
 	},
 /area/shuttle/drop2/sulaco)
 "zt" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "27"
 	},
@@ -322,31 +389,37 @@
 	},
 /area/shuttle/drop2/sulaco)
 "AN" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "48"
 	},
 /area/shuttle/drop2/sulaco)
 "Bb" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "56"
 	},
 /area/shuttle/drop2/sulaco)
 "Bi" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "97"
 	},
 /area/shuttle/drop2/sulaco)
 "Bs" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "59"
 	},
 /area/shuttle/drop2/sulaco)
 "BC" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "43"
 	},
 /area/shuttle/drop2/sulaco)
 "BG" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "20"
 	},
@@ -357,16 +430,19 @@
 	},
 /area/shuttle/drop2/sulaco)
 "Cl" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "42"
 	},
 /area/shuttle/drop2/sulaco)
 "Co" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin4"
 	},
 /area/shuttle/drop2/sulaco)
 "Dy" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "35"
 	},
@@ -382,11 +458,13 @@
 	dir = 8;
 	id = "starboard_door"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
 /area/shuttle/drop2/sulaco)
 "Eo" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "47"
 	},
@@ -403,11 +481,13 @@
 	dir = 1;
 	pixel_x = -8
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin3"
 	},
 /area/shuttle/drop2/sulaco)
 "GE" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "67"
 	},
@@ -421,21 +501,43 @@
 	req_one_access_txt = "3;22";
 	throw_range = 15
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "floor8"
 	},
 /area/shuttle/drop2/sulaco)
 "HB" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "78"
 	},
 /area/shuttle/drop2/sulaco)
+"Ij" = (
+/obj/structure/bed/chair/vehicle{
+	dir = 1;
+	pixel_x = 8
+	},
+/obj/structure/bed/chair/vehicle{
+	dir = 1;
+	pixel_x = -8
+	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/light{
+	dir = 8;
+	req_light_switch = 0
+	},
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15"
+	},
+/area/shuttle/drop2/sulaco)
 "Iv" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "53"
 	},
 /area/shuttle/drop2/sulaco)
 "Kl" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "10"
 	},
@@ -449,6 +551,7 @@
 	},
 /area/shuttle/drop2/sulaco)
 "Le" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "98"
 	},
@@ -457,16 +560,19 @@
 /obj/item/device/radio/intercom/normandy{
 	pixel_y = 24
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin6"
 	},
 /area/shuttle/drop2/sulaco)
 "Lk" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "30"
 	},
 /area/shuttle/drop2/sulaco)
 "Lq" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "19"
 	},
@@ -479,6 +585,7 @@
 	pixel_x = 8;
 	pixel_y = -16
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
@@ -494,11 +601,13 @@
 	},
 /area/shuttle/drop2/sulaco)
 "ME" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "96"
 	},
 /area/shuttle/drop2/sulaco)
 "ML" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "77"
 	},
@@ -506,6 +615,7 @@
 "MQ" = (
 /obj/structure/blocker/invisible_wall,
 /obj/structure/machinery/computer/shuttle/dropship/flight,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
@@ -517,21 +627,25 @@
 	},
 /area/shuttle/drop2/sulaco)
 "Nw" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "37"
 	},
 /area/shuttle/drop2/sulaco)
 "NM" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "3"
 	},
 /area/shuttle/drop2/sulaco)
 "Ov" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "5"
 	},
 /area/shuttle/drop2/sulaco)
 "OI" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "72"
 	},
@@ -548,16 +662,19 @@
 	dir = 1;
 	pixel_x = -8
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
 /area/shuttle/drop2/sulaco)
 "Px" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "31"
 	},
 /area/shuttle/drop2/sulaco)
 "PJ" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
@@ -573,21 +690,25 @@
 /obj/structure/bed/chair/vehicle{
 	pixel_x = -8
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
 /area/shuttle/drop2/sulaco)
 "Qo" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "76"
 	},
 /area/shuttle/drop2/sulaco)
 "QF" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "14"
 	},
 /area/shuttle/drop2/sulaco)
 "QK" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "49"
 	},
@@ -599,21 +720,41 @@
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/ds2{
 	id = "aft_door"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
 /area/shuttle/drop2/sulaco)
 "RG" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "51"
 	},
 /area/shuttle/drop2/sulaco)
+"RI" = (
+/obj/structure/bed/chair/vehicle{
+	pixel_x = 8
+	},
+/obj/structure/bed/chair/vehicle{
+	pixel_x = -8
+	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/light{
+	dir = 4;
+	req_light_switch = 0
+	},
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15"
+	},
+/area/shuttle/drop2/sulaco)
 "RJ" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "4"
 	},
 /area/shuttle/drop2/sulaco)
 "SB" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "95"
 	},
@@ -622,16 +763,19 @@
 /obj/structure/machinery/door/airlock/dropship_hatch/two{
 	id = "port_door"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
 /area/shuttle/drop2/sulaco)
 "SO" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "36"
 	},
 /area/shuttle/drop2/sulaco)
 "SQ" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "34"
 	},
@@ -643,46 +787,73 @@
 /obj/structure/bed/chair/vehicle{
 	pixel_x = -8
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15"
+	},
+/area/shuttle/drop2/sulaco)
+"Tg" = (
+/obj/structure/bed/chair/vehicle{
+	dir = 1;
+	pixel_x = 8
+	},
+/obj/structure/bed/chair/vehicle{
+	dir = 1;
+	pixel_x = -8
+	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/light{
+	dir = 4;
+	req_light_switch = 0
+	},
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
 /area/shuttle/drop2/sulaco)
 "Tp" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "64"
 	},
 /area/shuttle/drop2/sulaco)
 "TZ" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "81"
 	},
 /area/shuttle/drop2/sulaco)
 "Uu" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "17"
 	},
 /area/shuttle/drop2/sulaco)
 "UP" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "39"
 	},
 /area/shuttle/drop2/sulaco)
 "UX" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "24"
 	},
 /area/shuttle/drop2/sulaco)
 "Vh" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "2"
 	},
 /area/shuttle/drop2/sulaco)
 "Vs" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "89"
 	},
 /area/shuttle/drop2/sulaco)
 "VA" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "25"
 	},
@@ -699,6 +870,7 @@
 	req_one_access = null
 	},
 /obj/structure/blocker/forcefield/multitile_vehicles,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
@@ -709,21 +881,25 @@
 	pixel_x = 21;
 	pixel_y = 43
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
 	},
 /area/shuttle/drop2/sulaco)
 "Xr" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "16"
 	},
 /area/shuttle/drop2/sulaco)
 "XX" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "21"
 	},
 /area/shuttle/drop2/sulaco)
 "ZK" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship2{
 	icon_state = "63"
 	},
@@ -814,7 +990,7 @@ Co
 SY
 Fq
 SY
-it
+Ij
 SY
 it
 Kl
@@ -830,7 +1006,7 @@ HB
 xx
 SY
 it
-SY
+RI
 it
 SY
 xx
@@ -876,7 +1052,7 @@ ac
 xx
 SY
 it
-SY
+fq
 it
 SY
 xx
@@ -906,7 +1082,7 @@ qg
 SY
 OJ
 Qd
-it
+Tg
 SY
 it
 QF

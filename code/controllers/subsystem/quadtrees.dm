@@ -1,6 +1,7 @@
 SUBSYSTEM_DEF(quadtree)
 	name = "Quadtree"
 	wait = 0.5 SECONDS
+	init_order = SS_INIT_QUADTREE
 	priority = SS_PRIORITY_QUADTREE
 
 	var/list/cur_quadtrees
@@ -56,5 +57,5 @@ SUBSYSTEM_DEF(quadtree)
 		var/datum/quadtree/Q = cur_quadtrees[z_level]
 		if(!Q)
 			return players
-		players = SEARCH_QTREE(Q, range, flags)
+		players = Q.query_range(range, null, flags)
 	return players

@@ -13,7 +13,7 @@
 
 /obj/structure/grille/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_THROUGH|PASS_BUILDING_ONLY
 
 /obj/structure/grille/fence
@@ -137,7 +137,7 @@
 		if(loc == user.loc)
 			dir_to_set = user.dir
 		else
-			if( ( x == user.x ) || (y == user.y) ) //Only supposed to work for cardinal directions.
+			if( ( x == user.x ) || (y == user.y) ) //Only supposed to work for cardinals directions.
 				if( x == user.x )
 					if( y > user.y )
 						dir_to_set = 2
@@ -150,7 +150,7 @@
 						dir_to_set = 4
 			else
 				to_chat(user, SPAN_NOTICE("You can't reach."))
-				return //Only works for cardinal direcitons, diagonals aren't supposed to work like this.
+				return //Only works for cardinals direcitons, diagonals aren't supposed to work like this.
 		for(var/obj/structure/window/WINDOW in loc)
 			if(WINDOW.dir == dir_to_set)
 				to_chat(user, SPAN_NOTICE("There is already a window facing this way there."))
@@ -163,7 +163,7 @@
 					return
 
 			var/wtype = ST.created_window
-			if (ST.use(1))
+			if(ST.use(1))
 				var/obj/structure/window/WD = new wtype(loc)
 				WD.set_constructed_window(dir_to_set)
 				to_chat(user, SPAN_NOTICE("You place the [WD] on [src]."))

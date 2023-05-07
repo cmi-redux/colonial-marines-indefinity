@@ -14,9 +14,8 @@ var/list/datum/decorator/manual/admin_runtime/admin_runtime_decorators = list()
 
 	var/subtypes = FALSE
 
-	switch(alert("Do we want to replace subtypes too?", "Set Autoreplacer", "Yes", "No"))
-		if("Yes")
-			subtypes = TRUE
+	if(alert("Do we want to replace subtypes too?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) == usr.client.auto_lang(LANGUAGE_YES))
+		subtypes = TRUE
 
 	var/field = input(usr, "What field we want to change?", "Set Autoreplacer") as text|null
 	if(!field)
@@ -26,9 +25,8 @@ var/list/datum/decorator/manual/admin_runtime/admin_runtime_decorators = list()
 
 	var/hint_text = subtypes ? "types and subtypes of" : "all"
 
-	switch(alert("Please check: set for [hint_text] `[types]` for field `[field]` set value `[value]`. Correct?", "Set Autoreplacer", "Yes", "No"))
-		if("No")
-			return
+	if(alert("Please check: set for [hint_text] `[types]` for field `[field]` set value `[value]`. Correct?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
+		return
 
 	admin_runtime_decorators.Add(SSdecorator.add_decorator(/datum/decorator/manual/admin_runtime, types, subtypes, field, value))
 
@@ -59,9 +57,8 @@ var/list/datum/decorator/manual/admin_runtime/admin_runtime_decorators = list()
 		to_chat(usr, "Only administrators may use this command.")
 		return
 
-	switch(alert("ARE YOU SURE? THIS MAY CAUSE A LOT OF LAG!", "Rerun Decorators", "Yes", "No"))
-		if("No")
-			return
+	if(alert("ARE YOU SURE? THIS MAY CAUSE A LOT OF LAG!", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
+		return
 
 	SSdecorator.force_update()
 

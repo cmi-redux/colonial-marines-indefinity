@@ -5,15 +5,15 @@
 		if("distress")
 			admin_force_distress()
 		if("selfdestruct")
-			if(alert(usr, "Are you sure you want to do this?", "Confirmation", "Yes", "No") != "Yes")
+			if(alert(usr, "Are you sure you want to do this?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 				return
 			admin_force_selfdestruct()
 		if("evacuation_start")
-			if(alert(usr, "Are you sure you want to trigger an evacuation?", "Confirmation", "Yes", "No") != "Yes")
+			if(alert(usr, "Are you sure you want to trigger an evacuation?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 				return
 			admin_force_evacuation()
 		if("evacuation_cancel")
-			if(alert(usr, "Are you sure you want to do this?", "Confirmation", "Yes", "No") != "Yes")
+			if(alert(usr, "Are you sure you want to do this?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 				return
 			admin_cancel_evacuation()
 		if("add_req_points")
@@ -27,10 +27,10 @@
 		if("monkify")
 			owner.turn_everyone_into_primitives()
 		if("comms_blackout")
-			if(alert(usr, "Are you sure you want to do this?", "Confirmation", "Yes", "No") != "Yes")
+			if(alert(usr, "Are you sure you want to do this?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 				return
-			var/answer = alert(usr, "Would you like to alert the crew?", "Alert", "Yes", "No")
-			if(answer == "Yes")
+			var/answer = alert(usr, "Would you like to alert the crew?", "Alert", usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO))
+			if(answer == usr.client.auto_lang(LANGUAGE_YES))
 				communications_blackout(0)
 			else
 				communications_blackout(1)
@@ -41,38 +41,38 @@
 			toggle_destructible_terrain()
 			message_admins("[key_name_admin(usr)] toggled destructible terrain.")
 		if("blackout")
-			if(alert(usr, "Are you sure you want to do this?", "Confirmation", "Yes", "No") != "Yes")
+			if(alert(usr, "Are you sure you want to do this?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 				return
 			message_admins("[key_name_admin(usr)] broke all lights")
 			lightsout(0,0)
 		if("whiteout")
-			if(alert(usr, "Are you sure you want to do this?", "Confirmation", "Yes", "No") != "Yes")
+			if(alert(usr, "Are you sure you want to do this?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 				return
 			for(var/obj/structure/machinery/light/L in machines)
 				L.fix()
 			message_admins("[key_name_admin(usr)] fixed all lights")
 		if("power")
-			if(alert(usr, "Are you sure you want to do this?", "Confirmation", "Yes", "No") != "Yes")
+			if(alert(usr, "Are you sure you want to do this?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 				return
 			message_admins("[key_name_admin(usr)] powered all SMESs and APCs")
 			power_restore()
 		if("unpower")
-			if(alert(usr, "Are you sure you want to do this?", "Confirmation", "Yes", "No") != "Yes")
+			if(alert(usr, "Are you sure you want to do this?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 				return
 			message_admins("[key_name_admin(usr)] unpowered all SMESs and APCs")
 			power_failure()
 		if("quickpower")
-			if(alert(usr, "Are you sure you want to do this? It will laaag.", "Confirmation", "Yes", "No") != "Yes")
+			if(alert(usr, "Are you sure you want to do this? It will laaag.", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 				return
 			message_admins("[key_name_admin(usr)] powered all SMESs")
 			power_restore_quick()
 		if("powereverything")
-			if(alert(usr, "Are you sure you want to do this?", "Confirmation", "Yes", "No") != "Yes")
+			if(alert(usr, "Are you sure you want to do this?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 				return
 			message_admins("[key_name_admin(usr)] powered all SMESs and APCs everywhere")
 			power_restore_everything()
 		if("powershipreactors")
-			if(alert(usr, "Are you sure you want to do this?", "Confirmation", "Yes", "No") != "Yes")
+			if(alert(usr, "Are you sure you want to do this?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 				return
 			message_admins("[key_name_admin(usr)] powered all ship reactors")
 			power_restore_ship_reactors()
@@ -98,7 +98,7 @@
 	var/turf/initial_turf = get_turf(initial_spot)
 
 	var/job_name
-	if (istext(href_list["create_humans_list"]))
+	if(istext(href_list["create_humans_list"]))
 		job_name = href_list["create_humans_list"]
 	else
 		alert("Select fewer paths, (max 1)")
@@ -147,7 +147,7 @@
 
 			humans += H
 
-		if (offer_as_ert)
+		if(offer_as_ert)
 			var/datum/emergency_call/custom/em_call = new()
 			var/name = input(usr, "Please name your ERT", "ERT Name", "Admin spawned humans")
 			em_call.name = name
@@ -168,14 +168,14 @@
 	var/turf/initial_turf = get_turf(initial_spot)
 
 	var/xeno_hive
-	if (istext(href_list["create_hive_list"]))
-		xeno_hive = href_list["create_hive_list"]
+	if(istext(href_list["create_hive_list"]))
+		xeno_hive = GLOB.faction_datum[href_list["create_hive_list"]]
 	else
 		alert("Select fewer hive paths, (max 1)")
 		return
 
 	var/xeno_caste
-	if (istext(href_list["create_xenos_list"]))
+	if(istext(href_list["create_xenos_list"]))
 		xeno_caste = href_list["create_xenos_list"]
 	else
 		alert("Select fewer xeno paths, (max 1)")
@@ -208,7 +208,7 @@
 		if(!length(turfs))
 			return
 
-		var/caste_type = RoleAuthority.get_caste_by_text(xeno_caste)
+		var/caste_type = SSticker.role_authority.get_caste_by_text(xeno_caste)
 
 		var/list/xenos = list()
 		var/mob/living/carbon/xenomorph/X
@@ -224,7 +224,7 @@
 
 			xenos += X
 
-		if (offer_as_ert)
+		if(offer_as_ert)
 			var/datum/emergency_call/custom/em_call = new()
 			var/name = input(usr, "Please name your ERT", "ERT Name", "Admin spawned xenos")
 			em_call.name = name

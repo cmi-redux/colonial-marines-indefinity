@@ -7,13 +7,13 @@
 /mob/living/proc/stun_effect_act(stun_amount, agony_amount, def_zone, used_weapon=null)
 	flash_pain()
 
-	if (stun_amount)
+	if(stun_amount)
 		apply_effect(stun_amount, STUN)
 		apply_effect(stun_amount, WEAKEN)
 		apply_effect(STUTTER, stun_amount)
 		apply_effect(EYE_BLUR, stun_amount)
 
-	if (agony_amount)
+	if(agony_amount)
 		apply_damage(agony_amount, HALLOSS, def_zone, used_weapon)
 		apply_effect(STUTTER, agony_amount/10)
 		apply_effect(EYE_BLUR, agony_amount/10)
@@ -45,7 +45,7 @@
 		dist = LM.dist
 	var/miss_chance = min(15*(dist - 2), 0)
 
-	if (prob(miss_chance))
+	if(prob(miss_chance))
 		visible_message(SPAN_NOTICE("\The [O] misses [src] narrowly!"), null, null, 5)
 		return
 
@@ -53,7 +53,7 @@
 	var/damage_done = apply_armoured_damage(impact_damage, ARMOR_MELEE, dtype, null, , is_sharp(O), has_edge(O), null)
 
 	var/last_damage_source
-	if (damage_done > 5)
+	if(damage_done > 5)
 		last_damage_source = initial(O.name)
 		animation_flash_color(src)
 		var/obj/item/I = O
@@ -69,7 +69,7 @@
 		M = LM.thrower
 		if(damage_done > 5)
 			M.track_hit(initial(O.name))
-			if (M.faction == faction)
+			if(M.faction == faction)
 				M.track_friendly_fire(initial(O.name))
 		var/client/assailant = M.client
 		if(assailant)
@@ -132,6 +132,12 @@
 		to_chat(src, SPAN_DANGER("You are on fire! Use Resist to put yourself out!"))
 		update_fire()
 		SEND_SIGNAL(src, COMSIG_LIVING_IGNITION)
+		var/fire_light = min(fire_stacks,5)
+		fire_luminosity = fire_light = fire_light
+		set_light_range(light_range + fire_light)
+		set_light_power(light_power + min(fire_light/5,1))
+		set_light_color(BlendRGB(light_color, LIGHT_COLOR_LAVA))
+		set_light_on(TRUE) //And activate it
 		return IGNITE_IGNITED
 	return IGNITE_FAILED
 
@@ -141,13 +147,16 @@
 		INVOKE_ASYNC(src, TYPE_PROC_REF(/mob, emote), "scream")
 
 /mob/living/proc/ExtinguishMob()
-	if(on_fire)
-		on_fire = FALSE
-		fire_stacks = 0
-		update_fire()
-		SetLuminosity(0)
-		return TRUE
-	return FALSE
+	if(!on_fire)
+		return FALSE
+	on_fire = FALSE
+	fire_stacks = 0
+	set_light_range(light_range - fire_luminosity)
+	set_light_power(light_power - min(fire_luminosity/5,1))
+	fire_luminosity = 0
+	set_light_on(FALSE)
+	update_fire()
+	return TRUE
 
 /mob/living/carbon/human/ExtinguishMob()
 	. = ..()
@@ -185,41 +194,33 @@
 		return TRUE
 	if(fire_stacks > 0)
 		adjust_fire_stacks(-0.5, min_stacks = 0) //the fire is consumed slowly
-	if(current_weather_effect_type && SSweather && SSweather.weather_event_instance)
-		adjust_fire_stacks(-SSweather.weather_event_instance.fire_smothering_strength, min_stacks = 0)
+	if(current_weather_effect_type)
+		adjust_fire_stacks(-SSparticle_weather.running_weather.fire_smothering_strength, min_stacks = 0)
 
 /mob/living/fire_act()
 	TryIgniteMob(2)
 
 /mob/living/proc/TryIgniteMob(fire_stacks, datum/reagent/R)
 	adjust_fire_stacks(fire_stacks, R)
-	if (!IgniteMob())
+	if(!IgniteMob())
 		adjust_fire_stacks(-fire_stacks)
 		return FALSE
 	return TRUE
 
-//Mobs on Fire end
-
-/mob/living/proc/handle_weather(delta_time = 1)
-	var/starting_weather_type = current_weather_effect_type
-	var/area/area = get_area(src)
-	// Check if we're supposed to be something affected by weather
-	if(!SSweather.weather_event_instance || !SSweather.map_holder.should_affect_area(area))
-		current_weather_effect_type = null
-	else
-		current_weather_effect_type = SSweather.weather_event_type
-		SSweather.weather_event_instance.process_mob_effect(src, delta_time)
-
-	if(current_weather_effect_type != starting_weather_type)
-		if(current_weather_effect_type)
-			overlay_fullscreen("weather", SSweather.weather_event_instance.fullscreen_type)
-		else
-			clear_fullscreen("weather")
-
-/mob/living/handle_flamer_fire(obj/flamer_fire/fire, damage, delta_time)
+/mob/living/handle_flamer_fire(obj/flamer_fire/fire, damage, /delta_time)
 	. = ..()
 	fire.set_on_fire(src)
 
 /mob/living/handle_flamer_fire_crossed(obj/flamer_fire/fire)
 	. = ..()
 	fire.set_on_fire(src)
+
+//Mobs on Fire end
+
+/mob/living/proc/handle_weather(delta_time = 1)
+	var/turf/turf = get_turf(src)
+	if(!SSparticle_weather.running_weather || !(turf.turf_flags & TURF_WEATHER))
+		current_weather_effect_type = null
+	else
+		current_weather_effect_type = SSparticle_weather.running_weather
+	SSparticle_weather.running_weather.process_mob_effect(src, delta_time)

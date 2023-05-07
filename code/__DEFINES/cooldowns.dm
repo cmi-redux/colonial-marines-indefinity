@@ -79,3 +79,7 @@
 
 //cooldowns themselves as defines
 #define COOLDOWN_ORBIT_CHANGE "cooldown_orbit_change"
+
+#define COOLDOWN_LIGHT "cooldown_light"
+#define COOLDOWN_ARMOR_LIGHT "armor_light"
+#define COOLDOWN_BACKPACK_LIGHT "backpack_light"

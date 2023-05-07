@@ -5,16 +5,15 @@
 	icon = 'icons/turf/area_shiva.dmi'
 	//ambience = list('figuresomethingout.ogg')
 	icon_state = "shiva"
+	background_planet_sounds = TRUE
 	can_build_special = TRUE //T-Comms structure
 	temperature = ICE_COLONY_TEMPERATURE
-	lighting_use_dynamic = TRUE
 	minimap_color = MINIMAP_AREA_COLONY
 
 /area/shuttle/drop1/shiva
 	name = "Shiva's Snowball - Dropship Alamo Landing Zone"
 	icon_state = "shuttle"
 	icon = 'icons/turf/area_shiva.dmi'
-	lighting_use_dynamic = TRUE
 	is_resin_allowed = FALSE
 	minimap_color = MINIMAP_AREA_LZ
 
@@ -22,7 +21,6 @@
 	name = "Shiva's Snowball - Dropship Normandy Landing Zone"
 	icon_state = "shuttle2"
 	icon = 'icons/turf/area_shiva.dmi'
-	lighting_use_dynamic = TRUE
 	is_resin_allowed = FALSE
 	minimap_color = MINIMAP_AREA_LZ
 
@@ -37,17 +35,14 @@
 
 /area/shiva/exterior
 	name = "Shiva's Snowball - Exterior"
-	ceiling = CEILING_NONE
 
 
 /area/shiva/interior
 	name = "Shiva's Snowball - Interior"
-	ceiling = CEILING_UNDERGROUND_ALLOW_CAS
 	requires_power = TRUE
 
 /area/shiva/interior/oob
 	name = "Shiva's Snowball - Out Of Bounds"
-	ceiling = CEILING_MAX
 	icon_state = "oob"
 	is_resin_allowed = FALSE
 	flags_area = AREA_NOTUNNEL
@@ -162,7 +157,6 @@
 /area/shiva/interior/caves
 	name = "Shiva's Snowball - Caves"
 	icon_state = "caves0"
-	ceiling = CEILING_UNDERGROUND_METAL_BLOCK_CAS
 
 /area/shiva/interior/caves/right_spiders
 	name = "Shiva's Snowball - Forgotten Passage"
@@ -193,7 +187,6 @@
 /area/shiva/interior/colony
 	name = "Shiva's Snowball - Colony MegaStruct(TM)"
 	icon_state = "res0"
-	ceiling = CEILING_UNDERGROUND_METAL_ALLOW_CAS
 
 /area/shiva/interior/colony/botany
 	name = "Shiva's Snowball - MegaStruct(TM) Botanical Dorms"
@@ -224,7 +217,6 @@
 /area/shiva/interior/colony/deck
 	name = "Shiva's Snowball - Colony MegaStruct(TM) Open Deck"
 	icon_state = "res1"
-	ceiling = CEILING_GLASS
 
 /area/shiva/interior/aerodrome
 	name = "Shiva's Snowball - Aerodrome"

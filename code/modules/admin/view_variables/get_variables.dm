@@ -95,7 +95,7 @@
 			classes += markstring
 
 		var/list/tagstrings = new
-		if(!(VV_TAGGED_DATUM in restricted_classes) && admin_holder && LAZYLEN(admin_holder.tagged_datums))
+		if(!(VV_TAGGED_DATUM in restricted_classes) && admin_holder && length(admin_holder.tagged_datums))
 			var/i = 0
 			for(var/datum/iter_tagged_datum as anything in admin_holder.tagged_datums)
 				i++
@@ -376,15 +376,15 @@
 	if(!length(matches))
 		return
 
-	var/chosen
+	var/choice
 	if(length(matches) == 1)
-		chosen = matches[1]
+		choice = matches[1]
 	else
-		chosen = tgui_input_list(usr, "Select a type", "Pick Type", matches)
-		if(!chosen)
+		choice = tgui_input_list(usr, "Select a type", "Pick Type", matches)
+		if(!choice)
 			return
-	chosen = matches[chosen]
-	return chosen
+	choice = matches[choice]
+	return choice
 
 /proc/filter_fancy_list(list/L, filter as text)
 	var/list/matches = new

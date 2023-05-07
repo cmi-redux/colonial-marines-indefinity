@@ -31,8 +31,8 @@
 	game_start = time2text(world.realtime, "DD.MM.YYYY@hh:mm:ss")
 
 	map = SSmapping.configs[GROUND_MAP].map_name
-	gamemode = master_mode
-	round_name = round_statistics.name
+	gamemode = GLOB.master_mode
+	round_name = SSticker.mode.round_statistics.round_name
 
 // Record the end time of the game and export the game history
 /datum/round_recorder/proc/end_game()
@@ -67,7 +67,7 @@
 		if(X.client)
 			name_prefix = "[X.client.xeno_prefix ? X.client.xeno_prefix : "XX"]-"
 			name_postfix = X.client.xeno_postfix ? ("-" + X.client.xeno_postfix) : ""
-		player_name = "[(X.hive ? X.hive.prefix : "")][player_role] ([name_prefix][X.nicknumber][name_postfix])"
+		player_name = "[(X.faction ? X.faction.prefix : "")][player_role] ([name_prefix][X.nicknumber][name_postfix])"
 
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M

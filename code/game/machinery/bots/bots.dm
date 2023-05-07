@@ -3,16 +3,16 @@
 /obj/structure/machinery/bot
 	icon = 'icons/obj/structures/machinery/aibots.dmi'
 	layer = MOB_LAYER
-	luminosity = 3
+	light_range = 3
 	use_power = USE_POWER_NONE
-	var/obj/item/card/id/botcard // the ID card that the bot "holds"
-	var/on = 1
+	var/obj/item/card/id/botcard			// the ID card that the bot "holds"
+	var/on = TRUE
 	unslashable = TRUE
 	health = 0 //do not forget to set health for your bot!
 	var/maxhealth = 0
 	var/fire_dam_coeff = 1
 	var/brute_dam_coeff = 1
-	var/open = 0//Maint panel
+	var/open = 0 //Maint panel
 	var/locked = 1
 
 /obj/structure/machinery/bot/Destroy()
@@ -22,14 +22,14 @@
 
 /obj/structure/machinery/bot/proc/turn_on()
 	if(stat)
-		return 0
-	on = 1
-	SetLuminosity(initial(luminosity))
-	return 1
+		return FALSE
+	on = TRUE
+	set_light_on(TRUE)
+	return TRUE
 
 /obj/structure/machinery/bot/proc/turn_off()
-	on = 0
-	SetLuminosity(0)
+	on = FALSE
+	set_light_on(FALSE)
 
 /obj/structure/machinery/bot/proc/explode()
 	qdel(src)
@@ -39,7 +39,7 @@
 		explode()
 
 /obj/structure/machinery/bot/Destroy()
-	SetLuminosity(0)
+	set_light(0)
 	. = ..()
 
 /obj/structure/machinery/bot/get_examine_text(mob/user)
@@ -51,7 +51,8 @@
 			. += SPAN_DANGER("[src]'s parts look very loose!")
 
 /obj/structure/machinery/bot/attack_animal(mob/living/simple_animal/M as mob)
-	if(M.melee_damage_upper == 0) return
+	if(M.melee_damage_upper == 0)
+		return
 	health -= M.melee_damage_upper
 	visible_message(SPAN_DANGER("<B>[M] has [M.attacktext] [src]!</B>"))
 	M.attack_log += text("\[[time_stamp()]\] <font color='red'>attacked [src.name]</font>")
@@ -142,12 +143,12 @@
 // Used for A-star pathfinding
 
 
-// Returns the surrounding cardinal turfs with open links
+// Returns the surrounding cardinals turfs with open links
 // Including through doors openable with the ID
 /turf/proc/CardinalTurfsWithAccess(obj/item/card/id/ID)
 	var/L[] = new()
 
-	for(var/d in cardinal)
+	for(var/d in  GLOB.cardinals)
 		var/turf/T = get_step(src, d)
 		if(istype(T) && !T.density)
 			if(!LinkBlockedWithAccess(src, T, ID))
@@ -158,45 +159,52 @@
 // Movement through doors allowed if ID has access
 /proc/LinkBlockedWithAccess(turf/A, turf/B, obj/item/card/id/ID)
 
-	if(A == null || B == null) return 1
+	if(A == null || B == null)
+		return TRUE
 	var/adir = get_dir(A,B)
 	var/rdir = get_dir(B,A)
 	if((adir & (NORTH|SOUTH)) && (adir & (EAST|WEST))) //diagonal
 		var/iStep = get_step(A,adir&(NORTH|SOUTH))
 		if(!LinkBlockedWithAccess(A,iStep, ID) && !LinkBlockedWithAccess(iStep,B,ID))
-			return 0
+			return FALSE
 
 		var/pStep = get_step(A,adir&(EAST|WEST))
 		if(!LinkBlockedWithAccess(A,pStep,ID) && !LinkBlockedWithAccess(pStep,B,ID))
-			return 0
-		return 1
+			return FALSE
+		return TRUE
 
 	if(DirBlockedWithAccess(A,adir, ID))
-		return 1
+		return TRUE
 
 	if(DirBlockedWithAccess(B,rdir, ID))
-		return 1
+		return TRUE
 
 	for(var/obj/O in B)
 		if(O.density && !istype(O, /obj/structure/machinery/door) && !(O.flags_atom & ON_BORDER))
-			return 1
+			return TRUE
 
-	return 0
+	return FALSE
 
 // Returns true if direction is blocked from loc
 // Checks doors against access with given ID
 /proc/DirBlockedWithAccess(turf/loc, dir, obj/item/card/id/ID)
 	for(var/obj/structure/window/D in loc)
-		if(!D.density) continue
-		if(D.dir == SOUTHWEST) return 1
-		if(D.dir == dir) return 1
+		if(!D.density)
+			continue
+		if(D.dir == SOUTHWEST)
+			return TRUE
+		if(D.dir == dir)
+			return TRUE
 
 	for(var/obj/structure/machinery/door/D in loc)
-		if(!D.density) continue
+		if(!D.density)
+			continue
 		if(istype(D, /obj/structure/machinery/door/window))
-			if( dir & D.dir ) return !D.check_access(ID)
+			if(dir & D.dir)
+				return !D.check_access(ID)
 
 			//if((dir & SOUTH) && (D.dir & (EAST|WEST))) return !D.check_access(ID)
 			//if((dir & EAST ) && (D.dir & (NORTH|SOUTH))) return !D.check_access(ID)
-		else return !D.check_access(ID) // it's a real, air blocking door
-	return 0
+		else
+			return !D.check_access(ID) // it's a real, air blocking door
+	return FALSE

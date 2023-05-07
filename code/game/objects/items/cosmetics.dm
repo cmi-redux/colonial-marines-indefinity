@@ -73,7 +73,7 @@
 		else
 			to_chat(user, SPAN_NOTICE("You attempt to apply [src] on [H]..."))
 			to_chat(H, SPAN_NOTICE("[user] is trying to apply [src] on your face..."))
-			if(alert(H,"Will you allow [user] to apply makeup to your face?",,"Sure","No") == "Sure")
+			if(alert(H, "Will you allow [user] to apply makeup to your face?", , H.client.auto_lang(LANGUAGE_YES), H.client.auto_lang(LANGUAGE_NO)) == H.client.auto_lang(LANGUAGE_YES))
 				if( user && loc == user && (user in range(1,H)) ) //Have to be close and hold the thing.
 					paint_face(H, user)
 					return TRUE

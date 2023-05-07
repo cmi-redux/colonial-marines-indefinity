@@ -22,7 +22,7 @@
 		return
 
 	var/list/usable_hps = V.get_activatable_hardpoints(seat)
-	if(!LAZYLEN(usable_hps))
+	if(!length(usable_hps))
 		to_chat(M, SPAN_WARNING("None of the hardpoints can be activated or they are all broken."))
 		return
 
@@ -33,7 +33,7 @@
 	V.active_hp[seat] = HP
 	var/msg = "You select \the [HP]."
 	if(HP.ammo)
-		msg += " Ammo: <b>[SPAN_HELPFUL(HP.ammo.current_rounds)]/[SPAN_HELPFUL(HP.ammo.max_rounds)]</b> | Mags: <b>[SPAN_HELPFUL(LAZYLEN(HP.backup_clips))]/[SPAN_HELPFUL(HP.max_clips)]</b>"
+		msg += " Ammo: <b>[SPAN_HELPFUL(HP.ammo.ammo_position)]/[SPAN_HELPFUL(HP.ammo.max_rounds)]</b> | Mags: <b>[SPAN_HELPFUL(length(HP.backup_clips))]/[SPAN_HELPFUL(HP.max_clips)]</b>"
 	to_chat(M, SPAN_WARNING(msg))
 
 //cycles through hardpoints in a activatable hardpoints list without asking anything
@@ -54,7 +54,7 @@
 		return
 
 	var/list/usable_hps = V.get_activatable_hardpoints(seat)
-	if(!LAZYLEN(usable_hps))
+	if(!length(usable_hps))
 		to_chat(M, SPAN_WARNING("None of the hardpoints can be activated or they are all broken."))
 		return
 	var/new_hp = usable_hps.Find(V.active_hp[seat])
@@ -69,7 +69,7 @@
 	V.active_hp[seat] = HP
 	var/msg = "You select \the [HP]."
 	if(HP.ammo)
-		msg += " Ammo: <b>[SPAN_HELPFUL(HP.ammo.current_rounds)]/[SPAN_HELPFUL(HP.ammo.max_rounds)]</b> | Mags: <b>[SPAN_HELPFUL(LAZYLEN(HP.backup_clips))]/[SPAN_HELPFUL(HP.max_clips)]</b>"
+		msg += " Ammo: <b>[SPAN_HELPFUL(HP.ammo.ammo_position)]/[SPAN_HELPFUL(HP.ammo.max_rounds)]</b> | Mags: <b>[SPAN_HELPFUL(length(HP.backup_clips))]/[SPAN_HELPFUL(HP.max_clips)]</b>"
 	to_chat(M, SPAN_WARNING(msg))
 
 // Used to lock/unlock the vehicle doors to anyone without proper access
@@ -288,7 +288,7 @@
 	if(length(new_nickname) > MAX_NAME_LEN)
 		alert(user, "Name [new_nickname] is over [MAX_NAME_LEN] characters limit. Try again.", "Naming vehicle failed", "Ok")
 		return
-	if(alert(user, "Vehicle's name will be [V.name + "\"[new_nickname]\""]. Confirm?", "Confirmation?", "Yes", "No") != "Yes")
+	if(alert(user, "Vehicle's name will be [V.name + "\"[new_nickname]\""]. Confirm?", "Confirmation?", user.client.auto_lang(LANGUAGE_YES), user.client.auto_lang(LANGUAGE_NO)) != user.client.auto_lang(LANGUAGE_YES))
 		return
 
 	//post-checks
@@ -371,7 +371,7 @@
 
 	for(var/obj/item/hardpoint/special/firing_port_weapon/FPW in V.hardpoints)
 		if(FPW.allowed_seat == seat)
-			if(alert(user, "Initiate M56 FPW reload process? It will take [FPW.reload_time / 10] seconds.", "Initiate reload", "Yes", "No") == "Yes")
+			if(alert(user, "Initiate M56 FPW reload process? It will take [FPW.reload_time / 10] seconds.", "Initiate reload", user.client.auto_lang(LANGUAGE_YES), user.client.auto_lang(LANGUAGE_NO)) == user.client.auto_lang(LANGUAGE_YES))
 				FPW.start_auto_reload(user)
 			return
 

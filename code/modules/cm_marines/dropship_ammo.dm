@@ -39,6 +39,8 @@
 	var/mob/source_mob
 	var/combat_equipment = TRUE
 
+	var/explosing = FALSE
+	var/cause_data = "взрыв боеприпасов"
 
 /obj/structure/ship_ammo/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/powerloader_clamp))
@@ -75,11 +77,48 @@
 /obj/structure/ship_ammo/proc/show_loaded_desc(mob/user)
 	return "It's loaded with \a [src]."
 
-/obj/structure/ship_ammo/proc/detonate_on(turf/impact)
-	return
+/obj/structure/ship_ammo/proc/detonate_on(turf/impact, datum/cause_data/weapon_cause_data, ammo_detonation = FALSE)
+	if(!weapon_cause_data)
+		weapon_cause_data = create_cause_data(initial(name), source_mob)
 
 /obj/structure/ship_ammo/proc/can_fire_at(turf/impact, mob/user)
 	return TRUE
+
+/obj/structure/ship_ammo/proc/explosing_check()
+	if(!explosing)
+		return TRUE
+	return FALSE
+
+/obj/structure/ship_ammo/proc/prime(datum/cause_data/weapon_cause_data, detonate = FALSE)
+	if(!explosing_check())
+		return
+	explosing = TRUE
+	playsound(src, 'sound/effects/explosion_psss.ogg', 7, 1)
+	if(!weapon_cause_data)
+		weapon_cause_data = create_cause_data(cause_data)
+	if(!detonate)
+		cell_explosion(src, 500, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data)
+		if(!QDELETED(src))
+			qdel(src)
+	else
+		detonate_on(get_turf(src), weapon_cause_data, TRUE)
+
+/obj/structure/ship_ammo/ex_act(severity, explosion_direction, datum/cause_data/explosion_cause_data)
+	switch(severity)
+		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
+			addtimer(CALLBACK(src, PROC_REF(prime), explosion_cause_data), 1)
+
+/obj/structure/ship_ammo/bullet_act(obj/item/projectile/P)
+	..()
+
+	var/ammo_flags = P.ammo.traits_to_give | P.projectile_override_flags
+	if(ammo_flags && ammo_flags & (/datum/element/bullet_trait_incendiary) || P.ammo.flags_ammo_behavior & AMMO_XENO)
+		addtimer(CALLBACK(src, PROC_REF(prime), P.weapon_cause_data, TRUE), 1)
+	else if(rand(0,300) < 20)
+		addtimer(CALLBACK(src, PROC_REF(prime), P.weapon_cause_data), 1)
+
+/obj/structure/ship_ammo/flamer_fire_act(damage, datum/cause_data/flame_cause_data)
+	addtimer(CALLBACK(src, PROC_REF(prime), flame_cause_data, TRUE), 1)
 
 /obj/structure/ship_ammo/proc/transfer_ammo(obj/structure/ship_ammo/target, mob/user)
 	if(type != target.type)
@@ -148,33 +187,30 @@
 	else
 		return "It's loaded with an empty [name]."
 
-/obj/structure/ship_ammo/heavygun/detonate_on(turf/impact)
-	set waitfor = 0
+/obj/structure/ship_ammo/heavygun/detonate_on(turf/impact, datum/cause_data/weapon_cause_data, ammo_detonation)
+	set waitfor = FALSE
+	. = ..()
 	var/list/turf_list = list()
-	for(var/turf/T in range(bullet_spread_range, impact))
-		turf_list += T
+	for(var/turf/in_range in range(bullet_spread_range, impact))
+		turf_list += in_range
 	var/soundplaycooldown = 0
-	var/debriscooldown = 0
 	for(var/i = 1 to ammo_used_per_firing)
-		var/turf/U = pick(turf_list)
+		var/turf/turf = pick(turf_list)
+		if(!ammo_detonation)
+			turf = turf.air_hit(rand(1, 5), turf.get_real_roof())
 		sleep(1)
-		var/datum/cause_data/cause_data = create_cause_data(initial(name), source_mob)
-		U.ex_act(EXPLOSION_THRESHOLD_VLOW, pick(alldirs), cause_data)
-		create_shrapnel(U,1,0,0,shrapnel_type,cause_data,FALSE,100) //simulates a bullet
-		for(var/atom/movable/AM in U)
+		turf.ex_act(EXPLOSION_THRESHOLD_VLOW, pick(GLOB.alldirs), weapon_cause_data)
+		create_shrapnel(turf, 1, 0, 0, shrapnel_type, weapon_cause_data, FALSE, 100) //simulates a bullet
+		for(var/atom/movable/AM in turf)
 			if(iscarbon(AM))
-				AM.ex_act(EXPLOSION_THRESHOLD_VLOW, null, cause_data)
+				AM.ex_act(EXPLOSION_THRESHOLD_VLOW, null, weapon_cause_data)
 			else
 				AM.ex_act(EXPLOSION_THRESHOLD_VLOW)
 		if(!soundplaycooldown) //so we don't play the same sound 20 times very fast.
-			playsound(U, 'sound/effects/gauimpact.ogg',40,1,20)
+			playsound(turf, 'sound/effects/gauimpact.ogg',40,1,20)
 			soundplaycooldown = 3
 		soundplaycooldown--
-		if(!debriscooldown)
-			U.ceiling_debris_check(1)
-			debriscooldown = 6
-		debriscooldown--
-		new /obj/effect/particle_effect/expl_particles(U)
+		new /obj/effect/particle_effect/expl_particles(turf)
 	sleep(11) //speed of sound simulation
 	playsound(impact, 'sound/effects/gau.ogg',100,1,60)
 
@@ -225,24 +261,27 @@
 		return "It's loaded with an empty [name]."
 
 
-/obj/structure/ship_ammo/laser_battery/detonate_on(turf/impact)
-	set waitfor = 0
+/obj/structure/ship_ammo/laser_battery/detonate_on(turf/impact, datum/cause_data/weapon_cause_data, ammo_detonation)
+	set waitfor = FALSE
+	. = ..()
 	var/list/turf_list = list()
-	for(var/turf/T in range(impact, 3)) //This is its area of effect
-		turf_list += T
+	for(var/turf/in_range in range(impact, 3)) //This is its area of effect
+		turf_list += in_range
 	playsound(impact, 'sound/effects/pred_vision.ogg', 20, 1)
 	for(var/i=1 to 16) //This is how many tiles within that area of effect will be randomly ignited
-		var/turf/U = pick(turf_list)
-		turf_list -= U
-		laser_burn(U)
+		var/turf/turf = pick(turf_list)
+		turf_list -= turf
+		if(!ammo_detonation)
+			turf = turf.air_hit(rand(1, 5), turf.get_real_roof())
+		laser_burn(turf, weapon_cause_data)
 
 	if(!ammo_count && !QDELETED(src))
 		qdel(src) //deleted after last laser beam is fired and impact the ground.
 
 
 
-/obj/structure/ship_ammo/laser_battery/proc/laser_burn(turf/T)
-	fire_spread_recur(T, create_cause_data(initial(name), source_mob), 1, null, 5, 75, "#EE6515")//Very, very intense, but goes out very quick
+/obj/structure/ship_ammo/laser_battery/proc/laser_burn(turf/impact, datum/cause_data/weapon_cause_data)
+	fire_spread_recur(impact, weapon_cause_data, 1, null, 5, 75, "#EE6515")//Very, very intense, but goes out very quick
 
 
 //Rockets
@@ -262,9 +301,9 @@
 	max_inaccuracy = 5
 	point_cost = 0
 
-/obj/structure/ship_ammo/rocket/detonate_on(turf/impact)
+/obj/structure/ship_ammo/rocket/detonate_on(turf/impact, datum/cause_data/weapon_cause_data, ammo_detonation)
+	. = ..()
 	qdel(src)
-
 
 //this one is air-to-air only
 /obj/structure/ship_ammo/rocket/widowmaker
@@ -276,10 +315,12 @@
 	point_cost = 300
 	fire_mission_delay = 4 //We don't care because our ammo has just 1 rocket
 
-/obj/structure/ship_ammo/rocket/widowmaker/detonate_on(turf/impact)
-	impact.ceiling_debris_check(3)
+/obj/structure/ship_ammo/rocket/widowmaker/detonate_on(turf/impact, datum/cause_data/weapon_cause_data, ammo_detonation)
+	. = ..()
+	if(!ammo_detonation)
+		impact = impact.air_hit(rand(1, 5), impact.get_real_roof())
 	spawn(5)
-		cell_explosion(impact, 300, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data(initial(name), source_mob)) //Your standard HE splash damage rocket. Good damage, good range, good speed, it's an all rounder
+		cell_explosion(impact, 300, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data) //Your standard HE splash damage rocket. Good damage, good range, good speed, it's an all rounder
 		qdel(src)
 
 /obj/structure/ship_ammo/rocket/banshee
@@ -290,11 +331,13 @@
 	point_cost = 300
 	fire_mission_delay = 4 //We don't care because our ammo has just 1 rocket
 
-/obj/structure/ship_ammo/rocket/banshee/detonate_on(turf/impact)
-	impact.ceiling_debris_check(3)
+/obj/structure/ship_ammo/rocket/banshee/detonate_on(turf/impact, datum/cause_data/weapon_cause_data, ammo_detonation)
+	. = ..()
+	if(!ammo_detonation)
+		impact = impact.air_hit(rand(1, 5), impact.get_real_roof())
 	spawn(5)
-		cell_explosion(impact, 175, 20, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data(initial(name), source_mob)) //Small explosive power with a small fall off for a big explosion range
-		fire_spread(impact, create_cause_data(initial(name), source_mob), 4, 15, 50, "#00b8ff") //Very intense but the fire doesn't last very long
+		cell_explosion(impact, 175, 20, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data) //Small explosive power with a small fall off for a big explosion range
+		fire_spread(impact, weapon_cause_data, 4, 15, 50, "#00b8ff") //Very intense but the fire doesn't last very long
 		qdel(src)
 
 /obj/structure/ship_ammo/rocket/keeper
@@ -306,10 +349,12 @@
 	point_cost = 300
 	fire_mission_delay = 4 //We don't care because our ammo has just 1 rocket
 
-/obj/structure/ship_ammo/rocket/keeper/detonate_on(turf/impact)
-	impact.ceiling_debris_check(3)
+/obj/structure/ship_ammo/rocket/keeper/detonate_on(turf/impact, datum/cause_data/weapon_cause_data, ammo_detonation)
+	. = ..()
+	if(!ammo_detonation)
+		impact = impact.air_hit(rand(1, 5), impact.get_real_roof())
 	spawn(5)
-		cell_explosion(impact, 450, 100, EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL, null, create_cause_data(initial(name), source_mob)) //Insane fall off combined with insane damage makes the Keeper useful for single targets, but very bad against multiple.
+		cell_explosion(impact, 450, 100, EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL, null, weapon_cause_data) //Insane fall off combined with insane damage makes the Keeper useful for single targets, but very bad against multiple.
 		qdel(src)
 
 /obj/structure/ship_ammo/rocket/harpoon
@@ -322,10 +367,12 @@
 	fire_mission_delay = 4
 
 //Looks kinda OP but all it can actually do is just to blow windows and some of other things out, cant do much damage.
-/obj/structure/ship_ammo/rocket/harpoon/detonate_on(turf/impact)
-	impact.ceiling_debris_check(3)
+/obj/structure/ship_ammo/rocket/harpoon/detonate_on(turf/impact, datum/cause_data/weapon_cause_data, ammo_detonation)
+	. = ..()
+	if(!ammo_detonation)
+		impact = impact.air_hit(rand(1, 5), impact.get_real_roof())
 	spawn(5)
-		cell_explosion(impact, 150, 16, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data(initial(name), source_mob))
+		cell_explosion(impact, 150, 16, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data)
 		qdel(src)
 
 /obj/structure/ship_ammo/rocket/napalm
@@ -336,11 +383,13 @@
 	point_cost = 500
 	fire_mission_delay = 0 //0 means unusable
 
-/obj/structure/ship_ammo/rocket/napalm/detonate_on(turf/impact)
-	impact.ceiling_debris_check(3)
+/obj/structure/ship_ammo/rocket/napalm/detonate_on(turf/impact, datum/cause_data/weapon_cause_data, ammo_detonation)
+	. = ..()
+	if(!ammo_detonation)
+		impact = impact.air_hit(rand(1, 5), impact.get_real_roof())
 	spawn(5)
-		cell_explosion(impact, 200, 25, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data(initial(name), source_mob))
-		fire_spread(impact, create_cause_data(initial(name), source_mob), 6, 60, 30, "#EE6515") //Color changed into napalm's color to better convey how intense the fire actually is.
+		cell_explosion(impact, 200, 25, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data)
+		fire_spread(impact, weapon_cause_data, 6, 60, 30, "#EE6515") //Color changed into napalm's color to better convey how intense the fire actually is.
 		qdel(src)
 
 
@@ -361,16 +410,18 @@
 	point_cost = 300
 	fire_mission_delay = 3 //high cooldown
 
-/obj/structure/ship_ammo/minirocket/detonate_on(turf/impact)
-	impact.ceiling_debris_check(2)
+/obj/structure/ship_ammo/minirocket/detonate_on(turf/impact, datum/cause_data/weapon_cause_data, ammo_detonation)
+	. = ..()
+	if(!ammo_detonation)
+		impact = impact.air_hit(rand(1, 5), impact.get_real_roof())
 	spawn(5)
-		cell_explosion(impact, 200, 44, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data(initial(name), source_mob))
+		cell_explosion(impact, 200, 44, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data)
 		var/datum/effect_system/expl_particles/P = new/datum/effect_system/expl_particles()
 		P.set_up(4, 0, impact)
 		P.start()
 		spawn(5)
 			var/datum/effect_system/smoke_spread/S = new/datum/effect_system/smoke_spread()
-			S.set_up(1,0,impact,null)
+			S.set_up(1, 0, impact, null)
 			S.start()
 		if(!ammo_count && loc)
 			qdel(src) //deleted after last minirocket is fired and impact the ground.
@@ -391,10 +442,12 @@
 	point_cost = 500
 	fire_mission_delay = 3 //high cooldown
 
-/obj/structure/ship_ammo/minirocket/incendiary/detonate_on(turf/impact)
-	..()
+/obj/structure/ship_ammo/minirocket/incendiary/detonate_on(turf/impact, datum/cause_data/weapon_cause_data, ammo_detonation)
+	. = ..()
+	if(!ammo_detonation)
+		impact = impact.air_hit(rand(1, 5), impact.get_real_roof())
 	spawn(5)
-		fire_spread(impact, create_cause_data(initial(name), source_mob), 3, 25, 20, "#EE6515")
+		fire_spread(impact, weapon_cause_data, 3, 25, 20, "#EE6515")
 
 /obj/structure/ship_ammo/sentry
 	name = "multi-purpose area denial sentry"
@@ -411,7 +464,9 @@
 	/// Special structures it needs to break with drop pod
 	var/list/breakeable_structures = list(/obj/structure/barricade, /obj/structure/surface/table)
 
-/obj/structure/ship_ammo/sentry/detonate_on(turf/impact)
+/obj/structure/ship_ammo/sentry/detonate_on(turf/impact, datum/cause_data/weapon_cause_data, ammo_detonation)
+	if(!ammo_detonation)
+		impact = impact.air_hit(rand(1, 5), impact.get_real_roof())
 	var/obj/structure/droppod/equipment/sentry/droppod = new(impact, /obj/structure/machinery/defenses/sentry/launchable, source_mob)
 	droppod.special_structures_to_damage = breakeable_structures
 	droppod.special_structure_damage = 500

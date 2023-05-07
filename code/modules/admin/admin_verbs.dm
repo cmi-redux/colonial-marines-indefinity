@@ -24,6 +24,7 @@ var/list/admin_verbs_default = list(
 	/client/proc/cmd_admin_create_predator_report, //Predator ship AI report
 	/client/proc/admin_ghost, /*allows us to ghost/reenter body at will*/
 	/client/proc/invismin,
+	/client/proc/run_particle_weather,
 	/client/proc/set_explosive_antigrief,
 	/client/proc/check_explosive_antigrief,
 	/client/proc/cmd_mod_say,
@@ -66,16 +67,18 @@ var/list/admin_verbs_default = list(
 	/datum/admins/proc/alertall,
 	/datum/admins/proc/imaginary_friend,
 	)
-
 var/list/admin_verbs_admin = list(
-	/datum/admins/proc/togglejoin, /*toggles whether people can join the current game*/
-	/datum/admins/proc/announce, /*priority announce something to all clients.*/
-	/datum/admins/proc/view_txt_log, /*shows the server log (diary) for today*/
-	/client/proc/cmd_admin_delete, /*delete an instance/object/mob/etc*/
-	/client/proc/giveruntimelog, /*allows us to give access to runtime logs to somebody*/
-	/client/proc/getserverlog, /*allows us to fetch server logs (diary) for other days*/
-	/client/proc/toggleprayers, /*toggles prayers on/off*/
-	/client/proc/toggle_hear_radio, /*toggles whether we hear the radio*/
+	/datum/admins/proc/togglejoin,		/*toggles whether people can join the current game*/
+	/datum/admins/proc/shutdown_server,		/*shutdown world*/
+	/datum/admins/proc/servermode,		/*toggles whether people can join to server*/
+	/datum/admins/proc/announce,		/*priority announce something to all clients.*/
+	/datum/admins/proc/view_txt_log,	/*shows the server log (diary) for today*/
+	/client/proc/discord_panel,	/*discord info about all clients.*/
+	/client/proc/cmd_admin_delete,		/*delete an instance/object/mob/etc*/
+	/client/proc/giveruntimelog,		/*allows us to give access to runtime logs to somebody*/
+	/client/proc/getserverlog,			/*allows us to fetch server logs (diary) for other days*/
+	/client/proc/toggleprayers,			/*toggles prayers on/off*/
+	/client/proc/toggle_hear_radio,		/*toggles whether we hear the radio*/
 	/client/proc/event_panel,
 	/client/proc/cmd_admin_say, /*admin-only ooc chat*/
 	/client/proc/free_slot, /*frees slot for chosen job*/
@@ -83,6 +86,7 @@ var/list/admin_verbs_admin = list(
 	/client/proc/cmd_admin_rejuvenate,
 	/client/proc/cmd_admin_remove_clamp,
 	/client/proc/cmd_admin_repair_multitile,
+	/datum/admins/proc/admin_force_distress,
 	/datum/admins/proc/admin_force_selfdestruct,
 	/client/proc/check_round_statistics,
 	/client/proc/force_teleporter,
@@ -103,7 +107,6 @@ var/list/admin_verbs_sounds = list(
 var/list/admin_verbs_minor_event = list(
 	/client/proc/cmd_admin_change_custom_event,
 	/datum/admins/proc/admin_force_distress,
-	/datum/admins/proc/admin_force_ERT_shuttle,
 	/client/proc/force_shuttle,
 	/datum/admins/proc/force_predator_round, //Force spawns a predator round.
 	/client/proc/adjust_predator_round,
@@ -142,8 +145,7 @@ var/list/admin_verbs_major_event = list(
 	/client/proc/cmd_fun_fire_ob,
 	/client/proc/map_template_upload,
 	/client/proc/enable_podlauncher,
-	/client/proc/change_taskbar_icon,
-	/client/proc/change_weather
+	/client/proc/change_taskbar_icon
 )
 var/list/admin_verbs_spawn = list(
 	/datum/admins/proc/spawn_atom,
@@ -160,7 +162,8 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/change_ground_map,
 	/datum/admins/proc/change_ship_map,
 	/datum/admins/proc/vote_ground_map,
-	/client/proc/cmd_admin_delete, /*delete an instance/object/mob/etc*/
+	/datum/admins/proc/servermode,
+	/client/proc/cmd_admin_delete,		/*delete an instance/object/mob/etc*/
 	/client/proc/cmd_debug_del_all,
 	/datum/admins/proc/togglejoin,
 	/datum/admins/proc/view_txt_log
@@ -173,6 +176,7 @@ var/list/admin_verbs_debug = list(
 	/client/proc/cmd_admin_delete,
 	/client/proc/cmd_debug_del_all,
 	/client/proc/reload_admins,
+	/client/proc/global_toggle_fov,
 	/client/proc/reload_whitelist,
 	/client/proc/restart_controller,
 	/client/proc/debug_controller,
@@ -180,28 +184,23 @@ var/list/admin_verbs_debug = list(
 	/client/proc/enable_debug_verbs,
 	/client/proc/toggledebuglogs,
 	/client/proc/togglenichelogs,
-	/client/proc/cmd_admin_change_hivenumber,
+	/client/proc/cmd_admin_change_faction,
 	/client/proc/spawn_wave,
 	/client/proc/toggle_log_hrefs,
 	/client/proc/matrix_editor,
 	/client/proc/generate_sound_queues,
 	/client/proc/sound_debug_query,
 	/client/proc/debug_game_history,
-	/client/proc/enter_tree,
-	/client/proc/set_tree_points,
 	/client/proc/purge_data_tab,
 )
-
 var/list/admin_verbs_debug_advanced = list(
 	/client/proc/callproc_datum,
 	/client/proc/callproc,
 	/client/proc/SDQL2_query,
 )
-
 var/list/clan_verbs = list(
 	/client/proc/usr_create_new_clan
 )
-
 var/list/debug_verbs = list(
 	/client/proc/Cell,
 	/client/proc/cmd_assume_direct_control,
@@ -212,7 +211,6 @@ var/list/debug_verbs = list(
 	/client/proc/toggle_power_update_profiling,
 	/client/proc/nanomapgen_DumpImage,
 )
-
 var/list/admin_verbs_possess = list(
 	/client/proc/possess,
 	/client/proc/release
@@ -223,7 +221,6 @@ var/list/admin_verbs_permissions = list(
 var/list/admin_verbs_color = list(
 	/client/proc/set_ooc_color_self
 )
-
 var/list/admin_mob_event_verbs_hideable = list(
 	/client/proc/hide_event_mob_verbs,
 	/client/proc/cmd_admin_select_mob_rank,
@@ -231,7 +228,7 @@ var/list/admin_mob_event_verbs_hideable = list(
 	/client/proc/cmd_admin_direct_narrate,
 	/client/proc/editappear,
 	/client/proc/cmd_admin_addhud,
-	/client/proc/cmd_admin_change_their_hivenumber,
+	/client/proc/cmd_admin_change_their_faction,
 	/client/proc/cmd_assume_direct_control,
 	/client/proc/free_mob_for_ghosts,
 	/client/proc/possess,
@@ -240,7 +237,6 @@ var/list/admin_mob_event_verbs_hideable = list(
 	/client/proc/cmd_admin_grantallskills,
 	/client/proc/admin_create_account
 )
-
 //verbs which can be hidden - needs work
 var/list/admin_verbs_hideable = list(
 	/client/proc/release,
@@ -262,7 +258,6 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/debug_variables,
 	/client/proc/debug_global_variables
 )
-
 var/list/admin_verbs_teleport = list(
 	/client/proc/teleport_panel, /*teleport panel, for jumping to things/places and getting things/places */
 	/client/proc/jumptocoord,
@@ -276,11 +271,9 @@ var/list/admin_verbs_teleport = list(
 	/client/proc/Getkey,
 	/client/proc/toggle_noclip
 )
-
 var/list/roundstart_mod_verbs = list(
 	/client/proc/toggle_ob_spawn
 )
-
 /client/proc/add_admin_verbs()
 	if(!admin_holder)
 		return
@@ -315,14 +308,14 @@ var/list/roundstart_mod_verbs = list(
 		add_verb(src, admin_verbs_sounds)
 	if(CLIENT_HAS_RIGHTS(src, R_SPAWN))
 		add_verb(src, admin_verbs_spawn)
-	if(RoleAuthority && (RoleAuthority.roles_whitelist[ckey] & WHITELIST_YAUTJA_LEADER))
+	if(SSticker.role_authority && (SSticker.role_authority.roles_whitelist[ckey] & WHITELIST_YAUTJA_LEADER))
 		add_verb(src, clan_verbs)
-
 /client/proc/add_admin_whitelists()
+	UNTIL(SSticker.role_authority)
 	if(CLIENT_HAS_RIGHTS(src, R_MENTOR))
-		RoleAuthority.roles_whitelist[ckey] |= WHITELIST_MENTOR
+		SSticker.role_authority.roles_whitelist[ckey] |= WHITELIST_MENTOR
 	if(CLIENT_IS_STAFF(src))
-		RoleAuthority.roles_whitelist[ckey] |= WHITELIST_JOE
+		SSticker.role_authority.roles_whitelist[ckey] |= WHITELIST_JOE
 
 /client/proc/remove_admin_verbs()
 	remove_verb(src, list(
@@ -345,7 +338,6 @@ var/list/roundstart_mod_verbs = list(
 		admin_verbs_hideable,
 		debug_verbs,
 	))
-
 /client/proc/jobbans()
 	set name = "Display Job Bans"
 	set category = "Admin"
@@ -363,7 +355,8 @@ var/list/roundstart_mod_verbs = list(
 /client/proc/set_ooc_color_self()
 	set category = "OOC.OOC"
 	set name = "OOC Text Color - Self"
-	if(!admin_holder && !donator) return
+	if(!admin_holder || !donator_info.patreon_function_available("ooc_color"))
+		return
 	var/new_ooccolor = input(src, "Please select your OOC color.", "OOC color") as color|null
 	if(new_ooccolor)
 		prefs.ooccolor = new_ooccolor
@@ -395,7 +388,6 @@ var/list/roundstart_mod_verbs = list(
 			to_chat_forced(P.owning_client, "<font color='red'><BIG><B>You have been autobanned due to a warning by [key_name_admin(P.owning_client)].</B></BIG><br>This is a temporary ban, it will be removed in [AUTOBANTIME] minutes.")
 		else
 			message_admins("[key_name_admin(src)] has warned [warned_ckey] resulting in a [AUTOBANTIME] minute ban.")
-
 		P.add_timed_ban("Autobanning due to too many formal warnings", AUTOBANTIME)
 	else
 		if(P.owning_client)
@@ -403,7 +395,6 @@ var/list/roundstart_mod_verbs = list(
 			message_admins("[key_name_admin(src)] has warned [key_name_admin(P.owning_client)]. They have [MAX_WARNS-P.warning_count] strikes remaining.")
 		else
 			message_admins("[key_name_admin(src)] has warned [warned_ckey] (DC). They have [MAX_WARNS-P.warning_count] strikes remaining.")
-
 /client/proc/give_disease(mob/T as mob in GLOB.mob_list) // -- Giacom
 	set category = "Admin.Fun"
 	set name = "Give Disease (old)"
@@ -415,9 +406,7 @@ var/list/roundstart_mod_verbs = list(
 	if(!D) return
 	var/path = text2path("/datum/disease/[D]")
 	T.contract_disease(new path, 1)
-
 	message_admins("[key_name_admin(usr)] gave [key_name(T)] the disease [D].")
-
 
 /client/proc/object_talk(msg as text) // -- TLE
 	set category = "Admin.Events"
@@ -428,7 +417,6 @@ var/list/roundstart_mod_verbs = list(
 			return
 		for (var/mob/V in hearers(mob.control_object))
 			V.show_message("<b>[mob.control_object.name]</b> says: \"" + msg + "\"", SHOW_MESSAGE_AUDIBLE)
-
 
 /client/proc/toggle_log_hrefs()
 	set name = "Toggle href Logging"
@@ -442,7 +430,6 @@ var/list/roundstart_mod_verbs = list(
 			CONFIG_SET(flag/log_hrefs, TRUE)
 			to_chat(src, "<b>Started logging hrefs</b>")
 
-
 /client/proc/editappear(mob/living/carbon/human/M as mob in GLOB.human_mob_list)
 	set name = "Edit Appearance"
 	set category = null
@@ -452,27 +439,23 @@ var/list/roundstart_mod_verbs = list(
 	if(!istype(M, /mob/living/carbon/human))
 		to_chat(usr, SPAN_DANGER("You can only do this to humans!"))
 		return
-	switch(alert("Are you sure you wish to edit this mob's appearance?",,"Yes","No"))
-		if("No")
-			return
+	if(alert("Are you sure you wish to edit this mob's appearance?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
+		return
 	var/new_facial = input("Please select facial hair color.", "Character Generation") as color
 	if(new_facial)
 		M.r_facial = hex2num(copytext(new_facial, 2, 4))
 		M.g_facial = hex2num(copytext(new_facial, 4, 6))
 		M.b_facial = hex2num(copytext(new_facial, 6, 8))
-
 	var/new_hair = input("Please select hair color.", "Character Generation") as color
 	if(new_facial)
 		M.r_hair = hex2num(copytext(new_hair, 2, 4))
 		M.g_hair = hex2num(copytext(new_hair, 4, 6))
 		M.b_hair = hex2num(copytext(new_hair, 6, 8))
-
 	var/new_eyes = input("Please select eye color.", "Character Generation") as color
 	if(new_eyes)
 		M.r_eyes = hex2num(copytext(new_eyes, 2, 4))
 		M.g_eyes = hex2num(copytext(new_eyes, 4, 6))
 		M.b_eyes = hex2num(copytext(new_eyes, 6, 8))
-
 
 	// hair
 	var/new_hstyle = input(usr, "Select a hair style", "Grooming")  as null|anything in GLOB.hair_styles_list
@@ -485,7 +468,7 @@ var/list/roundstart_mod_verbs = list(
 		M.f_style = new_fstyle
 
 	var/new_gender = alert(usr, "Please select gender.", "Character Generation", "Male", "Female")
-	if (new_gender)
+	if(new_gender)
 		if(new_gender == "Male")
 			M.gender = MALE
 		else
@@ -493,28 +476,25 @@ var/list/roundstart_mod_verbs = list(
 	M.update_hair()
 	M.update_body()
 
-
 /client/proc/toggleattacklogs()
 	set name = "Toggle Attack Log Messages"
 	set category = "Preferences.Logs"
 
 	prefs.toggles_chat ^= CHAT_ATTACKLOGS
-	if (prefs.toggles_chat & CHAT_ATTACKLOGS)
+	if(prefs.toggles_chat & CHAT_ATTACKLOGS)
 		to_chat(usr, SPAN_BOLDNOTICE("You will now get attack log messages."))
 	else
 		to_chat(usr, SPAN_BOLDNOTICE("You will no longer get attack log messages."))
-
 
 /client/proc/toggleffattacklogs()
 	set name = "Toggle FF Attack Log Messages"
 	set category = "Preferences.Logs"
 
 	prefs.toggles_chat ^= CHAT_FFATTACKLOGS
-	if (prefs.toggles_chat & CHAT_FFATTACKLOGS)
+	if(prefs.toggles_chat & CHAT_FFATTACKLOGS)
 		to_chat(usr, SPAN_BOLDNOTICE("You will now get friendly fire attack log messages."))
 	else
 		to_chat(usr, SPAN_BOLDNOTICE("You will no longer get friendly fire attack log messages."))
-
 
 /client/proc/toggledebuglogs()
 	set name = "Toggle Debug Log Messages"
@@ -525,7 +505,6 @@ var/list/roundstart_mod_verbs = list(
 		to_chat(usr, SPAN_BOLDNOTICE("You will now get debug log messages."))
 	else
 		to_chat(usr, SPAN_BOLDNOTICE("You will no longer get debug log messages."))
-
 // TODO Port this to Statpanel Options Window probably
 /client/proc/togglestatpanelsplit()
 	set name = "Toggle Split Tabs"
@@ -535,7 +514,6 @@ var/list/roundstart_mod_verbs = list(
 		to_chat(usr, SPAN_BOLDNOTICE("You enabled split admin tabs in Statpanel."))
 	else
 		to_chat(usr, SPAN_BOLDNOTICE("You disabled split admin tabs in Statpanel."))
-
 /client/proc/togglenichelogs()
 	set name = "Toggle Niche Log Messages"
 	set category = "Preferences.Logs"
@@ -546,7 +524,6 @@ var/list/roundstart_mod_verbs = list(
 	else
 		to_chat(usr, SPAN_BOLDNOTICE("You will no longer get niche log messages."))
 
-
 /client/proc/announce_random_fact()
 	set name = "Announce Random Fact"
 	set desc = "Tells everyone about a random statistic in the round."
@@ -554,7 +531,6 @@ var/list/roundstart_mod_verbs = list(
 
 	message_admins("[key_name(usr)] announced a random fact.")
 	SSticker.mode?.declare_fun_facts()
-
 
 #undef MAX_WARNS
 #undef AUTOBANTIME

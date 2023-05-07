@@ -33,9 +33,9 @@
 	if(special_icon)
 		return
 	if(neighbors_list in list(EAST|WEST))
-		var/r1 = rand(0,10) //Make a random chance for this to happen
-		var/r2 = rand(0,3) // Which wall if we do choose it
-		if(r1 >= 9)
+		var/r1 = rand(0, 10) //Make a random chance for this to happen
+		var/r2 = rand(0, 3) // Which wall if we do choose it
+		if(!r1)
 			overlays += image(icon, icon_state = "almayer_deco_wall[r2]")
 
 /turf/closed/wall/almayer/take_damage(dam, mob/M)
@@ -57,7 +57,7 @@
 	icon_state = "hull" //Codersprite to make it more obvious in the map maker what's a hull wall and what's not
 	//icon_state = "testwall0_debug" //Uncomment to check hull in the map editor.
 	walltype = WALL_HULL
-	hull = 1 //Impossible to destroy or even damage. Used for outer walls that would breach into space, potentially some special walls
+	hull = TRUE //Impossible to destroy or even damage. Used for outer walls that would breach into space, potentially some special walls
 
 /turf/closed/wall/almayer/no_door_tile
 	tiles_with = list(/turf/closed/wall,/obj/structure/window/framed,/obj/structure/window_frame,/obj/structure/girder)
@@ -81,7 +81,7 @@
 /turf/closed/wall/almayer/white/hull
 	name = "ultra reinforced hull"
 	desc = "An extremely reinforced metal wall used to isolate potentially dangerous areas"
-	hull = 1
+	hull = TRUE
 	icon_state = "hull"
 
 /turf/closed/wall/almayer/research/can_be_dissolved()
@@ -125,7 +125,7 @@
 	operating = TRUE
 	flick("containment_wall_divide_lowering", src)
 	icon_state = "containment_wall_divide_lowered"
-	SetOpacity(0)
+	set_opacity(0)
 	density = FALSE
 	operating = FALSE
 	change_weeds()
@@ -136,7 +136,7 @@
 	operating = TRUE
 	flick("containment_wall_divide_rising", src)
 	icon_state = "containment_wall_divide"
-	SetOpacity(1)
+	set_opacity(1)
 	density = TRUE
 	operating = FALSE
 
@@ -205,7 +205,7 @@
 /turf/closed/wall/sulaco/hull
 	name = "outer hull"
 	desc = "A reinforced outer hull, probably to prevent breaches"
-	hull = 1
+	hull = TRUE
 	max_temperature = 50000 // Nearly impossible to melt
 	walltype = WALL_SULACO
 
@@ -213,7 +213,7 @@
 /turf/closed/wall/sulaco/unmeltable
 	name = "outer hull"
 	desc = "A reinforced outer hull, probably to prevent breaches"
-	hull = 1
+	hull = TRUE
 	max_temperature = 50000 // Nearly impossible to melt
 	walltype = WALL_SULACO
 
@@ -225,7 +225,7 @@
 	icon = 'icons/turf/walls/walls.dmi'
 	icon_state = "riveted"
 	opacity = TRUE
-	hull = 1
+	hull = TRUE
 
 
 
@@ -244,7 +244,6 @@
 	desc = "Assorted artworks."
 	icon = 'icons/lobby/title.dmi'
 	icon_state = ""
-// icon_state = "title_holiday"
 	layer = FLY_LAYER
 	special_icon = 1
 
@@ -263,7 +262,7 @@
 		if(displayed_lobby_art != -1)
 			var/author = lobby_authors[displayed_lobby_art]
 			if(author != "Unknown")
-				to_chat_forced(C, SPAN_ROUNDBODY("<hr>This round's lobby art is brought to you by [author]<hr>"))
+				to_chat_forced(C, SPAN_ROUNDBODY("<hr>В этом раунде лоби арт представлен вам by [author]<hr>"))
 
 /turf/closed/wall/indestructible/other
 	icon_state = "r_wall"
@@ -393,14 +392,11 @@
 
 /turf/closed/wall/mineral/bone_resin //mineral wall because, reasons bro.
 	name = "skeletal resin"
+	desc = "A wall made of molted old resin. This place is more alive than you are."
 	icon = 'icons/turf/walls/prison/bone_resin.dmi'
 	icon_state = "bone_resin"
 	walltype = WALL_BONE_RESIN
-	hull = 1
-	desc = "A wall made of molted old resin. This place is more alive than you are."
-
-/turf/closed/wall/mineral/bone/is_weedable()
-	return NOT_WEEDABLE
+	hull = TRUE
 
 //Misc walls
 
@@ -470,7 +466,7 @@
 	icon_state = "cavewall"
 	desc = "A rough wall of hardened rock."
 	walltype = WALL_CAVE
-	hull = 1
+	hull = TRUE
 	color = "#535963"
 
 /turf/closed/wall/rock/brown
@@ -498,7 +494,7 @@
 	icon_state = "strata_ice"
 	desc = "An absolutely massive collection of columns made of ice. The longer you stare, the deeper the ice seems to go."
 	walltype = WALL_STRATA_ICE //Not a metal wall
-	hull = 1 //Can't break this ice.
+	hull = TRUE //Can't break this ice.
 
 /turf/closed/wall/strata_ice/dirty
 	icon_state = "strata_ice_dirty"
@@ -511,7 +507,7 @@
 	icon_state = "jungle_veg"
 	desc = "Exceptionally dense vegetation that you can't see through."
 	walltype = WALL_JUNGLE_UPDATED //Not a metal wall
-	hull = 1
+	hull = TRUE
 
 /turf/closed/wall/strata_outpost_ribbed //this guy is our reinforced replacement
 	name = "ribbed outpost walls"
@@ -538,7 +534,7 @@
 	max_temperature = 28000
 
 /turf/closed/wall/strata_outpost/reinforced/hull
-	hull = 1
+	hull = TRUE
 	icon_state = "strata_hull"
 	desc = "A thick and chunky metal wall that is, just by virtue of its placement and imposing presence, entirely indestructible."
 
@@ -559,7 +555,7 @@
 
 /turf/closed/wall/solaris/reinforced/hull
 	icon_state = "solaris_interior_h"
-	hull = 1
+	hull = TRUE
 
 /turf/closed/wall/solaris/reinforced/hull/lv522
 	name = "Colony Windbreaker"
@@ -568,7 +564,7 @@
 	name = "solaris ridge rock wall"
 	icon_state = "solaris_rock"
 	walltype = WALL_SOLARIS_ROCK
-	hull = 1
+	hull = TRUE
 
 
 
@@ -592,7 +588,7 @@
 /turf/closed/wall/dev/reinforced/hull
 	name = "greybox hull wall"
 	desc = "Just like in the orange box! This one is indestructible."
-	hull = 1
+	hull = TRUE
 
 //KUTJEVO DESERT WALLS / SHARED TRIJENT TILESET
 
@@ -602,7 +598,7 @@
 	icon = 'icons/turf/walls/kutjevo/kutjevo.dmi'
 	icon_state = "rock"
 	walltype = WALL_KUTJEVO_ROCK
-	hull = 1
+	hull = TRUE
 
 /turf/closed/wall/kutjevo/rock/border
 	icon_state = "rock_border"//no sandy edges
@@ -627,7 +623,7 @@
 	icon_state = "colonyh"
 	name = "reinforced colony wall"
 	desc = "Dusty worn down walls that were once built to last. This one is indestructible."
-	hull = 1
+	hull = TRUE
 
 //ICE COLONY, AKA SHIVA'S SNOWBALL TOBLERONE WALLS
 /turf/closed/wall/shiva
@@ -638,7 +634,7 @@
 	icon_state = "shiva_ice"
 	desc = "Slabs on slabs of dirty black ice crusted over ancient rock formations. The permafrost fluctuates between 20in and 12in during the summer months."
 	walltype = WALL_SHIVA_ICE //Not a metal wall
-	hull = 1 //Can't break this ice.
+	hull = TRUE //Can't break this ice.
 
 /turf/closed/wall/shiva/prefabricated
 	name = "prefabricated structure wall"
@@ -689,16 +685,17 @@
 	desc = "Weird slime solidified into a wall."
 	icon = 'icons/mob/xenos/structures.dmi'
 	icon_state = "resin"
+	turf_flags = TURF_MULTIZ|TURF_ORGANIC
+	weedable = FULLY_WEEDABLE
 	walltype = WALL_RESIN
 	damage_cap = HEALTH_WALL_XENO
 	layer = RESIN_STRUCTURE_LAYER
 	blend_turfs = list(/turf/closed/wall/resin)
 	blend_objects = list(/obj/structure/mineral_door/resin)
 	repair_materials = list()
-	var/hivenumber = XENO_HIVE_NORMAL
+	var/datum/faction/faction
 	var/should_track_build = FALSE
 	var/datum/cause_data/construction_data
-	flags_turf = TURF_ORGANIC
 
 /turf/closed/wall/resin/pillar
 	name = "resin pillar segment"
@@ -741,13 +738,11 @@
 	if(!istype(X))
 		return FALSE
 
-	var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
-
-	return hive.is_ally(X)
+	return X.ally(faction)
 
 /turf/closed/wall/resin/membrane/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_GLASS
 
 /datum/movable_wall_group
@@ -791,7 +786,7 @@
 				var/datum/movable_wall_group/MWG = new()
 				MWG.add_structure(current)
 
-			for(var/dir in cardinal)
+			for(var/dir in  GLOB.cardinals)
 				connected = locate() in get_step(current, dir)
 				if(connected in current_walls)
 					if(connected.group == src)
@@ -879,18 +874,19 @@
 	anchored = TRUE
 	opacity = TRUE
 
+	faction_to_get = FACTION_XENOMORPH_NORMAL
+
 	var/turf/tied_turf
 	var/list/wall_connections = list("0", "0", "0", "0")
 	drag_delay = 4
 
-
-	var/hivenumber = XENO_HIVE_NORMAL
-
-/obj/structure/alien/movable_wall/Initialize(mapload, hive)
+/obj/structure/alien/movable_wall/Initialize(mapload, mob/builder, datum/faction/faction_to_set)
 	. = ..()
-	if(hive)
-		hivenumber = hive
-		set_hive_data(src, hive)
+
+	if(faction_to_set)
+		faction = faction_to_set
+
+	set_hive_data(src, faction)
 	recalculate_structure()
 	update_tied_turf(loc)
 	RegisterSignal(src, COMSIG_ATOM_TURF_CHANGE, PROC_REF(update_tied_turf))
@@ -926,7 +922,7 @@
 /obj/structure/alien/movable_wall/proc/update_connections(propagate = FALSE)
 	var/list/wall_dirs = list()
 
-	for(var/dir in alldirs)
+	for(var/dir in GLOB.alldirs)
 		var/obj/structure/alien/movable_wall/MW = locate() in get_step(src, dir)
 		if(!(MW in group.walls))
 			continue
@@ -956,7 +952,7 @@
 	M.visible_message(SPAN_XENONOTICE("\The [M] claws \the [src]!"), \
 	SPAN_XENONOTICE("You claw \the [src]."))
 	playsound(src, "alien_resin_break", 25)
-	if (M.hivenumber == hivenumber)
+	if(M.faction == faction)
 		take_damage(Ceiling(HEALTH_WALL_XENO * 0.25)) //Four hits for a regular wall
 	else
 		take_damage(M.melee_damage_lower*RESIN_XENO_DAMAGE_MULTIPLIER)
@@ -980,7 +976,7 @@
 /obj/structure/alien/movable_wall/proc/recalculate_structure()
 	var/list/found_structures = list()
 	var/current_walls = 0
-	for(var/i in cardinal)
+	for(var/i in  GLOB.cardinals)
 		var/turf/T = get_step(src, i)
 		var/obj/structure/alien/movable_wall/MW = locate() in T
 		if(!MW)
@@ -1026,18 +1022,18 @@
 	var/target_dir = get_dir(mover, T)
 
 	if(isxeno(mover))
-		var/mob/living/carbon/xenomorph/X = mover
-		if(X.hivenumber != hivenumber || X.throwing)
+		var/mob/living/carbon/xenomorph/xeno = mover
+		if(xeno.faction != faction || xeno.throwing)
 			return
 
-		if(X.pulling == src)
-			X.stop_pulling()
+		if(xeno.pulling == src)
+			xeno.stop_pulling()
 
 		if(group.try_move_in_direction(target_dir, list(mover)))
 			return COMPONENT_TURF_ALLOW_MOVEMENT
 
 /obj/structure/alien/movable_wall/Move(NewLoc, direct)
-	if(!(direct in cardinal))
+	if(!(direct in  GLOB.cardinals))
 		return
 	group.try_move_in_direction(direct)
 
@@ -1100,7 +1096,7 @@
 		return
 
 	var/obj/item/projectile/new_proj = new(src, construction_data ? construction_data : create_cause_data(initial(name)))
-	new_proj.generate_bullet(P.ammo)
+	new_proj.generate_bullet(P.ammo, src, 0, P.projectile_override_flags|AMMO_HOMING)
 	new_proj.damage = P.damage * reflection_multiplier // don't make it too punishing
 	new_proj.accuracy = HIT_ACCURACY_TIER_7 // 35% chance to hit something
 
@@ -1148,7 +1144,7 @@
 	var/tforce = 0
 	if(ismob(AM))
 		tforce = 10
-	else if (isobj(AM))
+	else if(isobj(AM))
 		var/obj/O = AM
 		tforce = O.throwforce
 	playsound(src, "alien_resin_break", 25)
@@ -1168,7 +1164,7 @@
 	M.visible_message(SPAN_XENONOTICE("\The [M] claws \the [src]!"), \
 	SPAN_XENONOTICE("You claw \the [src]."))
 	playsound(src, "alien_resin_break", 25)
-	if (M.hivenumber == hivenumber)
+	if(M.faction == faction)
 		take_damage(Ceiling(HEALTH_WALL_XENO * 0.25)) //Four hits for a regular wall
 	else
 		take_damage(M.melee_damage_lower*RESIN_XENO_DAMAGE_MULTIPLIER)
@@ -1198,20 +1194,21 @@
 		return attack_hand(user)
 
 /turf/closed/wall/resin/ChangeTurf(newtype, ...)
-	var/hive = hivenumber
+	var/datum/faction/old_faction = faction
 	. = ..()
 	if(.)
-		var/turf/T
-		for(var/i in cardinal)
-			T = get_step(src, i)
-			if(!istype(T)) continue
-			for(var/obj/structure/mineral_door/resin/R in T)
-				R.check_resin_support()
+		var/turf/turf
+		for(var/i in  GLOB.cardinals)
+			turf = get_step(src, i)
+			if(!istype(turf))
+				continue
+			for(var/obj/structure/mineral_door/resin/door in turf)
+				door.check_resin_support()
 
-		var/turf/closed/wall/resin/W = .
-		if (istype(W))
-			W.hivenumber = hive
-			set_hive_data(W, W.hivenumber)
+		var/turf/closed/wall/resin/wall = .
+		if(istype(wall))
+			wall.faction = old_faction
+			set_hive_data(wall, old_faction)
 
 /turf/closed/wall/resin/weak
 	name = "weak resin wall"
@@ -1237,7 +1234,7 @@
 	icon = 'icons/turf/walls/hunter.dmi'
 	icon_state = "metal"//DMI specific name
 	walltype = WALL_HUNTERSHIP
-	hull = 1
+	hull = TRUE
 
 /turf/closed/wall/huntership/destructible
 	name = "degraded hunter wall"

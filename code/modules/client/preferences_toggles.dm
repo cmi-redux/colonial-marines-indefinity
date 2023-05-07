@@ -57,8 +57,9 @@
 		to_chat(src, SPAN_BOLDNOTICE("The currently playing midi has been silenced."))
 		var/sound/break_sound = sound(null, repeat = 0, wait = 0, channel = SOUND_CHANNEL_ADMIN_MIDI)
 		break_sound.priority = 250
-		src << break_sound //breaks the client's sound output on SOUND_CHANNEL_ADMIN_MIDI
-		if(src.mob.client.midi_silenced) return
+		src << break_sound	//breaks the client's sound output on SOUND_CHANNEL_ADMIN_MIDI
+		if(src.mob.client.midi_silenced)
+			return
 		if(midi_playing)
 			total_silenced++
 			message_admins("A player has silenced the currently playing midi. Total: [total_silenced] player(s).", 1)
@@ -229,7 +230,7 @@
 	prefs.toggle_prefs ^= TOGGLE_AMBIENT_OCCLUSION
 	prefs.save_preferences()
 	var/atom/movable/screen/plane_master/game_world/plane_master = locate() in src.screen
-	if (!plane_master)
+	if(!plane_master)
 		return
 	plane_master.backdrop(src.mob)
 
@@ -261,20 +262,22 @@
 	set desc = "Toggles a specific toggleable preference"
 
 	var/list/pref_buttons = list(
-		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_ignore_self'>Toggle the Ability to Hurt Yourself</a><br>",
-		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_help_intent_safety'>Toggle Help Intent Safety</a><br>",
-		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_auto_eject'>Toggle Guns Auto-Ejecting Magazines</a><br>",
-		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_auto_eject_to_hand'>Toggle Guns Auto-Ejecting Magazines to Your Hands</a><br>",
-		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_eject_to_hand'>Toggle 'Unload Weapon' Ejecting Magazines to Your Hands</a><br>",
-		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_automatic_punctuation'>Toggle Automatic Punctuation</a><br>",
-		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_middle_mouse_click'>Toggle Middle Mouse Ability Activation</a><br>",
-		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_clickdrag_override'>Toggle Combat Click-Drag Override</a><br>",
-		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_dualwield'>Toggle Alternate-Fire Dual Wielding</a><br>",
-		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_middle_mouse_swap_hands'>Toggle Middle Mouse Swapping Hands</a><br>",
-		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_vend_item_to_hand'>Toggle Vendors Vending to Hands</a><br>",
-		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/switch_item_animations'>Toggle Item Animations</a><br>",
-		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_admin_sound_types'>Toggle Admin Sound Types</a><br>",
-		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/set_eye_blur_type'>Set Eye Blur Type</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_ignore_self'>[auto_lang(LANGUAGE_PREF_HURT_SELF)]</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_help_intent_safety'>[auto_lang(LANGUAGE_PREF_HELP_SAFE)]</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_directional_assist'>[auto_lang(LANGUAGE_PREF_DIRECT_ASSIST)]</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_auto_eject'>[auto_lang(LANGUAGE_PREF_AUTO_E)]</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_auto_eject_to_hand'>[auto_lang(LANGUAGE_PREF_AUTO_EOH)]</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_eject_to_hand'>[auto_lang(LANGUAGE_PREF_M_AUTO_EOH)]</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_automatic_punctuation'>[auto_lang(LANGUAGE_PREF_PUNCTUATION)]</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_middle_mouse_click'>[auto_lang(LANGUAGE_PREF_MIDDLE)]</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_clickdrag_override'>[auto_lang(LANGUAGE_PREF_CD_OVERRIDE)]</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_dualwield'>[auto_lang(LANGUAGE_PREF_ALT_DW)]</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_gun_ammo_counter'>[auto_lang(LANGUAGE_PREF_AMMO_COUNTER)]</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_middle_mouse_swap_hands'>[auto_lang(LANGUAGE_PREF_MC_SH)]</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_vend_item_to_hand'>[auto_lang(LANGUAGE_PREF_VVTH)]</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/switch_item_animations'>[auto_lang(LANGUAGE_PREF_ITEM_ANIM)]</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_admin_sound_types'>[auto_lang(LANGUAGE_PREF_AST)]</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/set_eye_blur_type'>[auto_lang(LANGUAGE_PREF_EYE_BLUR)]</a><br>"
 	)
 
 	var/dat = ""
@@ -301,11 +304,27 @@
 		to_chat(src, SPAN_BOLDNOTICE("Help intent can perform harmful actions again."))
 	prefs.save_preferences()
 
+/client/proc/toggle_middle_mouse_click() // Toggle whether abilities should use middle or shift clicking
+	prefs.toggle_prefs ^= TOGGLE_MIDDLE_MOUSE_CLICK
+	if(prefs.toggle_prefs & TOGGLE_MIDDLE_MOUSE_CLICK)
+		to_chat(src, SPAN_NOTICE("Your selected ability will now be activated with middle clicking."))
+	else
+		to_chat(src, SPAN_NOTICE("Your selected ability will now be activated with shift clicking."))
+	prefs.save_preferences()
+
+/client/proc/toggle_directional_assist() // Toggle whether abilities should use middle or shift clicking
+	prefs.toggle_prefs ^= TOGGLE_DIRECTIONAL_ATTACK
+	if(prefs.toggle_prefs & TOGGLE_DIRECTIONAL_ATTACK)
+		to_chat(src, SPAN_NOTICE("Now your attacks directionaly."))
+	else
+		to_chat(src, SPAN_NOTICE("Your attacks now no more have directional assist"))
+	prefs.save_preferences()
+
 /client/proc/toggle_auto_eject() // Toggle whether guns with auto-ejectors will automatically eject magazines
 	prefs.toggle_prefs ^= TOGGLE_AUTO_EJECT_MAGAZINE_OFF
 	if(prefs.toggle_prefs & TOGGLE_AUTO_EJECT_MAGAZINE_OFF)
 		var/msg = "Guns with auto-ejectors will no longer automatically eject their magazines."
-		if (prefs.toggle_prefs & TOGGLE_AUTO_EJECT_MAGAZINE_TO_HAND)
+		if(prefs.toggle_prefs & TOGGLE_AUTO_EJECT_MAGAZINE_TO_HAND)
 			prefs.toggle_prefs ^= TOGGLE_AUTO_EJECT_MAGAZINE_TO_HAND
 			msg += " The preference for auto-ejecting magazines to your hand has been toggled off."
 		to_chat(src, msg)
@@ -317,7 +336,7 @@
 	prefs.toggle_prefs ^= TOGGLE_AUTO_EJECT_MAGAZINE_TO_HAND
 	if(prefs.toggle_prefs & TOGGLE_AUTO_EJECT_MAGAZINE_TO_HAND)
 		var/msg = "Guns with auto-ejectors will eject their magazines to your offhand."
-		if (prefs.toggle_prefs & TOGGLE_AUTO_EJECT_MAGAZINE_OFF)
+		if(prefs.toggle_prefs & TOGGLE_AUTO_EJECT_MAGAZINE_OFF)
 			prefs.toggle_prefs ^= TOGGLE_AUTO_EJECT_MAGAZINE_OFF
 			msg += " The preference for removing magazine auto-ejecting has been toggled off."
 		to_chat(src, SPAN_BOLDNOTICE(msg))
@@ -341,14 +360,6 @@
 		to_chat(src, SPAN_BOLDNOTICE("Your messages will no longer be automatically punctuated if they are not punctuated already."))
 	prefs.save_preferences()
 
-/client/proc/toggle_middle_mouse_click() // Toggle whether abilities should use middle or shift clicking
-	prefs.toggle_prefs ^= TOGGLE_MIDDLE_MOUSE_CLICK
-	if (prefs.toggle_prefs & TOGGLE_MIDDLE_MOUSE_CLICK)
-		to_chat(src, SPAN_NOTICE("Your selected ability will now be activated with middle clicking."))
-	else
-		to_chat(src, SPAN_NOTICE("Your selected ability will now be activated with shift clicking."))
-	prefs.save_preferences()
-
 /client/proc/toggle_clickdrag_override() //Toggle whether mousedown clicks immediately when on disarm or harm intent to prevent click-dragging from 'eating' attacks.
 	prefs.toggle_prefs ^= TOGGLE_COMBAT_CLICKDRAG_OVERRIDE
 	if(prefs.toggle_prefs & TOGGLE_COMBAT_CLICKDRAG_OVERRIDE)
@@ -363,6 +374,14 @@
 		to_chat(src, SPAN_BOLDNOTICE("Dual-wielding now switches between guns, as long as the other gun is loaded."))
 	else
 		to_chat(src, SPAN_BOLDNOTICE("Dual-wielding now fires both guns simultaneously."))
+	prefs.save_preferences()
+
+/client/proc/toggle_gun_ammo_counter()
+	prefs.toggle_prefs ^= TOGGLE_GUN_AMMO_COUNTER
+	if(prefs.toggle_prefs & TOGGLE_GUN_AMMO_COUNTER)
+		to_chat(src, "Modern guns will now display an ammo counter when wielded.")
+	else
+		to_chat(src, "Modern guns will no longer display an ammo counter when wielded.")
 	prefs.save_preferences()
 
 /client/proc/toggle_middle_mouse_swap_hands() //Toggle whether middle click swaps your hands

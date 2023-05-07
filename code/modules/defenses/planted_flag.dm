@@ -15,24 +15,9 @@
 
 	can_be_near_defense = TRUE
 
-	choice_categories = list(
-		SENTRY_CATEGORY_IFF = list(FACTION_USCM, FACTION_WEYLAND, FACTION_HUMAN),
-	)
-
-	selected_categories = list(
-		SENTRY_CATEGORY_IFF = FACTION_USCM,
-	)
-
-
 /obj/structure/machinery/defenses/planted_flag/Initialize()
 	. = ..()
-
-	if(turned_on)
-		apply_area_effect()
-		start_processing()
-
 	range_bounds = RECT(x, y, PLANTED_FLAG_RANGE, PLANTED_FLAG_RANGE)
-	update_icon()
 
 /obj/structure/machinery/defenses/planted_flag/Destroy()
 	. = ..()
@@ -46,22 +31,24 @@
 		overlays += "[defense_type] planted_flag_destroyed"
 		return
 
-	if(turned_on)
+	if(light_on)
 		overlays += "[defense_type] planted_flag"
 	else
 		overlays += "[defense_type] planted_flag_off"
 
 /obj/structure/machinery/defenses/planted_flag/power_on_action()
+	set_light_on(TRUE)
 	apply_area_effect()
 	start_processing()
 	visible_message("[icon2html(src, viewers(src))] [SPAN_NOTICE("The [name] gives a short ring, as it comes alive.")]")
 
 /obj/structure/machinery/defenses/planted_flag/power_off_action()
+	set_light_on(FALSE)
 	stop_processing()
 	visible_message("[icon2html(src, viewers(src))] [SPAN_NOTICE("The [name] gives a beep and powers down.")]")
 
 /obj/structure/machinery/defenses/planted_flag/process()
-	if(!turned_on)
+	if(!light_on)
 		stop_processing()
 
 	apply_area_effect()
@@ -75,7 +62,7 @@
 		return
 
 	for(var/mob/living/carbon/human/H in targets)
-		if(!(H.get_target_lock(faction_group)))
+		if(!(H.ally(faction)))
 			continue
 
 		apply_buff_to_player(H)
@@ -119,7 +106,7 @@
 	var/area_range = PLANTED_FLAG_RANGE-2
 	var/buff_intensity = PLANTED_FLAG_BUFF/2
 
-/obj/item/storage/backpack/equipped(mob/user, slot)
+/obj/item/storage/backpack/jima/equipped(mob/user, slot)
 	. = ..()
 	if(slot == WEAR_BACK)
 		START_PROCESSING(SSobj, src)
@@ -143,7 +130,7 @@
 	targets |= M
 
 	for(var/mob/living/carbon/human/H in targets)
-		if(!(H.get_target_lock(M.faction_group)))
+		if(!(H.ally(M.faction)))
 			continue
 
 		H.activate_order_buff(COMMAND_ORDER_MOVE, buff_intensity, 3 SECONDS)

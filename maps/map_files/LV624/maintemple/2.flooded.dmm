@@ -149,7 +149,7 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 1
 	},
-/turf/open/gm/dirtgrassborder/weedable{
+/turf/open/gm/dirtgrassborder{
 	icon_state = "grass1"
 	},
 /area/lv624/ground/barrens/south_eastern_barrens)
@@ -258,7 +258,7 @@
 /area/lv624/ground/caves/sand_temple)
 "gI" = (
 /obj/structure/flora/bush/ausbushes/var3/sunnybush{
-	desc = "The oranges aren't done yet... this sucks.";
+	desc = "The oranges aren't done yet.. this sucks.";
 	name = "orange tree"
 	},
 /turf/open/gm/grass,
@@ -321,7 +321,8 @@
 /area/lv624/ground/barrens/south_eastern_barrens)
 "hO" = (
 /obj/structure/bed/chair/comfy/black{
-	dir = 8
+	dir = 8;
+	tag = "icon-comfychair (EAST)"
 	},
 /obj/structure/flora/jungle/vines{
 	icon_state = "light_3"
@@ -380,7 +381,7 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 4
 	},
-/turf/open/gm/dirtgrassborder/weedable{
+/turf/open/gm/dirtgrassborder{
 	icon_state = "grass1"
 	},
 /area/lv624/ground/barrens/south_eastern_barrens)
@@ -1389,7 +1390,8 @@
 "Hk" = (
 /obj/structure/flora/jungle/vines/heavy,
 /obj/structure/bed/chair/comfy/black{
-	dir = 1
+	dir = 1;
+	tag = "icon-comfychair (EAST)"
 	},
 /turf/open/gm/dirtgrassborder{
 	dir = 4
@@ -1458,7 +1460,7 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 4
 	},
-/turf/open/gm/dirtgrassborder/weedable{
+/turf/open/gm/dirtgrassborder{
 	icon_state = "grass1"
 	},
 /area/lv624/ground/barrens/south_eastern_barrens)
@@ -1730,13 +1732,13 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 8
 	},
-/turf/open/gm/dirtgrassborder/weedable{
+/turf/open/gm/dirtgrassborder{
 	icon_state = "grass1"
 	},
 /area/lv624/ground/barrens/south_eastern_barrens)
 "OP" = (
 /obj/structure/barricade/handrail/strata,
-/turf/open/gm/dirtgrassborder/weedable{
+/turf/open/gm/dirtgrassborder{
 	icon_state = "grass1"
 	},
 /area/lv624/ground/barrens/south_eastern_barrens)
@@ -1828,7 +1830,8 @@
 /area/lv624/ground/caves/sand_temple)
 "QX" = (
 /obj/structure/bed/chair/comfy/black{
-	dir = 4
+	dir = 4;
+	tag = "icon-comfychair (EAST)"
 	},
 /obj/structure/flora/jungle/vines{
 	icon_state = "light_3"
@@ -1847,7 +1850,8 @@
 /area/lv624/ground/caves/sand_temple)
 "Rx" = (
 /obj/structure/bed/chair/comfy/black{
-	dir = 8
+	dir = 8;
+	tag = "icon-comfychair (EAST)"
 	},
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple)
@@ -1965,7 +1969,7 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 8
 	},
-/turf/open/gm/dirtgrassborder/weedable{
+/turf/open/gm/dirtgrassborder{
 	icon_state = "grass1"
 	},
 /area/lv624/ground/barrens/south_eastern_barrens)
@@ -1991,7 +1995,8 @@
 /area/lv624/ground/barrens/south_eastern_barrens)
 "XV" = (
 /obj/structure/bed/chair/comfy/black{
-	dir = 1
+	dir = 1;
+	tag = "icon-comfychair (EAST)"
 	},
 /turf/open/gm/dirt,
 /area/lv624/ground/caves/sand_temple)

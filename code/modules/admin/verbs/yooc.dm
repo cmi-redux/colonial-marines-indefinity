@@ -12,6 +12,8 @@
 	if(!msg)
 		return
 
+	msg = emoji_parse(src, msg)
+
 	var/yooc_message = "YOOC: [src.key]([src.admin_holder.rank]): [msg]"
 	log_admin(yooc_message)
 

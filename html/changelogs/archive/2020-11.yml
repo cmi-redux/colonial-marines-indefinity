@@ -449,9 +449,9 @@
       station, closets, and synthetic head'
   Segrain:
   - tweak: Oppressor's tail lash is now less prone to be performed diagonally when
-      aimed with slightest deviation from cardinal direction.
+      aimed with slightest deviation from cardinals direction.
   - tweak: Tail lash in diagonal direction now has a 3-wide, 2-long effect area, same
-      as cardinal variant.
+      as cardinals variant.
   - bugfix: Diagonal tail lash no longer goes through walls.
   - bugfix: Eggmorphers no longer can be fed the same corpse twice.
   Waltermeldron:
@@ -537,7 +537,7 @@
       the uniform vendor instead of in the locker. Uniforms in the locker have been
       removed.
   spookydonut:
-  - bugfix: Fixes runtime caused by roleauthority when starting extended gamemode
+  - bugfix: Fixes runtime caused by SSticker.role_authority when starting extended gamemode
 2020-11-28:
   GabeGnuwall:
   - tweak: Humans with no engineering skill can now turn turrets on/off.

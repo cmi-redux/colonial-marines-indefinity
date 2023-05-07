@@ -5,25 +5,25 @@
 		alert("Invalid mob")
 		return
 
-	var/rank_list = list("Custom", "Weyland-Yutani") + RoleAuthority.roles_by_name
+	var/rank_list = list("Custom", "Weyland-Yutani") + SSticker.role_authority.roles_by_name
 
 	var/newrank = tgui_input_list(usr, "Select new rank for [H]", "Change the mob's rank and skills", rank_list)
-	if (!newrank)
+	if(!newrank)
 		return
 	if(!H)
 		return
 	var/obj/item/card/id/I = H.wear_id
 
-	if(RoleAuthority.roles_by_name[newrank])
-		var/datum/job/J = RoleAuthority.roles_by_name[newrank]
-		H.comm_title = J.get_comm_title()
-		H.set_skills(J.get_skills())
+	var/datum/job/job = GET_MAPPED_ROLE(newrank)
+	if(job)
+		H.comm_title = job.get_comm_title()
+		H.set_skills(job.get_skills())
 		if(istype(I))
-			I.access = J.get_access()
-			I.rank = J.title
-			I.assignment = J.disp_title
+			I.access = job.get_access()
+			I.rank = job.title
+			I.assignment = job.disp_title
 			I.name = "[I.registered_name]'s ID Card ([I.assignment])"
-			I.paygrade = J.get_paygrade()
+			I.paygrade = job.get_paygrade()
 			if(H.w_uniform)
 				var/obj/item/clothing/C = H.w_uniform
 				for(var/obj/item/clothing/accessory/ranks/R in C)
@@ -33,26 +33,32 @@
 				if(rankpath)
 					var/obj/item/clothing/accessory/ranks/R = new rankpath()
 					C.attach_accessory(H, R)
-		var/new_faction = tgui_input_list(usr, "Select faction.", "Faction Choice", FACTION_LIST_HUMANOID)
-		if(!new_faction)
-			new_faction = FACTION_NEUTRAL
-		H.faction = new_faction
+
+		var/list/factions = list()
+		for(var/faction_to_get in FACTION_LIST_HUMANOID)
+			var/datum/faction/faction_to_set = GLOB.faction_datum[faction_to_get]
+			LAZYSET(factions, faction_to_set.name, faction_to_set)
+
+		var/choice = tgui_input_list(usr, "Select faction", "Faction Choice", factions)
+		if(!choice)
+			return FALSE
+
+		GLOB.faction_datum[choice].add_mob(H)
 	else
 		switch(newrank)
 			if("Weyland-Yutani")
 
-				H.faction = FACTION_WY
-				H.faction_group = FACTION_LIST_WY
+				GLOB.faction_datum[FACTION_WY].add_mob(H)
 
-				var/newskillset = tgui_input_list(usr, "Select a skillset", "Skill Set", (list("Keep Skillset") +RoleAuthority.roles_by_name))
+				var/newskillset = tgui_input_list(usr, "Select a skillset", "Skill Set", (list("Keep Skillset") +SSticker.role_authority.roles_by_name))
 				if(!newskillset || newskillset == "Keep Skillset")
 					return
 
 				if(!H)
 					return
 
-				var/datum/job/J = RoleAuthority.roles_by_name[newskillset]
-				H.set_skills(J.get_skills())
+				job = GET_MAPPED_ROLE(newskillset)
+				H.set_skills(job.get_skills())
 
 			if("Custom")
 				var/newcommtitle = input("Write the custom title appearing on comms chat (e.g. Spc)", "Comms title") as null|text
@@ -83,20 +89,21 @@
 					I.assignment = IDtitle
 					I.name = "[I.registered_name]'s ID Card ([I.assignment])"
 
-				var/new_faction = tgui_input_list(usr, "Select faction.", "Faction Choice", FACTION_LIST_HUMANOID)
-				if(!new_faction)
-					new_faction = FACTION_NEUTRAL
-				H.faction = new_faction
+				var/choice = tgui_input_list(usr, "Select faction.", "Faction Choice", FACTION_LIST_HUMANOID)
+				if(!choice)
+					return
 
-				var/newskillset = tgui_input_list(usr, "Select a skillset", "Skill Set", RoleAuthority.roles_by_name)
+				GLOB.faction_datum[choice].add_mob(H)
+
+				var/newskillset = tgui_input_list(usr, "Select a skillset", "Skill Set", SSticker.role_authority.roles_by_name)
 				if(!newskillset)
 					return
 
 				if(!H)
 					return
 
-				var/datum/job/J = RoleAuthority.roles_by_name[newskillset]
-				H.set_skills(J.get_skills())
+				job = GET_MAPPED_ROLE(newskillset)
+				H.set_skills(job.get_skills())
 
 /client/proc/cmd_admin_dress(mob/M)
 	set category = null
@@ -105,7 +112,7 @@
 	cmd_admin_dress_human(M)
 
 /client/proc/cmd_admin_dress_human(mob/living/carbon/human/M in GLOB.human_mob_list, datum/equipment_preset/dresscode, no_logs = 0, count_participant = FALSE)
-	if (!no_logs)
+	if(!no_logs)
 		dresscode = tgui_input_list(usr, "Select dress for [M]", "Robust quick dress shop", GLOB.gear_name_presets_list)
 
 	if(isnull(dresscode))
@@ -113,7 +120,7 @@
 
 
 	for (var/obj/item/I in M)
-		if (istype(I, /obj/item/implant))
+		if(istype(I, /obj/item/implant))
 			continue
 		qdel(I)
 
@@ -139,10 +146,11 @@
 	set desc = "Applies an equipment preset to all humans in the world."
 
 	var/datum/equipment_preset/dresscode = tgui_input_list(usr, "Select dress for ALL HUMANS", "Robust quick dress shop", GLOB.gear_name_presets_list)
-	if (isnull(dresscode))
+	if(isnull(dresscode))
 		return
 
-	if(alert("Are you sure you want to change the equipment of ALL humans in the world to [dresscode]?",, "Yes", "No") != "Yes") return
+	if(alert("Are you sure you want to change the equipment of ALL humans in the world to [dresscode]?", , usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
+		return
 
 	for(var/mob/living/carbon/human/M in GLOB.human_mob_list)
 		src.cmd_admin_dress_human(M, dresscode, 1)
@@ -165,6 +173,8 @@
 			CRASH("arm_equipment !gear_path_presets_list[dresscode]")
 		GLOB.gear_name_presets_list[dresscode].load_preset(M, randomise, count_participant, mob_client, show_job_gear)
 
-	if(M.faction)
-		M.check_event_info(M.faction)
+	if(mob_client)
+		check_event_info("Global", mob_client)
+		if(!isobserver(M) && M.faction)
+			check_event_info(M.faction.name, mob_client)
 	return

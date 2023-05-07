@@ -1,8 +1,17 @@
-#define EQUIPMENT_PRESET_STUB 0
-#define EQUIPMENT_PRESET_START_OF_ROUND (1<<0)
-#define EQUIPMENT_PRESET_EXTRA (1<<1)
-#define EQUIPMENT_PRESET_START_OF_ROUND_WO (1<<2)
-#define EQUIPMENT_PRESET_MARINE (1<<3)
+#define EQUIPMENT_PRESET_STUB					0
+#define EQUIPMENT_PRESET_START_OF_ROUND			(1<<0)
+#define EQUIPMENT_PRESET_EXTRA					(1<<1)
+#define EQUIPMENT_PRESET_START_OF_ROUND_WO		(1<<2)
+#define EQUIPMENT_PRESET_MARINE					(1<<3)
+#define EQUIPMENT_PRESET_START_OF_ROUND_CRASH	(1<<4)
+
+DEFINE_BITFIELD(equipment_preset_flags, list(
+	"START_OF_ROUND" = EQUIPMENT_PRESET_START_OF_ROUND,
+	"EXTRA" = EQUIPMENT_PRESET_EXTRA,
+	"START_OF_ROUND_WO" = EQUIPMENT_PRESET_START_OF_ROUND_WO,
+	"MARINE" = EQUIPMENT_PRESET_MARINE,
+	"START_OF_ROUND_CRASH" = EQUIPMENT_PRESET_START_OF_ROUND_CRASH,
+))
 
 /datum/equipment_preset
 	var/name = "Preset"
@@ -19,12 +28,9 @@
 	var/role_comm_title
 	var/minimum_age
 	var/faction = FACTION_NEUTRAL
-	var/list/faction_group
+	var/force_update_faction = TRUE
+	var/auto_squad_name
 	var/origin_override
-
-	var/minimap_icon = "private"
-	var/minimap_background = MINIMAP_ICON_BACKGROUND_USCM
-	var/always_minimap_visible = TRUE
 
 	//Uniform data
 	var/utility_under = null
@@ -76,9 +82,6 @@
 		UNIFORM_VEND_DRESS_EXTRA = dress_extra
 	)
 
-	if(!faction_group)
-		faction_group = list(faction)
-
 	//load_appearance()
 /datum/equipment_preset/proc/load_race(mob/living/carbon/human/H, client/mob_client)
 	return
@@ -115,8 +118,6 @@
 	if(assignment)
 		W.name += " ([assignment])"
 	W.access = access.Copy(1, 0)
-	W.faction = faction
-	W.faction_group = faction_group.Copy()
 	W.assignment = assignment
 	W.rank = rank
 	W.registered_name = H.real_name
@@ -126,8 +127,6 @@
 	W.paygrade = load_rank(H)
 	W.uniform_sets = uniform_sets
 	H.equip_to_slot_or_del(W, WEAR_ID)
-	H.faction = faction
-	H.faction_group = faction_group.Copy()
 	if(H.mind)
 		H.mind.name = H.real_name
 		// Bank account details handled in generate_money_account()
@@ -138,33 +137,51 @@
 	H.set_languages(languages)
 
 /datum/equipment_preset/proc/load_preset(mob/living/carbon/human/H, randomise = FALSE, count_participant = FALSE, client/mob_client, show_job_gear = TRUE)
+	if(!istype(H, /mob/living/carbon/human/dummy))
+		var/datum/faction/mob_faction
+		if(!faction)
+			mob_faction = GLOB.faction_datum[FACTION_NEUTRAL]
+		else
+			mob_faction = GLOB.faction_datum[faction]
+
+		if(mob_faction && (!H.faction || force_update_faction))
+			mob_faction.add_mob(H)
+			if(mob_faction.organ_faction_iff_tag_type)
+				H.organ_faction_tag = new mob_faction.organ_faction_iff_tag_type
+
+			if(mob_faction.faction_iff_tag_type)
+				H.faction_tag = new mob_faction.faction_iff_tag_type
+
 	load_race(H, mob_client)
 	if(randomise || uses_special_name)
 		load_name(H, randomise, mob_client)
 	else if(origin_override)
 		var/datum/origin/origin = GLOB.origins[origin_override]
 		H.name = origin.correct_name(H.name, H.gender)
+
 	if(origin_override)
 		H.origin = origin_override
-	load_skills(H, mob_client) //skills are set before equipment because of skill restrictions on certain clothes.
+
+	load_skills(H, mob_client)
 	load_languages(H, mob_client)
 	load_age(H, mob_client)
-	if(show_job_gear)
-		load_gear(H, mob_client)
+	load_gear(H, mob_client)
 	load_id(H, mob_client)
 	load_status(H, mob_client)
 	load_vanity(H, mob_client)
 	load_traits(H, mob_client)
-	if(round_statistics && count_participant)
-		round_statistics.track_new_participant(faction)
+
+	if(SSticker.mode.round_statistics && count_participant)
+		SSticker.mode.round_statistics.track_new_participant(H.faction)
+		SSautobalancer.balance_action(H, "add")
 
 	H.assigned_equipment_preset = src
-
 	H.regenerate_icons()
+	H.vendor_datum = new(H)
 
-	H.marine_points = MARINE_TOTAL_BUY_POINTS //resetting buy points
-	H.marine_snowflake_points = MARINE_TOTAL_SNOWFLAKE_POINTS
-	H.marine_buy_flags = MARINE_CAN_BUY_ALL
+	var/datum/squad/auto_squad = get_squad_by_name(auto_squad_name)
+	if(auto_squad)
+		transfer_marine_to_squad(H, auto_squad, H.assigned_squad, H.wear_id)
 
 	H.hud_set_squad()
 	H.add_to_all_mob_huds()
@@ -256,32 +273,6 @@
 	for(var/trait in real_client.prefs.traits)
 		var/datum/character_trait/CT = GLOB.character_traits[trait]
 		CT.apply_trait(H, src)
-
-/datum/equipment_preset/proc/get_minimap_icon(mob/living/carbon/human/user)
-	var/image/background = mutable_appearance('icons/ui_icons/map_blips.dmi', "background")
-	if(user.assigned_squad)
-		background.color = user.assigned_squad.minimap_color
-	else if(minimap_background)
-		background.color = minimap_background
-	else
-		background.color = MINIMAP_ICON_BACKGROUND_CIVILIAN
-
-	if(islist(minimap_icon))
-		for(var/icons in minimap_icon)
-			var/iconstate = icons ? icons : "unknown"
-			var/mutable_appearance/icon = image('icons/ui_icons/map_blips.dmi', icon_state = iconstate)
-			icon.appearance_flags = RESET_COLOR
-
-			if(minimap_icon[icons])
-				icon.color = minimap_icon[icons]
-			background.overlays += icon
-	else
-		var/iconstate = minimap_icon ? minimap_icon : "unknown"
-		var/mutable_appearance/icon = image('icons/ui_icons/map_blips.dmi', icon_state = iconstate)
-		icon.appearance_flags = RESET_COLOR
-		background.overlays += icon
-
-	return background
 
 /datum/equipment_preset/strip //For removing all equipment
 	name = "*strip*"
@@ -886,43 +877,43 @@ var/list/rebel_rifles = list(
 /datum/equipment_preset/proc/get_antag_clothing_equipment()
 	return list(
 		list("STANDARD EQUIPMENT (TAKE ALL)", 0, null, null, null),
-		list("CLF Shoes (Random)", 0, /obj/effect/essentials_set/random/clf_shoes, MARINE_CAN_BUY_SHOES, VENDOR_ITEM_MANDATORY),
-		list("CLF Uniform", 0, /obj/item/clothing/under/colonist/clf, MARINE_CAN_BUY_UNIFORM, VENDOR_ITEM_MANDATORY),
-		list("CLF Armor (Random)", 0, /obj/effect/essentials_set/random/clf_armor, MARINE_CAN_BUY_ARMOR, VENDOR_ITEM_MANDATORY),
-		list("CLF Gloves (Random)", 0, /obj/effect/essentials_set/random/clf_gloves, MARINE_CAN_BUY_GLOVES, VENDOR_ITEM_MANDATORY),
-		list("CLF Belt (Random)", 0, /obj/effect/essentials_set/random/clf_belt, MARINE_CAN_BUY_BELT, VENDOR_ITEM_MANDATORY),
-		list("CLF Head Gear (Random)", 0, /obj/effect/essentials_set/random/clf_head, MARINE_CAN_BUY_HELMET, VENDOR_ITEM_MANDATORY),
-		list("Headset", 0, /obj/item/device/radio/headset/distress/dutch, MARINE_CAN_BUY_EAR, VENDOR_ITEM_MANDATORY),
-		list("Flashlight", 0, /obj/item/device/flashlight, MARINE_CAN_BUY_MRE, VENDOR_ITEM_MANDATORY),
-		list("Combat Pack", 0, /obj/item/storage/backpack/lightpack, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_MANDATORY),
+		list("CLF Shoes (Random)", 0, /obj/effect/essentials_set/random/clf_shoes, VENDOR_CAN_BUY_SHOES, VENDOR_ITEM_MANDATORY),
+		list("CLF Uniform", 0, /obj/item/clothing/under/colonist/clf, VENDOR_CAN_BUY_UNIFORM, VENDOR_ITEM_MANDATORY),
+		list("CLF Armor (Random)", 0, /obj/effect/essentials_set/random/clf_armor, VENDOR_CAN_BUY_ARMOR, VENDOR_ITEM_MANDATORY),
+		list("CLF Gloves (Random)", 0, /obj/effect/essentials_set/random/clf_gloves, VENDOR_CAN_BUY_GLOVES, VENDOR_ITEM_MANDATORY),
+		list("CLF Belt (Random)", 0, /obj/effect/essentials_set/random/clf_belt, VENDOR_CAN_BUY_BELT, VENDOR_ITEM_MANDATORY),
+		list("CLF Head Gear (Random)", 0, /obj/effect/essentials_set/random/clf_head, VENDOR_CAN_BUY_HELMET, VENDOR_ITEM_MANDATORY),
+		list("Headset", 0, /obj/item/device/radio/headset/distress/dutch, VENDOR_CAN_BUY_EAR, VENDOR_ITEM_MANDATORY),
+		list("Flashlight", 0, /obj/item/device/flashlight, VENDOR_CAN_BUY_MRE, VENDOR_ITEM_MANDATORY),
+		list("Combat Pack", 0, /obj/item/storage/backpack/lightpack, VENDOR_CAN_BUY_BACKPACK, VENDOR_ITEM_MANDATORY),
 
 		list("POUCHES (CHOOSE 2)", 0, null, null, null),
-		list("Bayonet Sheath", 0, /obj/item/storage/pouch/bayonet/upp, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
-		list("Explosive Pouch", 0, /obj/item/storage/pouch/explosive, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
-		list("First-Aid Pouch (Refillable Injectors)", 0, /obj/item/storage/pouch/firstaid/full, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), VENDOR_ITEM_RECOMMENDED),
-		list("First-Aid Pouch (Splints, Gauze, Ointment)", 0, /obj/item/storage/pouch/firstaid/full/alternate, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
-		list("First-Aid Pouch (Pill Packets)", 0, /obj/item/storage/pouch/firstaid/full/pills, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), VENDOR_ITEM_RECOMMENDED),
-		list("Flare Pouch (Full)", 0, /obj/item/storage/pouch/flare/full, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), VENDOR_ITEM_RECOMMENDED),
-		list("Large Magazine Pouch", 0, /obj/item/storage/pouch/magazine/large, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
-		list("Medium General Pouch", 0, /obj/item/storage/pouch/general/medium, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
-		list("Pistol Magazine Pouch", 0, /obj/item/storage/pouch/magazine/pistol, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
-		list("Pistol Pouch", 0, /obj/item/storage/pouch/pistol, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
+		list("Bayonet Sheath", 0, /obj/item/storage/pouch/bayonet/upp, (VENDOR_CAN_BUY_R_POUCH|VENDOR_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
+		list("Explosive Pouch", 0, /obj/item/storage/pouch/explosive, (VENDOR_CAN_BUY_R_POUCH|VENDOR_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
+		list("First-Aid Pouch (Refillable Injectors)", 0, /obj/item/storage/pouch/firstaid/full, (VENDOR_CAN_BUY_R_POUCH|VENDOR_CAN_BUY_L_POUCH), VENDOR_ITEM_RECOMMENDED),
+		list("First-Aid Pouch (Splints, Gauze, Ointment)", 0, /obj/item/storage/pouch/firstaid/full/alternate, (VENDOR_CAN_BUY_R_POUCH|VENDOR_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
+		list("First-Aid Pouch (Pill Packets)", 0, /obj/item/storage/pouch/firstaid/full/pills, (VENDOR_CAN_BUY_R_POUCH|VENDOR_CAN_BUY_L_POUCH), VENDOR_ITEM_RECOMMENDED),
+		list("Flare Pouch (Full)", 0, /obj/item/storage/pouch/flare/full, (VENDOR_CAN_BUY_R_POUCH|VENDOR_CAN_BUY_L_POUCH), VENDOR_ITEM_RECOMMENDED),
+		list("Large Magazine Pouch", 0, /obj/item/storage/pouch/magazine/large, (VENDOR_CAN_BUY_R_POUCH|VENDOR_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
+		list("Medium General Pouch", 0, /obj/item/storage/pouch/general/medium, (VENDOR_CAN_BUY_R_POUCH|VENDOR_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
+		list("Pistol Magazine Pouch", 0, /obj/item/storage/pouch/magazine/pistol, (VENDOR_CAN_BUY_R_POUCH|VENDOR_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
+		list("Pistol Pouch", 0, /obj/item/storage/pouch/pistol, (VENDOR_CAN_BUY_R_POUCH|VENDOR_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
 
 		list("ATTACHMENTS (CHOOSE 1)", 0, null, null, null),
-		list("Angled Grip", 0, /obj/item/attachable/angledgrip, MARINE_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
-		list("Extended Barrel", 0, /obj/item/attachable/extended_barrel, MARINE_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
-		list("Gyroscopic Stabilizer", 0, /obj/item/attachable/gyro, MARINE_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
-		list("Laser Sight", 0, /obj/item/attachable/lasersight, MARINE_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
-		list("Masterkey Shotgun", 0, /obj/item/attachable/attached_gun/shotgun, MARINE_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
-		list("Recoil Compensator", 0, /obj/item/attachable/compensator, MARINE_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
-		list("Red-Dot Sight", 0, /obj/item/attachable/reddot, MARINE_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
-		list("Reflex Sight", 0, /obj/item/attachable/reflex, MARINE_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
-		list("Suppressor", 0, /obj/item/attachable/suppressor, MARINE_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
-		list("Vertical Grip", 0, /obj/item/attachable/verticalgrip, MARINE_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
+		list("Angled Grip", 0, /obj/item/attachable/angledgrip, VENDOR_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
+		list("Extended Barrel", 0, /obj/item/attachable/extended_barrel, VENDOR_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
+		list("Gyroscopic Stabilizer", 0, /obj/item/attachable/gyro, VENDOR_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
+		list("Laser Sight", 0, /obj/item/attachable/lasersight, VENDOR_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
+		list("Masterkey Shotgun", 0, /obj/item/attachable/attached_gun/shotgun, VENDOR_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
+		list("Recoil Compensator", 0, /obj/item/attachable/compensator, VENDOR_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
+		list("Red-Dot Sight", 0, /obj/item/attachable/reddot, VENDOR_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
+		list("Reflex Sight", 0, /obj/item/attachable/reflex, VENDOR_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
+		list("Suppressor", 0, /obj/item/attachable/suppressor, VENDOR_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
+		list("Vertical Grip", 0, /obj/item/attachable/verticalgrip, VENDOR_CAN_BUY_ATTACHMENT, VENDOR_ITEM_REGULAR),
 
 		list("MASK (CHOOSE 1)", 0, null, null, null),
-		list("Gas Mask", 0, /obj/item/clothing/mask/gas, MARINE_CAN_BUY_MASK, VENDOR_ITEM_REGULAR),
-		list("Heat Absorbent Coif", 0, /obj/item/clothing/mask/rebreather/scarf, MARINE_CAN_BUY_MASK, VENDOR_ITEM_REGULAR)
+		list("Gas Mask", 0, /obj/item/clothing/mask/gas, VENDOR_CAN_BUY_MASK, VENDOR_ITEM_REGULAR),
+		list("Heat Absorbent Coif", 0, /obj/item/clothing/mask/rebreather/scarf, VENDOR_CAN_BUY_MASK, VENDOR_ITEM_REGULAR)
 	)
 
 /datum/equipment_preset/proc/get_antag_gear_equipment()

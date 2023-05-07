@@ -1,3 +1,108 @@
+GLOBAL_LIST_INIT(cardinals, list(
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST,
+))
+GLOBAL_LIST_INIT(cardinals_multiz, list(
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST,
+	UP,
+	DOWN,
+))
+GLOBAL_LIST_INIT(diagonals, list(
+	NORTHEAST,
+	NORTHWEST,
+	SOUTHEAST,
+	SOUTHWEST,
+))
+GLOBAL_LIST_INIT(corners_multiz, list(
+	UP|NORTHEAST,
+	UP|NORTHWEST,
+	UP|SOUTHEAST,
+	UP|SOUTHWEST,
+	DOWN|NORTHEAST,
+	DOWN|NORTHWEST,
+	DOWN|SOUTHEAST,
+	DOWN|SOUTHWEST,
+))
+GLOBAL_LIST_INIT(diagonals_multiz, list(
+	NORTHEAST,
+	NORTHWEST,
+	SOUTHEAST,
+	SOUTHWEST,
+
+	UP|NORTH,
+	UP|SOUTH,
+	UP|EAST,
+	UP|WEST,
+	UP|NORTHEAST,
+	UP|NORTHWEST,
+	UP|SOUTHEAST,
+	UP|SOUTHWEST,
+
+	DOWN|NORTH,
+	DOWN|SOUTH,
+	DOWN|EAST,
+	DOWN|WEST,
+	DOWN|NORTHEAST,
+	DOWN|NORTHWEST,
+	DOWN|SOUTHEAST,
+	DOWN|SOUTHWEST,
+))
+GLOBAL_LIST_INIT(alldirs_multiz, list(
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST,
+	NORTHEAST,
+	NORTHWEST,
+	SOUTHEAST,
+	SOUTHWEST,
+
+	UP,
+	UP|NORTH,
+	UP|SOUTH,
+	UP|EAST,
+	UP|WEST,
+	UP|NORTHEAST,
+	UP|NORTHWEST,
+	UP|SOUTHEAST,
+	UP|SOUTHWEST,
+
+	DOWN,
+	DOWN|NORTH,
+	DOWN|SOUTH,
+	DOWN|EAST,
+	DOWN|WEST,
+	DOWN|NORTHEAST,
+	DOWN|NORTHWEST,
+	DOWN|SOUTHEAST,
+	DOWN|SOUTHWEST,
+))
+GLOBAL_LIST_INIT(alldirs, list(
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST,
+	NORTHEAST,
+	NORTHWEST,
+	SOUTHEAST,
+	SOUTHWEST,
+))
+
+GLOBAL_LIST_INIT(reverse_dir, list(
+	2, 1, 3, 8, 10, 9, 11, 4, 6, 5, 7,
+	12, 14, 13, 15, 32, 34, 33, 35, 40,
+	42, 41, 43, 36, 38, 37, 39, 44, 46,
+	45, 47, 16, 18, 17, 19, 24, 26, 25,
+	27, 20, 22, 21, 23, 28, 30, 29, 31,
+	48, 50, 49, 51, 56, 58, 57, 59, 52,
+	54, 53, 55, 60, 62, 61, 63
+))
+
 
 GLOBAL_LIST_EMPTY(sorted_areas)
 /// An association from typepath to area instance. Only includes areas with `unique` set.
@@ -23,10 +128,7 @@ GLOBAL_LIST_EMPTY(thunderdome_two)
 GLOBAL_LIST_EMPTY(thunderdome_admin)
 GLOBAL_LIST_EMPTY(thunderdome_observer)
 
-GLOBAL_LIST_EMPTY(latewhiskey)
-
-GLOBAL_LIST_EMPTY(latejoin)
-GLOBAL_LIST_EMPTY(latejoin_by_squad)
+var/global/list/defcon_drop_point = list()
 
 GLOBAL_LIST_EMPTY(zombie_landmarks)
 
@@ -52,7 +154,6 @@ GLOBAL_LIST_EMPTY(simulator_cameras)
 
 GLOBAL_LIST_EMPTY(teleporter_landmarks)
 
-GLOBAL_LIST_INIT(cardinals, list(NORTH, SOUTH, EAST, WEST))
 GLOBAL_LIST_EMPTY(nightmare_landmarks)
 
 // Objective landmarks. Value is TRUE if it contains documents

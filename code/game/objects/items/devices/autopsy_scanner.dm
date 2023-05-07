@@ -90,7 +90,7 @@
 	var/scan_data = ""
 
 	if(timeofdeath)
-		scan_data += "<b>Time of death:</b> [worldtime2text("hh:mm", timeofdeath)] [time2text(timeofdeath, "DDD MMM DD [game_year]")]<br><br>"
+		scan_data += "<b>Time of death:</b> [game_time_timestamp("hh:mm", timeofdeath)] [time2text(timeofdeath, "DDD MMM DD [game_year]")]<br><br>"
 
 	var/n = 1
 	for(var/wdata_idx in wdata)
@@ -139,7 +139,7 @@
 		if(damaging_weapon)
 			scan_data += "Severity: [damage_desc]<br>"
 			scan_data += "Hits by weapon: [total_hits]<br>"
-		scan_data += "Approximate time of wound infliction: [worldtime2text("hh:mm", age)] [time2text(age, "DDD MMM DD [game_year]")]<br>"
+		scan_data += "Approximate time of wound infliction: [game_time_timestamp("hh:mm", age)] [time2text(age, "DDD MMM DD [game_year]")]<br>"
 		scan_data += "Affected limbs: [D.organ_names]<br>"
 		scan_data += "Possible weapons:<br>"
 		for(var/weapon_name in weapon_chances)
@@ -168,7 +168,7 @@
 	if(istype(usr,/mob/living/carbon))
 		// place the item in the usr's hand if possible
 		usr.put_in_hands(P)
-	if (ismob(src.loc))
+	if(ismob(src.loc))
 		var/mob/M = src.loc
 		M.update_inv_l_hand()
 		M.update_inv_r_hand()

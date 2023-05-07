@@ -11,6 +11,7 @@
 	power_channel = 1
 	use_power = USE_POWER_IDLE
 	machine_processing = 1
+	faction_to_get = FACTION_MARINE
 	var/deployment_cooldown
 	var/turret_path = /obj/structure/machinery/defenses/sentry/premade/deployable // Path of the turret used
 	var/obj/structure/machinery/defenses/sentry/premade/deployable/deployed_turret
@@ -21,7 +22,7 @@
 /obj/structure/machinery/sentry_holder/Initialize()
 	. = ..()
 	if(!deployed_turret)
-		deployed_turret = new turret_path(src)
+		deployed_turret = new turret_path(src, faction)
 		deployed_turret.deployment_system = src
 		ox = pixel_x
 		oy = pixel_y
@@ -71,7 +72,7 @@
 
 	playsound(loc, 'sound/machines/hydraulics_1.ogg', 40, 1)
 	deployment_cooldown = world.time + 50
-	deployed_turret.turned_on = TRUE
+	deployed_turret.set_light_on(TRUE)
 	deployed_turret.forceMove(loc)
 	icon_state = "sentry_system_deployed"
 
@@ -95,7 +96,7 @@
 	playsound(loc, 'sound/machines/hydraulics_2.ogg', 40, 1)
 	deployment_cooldown = world.time + 50
 	deployed_turret.forceMove(src)
-	deployed_turret.turned_on = FALSE
+	deployed_turret.set_light_on(FALSE)
 	deployed_turret.stop_processing()
 	deployed_turret.unset_range()
 	pixel_x = ox

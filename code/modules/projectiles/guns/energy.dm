@@ -5,8 +5,8 @@
 
 
 /obj/item/weapon/gun/energy //whoever delegated all behavior to the taser instead of a parent object needs to dig themselves a hole to die in. Fuck you old dev.
-	name = "energy pistol"
-	desc = "It shoots lasers by drawing power from an internal cell battery. Can be recharged at most convection stations."
+	name = LANGUAGE_GUN_ENERGY
+	desc = LANGUAGE_GUN_ENERGY_DESC
 
 	icon_state = "stunrevolver"
 	item_state = "stunrevolver"
@@ -23,9 +23,10 @@
 	var/works_in_recharger = TRUE
 	var/has_charge_meter = FALSE//do we use the charging overlay system or just have an empty overlay
 	var/charge_icon = "+stunrevolver_empty"//define on a per gun basis, used for the meter and empty icon on non meter guns
-
-	flags_gun_features = GUN_UNUSUAL_DESIGN|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_UNUSUAL_DESIGN|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER
+	durability_tier = WEAPON_DAMAGE_SMALL
 	gun_category = GUN_CATEGORY_HANDGUN
+	can_jammed = FALSE
 
 /obj/item/weapon/gun/energy/Initialize(mapload, spawn_empty)
 	. = ..()
@@ -40,7 +41,7 @@
 /obj/item/weapon/gun/energy/update_icon()
 	. = ..()
 
-	icon_state = "[base_gun_icon]"
+	icon_state = "[gun_icon]"
 
 	if(!cell)
 		return
@@ -64,6 +65,20 @@
 				overlays += charge_icon + "_25"
 			else
 				overlays += charge_icon + "_0"
+
+/obj/item/weapon/gun/energy/get_ammo_type()
+	if(!ammo)
+		return list("unknown", "unknown")
+	else if(!in_chamber)
+		return list(GLOB.ammo_list[ammo].hud_state, GLOB.ammo_list[ammo].hud_state_empty)
+	else
+		return list(in_chamber.ammo.hud_state, in_chamber.ammo.hud_state_empty)
+
+/obj/item/weapon/gun/energy/get_ammo_count()
+	if(!cell)
+		return 0
+	else
+		return FLOOR(cell.charge / max(charge_cost, 1),1)
 
 /obj/item/weapon/gun/energy/emp_act(severity)
 	cell.use(round(cell.maxcharge / severity))
@@ -97,7 +112,8 @@
 
 /obj/item/weapon/gun/energy/delete_bullet(obj/item/projectile/projectile_to_fire, refund = 0)
 	qdel(projectile_to_fire)
-	if(refund) cell.charge += charge_cost
+	if(refund)
+		cell.charge += charge_cost
 	return TRUE
 
 /obj/item/weapon/gun/energy/get_examine_text(mob/user)
@@ -110,8 +126,8 @@
 		. += SPAN_NOTICE("It has no power cell inside.")
 
 /obj/item/weapon/gun/energy/rxfm5_eva
-	name = "RXF-M5 EVA pistol"
-	desc = "A high power focusing laser pistol designed for Extra-Vehicular Activity, though it works just about anywhere really. Derived from the same technology as laser welders. Issued by the Weyland-Yutani Corporation, but also available on the civilian market."
+	name = LANGUAGE_GUN_ENERGY_RFXM5
+	desc =  LANGUAGE_GUN_ENERGY_RFXM5_DESC
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/colony.dmi'
 	icon_state = "rxfm5_eva"
 	item_state = "eva"
@@ -163,12 +179,12 @@
 	user.update_inv_l_hand()
 
 /obj/item/weapon/gun/energy/laser_top
-	name = "'LAZ-TOP'"
-	desc = "The 'LAZ-TOP', aka the Laser Anode something something"//finish this later
+	name = LANGUAGE_GUN_ENERGY_LAZ
+	desc = LANGUAGE_GUN_ENERGY_LAZ_DESC
 
 /obj/item/weapon/gun/energy/laz_uzi
-	name = "laser UZI"
-	desc = "A refit of the classic Israeli SMG. Fires laser bolts."
+	name = LANGUAGE_GUN_ENERGY_UZI
+	desc = LANGUAGE_GUN_ENERGY_UZI_DESC
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/colony.dmi'
 	icon_state = "laz_uzi"
 	item_state = "laz_uzi"
@@ -197,8 +213,8 @@
 //############################ Taser ##################
 // Lots of bits for it so splitting off an area
 /obj/item/weapon/gun/energy/taser
-	name = "disabler gun"
-	desc = "An advanced stun device capable of firing balls of ionized electricity. Used for nonlethal takedowns. "
+	name = LANGUAGE_GUN_ENERGY_TASER
+	desc = LANGUAGE_GUN_ENERGY_TASER_DESC
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/uscm.dmi'
 	icon_state = "taser"
 	item_state = "taser"
@@ -227,7 +243,7 @@
 
 /obj/item/weapon/gun/energy/taser/able_to_fire(mob/living/user)
 	. = ..()
-	if (. && istype(user)) //Let's check all that other stuff first.
+	if(. && istype(user)) //Let's check all that other stuff first.
 		if(skilllock && !skillcheck(user, SKILL_POLICE, skilllock))
 			to_chat(user, SPAN_WARNING("You don't seem to know how to use [src]..."))
 			return FALSE

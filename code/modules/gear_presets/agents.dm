@@ -47,7 +47,7 @@
 
 /datum/equipment_preset/upp/representative
 	name = "UPP Representative"
-	faction_group = FACTION_LIST_MARINE_UPP
+	faction = FACTION_UPP
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	idtype = /obj/item/card/id/silver/cl
@@ -72,7 +72,7 @@
 
 /datum/equipment_preset/upp/representative/load_gear(mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/rep(H), WEAR_L_EAR)
-	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/veteran/UPP, WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/veteran/upp, WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/laceup(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/gimmick/jason(H), WEAR_JACKET)
@@ -81,7 +81,6 @@
 	name = "TWE Representative"
 	flags = EQUIPMENT_PRESET_EXTRA
 	faction = FACTION_TWE
-	faction_group = FACTION_LIST_MARINE_TWE
 
 	idtype = /obj/item/card/id/silver/cl
 	access = list(

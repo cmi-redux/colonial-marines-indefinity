@@ -1,8 +1,5 @@
-//Xenomorph General Procs And Functions - Colonial Marines
-//LAST EDIT: APOPHIS 22MAY16
-
 //Send a message to all xenos. Mostly used in the deathgasp display
-/proc/xeno_message(message = null, size = 3, hivenumber = XENO_HIVE_NORMAL)
+/proc/xeno_message(message, size = 3, datum/faction/faction = GLOB.faction_datum[FACTION_XENOMORPH_NORMAL])
 	if(!message)
 		return
 
@@ -15,54 +12,65 @@
 		if(3)
 			fontsize_style = "large"
 
-	if(SSticker.mode && SSticker.mode.xenomorphs.len) //Send to only xenos in our gamemode list. This is faster than scanning all mobs
-		for(var/datum/mind/L in SSticker.mode.xenomorphs)
-			var/mob/living/carbon/M = L.current
-			if(M && istype(M) && !M.stat && M.client && (!hivenumber || M.ally_of_hivenumber(hivenumber))) //Only living and connected xenos
-				to_chat(M, SPAN_XENODANGER("<span class=\"[fontsize_style]\"> [message]</span>"))
+	for(var/mob/living/carbon/mob in faction.totalMobs)
+		if(!mob.stat && mob.client) //Only living and connected xenos
+			to_chat(mob, SPAN_XENODANGER("<span class=\"[fontsize_style]\"> [message]</span>"))
 
 //Sends a maptext alert to our currently selected squad. Does not make sound.
-/proc/xeno_maptext(text = "", title_text = "", hivenumber = XENO_HIVE_NORMAL)
-	if(text == "" || !hivenumber)
-		return //Logic
+/proc/xeno_maptext(text, title_text, datum/faction/faction = GLOB.faction_datum[FACTION_XENOMORPH_NORMAL])
+	if(!text || !faction)
+		return
 
-	if(SSticker.mode && SSticker.mode.xenomorphs.len) //Send to only xenos in our gamemode list. This is faster than scanning all mobs
-		for(var/datum/mind/L in SSticker.mode.xenomorphs)
-			var/mob/living/carbon/M = L.current
-			if(M && istype(M) && !M.stat && M.client && M.ally_of_hivenumber(hivenumber)) //Only living and connected xenos
-				M.play_screen_text("<span class='langchat' style=font-size:16pt;text-align:center valign='top'><u>[title_text]</u></span><br>" + text, /atom/movable/screen/text/screen_text/command_order, "#b491c8")
+	for(var/mob/living/carbon/mob in faction.totalMobs)
+		if(!mob.stat && mob.client) //Only living and connected xenos
+			mob.play_screen_text("<span class='langchat' style=font-size:16pt;text-align:center valign='top'><u>[title_text]</u></span><br>" + text, /atom/movable/screen/text/screen_text/command_order, "#b491c8")
 
 /proc/xeno_message_all(message = null, size = 3)
 	xeno_message(message, size)
 
-//Adds stuff to your "Status" pane -- Specific castes can have their own, like carrier hugger count
+//Adds stuff to your "Status" panel -- Specific castes can have their own, like carrier hugger count
 //Those are dealt with in their caste files.
 /mob/living/carbon/xenomorph/get_status_tab_items()
 	. = ..()
 
-	. += "Name: [name]"
+	. += ""
+
+	if(SSperf_logging.round)
+		. += "Раунд: [SSperf_logging.round.id]"
+	var/players = length(GLOB.clients)
+	. += "Игроки: [players]"
 
 	. += ""
 
-	. += "Health: [round(health)]/[round(maxHealth)]"
-	. += "Armor: [round(0.01*armor_integrity*armor_deflection)+(armor_deflection_buff-armor_deflection_debuff)]/[round(armor_deflection)]"
-	. += "Plasma: [round(plasma_stored)]/[round(plasma_max)]"
-	. += "Slash Damage: [round((melee_damage_lower+melee_damage_upper)/2)]"
+	. += "Имя: [name]"
+
+	. += ""
+
+	. += "Здоровье: [round(health)]/[round(maxHealth)]"
+	. += "Броня: [round(0.01*armor_integrity*armor_deflection)+(armor_deflection_buff-armor_deflection_debuff)]/[round(armor_deflection)]"
+	. += "Плазма: [round(plasma_stored)]/[round(plasma_max)]"
+	. += "Урон От Удара: [round((melee_damage_lower+melee_damage_upper)/2)+round((burn_damage_lower+burn_damage_upper)/2)]"
 
 	var/shieldtotal = 0
-	for (var/datum/xeno_shield/XS in xeno_shields)
+	for(var/datum/xeno_shield/XS in xeno_shields)
 		shieldtotal += XS.amount
 
-	. += "Shield: [shieldtotal]"
+	. += "Щит: [shieldtotal]"
+
+	if(mutators.remaining_points > 0)
+		. += "Поинты Мутаций: [mutators.remaining_points]"
+
+	if(istype(caste, /datum/caste_datum/queen) && faction.mutators.remaining_points > 0)
+		. += "Поинты Мутаций Улья: [faction.mutators.remaining_points]"
 
 	if(selected_ability)
 		. += ""
-		. += "Selected Ability: [selected_ability.name]"
+		. += "Выбранная Способность: [selected_ability.name]"
 		if(selected_ability.charges != NO_ACTION_CHARGES)
-			. += "Charges Left: [selected_ability.charges]"
+			. += "Зарядов Осталось: [selected_ability.charges]"
 
 		if(selected_ability.cooldown_timer_id != TIMER_ID_NULL)
-			. += "On Cooldown: [DisplayTimeText(timeleft(selected_ability.cooldown_timer_id))]"
+			. += "Перезарядка: [DisplayTimeText(timeleft(selected_ability.cooldown_timer_id), language = CLIENT_LANGUAGE_RUSSIAN)]"
 
 	. += ""
 
@@ -71,20 +79,20 @@
 
 	if(caste && caste.evolution_allowed)
 		evolve_progress = "[min(stored_evolution, evolution_threshold)]/[evolution_threshold]"
-		if(hive && !hive.allow_no_queen_actions && !caste?.evolve_without_queen)
-			if(!hive.living_xeno_queen)
+		if(faction && !faction.allow_no_queen_actions && !caste?.evolve_without_queen)
+			if(!faction.living_xeno_queen)
 				evolve_progress += " (NO QUEEN)"
-			else if(!(hive.living_xeno_queen.ovipositor || hive.evolution_without_ovipositor))
+			else if(!(faction.living_xeno_queen.ovipositor || faction.evolution_without_ovipositor))
 				evolve_progress += " (NO OVIPOSITOR)"
 
 	if(evolve_progress)
-		. += "Evolve Progress: [evolve_progress]"
+		. += "Эволюция: [evolve_progress]"
 	if(stored_evolution > evolution_threshold)
-		. += "Bonus Evolution: [stored_evolution - evolution_threshold]"
+		. += "Бонусная Эволюция: [stored_evolution - evolution_threshold]"
 
 	. += ""
 
-	if (behavior_delegate)
+	if(behavior_delegate)
 		var/datum/behavior_delegate/MD = behavior_delegate
 		. += MD.append_to_stat()
 
@@ -95,7 +103,6 @@
 
 	. += ""
 	if(!ignores_pheromones)
-		//Very weak <= 1.0, weak <= 2.0, no modifier 2-3, strong <= 3.5, very strong <= 4.5
 		var/msg_holder = "-"
 		if(frenzy_aura)
 			msg_holder = get_pheromone_aura_strength(frenzy_aura)
@@ -110,37 +117,45 @@
 		. += "Recovery: [msg_holder]"
 		. += ""
 
-	if(hive)
-		if(!hive.living_xeno_queen)
+	if(GLOB.xenomorph_attack_delay)
+		if((world.time - GLOB.xenomorph_attack_delay < 0) || (isqueen(src) &&  world.time - GLOB.xenomorph_attack_delay - 10 MINUTES < 0))
+			var/xeno_delay = GLOB.xenomorph_attack_delay - world.time
+			if(isqueen(src))
+				xeno_delay += 10 MINUTES
+			. += "ОВЗ Посадочной Зоны Носителей: [duration2text_hour_min_sec(xeno_delay)]"
+			. += ""
+
+	if(faction)
+		if(!faction.living_xeno_queen)
 			. += "Queen's Location: NO QUEEN"
 		else if(!(caste_type == XENO_CASTE_QUEEN))
-			. += "Queen's Location: [hive.living_xeno_queen.loc.loc.name]"
+			. += "Queen's Location: [faction.living_xeno_queen.loc.loc.name]"
 
-		if(hive.slashing_allowed == XENO_SLASH_ALLOWED)
+		if(faction.slashing_allowed == XENO_SLASH_ALLOWED)
 			. += "Slashing: PERMITTED"
 		else
 			. += "Slashing: FORBIDDEN"
 
-		if(hive.construction_allowed == XENO_LEADER)
+		if(faction.construction_allowed == XENO_LEADER)
 			. += "Construction Placement: LEADERS"
-		else if(hive.construction_allowed == NORMAL_XENO)
+		else if(faction.construction_allowed == NORMAL_XENO)
 			. += "Construction Placement: ANYONE"
-		else if(hive.construction_allowed == XENO_NOBODY)
+		else if(faction.construction_allowed == XENO_NOBODY)
 			. += "Construction Placement: NOBODY"
 		else
 			. += "Construction Placement: QUEEN"
 
-		if(hive.destruction_allowed == XENO_LEADER)
+		if(faction.destruction_allowed == XENO_LEADER)
 			. += "Special Structure Destruction: LEADERS"
-		else if(hive.destruction_allowed == NORMAL_XENO)
+		else if(faction.destruction_allowed == NORMAL_XENO)
 			. += "Special Structure Destruction: BUILDERS and LEADERS"
-		else if(hive.construction_allowed == XENO_NOBODY)
+		else if(faction.construction_allowed == XENO_NOBODY)
 			. += "Construction Placement: NOBODY"
 		else
 			. += "Special Structure Destruction: QUEEN"
 
-		if(hive.hive_orders)
-			. += "Hive Orders: [hive.hive_orders]"
+		if(faction.orders)
+			. += "Hive Orders: [faction.orders]"
 		else
 			. += "Hive Orders: -"
 
@@ -156,7 +171,7 @@
 			to_chat(src, SPAN_WARNING("You cannot do this in your current state."))
 			return FALSE
 	else
-		if(is_mob_incapacitated() || buckled || evolving)
+		if(is_mob_incapacitated() || buckled)
 			to_chat(src, SPAN_WARNING("You cannot do this in your current state."))
 			return FALSE
 
@@ -177,14 +192,14 @@
 /mob/living/carbon/xenomorph/proc/use_plasma(value)
 	plasma_stored = max(plasma_stored - value, 0)
 	for(var/X in actions)
-		var/datum/action/A = X
-		A.update_button_icon()
+		var/datum/action/action = X
+		action.update_button_icon()
 
 /mob/living/carbon/xenomorph/proc/gain_plasma(value)
 	plasma_stored = min(plasma_stored + value, plasma_max)
 	for(var/X in actions)
-		var/datum/action/A = X
-		A.update_button_icon()
+		var/datum/action/action = X
+		action.update_button_icon()
 
 /mob/living/carbon/xenomorph/proc/gain_health(value)
 	if(bruteloss == 0 && fireloss == 0)
@@ -207,8 +222,8 @@
 		bruteloss -= value
 
 	for(var/X in actions)
-		var/datum/action/A = X
-		A.update_button_icon()
+		var/datum/action/action = X
+		action.update_button_icon()
 
 
 /mob/living/carbon/xenomorph/proc/gain_armor_percent(value)
@@ -239,13 +254,13 @@
 	if(agility)
 		. += caste.agility_speed_increase
 
-	var/obj/effect/alien/weeds/W = locate(/obj/effect/alien/weeds) in loc
-	if (W)
-		if (W.linked_hive.hivenumber == hivenumber)
+	var/obj/effect/alien/weeds/weeds = locate(/obj/effect/alien/weeds) in loc
+	if(weeds)
+		if(weeds.faction == faction)
 			. *= 0.95
 
 	var/obj/effect/alien/resin/sticky/fast/FR = locate(/obj/effect/alien/resin/sticky/fast) in loc
-	if (FR && FR.hivenumber == hivenumber)
+	if(FR && FR.faction == faction)
 		. *= 0.8
 
 	if(superslowed)
@@ -277,7 +292,7 @@
 		throwing = FALSE
 		return
 
-	if (pounceAction.can_be_shield_blocked)
+	if(pounceAction.can_be_shield_blocked)
 		if(ishuman(M) && (M.dir in reverse_nearby_direction(dir)))
 			var/mob/living/carbon/human/H = M
 			if(H.check_shields(15, "the pounce")) //Human shield block.
@@ -311,14 +326,15 @@
 
 	visible_message(SPAN_DANGER("[src] [pounceAction.ability_name] onto [M]!"), SPAN_XENODANGER("You [pounceAction.ability_name] onto [M]!"), null, 5)
 
-	if (pounceAction.knockdown)
+	if(pounceAction.knockdown)
 		M.apply_effect(pounceAction.knockdown_duration, WEAKEN)
 		step_to(src, M)
 
-	if (pounceAction.freeze_self)
+	if(pounceAction.freeze_self)
 		if(pounceAction.freeze_play_sound)
 			playsound(loc, rand(0, 100) < 95 ? 'sound/voice/alien_pounce.ogg' : 'sound/voice/alien_pounce2.ogg', 25, 1)
 		canmove = FALSE
+		can_action = FALSE
 		frozen = TRUE
 		pounceAction.freeze_timer_id = addtimer(CALLBACK(src, PROC_REF(unfreeze)), pounceAction.freeze_time, TIMER_STOPPABLE)
 
@@ -340,7 +356,7 @@
 		obj_launch_collision(O)
 		return
 
-	if (pounceAction.should_destroy_objects)
+	if(pounceAction.should_destroy_objects)
 		if(istype(O, /obj/structure/surface/table) || istype(O, /obj/structure/surface/rack) || istype(O, /obj/structure/window_frame))
 			var/obj/structure/S = O
 			visible_message(SPAN_DANGER("[src] plows straight through [S]!"), null, null, 5)
@@ -399,7 +415,7 @@
 			SPAN_XENOWARNING("You hurl out the contents of your stomach!"), null, 5)
 			playsound(get_true_location(loc), 'sound/voice/alien_drool2.ogg', 50, 1)
 
-			if (stuns)
+			if(stuns)
 				victim.adjust_effect(2, STUN)
 	else
 		to_chat(src, SPAN_WARNING("There's nothing in your belly that needs regurgitating."))
@@ -477,7 +493,7 @@
 
 //Welp
 /mob/living/carbon/xenomorph/proc/xeno_jitter(jitter_time = 25)
-	set waitfor = 0
+	set waitfor = FALSE
 
 	pixel_x = old_x + rand(-3, 3)
 	pixel_y = old_y + rand(-1, 1)
@@ -492,9 +508,9 @@
 
 //When the Queen's pheromones are updated, or we add/remove a leader, update leader pheromones
 /mob/living/carbon/xenomorph/proc/handle_xeno_leader_pheromones()
-	if(!hive)
+	if(!faction)
 		return
-	var/mob/living/carbon/xenomorph/queen/Q = hive.living_xeno_queen
+	var/mob/living/carbon/xenomorph/queen/Q = faction.living_xeno_queen
 	if(!Q || !Q.ovipositor || hive_pos == NORMAL_XENO || !Q.current_aura || Q.loc.z != loc.z) //We are no longer a leader, or the Queen attached to us has dropped from her ovi, disabled her pheromones or even died
 		leader_aura_strength = 0
 		leader_current_aura = ""
@@ -506,7 +522,7 @@
 	hud_set_pheromone()
 
 /mob/living/carbon/xenomorph/proc/nocrit(wowave)
-	if(SSticker?.mode?.hardcore)
+	if(MODE_HAS_FLAG(MODE_HARDCORE))
 		nocrit = TRUE
 		if(wowave < 15)
 			maxHealth = ((maxHealth+abs(crit_health))*(wowave/15)*(3/4))+((maxHealth)*1/4) //if it's wo we give xeno's less hp in lower rounds. This makes help the marines feel good.
@@ -624,12 +640,12 @@
 		LAZYSET(tackle_counter, M, TC)
 		RegisterSignal(M, COMSIG_MOB_KNOCKED_DOWN, PROC_REF(tackle_handle_lying_changed))
 
-	if (TC.tackle_reset_id)
+	if(TC.tackle_reset_id)
 		deltimer(TC.tackle_reset_id)
 		TC.tackle_reset_id = null
 
 	. = TC.attempt_tackle(tackle_bonus)
-	if (!.)
+	if(!.)
 		TC.tackle_reset_id = addtimer(CALLBACK(src, PROC_REF(reset_tackle), M), 4 SECONDS, TIMER_UNIQUE | TIMER_STOPPABLE)
 	else
 		reset_tackle(M)
@@ -645,7 +661,7 @@
 
 /mob/living/carbon/xenomorph/proc/reset_tackle(mob/M)
 	var/datum/tackle_counter/TC = LAZYACCESS(tackle_counter, M)
-	if (TC)
+	if(TC)
 		qdel(TC)
 		LAZYREMOVE(tackle_counter, M)
 		UnregisterSignal(M, COMSIG_MOB_KNOCKED_DOWN)
@@ -700,9 +716,3 @@
 		tracked_marker.xenos_tracking -= src
 	tracked_marker = null
 
-/mob/living/carbon/xenomorph/proc/update_minimap_icon()
-	if(istype(caste, /datum/caste_datum/queen))
-		return
-
-	SSminimaps.remove_marker(src)
-	add_minimap_marker()

@@ -52,7 +52,7 @@
 			if(M.caste && !M.caste.is_intelligent)
 				if(HAS_TRAIT(src, TRAIT_NESTED) && (status_flags & XENO_HOST))
 					for(var/obj/item/alien_embryo/embryo in src)
-						if(HIVE_ALLIED_TO_HIVE(M.hivenumber, embryo.hivenumber))
+						if(M.faction == faction || M.faction.faction_is_ally(embryo.faction))
 							to_chat(M, SPAN_WARNING("You should not harm this host! It has a sister inside."))
 							return XENO_NO_DELAY_ACTION
 
@@ -84,6 +84,9 @@
 				M.visible_message(SPAN_DANGER("[M] lunges at [src]!"), \
 				SPAN_DANGER("You lunge at [src]!"), null, 5, CHAT_TYPE_XENO_COMBAT)
 				return XENO_ATTACK_ACTION
+
+			if(M.mutators.vampirism)
+				M.apply_damage(-damage/2)
 
 			M.flick_attack_overlay(src, "slash")
 			var/obj/limb/affecting
@@ -192,7 +195,7 @@
 			var/tackle_mult = 1
 			var/tackle_min_offset = 0
 			var/tackle_max_offset = 0
-			if (isyautja(src))
+			if(isyautja(src))
 				tackle_mult = 0.2
 				tackle_min_offset += 2
 				tackle_max_offset += 2
@@ -204,7 +207,7 @@
 				SPAN_DANGER("You tackle down [src]!"), null, 5, CHAT_TYPE_XENO_COMBAT)
 			else
 				playsound(loc, 'sound/weapons/alien_claw_swipe.ogg', 25, 1)
-				if (knocked_down)
+				if(knocked_down)
 					M.visible_message(SPAN_DANGER("[M] tries to tackle [src], but they are already down!"), \
 					SPAN_DANGER("You try to tackle [src], but they are already down!"), null, 5, CHAT_TYPE_XENO_COMBAT)
 				else
@@ -231,9 +234,9 @@
 				M.start_pulling(src)
 
 		if(INTENT_HARM)
-			if(isxeno(src) && xeno_hivenumber(src) == M.hivenumber)
-				var/mob/living/carbon/xenomorph/X = src
-				if(!X.banished)
+			if(isxeno(src) && faction == M.faction)
+				var/mob/living/carbon/xenomorph/xeno = src
+				if(!xeno.banished)
 					M.visible_message(SPAN_WARNING("[M] nibbles [src]."), \
 					SPAN_WARNING("You nibble [src]."), null, 5, CHAT_TYPE_XENO_FLUFF)
 					return XENO_ATTACK_ACTION
@@ -655,7 +658,7 @@
 			playsound(loc, "alien_resin_break", 25)
 
 		M.animation_attack_on(src)
-		if (hivenumber == M.hivenumber)
+		if(faction == M.faction)
 			qdel(src)
 		else
 			health -= M.melee_damage_lower * RESIN_XENO_DAMAGE_MULTIPLIER
@@ -773,18 +776,29 @@
 			if(!GLOB.resin_lz_allowed)
 				set_lz_resin_allowed(TRUE)
 
-		to_chat(M, SPAN_XENONOTICE("You interact with the machine and disable remote control."))
-		xeno_message(SPAN_XENOANNOUNCE("[message]"),3,M.hivenumber)
-		last_locked = world.time
-		if(almayer_orbital_cannon)
-			almayer_orbital_cannon.is_disabled = TRUE
-			addtimer(CALLBACK(almayer_orbital_cannon, .obj/structure/orbital_cannon/proc/enable), 10 MINUTES, TIMER_UNIQUE)
-		queen_locked = 1
+		var/req_time_to_hijack
+		if(escape_locked)
+			req_time_to_hijack = 1 MINUTES
+		else
+			req_time_to_hijack = 30 SECONDS
+
+		if(do_after(M, req_time_to_hijack, INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
+			if(M.lying)
+				return 0
+
+			to_chat(M, SPAN_XENONOTICE("You interact with the machine and disable remote control."))
+			xeno_message(SPAN_XENOANNOUNCE("[message]"),3,M.faction)
+			last_locked = world.time
+			if(almayer_orbital_cannon)
+				almayer_orbital_cannon.is_disabled = TRUE
+				addtimer(CALLBACK(almayer_orbital_cannon, .obj/structure/orbital_cannon/proc/enable), 10 MINUTES, TIMER_UNIQUE)
+			queen_locked = 1
+			escape_locked = 0
 
 /datum/shuttle/ferry/marine/proc/door_override(mob/living/carbon/xenomorph/M, shuttle_tag)
 	if(!door_override)
 		to_chat(M, SPAN_XENONOTICE("You override the doors."))
-		xeno_message(SPAN_XENOANNOUNCE("The doors of the metal bird have been overridden! Rejoice!"),3,M.hivenumber)
+		xeno_message(SPAN_XENOANNOUNCE("The doors of the metal bird have been overridden! Rejoice!"),3,M.faction)
 		last_door_override = world.time
 		door_override = 1
 
@@ -821,7 +835,7 @@
 	M.visible_message(SPAN_DANGER("[M] [M.slashes_verb] [src]!"), \
 	SPAN_DANGER("You [M.slash_verb] [src]!"), null, 5)
 	playsound(loc, "alien_claw_metal", 25, 1)
-	if (beenhit >= XENO_HITS_TO_CUT_WIRES)
+	if(beenhit >= XENO_HITS_TO_CUT_WIRES)
 		set_broken()
 		visible_message(SPAN_DANGER("[src]'s electronics are destroyed!"), null, null, 5)
 	else if(wiresexposed)
@@ -847,7 +861,7 @@
 	return attack_hand(M)
 
 /obj/structure/machinery/colony_floodlight/attack_alien(mob/living/carbon/xenomorph/M)
-	if(!is_lit)
+	if(!light_on)
 		to_chat(M, "Why bother? It's just some weird metal thing.")
 		return XENO_NO_DELAY_ACTION
 	if(damaged)
@@ -859,8 +873,8 @@
 	if(!health)
 		playsound(src, "glassbreak", 70, 1)
 		damaged = TRUE
-		if(is_lit)
-			SetLuminosity(0)
+		if(light_on)
+			set_light_on(FALSE)
 		update_icon()
 	else
 		playsound(loc, 'sound/effects/Glasshit.ogg', 25, 1)

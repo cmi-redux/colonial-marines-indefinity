@@ -60,7 +60,7 @@
 
 	//something went bad, try to reconnect to vehicle if user is currently buckled in and connected to vehicle
 	if(!vehicle)
-		if(isVehicle(user.interactee))
+		if(isvehicle(user.interactee))
 			vehicle = user.interactee
 		if(!istype(vehicle))
 			to_chat(user, SPAN_WARNING("Critical Error! Ahelp this! Code: T_VMIS"))
@@ -72,7 +72,7 @@
 		to_chat(user, SPAN_NOTICE("You have no idea how to operate this thing!"))
 		return
 
-	if(!LAZYLEN(hps))
+	if(!length(hps))
 		to_chat(user, SPAN_WARNING("None of the hardpoints can be reloaded!"))
 		return
 
@@ -87,7 +87,7 @@
 		to_chat(user, SPAN_WARNING("Error! Module not found!"))
 		return
 
-	if(!LAZYLEN(HP.backup_clips))
+	if(!length(HP.backup_clips))
 		to_chat(user, SPAN_WARNING("\The [HP] has no remaining backup magazines!"))
 		return
 
@@ -108,4 +108,4 @@
 	LAZYREMOVE(HP.backup_clips, M)
 
 	playsound(loc, 'sound/machines/hydraulics_3.ogg', 50)
-	to_chat(user, SPAN_NOTICE("You reload \the [HP]. Ammo: <b>[SPAN_HELPFUL(HP.ammo.current_rounds)]/[SPAN_HELPFUL(HP.ammo.max_rounds)]</b> | Mags: <b>[SPAN_HELPFUL(LAZYLEN(HP.backup_clips))]/[SPAN_HELPFUL(HP.max_clips)]</b>"))
+	to_chat(user, SPAN_NOTICE("You reload \the [HP]. Ammo: <b>[SPAN_HELPFUL(HP.ammo.ammo_position)]/[SPAN_HELPFUL(HP.ammo.max_rounds)]</b> | Mags: <b>[SPAN_HELPFUL(length(HP.backup_clips))]/[SPAN_HELPFUL(HP.max_clips)]</b>"))

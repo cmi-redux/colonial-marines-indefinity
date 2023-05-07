@@ -126,7 +126,7 @@
 	allowed = list(
 		/obj/item/weapon/gun,
 		/obj/item/ammo_magazine,
-		/obj/item/ammo_casing,
+		/obj/item/ammo_parts,
 		/obj/item/weapon/melee/baton,
 		/obj/item/handcuffs,
 		/obj/item/storage/fancy/cigarettes,
@@ -151,7 +151,7 @@
 	allowed = list(
 		/obj/item/weapon/gun,
 		/obj/item/ammo_magazine,
-		/obj/item/ammo_casing,
+		/obj/item/ammo_parts,
 		/obj/item/weapon/melee/baton,
 		/obj/item/handcuffs,
 		/obj/item/storage/fancy/cigarettes,
@@ -301,8 +301,8 @@
 	set category = "Object"
 	set src in usr
 
-	if(!usr.canmove || usr.stat || usr.is_mob_restrained())
-		return 0
+	if(!usr.can_action || usr.is_mob_restrained())
+		return FALSE
 
 	if(src.icon_state == "suitjacket_blue_open")
 		src.icon_state = "suitjacket_blue"

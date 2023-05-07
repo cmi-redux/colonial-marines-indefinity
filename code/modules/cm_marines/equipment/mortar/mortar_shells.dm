@@ -6,6 +6,7 @@
 	w_class = SIZE_HUGE
 	flags_atom = FPRINT|CONDUCT
 	var/datum/cause_data/cause_data
+	var/explosing = FALSE
 
 /obj/item/mortar_shell/Initialize(mapload, ...)
 	. = ..()
@@ -25,6 +26,40 @@
 		qdel(old_cam)
 	new /obj/structure/machinery/camera/mortar(T)
 
+/obj/item/mortar_shell/proc/explosing_check()
+	if(!explosing)
+		return TRUE
+	return FALSE
+
+/obj/item/mortar_shell/proc/prime(datum/cause_data/weapon_cause_data)
+	if(!explosing_check())
+		return
+	explosing = TRUE
+	playsound(src, 'sound/effects/explosion_psss.ogg', 7, 1)
+	if(weapon_cause_data)
+		cause_data = weapon_cause_data
+	sleep(10)
+	detonate(src)
+	if(!QDELETED(src))
+		qdel(src)
+
+/obj/item/mortar_shell/ex_act(severity, explosion_direction, datum/cause_data/explosion_cause_data)
+	switch(severity)
+		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
+			addtimer(CALLBACK(src, PROC_REF(prime), explosion_cause_data), 1)
+
+/obj/item/mortar_shell/bullet_act(obj/item/projectile/P)
+	..()
+
+	var/ammo_flags =  P.ammo.traits_to_give | P.projectile_override_flags
+	if(ammo_flags && ammo_flags & (/datum/element/bullet_trait_incendiary) || P.ammo.flags_ammo_behavior & AMMO_XENO)
+		addtimer(CALLBACK(src, PROC_REF(prime), P.weapon_cause_data), 1)
+	else if(rand(0,300) < 20)
+		addtimer(CALLBACK(src, PROC_REF(prime), P.weapon_cause_data), 1)
+
+/obj/item/mortar_shell/flamer_fire_act(damage, datum/cause_data/flame_cause_data)
+	addtimer(CALLBACK(src, PROC_REF(prime), flame_cause_data), 1)
+
 /obj/item/mortar_shell/he
 	name = "\improper 80mm high explosive mortar shell"
 	desc = "An 80mm mortar shell, loaded with a high explosive charge."
@@ -41,7 +76,7 @@
 /obj/item/mortar_shell/frag/detonate(turf/T)
 	create_shrapnel(T, 60, cause_data = cause_data)
 	sleep(2)
-	cell_explosion(T, 60, 20, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
+	cell_explosion(T, 200, 30, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
 
 /obj/item/mortar_shell/incendiary
 	name = "\improper 80mm incendiary mortar shell"

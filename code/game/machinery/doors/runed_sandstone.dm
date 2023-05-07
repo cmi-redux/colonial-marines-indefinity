@@ -24,7 +24,7 @@
 /obj/structure/machinery/door/airlock/sandstone/runed/attackby(obj/item/W as obj, mob/user as mob)
 // ..()
 	user.set_interaction(src)
-	if (!istype(W, /obj/item/weapon/wristblades || !isyautja(user)))
+	if(!istype(W, /obj/item/weapon/wristblades || !isyautja(user)))
 		return
 
 	if(istype(W, /obj/item/weapon/wristblades))
@@ -102,14 +102,14 @@
 	CHECK_TICK
 	do_animate("opening")
 	icon_state = "door0"
-	src.SetOpacity(FALSE)
+	src.set_opacity(FALSE)
 	sleep(openspeed)
 	src.layer = open_layer
 	src.density = FALSE
 	update_icon()
-	SetOpacity(0)
-	if (filler)
-		filler.SetOpacity(opacity)
+	set_opacity(FALSE)
+	if(filler)
+		filler.set_opacity(opacity)
 
 	if(operating)
 		operating = FALSE
@@ -130,7 +130,7 @@
 	operating = TRUE
 	CHECK_TICK
 	src.density = TRUE
-	src.SetOpacity(TRUE)
+	src.set_opacity(TRUE)
 	src.layer = closed_layer
 	do_animate("closing")
 	sleep(openspeed)
@@ -180,7 +180,7 @@
 
 	if(damage >= damage_cap)
 		if(M && istype(M))
-			M.count_niche_stat(STATISTICS_NICHE_DESTRUCTION_DOORS, 1)
+			M.count_statistic_stat(STATISTICS_DESTRUCTION_DOORS, 1)
 			SEND_SIGNAL(M, COMSIG_MOB_DESTROY_AIRLOCK, src)
 		to_chat(loc, SPAN_DANGER("[src] blows apart!"))
 		deconstruct(FALSE)

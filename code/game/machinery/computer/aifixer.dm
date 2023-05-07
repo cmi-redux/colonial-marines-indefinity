@@ -33,14 +33,14 @@
 	user.set_interaction(src)
 	var/dat
 
-	if (src.occupant)
+	if(src.occupant)
 		dat += "Stored AI: [src.occupant.name]<br>System integrity: [(src.occupant.health+100)/2]%<br>"
 
-		if (src.occupant.stat == 2)
+		if(src.occupant.stat == 2)
 			dat += "<b>AI nonfunctional</b>"
 		else
 			dat += "<b>AI functional</b>"
-		if (!src.active)
+		if(!src.active)
 			dat += {"<br><br><A href='byond://?src=\ref[src];fix=1'>Begin Reconstruction</A>"}
 		else
 			dat += "<br><br>Reconstruction in process, please wait.<br>"
@@ -57,7 +57,7 @@
 /obj/structure/machinery/computer/aifixer/Topic(href, href_list)
 	if(..())
 		return
-	if (href_list["fix"])
+	if(href_list["fix"])
 		src.active = 1
 		src.overlays += image('icons/obj/structures/machinery/computer.dmi', "ai-fixer-on")
 		while (src.occupant.health < 100)
@@ -66,7 +66,7 @@
 			src.occupant.apply_damage(-1, TOX)
 			src.occupant.apply_damage(-1, BRUTE)
 			src.occupant.updatehealth()
-			if (src.occupant.health >= 0 && src.occupant.stat == DEAD)
+			if(src.occupant.health >= 0 && src.occupant.stat == DEAD)
 				src.occupant.set_stat(CONSCIOUS)
 				src.occupant.lying = 0
 				GLOB.dead_mob_list -= src.occupant
@@ -94,11 +94,11 @@
 
 	// Working / Powered
 	else
-		if (occupant)
+		if(occupant)
 			switch (occupant.stat)
-				if (0)
+				if(0)
 					overlays += image('icons/obj/structures/machinery/computer.dmi', "ai-fixer-full")
-				if (2)
+				if(2)
 					overlays += image('icons/obj/structures/machinery/computer.dmi', "ai-fixer-404")
 		else
 			overlays += image('icons/obj/structures/machinery/computer.dmi', "ai-fixer-empty")

@@ -7,6 +7,7 @@
 	color = "#6b675e"
 	},
 /obj/item/stack/sheet/animalhide/xeno/kinghide,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -34,9 +35,11 @@
 /turf/open/space,
 /area/yautja)
 "af" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/cult,
 /area/yautja)
 "ag" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/mineral/sandstone/runed,
 /area/yautja)
 "ah" = (
@@ -49,6 +52,7 @@
 	dir = 4;
 	health = 80
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/sandstone/runed,
 /area/yautja)
 "ai" = (
@@ -65,6 +69,7 @@
 	dir = 4;
 	health = 80
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/sandstone/runed,
 /area/yautja)
 "aj" = (
@@ -77,6 +82,7 @@
 	dir = 8;
 	health = 80
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/sandstone/runed,
 /area/yautja)
 "ak" = (
@@ -89,6 +95,7 @@
 	dir = 4;
 	health = 80
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/sandstone/runed,
 /area/yautja)
 "al" = (
@@ -105,6 +112,7 @@
 	dir = 4;
 	health = 80
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/sandstone/runed,
 /area/yautja)
 "am" = (
@@ -117,12 +125,14 @@
 	dir = 8;
 	health = 80
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/sandstone/runed,
 /area/yautja)
 "an" = (
 /obj/structure/machinery/medical_pod/autodoc{
 	dir = 4
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -153,6 +163,7 @@
 	icon_state = "pred_mask_elder_n";
 	pixel_y = 29
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -162,6 +173,7 @@
 /obj/structure/stairs/perspective{
 	color = "#b29082"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "aq" = (
@@ -189,6 +201,7 @@
 	icon_state = "pred_mask_elder_joshuu";
 	pixel_y = 30
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -199,12 +212,15 @@
 	dir = 1;
 	name = "\improper Wargear Storage"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "as" = (
 /obj/structure/pipes/standard/simple/hidden{
-	dir = 6
+	dir = 6;
+	tag = "icon-intact (SOUTHEAST)"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -215,6 +231,7 @@
 /obj/structure/pipes/standard/cap/hidden{
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -233,6 +250,7 @@
 	dir = 4;
 	health = 80
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -243,6 +261,7 @@
 	color = "#6b675e"
 	},
 /obj/item/device/flashlight/lamp,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -250,6 +269,7 @@
 /area/yautja)
 "aw" = (
 /obj/structure/curtain/red,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "ay" = (
@@ -263,6 +283,7 @@
 /obj/item/clothing/mask/gas/yautja/thrall,
 /obj/item/clothing/shoes/yautja/thrall,
 /obj/item/clothing/under/chainshirt/thrall,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/sandstone/runed,
 /area/yautja)
 "az" = (
@@ -270,6 +291,7 @@
 	dir = 10;
 	icon_state = "phoronrwindow"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/light,
 /area/yautja)
 "aA" = (
@@ -283,11 +305,13 @@
 /obj/item/clothing/mask/gas/yautja/thrall,
 /obj/item/clothing/shoes/yautja/thrall,
 /obj/item/clothing/under/chainshirt/thrall,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/sandstone/runed,
 /area/yautja)
 "aB" = (
 /obj/structure/closet/crate/critter,
 /obj/effect/decal/cleanable/blood,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -306,6 +330,7 @@
 /obj/item/hunting_trap,
 /obj/item/hunting_trap,
 /obj/item/hunting_trap,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -313,6 +338,7 @@
 /area/yautja)
 "aD" = (
 /obj/structure/xenoautopsy/tank/hugger,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -327,6 +353,7 @@
 /obj/item/tool/surgery/hemostat/predatorhemostat,
 /obj/item/tool/surgery/retractor/predatorretractor,
 /obj/item/tool/surgery/scalpel/predatorscalpel,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -343,6 +370,7 @@
 	desc = "The ship's on-board self destruct system, let's hope you never have to use it.";
 	name = "Self Destruct System"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -355,6 +383,7 @@
 	dir = 4;
 	name = "plasma power generator"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -362,7 +391,8 @@
 /area/yautja)
 "aI" = (
 /obj/structure/shuttle/engine/heater{
-	dir = 1
+	dir = 1;
+	tag = "icon-heater (NORTH)"
 	},
 /obj/item/device/flashlight/slime,
 /obj/structure/window/phoronreinforced,
@@ -370,6 +400,7 @@
 	dir = 8;
 	icon_state = "phoronrwindow"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -377,7 +408,8 @@
 /area/yautja)
 "aK" = (
 /obj/structure/shuttle/engine/heater{
-	dir = 1
+	dir = 1;
+	tag = "icon-heater (NORTH)"
 	},
 /obj/item/device/flashlight/slime,
 /obj/structure/window/phoronreinforced,
@@ -385,6 +417,7 @@
 	dir = 4;
 	icon_state = "phoronrwindow"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -392,8 +425,10 @@
 /area/yautja)
 "aL" = (
 /obj/structure/machinery/power/terminal{
-	dir = 1
+	dir = 1;
+	tag = "icon-term (NORTH)"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -401,6 +436,7 @@
 /area/yautja)
 "aN" = (
 /obj/structure/machinery/computer/cryopod/yautja,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -411,6 +447,7 @@
 	dir = 1;
 	name = "\improper Trophy Room"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "aQ" = (
@@ -421,6 +458,7 @@
 /obj/item/tool/surgery/bonegel/predatorbonegel,
 /obj/item/tool/surgery/bonesetter/predatorbonesetter,
 /obj/item/tool/surgery/surgicaldrill/predatorsurgicaldrill,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -430,6 +468,7 @@
 /obj/structure/machinery/door/airlock/strata/autoname{
 	name = "\improper Operation Room"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "aV" = (
@@ -440,6 +479,7 @@
 /obj/item/weapon/melee/yautja/knife,
 /obj/item/reagent_container/hypospray/autoinjector/yautja,
 /obj/item/reagent_container/hypospray/autoinjector/yautja,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -447,6 +487,7 @@
 /area/yautja)
 "aW" = (
 /obj/structure/machinery/optable,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -467,6 +508,7 @@
 	name = "Radar Console";
 	pixel_x = -7
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -477,6 +519,7 @@
 /obj/structure/pipes/portables_connector{
 	dir = 4
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -486,6 +529,7 @@
 /obj/structure/pipes/standard/simple/hidden{
 	dir = 4
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -495,6 +539,7 @@
 /obj/structure/machinery/cryopod{
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -502,12 +547,14 @@
 /area/yautja)
 "bd" = (
 /obj/effect/step_trigger/teleporter/yautja_ship,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/light,
 /area/yautja)
 "be" = (
 /obj/structure/machinery/door/airlock/strata/autoname{
 	name = "\improper Blooded Teleporter"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
@@ -522,24 +569,28 @@
 /obj/item/stack/sheet/mineral/sandstone/large_stack,
 /obj/item/stack/sheet/mineral/sandstone/large_stack,
 /obj/item/stack/sheet/mineral/sandstone/large_stack,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
 	},
 /area/yautja)
 "bj" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/huntership,
 /area/yautja)
 "bl" = (
 /obj/structure/machinery/door/airlock/strata/autoname{
 	name = "\improper Starboard Wing"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "bm" = (
 /obj/structure/machinery/door/airlock/strata/autoname{
 	name = "\improper Port Wing"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "bn" = (
@@ -551,6 +602,7 @@
 /obj/item/weapon/melee/harpoon/yautja,
 /obj/item/weapon/melee/harpoon/yautja,
 /obj/item/weapon/melee/harpoon/yautja,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -560,6 +612,7 @@
 /obj/structure/machinery/body_scanconsole{
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -570,6 +623,7 @@
 	dir = 1;
 	name = "\improper Research Chamber"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "bq" = (
@@ -581,6 +635,7 @@
 	desc = "A powerful, shoulder-mounted energy weapon. This one is damaged beyond use.";
 	name = "damaged plasma caster"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -588,12 +643,14 @@
 /area/yautja)
 "br" = (
 /obj/item/stool,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "bs" = (
 /obj/structure/machinery/medical_pod/bodyscanner{
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -604,10 +661,12 @@
 	dir = 1;
 	name = "\improper Burial Room"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "bv" = (
 /obj/structure/closet/coffin/predator,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -615,6 +674,7 @@
 /area/yautja)
 "bw" = (
 /obj/structure/pipes/standard/simple/hidden,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "bx" = (
@@ -622,6 +682,7 @@
 	dir = 1;
 	name = "\improper Storage Chamber"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "by" = (
@@ -634,6 +695,7 @@
 	anchored = 1;
 	pixel_y = 20
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -651,6 +713,7 @@
 	dir = 4;
 	health = 80
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -660,6 +723,7 @@
 /obj/structure/machinery/chem_dispenser{
 	req_skill_level = 2
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -674,6 +738,7 @@
 	name = "\improper Dutch's Machete";
 	anchored = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -684,6 +749,7 @@
 	dir = 1;
 	name = "\improper Unworthy Prey"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "bE" = (
@@ -691,6 +757,7 @@
 	color = "#6b675e";
 	icon_state = "p_stair_full"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -700,10 +767,12 @@
 /obj/structure/machinery/door/airlock/strata/autoname{
 	name = "\improper Cooler Room"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "bH" = (
 /obj/structure/closet,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -715,6 +784,7 @@
 	dir = 1;
 	icon_state = "p_stair_full"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -724,6 +794,7 @@
 /obj/structure/pipes/unary/freezer{
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -733,9 +804,11 @@
 /obj/structure/pipes/standard/simple/hidden{
 	dir = 4
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "bL" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -746,6 +819,7 @@
 	color = "#6b675e"
 	},
 /obj/structure/machinery/processor,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "bN" = (
@@ -753,6 +827,7 @@
 	icon_state = "spikebloodygreen"
 	},
 /obj/effect/decal/cleanable/blood/gibs/xeno/body,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -762,6 +837,7 @@
 /obj/structure/bed/alien{
 	color = "#aba9a9"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -776,6 +852,7 @@
 	desc = "Claws from a creature that defies nature, you dare not touch it.";
 	force = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -786,6 +863,7 @@
 	icon_state = "spikebloody"
 	},
 /obj/effect/decal/cleanable/blood/gibs,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -793,8 +871,10 @@
 /area/yautja)
 "bS" = (
 /obj/structure/pipes/standard/simple/hidden{
-	dir = 9
+	dir = 9;
+	tag = "icon-intact (NORTHEAST)"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "bU" = (
@@ -804,6 +884,7 @@
 	pixel_x = -25;
 	pixel_y = 9
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "bV" = (
@@ -813,6 +894,7 @@
 	pixel_x = -7;
 	pixel_y = 9
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/huntership,
 /area/yautja)
 "bW" = (
@@ -825,6 +907,7 @@
 	id = "Cell Lockdown 1";
 	name = "\improper Cell Shutters"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "bX" = (
@@ -837,6 +920,7 @@
 	id = "Cell Lockdown 4";
 	name = "\improper Cell Shutters"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "bY" = (
@@ -847,6 +931,7 @@
 /obj/item/XenoItem/ChitinPlate,
 /obj/item/stack/sheet/xenochitin,
 /obj/item/stack/sheet/xenochitin,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -856,7 +941,8 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 1
 	},
-/turf/open/gm/dirtgrassborder/weedable{
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/gm/dirtgrassborder{
 	icon_state = "grass1"
 	},
 /area/yautja)
@@ -867,6 +953,7 @@
 	pixel_x = -25;
 	pixel_y = 9
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "cc" = (
@@ -876,6 +963,7 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/gm/dirtgrassborder{
 	icon_state = "grassdirt_corner"
 	},
@@ -885,6 +973,7 @@
 	color = "#6b675e"
 	},
 /obj/effect/spawner/random/toy,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -900,6 +989,7 @@
 	id = "Cell Lockdown 2";
 	name = "\improper Cell Shutters"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "cf" = (
@@ -912,6 +1002,7 @@
 	id = "Cell Lockdown 5";
 	name = "\improper Cell Shutters"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "cg" = (
@@ -921,6 +1012,7 @@
 	pixel_x = -25;
 	pixel_y = 9
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "ch" = (
@@ -930,10 +1022,12 @@
 	pixel_x = -7;
 	pixel_y = 9
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/huntership,
 /area/yautja)
 "cj" = (
 /obj/structure/machinery/medical_pod/sleeper,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -944,6 +1038,7 @@
 	color = "#6b675e"
 	},
 /obj/item/alienjar,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -959,6 +1054,7 @@
 	id = "Cell Lockdown 3";
 	name = "\improper Cell Shutters"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "cn" = (
@@ -971,6 +1067,7 @@
 	id = "Cell Lockdown 6";
 	name = "\improper Cell Shutters"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "co" = (
@@ -982,6 +1079,7 @@
 	dir = 8;
 	icon_state = "phoronrwindow"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -989,8 +1087,10 @@
 /area/yautja)
 "cq" = (
 /obj/structure/bed/chair/comfy/black{
-	dir = 4
+	dir = 4;
+	tag = "icon-comfychair (EAST)"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1001,13 +1101,24 @@
 	color = "#6b675e"
 	},
 /obj/structure/machinery/chem_dispenser/soda,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
+"cs" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/floor/corsat{
+	dir = 1;
+	icon_state = "squareswood"
+	},
+/area/yautja{
+	color = "#948954"
+	})
 "ct" = (
 /obj/structure/machinery/door/airlock/strata/autoname{
 	dir = 1;
 	name = "\improper Fore Rooms"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "cu" = (
@@ -1036,6 +1147,7 @@
 /obj/structure/closet/secure_closet/freezer/fridge{
 	locked = 0
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	dir = 10;
 	icon_state = "darkred2"
@@ -1058,6 +1170,7 @@
 /obj/item/tool/kitchen/knife{
 	pixel_x = -5
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "cw" = (
@@ -1070,10 +1183,12 @@
 /obj/item/clothing/mask/muzzle,
 /obj/item/clothing/mask/muzzle,
 /obj/item/clothing/mask/muzzle,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "cx" = (
 /obj/structure/machinery/autodoc_console,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1088,6 +1203,7 @@
 	dir = 4;
 	icon_state = "phoronrwindow"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1102,6 +1218,7 @@
 	desc = "A strange hide from an enigmatic creature.";
 	name = "deacon hide"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1111,6 +1228,7 @@
 /obj/structure/machinery/door/airlock/strata/autoname{
 	name = "\improper Elder Teleporter"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1121,10 +1239,12 @@
 	dir = 1;
 	name = "\improper Navigation Chamber"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "cC" = (
 /obj/structure/machinery/autolathe/yautja,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1132,6 +1252,7 @@
 /area/yautja)
 "cE" = (
 /obj/structure/machinery/prop/almayer/CICmap/yautja,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1142,6 +1263,7 @@
 	dir = 1;
 	name = "\improper Engine Room"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "cG" = (
@@ -1150,6 +1272,7 @@
 	dir = 9;
 	icon_state = "p_stair_full"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -1240,6 +1363,7 @@
 	pixel_x = 4;
 	pixel_y = -2
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1252,6 +1376,7 @@
 /obj/item/weapon/melee/twohanded/sledgehammer{
 	anchored = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1271,6 +1396,7 @@
 /obj/item/reagent_container/food/drinks/drinkingglass,
 /obj/item/reagent_container/food/drinks/drinkingglass,
 /obj/item/reagent_container/food/drinks/drinkingglass,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "cK" = (
@@ -1312,6 +1438,7 @@
 	force = 25;
 	pixel_x = -8
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "cL" = (
@@ -1321,10 +1448,12 @@
 /obj/structure/machinery/juicer{
 	pixel_y = 3
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "cN" = (
 /obj/structure/cryofeed,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1332,12 +1461,14 @@
 /area/yautja)
 "cO" = (
 /obj/structure/cryofeed/right,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
 	},
 /area/yautja)
 "cP" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "cQ" = (
@@ -1350,6 +1481,7 @@
 /obj/item/stack/sheet/mineral/sandstone/runed/large_stack,
 /obj/item/stack/sheet/mineral/sandstone/runed/large_stack,
 /obj/item/stack/sheet/mineral/sandstone/runed/large_stack,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1370,6 +1502,7 @@
 	name = "Radar Console";
 	pixel_x = 7
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -1384,6 +1517,7 @@
 /obj/item/clothing/gloves/combat,
 /obj/item/clothing/head/helmet/gladiator,
 /obj/item/clothing/suit/armor/gladiator,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1395,6 +1529,7 @@
 	layer = 2.79
 	},
 /obj/item/tool/pickaxe,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1406,6 +1541,7 @@
 	layer = 2.79
 	},
 /obj/item/tool/extinguisher,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1416,6 +1552,7 @@
 	color = "#6b675e"
 	},
 /obj/item/tool/weldingtool/hugetank,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1430,6 +1567,7 @@
 	pixel_x = -6;
 	pixel_y = 6
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1456,6 +1594,7 @@
 /obj/item/device/healthanalyzer/alien,
 /obj/item/device/healthanalyzer/alien,
 /obj/item/device/healthanalyzer/alien,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1467,6 +1606,7 @@
 	},
 /obj/item/reagent_container/food/snacks/meat/corgi,
 /obj/effect/decal/cleanable/blood,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -1474,6 +1614,7 @@
 /area/yautja)
 "cZ" = (
 /obj/structure/machinery/prop/almayer/CICmap/yautja,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	dir = 10;
@@ -1487,6 +1628,7 @@
 /obj/structure/machinery/microwave{
 	pixel_y = 4
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "db" = (
@@ -1495,6 +1637,7 @@
 	layer = 2.79
 	},
 /obj/item/tool/pickaxe/jackhammer,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1505,6 +1648,7 @@
 	dir = 1;
 	name = "\improper Research Containment"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -1516,6 +1660,7 @@
 /obj/item/reagent_container/food/snacks/meat/xenomeat,
 /obj/item/reagent_container/food/snacks/meat/xenomeat,
 /obj/item/reagent_container/food/snacks/meat/xenomeat,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "darkred2"
@@ -1526,6 +1671,7 @@
 	color = "#6b675e";
 	icon_state = "p_stair_full"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -1554,6 +1700,7 @@
 /obj/structure/closet/secure_closet/freezer/fridge{
 	locked = 0
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	dir = 1;
 	icon_state = "darkred2"
@@ -1561,6 +1708,7 @@
 /area/yautja)
 "dj" = (
 /obj/effect/alien/egg/forsaken,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -1572,6 +1720,7 @@
 	dir = 10;
 	icon_state = "p_stair_full"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -1583,6 +1732,7 @@
 	dir = 6;
 	icon_state = "p_stair_full"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -1595,9 +1745,11 @@
 	pixel_x = -7;
 	pixel_y = 9
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/huntership,
 /area/yautja)
 "dw" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/gm/dirtgrassborder{
 	dir = 1
 	},
@@ -1609,6 +1761,7 @@
 /obj/structure/prop/brazier/torch{
 	pixel_y = -2
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/mineral/sandstone/runed/decor,
 /area/yautja)
 "eg" = (
@@ -1616,6 +1769,7 @@
 	dir = 4
 	},
 /obj/structure/barricade/handrail/strata,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/gm/dirtgrassborder{
 	dir = 4;
 	icon_state = "grassdirt_corner"
@@ -1627,6 +1781,7 @@
 	dir = 9;
 	icon_state = "p_stair_full"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1638,6 +1793,7 @@
 	name = "Warrior Hide";
 	pixel_y = 30
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "eT" = (
@@ -1646,6 +1802,7 @@
 	dir = 4;
 	icon_state = "p_stair_full"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1655,9 +1812,11 @@
 /obj/structure/bed/chair/hunter{
 	dir = 4
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "fb" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	dir = 4;
 	icon_state = "darkred2"
@@ -1667,6 +1826,7 @@
 /obj/item/map/current_map,
 /obj/item/device/flashlight/lantern,
 /obj/structure/closet,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1674,12 +1834,14 @@
 /area/yautja)
 "fj" = (
 /obj/structure/machinery/cryopod,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "fq" = (
 /obj/structure/window/framed/colony/reinforced/hull{
 	color = "#aba9a9"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/holofloor{
 	icon_state = "cult"
 	},
@@ -1691,6 +1853,7 @@
 /obj/item/XenoItem/AntiAcid,
 /obj/item/XenoItem/AntiAcid,
 /obj/item/XenoItem/AntiAcid,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1725,11 +1888,13 @@
 	pixel_x = 6;
 	pixel_y = 7
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "fS" = (
 /obj/structure/barricade/handrail/strata,
-/turf/open/gm/dirtgrassborder/weedable{
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/gm/dirtgrassborder{
 	icon_state = "grass1"
 	},
 /area/yautja)
@@ -1747,6 +1912,7 @@
 /obj/structure/closet/crate{
 	color = "#6b675e"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -1754,6 +1920,7 @@
 /area/yautja)
 "gp" = (
 /obj/structure/bed/chair/comfy/black,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1768,6 +1935,7 @@
 	attack_speed = 12;
 	force = 25
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -1781,6 +1949,7 @@
 /obj/item/tool/surgery/bonegel/predatorbonegel,
 /obj/item/tool/surgery/bonesetter/predatorbonesetter,
 /obj/item/tool/surgery/surgicaldrill/predatorsurgicaldrill,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -1791,7 +1960,8 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 8
 	},
-/turf/open/gm/dirtgrassborder/weedable{
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/gm/dirtgrassborder{
 	icon_state = "grass1"
 	},
 /area/yautja)
@@ -1799,6 +1969,7 @@
 /obj/structure/shuttle/window{
 	color = "#6b675e"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	color = "#525151";
 	icon_state = "dark2"
@@ -1811,7 +1982,8 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 4
 	},
-/turf/open/gm/dirtgrassborder/weedable{
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/gm/dirtgrassborder{
 	icon_state = "grass1"
 	},
 /area/yautja)
@@ -1821,6 +1993,7 @@
 /obj/item/reagent_container/food/snacks/meat,
 /obj/item/reagent_container/food/snacks/meat,
 /obj/item/reagent_container/food/snacks/meat,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	dir = 8;
 	icon_state = "darkred2"
@@ -1830,6 +2003,7 @@
 /obj/structure/kitchenspike,
 /obj/item/reagent_container/food/snacks/sliceable/xenomeatbread,
 /obj/item/reagent_container/food/snacks/sliceable/xenomeatbread,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	dir = 8;
 	icon_state = "darkred2"
@@ -1844,6 +2018,7 @@
 	pixel_x = 10;
 	pixel_y = 3
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1877,10 +2052,12 @@
 	name = "duelling claymore";
 	pixel_x = 10
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "jR" = (
 /obj/structure/machinery/sleep_console,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1892,6 +2069,7 @@
 	dir = 6;
 	icon_state = "p_stair_full"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1904,6 +2082,7 @@
 /obj/item/weapon/melee/twohanded/dualsaber{
 	force_wielded = 35
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1911,12 +2090,14 @@
 /area/yautja)
 "lr" = (
 /obj/structure/lamarr,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
 	},
 /area/yautja)
 "lw" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/gm/dirtgrassborder{
 	icon_state = "desert1"
 	},
@@ -1927,12 +2108,14 @@
 	},
 /obj/item/storage/large_holster/katana,
 /obj/item/weapon/melee/katana,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
 	},
 /area/yautja)
 "nd" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/gm/dirtgrassborder{
 	icon_state = "desert0"
 	},
@@ -1949,6 +2132,7 @@
 	color = "#6b675e";
 	layer = 2.79
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1961,12 +2145,13 @@
 	},
 /obj/structure/machinery/power/apc/almayer{
 	dir = 4;
-	pixel_y = 25
+	pixel_y = 22
 	},
 /obj/item/weapon/melee/twohanded/yautja/spear,
 /obj/item/weapon/melee/twohanded/yautja/spear,
 /obj/item/weapon/melee/twohanded/yautja/spear,
 /obj/item/weapon/melee/twohanded/yautja/spear,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -1985,6 +2170,7 @@
 	health = 80
 	},
 /obj/structure/machinery/door/window/southright,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1992,8 +2178,10 @@
 /area/yautja)
 "nW" = (
 /obj/structure/pipes/standard/simple/hidden{
-	dir = 6
+	dir = 6;
+	tag = "icon-intact (SOUTHEAST)"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "ob" = (
@@ -2003,6 +2191,7 @@
 /obj/effect/decal/remains/human{
 	pixel_y = -25
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -2040,6 +2229,7 @@
 	color = "#6b675e";
 	layer = 2.79
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2052,6 +2242,7 @@
 	pixel_x = -3;
 	pixel_y = 29
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -2063,6 +2254,7 @@
 	layer = 2.79
 	},
 /obj/item/tool/crowbar,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2079,6 +2271,7 @@
 	pixel_x = 10;
 	pixel_y = 3
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2089,6 +2282,7 @@
 	color = "#6b675e"
 	},
 /obj/item/storage/medicomp/full,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2098,6 +2292,7 @@
 /obj/structure/shuttle/window{
 	color = "#6b675e"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2138,12 +2333,14 @@
 /obj/item/stack/medical/splint{
 	name = "splints"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "sx" = (
 /obj/structure/window/framed/colony/reinforced/hull{
 	color = "#aba9a9"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -2154,10 +2351,12 @@
 	dir = 1;
 	name = "\improper Feed Hall"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "te" = (
 /obj/structure/xenoautopsy/tank/alien,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2167,6 +2366,7 @@
 /obj/structure/shuttle/window{
 	color = "#6b675e"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -2177,6 +2377,7 @@
 	color = "#6b675e"
 	},
 /obj/item/device/flashlight/lamp,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -2202,6 +2403,7 @@
 /obj/item/stack/sheet/plasteel{
 	amount = 30
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2211,6 +2413,7 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 8
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/gm/dirtgrassborder{
 	dir = 4
 	},
@@ -2219,6 +2422,7 @@
 /obj/structure/bed/chair/hunter{
 	dir = 4
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2229,6 +2433,7 @@
 	color = "#6b675e"
 	},
 /obj/item/weapon/melee/claymore/mercsword/ceremonial,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2236,10 +2441,12 @@
 /area/yautja)
 "vO" = (
 /obj/structure/machinery/shower{
-	dir = 4
+	dir = 4;
+	tag = "icon-shower (EAST)"
 	},
 /obj/structure/machinery/door/window/tinted,
 /obj/structure/window/reinforced/tinted,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -2251,6 +2458,7 @@
 	name = "Lurker Hide";
 	pixel_y = 30
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "wH" = (
@@ -2273,6 +2481,7 @@
 /obj/item/reagent_container/food/condiment/sugar,
 /obj/item/reagent_container/food/condiment/sugar,
 /obj/item/reagent_container/food/condiment/sugar,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	dir = 8;
 	icon_state = "darkred2"
@@ -2290,6 +2499,7 @@
 	dir = 8;
 	health = 80
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2300,6 +2510,7 @@
 	dir = 8
 	},
 /obj/structure/barricade/handrail/strata,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/gm/dirtgrassborder{
 	dir = 8;
 	icon_state = "grassdirt_corner"
@@ -2312,6 +2523,7 @@
 /obj/item/xeno_egg/forsaken,
 /obj/item/xeno_egg/forsaken,
 /obj/item/xeno_egg/forsaken,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -2327,6 +2539,7 @@
 	desc = "An old hide from a fearsome creature.";
 	name = "hunter hide"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2338,6 +2551,7 @@
 	dir = 10;
 	icon_state = "p_stair_full"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2345,6 +2559,7 @@
 /area/yautja)
 "yH" = (
 /obj/structure/closet/secure_closet/freezer/fridge/groceries,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	dir = 4;
 	icon_state = "darkred2"
@@ -2362,6 +2577,7 @@
 	pixel_x = 1;
 	pixel_y = 4
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2371,11 +2587,13 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 4
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/gm/dirtgrassborder{
 	dir = 8
 	},
 /area/yautja)
 "zA" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	icon_state = "dark2"
 	},
@@ -2393,6 +2611,7 @@
 	health = 80;
 	pixel_y = 16
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2400,6 +2619,7 @@
 /area/yautja)
 "AA" = (
 /obj/structure/reagent_dispensers/fueltank,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2407,15 +2627,18 @@
 /area/yautja)
 "Be" = (
 /obj/structure/machinery/cryopod/right,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "Br" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/gm/dirtgrassborder{
 	icon_state = "desert2"
 	},
 /area/yautja)
 "BB" = (
 /obj/structure/machinery/iv_drip,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -2430,6 +2653,7 @@
 /obj/item/tool/surgery/hemostat/predatorhemostat,
 /obj/item/tool/surgery/retractor/predatorretractor,
 /obj/item/tool/surgery/scalpel/predatorscalpel,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -2440,6 +2664,7 @@
 	color = "#6b675e"
 	},
 /obj/item/reagent_container/glass/beaker/silver,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2451,6 +2676,7 @@
 	name = "Prime Empress Hide";
 	pixel_y = 30
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2469,6 +2695,7 @@
 	name = "Primordial Empress Steak";
 	pixel_y = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2481,6 +2708,7 @@
 /obj/item/device/flashlight/slime{
 	anchored = 1
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2493,6 +2721,7 @@
 	name = "\improper External Airlock"
 	},
 /obj/structure/blocker/invisible_wall,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/space,
 /area/yautja)
 "DF" = (
@@ -2509,6 +2738,7 @@
 /obj/structure/closet/secure_closet/freezer/fridge{
 	locked = 0
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	dir = 9;
 	icon_state = "darkred2"
@@ -2516,6 +2746,7 @@
 /area/yautja)
 "DJ" = (
 /obj/structure/machinery/computer/crew,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -2523,6 +2754,7 @@
 /area/yautja)
 "Es" = (
 /obj/structure/bed/chair/hunter,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2532,12 +2764,14 @@
 /obj/structure/surface/table/reinforced/prison{
 	color = "#6b675e"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
 	},
 /area/yautja)
 "Fh" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	dir = 10;
@@ -2549,6 +2783,7 @@
 	color = "#6b675e"
 	},
 /obj/item/storage/medicomp/full,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "Fx" = (
@@ -2563,6 +2798,7 @@
 	icon_state = "security_cam";
 	name = "Hunter Nav Console"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -2572,6 +2808,7 @@
 /obj/structure/window/framed/colony/reinforced/hull{
 	color = "#aba9a9"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2579,10 +2816,12 @@
 /area/yautja)
 "FG" = (
 /obj/effect/landmark/clan_spawn,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "Gd" = (
 /obj/structure/machinery/door/airlock/strata/autoname,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "Gk" = (
@@ -2590,6 +2829,7 @@
 	color = "#6b675e"
 	},
 /obj/item/explosive/grenade/spawnergrenade/spesscarp,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2623,9 +2863,11 @@
 /obj/item/handcuffs,
 /obj/item/handcuffs,
 /obj/item/handcuffs,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "GM" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/gm/dirtgrassborder{
 	icon_state = "desert_dug"
 	},
@@ -2634,6 +2876,7 @@
 /obj/structure/prop/brazier/torch{
 	pixel_y = -2
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/mineral/sandstone/runed,
 /area/yautja)
 "GY" = (
@@ -2641,6 +2884,7 @@
 	color = "#6b675e"
 	},
 /obj/item/weapon/melee/chainofcommand,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2663,12 +2907,14 @@
 /obj/item/stack/medical/advanced/bruise_pack/predator,
 /obj/item/stack/medical/advanced/bruise_pack/predator,
 /obj/item/stack/medical/advanced/bruise_pack/predator,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "Hp" = (
 /obj/structure/bed/chair/hunter{
 	dir = 8
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2681,6 +2927,7 @@
 /obj/item/bedsheet/captain{
 	color = "#aba9a9"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2695,6 +2942,7 @@
 	health = 80;
 	pixel_y = 16
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2703,6 +2951,7 @@
 "If" = (
 /obj/structure/machinery/optable,
 /obj/effect/decal/cleanable/blood,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -2736,6 +2985,7 @@
 	pixel_x = -5;
 	pixel_y = 6
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "Ip" = (
@@ -2743,7 +2993,8 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 4
 	},
-/turf/open/gm/dirtgrassborder/weedable{
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/gm/dirtgrassborder{
 	icon_state = "grass1"
 	},
 /area/yautja)
@@ -2751,6 +3002,7 @@
 /obj/structure/machinery/door/airlock/strata/autoname{
 	name = "\improper Hellhound Quarters"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2760,6 +3012,7 @@
 /obj/structure/machinery/door/airlock/strata/autoname{
 	name = "\improper Elder Quarters"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "Je" = (
@@ -2782,12 +3035,14 @@
 /obj/item/stack/sheet/metal{
 	amount = 50
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
 	},
 /area/yautja)
 "JH" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -2799,6 +3054,7 @@
 	name = "sacred ceremonial dagger";
 	pixel_x = 25
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2810,6 +3066,7 @@
 	},
 /obj/item/reagent_container/food/snacks/bearmeat,
 /obj/effect/decal/cleanable/blood,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -2819,6 +3076,7 @@
 /obj/effect/decal/remains/human{
 	pixel_y = -25
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "KV" = (
@@ -2826,6 +3084,7 @@
 	color = "#6b675e"
 	},
 /obj/item/trash/plate,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2833,6 +3092,7 @@
 /area/yautja)
 "Lo" = (
 /obj/structure/machinery/vending/dinnerware,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2846,6 +3106,7 @@
 	icon_state = "overwatch";
 	name = "Hunter Flight Console"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2861,6 +3122,7 @@
 	desc = "The skin of a nightmare long thought lost to time.";
 	name = "corroder hide"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2872,6 +3134,7 @@
 	dir = 8;
 	icon_state = "p_stair_full"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -2881,25 +3144,30 @@
 /obj/structure/machinery/door/airlock/strata/autoname{
 	name = "\improper Blooded Teleporter"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
 	},
 /area/yautja)
 "NA" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	icon_state = "darkred2"
 	},
 /area/yautja)
 "Ok" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/gm/dirtgrassborder{
 	icon_state = "desert"
 	},
 /area/yautja)
 "OZ" = (
 /obj/structure/bed/chair/comfy/black{
-	dir = 1
+	dir = 1;
+	tag = "icon-comfychair (EAST)"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2919,13 +3187,23 @@
 	color = "#6b675e";
 	layer = 2.79
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
 	},
 /area/yautja)
+"Pn" = (
+/obj/structure/shuttle/engine/propulsion/burst/right{
+	color = "#aba9a9";
+	dir = 1
+	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/space,
+/area/yautja)
 "Pp" = (
 /obj/effect/alien/weeds/node/forsaken,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -2935,6 +3213,7 @@
 /obj/structure/machinery/door/airlock/strata/autoname{
 	name = "\improper Research Containment"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -2946,10 +3225,12 @@
 	name = "Spitter Hide";
 	pixel_y = 30
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "Qi" = (
 /obj/structure/machinery/gibber,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	dir = 6;
 	icon_state = "darkred2"
@@ -2961,6 +3242,7 @@
 /obj/item/reagent_container/food/snacks/meat/corgi,
 /obj/item/reagent_container/food/snacks/meat/xenomeat,
 /obj/item/reagent_container/food/snacks/meat/xenomeat,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	dir = 1;
 	icon_state = "darkred2"
@@ -2970,6 +3252,7 @@
 /obj/structure/machinery/chem_master{
 	req_skill_level = 2
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2981,6 +3264,7 @@
 	name = "sacred ceremonial dagger";
 	pixel_x = -25
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2993,12 +3277,14 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 8
 	},
-/turf/open/gm/dirtgrassborder/weedable{
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/gm/dirtgrassborder{
 	icon_state = "grass1"
 	},
 /area/yautja)
 "Rq" = (
 /obj/structure/machinery/prop/almayer/CICmap/yautja,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -3006,15 +3292,18 @@
 /area/yautja)
 "RE" = (
 /obj/structure/closet/secure_closet/freezer/fridge/groceries,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	dir = 6;
 	icon_state = "darkred2"
 	},
 /area/yautja)
 "RS" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/gm/dirtgrassborder,
 /area/yautja)
 "Sx" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	dir = 8;
 	icon_state = "darkred2"
@@ -3024,6 +3313,7 @@
 /obj/structure/bed/chair/hunter{
 	dir = 8
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "Ut" = (
@@ -3038,6 +3328,7 @@
 	dir = 4;
 	health = 80
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -3047,6 +3338,7 @@
 /obj/effect/decal/remains/xeno{
 	pixel_y = -25
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "UR" = (
@@ -3055,6 +3347,7 @@
 	dir = 5;
 	icon_state = "p_stair_full"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -3070,6 +3363,7 @@
 /obj/item/restraints,
 /obj/item/restraints,
 /obj/item/restraints,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "VT" = (
@@ -3084,6 +3378,7 @@
 	icon_state = "security_cam";
 	name = "Hunter Nav Console"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -3093,6 +3388,7 @@
 /obj/structure/window/framed/colony/reinforced/hull{
 	color = "#aba9a9"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	dir = 10;
@@ -3109,6 +3405,7 @@
 /obj/item/weapon/melee/baton/cattleprod,
 /obj/item/weapon/melee/baton/cattleprod,
 /obj/item/weapon/melee/baton/cattleprod,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "Wg" = (
@@ -3116,6 +3413,7 @@
 	dir = 1;
 	name = "\improper Gladiator Hall"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "Ww" = (
@@ -3124,6 +3422,7 @@
 	},
 /obj/item/reagent_container/food/snacks/stew,
 /obj/item/tool/kitchen/utensil/spoon,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -3138,6 +3437,7 @@
 	pixel_x = 10;
 	pixel_y = 3
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -3174,6 +3474,7 @@
 	pixel_x = -7;
 	pixel_y = 6
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "Xs" = (
@@ -3183,6 +3484,7 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 4
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/gm/dirtgrassborder{
 	dir = 1;
 	icon_state = "grassdirt_corner"
@@ -3190,38 +3492,60 @@
 /area/yautja)
 "XP" = (
 /obj/structure/machinery/cryopod,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
 	},
 /area/yautja)
+"Yq" = (
+/obj/structure/shuttle/engine/propulsion/burst/left{
+	color = "#aba9a9";
+	dir = 1
+	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/space,
+/area/yautja)
 "Ys" = (
 /obj/structure/reagent_dispensers/watertank,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	dir = 10;
 	icon_state = "darkred2"
 	},
+/area/yautja)
+"YH" = (
+/obj/structure/shuttle/engine/propulsion{
+	color = "#aba9a9";
+	dir = 1
+	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/open/space,
 /area/yautja)
 "YL" = (
 /obj/structure/machinery/door/airlock/strata/autoname{
 	dir = 1;
 	name = "\improper Cryo Room"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "YM" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/mineral/sandstone/runed/decor,
 /area/yautja)
 "Zi" = (
 /obj/structure/sink{
 	pixel_y = 25
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)
 "Zs" = (
 /obj/structure/machinery/door/airlock/strata/autoname{
 	name = "\improper Containment"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -3232,6 +3556,7 @@
 	color = "#6b675e"
 	},
 /obj/item/alien_embryo,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -3243,12 +3568,14 @@
 	dir = 8;
 	icon_state = "p_stair_full"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
 	},
 /area/yautja)
 "ZI" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/gm/dirtgrassborder{
 	icon_state = "desert3"
 	},
@@ -3257,6 +3584,7 @@
 /obj/structure/surface/table/reinforced/prison{
 	color = "#6b675e"
 	},
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -3270,6 +3598,7 @@
 /obj/item/stack/yautja_rope,
 /obj/item/stack/yautja_rope,
 /obj/item/stack/yautja_rope,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -5152,7 +5481,7 @@ aa
 aa
 aa
 aa
-ac
+Pn
 bj
 af
 ZR
@@ -5224,7 +5553,7 @@ aa
 aa
 aa
 aa
-ae
+YH
 bj
 af
 aC
@@ -5296,7 +5625,7 @@ aa
 aa
 aa
 aa
-ad
+Yq
 bj
 ag
 GP
@@ -5440,7 +5769,7 @@ aa
 aa
 aa
 aa
-ac
+Pn
 bj
 aA
 ap
@@ -5512,7 +5841,7 @@ aa
 aa
 aa
 aa
-ad
+Yq
 bj
 YM
 ap
@@ -5656,7 +5985,7 @@ aa
 aa
 aa
 aa
-ac
+Pn
 bj
 ai
 ap
@@ -5728,7 +6057,7 @@ aa
 aa
 aa
 aa
-ae
+YH
 bj
 aj
 ap
@@ -5800,7 +6129,7 @@ sx
 aa
 aa
 aa
-ae
+YH
 bj
 dS
 ap
@@ -5872,7 +6201,7 @@ sx
 aa
 aa
 aa
-ae
+YH
 bj
 ak
 ap
@@ -5944,7 +6273,7 @@ sx
 aa
 aa
 aa
-ad
+Yq
 bj
 al
 ap
@@ -6088,7 +6417,7 @@ aa
 aa
 aa
 aa
-ac
+Pn
 bj
 YM
 ap
@@ -6160,7 +6489,7 @@ aa
 aa
 aa
 aa
-ad
+Yq
 bj
 ay
 ap
@@ -6304,7 +6633,7 @@ aa
 aa
 aa
 aa
-ac
+Pn
 bj
 ag
 GP
@@ -6315,7 +6644,7 @@ bL
 cP
 bL
 bj
-bL
+cs
 cP
 bL
 bj
@@ -6376,7 +6705,7 @@ aa
 aa
 aa
 aa
-ae
+YH
 bj
 af
 aC
@@ -6448,7 +6777,7 @@ aa
 aa
 aa
 aa
-ad
+Yq
 bj
 af
 ZR

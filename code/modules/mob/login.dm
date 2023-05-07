@@ -43,13 +43,10 @@
 	//updating atom HUD
 	refresh_huds()
 
-	if(isnewplayer(src))
-		check_event_info()
-	else if(isxeno(src))
-		var/mob/living/carbon/xenomorph/X = src
-		check_event_info(X.hive.name)
-	else if(!isobserver(src) && faction)
-		check_event_info(faction)
+	if(client)
+		check_event_info("Global", client)
+		if(!isobserver(src) && faction)
+			check_event_info(faction.name, client)
 
 	if(client.player_details)
 		for(var/foo in client.player_details.post_login_callbacks)
@@ -57,6 +54,13 @@
 			CB.Invoke()
 
 	client.init_verbs()
+
+	var/soft_popcap = CONFIG_GET(number/soft_popcap)
+	var/popcap_value = GLOB.clients.len
+	if(popcap_value >= soft_popcap)
+		to_chat(src, SPAN_WARNING("<h1>[CONFIG_GET(string/soft_popcap_message)]</h1>"))
+
+	SSautobalancer.balance_action(src, "login")
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MOB_LOGIN, src)
 	SEND_SIGNAL(client, COMSIG_CLIENT_MOB_LOGIN, src)

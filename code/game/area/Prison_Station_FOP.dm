@@ -1,7 +1,6 @@
 //Base Instance
 /area/prison
 	name = "Fiorina Orbital Penitentiary - Main Cellblock"
-	ceiling = CEILING_GLASS
 	ambience_exterior = AMBIENCE_ALMAYER
 	ceiling_muffle = FALSE
 	minimap_color = MINIMAP_AREA_COLONY
@@ -45,7 +44,6 @@
 
 /area/prison/security/monitoring/medsec/south
 	name = "\improper Medium-Security Monitoring"
-	ceiling = CEILING_GLASS
 
 /area/prison/security/monitoring/medsec/central
 	name = "\improper Central Medium-Security Monitoring"
@@ -306,6 +304,8 @@
 
 /area/prison/cellblock/lowsec
 	minimap_color = MINIMAP_AREA_CELL_LOW
+
+/area/prison/cellblock
 
 /area/prison/cellblock/lowsec/nw
 	name = "\improper Northwest Low-Security Cellblock"

@@ -3,10 +3,10 @@
 	title = JOB_POLICE
 	total_positions = 5
 	spawn_positions = 5
-	allow_additional = 1
-	scaled = 1
+	allow_additional = TRUE
+	scaled = TRUE
 	selection_class = "job_mp"
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT
+	flags_startup_parameters = NO_FLAGS
 	gear_preset = /datum/equipment_preset/uscm_ship/uscm_police/mp
 	entry_message_body = "<a href='"+URL_WIKI_MP_GUIDE+"'>You</a> are held by a higher standard and are required to obey not only the server rules but the <a href='"+URL_WIKI_LAW+"'>Marine Law</a>. Failure to do so may result in a job ban or server ban. Your primary job is to maintain peace and stability aboard the ship. Marines can get rowdy after a few weeks of cryosleep! In addition, you are tasked with the security of high-ranking personnel, including the command staff. Keep them safe!"
 
@@ -16,7 +16,7 @@
 /datum/job/command/police/get_total_positions(latejoin = 0)
 	var/positions = spawn_positions
 	if(latejoin)
-		positions = mp_slot_formula(get_total_marines())
+		positions = mp_slot_formula(get_total_population(FACTION_MARINE))
 		if(positions <= total_positions_so_far)
 			positions = total_positions_so_far
 		else

@@ -4,20 +4,20 @@
 	name = "xenomorph structure"
 	build_type = /obj/effect/alien/resin/special
 	crystals_required = 45 * XENO_STRUCTURE_PLASMA_MULTIPLIER
-	var/datum/hive_status/hive_ref //Who gets what we build
+	var/datum/faction/faction
 	var/block_range = 1
 
 /datum/construction_template/xenomorph/set_structure_image()
 	build_icon = 'icons/mob/xenos/structures64x64.dmi'
 
-/datum/construction_template/xenomorph/complete() //Override because we need to pass the hive ref
+/datum/construction_template/xenomorph/complete()
 	if(!owner || !get_turf(owner))
 		log_debug("Constuction template ([name]) completed construction without a build location")
 		return
-	if(hive_ref)
-		hive_ref.remove_construction(owner)
+	if(faction)
+		faction.remove_construction(owner)
 	build_loc = get_turf(owner)
-	new build_type(build_loc, hive_ref)
+	new build_type(build_loc, faction)
 	playsound(build_loc, "alien_resin_build", 25)
 	qdel(owner)
 	qdel(src)
@@ -31,7 +31,7 @@
 
 /datum/construction_template/xenomorph/cluster
 	name = XENO_STRUCTURE_CLUSTER
-	build_type = /obj/effect/alien/resin/special/cluster
+	build_type = /obj/effect/alien/resin/special/pylon/cluster
 	build_icon_state = "hive_cluster"
 	pixel_y = -8
 	pixel_x = -8

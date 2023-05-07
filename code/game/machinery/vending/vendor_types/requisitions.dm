@@ -34,13 +34,14 @@
 		list("VP78 Pistol", round(scale * 4), /obj/item/storage/box/guncase/vp78, VENDOR_ITEM_REGULAR),
 		list("SU-6 Smart Pistol", round(scale * 3), /obj/item/storage/box/guncase/smartpistol, VENDOR_ITEM_REGULAR),
 		list("MOU-53 Shotgun", round(scale * 2), /obj/item/storage/box/guncase/mou53, VENDOR_ITEM_REGULAR),
-		list("XM88 Heavy Rifle", round(scale * 3), /obj/item/storage/box/guncase/xm88, VENDOR_ITEM_REGULAR),
 		list("M41AE2 Heavy Pulse Rifle", round(scale * 2), /obj/item/storage/box/guncase/lmg, VENDOR_ITEM_REGULAR),
 		list("M41A Pulse Rifle MK1", round(scale * 3), /obj/item/storage/box/guncase/m41aMK1, VENDOR_ITEM_REGULAR),
+		list("MOU-53 Shotgun", round(scale * 3), /obj/item/storage/box/guncase/mou53, VENDOR_ITEM_REGULAR),
+		list("M41AE2 Heavy Pulse Rifle", round(scale * 2), /obj/item/storage/box/guncase/lmg, VENDOR_ITEM_REGULAR),
 		list("M56D Heavy Machine Gun", round(scale * 2), /obj/item/storage/box/guncase/m56d, VENDOR_ITEM_REGULAR),
-		list("M2C Heavy Machine Gun", round(scale * 2), /obj/item/storage/box/guncase/m2c, VENDOR_ITEM_REGULAR),
+		list("SGL2 Heavy Grenade Launcher Gun", round(scale * 2), /obj/item/storage/box/guncase/sgl2, VENDOR_ITEM_REGULAR),
+		list("RCT Heavy Rocket Launcher Gun", round(scale * 2), /obj/item/storage/box/guncase/rct, VENDOR_ITEM_REGULAR),
 		list("M240 Incinerator Unit", round(scale * 2), /obj/item/storage/box/guncase/flamer, VENDOR_ITEM_REGULAR),
-		list("M79 Grenade Launcher", round(scale * 3), /obj/item/storage/box/guncase/m79, VENDOR_ITEM_REGULAR),
 
 		list("EXPLOSIVES", -1, null, null),
 		list("M15 Fragmentation Grenade", round(scale * 2), /obj/item/explosive/grenade/high_explosive/m15, VENDOR_ITEM_REGULAR),
@@ -257,6 +258,7 @@
 		list("MISCELLANEOUS", -1, null, null),
 		list("Combat Flashlight", round(scale * 5), /obj/item/device/flashlight/combat, VENDOR_ITEM_REGULAR),
 		list("Entrenching Tool (ET)", round(scale * 2), /obj/item/tool/shovel/etool/folded, VENDOR_ITEM_REGULAR),
+		list("Trench Shovel (TS)", round(scale * 1), /obj/item/tool/shovel/etool/trench, VENDOR_ITEM_REGULAR),
 		list("M89-S Signal Flare Pack", round(scale * 1), /obj/item/storage/box/m94/signal, VENDOR_ITEM_REGULAR),
 		list("Machete Scabbard (Full)", round(scale * 5), /obj/item/storage/large_holster/machete/full, VENDOR_ITEM_REGULAR),
 		list("Binoculars", round(scale * 1), /obj/item/device/binoculars, VENDOR_ITEM_REGULAR),
@@ -301,31 +303,52 @@
 		list("M4A3 AP Magazine (9mm)", round(scale * 2), /obj/item/ammo_magazine/pistol/ap, VENDOR_ITEM_REGULAR),
 
 		list("EXTENDED AMMUNITION", -1, null, null),
-		list("M39 Extended Magazine (10x20mm)", round(scale * 9.5) + 3, /obj/item/ammo_magazine/smg/m39/extended, VENDOR_ITEM_REGULAR),
-		list("M41A MK2 Extended Magazine (10x24mm)", round(scale * 8.1), /obj/item/ammo_magazine/rifle/extended, VENDOR_ITEM_REGULAR),
+		list("M39 Extended Magazine", round(scale * 4.75), /obj/item/ammo_magazine/smg/m39/extended, VENDOR_ITEM_REGULAR),
+		list("M41A MK2 Extended Magazine", round(scale * 7.5), /obj/item/ammo_magazine/rifle/extended, VENDOR_ITEM_REGULAR),
 
 		list("SPECIAL AMMUNITION", -1, null, null),
-		list("M56 Powerpack", 2, /obj/item/smartgun_powerpack, VENDOR_ITEM_REGULAR),
-		list("M56 Smartgun Drum", 4, /obj/item/ammo_magazine/smartgun, VENDOR_ITEM_REGULAR),
-		list("M44 Heavy Speed Loader (.44)", round(scale * 10.5), /obj/item/ammo_magazine/revolver/heavy, VENDOR_ITEM_REGULAR),
-		list("M44 Marksman Speed Loader (.44)", round(scale * 5.7), /obj/item/ammo_magazine/revolver/marksman, VENDOR_ITEM_REGULAR),
-		list("M4A3 HP Magazine (9mm)", round(scale * 2), /obj/item/ammo_magazine/pistol/hp, VENDOR_ITEM_REGULAR),
-		list("M41AE2 Holo Target Rounds (10x24mm)", round(scale * 2), /obj/item/ammo_magazine/rifle/lmg/holo_target, VENDOR_ITEM_REGULAR),
+		list("M56 Powerpack", round(scale * 1), /obj/item/smartgun_powerpack, VENDOR_ITEM_REGULAR),
+		list("M56 Smartgun Drum", round(scale * 2), /obj/item/ammo_magazine/smartgun, VENDOR_ITEM_REGULAR),
+		list("M44 Heavy Speed Loader (.44)", round(scale * 2.5), /obj/item/ammo_magazine/revolver/heavy, VENDOR_ITEM_REGULAR),
+		list("M44 Marksman Speed Loader (.44)", round(scale * 2.5), /obj/item/ammo_magazine/revolver/marksman, VENDOR_ITEM_REGULAR),
+		list("M4A3 HP Magazine (9mm)", round(scale * 3), /obj/item/ammo_magazine/pistol/hp, VENDOR_ITEM_REGULAR),
+		list("M41AE2 Holo Target Rounds", round(scale * 2), /obj/item/ammo_magazine/rifle/lmg/holo_target, VENDOR_ITEM_REGULAR),
 
 		list("RESTRICTED FIREARM AMMUNITION", -1, null, null),
 		list("VP78 Magazine", round(scale * 11.2), /obj/item/ammo_magazine/pistol/vp78, VENDOR_ITEM_REGULAR),
 		list("SU-6 Smartpistol Magazine (.45)", round(scale * 12,8), /obj/item/ammo_magazine/pistol/smart, VENDOR_ITEM_REGULAR),
 		list("M240 Incinerator Tank", round(scale * 3), /obj/item/ammo_magazine/flamer_tank, VENDOR_ITEM_REGULAR),
-		list("M41AE2 Box Magazine (10x24mm)", round(scale * 3), /obj/item/ammo_magazine/rifle/lmg, VENDOR_ITEM_REGULAR),
-		list("M41A MK1 Magazine (10x24mm)", round(scale * 4.5), /obj/item/ammo_magazine/rifle/m41aMK1, VENDOR_ITEM_REGULAR),
-		list("M41A MK1 AP Magazine (10x24mm)", round(scale * 2), /obj/item/ammo_magazine/rifle/m41aMK1/ap, VENDOR_ITEM_REGULAR),
+		list("M41AE2 Box Magazine", round(scale * 3), /obj/item/ammo_magazine/rifle/lmg, VENDOR_ITEM_REGULAR),
+		list("M41A MK1 Magazine", round(scale * 4), /obj/item/ammo_magazine/rifle/m41aMK1, VENDOR_ITEM_REGULAR),
+		list("M41A MK1 AP Magazine", round(scale * 2), /obj/item/ammo_magazine/rifle/m41aMK1/ap, VENDOR_ITEM_REGULAR),
 		list("M56D Drum Magazine", round(scale * 2), /obj/item/ammo_magazine/m56d, VENDOR_ITEM_REGULAR),
-		list("M2C Box Magazine", round(scale * 2), /obj/item/ammo_magazine/m2c, VENDOR_ITEM_REGULAR),
 
-		list("SHOTGUN SHELL BOXES", -1, null, null),
+		list("AMMUNITION BOXES", -1, null, null),
+		list("Rifle Ammunition Box", round(scale * 2), /obj/item/ammo_box/rounds, VENDOR_ITEM_REGULAR),
+		list("Rifle Ammunition Box (10x24mm AP)", round(scale * 1), /obj/item/ammo_box/rounds/ap, VENDOR_ITEM_REGULAR),
+		list("SMG Ammunition Box (10x20mm HV)", round(scale * 2), /obj/item/ammo_box/rounds/smg, VENDOR_ITEM_REGULAR),
+		list("SMG Ammunition Box (10x20mm AP)", round(scale * 1), /obj/item/ammo_box/rounds/smg/ap, VENDOR_ITEM_REGULAR),
+
+
+		list("MAGAZINE BOXES", -1, null, null),
+		list("Magazine Box (88 Mod 4 AP x 16)", round(scale * 1), /obj/item/ammo_box/magazine/mod88, VENDOR_ITEM_REGULAR),
+		list("Magazine Box (AP L42A x 16)", round(scale * 1), /obj/item/ammo_box/magazine/l42a/ap, VENDOR_ITEM_REGULAR),
+		list("Magazine Box (AP M39 x 12)", round(scale * 1), /obj/item/ammo_box/magazine/m39/ap, VENDOR_ITEM_REGULAR),
+		list("Magazine Box (AP M41A x 10)", round(scale * 1), /obj/item/ammo_box/magazine/ap, VENDOR_ITEM_REGULAR),
+		list("Magazine Box (Ext M39 x 10)", round(scale * 1.5), /obj/item/ammo_box/magazine/m39/ext, VENDOR_ITEM_REGULAR),
+		list("Magazine Box (Ext M41A x 8)", round(scale * 1.5), /obj/item/ammo_box/magazine/ext, VENDOR_ITEM_REGULAR),
+		list("Magazine Box (L42A x 16)", round(scale * 2), /obj/item/ammo_box/magazine/l42a, VENDOR_ITEM_REGULAR),
+		list("Magazine Box (M39 x 12)", round(scale * 2), /obj/item/ammo_box/magazine/m39, VENDOR_ITEM_REGULAR),
+		list("Magazine Box (M41A x 10)", round(scale * 2), /obj/item/ammo_box/magazine, VENDOR_ITEM_REGULAR),
+		list("Magazine Box (M4A3 x 16)", round(scale * 1), /obj/item/ammo_box/magazine/m4a3, VENDOR_ITEM_REGULAR),
+		list("Magazine Box (SU-6 x 16)", round(scale * 1), /obj/item/ammo_box/magazine/su6, VENDOR_ITEM_REGULAR),
+		list("Magazine Box (VP78 x 16)", round(scale * 1), /obj/item/ammo_box/magazine/vp78, VENDOR_ITEM_REGULAR),
 		list("Shotgun Shell Box (Buckshot x 100)", round(scale * 1), /obj/item/ammo_box/magazine/shotgun/buckshot, VENDOR_ITEM_REGULAR),
 		list("Shotgun Shell Box (Flechette x 100)", round(scale * 1), /obj/item/ammo_box/magazine/shotgun/flechette, VENDOR_ITEM_REGULAR),
 		list("Shotgun Shell Box (Slugs x 100)", round(scale * 1), /obj/item/ammo_box/magazine/shotgun, VENDOR_ITEM_REGULAR),
+		list("Speed Loaders Box (M44 x 16)", round(scale * 1), /obj/item/ammo_box/magazine/m44, VENDOR_ITEM_REGULAR),
+		list("Speed Loaders Box (Marksman M44 x 16)", round(scale * 1), /obj/item/ammo_box/magazine/m44/marksman, VENDOR_ITEM_REGULAR),
+		list("Speed Loaders Box (Heavy M44 x 16)", round(scale * 1), /obj/item/ammo_box/magazine/m44/heavy, VENDOR_ITEM_REGULAR)
 		)
 
 /obj/structure/machinery/cm_vending/sorted/cargo_ammo/stock(obj/item/item_to_stock, mob/user)
@@ -391,8 +414,8 @@
 		list("M41A AP Magazine (10x24mm)", round(scale * 3), /obj/item/ammo_magazine/rifle/ap, VENDOR_ITEM_REGULAR),
 
 		list("EXTENDED AMMUNITION", -1, null, null),
-		list("M39 Extended Magazine (10x20mm)", round(scale * 1.8), /obj/item/ammo_magazine/smg/m39/extended, VENDOR_ITEM_REGULAR),
-		list("M41A Extended Magazine (10x24mm)", round(scale * 1.9), /obj/item/ammo_magazine/rifle/extended, VENDOR_ITEM_REGULAR),
+		list("M39 Extended Magazine", round(scale * 1.8), /obj/item/ammo_magazine/smg/m39/extended, VENDOR_ITEM_REGULAR),
+		list("M41A MK2 Extended Magazine", round(scale * 1.9), /obj/item/ammo_magazine/rifle/extended, VENDOR_ITEM_REGULAR),
 
 		list("SPECIAL AMMUNITION", -1, null, null),
 		list("M56 Smartgun Drum", 1, /obj/item/ammo_magazine/smartgun, VENDOR_ITEM_REGULAR),
@@ -403,9 +426,8 @@
 		list("VP78 Magazine", round(scale * 5), /obj/item/ammo_magazine/pistol/vp78, VENDOR_ITEM_REGULAR),
 		list("SU-6 Smartpistol Magazine (.45)", round(scale * 5), /obj/item/ammo_magazine/pistol/smart, VENDOR_ITEM_REGULAR),
 		list("M240 Incinerator Tank", round(scale * 3), /obj/item/ammo_magazine/flamer_tank, VENDOR_ITEM_REGULAR),
-		list("M41AE2 Box Magazine (10x24mm)", round(scale * 3), /obj/item/ammo_magazine/rifle/lmg, VENDOR_ITEM_REGULAR),
+		list("M41AE2 Box Magazine", round(scale * 3), /obj/item/ammo_magazine/rifle/lmg, VENDOR_ITEM_REGULAR),
 		list("M56D Drum Magazine", round(scale * 2), /obj/item/ammo_magazine/m56d, VENDOR_ITEM_REGULAR),
-		list("M2C Box Magazine", round(scale * 2), /obj/item/ammo_magazine/m2c, VENDOR_ITEM_REGULAR),
 		list("HIRR Baton Slugs", round(scale * 6), /obj/item/explosive/grenade/slug/baton, VENDOR_ITEM_REGULAR),
 		list("M74 AGM-S Star Shell", round(scale * 2), /obj/item/explosive/grenade/high_explosive/airburst/starshell, VENDOR_ITEM_REGULAR),
 		list("M74 AGM-S Hornet Shell", round(scale * 4), /obj/item/explosive/grenade/high_explosive/airburst/hornet_shell, VENDOR_ITEM_REGULAR),
@@ -610,7 +632,7 @@
 
 		list("MASKS", -1, null, null, null),
 		list("Gas Mask", 20, /obj/item/clothing/mask/gas, VENDOR_ITEM_REGULAR),
-		list("Heat Absorbent Coif", 10, /obj/item/clothing/mask/rebreather/scarf, VENDOR_ITEM_REGULAR),
+		list("Heat Absorbent Coif", 10, /obj/item/clothing/mask/rebreather/scarf, VENDOR_ITEM_REGULAR)
 		)
 
 /obj/structure/machinery/cm_vending/sorted/uniform_supply/ui_state(mob/user)

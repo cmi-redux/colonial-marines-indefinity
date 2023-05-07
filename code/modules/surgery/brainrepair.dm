@@ -51,7 +51,7 @@
 		SPAN_NOTICE("[user] finishes extracting fragments of bone from your brain."),
 		SPAN_NOTICE("[user] finishes extracting fragments of bone from [target]'s brain."))
 
-	user.count_niche_stat(STATISTICS_NICHE_SURGERY_BRAIN)
+	user.count_statistic_stat(STATISTICS_SURGERY_BRAIN)
 
 	var/datum/internal_organ/brain/B = target.internal_organs_by_name["brain"]
 	if(B)
@@ -71,7 +71,7 @@
 
 	log_interact(user, target, "[key_name(user)] failed to take the bone chips out of [key_name(target)]'s brain with \the [tool], possibly aborting [surgery].")
 
-	var/datum/wound/internal_bleeding/I = new (0)
+	var/datum/wound/internal_bleeding/I = new(0)
 	surgery.affected_limb.add_bleeding(I, TRUE)
 	surgery.affected_limb.wounds += I
 	target.custom_pain("You feel something rip in your [surgery.affected_limb.display_name]!", 1)

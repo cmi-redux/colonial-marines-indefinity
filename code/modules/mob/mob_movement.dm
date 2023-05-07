@@ -196,17 +196,15 @@
 				return
 		mob.crawling = FALSE
 		if(mob.confused)
-			mob.Move(get_step(mob, pick(cardinal)))
+			mob.Move(get_step(mob, pick( GLOB.cardinals)))
 		else
 			. = ..()
 
-			if (mob.tile_contents)
+			if(mob.tile_contents)
 				mob.tile_contents = list()
 		if(.)
 			mob.track_steps_walked()
 			mob.life_steps_total++
-			if(mob.clone != null)
-				mob.update_clone()
 		mob.move_intentionally = FALSE
 		moving = FALSE
 		next_movement = world.time + move_delay

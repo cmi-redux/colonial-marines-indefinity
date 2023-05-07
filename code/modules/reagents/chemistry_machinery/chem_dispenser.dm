@@ -111,7 +111,7 @@
 			beakerCurrentVolume += R.volume
 	.["beakerContents"] = beakerContents
 
-	if (beaker)
+	if(beaker)
 		.["beakerCurrentVolume"] = beakerCurrentVolume
 		.["beakerMaxVolume"] = beaker.volume
 	else

@@ -2,6 +2,7 @@
 	supervisors = "the acting commanding officer"
 	total_positions = 1
 	spawn_positions = 1
+	balance_formulas = list("misc", BALANCE_FORMULA_ENGINEER, BALANCE_FORMULA_SUPPORT)
 
 /datum/timelock/engineer
 	name = "Engineering Roles"

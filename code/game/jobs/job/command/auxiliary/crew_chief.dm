@@ -4,7 +4,7 @@
 	spawn_positions = 2
 	allow_additional = TRUE
 	scaled = TRUE
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT
+	flags_startup_parameters = NO_FLAGS
 	gear_preset = /datum/equipment_preset/uscm_ship/dcc
 	entry_message_body = "<a href='"+URL_WIKI_DCC_GUIDE+"'>Your job is to assist</a> the pilot officer maintain the ship's dropship. You have authority only on the dropship, but you are expected to maintain order, as not to disrupt the pilot."
 

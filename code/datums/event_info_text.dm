@@ -1,26 +1,22 @@
 /datum/custom_event_info
-	var/faction = "default" //here category/faction/hive name stored
-	var/msg = "" //here is the message itself
-
+	var/name = "default"
+	var/faction_name = "default"
+	var/datum/faction/faction = null
+	var/msg = ""
 
 //this shows event info to player. can pass clients and mobs
-/datum/custom_event_info/proc/show_player_event_info(user)
+/datum/custom_event_info/proc/show_player_event_info(client/user)
 
-	if(!istype(user, /client))
-		if(ismob(user))
-			var/mob/M = user
-			if(!M.client)
-				return
-		else
-			return
+	if(!istype(user))
+		return
 
 	if(msg == "")
-		to_chat(user, SPAN_WARNING("No [faction] custom event message has been found. Either no custom event is taking place, admin hasn't properly set this or deemed it unnecessary to be set."))
+		to_chat(user, SPAN_WARNING("Для [faction_name] кастомное ивент сообщение не найдено. Либо не происходит никакого ивента или администраторы не установили его или посчитали что не нужно устанавливать."))
 		return
 
 	var/dat
-	dat = "<h1 class='alert'>[faction] Event Message</h1>"
-	dat += "<h2 class='alert'>A custom event is in process. OOC Info:</h2>"
+	dat = "<h1 class='alert'>[faction_name] Ивент сообщение</h1>"
+	dat += "<h2 class='alert'>Кастомный ивент в процессе. OOC Info:</h2>"
 	dat += SPAN_ALERT("[msg]<br>")
 	to_chat(user, dat)
 	return
@@ -31,33 +27,22 @@
 	if(!msg)
 		return
 
-	if(faction == "Global")
-		var/dat = "<h1 class='alert'>[faction] Event Message</h1>"
-		dat += "<h2 class='alert'>A custom event is in process. OOC Info:</h2>"
+	if(faction_name == "Global")
+		var/dat = "<h1 class='alert'>[faction_name] Ивент сообщение</h1>"
+		dat += "<h2 class='alert'>Кастомный ивент в прогрессе. OOC Info:</h2>"
 		dat += SPAN_ALERT("[msg]<br>")
 		to_world(dat)
 		return
-
-	else if(faction in FACTION_LIST_HUMANOID)
-		for(var/mob/M in GLOB.human_mob_list)
-			if(M && M.faction == faction)
-				show_player_event_info(M)
+	else if(faction_name)
+		for(var/mob/M in faction.totalMobs)
+			show_player_event_info(M.client)
 		return
 
-	else
-		var/datum/hive_status/hive
-		for(var/hivenumber in GLOB.hive_datum)
-			hive = GLOB.hive_datum[hivenumber]
-			if(hive.name == faction)
-				for(var/mob/M in hive.totalXenos)
-					show_player_event_info(M)
-				return
-
-	message_admins("ERROR, ([faction ? faction : "name lost"]) faction is not found for event info.")
+	message_admins("ОШИБКА, ([faction_name ? faction_name : "name lost"]) фракция не найдена для ивент оповещения.")
 	return
 
-/mob/proc/check_event_info(category = "Global")
+/proc/check_event_info(category = "Global", client/user)
 	if(GLOB.custom_event_info_list[category])
 		var/datum/custom_event_info/CEI = GLOB.custom_event_info_list[category]
 		if(CEI.msg)
-			CEI.show_player_event_info(src)
+			CEI.show_player_event_info(user)

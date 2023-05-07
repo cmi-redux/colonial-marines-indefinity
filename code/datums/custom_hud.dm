@@ -49,11 +49,12 @@
 	var/UI_STATUS_Y_OFFSET = 26
 
 	//Middle right (status indicators)
-	var/UI_SL_LOCATOR_LOC = "EAST-1:28,9:18"
-	var/UI_OXYGEN_LOC = "EAST-1:28,8:17"
-	var/UI_HEALTH_LOC = "EAST-1:28,7:15"
-	var/UI_TEMP_LOC = "EAST-1:28,6:13"
-	var/UI_NUTRITION_LOC = "EAST-1:28,5:11"
+	var/UI_SL_LOCATOR_LOC 	= "EAST-1:28,9:18"
+	var/UI_OXYGEN_LOC 		= "EAST-1:28,8:17"
+	var/UI_HEALTH_LOC 		= "EAST-1:28,7:15"
+	var/UI_TEMP_LOC 		= "EAST-1:28,6:13"
+	var/UI_NUTRITION_LOC 	= "EAST-1:28,5:11"
+	var/UI_AMMO 			= "EAST-1:28,10:25"
 
 	//Pop-up inventory
 	var/ui_shoes = "WEST+1:8,1:5"

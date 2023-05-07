@@ -68,6 +68,7 @@ unless the surgical tool is completely unsuited to what it's being used for.*/
 	/obj/item/tool/weldingtool,\
 	/obj/item/tool/pen,\
 	/obj/item/stack/rods,\
+	/obj/item/tool/surgery/surgsynth_graftline,\
 	/obj/item/tool/surgery/surgical_line,\
 	/obj/item/tool/surgery/synthgraft\
 	)
@@ -134,6 +135,7 @@ See also /datum/surgery_step/cut_larval_pseudoroots, /datum/surgery_step/retract
 
 ///Tools used to suture damaged flesh. Same tools as BLOODVESSEL, but surgical line is ideal for this.
 #define SURGERY_TOOLS_SUTURE list(\
+	/obj/item/tool/surgery/surgsynth_graftline = SURGERY_TOOL_MULT_IDEAL,\
 	/obj/item/tool/surgery/surgical_line = SURGERY_TOOL_MULT_IDEAL,\
 	/obj/item/tool/surgery/FixOVein = SURGERY_TOOL_MULT_SUBSTITUTE,\
 	/obj/item/stack/cable_coil = SURGERY_TOOL_MULT_BAD_SUBSTITUTE,\

@@ -1,5 +1,6 @@
 macro "default"
 
+
 menu "menu"
 	elem
 		name = "&File"
@@ -163,19 +164,18 @@ window "mainwindow"
 		anchor1 = -1,-1
 		anchor2 = -1,-1
 		is-default = true
-		saved-params = "pos;size;is-minimized;is-maximized"
-		title = "CM-SS13 - USS Almayer"
-		is-maximized = true
-		statusbar = false
 		icon = 'icons\\taskbar\\gml_distress.png'
 		macro = "default"
 		menu = "menu"
+		outer-size = 3862x2122
+		inner-size = 3840x2036
 	elem "split"
 		type = CHILD
 		pos = 3,0
 		size = 634x440
 		anchor1 = 0,0
 		anchor2 = 100,100
+		background-color = none
 		saved-params = "splitter"
 		left = "mapwindow"
 		right = "infowindow"
@@ -239,22 +239,26 @@ window "infowindow"
 		saved-params = "pos;size;is-minimized;is-maximized"
 		title = "Info"
 		is-pane = true
+		outer-size = 662x481
+		inner-size = 640x425
 	elem "info"
 		type = CHILD
 		pos = 0,30
 		size = 640x445
 		anchor1 = 0,0
 		anchor2 = 100,100
+		background-color = none
 		saved-params = "splitter"
 		left = "statwindow"
 		right = "outputwindow"
 		is-vert = false
-	elem "changelog"
+	elem
 		type = BUTTON
 		pos = 16,5
 		size = 104x20
 		anchor1 = 3,0
 		anchor2 = 19,0
+		background-color = none
 		saved-params = "is-checked"
 		text = "Changelog"
 		command = "Changelog"
@@ -264,6 +268,7 @@ window "infowindow"
 		size = 100x20
 		anchor1 = 19,0
 		anchor2 = 34,0
+		background-color = none
 		saved-params = "is-checked"
 		text = "Rules"
 		command = "rules"
@@ -273,6 +278,7 @@ window "infowindow"
 		size = 100x20
 		anchor1 = 34,0
 		anchor2 = 50,0
+		background-color = none
 		saved-params = "is-checked"
 		text = "Wiki"
 		command = "wiki"
@@ -282,6 +288,7 @@ window "infowindow"
 		size = 100x20
 		anchor1 = 50,0
 		anchor2 = 66,0
+		background-color = none
 		saved-params = "is-checked"
 		text = "Forum"
 		command = "forum"
@@ -291,6 +298,7 @@ window "infowindow"
 		size = 100x20
 		anchor1 = 66,0
 		anchor2 = 81,0
+		background-color = none
 		saved-params = "is-checked"
 		text = "Submit Bug"
 		command = "submit-bug"

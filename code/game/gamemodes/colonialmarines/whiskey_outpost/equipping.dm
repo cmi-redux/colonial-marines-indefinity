@@ -19,7 +19,7 @@ Stay alive, and Godspeed, commander!"}
 		return
 	sleep(15)
 	if(H?.loc)
-		marine_announcement("All forces, Ground Commander [H.real_name] is in command!")
+		faction_announcement("All forces, Ground Commander [H.real_name] is in command!")
 
 
 
@@ -185,12 +185,12 @@ Ensure power is up, and the bunker is well defended. You share your bunker crew 
 //*************************************
 //---------------MAINT TECH-------------
 //*************************************/
-/datum/job/logistics/tech/maint/whiskey
+/datum/job/logistics/otech/maint/whiskey
 	title = JOB_WO_ORDNANCE_TECH
 	supervisors = "the bunker crew master and the quartermaster"
 	gear_preset = /datum/equipment_preset/wo/bc
 
-/datum/job/logistics/tech/maint/whiskey/generate_entry_message(mob/living/carbon/human/H)
+/datum/job/logistics/otech/maint/whiskey/generate_entry_message(mob/living/carbon/human/H)
 	. = {"You've worked here for a while, figuring it was a pretty comfy job. Now you gotta fight for your life. Have fun with that.
 Assist both the Bunker Crew Master and the Quartermaster in their duties."}
 
@@ -209,20 +209,6 @@ Assist both the Bunker Crew Master and the Quartermaster in their duties."}
 	. = {"You've worked here for a while, figuring it was a pretty comfy job. Now you gotta fight for your life. Have fun with that.
 Assist both the Bunker Crew Master and the Quartermaster in their duties."}
 
-
-//Giving the liaison a role on whiskey outpost! Nothing can go wrong here. N o t h i n g.
-//*************************************
-//-----------------LIAISON---------------
-//*************************************/
-/datum/job/civilian/liaison/whiskey
-	title = JOB_WO_CORPORATE_LIAISON
-	supervisors = "the press"
-	gear_preset = /datum/equipment_preset/wo/reporter
-
-/datum/job/civilian/liaison/whiskey/generate_entry_message(mob/living/carbon/human/H)
-	. = {"What a scoop! You followed the marines down to LV-624 to see what kinda mischief they'd get into down here, but it seems that trouble has come to them!
-This could be the story of the world! 'Brave Marines in brutal combat with unknown hostile alien lifeforms!' It'd surely get Mr. Parkerson to notice you in the office if you brought him a story like this!
-You just gotta get out of this jungle to tell the tale!"}
 
 //this calls  self-setting headsets for marines AFTER they are assigned squads
 /datum/game_mode/whiskey_outpost/proc/self_set_headset(mob/living/carbon/human/H)

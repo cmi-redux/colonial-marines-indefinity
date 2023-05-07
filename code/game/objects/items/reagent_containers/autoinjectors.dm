@@ -65,7 +65,7 @@
 	..()
 	update_icon()
 
-/obj/item/reagent_container/hypospray/autoinjector/on_exit_storage()
+/obj/item/reagent_container/hypospray/autoinjector/on_exit_storage(obj/item/storage/storage)
 	..()
 	update_icon()
 

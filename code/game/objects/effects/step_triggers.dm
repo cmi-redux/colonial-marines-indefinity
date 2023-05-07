@@ -50,7 +50,8 @@
 	if(ismob(AM))
 		var/mob/M = AM
 		if(immobilize)
-			M.canmove = 0
+			M.canmove = FALSE
+			M.can_action = FALSE
 
 	affecting.Add(AM)
 	while(AM && !stopthrow)
@@ -87,59 +88,14 @@
 	if(ismob(AM))
 		var/mob/M = AM
 		if(immobilize)
-			M.canmove = 1
+			M.canmove = TRUE
+			M.can_action = TRUE
 
 /* Stops things thrown by a thrower, doesn't do anything */
 
 /obj/effect/step_trigger/stopper
 
 /* Deletes any clones related to the atom */
-
-/obj/effect/step_trigger/clone_cleaner
-	icon_state = "cleaner"
-
-/obj/effect/step_trigger/clone_cleaner/Trigger(atom/movable/A)
-	if(A.clone)
-		A.destroy_clone()
-
-/* Seamless vector teleporter - to be used with projectors */
-
-/obj/effect/step_trigger/teleporter_vector
-	var/vector_x = 0 //Teleportation vector
-	var/vector_y = 0
-	var/vector_z = 0
-	affect_ghosts = 1
-
-/obj/effect/step_trigger/teleporter_vector/Trigger(atom/movable/A)
-	if(A && A.loc && A.type != /atom/movable/clone) //Prevent clones from teleporting
-		var/lx = A.x
-		var/ly = A.y
-		var/target = locate(A.x + vector_x, A.y + vector_y, A.z)
-		var/target_dir = get_dir(A, target)
-
-		if(A.clone) //Clones have to be hard-synced both before and after the transition
-			A.update_clone() //Update No. 1
-
-		if(istype(A,/mob))
-			var/mob/AM = A
-			sleep(AM.movement_delay() + 0.4) //Make the transition as seamless as possible
-
-		if(!Adjacent(A, locate(lx, ly, A.z))) //If the subject has moved too quickly, abort - this prevents double jumping
-			return
-
-		for(var/mob/M in target) //If the target location is obstructed, abort
-			if(M.BlockedPassDirs(A, target_dir))
-				return
-
-		A.x += vector_x
-		A.y += vector_y
-		A.z += vector_z
-
-		if(A.clone)
-			A.clone.proj_x *= -1 //Swap places with the clone
-			A.clone.proj_y *= -1
-			A.update_clone() //Update No. 2
-
 
 /* Instant teleporter */
 
@@ -151,7 +107,7 @@
 	var/teleport_z = 0
 
 /obj/effect/step_trigger/teleporter/Trigger(atom/movable/A, teleportation_type)
-	set waitfor = 0
+	set waitfor = FALSE
 
 	if(!istype(A,/obj) && !istype(A,/mob)) //mobs and objects only.
 		return

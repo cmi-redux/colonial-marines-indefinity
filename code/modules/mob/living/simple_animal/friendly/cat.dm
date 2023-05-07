@@ -47,7 +47,7 @@
 
 /mob/living/simple_animal/cat/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_pass = PASS_FLAGS_CRAWLER
 
 /mob/living/simple_animal/cat/Destroy()
@@ -60,10 +60,6 @@
 		return ..()
 
 	if((src.loc) && isturf(src.loc))
-		if(stat != DEAD)
-			if(++miaow_counter >= rand(20, 30)) //Increase the meow variable each tick. Play it at random intervals.
-				playsound(loc, "cat_meow", 15, 1, 4)
-				miaow_counter = 0 //Reset the counter
 		if(!stat && !resting && !buckled)
 			for(var/mob/prey in view(1,src))
 				if(is_type_in_list(prey, hunting_targets) && play_counter < 5 && prey.stat != DEAD)
@@ -105,7 +101,7 @@
 	if(last_damage_data)
 		var/mob/user = last_damage_data.resolve_mob()
 		if(user)
-			user.count_niche_stat(STATISTICS_NICHE_CAT)
+			user.count_statistic_stat(STATISTICS_CAT)
 
 /mob/living/simple_animal/cat/proc/handle_movement_target()
 	turns_since_scan++
@@ -143,7 +139,7 @@
 		return ..()
 
 /mob/living/simple_animal/cat/get_scooped(mob/living/carbon/grabber)
-	if (stat >= DEAD)
+	if(stat >= DEAD)
 		return
 	..()
 

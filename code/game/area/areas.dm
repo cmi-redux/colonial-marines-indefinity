@@ -18,16 +18,19 @@
 
 	/// Bitfield of special area features
 	var/flags_area = NO_FLAGS
-
 	var/flags_alarm_state = NO_FLAGS
+
+	var/faction_to_get
 
 	var/unique = TRUE
 
-	var/has_gravity = 1
+	var/parallax_movedir = 0
+	var/has_gravity = TRUE
 	var/area/master // master area used for power calcluations
 								// (original area before splitting due to sd_DAL)
 	var/list/related // the other areas of the same type as this
-// var/list/lights // list of all lights on this area
+	var/list/lights = list()
+	var/exterior_light = 0
 	var/list/all_doors = list() //Added by Strumpetplaya - Alarm Change - Contains a list of doors adjacent to this area
 	var/air_doors_activated = 0
 	var/statistic_exempt = FALSE
@@ -35,7 +38,6 @@
 	var/global/global_uid = 0
 	var/uid
 	var/ceiling = CEILING_NONE //the material the ceiling is made of. Used for debris from airstrikes and orbital beacons in ceiling_debris()
-	var/fake_zlevel // for multilevel maps in the same z level
 	var/gas_type = GAS_TYPE_AIR
 	var/temperature = T20C
 	var/pressure = ONE_ATMOSPHERE
@@ -44,14 +46,11 @@
 	var/is_landing_zone = FALSE // primarily used to prevent mortars from hitting this location
 	var/resin_construction_allowed = TRUE // Allow construction of resin walls, and other special
 
-	// Weather
-	var/weather_enabled = TRUE // Manual override for weather if set to false
-
-	// Fishing
 	var/fishing_loot = /datum/fish_loot_table
 
 	// Ambience sounds
 	var/list/soundscape_playlist = list() //Clients in this area will hear one of the sounds in this list from time to time
+	var/background_planet_sounds = FALSE
 	var/soundscape_interval = INITIAL_SOUNDSCAPE_COOLDOWN //The base interval between each soundscape.
 	var/ceiling_muffle = TRUE //If true, this area's ceiling type will alter the muffling of the ambience sound
 	var/base_muffle = 0 //Ambience will always be muffled by this ammount at minimum
@@ -91,41 +90,36 @@
 	initialize_power_and_lighting()
 
 /area/Initialize(mapload, ...)
-	icon_state = "" //Used to reset the icon overlay, I assume.
+	icon_state = ""
 	layer = AREAS_LAYER
 	uid = ++global_uid
 	. = ..()
-	active_areas += src
-	all_areas += src
+	if(!static_lighting)
+		blend_mode = BLEND_MULTIPLY
+	LAZYADD(active_areas, src)
+	LAZYADD(all_areas, src)
 	reg_in_areas_in_z()
+	initialize_power_and_lighting()
 
 /area/proc/initialize_power_and_lighting(override_power)
 	if(requires_power)
-		luminosity = 0
 		if(override_power) //Reset everything if you want to override.
 			power_light = TRUE
 			power_equip = TRUE
 			power_environ = TRUE
-			if(lighting_use_dynamic)
-				SetDynamicLighting()
 	else
-		power_light = FALSE //rastaf0
-		power_equip = FALSE //rastaf0
-		power_environ = FALSE //rastaf0
-		luminosity = 1
-		lighting_use_dynamic = 0
+		power_light = FALSE
+		power_equip = FALSE
+		power_environ = FALSE
 
-	power_change() // all machines set to current power level, also updates lighting icon
-	InitializeLighting()
+	power_change()		// all machines set to current power level, also updates lighting icon
 
 /// Returns the correct ambience sound track for a client in this area
 /area/proc/get_sound_ambience(client/target)
-	if(SSweather.is_weather_event && SSweather.map_holder.should_affect_area(src))
-		return SSweather.weather_event_instance.ambience
 	return ambience_exterior
 
 /area/proc/poweralert(state, obj/source as obj)
-	if (state != poweralm)
+	if(state != poweralm)
 		poweralm = state
 		if(istype(source)) //Only report power alarms on the z-level where the source is located.
 			var/list/cameras = list()
@@ -138,7 +132,7 @@
 						C.network.Add(CAMERA_NET_POWER_ALARMS)
 			for (var/mob/living/silicon/aiPlayer in ai_mob_list)
 				if(aiPlayer.z == source.z)
-					if (state == 1)
+					if(state == 1)
 						aiPlayer.cancelAlarm("Power", src, source)
 					else
 						aiPlayer.triggerAlarm("Power", src, cameras, source)
@@ -157,15 +151,15 @@
 	//Check all the alarms before lowering atmosalm. Raising is perfectly fine.
 	for (var/area/RA in related)
 		for (var/obj/structure/machinery/alarm/AA in RA)
-			if ( !(AA.inoperable()) && !AA.shorted)
+			if( !(AA.inoperable()) && !AA.shorted)
 				danger_level = max(danger_level, AA.danger_level)
 
 	if(danger_level != atmosalm)
-		if (danger_level < 1 && atmosalm >= 1)
+		if(danger_level < 1 && atmosalm >= 1)
 			//closing the doors on red and opening on green provides a bit of hysteresis that will hopefully prevent fire doors from opening and closing repeatedly due to noise
 			air_doors_open()
 
-		if (danger_level < 2 && atmosalm >= 2)
+		if(danger_level < 2 && atmosalm >= 2)
 			for(var/area/RA in related)
 				for(var/obj/structure/machinery/camera/C in RA)
 					C.network.Remove(CAMERA_NET_ATMOSPHERE_ALARMS)
@@ -174,7 +168,7 @@
 			for(var/obj/structure/machinery/computer/station_alert/a in machines)
 				a.cancelAlarm("Atmosphere", src, src)
 
-		if (danger_level >= 2 && atmosalm < 2)
+		if(danger_level >= 2 && atmosalm < 2)
 			var/list/cameras = list()
 			for(var/area/RA in related)
 				//updateicon()
@@ -192,8 +186,8 @@
 			for (var/obj/structure/machinery/alarm/AA in RA)
 				AA.update_icon()
 
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 /area/proc/air_doors_close()
 	if(!src.master.air_doors_activated)
@@ -376,23 +370,23 @@
 		if(POWER_CHANNEL_ONEOFF)
 			master.used_oneoff += amount
 
-/area/Entered(A,atom/OldLoc)
-	if(ismob(A))
-		if(!OldLoc)
+/area/Entered(atom/movable/arrived, old_loc)
+	if(ismob(arrived))
+		if(!old_loc)
 			return
-		var/mob/M = A
-		var/area/old_area = get_area(OldLoc)
-		if(old_area.master == master)
+		var/mob/mob = arrived
+		var/area/old_area = get_area(old_loc)
+		if(old_area?.master == master)
 			return
-		M?.client?.soundOutput?.update_ambience(src, null, TRUE)
-	else if(istype(A, /obj/structure/machinery))
-		add_machine(A)
+		mob?.client?.soundOutput?.update_ambience(src, null, TRUE)
+	else if(istype(arrived, /obj/structure/machinery))
+		add_machine(arrived)
 
-/area/Exited(A)
-	if(istype(A, /obj/structure/machinery))
-		remove_machine(A)
-	else if(ismob(A))
-		var/mob/exiting_mob = A
+/area/Exited(atom/movable/gone, direction)
+	if(istype(gone, /obj/structure/machinery))
+		remove_machine(gone)
+	else if(ismob(gone))
+		var/mob/exiting_mob = gone
 		exiting_mob?.client?.soundOutput?.update_ambience(target_area = null, ambience_override = null, force_update = TRUE)
 
 /area/proc/add_machine(obj/structure/machinery/M)

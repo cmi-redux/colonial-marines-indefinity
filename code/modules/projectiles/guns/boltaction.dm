@@ -3,8 +3,8 @@
 // For internally fed bolt actions, it'd be more advised to use pump shotgun code, or obj/item/weapon/gun/shotgun/pump, to create that type of variant of bolt action rifle.
 
 /obj/item/weapon/gun/boltaction
-	name = "\improper Basira-Armstrong bolt-action hunting rifle"
-	desc = "Named after its eccentric designers, the Basira-Armstrong is a cheap but reliable civilian bolt-action rifle frequently found in the outer colonies. Despite its legally-mandated limited magazine capacity, its light weight and legendary accuracy makes it popular among hunters and competitive shooters."
+	name = LANGUAGE_GUN_BOLT
+	desc = LANGUAGE_GUN_BOLT_DESC
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/colony.dmi'
 	cocked_sound = 'sound/weapons/gun_cocked2.ogg'
 	fire_sound = 'sound/weapons/gun_boltaction.ogg'
@@ -42,7 +42,7 @@
 
 /obj/item/weapon/gun/boltaction/Initialize(mapload, spawn_empty)
 	. = ..()
-	if(current_mag && current_mag.current_rounds > 0) load_into_chamber()
+	if(current_mag && current_mag.ammo_position > 0) load_into_chamber()
 	bolt_delay = FIRE_DELAY_TIER_5
 
 /obj/item/weapon/gun/boltaction/update_icon() // needed for bolt action sprites

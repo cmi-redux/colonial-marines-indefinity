@@ -1,8 +1,9 @@
 /datum/job/command
-	selection_class = "job_command"
 	supervisors = "the acting commanding officer"
+	selection_class = "job_command"
 	total_positions = 1
 	spawn_positions = 1
+	balance_formulas = list(BALANCE_FORMULA_COMMANDING, BALANCE_FORMULA_MISC, BALANCE_FORMULA_SUPPORT)
 
 /datum/timelock/command
 	name = "Command Roles"
@@ -23,7 +24,7 @@
 
 /datum/timelock/human/can_play(client/C)
 	return C.get_total_human_playtime() >= time_required
-	
+
 /datum/timelock/human/get_role_requirement(client/C)
 	return time_required - C.get_total_human_playtime()
-	
+

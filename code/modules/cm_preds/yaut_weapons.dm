@@ -631,6 +631,7 @@
 	var/spikes = 12
 	var/max_spikes = 12
 	var/last_regen
+	can_jammed = FALSE
 	flags_gun_features = GUN_UNUSUAL_DESIGN
 	flags_item = ITEM_PREDATOR|TWOHANDED
 
@@ -730,6 +731,7 @@
 	w_class = SIZE_HUGE
 	var/charge_time = 0
 	var/last_regen = 0
+	can_jammed = FALSE
 	flags_gun_features = GUN_UNUSUAL_DESIGN
 	flags_item = ITEM_PREDATOR
 
@@ -790,9 +792,8 @@
 	else
 		ammo = GLOB.ammo_list[/datum/ammo/energy/yautja/rifle/bolt]
 		charge_time -= 10
-	var/obj/item/projectile/projectile = create_bullet(ammo, initial(name))
-	projectile.SetLuminosity(1)
-	in_chamber = projectile
+	var/obj/item/projectile/P = create_bullet(ammo, initial(name))
+	in_chamber = P
 	return in_chamber
 
 /obj/item/weapon/gun/energy/yautja/plasmarifle/has_ammunition()
@@ -875,9 +876,8 @@
 /obj/item/weapon/gun/energy/yautja/plasmapistol/load_into_chamber()
 	if(charge_time < 1)
 		return
-	var/obj/item/projectile/projectile = create_bullet(ammo, initial(name))
-	projectile.SetLuminosity(1)
-	in_chamber = projectile
+	var/obj/item/projectile/P = create_bullet(ammo, initial(name))
+	in_chamber = P
 	charge_time--
 	return in_chamber
 

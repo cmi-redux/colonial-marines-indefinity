@@ -40,8 +40,6 @@ BSQL_PROTECT_DATUM(/datum/entity/player_note)
 	if(admin_id)
 		admin = DB_ENTITY(/datum/entity/player, admin_id)
 
-
-
 /datum/entity_link/player_to_player_notes
 	parent_entity = /datum/entity/player
 	child_entity = /datum/entity/player_note

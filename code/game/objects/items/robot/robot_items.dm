@@ -16,7 +16,7 @@
 
 	playsound(M.loc, 'sound/weapons/Egloves.ogg', 25, 1, 4)
 	M.apply_effect(5, WEAKEN)
-	if (M.stuttering < 5)
+	if(M.stuttering < 5)
 		M.stuttering = 5
 	M.apply_effect(5, STUN)
 

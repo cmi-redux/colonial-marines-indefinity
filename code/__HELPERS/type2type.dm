@@ -5,12 +5,11 @@
  * file2list
  * angle2dir
  * angle2text
- * worldtime2text
  */
 
 //Returns an integer given a hex input
 /proc/hex2num(hex)
-	if (!( istext(hex) ))
+	if(!( istext(hex) ))
 		return
 
 	var/num = 0
@@ -45,11 +44,11 @@
 //Returns the hex value of a number given a value assumed to be a base-ten value
 /proc/num2hex(num, placeholder)
 
-	if (placeholder == null)
+	if(placeholder == null)
 		placeholder = 2
-	if (!( isnum(num) ))
+	if(!( isnum(num) ))
 		return
-	if (num == 0)
+	if(num == 0)
 		var/final = ""
 		for(var/i=1 to placeholder) final = "[final]0"
 		return final
@@ -85,7 +84,7 @@
 
 //Splits the text of a file at seperator and returns them in a list.
 /proc/file2list(filename, seperator="\n", trim = TRUE)
-	if (trim)
+	if(trim)
 		return splittext(trim(file2text(filename)),seperator)
 	return splittext(file2text(filename),seperator)
 
@@ -179,6 +178,19 @@
 	if(degree < 270) return SOUTHWEST
 	if(degree < 315) return WEST
 	return NORTHWEST
+
+
+/proc/angle2dir_cardinal(degree)
+	degree = SIMPLIFY_DEGREES(degree)
+	switch(round(degree, 0.1))
+		if(315.5 to 360, 0 to 45.5)
+			return NORTH
+		if(45.6 to 135.5)
+			return EAST
+		if(135.6 to 225.5)
+			return SOUTH
+		if(225.6 to 315.5)
+			return WEST
 
 //returns the north-zero clockwise angle in degrees, given a direction
 

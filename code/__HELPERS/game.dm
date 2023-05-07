@@ -4,6 +4,19 @@
 		return null
 	return format_text ? format_text(A.name) : A.name
 
+/proc/get_atom_on_turf(atom/movable/something_in_turf, stop_type)
+	if(!istype(something_in_turf))
+		CRASH("get_atom_on_turf was not passed an /atom/movable! Got [isnull(something_in_turf) ? "null":"type: [something_in_turf.type]"]")
+
+	var/atom/movable/topmost_thing = something_in_turf
+
+	while(topmost_thing?.loc && !isturf(topmost_thing.loc))
+		topmost_thing = topmost_thing.loc
+		if(stop_type && istype(topmost_thing, stop_type))
+			break
+
+	return topmost_thing
+
 /proc/in_range(source, user)
 	if(get_dist(source, user) <= 1)
 		return 1
@@ -42,7 +55,7 @@
 /proc/circlerangeturfs(center=usr,radius=3)
 
 	var/turf/centerturf = get_turf(center)
-	var/list/turfs = new/list()
+	var/list/turfs = list()
 	var/rsq = radius * (radius+0.5)
 
 	for(var/turf/T in range(radius, centerturf))
@@ -111,20 +124,20 @@
 			var/mob/M = A
 			if(M.client)
 				hear += M
-		else if (istype(A, /obj/vehicle/multitile))
+		else if(istype(A, /obj/vehicle/multitile))
 			var/obj/vehicle/multitile/vehicle = A
 			for(var/mob/M in vehicle.get_passengers())
 				hear += M
-		else if (istype(A, /obj/structure/closet))
+		else if(istype(A, /obj/structure/closet))
 			var/obj/structure/closet/C = A
-			if (!C.store_mobs)
+			if(!C.store_mobs)
 				continue
 			for (var/mob/M in C)
-				if (M.client)
+				if(M.client)
 					hear += M
-		else if (istype(A, /obj/structure/morgue))
+		else if(istype(A, /obj/structure/morgue))
 			for (var/mob/M in A)
-				if (M.client)
+				if(M.client)
 					hear += M
 	return hear
 
@@ -147,7 +160,7 @@
 
 /proc/get_mobs_in_radio_ranges(list/obj/item/device/radio/radios)
 
-	set background = 1
+	set background = TRUE
 
 	. = list()
 	// Returns a list of mobs who can hear any of the radios given in @radios
@@ -226,7 +239,7 @@
 	else
 		return 0
 
-/proc/get_cardinal_step_away(atom/start, atom/finish) //returns the position of a step from start away from finish, in one of the cardinal directions
+/proc/get_cardinal_step_away(atom/start, atom/finish) //returns the position of a step from start away from finish, in one of the cardinals directions
 	//returns only NORTH, SOUTH, EAST, or WEST
 	var/dx = finish.x - start.x
 	var/dy = finish.y - start.y
@@ -254,7 +267,7 @@
 		//players that can still be revived are skipped
 		if(O.mind && O.mind.original && ishuman(O.mind.original))
 			var/mob/living/carbon/human/H = O.mind.original
-			if (H.check_tod() && H.is_revivable())
+			if(H.check_tod() && H.is_revivable())
 				continue
 
 		// copied from join as xeno

@@ -149,14 +149,15 @@
 	return FALSE
 
 /obj/structure/dropship_equipment/handle_vehicle_bump(obj/vehicle/multitile/V)
-	if(V.seats[VEHICLE_DRIVER])
-		var/last_moved = V.l_move_time //in case VC moves before answering
-		if(alert(V.seats[VEHICLE_DRIVER], "Are you sure you want to crush \the [name]?", "Ramming confirmation","Yes","No") == "Yes")
+	var/mob/driver = V.seats[VEHICLE_DRIVER]
+	if(driver)
+		var/last_moved = V.l_move_time	//in case VC moves before answering
+		if(alert(driver, "Are you sure you want to crush \the [name]?", "Ramming confirmation", driver.client.auto_lang(LANGUAGE_YES), driver.client.auto_lang(LANGUAGE_NO)) == driver.client.auto_lang(LANGUAGE_YES))
 			if(last_moved == V.l_move_time)
 				visible_message(SPAN_DANGER("\The [V] crushes \the [src]!"))
 				playsound(V, 'sound/effects/metal_crash.ogg', 20)
-				log_attack("[src] was crushed by [key_name(V.seats[VEHICLE_DRIVER])] with [V].")
-				message_admins("[src] was crushed by [key_name(V.seats[VEHICLE_DRIVER])] with [V].")
+				log_attack("[src] was crushed by [key_name(driver)] with [V].")
+				message_admins("[src] was crushed by [key_name(driver)] with [V].")
 				qdel(src)
 				return FALSE
 	return FALSE
@@ -343,81 +344,72 @@
 	tip_over()
 	return TRUE
 
-/obj/structure/machinery/m56d_post/handle_vehicle_bump(obj/vehicle/multitile/V)
-	new /obj/item/device/m56d_post(loc)
-	playsound(V, 'sound/effects/metal_crash.ogg', 20)
-	visible_message(SPAN_DANGER("\The [V] drives over \the [src]!"))
-	qdel(src)
-	return TRUE
-
-/obj/structure/machinery/m56d_hmg/handle_vehicle_bump(obj/vehicle/multitile/V)
-	var/obj/item/device/m56d_gun/HMG = new(loc)
-	HMG.name = name
-	HMG.rounds = rounds
-	HMG.has_mount = TRUE
-	HMG.update_icon()
-	playsound(V, 'sound/effects/metal_crash.ogg', 20)
-	visible_message(SPAN_DANGER("\The [V] drives over \the [src]!"))
-	qdel(src)
-	return TRUE
-
-/obj/structure/machinery/m56d_hmg/mg_turret/handle_vehicle_bump(obj/vehicle/multitile/V)
-	playsound(V, 'sound/effects/metal_crash.ogg', 20)
-	visible_message(SPAN_DANGER("\The [V] drives over \the [src]!"))
-	update_health(health + 1)
-	return TRUE
-
-/obj/structure/machinery/m56d_hmg/auto/handle_vehicle_bump(obj/vehicle/multitile/V)
-	var/obj/item/device/m2c_gun/HMG = new(loc)
-	HMG.name = name
-	HMG.rounds = rounds
-	HMG.overheat_value = round(0.5 * overheat_value)
-	if(HMG.overheat_value <= 10)
-		HMG.overheat_value = 0
-	HMG.update_icon()
-	HMG.health = health
-	playsound(V, 'sound/effects/metal_crash.ogg', 20)
-	visible_message(SPAN_DANGER("\The [V] drives over \the [src]!"))
-	qdel(src)
-	return TRUE
+/obj/structure/machinery/mounted_defence/handle_vehicle_bump(obj/vehicle/multitile/V)
+	var/mob/driver = V.seats[VEHICLE_DRIVER]
+	if(!driver)
+		return FALSE
+	var/last_moved = V.l_move_time	//in case VC moves before answering
+	if(alert(driver, "Are you sure you want to crush \the [name]?", "Ramming confirmation", driver.client.auto_lang(LANGUAGE_YES), driver.client.auto_lang(LANGUAGE_NO)) == driver.client.auto_lang(LANGUAGE_YES))
+		if(last_moved != V.l_move_time)
+			return FALSE
+		visible_message(SPAN_DANGER("\The [V] crushes \the [src]!"))
+		playsound(V, 'sound/effects/metal_crash.ogg', 20)
+		log_attack("[src] was crushed by [key_name(driver)] with [V].")
+		message_admins("[src] was crushed by [key_name(driver)] with [V].")
+		update_health(health + 1)
+		return TRUE
+	return FALSE
 
 /obj/structure/machinery/defenses/sentry/handle_vehicle_bump(obj/vehicle/multitile/V)
-	visible_message(SPAN_DANGER("\The [V] drives over \the [src]!"))
-	playsound(V, 'sound/effects/metal_crash.ogg', 20)
-	if(static)
-		update_health(health + 1)
-	else if(health < health_max * 0.15)
-		if(V.seats[VEHICLE_DRIVER])
-			to_chat(V.seats[VEHICLE_DRIVER], SPAN_WARNING("[src]'s was too damaged already and didn't handle well being rammed."))
-			destroyed_action()
-	else
-		HD.forceMove(get_turf(src))
-		HD.dropped = 1
-		HD.update_icon()
-		power_off()
-		placed = 0
-		forceMove(HD)
-	return TRUE
+	var/mob/driver = V.seats[VEHICLE_DRIVER]
+	if(!driver)
+		return FALSE
+	var/last_moved = V.l_move_time	//in case VC moves before answering
+	if(alert(driver, "Are you sure you want to crush \the [name]?", "Ramming confirmation", driver.client.auto_lang(LANGUAGE_YES), driver.client.auto_lang(LANGUAGE_NO)) == driver.client.auto_lang(LANGUAGE_YES))
+		if(last_moved != V.l_move_time)
+			return FALSE
+		visible_message(SPAN_DANGER("\The [V] drives over \the [src]!"))
+		playsound(V, 'sound/effects/metal_crash.ogg', 20)
+		if(static)
+			message_admins("[src] was crushed by [key_name(driver)] with [V].")
+			update_health(health + 1)
+		else if(health < health_max * 0.15)
+			if(V.seats[VEHICLE_DRIVER])
+				to_chat(V.seats[VEHICLE_DRIVER], SPAN_WARNING("[src]'s was too damaged already and didn't handle well being rammed."))
+				message_admins("[src] was crushed by [key_name(driver)] with [V].")
+				destroyed_action()
+		else
+			HD.forceMove(get_turf(src))
+			HD.dropped = 1
+			HD.update_icon()
+			power_off()
+			placed = 0
+			forceMove(HD)
+		return TRUE
+	return FALSE
 
 /obj/structure/machinery/defenses/sentry/premade/dropship/handle_vehicle_bump(obj/vehicle/multitile/V)
 	deployment_system.undeploy_sentry()
 	return FALSE
 
-/obj/structure/machinery/m56d_hmg/mg_turret/dropship/handle_vehicle_bump(obj/vehicle/multitile/V)
+/obj/structure/machinery/mounted_defence/tripod/prebuild/mg_turret/dropship/handle_vehicle_bump(obj/vehicle/multitile/V)
 	deployment_system.undeploy_mg()
 	return FALSE
 
 /obj/structure/machinery/defenses/sentry/launchable/handle_vehicle_bump(obj/vehicle/multitile/V)
-	if(V.seats[VEHICLE_DRIVER])
-		var/last_moved = V.l_move_time //in case VC moves before answering
-		if(alert(V.seats[VEHICLE_DRIVER], "Are you sure you want to crush \the [name]?", "Ramming confirmation","Yes","No") == "Yes")
-			if(last_moved == V.l_move_time)
-				visible_message(SPAN_DANGER("\The [V] crushes \the [src]!"))
-				playsound(V, 'sound/effects/metal_crash.ogg', 20)
-				log_attack("[src] was crushed by [key_name(V.seats[VEHICLE_DRIVER])] with [V].")
-				message_admins("[src] was crushed by [key_name(V.seats[VEHICLE_DRIVER])] with [V].")
-				qdel(src)
-				return FALSE
+	var/mob/driver = V.seats[VEHICLE_DRIVER]
+	if(!driver)
+		return FALSE
+	var/last_moved = V.l_move_time	//in case VC moves before answering
+	if(alert(driver, "Are you sure you want to crush \the [name]?", "Ramming confirmation", driver.client.auto_lang(LANGUAGE_YES), driver.client.auto_lang(LANGUAGE_NO)) == driver.client.auto_lang(LANGUAGE_YES))
+		if(last_moved != V.l_move_time)
+			return FALSE
+		visible_message(SPAN_DANGER("\The [V] crushes \the [src]!"))
+		playsound(V, 'sound/effects/metal_crash.ogg', 20)
+		log_attack("[src] was crushed by [key_name(driver)] with [V].")
+		message_admins("[src] was crushed by [key_name(driver)] with [V].")
+		qdel(src)
+		return TRUE
 	return FALSE
 
 /obj/structure/machinery/disposal/handle_vehicle_bump(obj/vehicle/multitile/V)
@@ -532,13 +524,13 @@
 				V.take_damage_type(TIER_3_RAM_DAMAGE_TAKEN, "blunt", src)
 				playsound(V, 'sound/effects/metal_crash.ogg', 35)
 				return FALSE
-		else if(driver && get_target_lock(driver.faction))
+		else if(driver && ally(driver.faction))
 			apply_effect(0.5, WEAKEN)
 		else
 			apply_effect(1, WEAKEN)
 
 	else if(V.vehicle_flags & VEHICLE_CLASS_LIGHT)
-		if(get_target_lock(driver.faction))
+		if(ally(driver.faction))
 			apply_effect(0.5, WEAKEN)
 		else
 			apply_effect(2, WEAKEN)
@@ -569,10 +561,12 @@
 	visible_message(SPAN_DANGER("\The [V] rams \the [src]!"), SPAN_DANGER("\The [V] rams you! Get out of the way!"))
 	if(dmg)
 		playsound(loc, "punch", 25, 1)
-		last_damage_data = create_cause_data("[initial(V.name)] roadkill", driver)
+		last_damage_data = create_cause_data("[initial(V.name)] дорожное убийство", driver)
 		log_attack("[key_name(src)] was rammed by [key_name(driver)] with [V].")
 		if(faction == driver.faction)
-			msg_admin_ff("[key_name(driver)] rammed [key_name(src)] with \the [V] in [get_area(src)] (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[driver.x];Y=[driver.y];Z=[driver.z]'>JMP</a>) ([driver.client ? "<a href='?priv_msg=[driver.client.ckey]'>PM</a>" : "NO CLIENT"])")
+			var/ff_msg = "key_name(driver)] rammed [key_name(src)] with \the [V] in [get_area(src)]"
+			var/ffl = "(<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[driver.x];Y=[driver.y];Z=[driver.z]'>JMP</a>) ([driver.client ? "<a href='?priv_msg=[driver.client.ckey]'>PM</a>" : "NO CLIENT"])"
+			msg_admin_ff("[ff_msg] [ffl]", ff_msg)
 	else
 		log_attack("[key_name(src)] was friendly pushed by [key_name(driver)] with [V].") //to be able to determine whether vehicle was pushign friendlies
 
@@ -585,13 +579,13 @@
 	var/dmg = FALSE
 
 	if(V.vehicle_flags & VEHICLE_CLASS_WEAK)
-		if(driver && get_target_lock(driver.faction))
+		if(driver && ally(driver.faction))
 			apply_effect(0.5, WEAKEN)
 		else
 			apply_effect(1, WEAKEN)
 	else if(V.vehicle_flags & VEHICLE_CLASS_LIGHT)
 		dmg = TRUE
-		if(get_target_lock(driver.faction))
+		if(ally(driver.faction))
 			apply_effect(0.5, WEAKEN)
 			apply_damage(5 + rand(0, 5), BRUTE, no_limb_loss = TRUE)
 			to_chat(V.seats[VEHICLE_DRIVER], SPAN_WARNING(SPAN_BOLD("*YOU RAMMED AN ALLY AND HURT THEM!*")))
@@ -612,10 +606,12 @@
 	visible_message(SPAN_DANGER("\The [V] rams \the [src]!"), SPAN_DANGER("\The [V] rams you! Get out of the way!"))
 	if(dmg)
 		playsound(loc, "punch", 25, 1)
-		last_damage_data = create_cause_data("[initial(V.name)] roadkill", driver)
+		last_damage_data = create_cause_data("[initial(V.name)] дорожное убийство", driver)
 		log_attack("[key_name(src)] was rammed by [key_name(driver)] with [V].")
 		if(faction == driver.faction)
-			msg_admin_ff("[key_name(driver)] rammed and damaged member of allied faction [key_name(src)] with \the [V] in [get_area(src)] (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[driver.x];Y=[driver.y];Z=[driver.z]'>JMP</a>) ([driver.client ? "<a href='?priv_msg=[driver.client.ckey]'>PM</a>" : "NO CLIENT"])")
+			var/ff_msg = "[key_name(driver)] rammed and damaged member of allied faction [key_name(src)] with \the [V] in [get_area(src)]"
+			var/ffl = "(<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[driver.x];Y=[driver.y];Z=[driver.z]'>JMP</a>) ([driver.client ? "<a href='?priv_msg=[driver.client.ckey]'>PM</a>" : "NO CLIENT"])"
+			msg_admin_ff("[ff_msg] [ffl]", ff_msg)
 	else
 		log_attack("[key_name(src)] was friendly pushed by [key_name(driver)] with [V].") //to be able to determine whether vehicle was pushing friendlies
 
@@ -642,7 +638,7 @@
 			//Check what dir they should be facing to be looking directly at the vehicle
 			else if(dir_between == dir) //front hit (facing the vehicle)
 				blocked = TRUE
-			else if(dir_between == reverse_dir[dir]) // rear hit (facing directly away from the vehicle)
+			else if(dir_between ==  GLOB.reverse_dir[dir])	// rear hit (facing directly away from the vehicle)
 				takes_damage = TRUE
 			//side hit
 			else if(caste.caste_type == XENO_CASTE_QUEEN) // queen blocks even with sides
@@ -700,14 +696,14 @@
 		H.livingmob_interact(src)
 
 	if(takes_damage)
-		//This could 100% be coded as max(VEHICLE_TRAMPLE_DAMAGE_MIN, 22.5-4.5*X.tier) but I think this is more readable, plus it lets me avoid a special case for Queen/Larva/Abom.
+		//This could 100% be coded as max(VEHICLE_TRAMPLE_DAMAGE_MIN, 22.5-4.5*X.tier) but I think this is more readable, plus it lets me avoid a special case for Queen/larva/Abom.
 		var/damage_percentage = VEHICLE_TRAMPLE_DAMAGE_SPECIAL // Queen and abomb
 		switch (tier)
-			if (1)
+			if(1)
 				damage_percentage = VEHICLE_TRAMPLE_DAMAGE_TIER_1 // 2.5 * 9 = 22.5
-			if (2)
+			if(2)
 				damage_percentage = VEHICLE_TRAMPLE_DAMAGE_TIER_2 // 18%
-			if (3)
+			if(3)
 				damage_percentage = VEHICLE_TRAMPLE_DAMAGE_TIER_3 // 13.5%
 
 		//this adds more flexibility for trample damage
@@ -722,14 +718,14 @@
 		damage_percentage = max(damage_percentage, VEHICLE_TRAMPLE_DAMAGE_MIN)
 
 		apply_damage(round((maxHealth / 100) * damage_percentage), BRUTE)
-		last_damage_data = create_cause_data("[initial(V.name)] roadkill", V.seats[VEHICLE_DRIVER])
+		last_damage_data = create_cause_data("[initial(V.name)] дорожное убийство", V.seats[VEHICLE_DRIVER])
 		var/mob/living/driver = V.get_seat_mob(VEHICLE_DRIVER)
 		log_attack("[key_name(src)] was rammed by [key_name(driver)] with [V].")
 
 	// If the mob is knocked down or was pushed away from the APC (aka have actual space to move), allow movement in desired direction
 	if(mob_knocked_down)
 		return TRUE
-	else if (mob_moved)
+	else if(mob_moved)
 		if(momentum_penalty)
 			V.move_momentum = Floor(V.move_momentum*0.8)
 			V.update_next_move()
@@ -794,7 +790,7 @@
 					do_move = FALSE
 					break
 		if(do_move)
-			try_move(C.dir, force=TRUE)
+			try_move(C.dir, force = TRUE)
 			visible_message(SPAN_DANGER("The sheer force of the impact makes \the [src] slide back!"))
 		log_attack("\The [src] was rammed [do_move ? "and pushed " : " "]by [key_name(C)].")
 		playsound(loc, 'sound/effects/metal_crash.ogg', 35)

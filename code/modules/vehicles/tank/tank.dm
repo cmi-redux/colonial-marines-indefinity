@@ -36,8 +36,6 @@
 	move_momentum_build_factor = 1.8
 	move_turn_momentum_loss_factor = 0.6
 
-	luminosity = 7
-
 	// Rest (all the guns) is handled by the tank turret hardpoint
 	hardpoints_allowed = list(
 		/obj/item/hardpoint/holder/tank_turret,
@@ -70,10 +68,17 @@
 		"bullet" = 0.4,
 		"explosive" = 0.8,
 		"blunt" = 0.8,
+		"weather" = 1.8,
 		"abstract" = 1
 	)
 
 	explosive_resistance = 400
+
+	faction_to_get = FACTION_MARINE
+
+/obj/vehicle/multitile/tank/Initialize()
+	. = ..()
+	SSmapview.add_marker(src, "vehicle_tank")
 
 /obj/vehicle/multitile/tank/initialize_cameras(change_tag = FALSE)
 	if(!camera)
@@ -157,7 +162,7 @@
 	if(!T)
 		return FALSE
 
-	if(direction == reverse_dir[T.dir] || direction == T.dir)
+	if(direction ==  GLOB.reverse_dir[T.dir] || direction == T.dir)
 		return FALSE
 
 	T.user_rotation(user, turning_angle(T.dir, direction))
@@ -182,7 +187,7 @@
 
 //PRESET: turret, no hardpoints (not the one without turret for convenience, you still expect to have turret when you spawn "no hardpoints tank")
 /obj/effect/vehicle_spawner/tank/spawn_vehicle()
-	var/obj/vehicle/multitile/tank/TANK = new (loc)
+	var/obj/vehicle/multitile/tank/TANK = new(loc)
 
 	load_misc(TANK)
 	load_hardpoints(TANK)
@@ -203,7 +208,7 @@
 
 //PRESET: default hardpoints, destroyed
 /obj/effect/vehicle_spawner/tank/decrepit/spawn_vehicle()
-	var/obj/vehicle/multitile/tank/TANK = new (loc)
+	var/obj/vehicle/multitile/tank/TANK = new(loc)
 
 	load_misc(TANK)
 	handle_direction(TANK)

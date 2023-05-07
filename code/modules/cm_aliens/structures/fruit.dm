@@ -10,7 +10,6 @@
 	health = 25
 	layer = BUSH_LAYER // technically a plant amiright
 	var/picked = FALSE
-	var/hivenumber = XENO_HIVE_NORMAL
 	var/consume_delay = 2 SECONDS
 	var/mature = FALSE
 	var/flags = 0
@@ -25,7 +24,7 @@
 	var/glow_color = "#17991b80"
 	var/gardener_sac_color = "#17991B"
 
-	var/mob/living/carbon/xenomorph/bound_xeno // Drone linked to this fruit
+	var/mob/living/carbon/xenomorph/bound_xeno
 	var/fruit_type = /obj/item/reagent_container/food/snacks/resin_fruit
 
 /obj/effect/alien/resin/fruit/attack_hand(mob/living/user)
@@ -44,18 +43,18 @@
 	new_fruit.color = n_color
 	user.put_in_hands(new_fruit)
 
-/obj/effect/alien/resin/fruit/Initialize(mapload, obj/effect/alien/weeds/W, mob/living/carbon/xenomorph/X)
-	if(!istype(X))
+/obj/effect/alien/resin/fruit/Initialize(mapload, obj/effect/alien/weeds/weeds, mob/living/carbon/xenomorph/xeno)
+	if(!istype(xeno))
 		return INITIALIZE_HINT_QDEL
 
-	bound_xeno = X
-	hivenumber = X.hivenumber
-	RegisterSignal(W, COMSIG_PARENT_QDELETING, PROC_REF(on_weed_expire))
-	RegisterSignal(X, COMSIG_PARENT_QDELETING, PROC_REF(handle_xeno_qdel))
-	set_hive_data(src, hivenumber)
+	bound_xeno = xeno
+	faction = xeno.faction
+	RegisterSignal(weeds, COMSIG_PARENT_QDELETING, PROC_REF(on_weed_expire))
+	RegisterSignal(xeno, COMSIG_PARENT_QDELETING, PROC_REF(handle_xeno_qdel))
 	//Keep timer value here
-	timer_id = addtimer(CALLBACK(src, PROC_REF(mature)), time_to_mature * W.fruit_growth_multiplier, TIMER_UNIQUE | TIMER_STOPPABLE)
+	timer_id = addtimer(CALLBACK(src, PROC_REF(mature)), time_to_mature * weeds.fruit_growth_multiplier, TIMER_UNIQUE | TIMER_STOPPABLE)
 	. = ..()
+	set_hive_data(src, faction)
 	// Need to do it here because baseline initialize override the icon through config.
 	icon = 'icons/mob/xenos/fruits.dmi'
 
@@ -99,7 +98,7 @@
 		bound_xeno = null
 
 /obj/effect/alien/resin/fruit/proc/reduce_timer(maturity_increase)
-	if (mature || timer_id == TIMER_ID_NULL)
+	if(mature || timer_id == TIMER_ID_NULL)
 		return
 
 	// Unconditionally delete the first timer
@@ -108,7 +107,7 @@
 	timer_id = TIMER_ID_NULL
 
 	// Are we done, or do we need to add a new timer
-	if ((timeleft - maturity_increase) < 0)
+	if((timeleft - maturity_increase) < 0)
 		mature()
 	else
 		// Restart the timer.
@@ -139,25 +138,25 @@
 	update_icon()
 	QDEL_IN(src, 3 SECONDS)
 
-/obj/effect/alien/resin/fruit/attack_alien(mob/living/carbon/xenomorph/X)
+/obj/effect/alien/resin/fruit/attack_alien(mob/living/carbon/xenomorph/xeno)
 	if(picked)
-		to_chat(X, SPAN_XENODANGER("This fruit is already being picked!"))
+		to_chat(xeno, SPAN_XENODANGER("This fruit is already being picked!"))
 		return
-	if(X.a_intent != INTENT_HARM && (X.can_not_harm(bound_xeno) || X.hivenumber == hivenumber))
-		var/cant_consume = prevent_consume(X)
+	if(xeno.a_intent != INTENT_HARM && (xeno.can_not_harm(bound_xeno) || xeno.faction == faction))
+		var/cant_consume = prevent_consume(xeno)
 		if(cant_consume)
 			return cant_consume
 		if(mature)
-			to_chat(X, SPAN_XENOWARNING("You prepare to consume [name]."))
-			xeno_noncombat_delay(X)
-			if(!do_after(X, consume_delay, INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
+			to_chat(xeno, SPAN_XENOWARNING("You prepare to consume [name]."))
+			xeno_noncombat_delay(xeno)
+			if(!do_after(xeno, consume_delay, INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
 				return XENO_NO_DELAY_ACTION
-			consume_effect(X)
+			consume_effect(xeno)
 		else
-			to_chat(X, SPAN_XENOWARNING("[name] isn't ripe yet. You need to wait a little longer."))
-	if(X.a_intent == INTENT_HARM && isxeno_builder(X) || (!X.can_not_harm(bound_xeno) && X.hivenumber != hivenumber))
-		X.animation_attack_on(src)
-		X.visible_message(SPAN_XENODANGER("[X] removes [name]!"),
+			to_chat(xeno, SPAN_XENOWARNING("[name] isn't ripe yet. You need to wait a little longer."))
+	if(xeno.a_intent == INTENT_HARM && isxeno_builder(xeno) || (!xeno.can_not_harm(bound_xeno) && xeno.faction != faction))
+		xeno.animation_attack_on(src)
+		xeno.visible_message(SPAN_XENODANGER("[xeno] removes [name]!"),
 		SPAN_XENODANGER("You remove [name]!"))
 		playsound(loc, "alien_resin_break", 25)
 		qdel(src)
@@ -268,7 +267,7 @@
 		for(var/mob/living/carbon/xenomorph/Z in range(pheromone_range, loc))
 			if(Z.ignores_pheromones)
 				continue
-			if(aura_strength > Z.recovery_new && hivenumber == Z.hivenumber)
+			if(aura_strength > Z.recovery_new && faction == Z.faction)
 				Z.recovery_new = aura_strength
 
 /obj/effect/alien/resin/fruit/speed
@@ -330,7 +329,7 @@
 	w_class = SIZE_MEDIUM
 	storage_cost = SIZE_LARGE
 	bitesize = 2
-	var/mob/living/carbon/xenomorph/bound_xeno //Drone linked to this fruit
+	var/mob/living/carbon/xenomorph/bound_xeno //drone linked to this fruit
 	var/fruit_type = /obj/effect/alien/resin/fruit
 	var/consume_delay = 2 SECONDS
 
@@ -340,11 +339,11 @@
 	pixel_x = 0
 	pixel_y = 0
 
-/obj/item/reagent_container/food/snacks/resin_fruit/proc/link_xeno(mob/living/carbon/xenomorph/X)
-	to_chat(X, SPAN_XENOWARNING("One of your resin fruits has been picked."))
-	X.current_fruits.Add(src)
-	bound_xeno = X
-	RegisterSignal(X, COMSIG_PARENT_QDELETING, PROC_REF(handle_xeno_qdel))
+/obj/item/reagent_container/food/snacks/resin_fruit/proc/link_xeno(mob/living/carbon/xenomorph/xeno)
+	to_chat(xeno, SPAN_XENOWARNING("One of your resin fruits has been picked."))
+	xeno.current_fruits.Add(src)
+	bound_xeno = xeno
+	RegisterSignal(xeno, COMSIG_PARENT_QDELETING, PROC_REF(handle_xeno_qdel))
 
 /obj/item/reagent_container/food/snacks/resin_fruit/proc/handle_xeno_qdel()
 	SIGNAL_HANDLER
@@ -365,38 +364,38 @@
 		bound_xeno = null
 
 // Xenos eating fruit
-/obj/item/reagent_container/food/snacks/resin_fruit/attack(mob/living/carbon/xenomorph/X, mob/user)
+/obj/item/reagent_container/food/snacks/resin_fruit/attack(mob/living/carbon/xenomorph/xeno, mob/user)
 	if(istype(user, /mob/living/carbon/xenomorph)) // Prevents xenos from feeding capped/dead marines fruit
-		var/mob/living/carbon/xenomorph/Y = user
-		if(!Y.can_not_harm(X))
-			to_chat(Y, SPAN_WARNING("[X] refuses to eat [src]."))
+		var/mob/living/carbon/xenomorph/user_xeno = user
+		if(!user_xeno.can_not_harm(xeno))
+			to_chat(user_xeno, SPAN_WARNING("[xeno] refuses to eat [src]."))
 			return
-	if(!istype(X))
+	if(!istype(xeno))
 		return ..()
-	if(X.stat == DEAD)
+	if(xeno.stat == DEAD)
 		to_chat(user, SPAN_WARNING("That sister is already dead, they won't benefit from the fruit now..."))
 		return
-	user.affected_message(X,
-		SPAN_HELPFUL("You <b>start [user == X ? "eating" : "feeding [X]"] [src]</b>."),
+	user.affected_message(xeno,
+		SPAN_HELPFUL("You <b>start [user == xeno ? "eating" : "feeding [xeno]"] [src]</b>."),
 		SPAN_HELPFUL("[user] <b>starts feeding</b> you <b>[src]</b>."),
-		SPAN_NOTICE("[user] starts [user == X ? "eating" : "feeding [X]"] <b>[src]</b>."))
-	if(!do_after(user, consume_delay, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, X, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
+		SPAN_NOTICE("[user] starts [user == xeno ? "eating" : "feeding [xeno]"] <b>[src]</b>."))
+	if(!do_after(user, consume_delay, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, xeno, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
 		return FALSE
-	user.affected_message(X,
-		SPAN_HELPFUL("You [user == X ? "<b>eat</b>" : "<b>fed</b> [X]"] <b>[src]</b>."),
+	user.affected_message(xeno,
+		SPAN_HELPFUL("You [user == xeno ? "<b>eat</b>" : "<b>fed</b> [xeno]"] <b>[src]</b>."),
 		SPAN_HELPFUL("[user] <b>fed</b> you <b>[src]</b>."),
-		SPAN_NOTICE("[user] [user == X ? "ate" : "fed [X]"] <b>[src]</b>."))
-	var/obj/effect/alien/resin/fruit/F = new fruit_type(X)
-	F.mature = TRUE
-	F.consume_effect(X)
+		SPAN_NOTICE("[user] [user == xeno ? "ate" : "fed [xeno]"] <b>[src]</b>."))
+	var/obj/effect/alien/resin/fruit/fruit = new fruit_type(xeno)
+	fruit.mature = TRUE
+	fruit.consume_effect(xeno)
 	//Notify the fruit's bound xeno if they exist
 	if(!QDELETED(bound_xeno))
 		to_chat(bound_xeno, SPAN_XENOWARNING("One of your picked resin fruits has been consumed."))
 	qdel(src)
 	return TRUE
 
-/obj/item/reagent_container/food/snacks/resin_fruit/attack_alien(mob/living/carbon/xenomorph/M)
-	attack_hand(M)
+/obj/item/reagent_container/food/snacks/resin_fruit/attack_alien(mob/living/carbon/xenomorph/xeno)
+	attack_hand(xeno)
 	return XENO_NONCOMBAT_ACTION
 
 /obj/item/reagent_container/food/snacks/resin_fruit/proc/add_juice()
@@ -408,41 +407,41 @@
 	X.pickup_fruit(src)
 
 // Handles xenos picking up fruit
-/mob/living/carbon/xenomorph/proc/pickup_fruit(obj/effect/alien/resin/fruit/F)
+/mob/living/carbon/xenomorph/proc/pickup_fruit(obj/effect/alien/resin/fruit/fruit)
 
-	if(F.bound_xeno && !can_not_harm(F.bound_xeno))
-		to_chat(src, SPAN_XENODANGER("You crush [F]."))
-		qdel(F)
+	if(fruit.bound_xeno && !can_not_harm(fruit.bound_xeno))
+		to_chat(src, SPAN_XENODANGER("You crush [fruit]."))
+		qdel(fruit)
 		return
-	if(!F.mature)
-		to_chat(src, SPAN_XENODANGER("[F] isn't mature yet!"))
+	if(!fruit.mature)
+		to_chat(src, SPAN_XENODANGER("[fruit] isn't mature yet!"))
 		return
-	if(F.picked)
-		to_chat(src, SPAN_XENODANGER("[F] is already being picked!"))
+	if(fruit.picked)
+		to_chat(src, SPAN_XENODANGER("[fruit] is already being picked!"))
 		return
 	// Indicates the fruit is being picked, so other xenos can't eat it at the same time
-	F.picked = TRUE
-	if(!do_after(src, F.consume_delay, INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
-		F.picked = FALSE
+	fruit.picked = TRUE
+	if(!do_after(src, fruit.consume_delay, INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
+		fruit.picked = FALSE
 		return
-	if(!F.mature)
-		F.picked = FALSE
+	if(!fruit.mature)
+		fruit.picked = FALSE
 		return
-	to_chat(src, SPAN_XENONOTICE("You uproot [F]."))
-	var/obj/item/reagent_container/food/snacks/resin_fruit/new_fruit = new F.fruit_type()
-	new_fruit.color = F.color
+	to_chat(src, SPAN_XENONOTICE("You uproot [fruit]."))
+	var/obj/item/reagent_container/food/snacks/resin_fruit/new_fruit = new fruit.fruit_type()
+	new_fruit.color = fruit.color
 	put_in_hands(new_fruit)
 	//if there's a xeno linked to the fruit, add it to their fruit cap and notify them.
-	if(!QDELETED(F.bound_xeno))
-		new_fruit.link_xeno(F.bound_xeno)
-	qdel(F)
+	if(!QDELETED(fruit.bound_xeno))
+		new_fruit.link_xeno(fruit.bound_xeno)
+	qdel(fruit)
 
-/mob/living/carbon/xenomorph/larva/pickup_fruit(obj/effect/alien/resin/fruit/F)
-	to_chat(src, SPAN_XENODANGER("You are too small to pick up \the [F]!"))
+/mob/living/carbon/xenomorph/larva/pickup_fruit(obj/effect/alien/resin/fruit/fruit)
+	to_chat(src, SPAN_XENODANGER("You are too small to pick up \the [fruit]!"))
 	return
 
-/mob/living/carbon/xenomorph/facehugger/pickup_fruit(obj/effect/alien/resin/fruit/F)
-	to_chat(src, SPAN_XENODANGER("You are too small to pick up \the [F]!"))
+/mob/living/carbon/xenomorph/facehugger/pickup_fruit(obj/effect/alien/resin/fruit/fruit)
+	to_chat(src, SPAN_XENODANGER("You are too small to pick up \the [fruit]!"))
 	return
 
 /obj/item/reagent_container/food/snacks/resin_fruit/greater

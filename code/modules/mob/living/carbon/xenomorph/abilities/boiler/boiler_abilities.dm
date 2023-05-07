@@ -1,6 +1,6 @@
 /datum/action/xeno_action/onclick/toggle_long_range/boiler
 	should_delay = TRUE
-	delay = 5
+	delay = 1 SECONDS
 	ability_primacy = XENO_PRIMARY_ACTION_4
 	handles_movement = FALSE
 	movement_slowdown = XENO_SPEED_SLOWMOD_ZOOM
@@ -13,7 +13,7 @@
 	macro_path = /datum/action/xeno_action/verb/verb_acid_lance
 	action_type = XENO_ACTION_CLICK
 	ability_primacy = XENO_PRIMARY_ACTION_2
-	xeno_cooldown = 190
+	xeno_cooldown = 19 SECONDS
 
 	// Config
 	var/stack_time = 10
@@ -96,7 +96,7 @@
 	ability_primacy = XENO_PRIMARY_ACTION_4
 	xeno_cooldown = 34 SECONDS
 
-	var/buffs_duration = 6 SECONDS
+	var/buffs_duration = 60
 	var/cooldown_duration = 30 SECONDS
 
 	var/speed_buff_amount = 0.5
@@ -110,6 +110,15 @@
 		/datum/action/xeno_action/activable/spray_acid/boiler,
 	)
 
+/datum/action/xeno_action/onclick/toggle_bomb
+	name = "Toggle Bombard Type"
+	ability_name = "toggle bombard type"
+	action_icon_state = "toggle_bomb0"
+	plasma_cost = 0
+	macro_path = /datum/action/xeno_action/verb/verb_toggle_bomb
+	action_type = XENO_ACTION_CLICK
+	xeno_cooldown = 2 SECONDS
+
 //////////////////////////// Trapper boiler abilities
 
 /datum/action/xeno_action/activable/boiler_trap
@@ -120,7 +129,7 @@
 	macro_path = /datum/action/xeno_action/verb/verb_boiler_trap
 	action_type = XENO_ACTION_CLICK
 	ability_primacy = XENO_PRIMARY_ACTION_1
-	xeno_cooldown = 205
+	xeno_cooldown = 20 SECONDS
 
 	/// Config
 	var/trap_ttl = 100
@@ -136,12 +145,12 @@
 	macro_path = /datum/action/xeno_action/verb/verb_acid_mine
 	action_type = XENO_ACTION_CLICK
 	ability_primacy = XENO_PRIMARY_ACTION_2
-	xeno_cooldown = 55
+	xeno_cooldown = 5 SECONDS
 
 	var/empowered = FALSE
 
 	var/damage = 45
-	var/delay = 13.5
+	var/delay = 13 SECONDS
 
 /datum/action/xeno_action/activable/acid_shotgun
 	name = "Acid Shotgun"
@@ -151,7 +160,7 @@
 	macro_path = /datum/action/xeno_action/verb/verb_acid_shotgun
 	action_type = XENO_ACTION_CLICK
 	ability_primacy = XENO_PRIMARY_ACTION_3
-	xeno_cooldown = 130
+	xeno_cooldown = 13 SECONDS
 
 	var/ammo_type = /datum/ammo/xeno/acid_shotgun
 

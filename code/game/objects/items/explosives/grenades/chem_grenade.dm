@@ -187,7 +187,7 @@
 
 /obj/item/explosive/grenade/custom/teargas/Initialize()
 	if(type == /obj/item/explosive/grenade/custom/teargas) // ugly but we only want to change base level teargas
-		if(SSticker.mode && MODE_HAS_FLAG(MODE_FACTION_CLASH))
+		if(SSticker.mode && MODE_HAS_FLAG(MODE_HVH_BALANCE))
 			new /obj/item/explosive/grenade/flashbang/noskill(loc)
 			return INITIALIZE_HINT_QDEL
 		else if(SSticker.current_state < GAME_STATE_PLAYING)
@@ -209,7 +209,7 @@
 	update_icon()
 
 /obj/item/explosive/grenade/custom/teargas/proc/replace_teargas()
-	if(MODE_HAS_FLAG(MODE_FACTION_CLASH))
+	if(MODE_HAS_FLAG(MODE_HVH_BALANCE))
 		new /obj/item/explosive/grenade/flashbang/noskill(loc)
 		qdel(src)
 	UnregisterSignal(SSdcs, COMSIG_GLOB_MODE_PRESETUP)

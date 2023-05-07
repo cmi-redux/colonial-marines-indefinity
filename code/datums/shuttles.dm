@@ -103,3 +103,11 @@
 /datum/map_template/shuttle/vehicle
 	shuttle_id = MOBILE_SHUTTLE_VEHICLE_ELEVATOR
 	name = "Vehicle Elevator"
+
+/datum/map_template/shuttle/uss_heart_of_gold
+	shuttle_id = DROPSHIP_HEART_OF_GOLD
+	name = "USS Heart Of Gold"
+
+/datum/map_template/shuttle/sky_scraper_elevator
+	shuttle_id = MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR
+	name = "S95 v2 Elevator"

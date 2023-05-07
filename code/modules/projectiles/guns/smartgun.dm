@@ -64,6 +64,8 @@
 	ammo_secondary = GLOB.ammo_list[ammo_secondary]
 	MD = new(src)
 	. = ..()
+	MD.faction_to_get = faction_to_get
+	MD.faction = faction
 	update_icon()
 
 /obj/item/weapon/gun/smartgun/Destroy()
@@ -101,11 +103,29 @@
 		BULLET_TRAIT_ENTRY_ID("iff", /datum/element/bullet_trait_iff)
 	))
 
+/obj/item/weapon/gun/smartgun/get_ammo_type()
+	if(!ammo)
+		return list("smartgun", "smartgun_empty")
+	else //for clarity's sake, smartguns will not return the chamber ammo but the magazine ammo
+		return list(ammo.hud_state, ammo.hud_state_empty)
+
+/obj/item/weapon/gun/smartgun/get_ammo_count()
+	if(!current_mag)
+		return 0
+	else
+		return current_mag.ammo_position
+
+/obj/item/weapon/gun/smartgun/display_ammo(mob/user)
+	if(flags_gun_features & GUN_AMMO_COUNTER)
+		var/atom/movable/screen/ammo/A = user.hud_used.ammo
+		A.update_hud(user)
+	return //no text warn, would clutter chat
+
 /obj/item/weapon/gun/smartgun/get_examine_text(mob/user)
 	. = ..()
 	var/rounds = 0
-	if(current_mag && current_mag.current_rounds)
-		rounds = current_mag.current_rounds
+	if(current_mag && current_mag.ammo_position)
+		rounds = current_mag.ammo_position
 	var/message = "[rounds ? "Ammo counter shows [rounds] round\s remaining." : "It's dry."]"
 	. += message
 	. += "The restriction system is [iff_enabled ? "<B>on</b>" : "<B>off</b>"]."
@@ -147,9 +167,9 @@
 /obj/item/weapon/gun/smartgun/update_icon()
 	. = ..()
 	if(cover_open)
-		overlays += "+[base_gun_icon]_cover_open"
+		overlays += "+[base_icon]_cover_open"
 	else
-		overlays += "+[base_gun_icon]_cover_closed"
+		overlays += "+[base_icon]_cover_closed"
 
 //---ability actions--\\
 
@@ -303,13 +323,6 @@
 			to_chat(H, SPAN_WARNING("You can't fire \the [src] with the feed cover open! (alt-click to close)"))
 			return FALSE
 
-/obj/item/weapon/gun/smartgun/delete_bullet(obj/item/projectile/projectile_to_fire, refund = 0)
-	if(!current_mag)
-		return
-	qdel(projectile_to_fire)
-	if(refund) current_mag.current_rounds++
-	return TRUE
-
 /obj/item/weapon/gun/smartgun/unique_action(mob/user)
 	if(isobserver(usr) || isxeno(usr))
 		return
@@ -325,6 +338,7 @@
 	to_chat(user, "[icon2html(src, usr)] You changed \the [src]'s ammo preparation procedures. You now fire [secondary_toggled ? "armor shredding rounds" : "highly precise rounds"].")
 	playsound(loc,'sound/machines/click.ogg', 25, 1)
 	ammo = secondary_toggled ? ammo_secondary : ammo_primary
+	force_ammo = TRUE
 	var/datum/action/item_action/smartgun/toggle_ammo_type/TAT = locate(/datum/action/item_action/smartgun/toggle_ammo_type) in actions
 	TAT.update_icon()
 
@@ -341,11 +355,11 @@
 	if(iff_enabled)
 		add_bullet_trait(BULLET_TRAIT_ENTRY_ID("iff", /datum/element/bullet_trait_iff))
 		drain += 10
-		MD.iff_signal = initial(MD.iff_signal)
+		MD.faction = faction
 	if(!iff_enabled)
 		remove_bullet_trait("iff")
 		drain -= 10
-		MD.iff_signal = null
+		MD.faction = null
 	if(!powerpack)
 		link_powerpack(usr)
 
@@ -454,7 +468,7 @@
 	for(var/mob/living/M in orange(range, user)) // orange allows sentry to fire through gas and darkness
 		if((M.stat & DEAD)) continue // No dead or non living.
 
-		if(M.get_target_lock(user.faction_group)) continue
+		if(M.ally(user.faction)) continue
 		if(angle > 0)
 			var/opp
 			var/adj
@@ -513,7 +527,7 @@
 		. = pick(unconscious_targets)
 
 /obj/item/weapon/gun/smartgun/proc/process_shot(mob/living/user, warned)
-	set waitfor = 0
+	set waitfor = FALSE
 
 
 	if(!target)
@@ -656,19 +670,15 @@
 	ammo_secondary = /datum/ammo/bullet/smartgun/dirty/armor_piercing///Toggled ammo type
 	flags_gun_features = GUN_WY_RESTRICTED|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_HAS_FULL_AUTO|GUN_FULL_AUTO_ON|GUN_FULL_AUTO_ONLY
 
-/obj/item/weapon/gun/smartgun/dirty/Initialize(mapload, ...)
-	. = ..()
-	MD.iff_signal = FACTION_PMC
+	faction_to_get = FACTION_PMC
 
 
 //TERMINATOR SMARTGUN
 /obj/item/weapon/gun/smartgun/dirty/elite
 	name = "\improper M56T 'Terminator' smartgun"
 	desc = "The actual firearm in the 4-piece M56T Smartgun System. If you have this, you're about to bring some serious pain to anyone in your way.\nYou may toggle firing restrictions by using a special action.\nAlt-click it to open the feed cover and allow for reloading."
+	faction_to_get = FACTION_WY_DEATHSQUAD
 
-/obj/item/weapon/gun/smartgun/dirty/elite/Initialize(mapload, ...)
-	. = ..()
-	MD.iff_signal = FACTION_WY_DEATHSQUAD
 
 /obj/item/weapon/gun/smartgun/dirty/elite/set_gun_config_values()
 	..()
@@ -688,6 +698,4 @@
 	name = "\improper M56B 'Freedom' smartgun"
 	desc = "The actual firearm in the 4-piece M56B Smartgun System. Essentially a heavy, mobile machinegun. This one has the CLF logo carved over the manufacturing stamp.\nYou may toggle firing restrictions by using a special action.\nAlt-click it to open the feed cover and allow for reloading."
 
-/obj/item/weapon/gun/smartgun/clf/Initialize(mapload, ...)
-	. = ..()
-	MD.iff_signal = FACTION_CLF
+	faction_to_get = FACTION_CLF

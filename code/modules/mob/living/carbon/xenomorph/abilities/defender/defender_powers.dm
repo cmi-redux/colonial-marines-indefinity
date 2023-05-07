@@ -1,6 +1,6 @@
 /datum/action/xeno_action/onclick/toggle_crest/use_ability(atom/target)
 	var/mob/living/carbon/xenomorph/xeno = owner
-	if (!istype(xeno))
+	if(!istype(xeno))
 		return
 
 	if(xeno.fortify)
@@ -36,56 +36,56 @@
 
 // Defender Headbutt
 /datum/action/xeno_action/activable/headbutt/use_ability(atom/target_atom)
-	var/mob/living/carbon/xenomorph/fendy = owner
-	if (!istype(fendy))
+	var/mob/living/carbon/xenomorph/X = owner
+	if(!istype(X))
 		return
 
-	if(!isxeno_human(target_atom) || fendy.can_not_harm(target_atom))
+	if(!isxeno_human(target_atom) || X.can_not_harm(target_atom))
 		return
 
-	if(!fendy.check_state())
+	if(!X.check_state())
 		return
 
-	if (!action_cooldown_check())
+	if(!action_cooldown_check())
 		return
 
 	if(!check_and_use_plasma_owner())
 		return
 
-	if(fendy.fortify && !fendy.steelcrest)
-		to_chat(fendy, SPAN_XENOWARNING("You cannot use headbutt while fortified."))
+	if(X.fortify && !X.steelcrest)
+		to_chat(X, SPAN_XENOWARNING("You cannot use headbutt while fortified."))
 		return
 
 	var/mob/living/carbon/carbone = target_atom
 	if(carbone.stat == DEAD)
 		return
 
-	var/distance = get_dist(fendy, carbone)
+	var/distance = get_dist(X, carbone)
 
-	var/max_distance = 3 - (fendy.crest_defense * 2)
+	var/max_distance = 3 - (X.crest_defense * 2)
 
 	if(distance > max_distance)
 		return
 
-	if(!fendy.crest_defense)
+	if(!X.crest_defense)
 		apply_cooldown()
-		fendy.throw_atom(get_step_towards(carbone, fendy), 3, SPEED_SLOW, fendy)
-	if(!fendy.Adjacent(carbone))
+		X.throw_atom(get_step_towards(carbone, X), 3, SPEED_SLOW, X)
+	if(!X.Adjacent(carbone))
 		on_cooldown_end()
 		return
 
-	carbone.last_damage_data = create_cause_data(fendy.caste_type, fendy)
-	fendy.visible_message(SPAN_XENOWARNING("[fendy] rams [carbone] with its armored crest!"), \
+	carbone.last_damage_data = create_cause_data(X.caste_type, X)
+	X.visible_message(SPAN_XENOWARNING("[X] rams [carbone] with its armored crest!"), \
 	SPAN_XENOWARNING("You ram [carbone] with your armored crest!"))
 
 	if(carbone.stat != DEAD && (!(carbone.status_flags & XENO_HOST) || !HAS_TRAIT(carbone, TRAIT_NESTED)) )
-		var/h_damage = 30 - (fendy.crest_defense * 10) + (fendy.steelcrest * 7.5) //30 if crest up, 20 if down, plus 7.5
+		var/h_damage = 30 - (X.crest_defense * 10) + (X.steelcrest * 7.5) //30 if crest up, 20 if down, plus 7.5
 		carbone.apply_armoured_damage(get_xeno_damage_slash(carbone, h_damage), ARMOR_MELEE, BRUTE, "chest", 5)
 
-	var/facing = get_dir(fendy, carbone)
-	var/headbutt_distance = 1 + (fendy.crest_defense * 2) + (fendy.fortify * 2)
-	var/turf/thrown_turf = get_turf(fendy)
-	var/turf/temp = get_turf(fendy)
+	var/facing = get_dir(X, carbone)
+	var/headbutt_distance = 1 + (X.crest_defense * 2) + (X.fortify * 2)
+	var/turf/thrown_turf = get_turf(X)
+	var/turf/temp = get_turf(X)
 
 	for(var/x in 0 to headbutt_distance)
 		temp = get_step(thrown_turf, facing)
@@ -94,9 +94,9 @@
 		thrown_turf = temp
 
 	// Hmm today I will kill a marine while looking away from them
-	fendy.face_atom(carbone)
-	fendy.animation_attack_on(carbone)
-	fendy.flick_attack_overlay(carbone, "punch")
+	X.face_atom(carbone)
+	X.animation_attack_on(carbone)
+	X.flick_attack_overlay(carbone, "punch")
 	carbone.throw_atom(thrown_turf, headbutt_distance, SPEED_SLOW, src)
 	playsound(carbone,'sound/weapons/alien_claw_block.ogg', 50, 1)
 	apply_cooldown()
@@ -106,13 +106,13 @@
 // Defender Tail Sweep
 /datum/action/xeno_action/onclick/tail_sweep/use_ability(atom/A)
 	var/mob/living/carbon/xenomorph/xeno = owner
-	if (!istype(xeno))
+	if(!istype(xeno))
 		return
 
 	if(!xeno.check_state())
 		return
 
-	if (!action_cooldown_check())
+	if(!action_cooldown_check())
 		return
 
 	if(xeno.fortify)
@@ -159,7 +159,7 @@
 // Defender Fortify
 /datum/action/xeno_action/activable/fortify/use_ability(atom/target)
 	var/mob/living/carbon/xenomorph/xeno = owner
-	if (!istype(xeno))
+	if(!istype(xeno))
 		return
 
 	if(xeno.crest_defense && xeno.steelcrest)
@@ -173,7 +173,7 @@
 	if(!xeno.check_state())
 		return
 
-	if (!action_cooldown_check())
+	if(!action_cooldown_check())
 		return
 
 	playsound(get_turf(xeno), 'sound/effects/stonedoor_openclose.ogg', 30, 1)

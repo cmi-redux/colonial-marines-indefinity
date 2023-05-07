@@ -1,21 +1,22 @@
-
+/// A secondary group, used when a client views a generic window
+#define PLANE_GROUP_POPUP_WINDOW(screen) "popup-[REF(screen)]"
 
 /mob
 	var/list/fullscreens = list()
 
 /mob/proc/overlay_fullscreen(category, type, severity)
 	var/atom/movable/screen/fullscreen/screen = fullscreens[category]
-	if (!screen || screen.type != type)
+	if(!screen || screen.type != type)
 		// needs to be recreated
 		clear_fullscreen(category, FALSE)
 		fullscreens[category] = screen = new type()
-	else if ((!severity || severity == screen.severity) && (!client || screen.screen_loc != "CENTER-7,CENTER-7" || screen.fs_view == client.view))
+	else if((!severity || severity == screen.severity) && (!client || screen.screen_loc != "CENTER-7,CENTER-7" || screen.fs_view == client.view))
 		// doesn't need to be updated
 		return screen
 
 	screen.icon_state = "[initial(screen.icon_state)][severity]"
 	screen.severity = severity
-	if (client && screen.should_show_to(src))
+	if(client && screen.should_show_to(src))
 		screen.update_for_view(client.view)
 		client.screen += screen
 
@@ -74,7 +75,7 @@
 	var/show_when_dead = FALSE
 
 /atom/movable/screen/fullscreen/proc/update_for_view(client_view)
-	if (screen_loc == "CENTER-7,CENTER-7" && fs_view != client_view)
+	if(screen_loc == "CENTER-7,CENTER-7" && fs_view != client_view)
 		var/list/actualview = getviewsize(client_view)
 		fs_view = client_view
 		transform = matrix(actualview[1]/FULLSCREEN_OVERLAY_RESOLUTION_X, 0, 0, 0, actualview[2]/FULLSCREEN_OVERLAY_RESOLUTION_Y, 0)
@@ -83,10 +84,6 @@
 	if(!show_when_dead && mymob.stat == DEAD)
 		return FALSE
 	return TRUE
-
-/atom/movable/screen/fullscreen/Destroy()
-	severity = 0
-	. = ..()
 
 /atom/movable/screen/fullscreen/brute
 	icon_state = "brutedamageoverlay"
@@ -186,3 +183,26 @@
 
 /atom/movable/screen/fullscreen/weather/high
 	icon_state = "impairedoverlay3"
+
+/atom/movable/screen/fullscreen/lighting_backdrop
+	icon = 'icons/mob/hud/screen1.dmi'
+	icon_state = "flash"
+	transform = matrix(200, 0, 0, 0, 200, 0)
+	plane = LIGHTING_PLANE
+	blend_mode = BLEND_OVERLAY
+	show_when_dead = TRUE
+
+//Provides darkness to the back of the lighting plane
+/atom/movable/screen/fullscreen/lighting_backdrop/lit
+	invisibility = INVISIBILITY_LIGHTING
+	layer = BACKGROUND_LAYER+21
+	color = "#000"
+
+//Provides whiteness in case you don't see lights so everything is still visible
+/atom/movable/screen/fullscreen/lighting_backdrop/unlit
+	layer = BACKGROUND_LAYER+20
+
+/atom/movable/screen/fullscreen/see_through_darkness
+	icon_state = "nightvision"
+	plane = LIGHTING_PLANE
+	blend_mode = BLEND_ADD

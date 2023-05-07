@@ -1,6 +1,9 @@
 /datum/faction/uscm
-	name = "United States Colonial Marines"
-	faction_tag = FACTION_MARINE
+	name = NAME_FACTION_USCM
+	faction_name = FACTION_USCM
+	faction_tag = SIDE_FACTION_USCM
+	relations_pregen = RELATIONS_FACTION_USCM
+	faction_iff_tag_type = /obj/item/faction_tag/uscm
 
 /datum/faction/uscm/modify_hud_holder(image/holder, mob/living/carbon/human/H)
 	var/datum/squad/squad = H.assigned_squad
@@ -14,25 +17,42 @@
 		else if(I)
 			_role = I.rank
 		switch(GET_DEFAULT_ROLE(_role))
-			if(JOB_SQUAD_ENGI) marine_rk = "engi"
-			if(JOB_SQUAD_SPECIALIST) marine_rk = "spec"
-			if(JOB_SQUAD_RTO) marine_rk = "rto"
-			if(JOB_SQUAD_MEDIC) marine_rk = "med"
-			if(JOB_SQUAD_SMARTGUN) marine_rk = "gun"
-			if(JOB_XO) marine_rk = "xo"
-			if(JOB_CO) marine_rk = "co"
-			if(JOB_GENERAL) marine_rk = "general"
-			if(JOB_PILOT) marine_rk = "po"
-			if(JOB_INTEL) marine_rk = "io"
-			if(JOB_DROPSHIP_CREW_CHIEF) marine_rk = "dcc"
-			if(JOB_CREWMAN) marine_rk = "tc"
-			if(JOB_MARINE_RAIDER) marine_rk = "soc"
-			if(JOB_MARINE_RAIDER_SL) marine_rk = "soctl"
-			if(JOB_MARINE_RAIDER_CMD) marine_rk = "soccmd"
+			if(JOB_SQUAD_ENGI)
+				marine_rk = "engi"
+			if(JOB_SQUAD_SPECIALIST)
+				marine_rk = "spec"
+			if(JOB_SQUAD_RTO)
+				marine_rk = "rto"
+			if(JOB_SQUAD_MEDIC)
+				marine_rk = "med"
+			if(JOB_SQUAD_SMARTGUN)
+				marine_rk = "gun"
+			if(JOB_XO)
+				marine_rk = "xo"
+			if(JOB_CO)
+				marine_rk = "co"
+			if(JOB_GENERAL)
+				marine_rk = "general"
+			if(JOB_PILOT)
+				marine_rk = "po"
+			if(JOB_INTEL)
+				marine_rk = "io"
+			if(JOB_DROPSHIP_CREW_CHIEF)
+				marine_rk = "dcc"
+			if(JOB_CREWMAN)
+				marine_rk = "tc"
+			if(JOB_MARINE_RAIDER)
+				marine_rk = "soc"
+			if(JOB_MARINE_RAIDER_SL)
+				marine_rk = "soctl"
+			if(JOB_MARINE_RAIDER_CMD)
+				marine_rk = "soccmd"
 		if(squad.squad_leader == H)
 			switch(squad.squad_type)
-				if("Squad") marine_rk = "leader_a"
-				if("Team") marine_rk = "soctl_a"
+				if("Squad")
+					marine_rk = "leader_a"
+				if("Team")
+					marine_rk = "soctl_a"
 
 			H.langchat_styles = "langchat_bolded" // bold text for bold leaders
 		else
@@ -40,7 +60,8 @@
 
 		H.langchat_color = squad_colors_chat[H.assigned_squad.color]
 
-		if(!marine_rk) marine_rk = H.rank_fallback
+		if(!marine_rk)
+			marine_rk = H.rank_fallback
 		if(marine_rk)
 			var/image/IMG = image('icons/mob/hud/marine_hud.dmi', H, "hudsquad")
 			if(squad_clr)

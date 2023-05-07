@@ -98,7 +98,7 @@
 /obj/item/storage/pouch/flamertank
 	name = "fuel tank strap pouch"
 	desc = "Two ring straps to loop around M240-pattern napalm tanks. Handle with care."
-	storage_slots = 2
+	storage_slots = 3
 	icon_state = "fueltank_pouch"
 	storage_flags = STORAGE_FLAGS_POUCH
 	can_hold = list(
@@ -313,7 +313,7 @@
 /obj/item/storage/pouch/pistol/proc/update_gun_icon()
 	if(current_gun)
 		playsound(src, drawSound, 15, TRUE)
-		gun_underlay = image('icons/obj/items/clothing/belts.dmi', current_gun.base_gun_icon)
+		gun_underlay = image('icons/obj/items/clothing/belts.dmi', current_gun.base_icon)
 		gun_underlay.pixel_x = icon_x
 		gun_underlay.pixel_y = icon_y
 		gun_underlay.color = current_gun.color
@@ -665,6 +665,7 @@
 		/obj/item/reagent_container/hypospray,
 		/obj/item/tool/extinguisher/mini,
 		/obj/item/storage/syringe_case,
+		/obj/item/tool/surgery/surgsynth_graftline,
 		/obj/item/tool/surgery/surgical_line,
 		/obj/item/tool/surgery/synthgraft,
 	)
@@ -692,6 +693,7 @@
 		/obj/item/device/healthanalyzer,
 		/obj/item/reagent_container/hypospray,
 		/obj/item/tool/extinguisher/mini,
+		/obj/item/tool/surgery/surgsynth_graftline,
 		/obj/item/tool/surgery/surgical_line,
 		/obj/item/tool/surgery/synthgraft,
 	)
@@ -932,6 +934,29 @@
 		playsound(loc, 'sound/effects/refill.ogg', 25, TRUE, 3)
 		autoinjector.update_icon()
 		update_icon()
+
+/obj/item/storage/pouch/document
+	name = "large document pouch"
+	desc = "It can contain papers, folders, disks, technical manuals, and clipboards."
+	icon_state = "document"
+	storage_slots = 21
+	max_w_class = SIZE_MEDIUM
+	max_storage_space = 21
+	storage_flags = STORAGE_FLAGS_POUCH|STORAGE_CLICK_GATHER
+	can_hold = list(
+		/obj/item/paper,
+		/obj/item/clipboard,
+		/obj/item/document_objective/paper,
+		/obj/item/document_objective/report,
+		/obj/item/document_objective/folder,
+		/obj/item/disk/objective,
+		/obj/item/document_objective/technical_manual
+	)
+
+/obj/item/storage/pouch/document/small
+	name = "small document pouch"
+	storage_slots = 7
+
 
 /obj/item/storage/pouch/pressurized_reagent_canister/afterattack(obj/target, mob/user, flag) //refuel at fueltanks & chem dispensers.
 	if(!inner)

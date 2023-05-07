@@ -192,6 +192,7 @@
 		/obj/item/ammo_magazine/flamer_tank/large,
 		/obj/item/ammo_magazine/flamer_tank/large/B,
 		/obj/item/ammo_magazine/flamer_tank/large/X,
+		/obj/item/ammo_magazine/flamer_tank/large/G,
 	)
 	cost = 60
 	containertype = /obj/structure/closet/crate/ammo/alt/flame
@@ -228,4 +229,14 @@
 	cost = 40
 	containertype = /obj/structure/closet/crate/ammo/alt/flame
 	containername = "M240-T Type-X Fuel Tank Crate"
+	group = "Weapons Specialist Ammo"
+
+/datum/supply_packs/ammo_pyro_g
+	name = "M240-T Type-G Fuel Tank Crate (x1)"
+	contains = list(
+					/obj/item/ammo_magazine/flamer_tank/large/G
+					)
+	cost = 50
+	containertype = /obj/structure/closet/crate/ammo/alt/flame
+	containername = "M240-T Type-G Fuel Tank Crate"
 	group = "Weapons Specialist Ammo"

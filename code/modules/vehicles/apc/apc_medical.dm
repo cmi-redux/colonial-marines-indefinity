@@ -112,7 +112,7 @@
 
 //PRESET: no hardpoints
 /obj/effect/vehicle_spawner/apc_med/spawn_vehicle()
-	var/obj/vehicle/multitile/apc/medical/APC = new (loc)
+	var/obj/vehicle/multitile/apc/medical/APC = new(loc)
 
 	load_misc(APC)
 	load_hardpoints(APC)
@@ -125,7 +125,7 @@
 
 //PRESET: default hardpoints, destroyed
 /obj/effect/vehicle_spawner/apc_med/decrepit/spawn_vehicle()
-	var/obj/vehicle/multitile/apc/medical/APC = new (loc)
+	var/obj/vehicle/multitile/apc/medical/APC = new(loc)
 
 	load_misc(APC)
 	load_hardpoints(APC)

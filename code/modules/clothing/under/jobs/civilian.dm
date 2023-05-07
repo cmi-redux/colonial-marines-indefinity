@@ -7,14 +7,14 @@
 	desc = "It looks like it could use some more flair."
 	name = "bartender's uniform"
 	icon_state = "ba_suit"
-	flags_jumpsuit = FALSE
+	flags_jumpsuit = NO_FLAGS
 
 /obj/item/clothing/under/rank/cargo
 	name = "quartermaster's jumpsuit"
 	desc = "It's a jumpsuit worn by the quartermaster. It's specially designed to prevent back injuries caused by pushing paper."
 	icon_state = "qm"
 	item_state = "lb_suit"
-	flags_jumpsuit = FALSE
+	flags_jumpsuit = NO_FLAGS
 
 /obj/item/clothing/under/rank/cargotech
 	name = "cargo technician's jumpsuit"
@@ -28,7 +28,7 @@
 	name = "chaplain's jumpsuit"
 	icon_state = "chaplain"
 	item_state = "chaplain"
-	flags_jumpsuit = FALSE
+	flags_jumpsuit = NO_FLAGS
 
 /obj/item/clothing/under/rank/chaplain/cultist
 	name = "cultist jumpsuit"
@@ -44,7 +44,7 @@
 	desc = "An outfit fit for the hard-working man."
 	icon_state = "worker_overalls"
 	item_state = "bl_suit"
-	flags_jumpsuit = FALSE
+	flags_jumpsuit = NO_FLAGS
 
 /obj/item/clothing/under/rank/chef
 	desc = "It's an apron which is given only to the most <b>hardcore</b> chefs in space."
@@ -55,7 +55,7 @@
 	name = "clown suit"
 	desc = "<i>'HONK!'</i>"
 	icon_state = "clown"
-	flags_jumpsuit = FALSE
+	flags_jumpsuit = NO_FLAGS
 	black_market_value = 25
 
 /obj/item/clothing/under/rank/hydroponics
@@ -69,7 +69,7 @@
 	desc = "The plain, professional attire of an Internal Affairs Agent. The collar is <i>immaculately</i> starched."
 	name = "Internal Affairs uniform"
 	icon_state = "internalaffairs"
-	flags_jumpsuit = FALSE
+	flags_jumpsuit = NO_FLAGS
 
 /obj/item/clothing/under/rank/janitor
 	desc = "It's the official uniform of the station's janitor. It has minor protection from biohazards."
@@ -87,7 +87,7 @@
 /obj/item/clothing/under/lawyer
 	desc = "Slick threads."
 	name = "Lawyer suit"
-	flags_jumpsuit = FALSE
+	flags_jumpsuit = NO_FLAGS
 
 /obj/item/clothing/under/lawyer/black
 	name = "black Lawyer suit"
@@ -123,10 +123,10 @@
 	name = "sensible suit"
 	desc = "It's very... sensible."
 	icon_state = "red_suit"
-	flags_jumpsuit = FALSE
+	flags_jumpsuit = NO_FLAGS
 
 /obj/item/clothing/under/mime
 	name = "mime's outfit"
 	desc = "It's not very colourful."
 	icon_state = "mime"
-	flags_jumpsuit = FALSE
+	flags_jumpsuit = NO_FLAGS

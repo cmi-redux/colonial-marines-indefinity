@@ -15,10 +15,6 @@
 		to_chat(src, SPAN_XENOWARNING("You can't escape this cell!"))
 		return
 
-	if(clone) //Prevents burrowing on stairs
-		to_chat(src, SPAN_XENOWARNING("You can't burrow here!"))
-		return
-
 	if(caste_type && GLOB.xeno_datum_list[caste_type])
 		caste = GLOB.xeno_datum_list[caste_type]
 
@@ -101,10 +97,6 @@
 		return
 
 	if(istype(T, /turf/open/space))
-		to_chat(src, SPAN_XENOWARNING("You make tunnels, not wormholes!"))
-		return
-
-	if(clone) //Prevents tunnels in Z transition areas
 		to_chat(src, SPAN_XENOWARNING("You make tunnels, not wormholes!"))
 		return
 

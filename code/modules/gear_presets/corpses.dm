@@ -16,14 +16,14 @@
 
 /datum/equipment_preset/corpse/load_status(mob/living/carbon/human/H)
 	. = ..(H)
-	H.death(create_cause_data("existing"), TRUE) //Kills the new mob
+	H.death(create_cause_data("существования"), TRUE) //Kills the new mob
 	H.apply_damage(100, BRUTE)
 	H.apply_damage(100, BRUTE)
 	H.apply_damage(100, BRUTE)
 	if(xenovictim)
 		var/datum/internal_organ/O
 		var/i
-		for(i in list("heart","lungs"))
+		for(i in list("heart", "lungs"))
 			O = H.internal_organs_by_name[i]
 			H.internal_organs_by_name -= i
 			H.internal_organs -= O
@@ -50,7 +50,7 @@
 	add_survivor_weapon_pistol(H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(H), WEAR_FEET)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/corpse/realpirate
 	name = "Corpse - Pirate"
@@ -75,7 +75,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/eyepatch(H), WEAR_EYES)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/bandana(H), WEAR_HEAD)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/corpse/realpirate/ranged
 	name = "Corpse - Pirate Gunner"
@@ -85,7 +85,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/pirate(H), WEAR_HEAD)
 	. = ..()
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/corpse/russian
 	name = "Corpse - Russian"
@@ -116,7 +116,7 @@
 	else
 		H.equip_to_slot_or_del(new /obj/item/clothing/head/ushanka(H), WEAR_HEAD)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 // Civilians
 
 /datum/equipment_preset/corpse/prisoner
@@ -135,7 +135,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/orange(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/orange(H), WEAR_FEET)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/corpse/chef
 	name = "Corpse - Chef"
@@ -153,7 +153,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/chefhat(H), WEAR_HEAD)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack(H), WEAR_BACK)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/corpse/doctor
 	name = "Corpse - Doctor"
@@ -177,7 +177,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/chef/classic(H), WEAR_JACKET)
 	add_random_survivor_medical_gear(H)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/corpse/engineer
 	name = "Corpse - Engineer"
@@ -207,7 +207,7 @@
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight/lantern(H.back), WEAR_IN_BACK)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/corpse/clown
 	name = "Corpse - Clown"
@@ -234,7 +234,7 @@
 	else
 		H.equip_to_slot_or_del(new /obj/item/device/radio(H), WEAR_IN_BACK)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/corpse/scientist
 	name = "Corpse - Scientist"
@@ -270,7 +270,7 @@
 	H.equip_to_slot_or_del(new /obj/item/paper/research_notes/good(H), WEAR_IN_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/reagent_container/glass/beaker/vial/random/good(H), WEAR_IN_JACKET)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/corpse/miner
 	name = "Corpse - Shaft Miner"
@@ -288,7 +288,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/industrial(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), WEAR_FEET)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/corpse/security
 	name = "Corpse - Security"
@@ -307,7 +307,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/security(H), WEAR_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet(H), WEAR_HEAD)
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress(H), WEAR_L_EAR)
-	H.equip_to_slot_or_del(new /obj/item/storage/belt/security/MP/full(H), WEAR_WAIST)
+	H.equip_to_slot_or_del(new /obj/item/storage/belt/security/mp/full(H), WEAR_WAIST)
 	H.equip_to_slot_or_del(new /obj/item/attachable/bayonet(H.back), WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/device/radio(H), WEAR_IN_BACK)
 	if(H.disabilities & NEARSIGHTED)
@@ -318,7 +318,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/jackboots(H), WEAR_FEET)
 
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/corpse/security/marshal
 	name = "Corpse - Colonial Marshal"
@@ -356,7 +356,7 @@
 
 	. = ..()
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/corpse/security/liaison
 	name = "Corpse - Corporate Liaison"
@@ -381,7 +381,7 @@
 		H.equip_to_slot_or_del(new /obj/item/device/radio(H), WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest(H), WEAR_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3/mod88(H), WEAR_WAIST)
-	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/WY(H), WEAR_L_EAR)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/wy(H), WEAR_L_EAR)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/device/radio(H), WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/attachable/bayonet(H.back), WEAR_IN_BACK)
@@ -393,7 +393,7 @@
 		H.equip_to_slot_or_del(new /obj/item/attachable/bayonet(H.back), WEAR_IN_BACK)
 	. = ..()
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/corpse/prison_security
 	name = "Corpse - Prison Guard"
@@ -421,7 +421,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine(H), WEAR_HANDS)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/jackboots(H), WEAR_FEET)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 								/////////////////Officers//////////////////////
 
 /datum/equipment_preset/corpse/bridgeofficer
@@ -448,7 +448,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses(H), WEAR_EYES)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 /datum/equipment_preset/corpse/bridgeofficer/johnson
 	name = "Corpse - Mr. Johnson Telovin"
 	idtype = /obj/item/card/id/general
@@ -478,7 +478,7 @@
 /datum/equipment_preset/corpse/bridgeofficer/johnson/load_name(mob/living/carbon/human/H, randomise)
 	H.change_real_name(H, "Johnson Telovin")
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/corpse/commander
 	name = "Corpse - Commanding Officer"
@@ -509,7 +509,7 @@
 	H.equip_to_slot_or_del(new /obj/item/tool/lighter/zippo(H), WEAR_R_STORE)
 	add_random_cl_survivor_loot(H)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/corpse/wysec
 	name = "Corpse - Weyland-Yutani Corporate Security Guard"
@@ -550,7 +550,6 @@
 	assignment = JOB_COLONIST
 	xenovictim = FALSE
 	rank = JOB_COLONIST
-	faction = FACTION_COLONIST
 	access = list(ACCESS_CIVILIAN_PUBLIC)
 	idtype = /obj/item/card/id/lanyard
 
@@ -671,7 +670,7 @@
 	role_comm_title = "Supervisor"
 	rank = FACTION_WY
 	idtype = /obj/item/card/id/silver/clearance_badge/manager
-	faction_group = FACTION_LIST_WY
+	faction = FACTION_WY
 	languages = list(LANGUAGE_ENGLISH, LANGUAGE_JAPANESE)
 	access = list(
 		ACCESS_WY_CORPORATE,
@@ -690,7 +689,7 @@
 		H.equip_to_slot_or_del(new /obj/item/device/radio(H), WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/lockable/liaison, WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/manager(H), WEAR_JACKET)
-	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/WY, WEAR_L_EAR)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/wy, WEAR_L_EAR)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/dress, WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/manager(H), WEAR_HEAD)
 	H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3/vp78(H), WEAR_WAIST)
@@ -733,7 +732,7 @@
 	spawn_rebel_gloves(H)
 	spawn_rebel_belt(H)
 
-	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/CLF(H), WEAR_L_EAR)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/clf(H), WEAR_L_EAR)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/lightpack/five_slot(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar(H), WEAR_IN_BACK)
@@ -767,13 +766,13 @@
 
 /datum/equipment_preset/corpse/upp/load_gear(mob/living/carbon/human/H)
 
-	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/UPP, WEAR_L_EAR)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/upp, WEAR_L_EAR)
 	//head
-	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/veteran/UPP, WEAR_HEAD)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/veteran/upp, WEAR_HEAD)
 	//body
-	var/obj/item/clothing/under/marine/veteran/UPP/UPP = new()
-	H.equip_to_slot_or_del(UPP, WEAR_BODY)
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/faction/UPP, WEAR_JACKET)
+	var/obj/item/clothing/under/marine/veteran/upp/upp = new()
+	H.equip_to_slot_or_del(upp, WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/faction/upp, WEAR_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/device/binoculars, WEAR_IN_JACKET)
 	//limbs
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/upp, WEAR_FEET)
@@ -794,7 +793,6 @@
 	flags = EQUIPMENT_PRESET_START_OF_ROUND
 	assignment = "Weyland-Yutani PMC (Standard)"
 	faction = FACTION_PMC
-	faction_group = FACTION_LIST_WY
 	rank = JOB_PMC
 	paygrade = "PMC-OP"
 	idtype = /obj/item/card/id/pmc
@@ -832,7 +830,7 @@
 	assignment = JOB_WY_GOON
 	rank = JOB_WY_GOON
 	paygrade = "WEY-GOON"
-	skills = /datum/skills/MP
+	skills = /datum/skills/mp
 
 /datum/equipment_preset/corpse/pmc/goon/load_gear(mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress, WEAR_L_EAR)
@@ -1014,7 +1012,7 @@
 
 /datum/equipment_preset/corpse/gladiator/load_gear(mob/living/carbon/human/H)
 
-	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/UPP, WEAR_L_EAR)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/upp, WEAR_L_EAR)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/gladiator, WEAR_HEAD)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/chainshirt/hunter, WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/gladiator, WEAR_JACKET)

@@ -2,6 +2,26 @@
 Verbs related to getting fucking jacked, bro
 */
 
+
+/mob/living/carbon/human/verb/assimilate()
+	set name = "Try to convert"
+	set desc = "Converting other faction ppl in your faction."
+	set category = "IC"
+
+	var/list/choices = list()
+	for(var/mob/living/carbon/human in range(2, get_turf(src)))
+		if(human.faction == faction)
+			continue
+		choices += human
+
+	if(!choices)
+		to_chat(src, SPAN_WARNING("There no potential targets"))
+		return
+
+	var/choice = tgui_input_list(src, "Choose human:", "Converting", choices)
+	if(choice)
+		handle_faction_convert(choice)
+
 /mob/living/carbon/human/verb/pushup()
 	set name = "Do Pushup"
 	set desc = "Makes you do a pushup."
@@ -20,6 +40,7 @@ Verbs related to getting fucking jacked, bro
 	if(choice == "Proper ones")
 		visible_message(SPAN_NOTICE("[src] shifts \his weight onto \his hands and feet."), SPAN_NOTICE("You move your weight onto your hands and feet."), SPAN_NOTICE("You hear rustling."))
 		execute_pushups(on_knees = FALSE)
+
 	if(choice == "On my knees")
 		visible_message(SPAN_NOTICE("[src] shifts \his weight onto \his knees. What a wimp."), SPAN_NOTICE("You move your weight onto your knees. WEAK!"), SPAN_NOTICE("You hear rustling."))
 		execute_pushups(on_knees = TRUE)

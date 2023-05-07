@@ -70,7 +70,7 @@ GLOBAL_LIST_EMPTY(jelly_awards)
 		if(!as_admin && mob == usr)
 			// Giver: Increment their medals given stat
 			giver_mob = mob
-			mob.count_niche_stat(STATISTICS_NICHE_MEDALS_GIVE)
+			track_statistic_earned(giver_mob.faction, STATISTIC_TYPE_MISC, STATISTICS_MEDALS_GIVE, 1, giver_mob.client.player_data.id)
 			if(found_other)
 				break
 			found_other = TRUE
@@ -147,7 +147,7 @@ GLOBAL_LIST_EMPTY(jelly_awards)
 
 	// Recipient: Add the medal to the player's stats
 	if(recipient_ckey)
-		var/datum/entity/player_entity/recipient_player = setup_player_entity(recipient_ckey)
+		var/datum/player_entity/recipient_player = setup_player_entity(recipient_ckey)
 		if(recipient_player)
 			recipient_player.track_medal_earned(medal_type, recipient_mob, recipient_rank, citation, usr)
 
@@ -159,11 +159,11 @@ GLOBAL_LIST_EMPTY(jelly_awards)
 /proc/print_medal(mob/living/carbon/human/user, obj/printer)
 	var/obj/item/card/id/card = user.wear_id
 	if(!card)
-		to_chat(user, SPAN_WARNING("You must have an authenticated ID Card to award medals."))
+		to_chat(user, SPAN_WARNING("Вы должны аунтифицировать ID Card для выдачи медали."))
 		return
 
 	if(!((card.paygrade in GLOB.co_paygrades) || (card.paygrade in GLOB.highcom_paygrades)))
-		to_chat(user, SPAN_WARNING("Only a Senior Officer can award medals!"))
+		to_chat(user, SPAN_WARNING("Только Сеньер Офицер может выдать медаль!"))
 		return
 
 	if(!card.registered_ref)
@@ -178,9 +178,10 @@ GLOBAL_LIST_EMPTY(jelly_awards)
 
 	if(give_medal_award(get_turf(printer)))
 		user.visible_message(SPAN_NOTICE("[printer] prints a medal."))
+		printer.visible_message(SPAN_NOTICE("[printer] печатает медаль."))
 
-/proc/give_jelly_award(datum/hive_status/hive, as_admin = FALSE)
-	if(!hive)
+/proc/give_jelly_award(datum/faction/faction, as_admin = FALSE)
+	if(!faction)
 		return FALSE
 
 	if(as_admin && !check_rights(R_ADMIN))
@@ -190,29 +191,18 @@ GLOBAL_LIST_EMPTY(jelly_awards)
 	var/list/possible_recipients = list()
 	var/list/recipient_castes = list()
 	var/list/recipient_mobs = list()
-	for(var/mob/living/carbon/xenomorph/xeno in hive.totalXenos)
-		if (xeno.persistent_ckey == usr.persistent_ckey) // Don't award self
+	for(var/mob/living/carbon/xenomorph/target_xeno in faction.totalMobs + faction.totalDeadMobs)
+		if(target_xeno.persistent_ckey == usr.persistent_ckey) // Don't award self
 			continue
-		if (xeno.tier == 0) // Don't award larva or facehuggers
+		if(target_xeno.tier == 0) // Don't award larva or huggers
 			continue
-		if (!as_admin && istype(xeno.caste, /datum/caste_datum/queen)) // Don't award queens unless admin
+		if(!as_admin && istype(target_xeno.caste, /datum/caste_datum/queen)) // Don't award queens unless admin
 			continue
-		var/recipient_name = xeno.real_name
-		recipient_castes[recipient_name] = xeno.caste_type
-		recipient_mobs[recipient_name] = xeno
+		var/recipient_name = target_xeno.real_name
+		recipient_castes[recipient_name] = target_xeno.caste_type
+		recipient_mobs[recipient_name] = target_xeno
 		possible_recipients += recipient_name
-	for(var/mob/living/carbon/xenomorph/xeno in hive.totalDeadXenos)
-		if (xeno.persistent_ckey == usr.persistent_ckey) // Don't award previous selves
-			continue
-		if (xeno.tier == 0) // Don't award larva or facehuggers
-			continue
-		if (!as_admin && istype(xeno.caste, /datum/caste_datum/queen)) // Don't award previous queens unless admin
-			continue
-		var/recipient_name = xeno.real_name
-		recipient_castes[recipient_name] = xeno.caste_type
-		recipient_mobs[recipient_name] = xeno
-		possible_recipients += recipient_name
-	var/chosen_recipient = tgui_input_list(usr, "Who do you want to award jelly to?", "Jelly Recipient", possible_recipients, theme="hive_status")
+	var/chosen_recipient = tgui_input_list(usr, "Who do you want to award jelly to?", "Jelly Recipient", possible_recipients, theme = "hive_status")
 	if(!chosen_recipient)
 		return FALSE
 
@@ -240,13 +230,12 @@ GLOBAL_LIST_EMPTY(jelly_awards)
 	var/recipient_ckey = recipient_mob.persistent_ckey
 	var/posthumous = !isliving(recipient_mob) || recipient_mob.stat == DEAD
 	if(!as_admin) // Don't need to check for giver mob in admin mode
-		for(var/mob/mob in hive.totalXenos)
+		for(var/mob/mob in faction.totalMobs)
 			if(mob == usr)
 				// Giver: Increment their medals given stat
 				giver_mob = mob
-				mob.count_niche_stat(STATISTICS_NICHE_MEDALS_GIVE)
+				track_statistic_earned(giver_mob.faction, STATISTIC_TYPE_MISC, STATISTICS_MEDALS_GIVE, 1, giver_mob.client.player_data.id)
 				break
-
 	// Create the recipient_award
 	if(!GLOB.jelly_awards[chosen_recipient])
 		GLOB.jelly_awards[chosen_recipient] = new /datum/recipient_awards()
@@ -272,7 +261,7 @@ GLOBAL_LIST_EMPTY(jelly_awards)
 
 	// Recipient: Add the medal to the player's stats
 	if(recipient_ckey)
-		var/datum/entity/player_entity/recipient_player = setup_player_entity(recipient_ckey)
+		var/datum/player_entity/recipient_player = setup_player_entity(recipient_ckey)
 		if(recipient_player)
 			recipient_player.track_medal_earned(medal_type, recipient_mob, recipient_caste, citation, usr)
 
@@ -339,13 +328,12 @@ GLOBAL_LIST_EMPTY(jelly_awards)
 		recipient_award.giver_mob.Cut(index, index + 1)
 		recipient_award.medal_items.Cut(index, index + 1)
 
-	// Remove giver's stat
 	if(giver_mob)
-		giver_mob.count_niche_stat(STATISTICS_NICHE_MEDALS_GIVE, -1)
+		track_statistic_earned(giver_mob.faction, STATISTIC_TYPE_MISC, STATISTICS_MEDALS_GIVE, -1, giver_mob.client.player_data.id)
 
 	// Remove stats for recipient (this has a weakref to the mob, but theres a possibility of recipient.statistic_exempt)
 	if(recipient_mob)
-		var/datum/entity/player_entity/recipient_player = setup_player_entity(recipient_mob.persistent_ckey)
+		var/datum/player_entity/recipient_player = setup_player_entity(recipient_mob.persistent_ckey)
 		if(recipient_player)
 			recipient_player.untrack_medal_earned(medal_type, recipient_mob, citation)
 

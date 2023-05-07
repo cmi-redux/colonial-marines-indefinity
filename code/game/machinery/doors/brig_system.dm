@@ -308,30 +308,30 @@
 	update_icon()
 
 /obj/structure/machinery/brig_cell/update_icon()
-	if (stat & (NOPOWER))
+	if(stat & (NOPOWER))
 		icon_state = "frame"
 		return
 
-	if (stat & (BROKEN))
+	if(stat & (BROKEN))
 		set_picture("ai_bsod")
 		return
 
-	if (active_report && (active_report.incident.status & BRIG_SENTENCE_ACTIVE))
+	if(active_report && (active_report.incident.status & BRIG_SENTENCE_ACTIVE))
 		var/disp1 = id
 		var/time_left = get_time_left(active_report.incident)
 		var/disp2
 
 		// Perma sentence shows 'Perma. Regular sentence shows the timer.
-		if (active_report.incident.status & BRIG_SENTENCE_PERMA)
+		if(active_report.incident.status & BRIG_SENTENCE_PERMA)
 			disp2 = "PERM"
 		else
 			disp2 = "[add_zero(num2text((time_left / 60) % 60),2)]~[add_zero(num2text(time_left % 60), 2)]"
-			if (length(disp2) > 5)
+			if(length(disp2) > 5)
 				disp2 = "Error"
 
 		update_display(disp1, disp2)
 	else
-		if (maptext)
+		if(maptext)
 			maptext = ""
 
 /obj/structure/machinery/brig_cell/power_change()

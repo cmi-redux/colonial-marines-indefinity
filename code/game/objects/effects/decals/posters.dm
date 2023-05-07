@@ -56,19 +56,18 @@
 	if(ruined)
 		return
 	var/temp_loc = user.loc
-	switch(alert("Do I want to rip the poster from the wall?","You think...","Yes","No"))
-		if("Yes")
-			if(user.loc != temp_loc)
-				return
-			visible_message(SPAN_WARNING("[user] rips [src] in a single, decisive motion!") )
-			playsound(src.loc, 'sound/items/poster_ripped.ogg', 25, 1)
-			ruined = 1
-			icon_state = "poster_ripped"
-			name = "ripped poster"
-			desc = "You can't make out anything from the poster's original print. It's ruined."
-			add_fingerprint(user)
-		if("No")
+	if(alert("Do I want to rip the poster from the wall?", "You think...", user.client.auto_lang(LANGUAGE_YES), user.client.auto_lang(LANGUAGE_NO)) == user.client.auto_lang(LANGUAGE_YES))
+		if(user.loc != temp_loc)
 			return
+		visible_message(SPAN_WARNING("[user] rips [src] in a single, decisive motion!") )
+		playsound(src.loc, 'sound/items/poster_ripped.ogg', 25, 1)
+		ruined = 1
+		icon_state = "poster_ripped"
+		name = "ripped poster"
+		desc = "You can't make out anything from the poster's original print. It's ruined."
+		add_fingerprint(user)
+	else
+		return
 
 /obj/structure/sign/poster/proc/roll_and_drop(turf/newloc)
 	var/obj/item/poster/P = new(src, serial_number)

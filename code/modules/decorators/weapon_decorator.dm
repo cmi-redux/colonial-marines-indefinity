@@ -6,7 +6,7 @@
 	var/icon/icon_override
 	var/icon_state
 	var/item_state
-	var/base_gun_icon
+	var/base_icon
 
 /datum/decorator/manual/weapon_decorator/New(_weapon_type)
 	weapon_type = _weapon_type
@@ -26,8 +26,8 @@
 		LAZYSET(G.item_icons, WEAR_R_HAND, r_hand)
 	if(icon_state)
 		G.icon_state = icon_state
-	if(base_gun_icon)
-		G.base_gun_icon = base_gun_icon
+	if(base_icon)
+		G.gun_icon = base_icon
 	if(icon_override)
 		G.icon_override = icon_override
 	if(item_state)

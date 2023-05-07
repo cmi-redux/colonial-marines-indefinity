@@ -19,11 +19,19 @@ SUBSYSTEM_DEF(mapping)
 	var/list/reservation_ready = list()
 	var/clearing_reserved_turfs = FALSE
 
-	// Z-manager stuff
-	var/ground_start  // should only be used for maploading-related tasks
+	/// True when in the process of adding a new Z-level, global locking
+	var/adding_new_zlevel = FALSE
+
+	//Z-manager stuff
+	var/ground_start // should only be used for maploading-related tasks
 	var/list/z_list
+	///list of all z level indices that form multiz connections and whether theyre linked up or down.
+	///list of lists, inner lists are of the form: list("up or down link direction" = TRUE)
 	var/datum/space_level/transit
 	var/num_of_res_levels = 1
+
+	/// list of traits and their associated z leves
+	var/list/z_trait_levels = list()
 
 //dlete dis once #39770 is resolved
 /datum/controller/subsystem/mapping/proc/HACK_LoadMapConfig()
@@ -58,8 +66,14 @@ SUBSYSTEM_DEF(mapping)
 		var/datum/map_config/MC = configs[maptype]
 		if(MC.perf_mode)
 			GLOB.perf_flags |= MC.perf_mode
-
+	SSticker.load_mode()
 	return SS_INIT_SUCCESS
+
+/// Takes a z level datum, and tells the mapping subsystem to manage it
+/// Also handles things like plane offset generation, and other things that happen on a z level to z level basis
+/datum/controller/subsystem/mapping/proc/manage_z_level(datum/space_level/new_z)
+	// First, add the z
+	z_list += new_z
 
 /datum/controller/subsystem/mapping/proc/wipe_reservations(wipe_safety_delay = 100)
 	if(clearing_reserved_turfs || !initialized) //in either case this is just not needed.
@@ -84,51 +98,52 @@ SUBSYSTEM_DEF(mapping)
 
 	z_list = SSmapping.z_list
 
-#define INIT_ANNOUNCE(X) to_chat(world, "<span class='notice'>[X]</span>"); log_world(X)
 /datum/controller/subsystem/mapping/proc/LoadGroup(list/errorList, name, path, files, list/traits, list/default_traits, silent = FALSE)
 	. = list()
 	var/start_time = REALTIMEOFDAY
 
-	if (!islist(files))  // handle single-level maps
+	if(!islist(files))  // handle single-level maps
 		files = list(files)
 
 	// check that the total z count of all maps matches the list of traits
 	var/total_z = 0
 	var/list/parsed_maps = list()
-	for (var/file in files)
+	for(var/file in files)
 		var/full_path = "maps/[path]/[file]"
 		var/datum/parsed_map/pm = new(file(full_path))
 		var/bounds = pm?.bounds
-		if (!bounds)
+		if(!bounds)
 			errorList |= full_path
 			continue
 		parsed_maps[pm] = total_z  // save the start Z of this file
 		total_z += bounds[MAP_MAXZ] - bounds[MAP_MINZ] + 1
 
-	if (!length(traits))  // null or empty - default
-		for (var/i in 1 to total_z)
+	if(!length(traits))  // null or empty - default
+		for(var/i in 1 to total_z)
 			traits += list(default_traits)
-	else if (total_z != traits.len)  // mismatch
+	else if(total_z != traits.len)  // mismatch
 		INIT_ANNOUNCE("WARNING: [traits.len] trait sets specified for [total_z] z-levels in [path]!")
-		if (total_z < traits.len)  // ignore extra traits
+		if(total_z < traits.len)  // ignore extra traits
 			traits.Cut(total_z + 1)
-		while (total_z > traits.len)  // fall back to defaults on extra levels
-			traits += list(default_traits)
+		if(total_z > traits.len)
+			traits = list()
+			while(total_z > traits.len)  // fall back to defaults on extra levels
+				traits += list(default_traits)
 
 	// preload the relevant space_level datums
 	var/start_z = world.maxz + 1
 	var/i = 0
-	for (var/level in traits)
+	for(var/level in traits)
 		add_new_zlevel("[name][i ? " [i + 1]" : ""]", level)
 		++i
 
 	// load the maps
-	for (var/P in parsed_maps)
+	for(var/P in parsed_maps)
 		var/datum/parsed_map/pm = P
-		if (!pm.load(1, 1, start_z + parsed_maps[P], no_changeturf = TRUE))
+		if(!pm.load(1, 1, start_z + parsed_maps[P], no_changeturf = TRUE))
 			errorList |= pm.original_path
 	if(!silent)
-		INIT_ANNOUNCE("Loaded [name] in [(REALTIMEOFDAY - start_time)/10]s!")
+		INIT_ANNOUNCE("Загружено [name] за [(REALTIMEOFDAY - start_time)/10] секунд!")
 	return parsed_maps
 
 /datum/controller/subsystem/mapping/proc/Loadship(list/errorList, name, path, files, list/traits, list/default_traits, silent = FALSE)
@@ -148,22 +163,21 @@ SUBSYSTEM_DEF(mapping)
 	ground_start = world.maxz + 1
 
 	var/datum/map_config/ground_map = configs[GROUND_MAP]
-	INIT_ANNOUNCE("Loading [ground_map.map_name]...")
+	INIT_ANNOUNCE("Загружается [ground_map.map_name]...")
 	Loadground(FailedZs, ground_map.map_name, ground_map.map_path, ground_map.map_file, ground_map.traits, ZTRAITS_GROUND)
 
-	if(!ground_map.disable_ship_map)
+	if(!ground_map.disable_ship_map && !MODE_HAS_FLAG(MODE_NO_SHIP_MAP))
 		var/datum/map_config/ship_map = configs[SHIP_MAP]
-		INIT_ANNOUNCE("Loading [ship_map.map_name]...")
+		INIT_ANNOUNCE("Загружается [ship_map.map_name]...")
 		Loadship(FailedZs, ship_map.map_name, ship_map.map_path, ship_map.map_file, ship_map.traits, ZTRAITS_MAIN_SHIP)
 
-	if(LAZYLEN(FailedZs)) //but seriously, unless the server's filesystem is messed up this will never happen
+	if(length(FailedZs)) //but seriously, unless the server's filesystem is messed up this will never happen
 		var/msg = "RED ALERT! The following map files failed to load: [FailedZs[1]]"
 		if(FailedZs.len > 1)
 			for(var/I in 2 to FailedZs.len)
 				msg += ", [FailedZs[I]]"
 		msg += ". Yell at your server host!"
 		INIT_ANNOUNCE(msg)
-#undef INIT_ANNOUNCE
 
 /datum/controller/subsystem/mapping/proc/changemap(datum/map_config/VM, maptype = GROUND_MAP)
 	LAZYINITLIST(next_map_configs)
@@ -200,25 +214,25 @@ SUBSYSTEM_DEF(mapping)
 	if(!Lines.len)
 		return
 	for (var/t in Lines)
-		if (!t)
+		if(!t)
 			continue
 
 		t = trim(t)
-		if (length(t) == 0)
+		if(length(t) == 0)
 			continue
-		else if (t[1] == "#")
+		else if(t[1] == "#")
 			continue
 
 		var/pos = findtext(t, " ")
 		var/name = null
 
-		if (pos)
+		if(pos)
 			name = lowertext(copytext(t, 1, pos))
 
 		else
 			name = lowertext(t)
 
-		if (!name)
+		if(!name)
 			continue
 
 		. += t
@@ -265,7 +279,7 @@ SUBSYSTEM_DEF(mapping)
 /datum/controller/subsystem/mapping/proc/initialize_reserved_level(z)
 	UNTIL(!clearing_reserved_turfs) //regardless, lets add a check just in case.
 	clearing_reserved_turfs = TRUE //This operation will likely clear any existing reservations, so lets make sure nothing tries to make one while we're doing it.
-	if(!level_trait(z,ZTRAIT_RESERVED))
+	if(!level_trait(z, ZTRAIT_RESERVED))
 		clearing_reserved_turfs = FALSE
 		CRASH("Invalid z level prepared for reservations.")
 	var/turf/A = get_turf(locate(8,8,z))
@@ -275,7 +289,7 @@ SUBSYSTEM_DEF(mapping)
 		// No need to empty() these, because it's world init and they're
 		// already /turf/open/space/basic.
 		var/turf/T = t
-		T.flags_atom |= UNUSED_RESERVATION_TURF
+		T.turf_flags |= TURF_UNUSED_RESERVATION
 	unused_turfs["[z]"] = block
 	reservation_ready["[z]"] = TRUE
 	clearing_reserved_turfs = FALSE
@@ -286,7 +300,7 @@ SUBSYSTEM_DEF(mapping)
 		T.empty(RESERVED_TURF_TYPE, RESERVED_TURF_TYPE, null, TRUE)
 		LAZYINITLIST(unused_turfs["[T.z]"])
 		unused_turfs["[T.z]"] |= T
-		T.flags_atom |= UNUSED_RESERVATION_TURF
+		T.turf_flags |= TURF_UNUSED_RESERVATION
 		GLOB.areas_by_type[world.area].contents += T
 		CHECK_TICK
 

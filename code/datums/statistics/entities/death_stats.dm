@@ -1,4 +1,4 @@
-/datum/entity/statistic/death
+/datum/entity/statistic_death
 	var/player_id
 	var/round_id
 
@@ -6,8 +6,6 @@
 	var/faction_name
 	var/mob_name
 	var/area_name
-
-	var/is_xeno
 
 	var/cause_name
 	var/cause_player_id
@@ -29,8 +27,10 @@
 	var/y
 	var/z
 
+BSQL_PROTECT_DATUM(/datum/entity/statistic_death)
+
 /datum/entity_meta/statistic_death
-	entity_type = /datum/entity/statistic/death
+	entity_type = /datum/entity/statistic_death
 	table_name = "log_player_statistic_death"
 	field_types = list(
 		"player_id" = DB_FIELDTYPE_BIGINT,
@@ -59,8 +59,69 @@
 
 		"x" = DB_FIELDTYPE_INT,
 		"y" = DB_FIELDTYPE_INT,
-		"z" = DB_FIELDTYPE_INT
+		"z" = DB_FIELDTYPE_INT,
 	)
+
+/datum/view_record/statistic_death
+	var/player_id
+	var/round_id
+
+	var/role_name
+	var/faction_name
+	var/mob_name
+	var/area_name
+
+	var/cause_name
+	var/cause_player_id
+	var/cause_role_name
+	var/cause_faction_name
+
+	var/total_steps = 0
+	var/total_kills = 0
+	var/time_of_death
+	var/total_time_alive
+
+	var/total_brute = 0
+	var/total_burn = 0
+	var/total_oxy = 0
+	var/total_tox = 0
+
+	var/x
+	var/y
+	var/z
+
+/datum/entity_view_meta/statistic_death_ordered
+	root_record_type = /datum/entity/statistic_death
+	destination_entity = /datum/view_record/statistic_death
+	fields = list(
+		"player_id",
+		"round_id",
+
+		"role_name",
+		"faction_name",
+		"mob_name",
+		"area_name",
+
+		"cause_name",
+		"cause_player_id",
+		"cause_role_name",
+		"cause_faction_name",
+
+		"total_steps",
+		"total_kills",
+		"time_of_death",
+		"total_time_alive",
+
+		"total_brute",
+		"total_burn",
+		"total_oxy",
+		"total_tox",
+
+		"x",
+		"y",
+		"z",
+	)
+	order_by = list("round_id" = DB_ORDER_BY_DESC)
 
 /mob/proc/track_mob_death(datum/cause_data/cause_data, turf/death_loc)
 	if(!mind || statistic_exempt)
@@ -70,90 +131,56 @@
 		stack_trace("track_mob_death called with string cause ([cause_data]) instead of datum")
 		cause_data = create_cause_data(cause_data)
 
-	var/datum/entity/statistic/death/new_death = DB_ENTITY(/datum/entity/statistic/death)
+	var/datum/entity/statistic_death/Dlog = DB_ENTITY(/datum/entity/statistic_death)
 	var/datum/entity/player/player_entity = get_player_from_key(mind.ckey)
 	if(player_entity)
-		new_death.player_id = player_entity.id
+		Dlog.player_id = player_entity.id
 
-	if(SSperf_logging)
-		new_death.round_id = SSperf_logging.round.id
+	Dlog.round_id = SSperf_logging.round?.id
 
-	new_death.role_name = get_role_name()
-	new_death.mob_name = real_name
-	new_death.faction_name = faction
-
-	new_death.is_xeno = FALSE
+	Dlog.role_name = get_role_name()
+	Dlog.mob_name = real_name
+	Dlog.faction_name = faction?.name
 
 	var/area/A = get_area(death_loc)
-	new_death.area_name = A.name
+	Dlog.area_name = A.name
 
-	new_death.cause_name = cause_data?.cause_name
+	Dlog.cause_name = cause_data?.cause_name
 	var/datum/entity/player/cause_player = get_player_from_key(cause_data?.ckey)
 	if(cause_player)
-		new_death.cause_player_id = cause_player.id
-	new_death.cause_role_name = cause_data?.role
-	new_death.cause_faction_name = cause_data?.faction
+		Dlog.cause_player_id = cause_player.id
+	Dlog.cause_role_name = cause_data?.role
+	Dlog.cause_faction_name = cause_data?.faction
 
 	var/mob/cause_mob = cause_data?.resolve_mob()
 	if(cause_mob)
 		cause_mob.life_kills_total += life_value
 
 	if(getBruteLoss())
-		new_death.total_brute = round(getBruteLoss())
+		Dlog.total_brute = round(getBruteLoss())
 	if(getFireLoss())
-		new_death.total_burn = round(getFireLoss())
+		Dlog.total_burn = round(getFireLoss())
 	if(getOxyLoss())
-		new_death.total_oxy = round(getOxyLoss())
+		Dlog.total_oxy = round(getOxyLoss())
 	if(getToxLoss())
-		new_death.total_tox = round(getToxLoss())
+		Dlog.total_tox = round(getToxLoss())
 
-	new_death.time_of_death = world.time
+	Dlog.time_of_death = duration2text(world.time)
 
-	new_death.x = death_loc.x
-	new_death.y = death_loc.y
-	new_death.z = death_loc.z
+	Dlog.x = death_loc.x
+	Dlog.y = death_loc.y
+	Dlog.z = death_loc.z
 
-	new_death.total_steps = life_steps_total
-	new_death.total_kills = life_kills_total
-	new_death.total_time_alive = life_time_total
-	new_death.total_damage_taken = life_damage_taken_total
+	Dlog.total_steps = life_steps_total
+	Dlog.total_kills = life_kills_total
+	Dlog.total_time_alive = duration2text(life_time_total)
+	Dlog.total_damage_taken = life_damage_taken_total
 
-	handle_observer_message(cause_data, cause_mob, death_loc, A)
-
-	if(round_statistics)
-		round_statistics.track_death(new_death)
-
-	new_death.save()
-	new_death.detach()
-	return new_death
-
-/mob/living/carbon/human/track_mob_death(cause, cause_mob)
-	. = ..(cause, cause_mob, job)
-	if(statistic_exempt || !mind)
-		return
-	var/datum/entity/player_stats/human/human_stats = mind.setup_human_stats()
-	if(human_stats && human_stats.death_list)
-		human_stats.death_list.Insert(1, .)
-
-/mob/living/carbon/xenomorph/track_mob_death(cause, cause_mob)
-	var/datum/entity/statistic/death/new_death = ..(cause, cause_mob, caste_type)
-	if(!new_death)
-		return
-	new_death.is_xeno = TRUE // this was placed beneath the if below, which meant gibbing as a xeno wouldn't track properly in stats
-	if(statistic_exempt || !mind)
-		return
-	var/datum/entity/player_stats/xeno/xeno_stats = mind.setup_xeno_stats()
-	if(xeno_stats && xeno_stats.death_list)
-		xeno_stats.death_list.Insert(1, new_death)
-
-/mob/proc/handle_observer_message(datum/cause_data/cause_data, mob/cause_mob, turf/death_loc, area/death_area)
-	var/observer_message = "<b>[real_name]</b> has died"
-	if(cause_data && cause_data.cause_name)
-		observer_message += " to <b>[cause_data.cause_name]</b>"
-	if(death_area.name)
-		observer_message += " at \the <b>[death_area.name]</b>"
-	if(cause_data && cause_mob)
-		observer_message += " from <b>[cause_mob]</b>"
+	var/observer_message = "<b>[real_name]</b> умер"
+	if(Dlog.cause_name)
+		observer_message += " от <b>[Dlog.cause_name]</b>"
+	if(A.name)
+		observer_message += " в <b>[A.name]</b>"
 
 	msg_admin_attack(observer_message, death_loc.x, death_loc.y, death_loc.z)
 
@@ -162,7 +189,29 @@
 	for(var/mob/dead/observer/g in GLOB.observer_list)
 		to_chat(g, SPAN_DEADSAY(observer_message + " (<a href='?src=\ref[g];jumptocoord=1;X=[death_loc.x];Y=[death_loc.y];Z=[death_loc.z]'>JMP</a>)"))
 
-/mob/living/carbon/xenomorph/handle_observer_message(datum/cause_data/cause_data, mob/cause_mob, turf/death_loc, area/death_area)
-	if(hardcore)
-		return
-	return ..()
+	var/ff_type = Dlog.cause_faction_name == Dlog.faction_name ? 1 : 0
+	if(SSticker.mode.round_statistics)
+		SSticker.mode.round_statistics.track_dead_participant(Dlog.faction_name)
+		if(ff_type)
+			SSticker.mode.round_statistics.total_friendly_kills++
+
+	if(isxeno(cause_mob))
+		track_statistic_earned(Dlog.cause_faction_name, STATISTIC_TYPE_CASTE, Dlog.cause_role_name, ff_type ? STATISTICS_KILL_FF : STATISTICS_KILL, 1, Dlog.cause_player_id)
+	else if(ishuman(cause_mob))
+		track_statistic_earned(Dlog.cause_faction_name, STATISTIC_TYPE_JOB, Dlog.cause_role_name, ff_type ? STATISTICS_KILL_FF : STATISTICS_KILL, 1, Dlog.cause_player_id)
+		if(Dlog.cause_role_name)
+			track_statistic_earned(Dlog.cause_faction_name, STATISTIC_TYPE_WEAPON, Dlog.cause_role_name, ff_type ? STATISTICS_KILL_FF : STATISTICS_KILL, 1, Dlog.cause_player_id)
+
+	if(isxeno(src))
+		track_statistic_earned(Dlog.faction_name, STATISTIC_TYPE_JOB, Dlog.role_name, ff_type ? STATISTICS_DEATH_FF : STATISTICS_DEATH, 1, Dlog.player_id)
+	else if(ishuman(src))
+		track_statistic_earned(Dlog.faction_name, STATISTIC_TYPE_JOB, Dlog.cause_name, ff_type ? STATISTICS_DEATH_FF : STATISTICS_DEATH, 1, Dlog.player_id)
+		if(Dlog.cause_name)
+			track_statistic_earned(Dlog.faction_name, STATISTIC_TYPE_WEAPON, Dlog.cause_name, ff_type ? STATISTICS_DEATH_FF : STATISTICS_DEATH, 1, Dlog.player_id)
+
+	if(SSticker.mode && SSticker.mode.round_statistics)
+		SSticker.mode.round_statistics.death_stats_list += Dlog
+
+	Dlog.save()
+	Dlog.detach()
+	return Dlog

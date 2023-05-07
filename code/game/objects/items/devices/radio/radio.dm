@@ -77,7 +77,6 @@
 
 	flags_atom |= USES_HEARING
 
-
 /obj/item/device/radio/attack_self(mob/user as mob)
 	..()
 	tgui_interact(user)
@@ -171,7 +170,7 @@
 				. = TRUE
 
 /obj/item/device/radio/proc/text_wires()
-	if (!b_stat)
+	if(!b_stat)
 		return ""
 	return {"
 			<hr>
@@ -179,7 +178,6 @@
 			Red Wire:   <A href='byond://?src=\ref[src];wires=2'>[(wires & 2) ? "Cut" : "Mend"] Wire</A><BR>
 			Blue Wire:  <A href='byond://?src=\ref[src];wires=1'>[(wires & 1) ? "Cut" : "Mend"] Wire</A><BR>
 			"}
-
 
 /obj/item/device/radio/proc/text_sec_channel(chan_name, chan_stat)
 	var/list = !!(chan_stat&FREQ_LISTENING)!=0
@@ -200,16 +198,18 @@
 		if (message_mode == RADIO_CHANNEL_DEPARTMENT ) // Department radio shortcut
 			message_mode = channels[1]
 
-		if (channels[message_mode]) // only broadcast if the channel is set on
+		if(channels[message_mode]) // only broadcast if the channel is set on
 			return secure_radio_connections[message_mode]
 
 	// If we were to send to a channel we don't have, drop it.
 	return null
 
 /obj/item/device/radio/talk_into(mob/living/M as mob, message, channel, verb = "says", datum/language/speaking = null)
-	if(!on) return // the device has to be on
+	if(!on)
+		return // the device has to be on
 	//  Fix for permacell radios, but kinda eh about actually fixing them.
-	if(!M || !message) return
+	if(!M || !message)
+		return
 
 	//  Uncommenting this. To the above comment:
 	// The permacell radios aren't suppose to be able to transmit, this isn't a bug and this "fix" is just making radio wires useless. -Giacom
@@ -288,7 +288,7 @@
 		filter_type = RADIO_FILTER_TYPE_ALL
 		if(!src.ignore_z)
 			target_zs = get_target_zs(connection.frequency)
-			if (isnull(target_zs))
+			if(isnull(target_zs))
 				//We don't have a radio connection on our Z-level, abort!
 				return
 
@@ -331,15 +331,15 @@
 	return target_zs
 
 /obj/item/device/radio/hear_talk(mob/M as mob, msg, verb = "says", datum/language/speaking = null)
-	if (broadcasting)
+	if(broadcasting)
 		if(get_dist(src, M) <= canhear_range)
-			talk_into(M, msg,null,verb,speaking)
+			talk_into(M, msg, null, verb, speaking)
 
 
 /*
 /obj/item/device/radio/proc/accept_rad(obj/item/device/radio/R as obj, message)
 
-	if ((R.frequency == frequency && message))
+	if((R.frequency == frequency && message))
 		return 1
 	else if
 
@@ -354,7 +354,7 @@
 	// what the range is in which mobs will hear the radio
 	// returns: -1 if can't receive, range otherwise
 
-	if (!(wires & WIRE_RECEIVE))
+	if(!(wires & WIRE_RECEIVE))
 		return -1
 	if(!listening)
 		return -1
@@ -373,20 +373,20 @@
 
 		if(!position || !(receive_z in level))
 			return -1
-	if (!on)
+	if(!on)
 		return -1
-	if (!freq) //received on main frequency
-		if (!listening)
+	if(!freq) //recieved on main frequency
+		if(!listening)
 			return -1
 	else
 		var/accept = (freq==frequency && listening)
-		if (!accept)
+		if(!accept)
 			for (var/ch_name in channels)
 				var/datum/radio_frequency/RF = secure_radio_connections[ch_name]
-				if (RF.frequency==freq && (channels[ch_name]&FREQ_LISTENING))
+				if(RF.frequency==freq && (channels[ch_name]&FREQ_LISTENING))
 					accept = 1
 					break
-		if (!accept)
+		if(!accept)
 			return -1
 	return canhear_range
 
@@ -403,8 +403,8 @@
 
 /obj/item/device/radio/get_examine_text(mob/user)
 	. = ..()
-	if ((in_range(src, user) || loc == user))
-		if (b_stat)
+	if((in_range(src, user) || loc == user))
+		if(b_stat)
 			. += SPAN_NOTICE("[src] can be attached and modified!")
 		else
 			. += SPAN_NOTICE("[src] can not be modified or attached!")
@@ -412,11 +412,11 @@
 
 /obj/item/device/radio/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-	if (!HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
+	if(!HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 		return
 	b_stat = !( b_stat )
 	if(!istype(src, /obj/item/device/radio/beacon))
-		if (b_stat)
+		if(b_stat)
 			user.show_message(SPAN_NOTICE("The radio can now be attached and modified!"))
 		else
 			user.show_message(SPAN_NOTICE("The radio can no longer be modified or attached!"))
@@ -448,14 +448,14 @@
 
 /obj/item/device/radio/borg/talk_into()
 	..()
-	if (isrobot(src.loc))
+	if(isrobot(src.loc))
 		var/mob/living/silicon/robot/R = src.loc
 		var/datum/robot_component/C = R.components["radio"]
 		R.cell_use_power(C.active_usage)
 
 /obj/item/device/radio/borg/attackby(obj/item/W as obj, mob/user as mob)
 // ..()
-	if (!(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER) || (istype(W, /obj/item/device/encryptionkey))))
+	if(!(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER) || (istype(W, /obj/item/device/encryptionkey))))
 		return
 
 	if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
@@ -518,7 +518,7 @@
 /obj/item/device/radio/borg/Topic(href, href_list)
 	if(usr.stat || !on)
 		return
-	if (href_list["mode"])
+	if(href_list["mode"])
 		if(subspace_transmission != 1)
 			subspace_transmission = 1
 			to_chat(usr, "Subspace Transmission is disabled")
@@ -529,7 +529,7 @@
 			channels = list()
 		else
 			recalculateChannels()
-	if (href_list["shutup"]) // Toggle loudspeaker mode, AKA everyone around you hearing your radio.
+	if(href_list["shutup"]) // Toggle loudspeaker mode, AKA everyone around you hearing your radio.
 		shut_up = !shut_up
 		if(shut_up)
 			canhear_range = 0

@@ -42,15 +42,13 @@
 	H.g_hair = rand(15,35)
 	H.b_hair = rand(25,45)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/contractor
 	name = "Military Contractor"
 	faction = FACTION_CONTRACTOR
 	rank = JOB_CONTRACTOR
 	idtype = /obj/item/card/id/data
-	faction = FACTION_CONTRACTOR
-	faction_group = FACTION_LIST_ERT
 	languages = list(LANGUAGE_ENGLISH, LANGUAGE_SPANISH, LANGUAGE_RUSSIAN)
 	var/human_versus_human = FALSE
 	var/headset_type = /obj/item/device/radio/headset/distress/contractor
@@ -103,7 +101,7 @@
 			uniform.sensor_faction = FACTION_CONTRACTOR
 	return ..()
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/contractor/duty/standard
 	name = "Military Contractor (Standard)"
@@ -202,7 +200,7 @@
 			H.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/m41aMK1, WEAR_IN_BACK)
 
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/contractor/duty/heavy
 	name = "Military Contractor (Machinegunner)"
@@ -248,7 +246,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/box/attachments(H), WEAR_IN_BACK)
 
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 /datum/equipment_preset/contractor/duty/engi
 	name = "Military Contractor (Engineer)"
 	paygrade = "VAI-E"
@@ -294,7 +292,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/box/attachments(H), WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/explosive/grenade/high_explosive/m15, WEAR_IN_BACK)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/contractor/duty/medic
 	name = "Military Contractor (Medic)"
@@ -340,7 +338,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/box/packet/smoke, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/mar40/extended, WEAR_IN_BACK)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/contractor/duty/leader
 	name = "Military Contractor (Leader)"
@@ -391,7 +389,7 @@
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/tactical, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/storage/box/attachments, WEAR_IN_BACK)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 /datum/equipment_preset/contractor/duty/synth
 	name = "Military Contractor (Synthetic)"
 	paygrade = "VAI-S"
@@ -481,7 +479,7 @@
 	H.equip_to_slot_or_del(new /obj/item/device/multitool, WEAR_IN_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/tool/weldingtool/hugetank, WEAR_IN_R_STORE)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/contractor/covert/standard
 	name = "Military Contractor (Covert Standard)"
@@ -582,7 +580,7 @@
 			H.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/m41aMK1, WEAR_IN_R_STORE)
 			H.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/m41aMK1, WEAR_IN_BACK)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/contractor/covert/heavy
 	name = "Military Contractor (Covert Machinegunner)"
@@ -635,7 +633,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/box/attachments(H), WEAR_IN_BACK)
 
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 /datum/equipment_preset/contractor/covert/engi
 	name = "Military Contractor (Covert Engineer)"
 	paygrade = "VAI-E"
@@ -687,7 +685,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/box/attachments(H), WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/explosive/grenade/high_explosive/m15, WEAR_IN_BACK)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/contractor/covert/medic
 	name = "Military Contractor (Covert Medic)"
@@ -739,7 +737,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/box/packet/smoke, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/mar40/extended, WEAR_IN_BACK)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/contractor/covert/leader
 	name = "Military Contractor (Covert Leader)"
@@ -791,7 +789,7 @@
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/tactical, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/storage/box/attachments, WEAR_IN_BACK)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 /datum/equipment_preset/contractor/covert/synth
 	name = "Military Contractor (Covert Synthetic)"
 	paygrade = "VAI-S"

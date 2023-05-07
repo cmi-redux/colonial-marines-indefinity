@@ -51,25 +51,25 @@ FIRE ALARM
 		icon_state = "firep"
 
 /obj/structure/machinery/firealarm/fire_act(temperature, volume)
-	if(src.detecting)
+	if(detecting)
 		if(temperature > T0C+200)
-			src.alarm() // added check of detector status here
+			alarm() // added check of detector status here
 	return
 
 /obj/structure/machinery/firealarm/attack_remote(mob/user as mob)
-	return src.attack_hand(user)
+	return attack_hand(user)
 
 /obj/structure/machinery/firealarm/bullet_act(BLAH)
-	return src.alarm()
+	return alarm()
 
 /obj/structure/machinery/firealarm/emp_act(severity)
 	if(prob(50/severity)) alarm()
 	..()
 
 /obj/structure/machinery/firealarm/attackby(obj/item/held_object as obj, mob/user as mob)
-	src.add_fingerprint(user)
+	add_fingerprint(user)
 
-	if (HAS_TRAIT(held_object, TRAIT_TOOL_SCREWDRIVER) && buildstage == 2)
+	if(HAS_TRAIT(held_object, TRAIT_TOOL_SCREWDRIVER) && buildstage == 2)
 		wiresexposed = !wiresexposed
 		update_icon()
 		return
@@ -77,21 +77,21 @@ FIRE ALARM
 	if(wiresexposed)
 		switch(buildstage)
 			if(2)
-				if (HAS_TRAIT(held_object, TRAIT_TOOL_MULTITOOL))
-					src.detecting = !( src.detecting )
-					if (src.detecting)
+				if(HAS_TRAIT(held_object, TRAIT_TOOL_MULTITOOL))
+					detecting = !detecting
+					if(detecting)
 						user.visible_message(SPAN_DANGER("[user] has reconnected [src]'s detecting unit!"), "You have reconnected [src]'s detecting unit.")
 					else
 						user.visible_message(SPAN_DANGER("[user] has disconnected [src]'s detecting unit!"), "You have disconnected [src]'s detecting unit.")
-				else if (HAS_TRAIT(held_object, TRAIT_TOOL_WIRECUTTERS))
+				else if(HAS_TRAIT(held_object, TRAIT_TOOL_WIRECUTTERS))
 					user.visible_message(SPAN_DANGER("[user] has cut the wires inside \the [src]!"), "You have cut the wires inside \the [src].")
-					playsound(src.loc, 'sound/items/Wirecutter.ogg', 25, 1)
+					playsound(loc, 'sound/items/Wirecutter.ogg', 25, 1)
 					buildstage = 1
 					update_icon()
 			if(1)
 				if(istype(held_object, /obj/item/stack/cable_coil))
 					var/obj/item/stack/cable_coil/cable = held_object
-					if (cable.use(5))
+					if(cable.use(5))
 						to_chat(user, SPAN_NOTICE("You wire \the [src]."))
 						buildstage = 2
 						update_icon()
@@ -101,7 +101,7 @@ FIRE ALARM
 						return
 				else if(HAS_TRAIT(held_object, TRAIT_TOOL_CROWBAR))
 					to_chat(user, "You pry out the circuit!")
-					playsound(src.loc, 'sound/items/Crowbar.ogg', 25, 1)
+					playsound(loc, 'sound/items/Crowbar.ogg', 25, 1)
 					spawn(20)
 						var/obj/item/circuitboard/firealarm/circuit = new()
 						circuit.forceMove(user.loc)
@@ -118,7 +118,7 @@ FIRE ALARM
 					to_chat(user, "You remove the fire alarm assembly from the wall!")
 					var/obj/item/frame/fire_alarm/frame = new /obj/item/frame/fire_alarm()
 					frame.forceMove(user.loc)
-					playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
+					playsound(loc, 'sound/items/Ratchet.ogg', 25, 1)
 					qdel(src)
 		return
 
@@ -133,12 +133,12 @@ FIRE ALARM
 	if(user.stat || inoperable())
 		return
 
-	if (buildstage != 2 || wiresexposed)
+	if(buildstage != 2 || wiresexposed)
 		return
 
 	var/area/area = get_area(src)
 
-	if (area.flags_alarm_state & ALARM_WARNING_FIRE)
+	if(area.flags_alarm_state & ALARM_WARNING_FIRE)
 		reset()
 	else
 		alarm()
@@ -146,22 +146,22 @@ FIRE ALARM
 	return
 
 /obj/structure/machinery/firealarm/proc/reset()
-	if (!( src.working ))
+	if(!(working))
 		return
 	var/area/area = get_area(src)
 
-	if (!( istype(area, /area) ))
+	if(!(istype(area, /area)))
 		return
 	area.firereset()
 	update_icon()
 	return
 
 /obj/structure/machinery/firealarm/proc/alarm()
-	if (!( src.working ))
+	if(!( working ))
 		return
 	var/area/area = get_area(src)
 
-	if (!( istype(area, /area) ))
+	if(!(istype(area, /area)))
 		return
 	area.firealert()
 	update_icon()
@@ -171,7 +171,7 @@ FIRE ALARM
 	. = ..()
 
 	if(dir)
-		src.setDir(dir)
+		setDir(dir)
 
 	if(building)
 		buildstage = 0
@@ -181,8 +181,8 @@ FIRE ALARM
 
 	if(!is_mainship_level(z))
 		if(security_level)
-			src.overlays += image('icons/obj/structures/machinery/monitors.dmi', "overlay_[get_security_level()]")
+			overlays += image('icons/obj/structures/machinery/monitors.dmi', "overlay_[get_security_level()]")
 		else
-			src.overlays += image('icons/obj/structures/machinery/monitors.dmi', "overlay_green")
+			overlays += image('icons/obj/structures/machinery/monitors.dmi', "overlay_green")
 
 	update_icon()

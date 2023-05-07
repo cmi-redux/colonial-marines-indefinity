@@ -39,63 +39,76 @@
 	if(isarea(source))
 		error("[source] is an area and is trying to make the sound: [soundin]")
 		return FALSE
-	var/datum/sound_template/S = new()
-
-	var/sound/SD = soundin
-	if(istype(SD))
-		S.file = SD.file
-		S.wait = SD.wait
-		S.repeat = SD.repeat
-	else
-		S.file = get_sfx(soundin)
-	S.channel = channel ? channel : get_free_channel()
-	S.status = status
-	S.falloff = falloff
-	S.volume = vol
-	S.volume_cat = vol_cat
-	S.echo = echo
-	S.y_s_offset = y_s_offset
-	S.x_s_offset = x_s_offset
-	if(vary != FALSE)
-		if(vary > 1)
-			S.frequency = vary
-		else
-			S.frequency = GET_RANDOM_FREQ // Same frequency for everybody
-
-	if(!sound_range)
-		sound_range = round(0.25*vol) //if no specific range, the max range is equal to a quarter of the volume.
-	S.range = sound_range
 
 	var/turf/turf_source = get_turf(source)
-	if(!turf_source || !turf_source.z)
-		return FALSE
-	S.x = turf_source.x
-	S.y = turf_source.y
-	S.z = turf_source.z
+	if(!turf_source)
+		return
 
-	if(!SSinterior)
-		SSsound.queue(S)
-		return S.channel
+	channel = channel ? channel : get_free_channel()
 
-	var/list/datum/interior/extra_interiors = list()
-	// If we're in an interior, range the chunk, then adjust to do so from outside instead
-	if(SSinterior.in_interior(turf_source))
-		var/datum/interior/VI = SSinterior.get_interior_by_coords(turf_source.x, turf_source.y, turf_source.z)
-		if(VI?.ready)
-			extra_interiors |= VI
-			if(VI.exterior)
-				var/turf/new_turf_source = get_turf(VI.exterior)
-				S.x = new_turf_source.x
-				S.y = new_turf_source.y
-				S.z = new_turf_source.z
-			else sound_range = 0
-	// Range for 'nearby interiors' aswell
-	for(var/datum/interior/VI in SSinterior.interiors)
-		if(VI?.ready && VI.exterior?.z == turf_source.z && get_dist(VI.exterior, turf_source) <= sound_range)
-			extra_interiors |= VI
+	var/datum/sound_template/S
+	var/sound/SD = soundin
 
-	SSsound.queue(S, null, extra_interiors)
-	return S.channel
+	var/list/potential_turfs = list()
+	potential_turfs += turf_source
+	potential_turfs += SSmapping.get_turf_above(turf_source)
+	potential_turfs += SSmapping.get_turf_below(turf_source)
+	for(var/turf/turf in potential_turfs)
+		if(!turf || !turf.z)
+			continue
+
+		S = new()
+		if(istype(SD))
+			S.file = SD.file
+			S.wait = SD.wait
+			S.repeat = SD.repeat
+		else
+			S.file = get_sfx(soundin)
+		S.channel = channel
+		S.status = status
+		S.falloff = falloff
+		S.volume = vol
+		S.volume_cat = vol_cat
+		S.echo = echo
+		S.y_s_offset = y_s_offset
+		S.x_s_offset = x_s_offset
+		if(vary != FALSE)
+			if(vary > 1)
+				S.frequency = vary
+			else
+				S.frequency = GET_RANDOM_FREQ // Same frequency for everybody
+
+		if(!sound_range)
+			sound_range = round(0.25*vol) //if no specific range, the max range is equal to a quarter of the volume.
+		S.range = sound_range
+
+		S.x = turf.x
+		S.y = turf.y
+		S.z = turf.z
+
+		if(!SSinterior)
+			SSsound.queue(S)
+			return S.channel
+
+		var/list/datum/interior/extra_interiors = list()
+		// If we're in an interior, range the chunk, then adjust to do so from outside instead
+		if(SSinterior.in_interior(turf))
+			var/datum/interior/VI = SSinterior.get_interior_by_coords(turf.x, turf.y, turf.z)
+			if(VI?.ready)
+				extra_interiors |= VI
+				if(VI.exterior)
+					var/turf/new_turf_source = get_turf(VI.exterior)
+					S.x = new_turf_source.x
+					S.y = new_turf_source.y
+					S.z = new_turf_source.z
+				else sound_range = 0
+		// Range for 'nearby interiors' aswell
+		for(var/datum/interior/VI in SSinterior.interiors)
+			if(VI?.ready && VI.exterior?.z == turf.z && get_dist(VI.exterior, turf) <= sound_range)
+				extra_interiors |= VI
+
+		SSsound.queue(S, null, extra_interiors)
+	return channel
 
 
 
@@ -174,6 +187,8 @@
 	if(istext(S))
 		switch(S)
 			// General effects
+			if("bodyfall")
+				S = pick('sound/effects/bodyfall1.ogg','sound/effects/bodyfall2.ogg','sound/effects/bodyfall3.ogg','sound/effects/bodyfall4.ogg')
 			if("shatter")
 				S = pick('sound/effects/Glassbr1.ogg','sound/effects/Glassbr2.ogg','sound/effects/Glassbr3.ogg')
 			if("windowshatter") //meaty window shattering sound

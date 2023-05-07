@@ -34,7 +34,7 @@
 	skincmds = null
 	item_verbs = null
 	interactee = null
-	faction_group = null
+	faction = null
 	lastarea = null
 	langchat_listeners = null
 	langchat_image = null
@@ -47,12 +47,7 @@
 	item_verbs = null
 	luminosity_sources = null
 
-
-
 /mob/Initialize()
-	if(!faction_group)
-		faction_group = list(faction)
-
 	last_mob_gid++
 	gid = last_mob_gid
 
@@ -73,6 +68,8 @@
 	langchat_make_image()
 	create_player_panel()
 
+	add_filter("cutterout", 1, alpha_mask_filter(render_source = LAYER_CUTTER_VISUAL_RENDER_TARGET, flags = MASK_INVERSE))
+
 	return ..()
 
 /mob/proc/create_player_panel()
@@ -85,10 +82,9 @@
 
 	mob_language_menu = new(src)
 
-
 /mob/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_pass = PASS_MOB_IS_OTHER
 		PF.flags_can_pass_all = PASS_MOB_THRU_OTHER|PASS_AROUND|PASS_HIGH_OVER_ONLY
 
@@ -104,13 +100,12 @@
 		I.appearance_flags |= NO_CLIENT_COLOR|KEEP_APART|RESET_COLOR
 		hud_list[hud] = I
 
-
 /mob/proc/show_message(msg, type, alt, alt_type, message_flags = CHAT_TYPE_OTHER)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
 
 	if(!client || !client.prefs) return
 
-	if (type)
-		if(type & SHOW_MESSAGE_VISIBLE && (sdisabilities & DISABILITY_BLIND || blinded) )//Vision related
+	if(type)
+		if(type & SHOW_MESSAGE_VISIBLE && (sdisabilities & DISABILITY_BLIND || blinded))//Vision related
 			if(!alt)
 				return
 			else
@@ -122,7 +117,7 @@
 			else
 				msg = alt
 				type = alt_type
-				if (type & SHOW_MESSAGE_VISIBLE && (sdisabilities & DISABILITY_BLIND))
+				if(type & SHOW_MESSAGE_VISIBLE && (sdisabilities & DISABILITY_BLIND))
 					return
 	if(message_flags == CHAT_TYPE_OTHER || client.prefs && (message_flags & client.prefs.chat_display_preferences) > 0) // or logic between types
 		if(stat == UNCONSCIOUS)
@@ -131,7 +126,6 @@
 			to_chat(src, html = msg, type = MESSAGE_TYPE_COMBAT)
 		else
 			to_chat(src, msg)
-
 
 // Show a message to all mobs in sight of this one
 // This would be for visible actions by the src mob
@@ -144,7 +138,8 @@
 
 	var/view_dist = 7
 	var/flags = message_flags
-	if(max_distance) view_dist = max_distance
+	if(max_distance)
+		view_dist = max_distance
 	for(var/mob/M as anything in viewers(view_dist, src))
 		var/msg = message
 		if(self_message && M==src)
@@ -164,7 +159,6 @@
 			M.show_message( msg, SHOW_MESSAGE_VISIBLE, blind_message, SHOW_MESSAGE_AUDIBLE, flags)
 		CHECK_TICK
 
-
 // Shows three different messages depending on who does it to who and how does it look like to outsiders
 // message_mob: "You do something to X!"
 // message_affected: "Y does something to you!"
@@ -183,7 +177,8 @@
 // blind_message (optional) is what blind people will hear e.g. "You hear something!"
 /atom/proc/visible_message(message, blind_message, max_distance, message_flags = CHAT_TYPE_OTHER)
 	var/view_dist = 7
-	if(max_distance) view_dist = max_distance
+	if(max_distance)
+		view_dist = max_distance
 	for(var/mob/M as anything in viewers(view_dist, src))
 		M.show_message(message, SHOW_MESSAGE_VISIBLE, blind_message, SHOW_MESSAGE_AUDIBLE, message_flags)
 
@@ -203,10 +198,9 @@
 	for(var/mob/M in orange(view_dist, src))
 		M.show_message(message, SHOW_MESSAGE_VISIBLE, blind_message, SHOW_MESSAGE_AUDIBLE, message_flags)
 
-
 /mob/proc/findname(msg)
 	for(var/mob/M in GLOB.mob_list)
-		if (M.real_name == text("[]", msg))
+		if(M.real_name == text("[]", msg))
 			return M
 	return 0
 
@@ -218,7 +212,6 @@
 			. = 7 + CONFIG_GET(number/walk_speed)
 	. += speed
 	move_delay = .
-
 
 /mob/proc/Life(delta_time)
 	SHOULD_NOT_SLEEP(TRUE)
@@ -246,8 +239,8 @@
 		if(equip_to_slot_if_possible(W, WEAR_R_HAND, 1, del_on_fail, disable_warning, redraw_mob))
 			return 1
 		else if(equip_to_slot_if_possible(W, WEAR_L_HAND, 1, del_on_fail, disable_warning, redraw_mob))
-			return 1
-	return 0
+			return TRUE
+	return FALSE
 
 //This is a SAFE proc. Use this instead of equip_to_slot()!
 //set del_on_fail to have it delete W if it fails to equip
@@ -317,12 +310,8 @@
 /mob/proc/sync_lighting_plane_alpha()
 	if(hud_used)
 		var/atom/movable/screen/plane_master/lighting/lighting = hud_used.plane_masters["[LIGHTING_PLANE]"]
-		if (lighting)
+		if(lighting)
 			lighting.alpha = lighting_alpha
-		var/atom/movable/screen/plane_master/lighting/exterior_lighting = hud_used.plane_masters["[EXTERIOR_LIGHTING_PLANE]"]
-		if (exterior_lighting)
-			exterior_lighting.alpha = min(GLOB.minimum_exterior_lighting_alpha, lighting_alpha)
-
 
 //puts the item "W" into an appropriate slot in a human's inventory
 //returns 0 if it cannot, 1 if successful
@@ -338,12 +327,12 @@
 /mob/proc/reset_view(atom/A)
 	if(SEND_SIGNAL(src, COMSIG_MOB_RESET_VIEW, A) & COMPONENT_OVERRIDE_VIEW) return TRUE
 
-	if (client)
-		if (istype(A, /atom/movable))
+	if(client)
+		if(istype(A, /atom/movable))
 			client.perspective = EYE_PERSPECTIVE
 			client.eye = A
 		else
-			if (isturf(loc))
+			if(isturf(loc))
 				client.eye = client.mob
 				client.perspective = MOB_PERSPECTIVE
 			else
@@ -354,7 +343,6 @@
 
 		SEND_SIGNAL(client, COMSIG_CLIENT_RESET_VIEW, A)
 	return
-
 
 /mob/proc/show_inv(mob/user)
 	user.set_interaction(src)
@@ -372,8 +360,6 @@
 	<BR>"}
 	show_browser(user, dat, name, "mob[name]")
 	return
-
-
 
 /mob/proc/point_to_atom(atom/A, turf/T)
 	//Squad Leaders and above have reduced cooldown and get a bigger arrow
@@ -409,7 +395,7 @@
 		to_chat(src, SPAN_ALERT("Your flavor text is likely out of date! <a href='byond://?src=\ref[src];flavor_change=1'>Change</a>"))
 
 /mob/proc/print_flavor_text()
-	if (flavor_text && flavor_text != "")
+	if(flavor_text && flavor_text != "")
 		var/msg = replacetext(flavor_text, "\n", " ")
 		if(length(msg) <= 40)
 			return SPAN_NOTICE("[msg]")
@@ -432,15 +418,13 @@
 		update_flavor_text()
 	return
 
-
 /mob/MouseDrop(mob/M)
 	..()
-	if(M != usr) return
-	if(usr == src) return
-	if(!Adjacent(usr)) return
-	if(!ishuman(M) && !ismonkey(M)) return
-	if(!ishuman(src) && !ismonkey(src)) return
-	if(M.lying || M.is_mob_incapacitated())
+	if(M != usr || usr == src || !Adjacent(usr))
+		return
+	if((!ishuman(M) && !ismonkey(M)) || (!ishuman(src) && !ismonkey(src)))
+		return
+	if(!M.can_action || M.is_mob_incapacitated())
 		return
 	if(M.pulling == src && (M.a_intent & INTENT_GRAB) && M.grab_level == GRAB_AGGRESSIVE)
 		return
@@ -454,14 +438,11 @@
 /mob/proc/start_pulling(atom/movable/AM, lunge, no_msg)
 	return
 
-/mob/living/start_pulling(atom/movable/clone/AM, lunge, no_msg)
-	if(istype(AM, /atom/movable/clone))
-		AM = AM.mstr //If AM is a clone, refer to the real target
-
-	if ( QDELETED(AM) || !usr || src==AM || !isturf(loc) || !isturf(AM.loc) ) //if there's no person pulling OR the person is pulling themself OR the object being pulled is inside something: abort!
+/mob/living/start_pulling(atom/movable/AM, lunge, no_msg)
+	if(QDELETED(AM) || !usr || src == AM || !isturf(loc) || !isturf(AM.loc))	//if there's no person pulling OR the person is pulling themself OR the object being pulled is inside something: abort!
 		return
 
-	if (AM.anchored || AM.throwing)
+	if(AM.anchored || AM.throwing)
 		return
 
 	if(throwing || is_mob_incapacitated())
@@ -512,8 +493,7 @@
 		</font>
 	"}
 
-
-/mob/living/proc/do_pull(atom/movable/clone/AM, lunge, no_msg)
+/mob/living/proc/do_pull(atom/movable/AM, lunge, no_msg)
 	if(pulling)
 		stop_pulling()
 
@@ -567,12 +547,10 @@
 /atom/movable/proc/pull_response(mob/puller)
 	return TRUE
 
-
 /mob/proc/show_viewers(message)
 	for(var/mob/M as anything in viewers())
 		if(!M.stat)
 			to_chat(src, message)
-
 
 /*
 adds a dizziness amount to a mob
@@ -591,7 +569,6 @@ below 100 is not dizzy
 													// clamped to max 1000
 	if(dizziness > 100 && !is_dizzy)
 		INVOKE_ASYNC(src, PROC_REF(dizzy_process))
-
 
 /*
 dizzy process - wiggles the client's pixel offset over time
@@ -629,7 +606,6 @@ note dizziness decrements automatically in the mob's Life() proc.
 	if(jitteriness > 100 && !is_jittery)
 		INVOKE_ASYNC(src, PROC_REF(jittery_process))
 
-
 // Typo from the oriignal coder here, below lies the jitteriness process. So make of his code what you will, the previous comment here was just a copypaste of the above.
 /mob/proc/jittery_process()
 	//var/old_x = pixel_x
@@ -649,7 +625,6 @@ note dizziness decrements automatically in the mob's Life() proc.
 	is_jittery = 0
 	pixel_x = old_x
 	pixel_y = old_y
-
 
 //handles up-down floaty effect in space
 /mob/proc/make_floating(n)
@@ -684,40 +659,40 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 // facing verbs
 /mob/proc/canface()
-	if(!canmove) return 0
-	if(client.moving) return 0
-	if(stat==2) return 0
-	if(anchored) return 0
-	if(monkeyizing) return 0
-	if(is_mob_restrained()) return 0
-	return 1
+	if(!canmove || client.moving || stat >= UNCONSCIOUS || anchored || monkeyizing || is_mob_restrained())
+		return FALSE
+	return TRUE
 
 //Updates canmove, lying and icons. Could perhaps do with a rename but I can't think of anything to describe it.
 /mob/proc/update_canmove()
-	var/laid_down = (stat || knocked_down || knocked_out || !has_legs() || resting || (status_flags & FAKEDEATH) || (pulledby && pulledby.grab_level >= GRAB_AGGRESSIVE))
+	var/laid_down = (stat || knocked_down || knocked_out || !has_legs() || (status_flags & FAKEDEATH) || (pulledby && pulledby.grab_level >= GRAB_AGGRESSIVE))
 
-	if(laid_down)
+	if(laid_down || resting)
 		lying = TRUE
 		flags_atom &= ~DIRLOCK
 	else
 		lying = FALSE
+
 	if(buckled)
 		if(buckled.buckle_lying)
 			lying = TRUE
 			flags_atom &= ~DIRLOCK
 		else
 			lying = FALSE
+	else
+		if(laid_down && !lying)
+			fall(laid_down)
 
-	canmove = !(stunned || frozen)
-	if(!can_crawl && lying)
+	canmove = !(stunned || frozen || laid_down)
+	if((!can_crawl || buckled) && lying)
 		canmove = FALSE
+
+	can_action = canmove
 
 	if(lying_prev != lying)
 		if(lying)
 			density = FALSE
 			add_temp_pass_flags(PASS_MOB_THRU)
-			drop_l_hand()
-			drop_r_hand()
 			SEND_SIGNAL(src, COMSIG_MOB_KNOCKED_DOWN)
 		else
 			density = TRUE
@@ -729,7 +704,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 		//so mob lying always appear behind standing mobs, but dead ones appear behind living ones
 		if(pulledby && pulledby.grab_level == GRAB_CARRY)
 			layer = ABOVE_MOB_LAYER
-		else if (stat == DEAD)
+		else if(stat == DEAD)
 			layer = LYING_DEAD_MOB_LAYER // Dead mobs should layer under living ones
 		else if(layer == initial(layer)) //to avoid things like hiding larvas.
 			layer = LYING_LIVING_MOB_LAYER
@@ -739,6 +714,10 @@ note dizziness decrements automatically in the mob's Life() proc.
 	SEND_SIGNAL(src, COMSIG_MOB_POST_UPDATE_CANMOVE, canmove, laid_down, lying)
 
 	return canmove
+
+/mob/proc/fall(forced)
+	drop_l_hand()
+	drop_r_hand()
 
 /mob/proc/face_dir(ndir, specific_dir)
 	if(!canface()) return 0
@@ -763,13 +742,11 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 	if(newdir == dir && flags_atom & DIRLOCK)
 		flags_atom &= ~DIRLOCK
-	else if (face_dir(newdir))
+	else if(face_dir(newdir))
 		flags_atom |= DIRLOCK
-
 
 /mob/proc/IsAdvancedToolUser()//This might need a rename but it should replace the can this mob use things check
 	return 0
-
 
 /mob/proc/get_species()
 	return ""
@@ -879,7 +856,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 		H.pain.apply_pain(selection.w_class * 3)
 
 		if(prob(selection.w_class * 5) && !(affected.status & (LIMB_ROBOT|LIMB_SYNTHSKIN)))
-			var/datum/wound/internal_bleeding/I = new (0)
+			var/datum/wound/internal_bleeding/I = new(0)
 			affected.add_bleeding(I, TRUE)
 			affected.wounds += I
 			H.custom_pain("Something tears wetly in your [affected] as [selection] is pulled free!", 1)
@@ -918,7 +895,6 @@ note dizziness decrements automatically in the mob's Life() proc.
 	if(superslowed)
 		adjust_effect(-1, SUPERSLOW)
 	return superslowed
-
 
 /mob/living/proc/handle_knocked_down(bypass_client_check = FALSE)
 	if(knocked_down && (bypass_client_check || client))
@@ -989,11 +965,12 @@ note dizziness decrements automatically in the mob's Life() proc.
 		if(istype(img))
 			img.appearance_flags &= ~PIXEL_SCALE
 
-/mob/proc/trainteleport(atom/destination)
+/mob/proc/trainteleport(atom/destination, z_move_flags)
 	if(!destination || anchored)
 		return FALSE //Gotta go somewhere and be able to move
 	if(!pulling)
-		return forceMove(destination) //No need for a special proc if there's nothing being pulled.
+		return zMove(target = destination, z_move_flags = ZMOVE_STAIRS_FLAGS) //No need for a special proc if there's nothing being pulled.
+
 	pulledby?.stop_pulling() //The leader of the choo-choo train breaks the pull
 	var/list/conga_line = list()
 	var/end_of_conga = FALSE
@@ -1037,23 +1014,23 @@ note dizziness decrements automatically in the mob's Life() proc.
 			end_of_conga = TRUE //Only mobs can continue the cycle.
 	var/area/new_area = get_area(destination)
 	for(var/atom/movable/AM in conga_line)
-		var/oldLoc
+		var/old_loc
 		if(AM.loc)
-			oldLoc = AM.loc
-			AM.loc.Exited(AM,destination)
+			old_loc = AM.loc
+			AM.loc.Exited(AM, destination)
 		AM.loc = destination
-		AM.loc.Entered(AM,oldLoc)
+		AM.loc.Entered(AM, old_loc)
 		var/area/old_area
-		if(oldLoc)
-			old_area = get_area(oldLoc)
+		if(old_loc)
+			old_area = get_area(old_loc)
 		if(new_area && old_area != new_area)
-			new_area.Entered(AM,oldLoc)
+			new_area.Entered(AM, old_loc)
 		for(var/atom/movable/CR in destination)
 			if(CR in conga_line)
 				continue
 			CR.Crossed(AM)
-		if(oldLoc)
-			AM.Moved(oldLoc)
+		if(old_loc)
+			AM.zMove(target = old_loc, z_move_flags = ZMOVE_STAIRS_FLAGS)
 
 	return TRUE
 

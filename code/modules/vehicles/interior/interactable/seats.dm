@@ -55,6 +55,10 @@
 		if(M && M.client)
 			M.client.change_view(8, vehicle)
 
+/obj/structure/bed/chair/comfy/vehicle/unbuckle()
+//	buckled_mob.remove_fov_trait(src, "no_fov")
+	. = ..()
+
 /obj/structure/bed/chair/comfy/vehicle/clicked(mob/user, list/mods) // If you're buckled, you can shift-click on the seat in order to return to camera-view
 	if(user == buckled_mob && mods["shift"] && !user.is_mob_incapacitated())
 		user.client.change_view(8, vehicle)
@@ -81,7 +85,11 @@
 		return FALSE
 
 	if(vehicle)
-		vehicle.vehicle_faction = target.faction
+		vehicle.faction = target.faction
+
+//	var/mob/living/fov_mob = target
+//	if(fov_mob)
+//		fov_mob.add_fov_trait(src, "no_fov")
 
 	return ..()
 
@@ -113,7 +121,11 @@
 			I.zoom(user)
 
 	if(vehicle)
-		vehicle.vehicle_faction = target.faction
+		vehicle.faction = target.faction
+
+//	var/mob/living/fov_mob = target
+//	if(fov_mob)
+//		fov_mob.add_fov_trait(src, "no_fov")
 
 	return ..()
 
@@ -236,6 +248,10 @@
 			return
 	. = ..()
 
+//	var/mob/living/fov_mob = target
+//	if(fov_mob)
+//		fov_mob.add_fov_trait(src, "no_fov")
+
 	update_icon()
 
 /obj/structure/bed/chair/comfy/vehicle/support_gunner/update_icon()
@@ -278,7 +294,7 @@
 				if(FPW.reloading)
 					msg += SPAN_WARNING("The M56 FPW is currently reloading. Wait [SPAN_HELPFUL((FPW.reload_time_started + FPW.reload_time - world.time) / 10)] seconds.")
 				else if(FPW.ammo)
-					msg += SPAN_NOTICE("Ammo: <b>[SPAN_HELPFUL(FPW.ammo.current_rounds)]/[SPAN_HELPFUL(FPW.ammo.max_rounds)]</b>")
+					msg += SPAN_NOTICE("Ammo: <b>[SPAN_HELPFUL(FPW.ammo.ammo_position)]/[SPAN_HELPFUL(FPW.ammo.max_rounds)]</b>")
 				else
 					msg += SPAN_DANGER("<b>ERROR. AMMO NOT FOUND, TELL A DEV!</b>")
 				msg = SPAN_INFO("Use 'Reload Firing Port Weapon' verb in 'Vehicle' tab to activate automated reload.")
@@ -446,10 +462,10 @@
 		return
 	switch(severity)
 		if(0 to EXPLOSION_THRESHOLD_LOW)
-			if (prob(20))
+			if(prob(20))
 				break_seat()
 		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
-			if (prob(60))
+			if(prob(60))
 				break_seat()
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
 			break_seat()

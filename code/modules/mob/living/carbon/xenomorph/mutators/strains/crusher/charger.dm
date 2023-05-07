@@ -14,19 +14,19 @@
 #define CCA_MOMENTUM_LOSS_MIN 1
 
 
-/datum/xeno_mutator/charger
-	name = "STRAIN: Crusher - Charger"
-	description = "In exchange for your shield, a little bit of your armor and damage, your slowdown resist from autospitters, your influence under frenzy pheromones, your stomp no longer knocking down talls, and your ability to lock your direction, you gain a considerable amount of health, some speed, your stomp does extra damage when stomping over a grounded tall, and your charge is now manually-controlled and momentum-based; the further you go, the more damage and speed you will gain until you achieve maximum momentum, indicated by your roar. In addition, your armor is now directional, being the toughest on the front, weaker on the sides, and weakest from the back. In return, you gain an ability to tumble to pass through talls and avoid enemy fire, and an ability to forcefully move enemies via ramming into them."
-	flavor_description = "We're just getting started. Nothing stops this train. Nothing."
+/datum/xeno_mutation/strain/charger
+	name = LANGUAGE_STRAIN_CHARGER
+	description = LANGUAGE_STRAIN_DESC_CHARGER
+	flavor_description = LANGUAGE_STRAIN_FLAV_DESC_CHARGER
 	cost = MUTATOR_COST_EXPENSIVE
 	individual_only = TRUE
 	caste_whitelist = list(XENO_CASTE_CRUSHER)
-	mutator_actions_to_remove = list (
+	mutation_actions_to_remove = list (
 		/datum/action/xeno_action/activable/pounce/crusher_charge,
 		/datum/action/xeno_action/onclick/crusher_stomp,
 		/datum/action/xeno_action/onclick/crusher_shield,
 	)
-	mutator_actions_to_add = list(
+	mutation_actions_to_add = list(
 		/datum/action/xeno_action/onclick/charger_charge,
 		/datum/action/xeno_action/activable/tumble,
 		/datum/action/xeno_action/onclick/crusher_stomp/charger,
@@ -35,9 +35,9 @@
 	keystone = TRUE
 	behavior_delegate_type = /datum/behavior_delegate/crusher_charger
 
-/datum/xeno_mutator/charger/apply_mutator(datum/mutator_set/individual_mutators/mutator_set)
+/datum/xeno_mutation/strain/charger/apply_mutator(datum/mutator_set/individual_mutations/mutator_set)
 	. = ..()
-	if (. == 0)
+	if(. == 0)
 		return
 
 	var/mob/living/carbon/xenomorph/crusher/crusher = mutator_set.xeno
@@ -45,8 +45,8 @@
 	crusher.small_explosives_stun = FALSE
 	crusher.health_modifier += XENO_HEALTH_MOD_LARGE
 	crusher.speed_modifier += XENO_SPEED_FASTMOD_TIER_3
-	crusher.armor_modifier -= XENO_ARMOR_MOD_SMALL
-	crusher.damage_modifier -= XENO_DAMAGE_MOD_SMALL
+	crusher.armor_modifier += XENO_ARMOR_MOD_SMALL
+	crusher.damage_modifier += XENO_DAMAGE_MOD_SMALL
 	crusher.ignore_aura = "frenzy" // no funny crushers going 7 morbillion kilometers per second
 	crusher.phero_modifier = -crusher.caste.aura_strength
 	crusher.recalculate_pheromones()
@@ -337,9 +337,9 @@
 
 /mob/living/carbon/human/handle_charge_collision(mob/living/carbon/xenomorph/xeno, datum/action/xeno_action/onclick/charger_charge/charger_ability)
 	playsound(loc, "punch", 25, TRUE)
-	attack_log += text("\[[time_stamp()]\] <font color='orange'>was xeno charged by [xeno] ([xeno.ckey])</font>")
-	xeno.attack_log += text("\[[time_stamp()]\] <font color='red'>xeno charged [src] ([src.ckey])</font>")
-	log_attack("[xeno] ([xeno.ckey]) xeno charged [src] ([src.ckey])")
+	attack_log += text("\[[time_stamp()]\] <font color='orange'>was xenomorph charged by [xeno] ([xeno.ckey])</font>")
+	xeno.attack_log += text("\[[time_stamp()]\] <font color='red'>xenomorph charged [src] ([src.ckey])</font>")
+	log_attack("[xeno] ([xeno.ckey]) xenomorph charged [src] ([src.ckey])")
 	var/momentum_mult = 5
 	if(charger_ability.momentum == charger_ability.max_momentum)
 		momentum_mult = 8
@@ -371,10 +371,10 @@
 /mob/living/carbon/xenomorph/handle_charge_collision(mob/living/carbon/xenomorph/xeno, datum/action/xeno_action/onclick/charger_charge/charger_ability)
 	if(charger_ability.momentum)
 		playsound(loc, "punch", 25, TRUE)
-		if(!xeno.ally_of_hivenumber(hivenumber))
-			attack_log += text("\[[time_stamp()]\] <font color='orange'>was xeno charged by [xeno] ([xeno.ckey])</font>")
-			xeno.attack_log += text("\[[time_stamp()]\] <font color='red'>xeno charged [src] ([ckey])</font>")
-			log_attack("[xeno] ([xeno.ckey]) xeno charged [src] ([ckey])")
+		if(!xeno.ally(faction))
+			attack_log += text("\[[time_stamp()]\] <font color='orange'>was xenomorph charged by [xeno] ([xeno.ckey])</font>")
+			xeno.attack_log += text("\[[time_stamp()]\] <font color='red'>xenomorph charged [src] ([ckey])</font>")
+			log_attack("[xeno] ([xeno.ckey]) xenomorph charged [src] ([ckey])")
 			apply_damage(charger_ability.momentum * 10, BRUTE) // half damage to avoid sillyness
 		if(anchored) //Ovipositor queen can't be pushed
 			charger_ability.stop_momentum()
@@ -385,8 +385,8 @@
 		if(HAS_TRAIT(src, TRAIT_CHARGING))
 			apply_effect(2, WEAKEN)
 			xeno.apply_effect(2, WEAKEN)
-			src.throw_atom(pick(cardinal),1,3,xeno,TRUE)
-			xeno.throw_atom(pick(cardinal),1,3,xeno,TRUE)
+			src.throw_atom(pick(GLOB.cardinals), 1, 3, xeno, TRUE)
+			xeno.throw_atom(pick(GLOB.cardinals), 1, 3, xeno, TRUE)
 			charger_ability.stop_momentum() // We assume the other crusher'sparks handle_charge_collision() kicks in and stuns us too.
 			playsound(get_turf(xeno), 'sound/effects/bang.ogg', 25, 0)
 			return
@@ -399,7 +399,7 @@
 			xeno.visible_message(SPAN_DANGER("[xeno] flings [src] over to the side!"),SPAN_DANGER( "You fling [src] out of the way!"))
 			to_chat(src, SPAN_XENOHIGHDANGER("[xeno] flings you out of its way! Move it!"))
 			apply_effect(1, WEAKEN) // brief flicker stun
-			src.throw_atom(src.loc,1,3,xeno,TRUE)
+			src.throw_atom(src.loc, 1, 3, xeno, TRUE)
 		step(src, ram_dir, charger_ability.momentum * 0.5)
 		charger_ability.lose_momentum(CCA_MOMENTUM_LOSS_MIN)
 		return XENO_CHARGE_TRY_MOVE
@@ -409,9 +409,9 @@
 
 /mob/living/carbon/handle_charge_collision(mob/living/carbon/xenomorph/xeno, datum/action/xeno_action/onclick/charger_charge/charger_ability)
 	playsound(loc, "punch", 25, TRUE)
-	attack_log += text("\[[time_stamp()]\] <font color='orange'>was xeno charged by [xeno] ([xeno.ckey])</font>")
-	xeno.attack_log += text("\[[time_stamp()]\] <font color='red'>xeno charged [src] ([src.ckey])</font>")
-	log_attack("[xeno] ([xeno.ckey]) xeno charged [src] ([src.ckey])")
+	attack_log += text("\[[time_stamp()]\] <font color='orange'>was xenomorph charged by [xeno] ([xeno.ckey])</font>")
+	xeno.attack_log += text("\[[time_stamp()]\] <font color='red'>xenomorph charged [src] ([src.ckey])</font>")
+	log_attack("[xeno] ([xeno.ckey]) xenomorph charged [src] ([src.ckey])")
 	var/momentum_mult = 5
 	if(charger_ability.momentum == charger_ability.max_momentum)
 		momentum_mult = 8
@@ -442,7 +442,7 @@
 /turf/handle_charge_collision(mob/living/carbon/xenomorph/xeno, datum/action/xeno_action/onclick/charger_charge/charger_ability)
 	if(charger_ability.momentum)
 		if(istype(src, /turf/closed/wall/resin))
-			ex_act(charger_ability.momentum * 5, null, create_cause_data(initial(xeno.caste_type), xeno)) // Half damage for xeno walls?
+			ex_act(charger_ability.momentum * 5, null, create_cause_data(initial(xeno.caste_type), xeno))
 		else
 			ex_act(charger_ability.momentum * 13, null, create_cause_data(initial(xeno.caste_type), xeno))
 
@@ -483,41 +483,6 @@
 		charger_ability.lose_momentum(CCA_MOMENTUM_LOSS_QUARTER) //Lose two turfs worth of speed
 		return XENO_CHARGE_TRY_MOVE
 
-	charger_ability.stop_momentum()
-
-// Marine MGs
-
-/obj/structure/machinery/m56d_hmg/handle_charge_collision(mob/living/carbon/xenomorph/xeno, datum/action/xeno_action/onclick/charger_charge/charger_ability)
-	if(charger_ability.momentum > CCA_MOMENTUM_LOSS_MIN)
-		CrusherImpact()
-		var/datum/effect_system/spark_spread/sparks = new
-		update_health(charger_ability.momentum * 15)
-		if(operator) operator.emote("pain")
-		sparks.set_up(1, 1, loc)
-		sparks.start()
-		xeno.visible_message(
-			SPAN_DANGER("[xeno] rams \the [src]!"),
-			SPAN_XENODANGER("You ram \the [src]!")
-		)
-		playsound(src, "sound/effects/metal_crash.ogg", 25, TRUE)
-		if(istype(src,/obj/structure/machinery/m56d_hmg/auto)) // we don't want to charge it to the point of downgrading it (:
-			var/obj/item/device/m2c_gun/HMG = new(src.loc)
-			HMG.health = src.health
-			transfer_label_component(HMG)
-			HMG.rounds = src.rounds //Inherent the amount of ammo we had.
-			HMG.update_icon()
-			qdel(src)
-		else
-			var/obj/item/device/m56d_gun/HMG = new(src.loc) // note: find a better way than a copy pasted else statement
-			HMG.health = src.health
-			transfer_label_component(HMG)
-			HMG.rounds = src.rounds //Inherent the amount of ammo we had.
-			HMG.has_mount = TRUE
-			HMG.update_icon()
-			qdel(src) //Now we clean up the constructed gun.
-	if(QDELETED(src))
-		charger_ability.lose_momentum(CCA_MOMENTUM_LOSS_MIN) //Lose one turfs worth of speed
-		return XENO_CHARGE_TRY_MOVE
 	charger_ability.stop_momentum()
 
 // Prison Windows

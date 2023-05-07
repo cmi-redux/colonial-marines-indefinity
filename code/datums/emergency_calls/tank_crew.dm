@@ -10,7 +10,7 @@
 	name_of_spawn = /obj/effect/landmark/ert_spawns/distress_cryo
 	shuttle_id = ""
 
-/datum/emergency_call/tank_crew/create_member(datum/mind/M, turf/override_spawn_loc)
+/datum/emergency_call/tank_crew/create_member(datum/mind/mind, turf/override_spawn_loc)
 	set waitfor = 0
 	if(SSmapping.configs[GROUND_MAP].map_name == MAP_WHISKEY_OUTPOST)
 		name_of_spawn = /obj/effect/landmark/ert_spawns/distress_wo
@@ -19,7 +19,8 @@
 	if(!istype(spawn_loc)) return //Didn't find a useable spawn point.
 
 	var/mob/living/carbon/human/H = new(spawn_loc)
-	M.transfer_to(H, TRUE)
+	mind.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 
 	sleep(5)
 	arm_equipment(H, /datum/equipment_preset/uscm/tank/full, TRUE, TRUE)

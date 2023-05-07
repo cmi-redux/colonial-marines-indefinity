@@ -257,7 +257,7 @@ GLOBAL_LIST_INIT(apc_wire_descriptions, list(
 
 	return data
 
-/obj/structure/machinery/power/apc/ui_act(action, params)
+/obj/structure/machinery/power/apc/ui_act(action, list/params)
 	. = ..()
 
 	if(. || !can_use(usr, 1))
@@ -308,7 +308,7 @@ GLOBAL_LIST_INIT(apc_wire_descriptions, list(
 				. = TRUE
 		if("cut")
 			var/obj/item/held_item = usr.get_held_item()
-			if (!held_item || !HAS_TRAIT(held_item, TRAIT_TOOL_WIRECUTTERS))
+			if(!held_item || !HAS_TRAIT(held_item, TRAIT_TOOL_WIRECUTTERS))
 				to_chat(usr, SPAN_WARNING("You need wirecutters!"))
 				return TRUE
 
@@ -320,7 +320,7 @@ GLOBAL_LIST_INIT(apc_wire_descriptions, list(
 			. = TRUE
 		if("pulse")
 			var/obj/item/held_item = usr.get_held_item()
-			if (!held_item || !HAS_TRAIT(held_item, TRAIT_TOOL_MULTITOOL))
+			if(!held_item || !HAS_TRAIT(held_item, TRAIT_TOOL_MULTITOOL))
 				to_chat(usr, SPAN_WARNING("You need a multitool!"))
 				return TRUE
 			playsound(src.loc, 'sound/effects/zzzt.ogg', 25, 1)
@@ -376,9 +376,9 @@ GLOBAL_LIST_INIT(apc_wire_descriptions, list(
 	if(opened)
 		if(has_electronics && terminal)
 			. += SPAN_INFO("The cover is [opened == APC_COVER_REMOVED ? "removed":"open"] and the power cell is [cell ? "installed":"missing"].")
-		else if (!has_electronics && terminal)
+		else if(!has_electronics && terminal)
 			. += SPAN_INFO("There are some wires but no any electronics.")
-		else if (has_electronics && !terminal)
+		else if(has_electronics && !terminal)
 			. += SPAN_INFO("Electronics installed but not wired.")
 		else
 			. += SPAN_INFO("There is no electronics nor connected wires.")
@@ -509,7 +509,7 @@ GLOBAL_LIST_INIT(apc_wire_descriptions, list(
 		else if(charging == APC_FULLY_CHARGED)
 			update_overlay |= APC_UPOVERLAY_CHARGEING2
 
-		if (!equipment)
+		if(!equipment)
 			update_overlay |= APC_UPOVERLAY_EQUIPMENT0
 		else if(equipment == 1)
 			update_overlay |= APC_UPOVERLAY_EQUIPMENT1
@@ -699,7 +699,7 @@ GLOBAL_LIST_INIT(apc_wire_descriptions, list(
 			if(!terminal)
 				to_chat(user, SPAN_WARNING("\The [src] lacks a terminal to remove."))
 				return
-			if (prob(50) && electrocute_mob(user, terminal.powernet, terminal))
+			if(prob(50) && electrocute_mob(user, terminal.powernet, terminal))
 				var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
 				s.set_up(5, 1, src)
 				s.start()
@@ -759,7 +759,7 @@ GLOBAL_LIST_INIT(apc_wire_descriptions, list(
 		if(do_after(user, 50 * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 			user.visible_message(SPAN_NOTICE("[user] replaces [src]'s damaged frontal panel with a new one."),
 			SPAN_NOTICE("You replace [src]'s damaged frontal panel with a new one."))
-			user.count_niche_stat(STATISTICS_NICHE_REPAIR_APC)
+			user.count_statistic_stat(STATISTICS_REPAIR_APC)
 			qdel(W)
 			beenhit = 0
 			stat &= ~BROKEN
@@ -1095,7 +1095,7 @@ GLOBAL_LIST_INIT(apc_wire_descriptions, list(
 			if(cell.charge >= required_power * CELLRATE) //Can we draw enough from cell to cover what's left over?
 				cell.use(required_power * CELLRATE)
 
-			else if (autoflag != 0) //Not enough power available to run the last tick!
+			else if(autoflag != 0) //Not enough power available to run the last tick!
 				chargecount = 0
 				//This turns everything off in the case that there is still a charge left on the battery, just not enough to run the room.
 				equipment = autoset(equipment, 0)
@@ -1194,7 +1194,7 @@ GLOBAL_LIST_INIT(apc_wire_descriptions, list(
 	if(last_lt != lighting || last_eq != equipment || last_en != environ)
 		queue_icon_update()
 		update()
-	else if (last_ch != charging)
+	else if(last_ch != charging)
 		queue_icon_update()
 
 //val 0 = off, 1 = off(auto) 2 = on, 3 = on(auto)
@@ -1269,7 +1269,7 @@ GLOBAL_LIST_INIT(apc_wire_descriptions, list(
 		spawn(0)
 			for(var/area/A in area.related)
 				for(var/obj/structure/machinery/light/L in A)
-					L.on = 1
+					L.set_light_on(TRUE)
 					L.broken()
 					sleep(1)
 

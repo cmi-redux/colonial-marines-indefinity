@@ -271,7 +271,7 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 			named_args[named_arg] = value["value"]
 		else
 			. += value["value"]
-	if(LAZYLEN(named_args))
+	if(length(named_args))
 		. += named_args
 
 /client/proc/get_callproc_returnval(returnval,procname)

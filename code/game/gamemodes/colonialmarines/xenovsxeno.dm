@@ -1,12 +1,18 @@
-#define is_hive_living(hive) (!hive.hardcore || hive.living_xeno_queen)
+#define is_hive_living(faction) (!faction.hardcore || faction.living_xeno_queen)
 
 /datum/game_mode/xenovs
-	name = GAMEMODE_HIVE_WARS
-	config_tag = GAMEMODE_HIVE_WARS
+	name = MODE_NAME_HIVE_WARS
+	config_tag = MODE_NAME_HIVE_WARS
 	required_players = 4 //Need at least 4 players
 	xeno_required_num = 4 //Need at least four xenos.
 	monkey_amount = 0.2 // Amount of monkeys per player
+	end_game_announce = "Thus ends the story of the battling hives on"
 	flags_round_type = MODE_NO_SPAWN|MODE_NO_LATEJOIN|MODE_XVX|MODE_RANDOM_HIVE
+
+	faction_result_end_state = list(
+		list("xeno_major", list('sound/music/round_end/winning_triumph1.ogg', 'sound/music/round_end/winning_triumph2.ogg'), list('sound/music/round_end/bluespace.ogg')),
+		list("xeno_minor", list('sound/music/round_end/sad_loss1.ogg', 'sound/music/round_end/sad_loss2.ogg'), list('sound/music/round_end/end.ogg')),
+	)
 
 	var/list/structures_to_delete = list(/obj/effect/alien/weeds, /turf/closed/wall/resin, /obj/structure/mineral_door/resin, /obj/structure/bed/nest, /obj/item, /obj/structure/tunnel, /obj/structure/machinery/computer/shuttle_control, /obj/structure/machinery/defenses/sentry/premade)
 	var/list/hives = list()
@@ -35,7 +41,7 @@
 	return TRUE
 
 /datum/game_mode/xenovs/announce()
-	to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDHEADER("The current map is - [SSmapping.configs[GROUND_MAP].map_name]!"))
+	to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDHEADER("В данный момент карта - [SSmapping.configs[GROUND_MAP].map_name]!"))
 
 /* Pre-setup */
 /datum/game_mode/xenovs/pre_setup()
@@ -101,30 +107,30 @@
 
 /datum/game_mode/xenovs/proc/initialize_post_xenomorph_list(list/hive_spawns = GLOB.xeno_spawns)
 	var/list/hive_spots = list()
-	for(var/hive in hives)
+	for(var/faction in hives)
 		var/turf/spot = get_turf(pick(hive_spawns))
-		hive_spots[GLOB.hive_datum[hive]] = spot
+		hive_spots[GLOB.faction_datum[faction]] = spot
 		hive_spawns -= spot
 
-		current_hives += GLOB.hive_datum[hive].name
+		current_hives += GLOB.faction_datum[faction].name
 
-	for(var/datum/hive_status/hive in xenomorphs) //Build and move the xenos.
-		for(var/datum/mind/ghost_mind in xenomorphs[hive])
-			transform_xeno(ghost_mind, hive_spots[hive], hive.hivenumber, FALSE)
+	for(var/datum/faction/faction in xenomorphs) //Build and move the xenos.
+		for(var/datum/mind/ghost_mind in xenomorphs[faction])
+			transform_xeno(ghost_mind, hive_spots[faction], faction, FALSE)
 			ghost_mind.current.close_spawn_windows()
 
 	// Have to spawn the queen last or the mind will be added to xenomorphs and double spawned
-	for(var/datum/hive_status/hive in picked_queens)
-		transform_queen(picked_queens[hive], hive_spots[hive], hive.hivenumber)
-		var/datum/mind/M = picked_queens[hive]
+	for(var/datum/faction/faction in picked_queens)
+		transform_queen(picked_queens[faction], hive_spots[faction], faction)
+		var/datum/mind/M = picked_queens[faction]
 		M.current.close_spawn_windows()
 
-	for(var/datum/hive_status/hive in hive_spots)
-		var/obj/effect/alien/resin/special/pylon/core/C = new(hive_spots[hive], hive)
-		C.hardcore = TRUE // This'll make losing the hive core more detrimental than losing a Queen
-		hive_cores += C
+	for(var/datum/faction/faction in hive_spots)
+		var/obj/effect/alien/resin/special/pylon/core/core = new(hive_spots[faction], faction)
+		core.hardcore = TRUE // This'll make losing the hive core more detrimental than losing a Queen
+		hive_cores += core
 
-/datum/game_mode/xenovs/proc/transform_xeno(datum/mind/ghost_mind, turf/xeno_turf, hivenumber = XENO_HIVE_NORMAL, should_spawn_nest = TRUE)
+/datum/game_mode/xenovs/proc/transform_xeno(datum/mind/ghost_mind, turf/xeno_turf, datum/faction/faction = GLOB.faction_datum[FACTION_XENOMORPH_NORMAL], should_spawn_nest = TRUE)
 	if(should_spawn_nest)
 		var/mob/living/carbon/human/original = ghost_mind.current
 
@@ -147,15 +153,14 @@
 
 		var/obj/item/alien_embryo/embryo = new /obj/item/alien_embryo(original) //Put the initial larva in a host
 		embryo.stage = 5 //Give the embryo a head-start (make the larva burst instantly)
-		embryo.hivenumber = hivenumber
-
+		embryo.faction = faction
 		if(original && !original.first_xeno)
 			qdel(original)
 	else
-		var/mob/living/carbon/xenomorph/larva/L = new(xeno_turf, null, hivenumber)
-		ghost_mind.transfer_to(L)
+		var/mob/living/carbon/xenomorph/larva/xeno = new(xeno_turf, null, faction)
+		ghost_mind.transfer_to(xeno)
 
-/datum/game_mode/xenovs/pick_queen_spawn(datum/mind/ghost_mind, hivenumber = XENO_HIVE_NORMAL)
+/datum/game_mode/xenovs/pick_queen_spawn(datum/mind/ghost_mind, datum/faction/faction = GLOB.faction_datum[FACTION_XENOMORPH_NORMAL])
 	. = ..()
 	if(!.) return
 	// Spawn additional hive structures
@@ -172,17 +177,17 @@
 //This is processed each tick, but check_win is only checked 5 ticks, so we don't go crazy with scanning for mobs.
 /datum/game_mode/xenovs/process()
 	. = ..()
-	if(--round_started > 0)
-		return FALSE //Initial countdown, just to be safe, so that everyone has a chance to spawn before we check anything.
-
-
+	if(round_started > 0)
+		round_started--
+		return FALSE
 
 	if(!round_finished)
 		if(++round_checkwin >= 5) //Only check win conditions every 5 ticks.
 			if(world.time > round_time_larva_interval)
-				for(var/hive in hives)
-					GLOB.hive_datum[hive].stored_larva++
-					GLOB.hive_datum[hive].hive_ui.update_burrowed_larva()
+				for(var/faction in hives)
+					var/datum/faction/hive = GLOB.faction_datum[faction]
+					hive.stored_larva++
+					hive.faction_ui.update_burrowed_larva()
 
 				round_time_larva_interval = world.time + hive_larva_interval_gain
 
@@ -198,25 +203,18 @@
 			round_checkwin = 0
 
 
-/datum/game_mode/xenovs/proc/get_xenos_hive(list/z_levels = SSmapping.levels_by_any_trait(list(ZTRAIT_GROUND, ZTRAIT_RESERVED, ZTRAIT_MARINE_MAIN_SHIP)))
-	var/list/list/hivenumbers = list()
-	var/datum/hive_status/HS
-	for(var/hivenumber in GLOB.hive_datum)
-		HS = GLOB.hive_datum[hivenumber]
-		hivenumbers += list(HS.name = list())
+/datum/game_mode/xenovs/proc/get_xenos_hive(list/z_levels = SSmapping.levels_by_any_trait(list(ZTRAIT_GROUND, ZTRAIT_LOWORBIT, ZTRAIT_MARINE_MAIN_SHIP)))
+	var/list/factions = list()
+	for(var/faction_to_get in FACTION_LIST_XENOMORPH)
+		var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
+		if(!is_hive_living(faction))
+			continue
+		factions += list(faction.name = list())
+		for(var/mob/living/carbon/xenomorph/xenomorph in faction.totalMobs)
+			if(xenomorph.z && (xenomorph.z in z_levels) && !istype(xenomorph.loc, /turf/open/space))
+				factions[faction.name] += xenomorph
 
-	for(var/mob/M in GLOB.player_list)
-		if(M.z && (M.z in z_levels) && M.stat != DEAD && !istype(M.loc, /turf/open/space)) //If they have a z var, they are on a turf.
-			var/mob/living/carbon/xenomorph/X = M
-			var/datum/hive_status/hive = GLOB.hive_datum[X.hivenumber]
-			if(!hive)
-				continue
-
-			if(istype(X) && is_hive_living(hive))
-				hivenumbers[hive.name].Add(X)
-
-
-	return hivenumbers
+	return factions
 
 ///////////////////////////
 //Checks to see who won///
@@ -227,23 +225,22 @@
 
 	var/list/living_player_list = get_xenos_hive()
 
-	var/last_living_hive
+	var/datum/faction/last_living_hive
 	var/living_hives = 0
 
-	for(var/H in living_player_list)
-		if(length(living_player_list[H]) > 0)
+	for(var/datum/faction/hive in living_player_list)
+		if(length(living_player_list[hive]) > 0)
 			living_hives++
-			last_living_hive = H
-		else if (H in current_hives)
-			xeno_announcement("\The [H] has been eliminated from the world", "everything", HIGHER_FORCE_ANNOUNCE)
-			current_hives -= H
-
+			last_living_hive = hive
+		else if(hive in current_hives)
+			xeno_announcement("\The [hive] has been eliminated from the world", "everything", HIGHER_FORCE_ANNOUNCE)
+			current_hives -= hive
 
 	if(!living_hives)
 		round_finished = "No one has won."
-	else if (living_hives == 1)
+	else if(living_hives == 1)
 		round_finished = "The [last_living_hive] has won."
-
+		SSticker.mode.faction_won = last_living_hive
 
 ///////////////////////////////
 //Checks if the round is over//
@@ -251,40 +248,38 @@
 /datum/game_mode/xenovs/check_finished()
 	if(round_finished)
 		return TRUE
+	return FALSE
 
 //////////////////////////////////////////////////////////////////////
 //Announces the end of the game with all relevant information stated//
 //////////////////////////////////////////////////////////////////////
 /datum/game_mode/xenovs/declare_completion()
-	announce_ending()
-	var/musical_track
-	musical_track = pick('sound/theme/nuclear_detonation1.ogg','sound/theme/nuclear_detonation2.ogg')
-
-	var/sound/S = sound(musical_track, channel = SOUND_CHANNEL_LOBBY)
-	S.status = SOUND_STREAM
-	sound_to(world, S)
-	if(round_statistics)
-		round_statistics.game_mode = name
-		round_statistics.round_length = world.time
-		round_statistics.end_round_player_population = GLOB.clients.len
-
-		round_statistics.log_round_statistics()
+	. = ..()
 
 	declare_completion_announce_xenomorphs()
 	calculate_end_statistics()
 	declare_fun_facts()
 
-	return TRUE
-
 /datum/game_mode/xenovs/announce_ending()
-	if(round_statistics)
-		round_statistics.track_round_end()
 	log_game("Round end result: [round_finished]")
-	to_chat_spaced(world, margin_top = 2, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDHEADER("|Round Complete|"))
-	to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDBODY("Thus ends the story of the battling hives on [SSmapping.configs[GROUND_MAP].map_name]. [round_finished]\nThe game-mode was: [master_mode]!\nEnd of Round Grief (EORG) is an IMMEDIATE 3 hour ban with no warnings, see rule #3 for more details."))
+	to_chat_spaced(world, margin_top = 2, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDHEADER("|Раунд Закончен|"))
+	to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDBODY("[end_game_announce] [SSmapping.configs[GROUND_MAP].map_name]. [round_finished]\nThe game-mode was: [GLOB.master_mode]!\nEnd of Round Grief (EORG) это мгновенный 3-х часовой бан без предупреждений."))
 
-// for the toolbox
-/datum/game_mode/xenovs/end_round_message()
-	if(round_finished)
-		return "Hive Wars Round has ended. [round_finished]"
-	return "Hive Wars Round has ended. No one has won"
+/datum/game_mode/xenovs/get_winners_states()
+	var/list/icon_states = list()
+	var/list/musical_tracks = list()
+	var/sound/sound
+	for(var/faction_name in factions_pool)
+		var/pick = 2
+		if(faction_won.faction_name == faction_name)
+			pick = 1
+
+		icon_states[faction_name] = faction_result_end_state[pick][1]
+		sound = sound(pick(faction_result_end_state[pick][2]), channel = SOUND_CHANNEL_LOBBY)
+		sound.status = SOUND_STREAM
+		musical_tracks[faction_name] = sound
+		sound = sound(pick(faction_result_end_state[pick][3]), channel = SOUND_CHANNEL_LOBBY)
+		sound.status = SOUND_STREAM
+		musical_tracks[faction_name] += sound
+
+	return list(icon_states, musical_tracks)

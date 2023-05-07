@@ -79,7 +79,7 @@
 
 /mob/living/silicon/robot/drone/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_pass = PASS_MOB_THRU|PASS_FLAGS_CRAWLER
 
 /mob/living/silicon/robot/drone/init()
@@ -114,7 +114,7 @@
 		to_chat(user, SPAN_DANGER("The maintenance drone chassis not compatible with \the [W]."))
 		return
 
-	else if (HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
+	else if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 		to_chat(user, "The machine is hermetically sealed. You can't open the case.")
 		return
 
@@ -163,11 +163,12 @@
 
 /mob/living/silicon/robot/drone/proc/question(client/C)
 	spawn(0)
-		if(!C || jobban_isbanned(C,"Cyborg")) return
-		var/response = alert(C, "Someone is attempting to reboot a maintenance drone. Would you like to play as one?", "Maintenance drone reboot", "Yes", "No", "Never for this round.")
+		if(!C || jobban_isbanned(C,"Cyborg"))
+			return
+		var/response = alert(C, "Someone is attempting to reboot a maintenance drone. Would you like to play as one?", "Maintenance drone reboot", client.auto_lang(LANGUAGE_YES), client.auto_lang(LANGUAGE_NO), "Never for this round.")
 		if(!C || ckey)
 			return
-		else if(response == "Yes")
+		else if(response == client.auto_lang(LANGUAGE_YES))
 			transfer_personality(C)
 
 /mob/living/silicon/robot/drone/proc/transfer_personality(client/player)

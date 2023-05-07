@@ -62,16 +62,15 @@
 /datum/action/xeno_action/proc/track_xeno_ability_stats()
 	if(!owner)
 		return
-	var/mob/living/carbon/xenomorph/X = owner
-	if (ability_name && round_statistics)
-		round_statistics.track_ability_usage(ability_name)
-		X.track_ability_usage(ability_name, X.caste_type)
+	var/mob/living/carbon/xenomorph/xeno = owner
+	if(ability_name)
+		xeno.track_ability_usage(ability_name, xeno.caste_type)
 
 /datum/action/xeno_action/can_use_action()
 	if(!owner)
 		return FALSE
-	var/mob/living/carbon/xenomorph/X = owner
-	if(X && !X.is_mob_incapacitated() && !X.dazed && !X.lying && !X.buckled && X.plasma_stored >= plasma_cost)
+	var/mob/living/carbon/xenomorph/xeno = owner
+	if(xeno && !xeno.is_mob_incapacitated() && !xeno.dazed && !xeno.lying && !xeno.buckled && xeno.plasma_stored >= plasma_cost)
 		return TRUE
 
 /datum/action/xeno_action/give_to(mob/living/L)
@@ -95,7 +94,7 @@
 // Helper proc that checks and uses plasma if possible, returning TRUE
 // if the use was successful
 /datum/action/xeno_action/proc/check_and_use_plasma_owner(plasma_to_use)
-	if (!check_plasma_owner(plasma_to_use))
+	if(!check_plasma_owner(plasma_to_use))
 		return FALSE
 
 	use_plasma_owner(plasma_to_use)
@@ -209,7 +208,7 @@
 		return
 	var/mob/living/carbon/xenomorph/X = owner
 	// Uh oh! STINKY! already on cooldown
-	if (cooldown_timer_id != TIMER_ID_NULL)
+	if(cooldown_timer_id != TIMER_ID_NULL)
 	/*
 		Debug log disabled due to our historical inability at doing anything meaningful about it
 		And to make room for ones that matter more in regard to our ability to fix.
@@ -262,7 +261,7 @@
 // that it can do stuff again and handles any other end-of-cooldown behavior. ability_cooldown_over
 // is called when a cooldown ends prematurely and otherwise.
 /datum/action/xeno_action/proc/on_cooldown_end()
-	if (cooldown_timer_id == TIMER_ID_NULL)
+	if(cooldown_timer_id == TIMER_ID_NULL)
 		/* See notes above in apply_cooldown()
 		log_debug("Xeno action [src] tried to go off cooldown while already off cooldown.")
 		log_admin("Xeno action [src] tried to go off cooldown while already off cooldown.")
@@ -278,7 +277,7 @@
 
 // Immediately force-ends the current cooldown.
 /datum/action/xeno_action/proc/end_cooldown()
-	if (cooldown_timer_id == TIMER_ID_NULL)
+	if(cooldown_timer_id == TIMER_ID_NULL)
 		/* See notes above in apply_cooldown()
 		log_debug("Xeno action [src] tried to force end cooldown while already off cooldown.")
 		log_admin("Xeno action [src] tried to force end cooldown while already off cooldown.")
@@ -296,7 +295,7 @@
 // we tracked earlier, because unfortunately the timer SS doesn't support querying the time from
 // an existing timer by ID. So we just delete it and add a new one if necessary
 /datum/action/xeno_action/proc/reduce_cooldown(amount)
-	if (cooldown_timer_id == TIMER_ID_NULL)
+	if(cooldown_timer_id == TIMER_ID_NULL)
 		/* See notes above in apply_cooldown()
 		log_debug("Xeno action [src] tried to force end cooldown while already off cooldown.")
 		log_admin("Xeno action [src] tried to force end cooldown while already off cooldown.")
@@ -308,7 +307,7 @@
 	cooldown_timer_id = TIMER_ID_NULL
 
 	// Are we done, or do we need to add a new timer
-	if ((current_cooldown_start_time + current_cooldown_duration - amount) < world.time)
+	if((current_cooldown_start_time + current_cooldown_duration - amount) < world.time)
 		// We are done, no more cooldown.
 		current_cooldown_start_time = 0
 		current_cooldown_duration = 0
@@ -360,11 +359,11 @@
 // Helper proc to get an action on a target Xeno by type.
 // Used to interact with abilities from the outside
 /proc/get_xeno_action_by_type(mob/living/carbon/xenomorph/X, typepath)
-	if (!istype(X))
+	if(!istype(X))
 		CRASH("xeno_action.dm: get_xeno_action_by_type invoked with non-xeno first argument.")
 
 	for (var/datum/action/xeno_action/XA in X.actions)
-		if (istype(XA, typepath))
+		if(istype(XA, typepath))
 			return XA
 	return null
 

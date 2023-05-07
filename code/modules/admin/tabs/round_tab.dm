@@ -34,11 +34,11 @@
 		return
 
 	var/datum/game_mode/predator_round = SSticker.mode
-	if(alert("Are you sure you want to force-toggle a predator round? Predators currently: [(predator_round.flags_round_type & MODE_PREDATOR) ? "Enabled" : "Disabled"]",, "Yes", "No") != "Yes")
+	if(alert("Are you sure you want to force-toggle a predator round? Predators currently: [(predator_round.flags_round_type & MODE_PREDATOR) ? "Enabled" : "Disabled"]", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 
 	if(!(predator_round.flags_round_type & MODE_PREDATOR))
-		var/datum/job/PJ = RoleAuthority.roles_for_mode[JOB_PREDATOR]
+		var/datum/job/PJ = GET_MAPPED_ROLE(JOB_PREDATOR)
 		if(istype(PJ) && !PJ.spawn_positions)
 			PJ.set_spawn_positions(players_preassigned)
 		predator_round.flags_round_type |= MODE_PREDATOR
@@ -56,17 +56,20 @@
 
 	var/roles[] = new
 	var/i
+	var/list/roles_pool
 	var/datum/job/J
-	for(i in RoleAuthority.roles_for_mode) //All the roles in the game.
-		J = RoleAuthority.roles_for_mode[i]
-		if(J.total_positions > 0 && J.current_positions > 0)
-			roles += i
+	for(var/f in SSticker.role_authority.roles_for_mode)
+		roles_pool = SSticker.role_authority.roles_for_mode[f]
+		for(i in roles_pool)
+			J = SSticker.role_authority.roles_for_mode[i]
+			if(J.total_positions > 0 && J.current_positions > 0)
+				roles += i
 
 	to_chat(usr, SPAN_BOLDNOTICE("There is not a single taken job slot."))
 	var/role = input("This list contains all roles that have at least one slot taken.\nPlease select role slot to free.", "Free role slot")  as null|anything in roles
 	if(!role)
 		return
-	RoleAuthority.free_role_admin(RoleAuthority.roles_for_mode[role], TRUE, src)
+	SSticker.role_authority.free_role_admin(roles_pool[role], TRUE, src)
 
 /client/proc/modify_slot()
 	set name = "Adjust Job Slots"
@@ -78,25 +81,25 @@
 	var/roles[] = new
 	var/datum/job/J
 
-	var/active_role_names = GLOB.gamemode_roles[GLOB.master_mode]
+	var/active_role_names = SSticker.mode.active_roles_pool
 	if(!active_role_names)
 		active_role_names = ROLES_REGULAR_ALL
 
 	for(var/role_name as anything in active_role_names)
-		var/datum/job/job = RoleAuthority.roles_by_name[role_name]
+		var/datum/job/job = GET_MAPPED_ROLE(role_name)
 		if(!job)
 			continue
 		roles += role_name
 
-	var/role = input("Please select role slot to modify", "Modify amount of slots")  as null|anything in roles
+	var/role = input("Please select role slot to modify", "Modify amount of slots") as null|anything in roles
 	if(!role)
 		return
-	J = RoleAuthority.roles_by_name[role]
+	J = GET_MAPPED_ROLE(role)
 	var/tpos = J.spawn_positions
 	var/num = tgui_input_number(src, "How many slots role [J.title] should have?\nCurrently taken slots: [J.current_positions]\nTotal amount of slots opened this round: [J.total_positions_so_far]","Number:", tpos)
 	if(isnull(num))
 		return
-	if(!RoleAuthority.modify_role(J, num))
+	if(!SSticker.role_authority.modify_role(J, num))
 		to_chat(usr, SPAN_BOLDNOTICE("Can't set job slots to be less than amount of log-ins or you are setting amount of slots less than minimal. Free slots first."))
 	message_admins("[key_name(usr)] adjusted job slots of [J.title] to be [num].")
 
@@ -124,14 +127,28 @@
 	if(!check_rights(R_SERVER) || !SSticker.mode)
 		return
 
-	if(alert("Are you sure you want to end the round?",,"Yes","No") != "Yes")
-		return
 	// trying to end the round before it even starts. bruh
 	if(!SSticker.mode)
 		return
 
-	SSticker.mode.round_finished = MODE_INFESTATION_DRAW_DEATH
-	message_admins("[key_name(usr)] has made the round end early.")
+	if(alert("Are you sure you want to end the round?", "End Round", usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
+		return
+
+	var/winstate = input(usr, "What do you want the round end state to be?", "End Round") as null|anything in list("Custom", "Admin Intervention") + SSticker.mode.round_end_states
+	if(!winstate)
+		return
+
+	if(winstate == "Custom")
+		winstate = input(usr, "Please enter a custom round end state.", "End Round") as null|text
+		if(!winstate)
+			return
+
+	if(SSticker.mode.faction_round_end_state[winstate])
+		SSticker.mode.faction_won = GLOB.faction_datum[SSticker.mode.faction_round_end_state[winstate]]
+	SSticker.mode.round_finished = winstate
+
+	log_admin("[key_name(usr)] has made the round end early - [winstate].")
+	message_admins("[key_name(usr)] has made the round end early - [winstate].")
 	for(var/client/C in GLOB.admins)
 		to_chat(C, {"
 		<hr>
@@ -147,7 +164,7 @@
 
 	if(!check_rights(R_SERVER))
 		return
-	if (SSticker.current_state != GAME_STATE_PREGAME)
+	if(SSticker.current_state != GAME_STATE_PREGAME)
 		SSticker.delay_end = !SSticker.delay_end
 		message_admins("[SPAN_NOTICE("[key_name(usr)] [SSticker.delay_end ? "delayed the round end" : "has made the round end normally"].")]")
 		for(var/client/C in GLOB.admins)
@@ -166,12 +183,12 @@
 	set desc = "Start the round RIGHT NOW"
 	set category = "Server.Round"
 
-	if (!SSticker)
+	if(!SSticker)
 		alert("Unable to start the game as it is not set up.")
 		return
-	if (alert("Are you sure you want to start the round early?",,"Yes","No") != "Yes")
+	if(alert("Are you sure you want to start the round early?", , usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
-	if (SSticker.current_state == GAME_STATE_PREGAME)
+	if(SSticker.current_state == GAME_STATE_PREGAME)
 		SSticker.request_start()
 		message_admins(SPAN_BLUE("[usr.key] has started the game."))
 

@@ -88,11 +88,11 @@ GLOBAL_LIST_INIT(droppod_target_mode, list(
 	var/list/acceptableTurfs = list()
 	for (var/t in ordered_area) //Go through the orderedArea list
 		var/turf/unchecked_turf = t
-		if (typecache_filter_list_reverse(unchecked_turf.contents, ignored_atoms).len != 0) //if there is something in this turf that isn't in the blacklist, we consider this turf "acceptable" and add it to the acceptableTurfs list
+		if(typecache_filter_list_reverse(unchecked_turf.contents, ignored_atoms).len != 0) //if there is something in this turf that isn't in the blacklist, we consider this turf "acceptable" and add it to the acceptableTurfs list
 			acceptableTurfs.Add(unchecked_turf) //Because orderedArea was an ordered linear list, acceptableTurfs will be as well.
 
 	launch_list = list() //Anything in launch_list will go into the supplypod when it is launched
-	if (length(acceptableTurfs) && !custom_dropoff) //We dont fill the supplypod if acceptableTurfs is empty, if the pod is going in reverse (effectReverse=true), or if the pod is acitng like a missile (effectMissile=true)
+	if(length(acceptableTurfs) && !custom_dropoff) //We dont fill the supplypod if acceptableTurfs is empty, if the pod is going in reverse (effectReverse=true), or if the pod is acitng like a missile (effectMissile=true)
 		switch(launch_choice)
 			if(LAUNCH_ALL) //If we are launching all the turfs at once
 				for (var/t in acceptableTurfs)
@@ -103,7 +103,7 @@ GLOBAL_LIST_INIT(droppod_target_mode, list(
 				launch_list |= typecache_filter_list_reverse(acceptable_turf.contents, ignored_atoms) //filter a random turf from the acceptableTurfs list and add it to the launch_list
 
 /datum/admin_podlauncher/proc/launch(turf/target_turf) //Game time started
-	if (isnull(target_turf))
+	if(isnull(target_turf))
 		return
 	var/obj/structure/droppod/container/toLaunch = DuplicateObject(temp_pod) //Duplicate the temp_pod (which we have been varediting or configuring with the UI) and store the result
 	toLaunch.dropoff_point = temp_pod.dropoff_point
@@ -115,7 +115,7 @@ GLOBAL_LIST_INIT(droppod_target_mode, list(
 			launch_candidate.forceMove(toLaunch) //Duplicate a single atom/movable from launchList and forceMove it into the supplypod
 	else
 		for (var/launch_candidate in launch_list)
-			if (isnull(launch_candidate))
+			if(isnull(launch_candidate))
 				continue
 			var/atom/movable/movable_to_launch = launch_candidate
 			if(launch_clone)
@@ -145,9 +145,9 @@ GLOBAL_LIST_INIT(droppod_target_mode, list(
 
 /datum/admin_podlauncher/proc/refresh_view()
 	switch(tab_index)
-		if (TAB_POD)
+		if(TAB_POD)
 			setup_view_pod()
-		if (TAB_BAY)
+		if(TAB_BAY)
 			setup_view_bay()
 		else
 			setup_view_dropoff()
@@ -330,7 +330,7 @@ GLOBAL_LIST_INIT(droppod_target_mode, list(
 			var/mob/M = holder.mob //We teleport whatever mob the client is attached to at the point of clicking
 			var/turf/current_location = get_turf(M)
 			var/turf/dropoff_turf = temp_pod.dropoff_point
-			if (current_location != dropoff_turf)
+			if(current_location != dropoff_turf)
 				old_location = current_location
 			M.forceMove(dropoff_turf) //Perform the actual teleport
 			message_admins("[key_name(usr)] jumped to [get_area(dropoff_turf)]")
@@ -400,7 +400,7 @@ GLOBAL_LIST_INIT(droppod_target_mode, list(
 			. = TRUE
 		if("clear_bay")
 			if(tgui_alert(usr, "This will delete all objs and mobs in [bay]. Are you sure?",\
-				"Confirmation", list("Yes", "No")) == "Yes")
+				usr.client.auto_lang(LANGUAGE_CONFIRM), list(usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO))) == usr.client.auto_lang(LANGUAGE_YES))
 				clear_bay()
 				refresh_bay()
 			. = TRUE

@@ -3,14 +3,22 @@
 	icon = 'icons/obj/vehicles/powerloader.dmi'
 	desc = "The Caterpillar P-5000 Work Loader is a commercial mechanized exoskeleton used for lifting heavy materials and objects, first designed in January 29, 2025 by Weyland Corporation. An old but trusted design used in warehouses, constructions and military ships everywhere."
 	icon_state = "powerloader_open"
+	plane = GAME_PLANE
 	layer = POWERLOADER_LAYER //so the top appears above windows and wall mounts
 	anchored = TRUE
 	density = TRUE
-	luminosity = 5
 	move_delay = 8
 	buckling_y = 9
 	health = 200
 	maxhealth = 200
+
+
+	light_system = MOVABLE_LIGHT
+	light_range = 7
+	light_power = 1
+	light_color = LIGHT_COLOR_ORANGE
+	light_on = FALSE
+
 	pixel_x = -16
 	pixel_y = -2
 	var/base_state = "powerloader"
@@ -121,6 +129,7 @@
 	overlays.Cut()
 	playsound(loc, 'sound/mecha/powerloader_buckle.ogg', 25)
 	if(.)
+		set_light_on(TRUE)
 		icon_state = base_state
 		overlays += image(icon_state = overlay_state, layer = MOB_LAYER + 0.1)
 		if(M.mind && M.skills)
@@ -138,6 +147,7 @@
 		move_delay = initial(move_delay)
 		icon_state = open_state
 		M.drop_held_items() //drop the clamp when unbuckling
+		set_light_on(FALSE)
 
 //verb
 /obj/vehicle/powerloader/verb/enter_powerloader(mob/M)

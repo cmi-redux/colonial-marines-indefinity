@@ -99,7 +99,7 @@
 	orbiters -= orbiter
 	orbiter.stop_orbit(src)
 	orbiter.orbiting = null
-	orbiter.glide_size = 0 //Reset to the default for atom/movable as ours was matched to the orbit target
+	orbiter.glide_size = initial(orbiter.glide_size) //Reset to the default for atom/movable as ours was matched to the orbit target
 	if(!refreshing && !length(orbiters) && !QDELING(src))
 		qdel(src)
 

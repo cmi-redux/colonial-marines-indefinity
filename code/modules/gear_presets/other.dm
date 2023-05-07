@@ -2,7 +2,7 @@
 	name = "Other"
 	languages = list(LANGUAGE_ENGLISH)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/mutineer
 	name = "Mutineer"
@@ -56,7 +56,7 @@
 	H.g_hair = 25
 	H.b_hair = 35
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/freelancer/standard
 	name = "Freelancer (Standard)"
@@ -128,7 +128,7 @@
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/storage/firstaid/regular, WEAR_IN_BACK)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/freelancer/medic
 	name = "Freelancer (Medic)"
@@ -199,7 +199,7 @@
 	H.equip_to_slot_or_del(new /obj/item/tool/surgery/synthgraft, WEAR_IN_BACK) //Line is in vest.
 	spawn_merc_rifle(H)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/freelancer/leader
 	name = "Freelancer (Leader)"
@@ -208,7 +208,7 @@
 	assignment = "Freelancer Warlord"
 	languages = list(LANGUAGE_ENGLISH, LANGUAGE_RUSSIAN, LANGUAGE_CHINESE, LANGUAGE_JAPANESE)
 
-	skills = /datum/skills/freelancer/SL
+	skills = /datum/skills/freelancer/sl
 
 /datum/equipment_preset/other/freelancer/leader/load_gear(mob/living/carbon/human/H)
 
@@ -235,7 +235,7 @@
 	spawn_weapon(/obj/item/weapon/gun/rifle/m41aMK1, /obj/item/ammo_magazine/rifle/m41aMK1, H, 0, 9)
 	spawn_merc_weapon(H,1,2)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/elite_merc
 	name = "Elite Mercenary"
@@ -265,7 +265,7 @@
 	H.g_hair = rand(15,35)
 	H.b_hair = rand(25,45)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/elite_merc/standard
 	name = "Elite Mercenary (Standard Miner)"
@@ -306,7 +306,7 @@
 
 	spawn_merc_elite_weapon(H, 12, 50, 1)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/elite_merc/heavy
 	name = "Elite Mercenary (Heavy)"
@@ -351,7 +351,7 @@
 	H.equip_to_slot_or_del(new /obj/item/weapon/gun/minigun(H), WEAR_J_STORE)
 
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 /datum/equipment_preset/other/elite_merc/engineer
 	name = "Elite Mercenary (Engineer)"
 	paygrade = "Elite Freelancer Engineer"
@@ -407,7 +407,7 @@
 	//gun
 	spawn_merc_elite_weapon(H, 9, 100, 0) //only shotguns
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/elite_merc/medic
 	name = "Elite Mercenary (Medic)"
@@ -457,7 +457,7 @@
 	//gun
 	spawn_merc_elite_weapon(H, 7, 0, 0) //no shotguns
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/elite_merc/leader
 	name = "Elite Mercenary (Leader)"
@@ -499,7 +499,7 @@
 	//gun
 	spawn_merc_elite_weapon(H, 7, 25, 1) //lower shotgun chance, but not zero
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/business_person
 	name = "Business Person"
@@ -523,12 +523,12 @@
 	H.equip_if_possible(new /obj/item/clothing/glasses/sunglasses, WEAR_EYES)
 	H.equip_if_possible(new /obj/item/clipboard, WEAR_WAIST)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/compression_suit
 	name = "Mk50 Compression Suit"
 	flags = EQUIPMENT_PRESET_EXTRA
-	faction = FACTION_PMC
+	faction = FACTION_WY
 	skills = /datum/skills/pfc
 	idtype = /obj/item/card/id/data
 
@@ -547,7 +547,7 @@
 	spawn_merc_weapon(H)
 
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/pizza
 	name = "Pizza"
@@ -632,20 +632,32 @@
 	V.forceMove(H.loc)
 	V.buckle_mob(H, H)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/zombie
 	name = "Zombie"
 	flags = EQUIPMENT_PRESET_EXTRA
-	rank = FACTION_ZOMBIE
+	faction = FACTION_ZOMBIE
+	rank = "Unknown"
 	languages = list("Zombie")
 	skills = null //no restrictions
-	faction = FACTION_ZOMBIE
+
+/datum/equipment_preset/other/mutineer/load_status(mob/living/carbon/human/H)
+	. = ..()
+	H.set_species("Zombie")
 
 //Overloading the function to be able to spawn gear first
 /datum/equipment_preset/other/zombie/load_preset(mob/living/carbon/human/H, randomise = FALSE)
+	if(!faction)
+		faction = FACTION_NEUTRAL
+
+	GLOB.faction_datum[faction].add_mob(H)
+	if(H.faction?.organ_faction_iff_tag_type)
+		H.organ_faction_tag = new H.faction.organ_faction_iff_tag_type
+
 	if(randomise)
 		load_name(H)
+
 	load_skills(H) //skills are set before equipment because of skill restrictions on certain clothes.
 	load_languages(H)
 	load_gear(H)
@@ -662,7 +674,7 @@
 	A.randomize_appearance(H)
 	var/random_name = capitalize(pick(H.gender == MALE ? first_names_male : first_names_female)) + " " + capitalize(pick(last_names))
 	H.change_real_name(H, random_name)
-	H.age = rand(21,45)
+	H.age = rand(21, 45)
 
 /datum/equipment_preset/other/zombie/load_id(mob/living/carbon/human/H, client/mob_client)
 	var/obj/item/clothing/under/uniform = H.w_uniform
@@ -670,7 +682,6 @@
 		uniform.has_sensor = UNIFORM_HAS_SENSORS
 		uniform.sensor_faction = FACTION_COLONIST
 	H.job = "Zombie"
-	H.faction = faction
 	return ..()
 
 /datum/equipment_preset/other/zombie/load_race(mob/living/carbon/human/H)
@@ -683,7 +694,7 @@
 	var/shoe_path = pick(/obj/item/clothing/shoes/laceup, /obj/item/clothing/shoes/leather, /obj/item/clothing/shoes/jackboots)
 	H.equip_to_slot_or_del(new shoe_path, WEAR_FEET)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/gladiator
 	name = "Gladiator"
@@ -694,7 +705,7 @@
 
 	assignment = "Bestiarius"
 	rank = FACTION_GLADIATOR
-	faction = FACTION_GLADIATOR
+	faction = FACTION_NEUTRAL
 
 /datum/equipment_preset/other/gladiator/load_name(mob/living/carbon/human/H, randomise)
 	H.gender = pick(MALE, FEMALE)
@@ -705,7 +716,7 @@
 	H.age = rand(21,45)
 
 /datum/equipment_preset/other/gladiator/load_gear(mob/living/carbon/human/H)
-	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/UPP, WEAR_L_EAR)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/upp, WEAR_L_EAR)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/gladiator, WEAR_HEAD)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/chainshirt/hunter, WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/gladiator, WEAR_JACKET)
@@ -721,7 +732,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/ert, WEAR_L_STORE)
 	H.equip_to_slot_or_del(lantern, WEAR_R_STORE)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/gladiator/champion
 	name = "Gladiator Champion"
@@ -731,7 +742,7 @@
 	rank = "Samnite"
 
 /datum/equipment_preset/other/gladiator/champion/load_gear(mob/living/carbon/human/H)
-	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/UPP, WEAR_L_EAR)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/upp, WEAR_L_EAR)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/gladiator, WEAR_HEAD)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/chainshirt/hunter, WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/gladiator, WEAR_JACKET)
@@ -747,7 +758,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/ert, WEAR_L_STORE)
 	H.equip_to_slot_or_del(lantern, WEAR_R_STORE)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/gladiator/leader
 	name = "Gladiator Leader"
@@ -757,7 +768,7 @@
 	rank = "Spartacus"
 
 /datum/equipment_preset/other/gladiator/leader/load_gear(mob/living/carbon/human/H)
-	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/UPP, WEAR_L_EAR)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/upp, WEAR_L_EAR)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/gladiator, WEAR_HEAD)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/chainshirt/hunter, WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/gladiator, WEAR_JACKET)
@@ -773,11 +784,11 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/ert, WEAR_L_STORE)
 	H.equip_to_slot_or_del(lantern, WEAR_R_STORE)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/xeno_cultist
 	name = "Cultist - Xeno Cultist"
-	faction = FACTION_XENOMORPH
+	faction = FACTION_XENOMORPH_NORMAL
 	flags = EQUIPMENT_PRESET_EXTRA
 	idtype = /obj/item/card/id/lanyard
 	skills = /datum/skills/civilian/survivor
@@ -789,6 +800,7 @@
 
 /datum/equipment_preset/other/xeno_cultist/New()
 	. = ..()
+
 	access = get_all_civilian_accesses()
 
 /datum/equipment_preset/other/xeno_cultist/load_gear(mob/living/carbon/human/H)
@@ -808,17 +820,10 @@
 
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine/veteran(H), WEAR_HANDS)
 
-//*****************************************************************************************************/
-/datum/equipment_preset/other/xeno_cultist/load_status(mob/living/carbon/human/H, hivenumber = XENO_HIVE_NORMAL)
+//*****************************************************************************************************//
+/datum/equipment_preset/other/xeno_cultist/load_status(mob/living/carbon/human/H)
 	if(SSticker.mode && H.mind)
 		SSticker.mode.xenomorphs += H.mind
-
-	var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
-	if(hive)
-		H.faction = hive.internal_faction
-		if(hive.leading_cult_sl == H)
-			hive.leading_cult_sl = null
-	H.hivenumber = hivenumber
 
 	GLOB.xeno_cultists += H
 
@@ -855,14 +860,11 @@
 /datum/equipment_preset/other/xeno_cultist/leader/load_status(mob/living/carbon/human/H)
 	. = ..()
 
-	var/datum/hive_status/hive = GLOB.hive_datum[H.hivenumber]
-	hive.leading_cult_sl = H
-
 	var/list/types = subtypesof(/datum/action/human_action/activable/cult_leader)
 	for(var/type in types)
 		give_action(H, type)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/professor_dummy
 	name = "DUMMY"
@@ -894,7 +896,7 @@
 
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/medical, WEAR_BODY)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/other/tank
 	name = "Event Vehicle Crewman (CRMN)"
@@ -932,9 +934,9 @@
 /datum/equipment_preset/other/tank/load_status()
 	return
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 //adding one for VC training camp, cause I really need these
 /datum/equipment_preset/other/tank/trainee
 	name = "Vehicle Crewman Trainee (CRTR)"
@@ -970,4 +972,57 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/large(H), WEAR_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/tools/tank(H), WEAR_R_STORE)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
+
+/datum/equipment_preset/reporter
+	name = "Combat Reporter"
+	flags = EQUIPMENT_PRESET_START_OF_ROUND
+
+	access = list(
+		ACCESS_WY_CORPORATE, ACCESS_ILLEGAL_PIRATE, ACCESS_MARINE_DROPSHIP,
+		ACCESS_MARINE_RESEARCH, ACCESS_MARINE_MEDBAY, ACCESS_CIVILIAN_PUBLIC,
+		ACCESS_CIVILIAN_RESEARCH, ACCESS_CIVILIAN_ENGINEERING, ACCESS_CIVILIAN_LOGISTICS)
+	assignment = JOB_COMBAT_REPORTER_CORPORATE_LIAISON
+	rank = JOB_COMBAT_REPORTER_CORPORATE_LIAISON
+	paygrade = "WY-XB-X"
+	role_comm_title = "PRESS"
+	skills = /datum/skills/civilian
+	idtype = /obj/item/card/id/silver/cl
+
+	languages = ALL_HUMAN_LANGUAGES
+
+/datum/equipment_preset/reporter/load_gear(mob/living/carbon/human/H)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/fedora(H), WEAR_HEAD)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mcom(H), WEAR_L_EAR)
+	H.equip_to_slot_or_del(new /obj/item/clothing/under/liaison_suit/suspenders(H), WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/laceup(H), WEAR_FEET)
+	H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel(H), WEAR_BACK)
+	H.equip_to_slot_or_del(new /obj/item/device/camera(H), WEAR_L_HAND)
+	H.equip_to_slot_or_del(new /obj/item/device/camera_film(H), WEAR_IN_BACK)
+	H.equip_to_slot_or_del(new /obj/item/device/binoculars(H), WEAR_IN_BACK)
+	H.equip_to_slot_or_del(new /obj/item/device/taperecorder(H), WEAR_IN_BACK)
+	H.equip_to_slot_or_del(new /obj/item/device/megaphone(H), WEAR_IN_BACK)
+
+/datum/equipment_preset/reporter/uscm
+	faction = FACTION_USCM
+
+/datum/equipment_preset/reporter/cm
+	faction = FACTION_MARINE
+
+/datum/equipment_preset/reporter/upp
+	faction = FACTION_UPP
+
+/datum/job/civilian/liaison/combat_reporter
+	title = JOB_COMBAT_REPORTER_CORPORATE_LIAISON
+	supervisors = "the press"
+	gear_preset = /datum/equipment_preset/reporter/uscm
+
+/datum/job/civilian/liaison/combat_reporter/generate_entry_message(mob/living/carbon/human/H)
+	. = {"What a scoop! Time for a great report on this topic! This could be the story of the world!
+It'd surely get Mr. Parkerson to notice you in the office if you brought him a story like this!"}
+
+/datum/job/civilian/liaison/combat_reporter/cm
+	gear_preset = /datum/equipment_preset/reporter/cm
+
+/datum/job/civilian/liaison/combat_reporter/upp
+	gear_preset = /datum/equipment_preset/reporter/upp

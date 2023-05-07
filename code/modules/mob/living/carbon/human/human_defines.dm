@@ -118,10 +118,7 @@
 	var/assigned_fireteam = 0 //the fireteam this human is assigned to
 	var/squad_status = null //var for squad info window. Can be null, "M.I.A" and "K.I.A"
 
-	//moved from IDs to prevent some exploits and to make points more flexible
-	var/marine_points = MARINE_TOTAL_BUY_POINTS
-	var/marine_snowflake_points = MARINE_TOTAL_SNOWFLAKE_POINTS
-	var/marine_buy_flags = MARINE_CAN_BUY_ALL
+	var/datum/vendor_points/vendor_datum
 
 	var/spawned_corpse = FALSE // For the corpse spawner
 	//taken from blood.dm
@@ -136,8 +133,8 @@
 	var/last_chew = 0
 
 	//taken from human.dm
-	hud_possible = list(HEALTH_HUD,STATUS_HUD, STATUS_HUD_OOC, STATUS_HUD_XENO_INFECTION, STATUS_HUD_XENO_CULTIST, ID_HUD, WANTED_HUD, ORDER_HUD, XENO_HOSTILE_ACID, XENO_HOSTILE_SLOW, XENO_HOSTILE_TAG, XENO_HOSTILE_FREEZE, HUNTER_CLAN, HUNTER_HUD, FACTION_HUD)
-	var/embedded_flag //To check if we've need to roll for damage on movement while an item is imbedded in us.
+	hud_possible = list(HEALTH_HUD, STATUS_HUD, STATUS_HUD_OOC, STATUS_HUD_XENO_INFECTION, STATUS_HUD_XENO_CULTIST, ID_HUD, WANTED_HUD, ORDER_HUD, XENO_HOSTILE_ACID, XENO_HOSTILE_SLOW, XENO_HOSTILE_TAG, XENO_HOSTILE_FREEZE, HUNTER_CLAN, HUNTER_HUD, FACTION_HUD)
+	var/embedded_flag	  				//To check if we've need to roll for damage on movement while an item is imbedded in us.
 	var/allow_gun_usage = TRUE
 	var/melee_allowed = TRUE
 	var/throw_allowed = TRUE
@@ -152,7 +149,6 @@
 
 	//Taken from update_icons
 	var/list/overlays_standing[TOTAL_LAYERS]
-	var/hardcore = FALSE //If TRUE, removes the body upon unrevivable death (for WO)
 	appearance_flags = KEEP_TOGETHER | TILE_BOUND
 	throw_range = 4 // Humans can't be thrown that far
 
@@ -172,12 +168,12 @@
 
 	var/total_marine_playtime = 0
 
-	for(var/job in RoleAuthority.roles_by_name)
-		var/datum/job/J = RoleAuthority.roles_by_name[job]
-		if(istype(J, /datum/job/antag))
+	for(var/role_name in SSticker.role_authority.roles_by_name)
+		var/datum/job/job = GET_MAPPED_ROLE(role_name)
+		if(istype(job, /datum/job/antag))
 			continue
 
-		total_marine_playtime += get_job_playtime(src, job)
+		total_marine_playtime += get_job_playtime(src, role_name)
 
 	cached_human_playtime = total_marine_playtime
 

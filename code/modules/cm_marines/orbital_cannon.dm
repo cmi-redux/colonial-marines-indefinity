@@ -1,5 +1,3 @@
-
-
 //global vars
 var/obj/structure/orbital_cannon/almayer_orbital_cannon
 var/list/ob_type_fuel_requirements
@@ -35,9 +33,9 @@ var/list/ob_type_fuel_requirements
 
 	if(!ob_type_fuel_requirements)
 		ob_type_fuel_requirements = list()
-		var/list/L = list(4,5,6)
+		var/list/L = list(3,4,5,6)
 		var/amt
-		for(var/i=1 to 3)
+		for(var/i=1 to 4)
 			amt = pick_n_take(L)
 			ob_type_fuel_requirements += amt
 
@@ -69,7 +67,7 @@ var/list/ob_type_fuel_requirements
 	is_disabled = FALSE
 
 /obj/structure/orbital_cannon/proc/load_tray(mob/user)
-	set waitfor = 0
+	set waitfor = FALSE
 
 	if(!tray)
 		return
@@ -107,7 +105,7 @@ var/list/ob_type_fuel_requirements
 	update_icon()
 
 /obj/structure/orbital_cannon/proc/unload_tray(mob/user)
-	set waitfor = 0
+	set waitfor = FALSE
 
 	if(ob_cannon_busy)
 		return
@@ -138,7 +136,7 @@ var/list/ob_type_fuel_requirements
 	update_icon()
 
 /obj/structure/orbital_cannon/proc/chamber_payload(mob/user)
-	set waitfor = 0
+	set waitfor = FALSE
 
 	if(ob_cannon_busy)
 		return
@@ -183,7 +181,7 @@ var/list/ob_type_fuel_requirements
 /var/global/list/orbital_cannon_cancellation = new
 
 /obj/structure/orbital_cannon/proc/fire_ob_cannon(turf/T, mob/user)
-	set waitfor = 0
+	set waitfor = FALSE
 
 	if(!chambered_tray || !loaded_tray || !tray || !tray.warhead || ob_cannon_busy)
 		return
@@ -209,6 +207,8 @@ var/list/ob_type_fuel_requirements
 			inaccurate_fuel = abs(ob_type_fuel_requirements[2] - tray.fuel_amt)
 		if("cluster")
 			inaccurate_fuel = abs(ob_type_fuel_requirements[3] - tray.fuel_amt)
+		if("nuke")
+			inaccurate_fuel = abs(ob_type_fuel_requirements[4] - tray.fuel_amt)
 
 	var/turf/target = locate(T.x + inaccurate_fuel * round(rand(-3,3), 1), T.y + inaccurate_fuel * round(rand(-3,3), 1), T.z)
 	if(user)
@@ -306,7 +306,7 @@ var/list/ob_type_fuel_requirements
 
 		else
 			if(fuel_amt)
-				var/obj/structure/ob_ammo/ob_fuel/OF = new (src)
+				var/obj/structure/ob_ammo/ob_fuel/OF = new(src)
 				fuel_amt--
 				PC.grab_object(user, OF, "ob_fuel", 'sound/machines/hydraulics_2.ogg')
 			else if(warhead)
@@ -399,16 +399,16 @@ var/list/ob_type_fuel_requirements
 	name = "\improper HE orbital warhead"
 	warhead_kind = "explosive"
 	icon_state = "ob_warhead_1"
-	var/clear_power = 1200
-	var/clear_falloff = 400
-	var/standard_power = 600
-	var/standard_falloff = 30
+	var/clear_power = 2400
+	var/clear_falloff = 200
+	var/standard_power = 1400
+	var/standard_falloff = 50
 	var/clear_delay = 3
 	var/double_explosion_delay = 6
 
 /obj/structure/ob_ammo/warhead/explosive/warhead_impact(turf/target)
 	. = ..()
-	if (!.)
+	if(!.)
 		return
 
 	new /obj/effect/overlay/temp/blinking_laser (target)
@@ -434,18 +434,18 @@ var/list/ob_type_fuel_requirements
 	name = "\improper Incendiary orbital warhead"
 	warhead_kind = "incendiary"
 	icon_state = "ob_warhead_2"
-	var/clear_power = 1200
-	var/clear_falloff = 400
+	var/clear_power = 1600
+	var/clear_falloff = 100
 	var/clear_delay = 3
-	var/distance = 18
-	var/fire_level = 70
-	var/burn_level = 80
+	var/distance = 30
+	var/fire_level = 80
+	var/burn_level = 100
 	var/fire_color = null
 	var/fire_type = "white"
 
 /obj/structure/ob_ammo/warhead/incendiary/warhead_impact(turf/target)
 	. = ..()
-	if (!.)
+	if(!.)
 		return
 	if(fire_color)
 		fire_type = "dynamic"
@@ -455,40 +455,40 @@ var/list/ob_type_fuel_requirements
 	var/datum/cause_data/cause_data = create_cause_data(initial(name), source_mob)
 	cell_explosion(target, clear_power, clear_falloff, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data) //break shit around
 	sleep(clear_delay)
-	fire_spread(target, cause_data, distance, fire_level, burn_level, fire_color, fire_type, TURF_PROTECTION_OB)
+	fire_spread(target, cause_data, distance, fire_level, burn_level, fire_color, fire_type)
 
 /obj/structure/ob_ammo/warhead/cluster
 	name = "\improper Cluster orbital warhead"
 	warhead_kind = "cluster"
 	icon_state = "ob_warhead_3"
-	var/total_amount = 75 // how many times will the shell fire?
-	var/instant_amount = 3 // how many explosions per time it fires?
-	var/explosion_power = 350
-	var/explosion_falloff = 150
+	var/total_amount = 80
+	var/instant_amount = 4
+	var/explosion_power = 600
+	var/explosion_falloff = 200
 	var/delay_between_clusters = 0.4 SECONDS // how long between each firing?
 
 /obj/structure/ob_ammo/warhead/cluster/warhead_impact(turf/target)
 	. = ..()
-	if (!.)
+	if(!.)
 		return
 
 	start_cluster(target)
 
 /obj/structure/ob_ammo/warhead/cluster/proc/start_cluster(turf/target)
-	set waitfor = 0
+	set waitfor = FALSE
 
-	var/range_num = 12
+	var/range_num = 30
 	var/list/turf_list = list()
 
-	for(var/turf/T in range(range_num, target))
-		if(protected_by_pylon(TURF_PROTECTION_OB, T))
+	for(var/turf/turf in range(range_num, target))
+		if(!turf.can_air_strike(20, turf.get_real_roof()))
 			continue
-
-		turf_list += T
+		turf_list += turf
 
 	for(var/i = 1 to total_amount)
 		for(var/k = 1 to instant_amount)
 			var/turf/U = pick(turf_list)
+			U = U.air_hit(rand(1, 5), U.get_real_roof())
 			fire_in_a_hole(U)
 		sleep(delay_between_clusters)
 
@@ -506,6 +506,51 @@ var/list/ob_type_fuel_requirements
 	pixel_x = rand(-5,5)
 	pixel_y = rand(-5,5)
 
+
+/obj/structure/ob_ammo/warhead/nuke
+	name = "\improper Nucke orbital warhead"
+	warhead_kind = "nuke"
+	icon_state = "ob_warhead_4"
+	var/clear_power = 4000
+	var/clear_falloff = 200
+	var/standard_power = 2000
+	var/standard_falloff = 20
+	var/clear_delay = 3
+	var/double_explosion_delay = 6
+	var/fire_explosion_delay = 4
+	var/distance = 45
+	var/fire_level = 80
+	var/burn_level = 100
+	var/fire_type = "white"
+
+/obj/structure/ob_ammo/warhead/nuke/warhead_impact(turf/target)
+	. = ..()
+	if(!.)
+		return
+
+	new /obj/effect/overlay/temp/blinking_laser (target)
+	sleep(10)
+	var/datum/cause_data/cause_data = create_cause_data(initial(name), source_mob)
+	sleep(clear_delay)
+	fire_spread(target, cause_data, distance, fire_level, burn_level, null, fire_type)
+	if(!target.density)
+		cell_explosion(target, standard_power, standard_falloff, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
+		sleep(double_explosion_delay)
+		cell_explosion(target, standard_power, standard_falloff, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
+		sleep(fire_explosion_delay)
+		fire_spread(target, cause_data, distance, fire_level, burn_level, null, fire_type)
+		return
+
+	for(var/turf/T in range(3, target))
+		if(!T.density)
+			cell_explosion(target, standard_power, standard_falloff, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
+			sleep(double_explosion_delay)
+			cell_explosion(target, standard_power, standard_falloff, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
+			sleep(fire_explosion_delay)
+			fire_spread(target, cause_data, distance, fire_level, burn_level, null, fire_type)
+			return
+
+
 /obj/structure/machinery/computer/orbital_cannon_console
 	name = "\improper Orbital Cannon Console"
 	desc = "The console controlling the orbital cannon loading systems."
@@ -515,7 +560,7 @@ var/list/ob_type_fuel_requirements
 
 /obj/structure/machinery/computer/orbital_cannon_console/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = PASS_ALL
 
 /obj/structure/machinery/computer/orbital_cannon_console/ex_act()

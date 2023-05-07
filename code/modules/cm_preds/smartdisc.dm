@@ -48,7 +48,7 @@
 				continue
 			else if(isyautja(L))
 				continue
-			else if (L.stat == DEAD)
+			else if(L.stat == DEAD)
 				continue
 			else
 				T = L
@@ -148,7 +148,7 @@
 	break_stuff_probability = 0
 	destroy_surroundings = 0
 
-	faction = FACTION_YAUTJA
+	faction_to_get = FACTION_YAUTJA
 	var/lifetime = 8 //About 15 seconds.
 	var/time_idle = 0
 
@@ -203,7 +203,7 @@
 				continue
 			else if(isyautja(L))
 				continue
-			else if (L.stat == DEAD)
+			else if(L.stat == DEAD)
 				continue
 			else
 				if(!L.stat)

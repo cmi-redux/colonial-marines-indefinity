@@ -48,7 +48,7 @@ DEFINES in setup.dm, referenced here.
 	You can see examples of how this is modified in smartgun/sadar code, along with others. Return ..() on a success.
 
 	load_into_chamber() //This can get complicated, but if the gun doesn't take attachments that fire bullets from
-	the Fire() process, just set them to null and leave the if(current_mag && current_mag.current_rounds > 0) check.
+	the Fire() process, just set them to null and leave the if(current_mag && current_mag.ammo_position > 0) check.
 	The idea here is that if the gun can find a valid bullet to fire, subtract the ammo.
 	This must return positive to continue the fire cycle.
 
@@ -144,10 +144,9 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 	. = ..()
 
 	stop_aim()
-	if (user && user.client)
+	if(user && user.client)
 		user.update_gun_icons()
-
-	turn_off_light(user)
+		user.client.mouse_pointer_icon = initial(user.client.mouse_pointer_icon)
 
 	var/delay_left = (last_fired + fire_delay + additional_fire_group_delay) - world.time
 	if(fire_delay_group && delay_left > 0)
@@ -164,30 +163,10 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 		for(var/group in fire_delay_group)
 			LAZYSET(user.fire_delay_next_fire, group, world.time + delay_left)
 
-/obj/item/weapon/gun/proc/turn_off_light(mob/bearer)
-	if (!(flags_gun_features & GUN_FLASHLIGHT_ON))
-		return FALSE
-	for (var/slot in attachments)
-		var/obj/item/attachable/attachment = attachments[slot]
-		if (!attachment || !attachment.light_mod)
-			continue
-		bearer.SetLuminosity(0, FALSE, src)
-		SetLuminosity(attachment.light_mod)
-		return TRUE
-	return FALSE
-
 /obj/item/weapon/gun/pickup(mob/user)
 	..()
-
-	if (flags_gun_features & GUN_FLASHLIGHT_ON)
-		for (var/slot in attachments)
-			var/obj/item/attachable/attachment = attachments[slot]
-			if (!attachment || !attachment.light_mod)
-				continue
-			user.SetLuminosity(attachment.light_mod, FALSE, src)
-			SetLuminosity(0)
-			break
-
+	if(user && user.client)
+		user.client.mouse_pointer_icon = file("icons/effects/cursor.dmi")
 	unwield(user)
 
 /obj/item/weapon/gun/proc/wy_allowed_check(mob/living/carbon/human/user)
@@ -203,19 +182,15 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 				"Event",
 				"UPP Armsmaster", //this rank is for the Fun - Ivan preset, it allows him to use the PMC guns randomly generated from his backpack
 			) return TRUE
-		switch(user.faction)
+		switch(user.faction.faction_name)
 			if(
+				FACTION_WY,
 				FACTION_WY_DEATHSQUAD,
 				FACTION_PMC,
 				FACTION_MERCENARY,
 				FACTION_FREELANCER,
 			) return TRUE
-
-		for(var/faction in user.faction_group)
-			if(faction in FACTION_LIST_WY)
-				return TRUE
-
-		if(user.faction in FACTION_LIST_WY)
+		if(user.faction.faction_name in FACTION_LIST_WY)
 			return TRUE
 
 	to_chat(user, SPAN_WARNING("[src] flashes a warning sign indicating unauthorized use!"))
@@ -229,9 +204,9 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 	return TRUE
 
 /obj/item/weapon/gun/proc/retrieve_to_slot(mob/living/carbon/human/user, retrieval_slot)
-	if (!loc || !user)
+	if(!loc || !user)
 		return FALSE
-	if (!isturf(loc))
+	if(!isturf(loc))
 		return FALSE
 	if(!retrieval_check(user, retrieval_slot))
 		return FALSE
@@ -253,15 +228,15 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 	return TRUE
 
 /obj/item/weapon/gun/proc/handle_retrieval(mob/living/carbon/human/user, retrieval_slot)
-	if (!ishuman(user))
+	if(!ishuman(user))
 		return
-	if (!retrieval_check(user, retrieval_slot))
+	if(!retrieval_check(user, retrieval_slot))
 		return
 	addtimer(CALLBACK(src, PROC_REF(retrieve_to_slot), user, retrieval_slot), 0.3 SECONDS, TIMER_UNIQUE|TIMER_NO_HASH_WAIT)
 
 /obj/item/weapon/gun/attack_self(mob/user)
 	..()
-	if (target)
+	if(target)
 		lower_aim()
 		return
 
@@ -277,54 +252,119 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 //magnetic sling
 
 /obj/item/weapon/gun/proc/handle_sling(mob/living/carbon/human/user)
-	if (!ishuman(user))
+	if(!ishuman(user))
 		return
 
 	addtimer(CALLBACK(src, PROC_REF(sling_return), user), 3, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 /obj/item/weapon/gun/proc/sling_return(mob/living/carbon/human/user)
-	if (!loc || !user)
+	if(!loc || !user)
 		return
-	if (!isturf(loc))
+	if(!isturf(loc))
 		return
 
 	if(user.equip_to_slot_if_possible(src, WEAR_BACK))
 		to_chat(user, SPAN_WARNING("[src]'s magnetic sling automatically yanks it into your back."))
 
 //Clicking stuff onto the gun.
-//Attachables & Reloading
+//Attachables & Reloading & Repair
 /obj/item/weapon/gun/attackby(obj/item/attack_item, mob/user)
 	if(flags_gun_features & GUN_BURST_FIRING)
 		return
 
-	if(istype(attack_item, /obj/item/prop/helmetgarb/gunoil))
+	if(HAS_TRAIT(attack_item, TRAIT_TOOL_SCREWDRIVER))
+		if(req_fix)
+			user.visible_message("[user] начинает что-то делать с [src].", "Вы начинаете исправлять неполадку в [src].")
+			if(do_after(user, 30 * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_GENERIC))
+				req_fix = FALSE
+				user.visible_message("[user] исправил неполадку с [src].", "Вы исправили неполадку с [src].")
+			else
+				return
+
+	else if(istype(attack_item, /obj/item/prop/helmetgarb/gunoil))
+		var/obj/item/prop/helmetgarb/gunoil/GO = attack_item
 		var/oil_verb = pick("lubes", "oils", "cleans", "tends to", "gently strokes")
-		if(do_after(user, 30, INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY, user, INTERRUPT_MOVED, BUSY_ICON_GENERIC))
-			user.visible_message("[user] [oil_verb] [src]. It shines like new.", "You oil up and immaculately clean [src]. It shines like new.")
-			src.clean_blood()
+		if(active_attachable?.flags_attach_features & ATTACH_WEAPON && !active_attachable.oil)
+			if(do_after(user, 60 * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_GENERIC))
+				if(active_attachable?.flags_attach_features & ATTACH_WEAPON) //Attachment activated and is a weapon.
+					if(GO.remove_oil(gun_category, user))
+						user.visible_message("[user] [oil_verb] [active_attachable]. It shines like new.", "You oil up and immaculately clean [active_attachable]. It shines like new.")
+						active_attachable.clean_blood()
+						active_attachable.oil(oil_max/2,0.5)
+		else if(!oil)
+			if(do_after(user, 60 * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_GENERIC))
+				if(GO.remove_oil(gun_category, user))
+					user.visible_message("[user] [oil_verb] [src]. It shines like new.", "You oil up and immaculately clean [src]. It shines like new.")
+					clean_blood()
+					oil(oil_max/2,0.5)
+		else if(oil || (active_attachable && active_attachable.oil))
+			to_chat(user, SPAN_NOTICE("Недавно смазано."))
+			return
 		else
 			return
 
 
-	if(istype(attack_item,/obj/item/attachable))
-		if(check_inactive_hand(user)) attach_to_gun(user,attack_item)
+	if(istype(attack_item, /obj/item/attachable))
+		if(check_inactive_hand(user))
+			attach_to_gun(user, attack_item)
 
 	//the active attachment is reloadable
 	else if(active_attachable && active_attachable.flags_attach_features & ATTACH_RELOADABLE)
 		if(check_inactive_hand(user))
-			if(istype(attack_item,/obj/item/ammo_magazine))
+			if(istype(attack_item, /obj/item/ammo_magazine))
 				var/obj/item/ammo_magazine/attachment_magazine = attack_item
 				if(istype(src, attachment_magazine.gun_type))
 					to_chat(user, SPAN_NOTICE("You disable [active_attachable]."))
 					playsound(user, active_attachable.activation_sound, 15, 1)
 					active_attachable.activate_attachment(src, null, TRUE)
-					reload(user,attachment_magazine)
-					return
-			active_attachable.reload_attachment(attack_item, user)
+					reload(user, attachment_magazine)
+				else
+					active_attachable.reload_attachment(attachment_magazine, user)
+			else if(istype(attack_item, /obj/item/projectile))
+				var/obj/item/projectile/projectile = attack_item
+				var/obj/item/ammo_magazine/handful/new_handful = projectile.bullet_make_handful(user)
+				if(istype(src, new_handful.gun_type))
+					to_chat(user, SPAN_NOTICE("You disable [active_attachable]."))
+					playsound(user, active_attachable.activation_sound, 15, 1)
+					active_attachable.activate_attachment(src, null, TRUE)
+					reload(user, new_handful)
+				else
+					active_attachable.reload_attachment(new_handful, user)
+			else
+				active_attachable.reload_attachment(attack_item, user)
 
-	else if(istype(attack_item,/obj/item/ammo_magazine))
-		if(check_inactive_hand(user)) reload(user,attack_item)
+	else if(istype(attack_item, /obj/item/ammo_magazine))
+		if(check_inactive_hand(user))
+			reload(user, attack_item)
 
+	else if(istype(attack_item, /obj/item/projectile) && flags_gun_features & GUN_INTERNAL_MAG)
+		if(check_inactive_hand(user))
+			var/obj/item/projectile/projectile = attack_item
+			var/obj/item/ammo_magazine/handful/new_handful = projectile.bullet_make_handful(user)
+			if(!reload(user, new_handful))
+				user.put_in_hands(attack_item)
+				qdel(new_handful)
+
+	else if(istype(attack_item, /obj/item/tool/weldingtool))
+		var/obj/item/tool/weldingtool/WT = attack_item
+		if(durability >= max_durability && !(active_attachable?.flags_attach_features & ATTACH_WEAPON && active_attachable.durability < active_attachable.max_durability))
+			to_chat(user, SPAN_NOTICE("Оружие в идеальном состояние!"))
+			return
+		if(do_after(user, 60 * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD) && !broken)
+			if(WT.remove_fuel(3, user))
+				to_chat(user, SPAN_NOTICE("Вы починили повреждения [src]."))
+				durability = min(max_durability / 8 + durability, max_durability)
+				failure_probability = max(0.5, failure_probability - 0.5)
+				if(active_attachable?.flags_attach_features & ATTACH_WEAPON && active_attachable.durability < active_attachable.max_durability)
+					active_attachable.durability = min(active_attachable.max_durability / 8 + active_attachable.durability, active_attachable.max_durability)
+					active_attachable.failure_probability = max(0.5, active_attachable.failure_probability - 0.5)
+					active_attachable.durability_percentage()
+					active_attachable.update_icon()
+				durability_percentage()
+				update_icon()
+			return
+		to_chat(user, SPAN_NOTICE("[src] невозможно починить, для этого требуется специальное устройство."))
+		return
 
 //tactical reloads
 /obj/item/weapon/gun/MouseDrop_T(atom/dropping, mob/living/carbon/human/user)
@@ -372,6 +412,12 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 /obj/item/weapon/proc/unique_action(mob/user) //moved this up a path to make macroing for other weapons easier -spookydonut
 	return
 
+/obj/item/weapon/gun/proc/get_ammo_type()
+	return null //usually a list
+
+/obj/item/weapon/gun/proc/get_ammo_count()
+	return 0
+
 /obj/item/weapon/gun/proc/check_inactive_hand(mob/user)
 	if(user)
 		var/obj/item/weapon/gun/in_hand = user.get_inactive_hand()
@@ -407,17 +453,8 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 		var/obj/item/attachable/attached_attachment = attachments[attachment.slot]
 		if(attached_attachment && !(attached_attachment.flags_attach_features & ATTACH_REMOVABLE))
 			to_chat(user, SPAN_WARNING("The attachment on [src]'s [attachment.slot] cannot be removed!"))
-			return 0
-	//to prevent headaches with lighting stuff
-	if(attachment.light_mod)
-		for(var/slot in attachments)
-			var/obj/item/attachable/attached_attachment = attachments[slot]
-			if(!attached_attachment)
-				continue
-			if(attached_attachment.light_mod)
-				to_chat(user, SPAN_WARNING("You already have a light source attachment on [src]."))
-				return 0
-	return 1
+			return FALSE
+	return TRUE
 
 /obj/item/weapon/gun/proc/attach_to_gun(mob/user, obj/item/attachable/attachment)
 	if(!can_attach_to_gun(user, attachment))
@@ -450,7 +487,8 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 	if(attachable_offset && attachments[attachable])
 		update_overlays(attachments[attachable], attachable)
 
-/obj/item/weapon/gun/proc/update_overlays(obj/item/attachable/attachment, slot)
+/obj/item/weapon/gun/update_overlays(obj/item/attachable/attachment, slot)
+	. = ..()
 	var/image/gun_image = attachable_overlays[slot]
 	overlays -= gun_image
 	attachable_overlays[slot] = null
@@ -462,8 +500,12 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 		gun_image.pixel_x = attachable_offset["[slot]_x"] - attachment.pixel_shift_x + x_offset_by_attachment_type(attachment.type)
 		gun_image.pixel_y = attachable_offset["[slot]_y"] - attachment.pixel_shift_y + y_offset_by_attachment_type(attachment.type)
 		attachable_overlays[slot] = gun_image
+		if(attachment_recoloring)
+			attachment.overlays += attachment_recoloring
+			attachment.blend_mode = BLEND_DEFAULT
 		overlays += gun_image
-	else attachable_overlays[slot] = null
+	else
+		attachable_overlays[slot] = null
 
 /obj/item/weapon/gun/proc/x_offset_by_attachment_type(attachment_type)
 	return 0
@@ -502,7 +544,7 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 /obj/item/weapon/gun/proc/get_active_firearm(mob/user, restrictive = TRUE)
 	if(!ishuman(usr))
 		return
-	if(!user.canmove || user.stat || user.is_mob_restrained() || !user.loc || !isturf(usr.loc))
+	if(!user.can_action || user.is_mob_restrained() || !user.loc || !isturf(usr.loc))
 		to_chat(user, SPAN_WARNING("Not right now."))
 		return
 

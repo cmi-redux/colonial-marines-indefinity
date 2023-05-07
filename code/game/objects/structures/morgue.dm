@@ -214,7 +214,7 @@
 
 
 /obj/structure/morgue/crematorium/proc/cremate(mob/user)
-	set waitfor = 0
+	set waitfor = FALSE
 	if(cremating)
 		return
 
@@ -238,7 +238,7 @@
 
 			user.attack_log +="\[[time_stamp()]\] Cremated <b>[key_name(M)]</b>"
 			msg_admin_attack("\[[time_stamp()]\] <b>[key_name(user)]</b> cremated <b>[key_name(M)]</b> in [get_area(src)] ([src.loc.x],[src.loc.y],[src.loc.z]).", src.loc.x, src.loc.y, src.loc.z)
-			M.death(create_cause_data("cremation", user), TRUE)
+			M.death(create_cause_data("кремации", user), TRUE)
 			M.ghostize()
 			qdel(M)
 

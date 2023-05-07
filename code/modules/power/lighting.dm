@@ -25,7 +25,7 @@
 
 /obj/structure/machinery/light_construct/Initialize()
 	. = ..()
-	if (fixture_type == "bulb")
+	if(fixture_type == "bulb")
 		icon_state = "bulb-construct-stage1"
 
 /obj/structure/machinery/light_construct/Destroy()
@@ -50,28 +50,28 @@
 
 /obj/structure/machinery/light_construct/attackby(obj/item/W as obj, mob/user as mob)
 	src.add_fingerprint(user)
-	if (HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
-		if (src.stage == 1)
+	if(HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
+		if(src.stage == 1)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
 			to_chat(usr, "You begin deconstructing [src].")
-			if (!do_after(usr, 30, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
+			if(!do_after(usr, 30, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 				return
 			user.visible_message("[user.name] deconstructs [src].", \
 				"You deconstruct [src].", "You hear a noise.")
 			playsound(src.loc, 'sound/items/Deconstruct.ogg', 25, 1)
 			deconstruct()
-		if (src.stage == 2)
+		if(src.stage == 2)
 			to_chat(usr, "You have to remove the wires first.")
 			return
-		if (src.stage == 3)
+		if(src.stage == 3)
 			to_chat(usr, "You have to unscrew the case first.")
 			return
 
 	if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS))
-		if (src.stage != 2) return
+		if(src.stage != 2) return
 		src.stage = 1
 		switch(fixture_type)
-			if ("tube")
+			if("tube")
 				src.icon_state = "tube-construct-stage1"
 			if("bulb")
 				src.icon_state = "bulb-construct-stage1"
@@ -82,11 +82,11 @@
 		return
 
 	if(istype(W, /obj/item/stack/cable_coil))
-		if (src.stage != 1) return
+		if(src.stage != 1) return
 		var/obj/item/stack/cable_coil/coil = W
-		if (coil.use(1))
+		if(coil.use(1))
 			switch(fixture_type)
-				if ("tube")
+				if("tube")
 					src.icon_state = "tube-construct-stage2"
 				if("bulb")
 					src.icon_state = "bulb-construct-stage2"
@@ -96,9 +96,9 @@
 		return
 
 	if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
-		if (src.stage == 2)
+		if(src.stage == 2)
 			switch(fixture_type)
-				if ("tube")
+				if("tube")
 					src.icon_state = "tube-empty"
 				if("bulb")
 					src.icon_state = "bulb-empty"
@@ -111,7 +111,7 @@
 
 				if("tube")
 					newlight = new /obj/structure/machinery/light/built(src.loc)
-				if ("bulb")
+				if("bulb")
 					newlight = new /obj/structure/machinery/light/small/built(src.loc)
 
 			newlight.setDir(dir)
@@ -139,22 +139,22 @@
 	desc = "A bright fluorescent tube light. Looking at it for too long makes your eyes go watery."
 	anchored = TRUE
 	layer = FLY_LAYER
+	plane = GAME_PLANE
 	use_power = USE_POWER_IDLE
 	idle_power_usage = 2
 	active_power_usage = 20
 	power_channel = POWER_CHANNEL_LIGHT //Lights are calc'd via area so they dont need to be in the machine list
-	var/on = 0 // 1 if on, 0 if off
-	var/on_gs = 0
-	var/brightness = 8 // luminosity when on, also used in power calculation
-	var/status = LIGHT_OK // LIGHT_OK, _EMPTY, _BURNED or _BROKEN
-	var/flickering = 0
-	var/light_type = /obj/item/light_bulb/tube // the type of light item
+	var/brightness = 6			// power usage and light range when on
+	var/bulb_power = 0.5			// basically the light_power of the emitted light source
+	var/bulb_colour = COLOR_WHITE
+	var/status = LIGHT_OK		// LIGHT_OK, _EMPTY, _BURNED or _BROKEN
+	var/flickering = FALSE
+	var/light_type = /obj/item/light_bulb/tube		// the type of light item
 	var/fitting = "tube"
 	var/switchcount = 0 // count of number of times switched on/off
 								// this is used to calc the probability the light burns out
-
-	var/rigged = 0 // true if rigged to explode
-
+	var/rigged = 0				// true if rigged to explode
+	var/req_light_switch = TRUE
 	appearance_flags = TILE_BOUND
 
 // containment lights
@@ -182,9 +182,12 @@
 	icon_state = "ptube1"
 	base_state = "ptube"
 	brightness = 6
+
 /obj/structure/machinery/light/double/blue
 	icon_state = "bptube1"
 	base_state = "bptube"
+	bulb_colour = COLOR_SOFT_BLUE
+
 /obj/structure/machinery/light/alt
 	icon_state = "ltube1"
 	base_state = "ltube"
@@ -230,6 +233,8 @@
 			switch(dir)
 				if(NORTH)
 					pixel_y = 23
+				if(SOUTH)
+					plane = GAME_PLANE_UPPER
 				if(EAST)
 					pixel_x = 10
 				if(WEST)
@@ -240,71 +245,88 @@
 					pixel_y = 10
 				if(SOUTH)
 					pixel_y = -10
+					plane = GAME_PLANE_UPPER
 				if(EAST)
 					pixel_x = 10
 				if(WEST)
 					pixel_x = -10
 
 /obj/structure/machinery/light/Destroy()
-	var/area/A = get_area(src)
-	if(A)
-		on = 0
-// A.update_lights()
-	SetLuminosity(0)
+	set_light(FALSE)
 	. = ..()
 
 /obj/structure/machinery/light/proc/is_broken()
 	return status == LIGHT_BROKEN
 
 /obj/structure/machinery/light/update_icon()
-
-	switch(status) // set icon_states
+	switch(status)		// set icon_states
 		if(LIGHT_OK)
-			icon_state = "[base_state][on]"
+			icon_state = "[base_state][light_on]"
 		if(LIGHT_EMPTY)
 			icon_state = "[base_state]-empty"
-			on = 0
 		if(LIGHT_BURNED)
 			icon_state = "[base_state]-burned"
-			on = 0
 		if(LIGHT_BROKEN)
 			icon_state = "[base_state]-broken"
-			on = 0
 	return
 
 // update the icon_state and luminosity of the light depending on its state
-/obj/structure/machinery/light/proc/update(trigger = 1)
-	SSlighting.lights_current.Add(light)
+/obj/structure/machinery/light/proc/update(trigger = TRUE)
 	update_icon()
-	if(on)
-		if(luminosity != brightness)
+	if(light_on)
+		var/brightness_set = brightness
+		var/power_set = bulb_power
+		var/color_set = bulb_colour
+		if(color)
+			color_set = color
+		var/matching = light && brightness_set == light.light_range && power_set == light.light_power && color_set == light.light_color
+		if(!matching)
 			switchcount++
 			if(rigged)
 				if(status == LIGHT_OK && trigger)
-
 					message_admins("LOG: Rigged light explosion, last touched by [fingerprintslast]")
-
 					explode()
-			else if( prob( min(60, switchcount*switchcount*0.01) ) )
+
+			else if(prob(min(60, (switchcount ^ 2) * 0.01)))
 				if(status == LIGHT_OK && trigger)
 					status = LIGHT_BURNED
 					icon_state = "[base_state]-burned"
-					on = 0
-					SetLuminosity(0)
+					update()
 			else
+				flik()
 				update_use_power(USE_POWER_ACTIVE)
-				SetLuminosity(brightness)
+				set_light(l_range = brightness_set, l_power = power_set, l_color = color_set)
 	else
 		update_use_power(USE_POWER_NONE)
-		SetLuminosity(0)
 
-	if(on != on_gs)
-		on_gs = on
+/obj/structure/machinery/light/proc/flik(flik_chance = rand(0, 99))
+	if((flik_chance < 10 && switchcount > 4) || !flik_chance)
+		flicker()
+
+/obj/structure/machinery/light/proc/flicker(amount = rand(1, 10))
+	if(flickering)
+		return
+	flickering = TRUE
+	spawn(0)
+		if(light_on && status == LIGHT_OK)
+			for(var/i = 0; i < amount; i++)
+				if(status != LIGHT_OK)
+					break
+				seton(TRUE)
+				update()
+				var/sound = pick('sound/effects/light/blinks1.ogg', 'sound/effects/light/blinks2.ogg', 'sound/effects/light/blinks3.ogg')
+				playsound(src, sound,12,TRUE, 8,VOLUME_SFX,0,falloff = 5)
+				switchcount--
+				sleep(rand(5, 20))
+			seton(FALSE)
+			update()
+		flickering = FALSE
+
 
 // attempt to set the light's on/off status
 // will not switch on if broken/burned/empty
 /obj/structure/machinery/light/proc/seton(s)
-	on = (s && status == LIGHT_OK)
+	set_light_on(((s && status == LIGHT_OK) || !req_light_switch))
 	update()
 
 // examine verb
@@ -312,13 +334,13 @@
 	. = ..()
 	switch(status)
 		if(LIGHT_OK)
-			to_chat(user, "It is turned [on? "on" : "off"].")
+			. += "It is turned [light_on? "on" : "off"]."
 		if(LIGHT_EMPTY)
-			to_chat(user, "The [fitting] has been removed.")
+			. += "The [fitting] has been removed."
 		if(LIGHT_BURNED)
-			to_chat(user, "The [fitting] is burnt out.")
+			. += "The [fitting] is burnt out."
 		if(LIGHT_BROKEN)
-			to_chat(user, "The [fitting] has been smashed.")
+			. += "The [fitting] has been smashed."
 
 
 
@@ -332,6 +354,7 @@
 		if(isliving(user))
 			var/mob/living/U = user
 			LR.ReplaceLight(src, U)
+			update()
 			return
 
 	// attempt to insert light
@@ -348,13 +371,12 @@
 				switchcount = L.switchcount
 				rigged = L.rigged
 				brightness = L.brightness
-				on = has_power()
-				update()
+				seton(has_power())
 
 				if(user.temp_drop_inv_item(L))
 					qdel(L)
 
-					if(on && rigged)
+					if(light_on && rigged)
 
 						message_admins("LOG: Rigged light explosion, last touched by [fingerprintslast]")
 
@@ -376,8 +398,8 @@
 				if(M == user)
 					continue
 				M.show_message("[user.name] smashed the light!", SHOW_MESSAGE_VISIBLE, "You hear a tinkle of breaking glass", SHOW_MESSAGE_AUDIBLE)
-			if(on && (W.flags_atom & CONDUCT))
-				if (prob(12))
+			if(light_on && (W.flags_atom & CONDUCT))
+				if(prob(12))
 					electrocute_mob(user, get_area(src), src, 0.3)
 			broken()
 
@@ -410,7 +432,7 @@
 			var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
 			s.set_up(3, 1, src)
 			s.start()
-			if (prob(75))
+			if(prob(75))
 				electrocute_mob(user, get_area(src), src, rand(0.7,1.0))
 
 
@@ -418,23 +440,9 @@
 // true if area has power and lightswitch is on
 /obj/structure/machinery/light/proc/has_power()
 	var/area/A = src.loc.loc
-	if(!src.needs_power)
-		return A.master.lightswitch
+	if(!needs_power)
+		return A.master.lightswitch || !req_light_switch
 	return A.master.lightswitch && A.master.power_light
-
-/obj/structure/machinery/light/proc/flicker(amount = rand(10, 20))
-	if(flickering) return
-	flickering = 1
-	spawn(0)
-		if(on && status == LIGHT_OK)
-			for(var/i = 0; i < amount; i++)
-				if(status != LIGHT_OK) break
-				on = !on
-				update(0)
-				sleep(rand(5, 15))
-			on = (status == LIGHT_OK)
-			update(0)
-		flickering = 0
 
 // ai attack - make lights flicker, because why not
 
@@ -451,7 +459,7 @@
 	if(status == LIGHT_EMPTY||status == LIGHT_BROKEN)
 		to_chat(M, SPAN_WARNING("That object is useless to you."))
 		return
-	else if (status == LIGHT_OK||status == LIGHT_BURNED)
+	else if(status == LIGHT_OK||status == LIGHT_BURNED)
 		for(var/mob/O in viewers(src))
 			O.show_message(SPAN_DANGER("[M.name] smashed the light!"), SHOW_MESSAGE_VISIBLE, "You hear a tinkle of breaking glass", SHOW_MESSAGE_AUDIBLE)
 		broken()
@@ -476,7 +484,7 @@
 			return
 
 	// make it burn hands if not wearing fire-insulated gloves
-	if(on)
+	if(light_on)
 		var/prot = 0
 		var/mob/living/carbon/human/H = user
 
@@ -514,7 +522,7 @@
 	else
 		L.forceMove(loc) //if not, put it on the ground
 	status = LIGHT_EMPTY
-	update()
+	seton(FALSE)
 
 // break the light and make sparks if was on
 
@@ -530,15 +538,14 @@
 // s.set_up(3, 1, src)
 // s.start()
 	status = LIGHT_BROKEN
-	update()
+	seton()
 
 /obj/structure/machinery/light/proc/fix()
 	if(status == LIGHT_OK)
 		return
 	status = LIGHT_OK
 	brightness = initial(brightness)
-	on = 1
-	update()
+	seton(TRUE)
 
 // explosion effect
 // destroy the whole light fixture or just shatter it
@@ -546,10 +553,10 @@
 /obj/structure/machinery/light/ex_act(severity)
 	switch(severity)
 		if(0 to EXPLOSION_THRESHOLD_LOW)
-			if (prob(50))
+			if(prob(50))
 				broken()
 		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
-			if (prob(75))
+			if(prob(75))
 				broken()
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
 			deconstruct(FALSE)
@@ -734,6 +741,8 @@
 	unslashable = TRUE
 	unacidable = TRUE
 
+	light_color = COLOR_SOFT_RED
+
 //Don't allow blowing those up, so Marine nades don't fuck them
 /obj/structure/machinery/landinglight/ex_act(severity)
 	return
@@ -744,7 +753,7 @@
 
 /obj/structure/machinery/landinglight/proc/turn_off()
 	icon_state = initial(icon_state)
-	SetLuminosity(0)
+	set_light_on(FALSE)
 
 /obj/structure/machinery/landinglight/ds1
 	id = "USS Almayer Dropship 1" // ID for landing zone
@@ -754,42 +763,42 @@
 
 /obj/structure/machinery/landinglight/proc/turn_on()
 	icon_state = initial(icon_state) + "0"
-	SetLuminosity(2)
+	set_light(2, 0.2, light_color)
 
 /obj/structure/machinery/landinglight/ds1/delayone/turn_on()
 	icon_state = initial(icon_state) + "1"
-	SetLuminosity(2)
+	set_light(2, 0.2, light_color)
 
 /obj/structure/machinery/landinglight/ds1/delaytwo/turn_on()
 	icon_state = initial(icon_state) + "2"
-	SetLuminosity(2)
+	set_light(2, 0.2, light_color)
 
 /obj/structure/machinery/landinglight/ds1/delaythree/turn_on()
 	icon_state = initial(icon_state) + "3"
-	SetLuminosity(2)
+	set_light(2, 0.2, light_color)
 
 /obj/structure/machinery/landinglight/ds2/delayone/turn_on()
 	icon_state = initial(icon_state) + "1"
-	SetLuminosity(2)
+	set_light(2, 0.2, light_color)
 
 /obj/structure/machinery/landinglight/ds2/delaytwo/turn_on()
 	icon_state = initial(icon_state) + "2"
-	SetLuminosity(2)
+	set_light(2, 0.2, light_color)
 
 /obj/structure/machinery/landinglight/ds2/delaythree/turn_on()
 	icon_state = initial(icon_state) + "3"
-	SetLuminosity(2)
+	set_light(2, 0.2, light_color)
 
 /obj/structure/machinery/landinglight/ds1/spoke
 	icon_state = "lz_spoke_light"
 
 /obj/structure/machinery/landinglight/ds1/spoke/turn_on()
 	icon_state = initial(icon_state) + "1"
-	SetLuminosity(3)
+	set_light(3, 0.2, light_color)
 
 /obj/structure/machinery/landinglight/ds2/spoke
 	icon_state = "lz_spoke_light"
 
 /obj/structure/machinery/landinglight/ds2/spoke/turn_on()
 	icon_state = initial(icon_state) + "1"
-	SetLuminosity(3)
+	set_light(3, 0.2, light_color)

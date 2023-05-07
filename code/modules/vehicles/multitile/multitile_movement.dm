@@ -79,7 +79,6 @@
 		move_next_sound_play = world.time + 10
 
 	last_move_dir = direction
-
 	return TRUE
 
 // Rotates the vehicle by deg degrees if possible
@@ -107,7 +106,6 @@
 		move_next_sound_play = world.time + 10
 
 	update_icon()
-
 	return TRUE
 
 // Increases/decreases the vehicle's momentum according to whether or not the user is steppin' on the gas or not
@@ -260,7 +258,7 @@
 	for (var/x in 0 to fling_distance-1)
 		// NOTE: We fling east/west because all interiors are front-facing east
 		target = get_step(target, move_momentum > 0 ? EAST : WEST)
-		if (!target)
+		if(!target)
 			break
 
 	var/list/bounds = interior.get_bound_turfs()

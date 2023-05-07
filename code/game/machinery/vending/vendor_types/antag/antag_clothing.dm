@@ -20,7 +20,7 @@
 		for(var/i in presets)
 			var/datum/equipment_preset/eq = new i
 			var/list/equipment = eq.get_antag_clothing_equipment()
-			if(LAZYLEN(equipment))
+			if(length(equipment))
 				all_equipment += equipment
 			qdel(eq)
 		return all_equipment

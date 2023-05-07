@@ -11,9 +11,22 @@
 		/obj/item/device/radio/intercom,
 		/obj/item/device/sentry_computer
 	)
+	var/objective_spawn = TRUE
 
 /obj/structure/surface/Initialize()
 	. = ..()
+	//make sure to load landmarks for defcons
+	var/turf/T = get_turf(src)
+	if(objective_spawn && is_ground_level(T.z))
+		var/chance = rand(1,100)
+		if(chance < CLUE_CLOSE)
+			new /obj/effect/landmark/objective_landmark/close(loc)
+		else if(chance < CLUE_MEDIUM)
+			new /obj/effect/landmark/objective_landmark/medium(loc)
+		else if(chance < CLUE_FAR)
+			new /obj/effect/landmark/objective_landmark/far(loc)
+		else if(chance < CLUE_SCIENCE)
+			new /obj/effect/landmark/objective_landmark/science(loc)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/surface/LateInitialize()
@@ -53,7 +66,7 @@
 /obj/structure/surface/proc/attach_item(obj/item/O, update = TRUE)
 	if(!O)
 		return
-	if(O.luminosity) //it can't make light as an overlay
+	if(O.light_on) //it can't make light as an overlay
 		return
 	O.forceMove(src)
 	RegisterSignal(O, COMSIG_ATOM_DECORATED, PROC_REF(decorate_update))
@@ -78,7 +91,7 @@
 		O.forceMove(loc)
 
 /obj/structure/surface/proc/get_item(list/click_data)
-	var/i = LAZYLEN(contents)
+	var/i = length(contents)
 	if(!click_data)
 		return
 	if(i < 1)
@@ -141,7 +154,7 @@
 	if(!O || click_data["ctrl"])//holding the ctrl key will force it to place the object
 		// Placing stuff on tables
 		if(user.drop_inv_item_to_loc(W, loc))
-			auto_align(W, click_data)
+			auto_align_surface(W, click_data)
 			user.next_move = world.time + 2
 			return TRUE
 	else if(!O.attackby(W, user))
@@ -150,7 +163,7 @@
 		if(istype(O, type))
 			draw_item_overlays()
 
-/obj/structure/surface/proc/auto_align(obj/item/W, click_data)
+/obj/structure/surface/proc/auto_align_surface(obj/item/W, click_data)
 	if(!W.center_of_mass) // Clothing, material stacks, generally items with large sprites where exact placement would be unhandy.
 		W.pixel_x = rand(-W.randpixel, W.randpixel)
 		W.pixel_y = rand(-W.randpixel, W.randpixel)

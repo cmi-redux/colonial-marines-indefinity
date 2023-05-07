@@ -1,4 +1,3 @@
-
 /datum/action
 	var/name = "Generic Action"
 	var/icon_file = 'icons/mob/hud/actions.dmi'
@@ -69,14 +68,14 @@
  *
  * Can pass additional initialization args
  */
-/proc/give_action(mob/L, action_path, ...)
-	for(var/a in L.actions)
-		var/datum/action/A = a
-		if(A.unique && A.type == action_path)
-			if(A.hidden)
-				A.hidden = FALSE
-				L.update_action_buttons()
-			return A
+/proc/give_action(mob/mob, action_path, ...)
+	for(var/X in mob.actions)
+		var/datum/action/action = X
+		if(action.unique && action.type == action_path)
+			if(action.hidden)
+				action.hidden = FALSE
+				mob.update_action_buttons()
+			return action
 
 	var/datum/action/action
 	/// Cannot use arglist for both cases because of
@@ -85,20 +84,20 @@
 		action = new action_path(arglist(args.Copy(3)))
 	else
 		action = new action_path()
-	action.give_to(L)
+	action.give_to(mob)
 	return action
 
-/datum/action/proc/give_to(mob/L)
+/datum/action/proc/give_to(mob/target_mob)
 	SHOULD_CALL_PARENT(TRUE)
 	if(owner)
-		if(owner == L)
+		if(owner == target_mob)
 			return
 		remove_from(owner)
-	SEND_SIGNAL(src, COMSIG_ACTION_GIVEN, L)
-	L.handle_add_action(src)
+	SEND_SIGNAL(src, COMSIG_ACTION_GIVEN, target_mob)
+	target_mob.handle_add_action(src)
 	if(listen_signal)
-		RegisterSignal(L, listen_signal, PROC_REF(keybind_activation))
-	owner = L
+		RegisterSignal(target_mob, listen_signal, PROC_REF(keybind_activation))
+	owner = target_mob
 
 /mob/proc/handle_add_action(datum/action/action)
 	LAZYADD(actions, action)
@@ -106,17 +105,17 @@
 		client.screen += action.button
 	update_action_buttons()
 
-/proc/remove_action(mob/L, action_path)
-	for(var/a in L.actions)
-		var/datum/action/A = a
-		if(A.type == action_path)
-			A.remove_from(L)
-			return A
+/proc/remove_action(mob/mob, action_path)
+	for(var/X in mob.actions)
+		var/datum/action/action = X
+		if(action.type == action_path)
+			action.remove_from(mob)
+			return action
 
-/datum/action/proc/remove_from(mob/L)
+/datum/action/proc/remove_from(mob/mob)
 	SHOULD_CALL_PARENT(TRUE)
-	SEND_SIGNAL(src, COMSIG_ACTION_REMOVED, L)
-	L.handle_remove_action(src)
+	SEND_SIGNAL(src, COMSIG_ACTION_REMOVED, mob)
+	mob.handle_remove_action(src)
 	owner = null
 
 /mob/proc/handle_remove_action(datum/action/action)
@@ -130,33 +129,33 @@
 		action.action_activate()
 	return ..()
 
-/proc/hide_action(mob/L, action_path)
-	for(var/a in L.actions)
-		var/datum/action/A = a
-		if(A.type == action_path)
-			A.hidden = TRUE
-			L.update_action_buttons()
-			return A
+/proc/hide_action(mob/mob, action_path)
+	for(var/X in mob.actions)
+		var/datum/action/action = X
+		if(action.type == action_path)
+			action.hidden = TRUE
+			mob.update_action_buttons()
+			return action
 
-/datum/action/proc/hide_from(mob/L)
+/datum/action/proc/hide_from(mob/mob)
 	SHOULD_CALL_PARENT(TRUE)
-	SEND_SIGNAL(src, COMSIG_ACTION_HIDDEN, L)
+	SEND_SIGNAL(src, COMSIG_ACTION_HIDDEN, mob)
 	hidden = TRUE
-	L.update_action_buttons()
+	mob.update_action_buttons()
 
-/proc/unhide_action(mob/L, action_path)
-	for(var/a in L.actions)
-		var/datum/action/A = a
-		if(A.type == action_path)
-			A.hidden = FALSE
-			L.update_action_buttons()
-			return A
+/proc/unhide_action(mob/mob, action_path)
+	for(var/X in mob.actions)
+		var/datum/action/action = X
+		if(action.type == action_path)
+			action.hidden = FALSE
+			mob.update_action_buttons()
+			return action
 
-/datum/action/proc/unhide_from(mob/L)
+/datum/action/proc/unhide_from(mob/mob)
 	SHOULD_CALL_PARENT(TRUE)
-	SEND_SIGNAL(src, COMSIG_ACTION_UNHIDDEN, L)
+	SEND_SIGNAL(src, COMSIG_ACTION_UNHIDDEN, mob)
 	hidden = FALSE
-	L.update_action_buttons()
+	mob.update_action_buttons()
 
 
 /datum/action/item_action
@@ -187,7 +186,7 @@
 		I.ui_action_click(owner, holder_item)
 
 /datum/action/item_action/can_use_action()
-	if(ishuman(owner) && !owner.is_mob_incapacitated() && !owner.lying)
+	if(ishuman(owner) && !owner.is_mob_incapacitated() && owner.can_action)
 		return TRUE
 
 /datum/action/item_action/update_button_icon()
@@ -216,20 +215,20 @@
 	var/button_number = 0
 
 	if(hud_used.action_buttons_hidden)
-		for(var/datum/action/A in actions)
-			A.button.screen_loc = null
+		for(var/datum/action/action in actions)
+			action.button.screen_loc = null
 			if(reload_screen)
-				client.screen += A.button
+				client.screen += action.button
 	else
-		for(var/datum/action/A in actions)
-			var/atom/movable/screen/action_button/B = A.button
+		for(var/datum/action/action in actions)
+			var/atom/movable/screen/action_button/button = action.button
 			if(reload_screen)
-				client.screen += B
-			if(A.hidden)
-				B.screen_loc = null
+				client.screen += button
+			if(action.hidden)
+				button.screen_loc = null
 				continue
 			button_number++
-			B.screen_loc = B.get_button_screen_loc(button_number)
+			button.screen_loc = button.get_button_screen_loc(button_number)
 
 		if(!button_number)
 			hud_used.hide_actions_toggle.screen_loc = null
@@ -241,4 +240,3 @@
 
 	if(reload_screen)
 		client.screen += hud_used.hide_actions_toggle
-

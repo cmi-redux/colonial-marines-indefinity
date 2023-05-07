@@ -26,6 +26,7 @@
 	icon_state = "ghost"
 	density = FALSE
 	canmove = TRUE
+	can_action = FALSE
 	blinded = FALSE
 	anchored = TRUE //  don't get pushed around
 	invisibility = INVISIBILITY_OBSERVER
@@ -64,14 +65,40 @@
 	ghostvision = !ghostvision
 	if(hud_used)
 		var/atom/movable/screen/plane_master/lighting/lighting = hud_used.plane_masters["[GHOST_PLANE]"]
-		if (lighting)
+		if(lighting)
 			lighting.alpha = ghostvision? 255 : 0
 	to_chat(usr, SPAN_NOTICE("You [(ghostvision?"now":"no longer")] have ghost vision."))
+
+/mob/dead/observer/verb/donater_respawn()
+	set name = "DRespawn"
+	set desc = "Allow you to respawn"
+	set category = "Ghost"
+
+	if(!client.donator_info.patreon_function_available("respawn"))
+		to_chat(usr, SPAN_NOTICE("You don't have enought donat level to do that, req [DONATER_VIETNAM] or higher."))
+		return FALSE
+
+	var/remaining_time = timeofdeath + 15 MINUTES - world.time
+	if(remaining_time > 0)
+		to_chat(usr, SPAN_NOTICE("You still need wait [DisplayTimeText(remaining_time, language = CLIENT_LANGUAGE_RUSSIAN)] more to respawn."))
+		return FALSE
+
+	message_admins("[key_name_admin(src)] has their donater respawn time left and returned to lobby.")
+	var/mob/new_player/NP = new()
+
+	if(!mind)
+		mind_initialize()
+
+	mind.transfer_to(NP)
+
+	qdel(src)
+	return TRUE
 
 /mob/dead/observer/Initialize(mapload, mob/body)
 	. = ..()
 
 	GLOB.observer_list += src
+	timeofdeath = world.time
 
 	var/turf/spawn_turf
 	if(ismob(body))
@@ -104,7 +131,9 @@
 		own_orbit_size = 32
 
 	if(!isturf(spawn_turf))
-		spawn_turf = get_turf(SAFEPICK(GLOB.latejoin)) //Safety in case we cannot find the body's position
+		if(GLOB.observer_starts)
+			spawn_turf = get_turf(pick(GLOB.observer_starts))
+
 	if(spawn_turf)
 		forceMove(spawn_turf)
 
@@ -119,10 +148,7 @@
 	pixel_x = 0
 	pixel_y = 0
 
-	minimap = new
-	minimap.give_to(src)
-
-	if(SSticker.mode && SSticker.mode.flags_round_type & MODE_PREDATOR)
+	if(MODE_HAS_FLAG(MODE_PREDATOR))
 		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), src, "<span style='color: red;'>This is a <B>PREDATOR ROUND</B>! If you are whitelisted, you may Join the Hunt!</span>"), 2 SECONDS)
 
 	for(var/path in subtypesof(/datum/action/observer_action))
@@ -332,13 +358,11 @@ Works together with spawning an observer, noted above.
 
 	if(!can_reenter_corpse)
 		away_timer = 300 //They'll never come back, so we can max out the timer right away.
-		if(round_statistics)
-			round_statistics.update_panel_data()
 		track_death_calculations() //This needs to be done before mind is nullified
 		if(ghost.mind)
 			ghost.mind.original = ghost
-	else if(ghost.mind && ghost.mind.player_entity) //Use else here because track_death_calculations() already calls this.
-		ghost.mind.player_entity.update_panel_data(round_statistics)
+	else if(ghost.client && ghost.client.player_data)
+		ghost.client.player_data.setup_statistics()
 		ghost.mind.original = src
 
 	mind = null
@@ -373,8 +397,8 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 /mob/living/proc/do_ghost()
 	if(stat == DEAD)
-		if(mind && mind.player_entity)
-			mind.player_entity.update_panel_data(round_statistics)
+		if(client && client.player_data)
+			client.player_data.setup_statistics()
 		ghostize(TRUE)
 	else
 		var/list/options = list("Ghost", "Stay in body")
@@ -389,7 +413,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		var/turf/location = get_turf(src)
 		if(location) //to avoid runtime when a mob ends up in nullspace
 			msg_admin_niche("[key_name_admin(usr)] has ghosted. (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[location.x];Y=[location.y];Z=[location.z]'>JMP</a>)")
-		log_game("[key_name_admin(usr)] has ghosted.")
+		log_game("[key_name_admin(usr)] стал наблюдателем.")
 		var/mob/dead/observer/ghost = ghostize(FALSE) //FALSE parameter is so we can never re-enter our body, "Charlie, you can never come baaaack~" :3
 		if(ghost && !is_admin_level(z))
 			ghost.timeofdeath = world.time
@@ -452,28 +476,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	SStgui.on_transfer(src, mind.current)
 	qdel(src)
 	return TRUE
-
-/mob/dead/observer/verb/enter_tech_tree()
-	set category = "Ghost"
-	set name = "Teleport to Techtree"
-
-	var/list/trees = list()
-
-	for(var/T in SStechtree.trees)
-		trees += list("[T]" = SStechtree.trees[T])
-
-	var/value = SStechtree.trees[1]
-
-	if(trees.len > 1)
-		value = tgui_input_list(src, "Choose which tree to enter", "Enter Tree", trees)
-
-	if(!value)
-		return
-
-	var/datum/techtree/tree = trees[value]
-
-	forceMove(tree.entrance)
-
 
 /mob/dead/observer/verb/dead_teleport_area()
 	set category = "Ghost"
@@ -588,7 +590,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		dest += getmobs() //Fill list, prompt user with list
 		target = tgui_input_list(usr, "Please, select a player!", "Jump to Mob", dest)
 
-		if (!target)//Make sure we actually have a target
+		if(!target)//Make sure we actually have a target
 			return
 		else
 			var/mob/M = dest[target] //Destination mob
@@ -616,7 +618,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(!istype(usr, /mob/dead/observer)) return
 
 	// Shamelessly copied from the Gas Analyzers
-	if (!( istype(loc, /turf) ))
+	if(!( istype(loc, /turf) ))
 		return
 
 	var/turf/T = loc
@@ -672,53 +674,34 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Toggle Self Visibility"
 	set category = "Ghost.Settings"
 
-	if (alpha)
+	if(alpha)
 		alpha = 0
 	else
 		alpha = initial(alpha)
 
 /mob/dead/observer/verb/view_manifest()
-	set name = "View Crew Manifest"
+	set name = "View Faction Info"
 	set category = "Ghost.View"
 
-	var/dat = GLOB.data_core.get_manifest()
+	var/list/factions = list()
+	for(var/faction_to_get in FACTION_LIST_ALL)
+		var/datum/faction/faction_to_set = GLOB.faction_datum[faction_to_get]
+		if(!length(faction_to_set.totalMobs))
+			continue
+		LAZYSET(factions, faction_to_set.name, faction_to_set)
 
-	show_browser(src, dat, "Crew Manifest", "manifest", "size=450x750")
+	var/choice = tgui_input_list(src, "Please choose faction status menu will to be show.", "Faction Selection", factions)
+	if(!choice)
+		return FALSE
 
-/mob/dead/verb/hive_status()
-	set name = "Hive Status"
-	set desc = "Check the status of the hive."
-	set category = "Ghost.View"
-
-	var/list/hives = list()
-	var/datum/hive_status/last_hive_checked
-
-	var/datum/hive_status/hive
-	for(var/hivenumber in GLOB.hive_datum)
-		hive = GLOB.hive_datum[hivenumber]
-		if(hive.totalXenos.len > 0)
-			hives += list("[hive.name]" = hive.hivenumber)
-			last_hive_checked = hive
-
-	if(!length(hives))
-		to_chat(src, SPAN_ALERT("There seem to be no living hives at the moment"))
-		return
-	else if(length(hives) == 1) // Only one hive, don't need an input menu for that
-		last_hive_checked.hive_ui.open_hive_status(src)
-	else
-		faction = tgui_input_list(src, "Select which hive status menu to open up", "Hive Choice", hives, theme="hive_status")
-		if(!faction)
-			to_chat(src, SPAN_ALERT("Hive choice error. Aborting."))
-			return
-
-		GLOB.hive_datum[hives[faction]].hive_ui.open_hive_status(src)
+	return GLOB.faction_datum[faction_to_get].get_faction_info(src)
 
 /mob/dead/verb/join_as_alien()
 	set category = "Ghost.Join"
 	set name = "Join as Xeno"
 	set desc = "Select an alive but logged-out Xenomorph to rejoin the game."
 
-	if (!client)
+	if(!client)
 		return
 
 	if(SSticker.current_state < GAME_STATE_PLAYING || !SSticker.mode)
@@ -748,55 +731,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Join as Zombie"
 	set desc = "Select an alive but logged-out Zombie to rejoin the game."
 
-	if (!client)
-		return
-
-	if(SSticker.current_state < GAME_STATE_PLAYING || !SSticker.mode)
-		to_chat(src, SPAN_WARNING("The game hasn't started yet!"))
-		return
-
-	var/list/zombie_list = list()
-	if(length(GLOB.zombie_landmarks))
-		zombie_list += list("Underground Zombie" = "Underground Zombie")
-	for(var/mob/living/carbon/human/A in GLOB.zombie_list)
-		if(!A.client && A.stat != DEAD) // Only living zombies
-			zombie_list += list(A.real_name = A)
-
-	if(!length(zombie_list))
-		to_chat(src, SPAN_DANGER("There are no available zombies."))
-		return
-
-	var/choice = tgui_input_list(usr, "Pick a Zombie:", "Join as Zombie", zombie_list)
-	if(!choice)
-		return
-
-	if(!client || !mind)
-		return
-
-	if(choice == "Underground Zombie")
-		if(!length(GLOB.zombie_landmarks))
-			to_chat(src, SPAN_WARNING("Sorry, the last underground zombie just got taken."))
-			return
-		var/obj/effect/landmark/zombie/spawn_point = pick(GLOB.zombie_landmarks)
-		spawn_point.spawn_zombie(src)
-		return
-
-	var/mob/living/carbon/human/Z = zombie_list[choice]
-
-	if(!Z || QDELETED(Z))
-		return
-
-	if(Z.stat == DEAD)
-		to_chat(src, SPAN_WARNING("This zombie is dead!"))
-		return
-
-	if(Z.client)
-		to_chat(src, SPAN_WARNING("That player is still connected."))
-		return
-
-	mind.transfer_to(Z, TRUE)
-	msg_admin_niche("[key_name(usr)] has joined as a [Z].")
-
+	GLOB.faction_datum[FACTION_ZOMBIE].get_join_status(src)
 
 /mob/dead/verb/join_as_freed_mob()
 	set category = "Ghost.Join"
@@ -886,7 +821,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Join the Hunt"
 	set desc = "If you are whitelisted, and it is the right type of round, join in."
 
-	if (!client)
+	if(!client)
 		return
 
 	if(SSticker.current_state < GAME_STATE_PLAYING || !SSticker.mode)
@@ -926,7 +861,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	target = tgui_input_list(usr, "Please, select a contestant!", "Cake Time", mobs)
 
-	if (!target)//Make sure we actually have a target
+	if(!target)//Make sure we actually have a target
 		return
 	else
 		to_chat(src, SPAN_INFO("Your vote for [target] has been counted!"))
@@ -939,7 +874,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Go DNR"
 	set desc = "Prevent your character from being revived."
 
-	if(alert("Do you want to go DNR?", "Choose to go DNR", "Yes", "No") == "Yes")
+	if(alert("Do you want to go DNR?", "Choose to go DNR", client.auto_lang(LANGUAGE_YES), client.auto_lang(LANGUAGE_NO)) == client.auto_lang(LANGUAGE_YES))
 		can_reenter_corpse = FALSE
 		var/ref
 		var/mob/living/carbon/human/H = mind.original
@@ -948,46 +883,53 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		GLOB.data_core.manifest_modify(name, ref, null, null, "*Deceased*")
 
 
-/mob/dead/observer/verb/view_kill_feed()
+/mob/dead/observer/verb/view_stats()
 	set category = "Ghost.View"
-	set name = "View Kill Feed"
-	set desc = "View global kill statistics tied to the game."
+	set name = "View Statistics"
+	set desc = "View global and player statistics tied to the game."
 
-	if(round_statistics)
-		round_statistics.show_kill_feed(src)
+	if(client && client.player_entity)
+		client.player_entity.tgui_interact(src)
 
 /mob/dead/observer/get_status_tab_items()
 	. = ..()
+
 	. += ""
-	. += "Game Mode: [GLOB.master_mode]"
+
+	. += "Режим Игры: [GLOB.master_mode]"
 
 	if(!SSticker.HasRoundStarted())
 		var/time_remaining = SSticker.GetTimeLeft()
 		if(time_remaining > 0)
-			. += "Time To Start: [round(time_remaining)]s"
+			. += "Время до Старта: [round(time_remaining)]s"
 		else if(time_remaining == -10)
-			. += "Time To Start: DELAYED"
+			. += "Время до Старта: ЗАДЕРЖАНО"
 		else
-			. += "Time To Start: SOON"
+			. += "Время до Старта: СЕЙЧАС"
 
-		. += "Players: [SSticker.totalPlayers]"
+	var/players = length(GLOB.clients)
+	. += "Игроки: [players]"
+	if(!SSticker.HasRoundStarted())
 		if(client.admin_holder)
-			. += "Players Ready: [SSticker.totalPlayersReady]"
+			. += "Игроки Готовы: [SSticker.totalPlayersReady]"
 
-	. += ""
+	. += "Статус Эвакуации: [SSevacuation.get_evac_status_panel_eta()]"
+	. += "Стадия Операции: [SSevacuation.get_ship_operation_stage_status_panel_eta()]"
+
+	if(GLOB.xenomorph_attack_delay)
+		if(world.time - GLOB.xenomorph_attack_delay < 0)
+			var/xeno_delay = GLOB.xenomorph_attack_delay - world.time
+			. += "ОВЗА Ксеноморфов: [duration2text_hour_min_sec(xeno_delay)]"
+		if(world.time - GLOB.xenomorph_attack_delay - 10 MINUTES < 0)
+			var/xeno_delay = GLOB.xenomorph_attack_delay + 10 MINUTES - world.time
+			. += "ОВЗА Королевы Ксеноморфов: [duration2text_hour_min_sec(xeno_delay)]"
 
 	if(SSticker.mode?.force_end_at)
 		var/time_left = SSticker.mode.force_end_at - world.time
 		if(time_left >= 0)
-			. += "Hijack Time Left: [DisplayTimeText(time_left, 1)]"
+			. += "Overtime Time Left: [DisplayTimeText(time_left, 1)]"
 		else
-			. += "Hijack Over"
-
-	if(EvacuationAuthority)
-		var/eta_status = EvacuationAuthority.get_status_panel_eta()
-		if(eta_status)
-			. += "Evacuation: [eta_status]"
-
+			. += "Overtime Over"
 
 /proc/message_ghosts(message)
 	for(var/mob/dead/observer/O as anything in GLOB.observer_list)
@@ -1025,3 +967,21 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 			&& src.z == nearby_observer.z && get_dist(src, nearby_observer) <= observer_client.view)
 			to_chat(observer_client, SPAN_DEADSAY("<b>[src]</b> points to [A] [nearby_observer.format_jump(A)]"))
 	return TRUE
+
+/mob/dead/observer/up()
+	set name = "Move Upwards"
+	set category = "IC"
+
+	if(zMove(UP, z_move_flags = ZMOVE_FEEDBACK))
+		to_chat(src, SPAN_NOTICE("You move upwards."))
+
+/mob/dead/observer/down()
+	set name = "Move Down"
+	set category = "IC"
+
+	if(zMove(DOWN, z_move_flags = ZMOVE_FEEDBACK))
+		to_chat(src, SPAN_NOTICE("You move down."))
+
+/mob/dead/observer/can_z_move(direction, turf/start, turf/destination, z_move_flags = NONE, mob/living/rider)
+	z_move_flags |= ZMOVE_IGNORE_OBSTACLES  //observers do not respect these FLOORS you speak so much of.
+	return ..()

@@ -18,12 +18,12 @@
 /atom/movable/screen/ghost/minimap
 	name = "Minimap"
 	icon_state = "minimap"
-
+/*
 /atom/movable/screen/ghost/minimap/Click()
 	var/mob/dead/observer/ghost = usr
 
 	ghost.minimap.action_activate()
-
+*/
 // /atom/movable/screen/ghost/follow_xeno
 // name = "Follow Xeno"
 // icon_state = "follow_xeno"
@@ -72,7 +72,7 @@
 /datum/hud/ghost/show_hud(version = 0, mob/viewmob)
 	// don't show this HUD if observing; show the HUD of the observee
 	var/mob/dead/observer/O = mymob
-	if (istype(O) && O.observetarget)
+	if(istype(O) && O.observetarget)
 		plane_masters_update()
 		return FALSE
 

@@ -17,22 +17,6 @@
 
 	can_be_near_defense = TRUE
 
-	choice_categories = list(
-		SENTRY_CATEGORY_IFF = list(FACTION_USCM, FACTION_WEYLAND, FACTION_HUMAN),
-	)
-
-	selected_categories = list(
-		SENTRY_CATEGORY_IFF = FACTION_USCM,
-	)
-
-
-/obj/structure/machinery/defenses/bell_tower/Initialize()
-	. = ..()
-
-	if(turned_on)
-		setup_tripwires()
-	update_icon()
-
 /obj/structure/machinery/defenses/bell_tower/update_icon()
 	..()
 
@@ -59,7 +43,7 @@
 /obj/structure/machinery/defenses/bell_tower/proc/setup_tripwires()
 	clear_tripwires()
 	for(var/turf/T in orange(BELL_TOWER_RANGE, loc))
-		var/obj/effect/bell_tripwire/FE = new /obj/effect/bell_tripwire(T, faction_group)
+		var/obj/effect/bell_tripwire/FE = new /obj/effect/bell_tripwire(T, faction + faction.allies)
 		FE.linked_bell = src
 		tripwires_placed += FE
 
@@ -85,12 +69,12 @@
 	invisibility = 101
 	unacidable = TRUE
 	var/obj/structure/machinery/defenses/bell_tower/linked_bell
-	var/faction = FACTION_LIST_MARINE
 
-/obj/effect/bell_tripwire/New(turf/T, faction = null)
+/obj/effect/bell_tripwire/New(turf/T, datum/faction/faction_to_set)
 	..(T)
-	if(faction)
-		src.faction = faction
+
+	if(faction_to_set)
+		faction = faction_to_set
 
 /obj/effect/bell_tripwire/Destroy()
 	if(linked_bell)
@@ -107,7 +91,7 @@
 		return
 
 	var/mob/living/carbon/M = A
-	if(M.get_target_lock(faction))
+	if(M.ally(faction))
 		return
 
 	var/list/turf/path = getline2(src, linked_bell, include_from_atom = TRUE)
@@ -168,11 +152,8 @@
 /obj/structure/machinery/defenses/bell_tower/md/setup_tripwires()
 	md = new(src)
 	md.linked_tower = src
-	md.iff_signal = LAZYACCESS(faction_group, 1)
+	md.faction = faction
 	md.toggle_active(null, FALSE)
-
-	if(!md.iff_signal)
-		md.iff_signal = FACTION_MARINE
 
 /obj/structure/machinery/defenses/bell_tower/md/clear_tripwires()
 	if(md)
@@ -207,7 +188,7 @@
 /obj/structure/machinery/defenses/bell_tower/cloaker/proc/cloaker_fade_in()
 	// This is activated whenever the bell is rang, makes the cloaked tower visible a bit
 	var/obj/structure/machinery/defenses/bell_tower/cloaker/cloakebelltower = src
-	if(turned_on)
+	if(light_on)
 		if(cloak_alpha_current < cloak_alpha_max)
 			cloak_alpha_current = cloak_alpha_max
 		cloak_alpha_current = Clamp(cloak_alpha_current + incremental_ring_camo_penalty, cloak_alpha_max, 255)
@@ -217,7 +198,7 @@
 
 /obj/structure/machinery/defenses/bell_tower/cloaker/proc/cloaker_fade_out_finish()
 	// Resets the cloak to its max invisibility
-	if(turned_on)
+	if(light_on)
 		animate(src, alpha = cloak_alpha_max)
 		cloak_alpha_current = cloak_alpha_max
 

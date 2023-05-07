@@ -12,7 +12,7 @@
 	volume = 50
 
 /obj/item/reagent_container/food/drinks/on_reagent_change()
-	if (gulp_size < 5) gulp_size = 5
+	if(gulp_size < 5) gulp_size = 5
 	else gulp_size = max(round(reagents.total_volume / 5), 5)
 
 /obj/item/reagent_container/food/drinks/attack(mob/M, mob/user)
@@ -124,15 +124,15 @@
 
 /obj/item/reagent_container/food/drinks/get_examine_text(mob/user)
 	. = ..()
-	if (get_dist(user, src) > 1 && user != loc)
+	if(get_dist(user, src) > 1 && user != loc)
 		return
 	if(!reagents || reagents.total_volume==0)
 		. += SPAN_NOTICE("\The [src] is empty!")
-	else if (reagents.total_volume<=src.volume/4)
+	else if(reagents.total_volume<=src.volume/4)
 		. += SPAN_NOTICE("\The [src] is almost empty!")
-	else if (reagents.total_volume<=src.volume*0.66)
+	else if(reagents.total_volume<=src.volume*0.66)
 		. += SPAN_NOTICE("\The [src] is half full!")
-	else if (reagents.total_volume<=src.volume*0.90)
+	else if(reagents.total_volume<=src.volume*0.90)
 		. += SPAN_NOTICE("\The [src] is almost full!")
 	else
 		. += SPAN_NOTICE("\The [src] is full!")

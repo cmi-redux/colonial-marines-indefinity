@@ -234,15 +234,15 @@
 		/obj/item/reagent_container/spray/pepper = 4,
 		/obj/item/weapon/melee/baton = 4,
 		/obj/item/device/flashlight = 4,
-		/obj/item/storage/belt/security/MP = 4,
+		/obj/item/storage/belt/security/mp = 4,
 		/obj/item/device/flash = 5,
 		/obj/item/reagent_container/food/snacks/donut/normal = 12,
 		/obj/item/storage/box/evidence = 6,
-		/obj/item/clothing/head/helmet/marine/MP = 6,
+		/obj/item/clothing/head/helmet/marine/mp = 6,
 		/obj/item/clothing/head/beret/marine/mp/mppeaked = 6,
 		/obj/item/clothing/head/beret/marine/mp/mpcap = 6,
 		/obj/item/clothing/under/marine/mp = 2,
-		/obj/item/storage/belt/security/MP = 6,
+		/obj/item/storage/belt/security/mp = 6,
 		/obj/item/clothing/head/beret/marine/mp = 6,
 		/obj/item/clothing/glasses/sunglasses/sechud = 3,
 		/obj/item/device/radio/headset = 6,
@@ -392,16 +392,9 @@
 	idle_power_usage = 200
 
 	products = list(
-		/obj/item/device/cassette_tape/pop1 = 10,
-		/obj/item/device/cassette_tape/hiphop = 10,
-		/obj/item/device/cassette_tape/nam = 10,
-		/obj/item/device/cassette_tape/ocean = 10,
-		/obj/item/device/cassette_tape/pop3 = 10,
-		/obj/item/device/cassette_tape/pop4 = 10,
-		/obj/item/device/cassette_tape/pop2 = 10,
-		/obj/item/device/cassette_tape/heavymetal = 10,
-		/obj/item/device/cassette_tape/hairmetal = 10,
-		/obj/item/device/cassette_tape/indie = 10,
+		/obj/item/device/cassette_tape/lybe = 10,
+		/obj/item/device/cassette_tape/sad = 10,
+		/obj/item/device/cassette_tape/sovietwave = 10,
 		/obj/item/device/walkman = 50,
 		/obj/item/storage/pouch/cassette = 15,
 		/obj/item/toy/deck = 5,
@@ -409,23 +402,18 @@
 		/obj/item/device/camera = 5,
 	)
 
-	contraband = list(/obj/item/toy/sword = 2)
+	contraband = list(
+		/obj/item/toy/sword = 2,
+		)
 
-	prices = list(
-		/obj/item/device/cassette_tape/pop1 = 5,
-		/obj/item/device/cassette_tape/hiphop = 5,
-		/obj/item/device/cassette_tape/nam = 5,
-		/obj/item/device/cassette_tape/ocean = 6,
-		/obj/item/device/cassette_tape/pop3 = 5,
-		/obj/item/device/cassette_tape/pop4 = 5,
-		/obj/item/device/cassette_tape/pop2 = 5,
-		/obj/item/device/cassette_tape/heavymetal = 5,
-		/obj/item/device/cassette_tape/hairmetal = 5,
-		/obj/item/device/cassette_tape/indie = 5,
+	products = list(
+		/obj/item/device/cassette_tape/lybe = 10,
+		/obj/item/device/cassette_tape/sad = 10,
+		/obj/item/device/cassette_tape/sovietwave = 10,
 		/obj/item/device/walkman = 15,
 		/obj/item/storage/pouch/cassette = 10,
 		/obj/item/toy/deck = 20,
 		/obj/item/toy/deck/uno = 15,
 		/obj/item/device/camera = 30,
 	)
-	product_type = VENDOR_PRODUCT_TYPE_RECREATIONAL
+	product_type = VENDOR_PRODUCT_TYPE_RECREATION

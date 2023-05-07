@@ -5,8 +5,9 @@
 	selection_class = "job_special"
 	// For the roundstart precount, then gets further limited by set_spawn_positions.
 	total_positions = 8
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT|ROLE_CUSTOM_SPAWN
+	flags_startup_parameters = ROLE_CUSTOM_SPAWN
 	late_joinable = FALSE
+	balance_formulas = list("field", BALANCE_FORMULA_ENGINEER, BALANCE_FORMULA_MEDIC, BALANCE_FORMULA_FIELD)
 	var/intro_text
 	var/story_text
 
@@ -126,7 +127,7 @@ AddTimelock(/datum/job/civilian/survivor, list(
 /datum/job/civilian/survivor/synth
 	title = JOB_SYNTH_SURVIVOR
 	selection_class = "job_synth"
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT|ROLE_ADMIN_NOTIFY|ROLE_WHITELISTED|ROLE_CUSTOM_SPAWN
+	flags_startup_parameters = ROLE_ADMIN_NOTIFY|ROLE_WHITELISTED|ROLE_CUSTOM_SPAWN
 	flags_whitelist = WHITELIST_SYNTHETIC
 	total_positions = 1
 	spawn_positions = 1
@@ -152,7 +153,7 @@ AddTimelock(/datum/job/civilian/survivor, list(
 /datum/job/civilian/survivor/commanding_officer
 	title = JOB_CO_SURVIVOR
 	selection_class = "job_co"
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT|ROLE_ADMIN_NOTIFY|ROLE_WHITELISTED|ROLE_CUSTOM_SPAWN
+	flags_startup_parameters = ROLE_ADMIN_NOTIFY|ROLE_WHITELISTED|ROLE_CUSTOM_SPAWN
 	flags_whitelist = WHITELIST_COMMANDER
 	total_positions = 0
 	spawn_positions = 0

@@ -2,55 +2,39 @@
 
 //Global proc for checking if the game is whiskey outpost so I dont need to type if(gamemode == whiskey outpost) 50000 times
 /proc/Check_WO()
-	if(SSticker.mode == GAMEMODE_WHISKEY_OUTPOST || master_mode == GAMEMODE_WHISKEY_OUTPOST)
-		return 1
-	return 0
+	if(SSticker.mode == MODE_NAME_WISKEY_OUTPOST || GLOB.master_mode == MODE_NAME_WISKEY_OUTPOST)
+		return TRUE
+	return FALSE
 
 /datum/game_mode/whiskey_outpost
-	name = GAMEMODE_WHISKEY_OUTPOST
-	config_tag = GAMEMODE_WHISKEY_OUTPOST
+	name = MODE_NAME_WISKEY_OUTPOST
+	config_tag = MODE_NAME_WISKEY_OUTPOST
 	required_players = 0
-	xeno_bypass_timer = 1
-	flags_round_type = MODE_NEW_SPAWN
-	role_mappings = list(
-		/datum/job/command/commander/whiskey = JOB_CO,
-		/datum/job/command/executive/whiskey = JOB_XO,
-		/datum/job/civilian/synthetic/whiskey = JOB_SYNTH,
-		/datum/job/command/warrant/whiskey = JOB_CHIEF_POLICE,
-		/datum/job/command/bridge/whiskey = JOB_SO,
-		/datum/job/command/tank_crew/whiskey = JOB_CREWMAN,
-		/datum/job/command/police/whiskey = JOB_POLICE,
-		/datum/job/command/pilot/whiskey = JOB_PILOT,
-		/datum/job/logistics/requisition/whiskey = JOB_CHIEF_REQUISITION,
-		/datum/job/civilian/professor/whiskey = JOB_CMO,
-		/datum/job/civilian/doctor/whiskey = JOB_DOCTOR,
-		/datum/job/civilian/researcher/whiskey = JOB_RESEARCHER,
-		/datum/job/logistics/engineering/whiskey = JOB_CHIEF_ENGINEER,
-		/datum/job/logistics/tech/maint/whiskey = JOB_MAINT_TECH,
-		/datum/job/logistics/cargo/whiskey = JOB_CARGO_TECH,
-		/datum/job/civilian/liaison/whiskey = JOB_CORPORATE_LIAISON,
-		/datum/job/marine/leader/whiskey = JOB_SQUAD_LEADER,
-		/datum/job/marine/specialist/whiskey = JOB_SQUAD_SPECIALIST,
-		/datum/job/marine/smartgunner/whiskey = JOB_SQUAD_SMARTGUN,
-		/datum/job/marine/medic/whiskey = JOB_SQUAD_MEDIC,
-		/datum/job/marine/engineer/whiskey = JOB_SQUAD_ENGI,
-		/datum/job/marine/standard/whiskey = JOB_SQUAD_MARINE,
-	)
-
+	xeno_bypass_timer = TRUE
+	flags_round_type = MODE_NEW_SPAWN|MODE_NO_SHIP_MAP|MODE_HARDCORE
 
 	latejoin_larva_drop = 0 //You never know
 
 	//var/mob/living/carbon/human/Commander //If there is no Commander, marines wont get any supplies
 	//No longer relevant to the game mode, since supply drops are getting changed.
-	var/checkwin_counter = 0
-	var/finished = 0
-	var/has_started_timer = 10 //This is a simple timer so we don't accidently check win conditions right in post-game
+	round_end_states = list(MODE_WISKEY_OUTPOST_X_MAJOR, MODE_WISKEY_OUTPOST_M_MAJOR)
+
+	faction_result_end_state = list(
+		FACTION_MARINE = list(
+			MODE_WISKEY_OUTPOST_M_MAJOR = list("marine_major", list('sound/misc/hell_march.ogg'), list('sound/music/round_end/issomebodysinging.ogg')),
+			MODE_WISKEY_OUTPOST_X_MAJOR = list("marine_minor", list('sound/misc/Game_Over_Man.ogg'), list('sound/music/round_end/end.ogg')),
+		),
+		FACTION_XENOMORPH_NORMAL = list(
+			MODE_WISKEY_OUTPOST_X_MAJOR = list("xeno_major", list('sound/misc/hell_march.ogg'), list('sound/music/round_end/bluespace.ogg')),
+			MODE_WISKEY_OUTPOST_M_MAJOR = list("xeno_minor", list('sound/misc/Game_Over_Man.ogg'), list('sound/music/round_end/end.ogg')),
+		)
+	)
+
 	var/randomovertime = 0 //This is a simple timer so we can add some random time to the game mode.
-	var/spawn_next_wave = 12 MINUTES //Spawn first batch at ~12 minutes
+	var/maxovertime = 20 MINUTES
+	var/spawn_next_wave_time = 12 MINUTES //Spawn first batch at ~12 minutes
 	var/last_wave_time = 0 // Stores the time the last wave (wave 15) started
 	var/xeno_wave = 1 //Which wave is it
-
-	var/wave_ticks_passed = 0 //Timer for xeno waves
 
 	var/list/players = list()
 
@@ -65,23 +49,14 @@
 
 	var/next_supply = 1 MINUTES //At which wave does the next supply drop come?
 
-	var/ticks_passed = 0
-	var/lobby_time = 0 //Lobby time does not count for marine 1h win condition
-
 	var/map_locale = 0 // 0 is Jungle Whiskey Outpost, 1 is Big Red Whiskey Outpost, 2 is Ice Colony Whiskey Outpost, 3 is space
-	var/spawn_next_wo_wave = FALSE
 
 	var/list/whiskey_outpost_waves = list()
 
-	hardcore = TRUE
-
 	votable = TRUE
-	vote_cycle = 25 // approx. once every 5 days, if it wins the vote
+	vote_cycle = 20 // approx. once every 5 days, if it wins the vote
 
 	taskbar_icon = 'icons/taskbar/gml_wo.png'
-
-/datum/game_mode/whiskey_outpost/get_roles_list()
-	return ROLES_WO
 
 /datum/game_mode/whiskey_outpost/announce()
 	return 1
@@ -91,7 +66,6 @@
 		xeno_spawns += X.loc
 	for(var/obj/effect/landmark/whiskey_outpost/supplydrops/S)
 		supply_spawns += S.loc
-
 
 	//  WO waves
 	var/list/paths = typesof(/datum/whiskey_outpost_wave) - /datum/whiskey_outpost_wave - /datum/whiskey_outpost_wave/random
@@ -106,14 +80,13 @@
 	return ..()
 
 /datum/game_mode/whiskey_outpost/post_setup()
-	set waitfor = 0
+	set waitfor = FALSE
 	update_controllers()
 	initialize_post_marine_gear_list()
-	lobby_time = world.time
 
 	CONFIG_SET(flag/remove_gun_restrictions, TRUE)
 	sleep(10)
-	to_world(SPAN_ROUND_HEADER("The current game mode is - WHISKEY OUTPOST!"))
+	to_world(SPAN_ROUND_HEADER("The current game mode is - [name]!"))
 	to_world(SPAN_ROUNDBODY("It is the year 2177 on the planet LV-624, five years before the arrival of the USS Almayer and the 2nd 'Falling Falcons' Battalion in the sector"))
 	to_world(SPAN_ROUNDBODY("The 3rd 'Dust Raiders' Battalion is charged with establishing a USCM presence in the Neroid Sector"))
 	to_world(SPAN_ROUNDBODY("[SSmapping.configs[GROUND_MAP].map_name], one of the Dust Raider bases being established in the sector, has come under attack from unrecognized alien forces"))
@@ -122,20 +95,18 @@
 	world << sound('sound/effects/siren.ogg')
 
 	sleep(10)
-	switch(map_locale) //Switching it up.
-		if(0)
-			marine_announcement("This is Captain Hans Naiche, commander of the 3rd Battalion 'Dust Raiders' forces here on LV-624. In our attempts to establish a base on this planet, several of our patrols were wiped out by hostile creatures.  We're setting up a distress call, but we need you to hold [SSmapping.configs[GROUND_MAP].map_name] in order for our engineers to set up the relay. We're prepping several M402 mortar units to provide fire support. If they overrun your positon, we will be wiped out with no way to call for help. Hold the line or we all die.", "Captain Naiche, 3rd Battalion Command, LV-624 Garrison")
 	addtimer(CALLBACK(src, PROC_REF(story_announce), 0), 3 MINUTES)
 	return ..()
 
 /datum/game_mode/whiskey_outpost/proc/story_announce(time)
 	switch(time)
 		if(0)
-			marine_announcement("This is Captain Hans Naiche, Commander of the 3rd Bataillion, 'Dust Raiders' forces on LV-624. As you already know, several of our patrols have gone missing and likely wiped out by hostile local creatures as we've attempted to set our base up.", "Captain Naiche, 3rd Battalion Command, LV-624 Garrison")
+			faction_announcement("This is Captain Hans Naiche, Commander of the 3rd Bataillion, 'Dust Raiders' forces on LV-624. As you already know, several of our patrols have gone missing and likely wiped out by hostile local creatures as we've attempted to set our base up.", "Captain Naiche, 3rd Battalion Command, LV-624 Garrison")
+			disablejoining()
 		if(1)
-			marine_announcement("Our scouts report increased activity in the area and given our intel, we're already preparing for the worst. We're setting up a comms relay to send out a distress call, but we're going to need time while our engineers get everything ready. All other stations should prepare accordingly and maximize combat readiness, effective immediately.", "Captain Naiche, 3rd Battalion Command, LV-624 Garrison")
+			faction_announcement("Our scouts report increased activity in the area and given our intel, we're already preparing for the worst. We're setting up a comms relay to send out a distress call, but we're going to need time while our engineers get everything ready. All other stations should prepare accordingly and maximize combat readiness, effective immediately.", "Captain Naiche, 3rd Battalion Command, LV-624 Garrison")
 		if(2)
-			marine_announcement("Captain Naiche here. We've tracked the bulk of enemy forces on the move and [SSmapping.configs[GROUND_MAP].map_name] is likely to be hit before they reach the base. We need you to hold them off while we finish sending the distress call. Expect incoming within a few minutes. Godspeed, [SSmapping.configs[GROUND_MAP].map_name].", "Captain Naiche, 3rd Battalion Command, LV-624 Garrison")
+			faction_announcement("Captain Naiche here. We've tracked the bulk of enemy forces on the move and [SSmapping.configs[GROUND_MAP].map_name] is likely to be hit before they reach the base. We need you to hold them off while we finish sending the distress call. Expect incoming within a few minutes. Godspeed, [SSmapping.configs[GROUND_MAP].map_name].", "Captain Naiche, 3rd Battalion Command, LV-624 Garrison")
 
 	if(time <= 2)
 		addtimer(CALLBACK(src, PROC_REF(story_announce), time+1), 3 MINUTES)
@@ -157,36 +128,27 @@
 
 
 //PROCCESS
-/datum/game_mode/whiskey_outpost/process(delta_time)
+/datum/game_mode/whiskey_outpost/process()
 	. = ..()
-	checkwin_counter++
-	ticks_passed++
-	wave_ticks_passed++
+	if(round_started > 0)
+		round_started--
+		return FALSE
 
-	if(wave_ticks_passed >= (spawn_next_wave/(delta_time SECONDS)))
-		wave_ticks_passed = 0
-		spawn_next_wo_wave = TRUE
-
-	if(spawn_next_wo_wave)
+	if(world.time > (last_wave_time + spawn_next_wave_time) && xeno_wave != WO_MAX_WAVE)
+		last_wave_time = world.time + pickovertime()
 		spawn_next_xeno_wave()
-
-	if(has_started_timer > 0) //Initial countdown, just to be safe, so that everyone has a chance to spawn before we check anything.
-		has_started_timer--
 
 	if(world.time > next_supply)
 		place_whiskey_outpost_drop()
-		next_supply += 2 MINUTES
+		next_supply += 2 MINUTES + pickovertime()
 
-	if(checkwin_counter >= 10) //Only check win conditions every 10 ticks.
-		if(xeno_wave == WO_MAX_WAVE && last_wave_time == 0)
-			last_wave_time = world.time
-		if(!finished && round_should_check_for_win && last_wave_time != 0)
-			check_win()
-		checkwin_counter = 0
-	return 0
+	if(!round_finished)
+		if(++round_checkwin >= 5) //Only check win conditions every 5 ticks.
+			if(round_should_check_for_win)
+				check_win()
+			round_checkwin = 0
 
 /datum/game_mode/whiskey_outpost/proc/spawn_next_xeno_wave()
-	spawn_next_wo_wave = FALSE
 	var/wave = pick(whiskey_outpost_waves[xeno_wave])
 	spawn_whiskey_outpost_xenos(wave)
 	announce_xeno_wave(wave)
@@ -199,26 +161,17 @@
 /datum/game_mode/whiskey_outpost/proc/announce_xeno_wave(datum/whiskey_outpost_wave/wave_data)
 	if(!istype(wave_data))
 		return
-	if(wave_data.command_announcement.len > 0)
-		marine_announcement(wave_data.command_announcement[1], wave_data.command_announcement[2])
-	if(wave_data.sound_effect.len > 0)
+	if(length(wave_data.command_announcement) > 0)
+		faction_announcement(wave_data.command_announcement[1], wave_data.command_announcement[2])
+	if(length(wave_data.sound_effect) > 0)
 		playsound_z(SSmapping.levels_by_trait(ZTRAIT_GROUND), pick(wave_data.sound_effect))
 
-//CHECK WIN
-/datum/game_mode/whiskey_outpost/check_win()
-	var/C = count_humans_and_xenos(SSmapping.levels_by_trait(ZTRAIT_GROUND))
-
-	if(C[1] == 0)
-		finished = 1 //Alien win
-	else if(world.time > last_wave_time + 15 MINUTES) // Around 1:12 hh:mm
-		finished = 2 //Marine win
-
 /datum/game_mode/whiskey_outpost/proc/disablejoining()
-	for(var/i in RoleAuthority.roles_by_name)
-		var/datum/job/J = RoleAuthority.roles_by_name[i]
+	for(var/i in SSticker.role_authority.roles_by_name)
+		var/datum/job/J = GET_MAPPED_ROLE(i)
 
 		// If the job has unlimited job slots, We set the amount of slots to the amount it has at the moment this is called
-		if (J.spawn_positions < 0)
+		if(J.spawn_positions < 0)
 			J.spawn_positions = J.current_positions
 			J.total_positions = J.current_positions
 		J.current_positions = J.get_total_positions(TRUE)
@@ -230,84 +183,55 @@
 /datum/game_mode/whiskey_outpost/count_xenos()//Counts braindead too
 	var/xeno_count = 0
 	for(var/i in GLOB.living_xeno_list)
-		var/mob/living/carbon/xenomorph/X = i
-		if(is_ground_level(X.z) && !istype(X.loc,/turf/open/space)) // If they're connected/unghosted and alive and not debrained
+		var/mob/living/carbon/xenomorph/xeno = i
+		if(is_ground_level(xeno.z) && !istype(xeno.loc, /turf/open/space)) // If they're connected/unghosted and alive and not debrained
 			xeno_count += 1 //Add them to the amount of people who're alive.
 
 	return xeno_count
 
 /datum/game_mode/whiskey_outpost/proc/pickovertime()
-	var/randomtime = ((rand(0,6)+rand(0,6)+rand(0,6)+rand(0,6))*50 SECONDS)
-	var/maxovertime = 20 MINUTES
-	if (randomtime >= maxovertime)
+	if(prob(80))
+		return 0
+	randomovertime += rand(0, 600)
+	if(randomovertime >= maxovertime)
 		return maxovertime
-	return randomtime
+	return randomovertime
+
+///////////////////////////
+//Checks to see who won///
+//////////////////////////
+/datum/game_mode/whiskey_outpost/check_win()
+	if(SSticker.current_state != GAME_STATE_PLAYING)
+		return
+
+	var/living_player_list[] = count_humans_and_xenos(SSevacuation.get_affected_zlevels())
+	var/num_humans = living_player_list[1]
+
+	if(!num_humans)
+		round_finished = MODE_WISKEY_OUTPOST_X_MAJOR //Alien win
+	else if(world.time > (last_wave_time + spawn_next_wave_time * 2)) //Last wave time + 15 minutes over for give some time to xeno push
+		round_finished = MODE_WISKEY_OUTPOST_M_MAJOR //Marine win
 
 ///////////////////////////////
 //Checks if the round is over//
 ///////////////////////////////
 /datum/game_mode/whiskey_outpost/check_finished()
-	if(finished != 0)
-		return 1
-
-	return 0
+	if(round_finished)
+		return TRUE
+	return FALSE
 
 //////////////////////////////////////////////////////////////////////
 //Announces the end of the game with all relevant information stated//
 //////////////////////////////////////////////////////////////////////
 /datum/game_mode/whiskey_outpost/declare_completion()
-	if(round_statistics)
-		round_statistics.track_round_end()
-	if(finished == 1)
-		log_game("Round end result - xenos won")
-		to_world(SPAN_ROUND_HEADER("The Xenos have succesfully defended their hive from colonization."))
-		to_world(SPAN_ROUNDBODY("Well done, you've secured LV-624 for the hive!"))
-		to_world(SPAN_ROUNDBODY("It will be another five years before the USCM returns to the Neroid Sector, with the arrival of the 2nd 'Falling Falcons' Battalion and the USS Almayer."))
-		to_world(SPAN_ROUNDBODY("The xenomorph hive on LV-624 remains unthreatened until then..."))
-		world << sound('sound/misc/Game_Over_Man.ogg')
-		if(round_statistics)
-			round_statistics.round_result = MODE_INFESTATION_X_MAJOR
-			if(round_statistics.current_map)
-				round_statistics.current_map.total_xeno_victories++
-				round_statistics.current_map.total_xeno_majors++
+	. = ..()
 
-	else if(finished == 2)
-		log_game("Round end result - marines won")
-		to_world(SPAN_ROUND_HEADER("Against the onslaught, the marines have survived."))
-		to_world(SPAN_ROUNDBODY("The signal rings out to the USS Alistoun, and Dust Raiders stationed elsewhere in the Neroid Sector begin to converge on LV-624."))
-		to_world(SPAN_ROUNDBODY("Eventually, the Dust Raiders secure LV-624 and the entire Neroid Sector in 2182, pacifiying it and establishing peace in the sector for decades to come."))
-		to_world(SPAN_ROUNDBODY("The USS Almayer and the 2nd 'Falling Falcons' Battalion are never sent to the sector and are spared their fate in 2186."))
-		world << sound('sound/misc/hell_march.ogg')
-		if(round_statistics)
-			round_statistics.round_result = MODE_INFESTATION_M_MAJOR
-			if(round_statistics.current_map)
-				round_statistics.current_map.total_marine_victories++
-				round_statistics.current_map.total_marine_majors++
+	declare_completion_announce_medal_awards()
+	declare_fun_facts()
 
-	else
-		log_game("Round end result - no winners")
-		to_world(SPAN_ROUND_HEADER("NOBODY WON!"))
-		to_world(SPAN_ROUNDBODY("How? Don't ask me..."))
-		world << 'sound/misc/sadtrombone.ogg'
-		if(round_statistics)
-			round_statistics.round_result = MODE_INFESTATION_DRAW_DEATH
-
-	if(round_statistics)
-		round_statistics.game_mode = name
-		round_statistics.round_length = world.time
-		round_statistics.end_round_player_population = GLOB.clients.len
-
-		round_statistics.log_round_statistics()
-
-		round_finished = 1
-
-	calculate_end_statistics()
-
-	return 1
-
-/datum/game_mode/proc/auto_declare_completion_whiskey_outpost()
-	return
-
+///////////////////////////////
+//Other WO things to simulate//
+///////////////////////////////
 /datum/game_mode/whiskey_outpost/proc/place_whiskey_outpost_drop(OT = "sup") //Art revamping spawns 13JAN17
 	var/turf/T = pick(supply_spawns)
 	var/randpick
@@ -319,7 +243,7 @@
 	if(!OT)
 		OT = "sup" //no breaking anything.
 
-	else if (OT == "sup")
+	else if(OT == "sup")
 		randpick = rand(0,50)
 		switch(randpick)
 			if(0 to 5)//Marine Gear 10% Chance.
@@ -427,7 +351,7 @@
 	if(crate)
 		crate.storage_capacity = 60
 
-	if(randomitems.len)
+	if(length(randomitems))
 		for(var/i = 0; i < choosemax; i++)
 			var/path = pick(randomitems)
 			var/obj/I = new path(crate)
@@ -681,7 +605,7 @@
 			spawnitems = list(/obj/item/storage/box/explosive_mines,
 							/obj/item/storage/belt/grenade/full)
 		if(5) // Pyrotech
-			var/fuel = pick(/obj/item/ammo_magazine/flamer_tank/large/B, /obj/item/ammo_magazine/flamer_tank/large/X)
+			var/fuel = pick(/obj/item/ammo_magazine/flamer_tank/large/B, /obj/item/ammo_magazine/flamer_tank/large/X, /obj/item/ammo_magazine/flamer_tank/large/G)
 			spawnitems = list(/obj/item/ammo_magazine/flamer_tank/large,
 							/obj/item/ammo_magazine/flamer_tank/large,
 							fuel)
@@ -721,7 +645,7 @@
 	return
 
 /obj/item/storage/box/attachments/update_icon()
-	if(!contents.len)
+	if(!length(contents))
 		var/turf/T = get_turf(src)
 		if(T)
 			new /obj/item/paper/crumpled(T)

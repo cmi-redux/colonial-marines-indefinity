@@ -4,7 +4,7 @@
 	title = JOB_SQUAD_MARINE
 	total_positions = -1
 	spawn_positions = -1
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT|ROLE_ADD_TO_SQUAD
+	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = /datum/equipment_preset/uscm/pfc
 	entry_message_body = "You are a rank-and-file <a href='"+URL_WIKI_MARINE_QUICKSTART+"'>Marine of the USCM</a>, and that is your strength. What you lack alone, you gain standing shoulder to shoulder with the men and women of the corps. Ooh-rah!"
 
@@ -15,6 +15,11 @@
 	title = JOB_WO_SQUAD_MARINE
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = /datum/equipment_preset/wo/marine/pfc
+
+/datum/job/marine/standard/crash
+	title = JOB_CRASH_SQUAD_MARINE
+	flags_startup_parameters = ROLE_ADD_TO_SQUAD
+	gear_preset = /datum/equipment_preset/crash/marine/pfc
 
 /obj/effect/landmark/start/marine
 	name = JOB_SQUAD_MARINE

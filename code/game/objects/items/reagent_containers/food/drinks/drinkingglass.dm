@@ -651,7 +651,10 @@
 
 	drowsy_threshold = CLOTHING_ARMOR_MEDIUM - target.getarmor(affecting, ARMOR_MELEE)
 
-	target.apply_damage(force, BRUTE, affecting, sharp=0)
+	target.apply_damage(force, BRUTE, affecting, sharp = 0)
+	user.track_damage(initial(name), target, force)
+	if(user.faction == target.faction)
+		user.track_friendly_damage(initial(name), target, force)
 
 	if(affecting == "head" && iscarbon(target) && !isxeno(target))
 		for(var/mob/O in viewers(user, null))

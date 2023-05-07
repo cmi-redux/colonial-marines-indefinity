@@ -12,7 +12,7 @@
 
 /mob/dead/observer/click(atom/A, list/mods)
 	if(..())
-		return 1
+		return TRUE
 
 	if (mods["shift"] && mods["middle"])
 		point_to(A)
@@ -21,15 +21,15 @@
 	if(mods["ctrl"])
 		if(A == src)
 			if(!can_reenter_corpse || !mind || !mind.current)
-				return
-			if(alert(src, "Are you sure you want to re-enter your corpse?", "Confirm", "Yes", "No") == "Yes")
+				return FALSE
+			if(alert(src, "Are you sure you want to re-enter your corpse?", "Confirm", client.auto_lang(LANGUAGE_YES), client.auto_lang(LANGUAGE_NO)) == client.auto_lang(LANGUAGE_YES))
 				reenter_corpse()
 				return TRUE
 
-		if(ismob(A) || isVehicle(A))
+		if(ismob(A) || isvehicle(A))
 			if(isxeno(A) && SSticker.mode.check_xeno_late_join(src)) //if it's a xeno and all checks are alright, we are gonna try to take their body
 				var/mob/living/carbon/xenomorph/X = A
-				if(X.stat == DEAD || is_admin_level(X.z) || X.aghosted)
+				if(X.stat == DEAD || X.statistic_exempt || X.aghosted)
 					to_chat(src, SPAN_WARNING("You cannot join as [X]."))
 					ManualFollow(X)
 					return
@@ -46,20 +46,25 @@
 
 					var/deathtime = world.time - timeofdeath
 					if(deathtime < 2.5 MINUTES)
-						var/message = "You have been dead for [DisplayTimeText(deathtime)]."
+						var/message = "You have been dead for [DisplayTimeText(deathtime, language = CLIENT_LANGUAGE_RUSSIAN)]."
 						message = SPAN_WARNING("[message]")
 						to_chat(src, message)
 						to_chat(src, SPAN_WARNING("You must wait 2.5 minutes before rejoining the game!"))
 						ManualFollow(A)
 						return FALSE
-
-				if(alert(src, "Are you sure you want to transfer yourself into [X]?", "Confirm Transfer", "Yes", "No") != "Yes")
-					return FALSE
-				if(((!islarva(X) && X.away_timer < XENO_LEAVE_TIMER) || (islarva(X) && X.away_timer < XENO_LEAVE_TIMER_LARVA)) || X.stat == DEAD) // Do it again, just in case
-					to_chat(src, SPAN_WARNING("That xenomorph can no longer be controlled. Please try another."))
-					return FALSE
-				SSticker.mode.transfer_xeno(src, X)
-				return TRUE
+					if((!islarva(X) && X.away_timer < XENO_LEAVE_TIMER) || (islarva(X) && X.away_timer < XENO_LEAVE_TIMER_LARVA))
+						var/to_wait = XENO_LEAVE_TIMER - X.away_timer
+						if(islarva(X))
+							to_wait = XENO_LEAVE_TIMER_LARVA - X.away_timer
+						to_chat(src, SPAN_WARNING("That player hasn't been away long enough. Please wait [to_wait] second\s longer."))
+						return FALSE
+				if(alert(src, "Are you sure you want to transfer yourself into [X]?", "Confirm Transfer", client.auto_lang(LANGUAGE_YES), client.auto_lang(LANGUAGE_NO)) == client.auto_lang(LANGUAGE_YES))
+					if(((!islarva(X) && X.away_timer < XENO_LEAVE_TIMER) || (islarva(X) && X.away_timer < XENO_LEAVE_TIMER_LARVA)) || X.stat == DEAD) // Do it again, just in case
+						to_chat(src, SPAN_WARNING("That xenomorph can no longer be controlled. Please try another."))
+						return FALSE
+					SSticker.mode.transfer_xenomorph(src, X)
+					return TRUE
+				return FALSE
 			ManualFollow(A)
 			return TRUE
 
@@ -138,6 +143,6 @@
 		to_chat(user, "That player hasn't been away long enough. Please wait [60 - away_timer] more seconds.")
 		return
 
-	if (alert(user, "Are you sure you want to transfer yourself into this Alien Larva?", "Confirmation", "Yes", "No") == "Yes")
+	if(alert(user, "Are you sure you want to transfer yourself into this Alien Larva?", user.auto_lang(LANGUAGE_CONFIRM), user.auto_lang(LANGUAGE_YES), user.auto_lang(LANGUAGE_NO)) == user.auto_lang(LANGUAGE_YES))
 		src.client = user.client
 		return*/

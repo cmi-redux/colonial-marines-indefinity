@@ -8,7 +8,7 @@
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "aN" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/computer/secure_data{
@@ -17,29 +17,31 @@
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "bp" = (
-/obj/structure/machinery/door/airlock/almayer/security/glass/colony{
+/obj/structure/machinery/door/airlock/almayer/security/glass{
 	icon_state = "door_locked";
-	locked = 0;
-	name = "\improper Checkpoint Office"
+	locked = 1;
+	name = "\improper Checkpoint Office";
+	req_access = null
 	},
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "bx" = (
 /obj/structure/surface/table/almayer,
 /obj/item/device/motiondetector,
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "cO" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (NORTH)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "dz" = (
@@ -47,7 +49,8 @@
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/floor{
 	dir = 6;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (NORTHWEST)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "el" = (
@@ -56,41 +59,35 @@
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "ge" = (
 /obj/structure/closet/secure_closet/marshal,
 /turf/open/floor/greengrid,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "hz" = (
-/obj/structure/machinery/door/airlock/almayer/security/glass/colony{
+/obj/structure/machinery/door/airlock/almayer/security/glass{
 	dir = 1;
-	name = "\improper Checkpoint Office"
+	name = "\improper Checkpoint Office";
+	req_access = null
 	},
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "ie" = (
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars_cave{
-	icon_state = "mars_cave_2"
+	icon_state = "mars_cave_2";
+	tag = "icon-mars_cave_2"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
-"kd" = (
-/obj/structure/surface/table/almayer,
-/obj/structure/transmitter/colony_net/rotary{
-	phone_category = "Solaris Ridge";
-	phone_id = "Filtration Checkpoint";
-	phone_color = "red"
-	},
-/turf/open/floor/greengrid,
-/area/bigred/ground/security)
 "kG" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
 	dir = 6;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (NORTHWEST)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "kL" = (
@@ -100,17 +97,16 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
 	dir = 9;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (NORTHWEST)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
-"kX" = (
-/turf/closed/wall/solaris/reinforced,
-/area/bigred/ground/security)
 "mp" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
 	dir = 9;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (NORTHWEST)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "oT" = (
@@ -120,14 +116,16 @@
 /obj/item/tool/warning_cone,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (NORTH)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "pJ" = (
 /obj/item/tool/warning_cone,
 /turf/open/floor{
 	dir = 5;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (NORTHEAST)"
 	},
 /area/bigredv2/outside/se)
 "pV" = (
@@ -136,11 +134,12 @@
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "qg" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "qy" = (
@@ -149,7 +148,7 @@
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "rD" = (
 /obj/structure/machinery/camera/autoname{
 	dir = 8
@@ -157,11 +156,11 @@
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "rF" = (
 /obj/structure/machinery/deployable/barrier,
 /turf/open/floor/greengrid,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "tV" = (
 /obj/structure/machinery/door/poddoor/almayer/closed{
 	dir = 4;
@@ -170,7 +169,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "uk" = (
@@ -178,52 +178,55 @@
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "uF" = (
 /obj/structure/surface/table/almayer,
 /obj/effect/spawner/random/technology_scanner,
 /turf/open/floor/greengrid,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "ve" = (
-/obj/structure/machinery/door/airlock/almayer/security/glass/colony{
+/obj/structure/machinery/door/airlock/almayer/security/glass{
 	dir = 1;
-	name = "\improper Checkpoint Office"
+	name = "\improper Checkpoint Office";
+	req_access = null
 	},
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "vH" = (
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "vO" = (
 /obj/structure/surface/rack,
 /obj/item/stack/sheet/metal/small_stack,
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "wi" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
 	dir = 4;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (EAST)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "xa" = (
 /turf/open/floor/greengrid,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "xj" = (
 /obj/structure/bed/chair/office/light{
-	dir = 4
+	dir = 4;
+	tag = ""
 	},
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "xr" = (
 /obj/structure/surface/rack,
 /obj/item/clothing/mask/gas,
@@ -234,44 +237,49 @@
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "zE" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
 	dir = 8;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (WEST)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "Aq" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "AY" = (
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "AZ" = (
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (NORTH)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "EV" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
 	dir = 4;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (EAST)"
 	},
 /area/bigredv2/outside/se)
 "Ge" = (
 /obj/effect/landmark/crap_item,
 /turf/open/floor{
 	dir = 5;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (NORTHEAST)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "Gm" = (
@@ -280,7 +288,8 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (NORTH)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "GJ" = (
@@ -288,31 +297,34 @@
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/floor{
 	dir = 4;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (EAST)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "HH" = (
 /turf/open/floor{
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "Ih" = (
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "IS" = (
 /obj/structure/filingcabinet,
 /turf/open/floor/greengrid,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "KO" = (
 /obj/item/trash/sosjerky,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "LX" = (
 /obj/structure/machinery/light{
 	dir = 8
@@ -321,15 +333,15 @@
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "Mq" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/greengrid,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "NQ" = (
 /obj/structure/largecrate,
 /turf/open/floor/greengrid,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "NU" = (
 /obj/structure/machinery/light{
 	dir = 8
@@ -338,18 +350,20 @@
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "OD" = (
 /turf/open/floor{
 	dir = 4;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (EAST)"
 	},
 /area/bigredv2/outside/se)
 "OM" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
 	dir = 10;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (SOUTHWEST)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "Pf" = (
@@ -358,7 +372,7 @@
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "PS" = (
 /turf/open/mars,
 /area/bigredv2/outside/se)
@@ -371,13 +385,14 @@
 	},
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidfloor"
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "Qo" = (
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/closed/wall/solaris/reinforced,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "Sr" = (
 /obj/structure/machinery/camera/autoname{
 	dir = 8
@@ -387,22 +402,27 @@
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
+"Sx" = (
+/turf/closed/wall/solaris/reinforced,
+/area/bigred/uground/building/lambda_labs/office)
 "SF" = (
 /obj/structure/window/framed/solaris/reinforced,
 /turf/open/floor/plating,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "Ue" = (
 /obj/structure/machinery/camera/autoname,
 /turf/open/floor{
 	dir = 1;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (NORTH)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "Vg" = (
 /turf/open/floor{
 	dir = 8;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (WEST)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "Vn" = (
@@ -410,23 +430,25 @@
 /obj/item/ashtray/bronze,
 /obj/item/trash/cigbutt/cigarbutt,
 /turf/open/floor/greengrid,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "VI" = (
 /obj/structure/largecrate,
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "Wa" = (
 /turf/open/floor{
 	dir = 6;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (NORTHWEST)"
 	},
 /area/bigredv2/outside/se)
 "XU" = (
 /turf/open/floor{
 	dir = 10;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (SOUTHWEST)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "Yo" = (
@@ -435,20 +457,21 @@
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "YZ" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/computer/cameras/wooden_tv{
 	dir = 8
 	},
 /turf/open/floor/greengrid,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "Zu" = (
 /obj/effect/landmark/hunter_primary,
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/floor{
 	dir = 5;
-	icon_state = "asteroidwarning"
+	icon_state = "asteroidwarning";
+	tag = "icon-asteroidwarning (NORTHEAST)"
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "ZK" = (
@@ -459,7 +482,7 @@
 /turf/open/floor{
 	icon_state = "dark"
 	},
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 
 (1,1,1) = {"
 PS
@@ -467,14 +490,14 @@ pJ
 EV
 OD
 Wa
-kX
-kX
-kX
-kX
-kX
-kX
-kX
-kX
+Sx
+Sx
+Sx
+Sx
+Sx
+Sx
+Sx
+Sx
 Qo
 "}
 (2,1,1) = {"
@@ -483,7 +506,7 @@ tV
 tV
 tV
 tV
-kX
+Sx
 IS
 LX
 qy
@@ -500,7 +523,7 @@ Vg
 zE
 OM
 SF
-kd
+Mq
 AY
 KO
 uk
@@ -531,7 +554,7 @@ tV
 tV
 Qf
 Qf
-kX
+Sx
 YZ
 aN
 rD
@@ -547,14 +570,14 @@ mp
 Vg
 Vg
 XU
-kX
-kX
-kX
-kX
+Sx
+Sx
+Sx
+Sx
 bp
-kX
-kX
-kX
+Sx
+Sx
+Sx
 Qo
 "}
 (7,1,1) = {"
@@ -563,7 +586,7 @@ Ue
 Ih
 Aq
 qg
-kX
+Sx
 VI
 VI
 AY
@@ -579,7 +602,7 @@ AZ
 Ih
 Aq
 qg
-kX
+Sx
 ax
 AY
 uk
@@ -611,7 +634,7 @@ Gm
 Ih
 Ih
 HH
-kX
+Sx
 AY
 Pf
 vH
@@ -627,7 +650,7 @@ pb
 Ih
 Aq
 qg
-kX
+Sx
 vH
 ZK
 Sr

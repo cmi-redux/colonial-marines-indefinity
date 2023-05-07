@@ -16,8 +16,8 @@
 	var/obj/item/card/id/locking_id = null
 	var/is_id_lockable = FALSE
 	var/lock_overridable = TRUE
-	var/xeno_icon_state = null //the icon_state for xeno's wearing this (using the dmi defined in default_xeno_onmob_icons list)
-	var/list/xeno_types = null //what xeno types can equip this backpack
+	var/xeno_icon_state = null //the icon_state for xenomorph's wearing this (using the dmi defined in default_xeno_onmob_icons list)
+	var/list/xeno_types = null //what xenomorph types can equip this backpack
 
 /obj/item/storage/backpack/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/card/id/) && is_id_lockable && ishuman(user))
@@ -26,7 +26,7 @@
 		toggle_lock(card, H)
 		return
 
-	if (..() && use_sound)
+	if(..() && use_sound)
 		playsound(loc, use_sound, 15, TRUE, 6)
 
 /obj/item/storage/backpack/attack(mob/living/target_mob, mob/living/user)
@@ -45,7 +45,7 @@
 	var/mob/living/carbon/xenomorph/xeno = target_mob
 	if(target_mob.stat != DEAD) // If the Xeno is alive, fight back
 		var/mob/living/carbon/carbon_user = user
-		if(!carbon_user || !carbon_user.ally_of_hivenumber(xeno.hivenumber))
+		if(!carbon_user || !carbon_user.ally(xeno.faction))
 			user.KnockDown(rand(xeno.caste.tacklestrength_min, xeno.caste.tacklestrength_max))
 			playsound(user.loc, 'sound/weapons/pierce.ogg', 25, TRUE)
 			user.visible_message(SPAN_WARNING("\The [user] tried to strap \the [src] onto [target_mob] but instead gets a tail swipe to the head!"))
@@ -443,6 +443,12 @@
 	desc = "A heavy-duty satchel used by USCM medics. It sacrifices capacity for usability. A small patch is sewn to the top flap."
 	icon_state = "marinesatch_medic"
 
+/obj/item/storage/backpack/marine/satchel/intel
+	name = "\improper USCM lightweight expedition pack"
+	desc = "A heavy-duty IMP based backpack that can be slung around the front or to the side, and can quickly be accessed with only one hand. Usually issued to USCM intelligence officers."
+	icon_state = "marinepack_techi"
+	max_storage_space = 20
+
 /obj/item/storage/backpack/marine/satchel/tech
 	name = "\improper USCM technician chestrig"
 	desc = "A heavy-duty chestrig used by some USCM technicians."
@@ -457,16 +463,14 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 	item_state = "rto_backpack"
 	has_gamemode_skin = FALSE
 	actions_types = list(/datum/action/item_action/rto_pack/use_phone)
+	sensor_radius = 12
 
 	flags_item = ITEM_OVERRIDE_NORTHFACE
 
 	uniform_restricted = list(/obj/item/clothing/under/marine/rto)
 	var/obj/structure/transmitter/internal/internal_transmitter
-
 	var/phone_category = PHONE_RTO
-	var/network_receive = FACTION_MARINE
-	var/list/networks_transmit = list(FACTION_MARINE)
-	var/base_icon
+	faction_to_get = FACTION_MARINE
 
 /datum/action/item_action/rto_pack/use_phone/New(mob/living/user, obj/item/holder)
 	..()
@@ -489,12 +493,10 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 
 /obj/item/storage/backpack/marine/satchel/rto/Initialize()
 	. = ..()
-	internal_transmitter = new(src)
+	internal_transmitter = new(src, faction)
 	internal_transmitter.relay_obj = src
 	internal_transmitter.phone_category = phone_category
 	internal_transmitter.enabled = FALSE
-	internal_transmitter.network_receive = network_receive
-	internal_transmitter.networks_transmit = networks_transmit
 	RegisterSignal(internal_transmitter, COMSIG_TRANSMITTER_UPDATE_ICON, PROC_REF(check_for_ringing))
 	GLOB.radio_packs += src
 
@@ -571,20 +573,19 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 		. = ..()
 
 /obj/item/storage/backpack/marine/satchel/rto/upp_net
-	network_receive = FACTION_UPP
-	networks_transmit = list(FACTION_UPP)
+	faction_to_get = FACTION_UPP
 
 /obj/item/storage/backpack/marine/satchel/rto/small
 	name = "\improper USCM Small Radio Telephone Pack"
 	max_storage_space = 10
+	sensor_radius = 6
 
 	uniform_restricted = null
 	phone_category = PHONE_MARINE
 
 
 /obj/item/storage/backpack/marine/satchel/rto/small/upp_net
-	network_receive = FACTION_UPP
-	networks_transmit = list(FACTION_UPP)
+	faction_to_get = FACTION_UPP
 	phone_category = PHONE_UPP_SOLDIER
 
 /obj/item/storage/backpack/marine/satchel/rto/io
@@ -800,7 +801,7 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 
 /datum/action/item_action/specialist/toggle_cloak/can_use_action()
 	var/mob/living/carbon/human/H = owner
-	if(istype(H) && !H.is_mob_incapacitated() && !H.lying && holder_item == H.back)
+	if(istype(H) && !H.is_mob_incapacitated() && H.can_action && holder_item == H.back)
 		return TRUE
 
 /datum/action/item_action/specialist/toggle_cloak/action_activate()
@@ -841,10 +842,10 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 				return
 		else if(istype(W, /obj/item/ammo_magazine/flamer_tank))
 			var/obj/item/ammo_magazine/flamer_tank/FT = W
-			if(!FT.current_rounds && reagents.total_volume)
+			if(!FT.ammo_position && reagents.total_volume)
 				var/fuel_available = reagents.total_volume < FT.max_rounds ? reagents.total_volume : FT.max_rounds
 				reagents.remove_reagent("fuel", fuel_available)
-				FT.current_rounds = fuel_available
+				FT.ammo_position = fuel_available
 				playsound(loc, 'sound/effects/refill.ogg', 25, TRUE, 3)
 				FT.caliber = "Fuel"
 				to_chat(user, SPAN_NOTICE("You refill [FT] with [lowertext(FT.caliber)]."))
@@ -855,12 +856,12 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 			for(var/slot in G.attachments)
 				if(istype(G.attachments[slot], /obj/item/attachable/attached_gun/flamer))
 					var/obj/item/attachable/attached_gun/flamer/F = G.attachments[slot]
-					if(F.current_rounds < F.max_rounds)
-						var/to_transfer = F.max_rounds - F.current_rounds
+					if(F.ammo_position < F.max_rounds)
+						var/to_transfer = F.max_rounds - F.ammo_position
 						if(to_transfer > reagents.total_volume)
 							to_transfer = reagents.total_volume
 						reagents.remove_reagent("fuel", to_transfer)
-						F.current_rounds += to_transfer
+						F.ammo_position += to_transfer
 						playsound(loc, 'sound/effects/refill.ogg', 25, TRUE, 3)
 						to_chat(user, SPAN_NOTICE("You refill [F] with fuel."))
 					else
@@ -871,12 +872,12 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 /obj/item/storage/backpack/marine/engineerpack/afterattack(obj/O as obj, mob/user as mob, proximity)
 	if(!proximity) // this replaces and improves the get_dist(src,O) <= 1 checks used previously
 		return
-	if (istype(O, /obj/structure/reagent_dispensers/fueltank) && src.reagents.total_volume < max_fuel)
+	if(istype(O, /obj/structure/reagent_dispensers/fueltank) && src.reagents.total_volume < max_fuel)
 		O.reagents.trans_to(src, max_fuel)
 		to_chat(user, SPAN_NOTICE(" You crack the cap off the top of the pack and fill it back up again from the tank."))
 		playsound(loc, 'sound/effects/refill.ogg', 25, TRUE, 3)
 		return
-	else if (istype(O, /obj/structure/reagent_dispensers/fueltank) && src.reagents.total_volume == max_fuel)
+	else if(istype(O, /obj/structure/reagent_dispensers/fueltank) && src.reagents.total_volume == max_fuel)
 		to_chat(user, SPAN_NOTICE(" The pack is already full!"))
 		return
 	..()
@@ -905,15 +906,15 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 	has_gamemode_skin = TRUE
 
 /obj/item/storage/backpack/marine/engineerpack/flamethrower/attackby(obj/item/W, mob/living/user)
-	if (istype(W, /obj/item/ammo_magazine/flamer_tank))
+	if(istype(W, /obj/item/ammo_magazine/flamer_tank))
 		var/obj/item/ammo_magazine/flamer_tank/FTL = W
-		var/missing_volume = FTL.max_rounds - FTL.current_rounds
+		var/missing_volume = FTL.max_rounds - FTL.ammo_position
 
 		//Fuel has to be standard napalm OR tank needs to be empty. We need to have a non-full tank and our backpack be dry
-		if (((FTL.caliber == "UT-Napthal Fuel") || (!FTL.current_rounds)) && missing_volume && reagents.total_volume)
+		if(((FTL.caliber == "UT-Napthal Fuel") || (!FTL.ammo_position)) && missing_volume && reagents.total_volume)
 			var/fuel_available = reagents.total_volume < missing_volume ? reagents.total_volume : missing_volume
 			reagents.remove_reagent("fuel", fuel_available)
-			FTL.current_rounds = FTL.current_rounds + fuel_available
+			FTL.ammo_position = FTL.ammo_position + fuel_available
 			playsound(loc, 'sound/effects/refill.ogg', 25, TRUE, 3)
 			FTL.caliber = "UT-Napthal Fuel"
 			to_chat(user, SPAN_NOTICE("You refill [FTL] with [FTL.caliber]."))
@@ -980,7 +981,7 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 	. = ..()
 	var/list/template_guns = list(/obj/item/weapon/gun/pistol, /obj/item/weapon/gun/revolver, /obj/item/weapon/gun/shotgun, /obj/item/weapon/gun/rifle, /obj/item/weapon/gun/smg, /obj/item/weapon/gun/energy, /obj/item/weapon/gun/launcher, /obj/item/weapon/gun/launcher/grenade, /obj/item/weapon/gun/rifle/sniper)
 	var/list/bad_guns = typesof(/obj/item/weapon/gun/pill) + /obj/item/weapon/gun/souto + /obj/item/weapon/gun/smg/nailgun/compact //guns that don't work for some reason
-	var/list/emplacements = list(/obj/item/device/m2c_gun , /obj/item/device/m56d_gun/mounted)
+	var/list/emplacements = list()
 	var/list/yautja_guns = typesof(/obj/item/weapon/gun/energy/yautja) + /obj/item/weapon/gun/launcher/spike
 	var/list/smartguns = typesof(/obj/item/weapon/gun/smartgun)
 	var/list/training_guns = list(
@@ -1030,7 +1031,7 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 /obj/item/storage/backpack/marine/satchel/scout_cloak/upp
 	name = "\improper V86 Thermal Cloak"
 	desc = "A thermo-optic camouflage cloak commonly used by UPP commando units."
-	uniform_restricted = list(/obj/item/clothing/suit/storage/marine/faction/UPP/commando) //Need to wear UPP commando armor to equip this.
+	uniform_restricted = list(/obj/item/clothing/suit/storage/marine/faction/upp/commando) //Need to wear UPP commando armor to equip this.
 
 	max_storage_space = 21
 	camo_alpha = 10

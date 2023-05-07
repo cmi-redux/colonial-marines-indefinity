@@ -56,7 +56,8 @@
 /area/lv624/ground/barrens/south_eastern_barrens)
 "aO" = (
 /obj/structure/bed/chair/comfy/black{
-	dir = 1
+	dir = 1;
+	tag = "icon-comfychair (EAST)"
 	},
 /turf/open/floor/corsat{
 	dir = 1;
@@ -151,7 +152,7 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 1
 	},
-/turf/open/gm/dirtgrassborder/weedable{
+/turf/open/gm/dirtgrassborder{
 	icon_state = "grass1"
 	},
 /area/lv624/ground/barrens/south_eastern_barrens)
@@ -249,7 +250,7 @@
 "eY" = (
 /obj/structure/showcase{
 	color = "#FFE55C";
-	desc = "This statue seems taller and somehow mightier than the others... it makes you want to steer away from it.";
+	desc = "This statue seems taller and somehow mightier than the others.. it makes you want to steer away from it.";
 	icon = 'icons/mob/humans/species/r_synthetic.dmi';
 	icon_state = "Synthetic_Template";
 	name = "massive statue"
@@ -353,7 +354,7 @@
 /area/lv624/ground/caves/sand_temple)
 "gI" = (
 /obj/structure/flora/bush/ausbushes/var3/sunnybush{
-	desc = "The oranges aren't done yet... this sucks.";
+	desc = "The oranges aren't done yet.. this sucks.";
 	name = "orange tree"
 	},
 /turf/open/gm/grass,
@@ -510,7 +511,7 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 4
 	},
-/turf/open/gm/dirtgrassborder/weedable{
+/turf/open/gm/dirtgrassborder{
 	icon_state = "grass1"
 	},
 /area/lv624/ground/barrens/south_eastern_barrens)
@@ -1366,7 +1367,7 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 4
 	},
-/turf/open/gm/dirtgrassborder/weedable{
+/turf/open/gm/dirtgrassborder{
 	icon_state = "grass1"
 	},
 /area/lv624/ground/barrens/south_eastern_barrens)
@@ -1532,7 +1533,8 @@
 /area/lv624/ground/caves/sand_temple)
 "MB" = (
 /obj/structure/bed/chair/comfy/black{
-	dir = 4
+	dir = 4;
+	tag = "icon-comfychair (EAST)"
 	},
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple)
@@ -1603,13 +1605,13 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 8
 	},
-/turf/open/gm/dirtgrassborder/weedable{
+/turf/open/gm/dirtgrassborder{
 	icon_state = "grass1"
 	},
 /area/lv624/ground/barrens/south_eastern_barrens)
 "OP" = (
 /obj/structure/barricade/handrail/strata,
-/turf/open/gm/dirtgrassborder/weedable{
+/turf/open/gm/dirtgrassborder{
 	icon_state = "grass1"
 	},
 /area/lv624/ground/barrens/south_eastern_barrens)
@@ -1701,7 +1703,8 @@
 /area/lv624/ground/caves/sand_temple)
 "Rx" = (
 /obj/structure/bed/chair/comfy/black{
-	dir = 8
+	dir = 8;
+	tag = "icon-comfychair (EAST)"
 	},
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple)
@@ -1787,7 +1790,9 @@
 	color = "#b29082"
 	},
 /turf/open/floor/sandstone/runed,
-/area/lv624/ground/caves/sand_temple)
+/area/lv624/ground/caves/sand_temple{
+	color = "#b29082"
+	})
 "UU" = (
 /obj/structure/xenoautopsy/tank/broken,
 /turf/open/shuttle{
@@ -1813,7 +1818,8 @@
 /area/lv624/ground/caves/sand_temple)
 "Wl" = (
 /obj/structure/bed/chair/comfy/black{
-	dir = 1
+	dir = 1;
+	tag = "icon-comfychair (EAST)"
 	},
 /turf/open/floor/strata{
 	color = "#5e5d5d";
@@ -1827,7 +1833,7 @@
 /obj/structure/barricade/handrail/strata{
 	dir = 8
 	},
-/turf/open/gm/dirtgrassborder/weedable{
+/turf/open/gm/dirtgrassborder{
 	icon_state = "grass1"
 	},
 /area/lv624/ground/barrens/south_eastern_barrens)
@@ -1840,6 +1846,12 @@
 	desc = "It's a spoon. Covered in red slime and mold.";
 	pixel_x = -10;
 	pixel_y = 3
+	},
+/turf/open/floor/sandstone/runed,
+/area/lv624/ground/caves/sand_temple)
+"Xb" = (
+/obj/structure/stairs/perspective{
+	color = "#b29082"
 	},
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple)
@@ -1863,7 +1875,8 @@
 /area/lv624/ground/barrens/south_eastern_barrens)
 "XV" = (
 /obj/structure/bed/chair/comfy/black{
-	dir = 1
+	dir = 1;
+	tag = "icon-comfychair (EAST)"
 	},
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple/powered)
@@ -2697,7 +2710,7 @@ mv
 mv
 kO
 PA
-UP
+Xb
 mv
 mv
 mv
@@ -2781,7 +2794,7 @@ mv
 mv
 kO
 PA
-UP
+Xb
 mv
 mv
 mv

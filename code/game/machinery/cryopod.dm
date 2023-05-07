@@ -218,7 +218,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_MARINE_1 = list(), SQUAD_MARINE_2 = li
 	items -= occupant //Don't delete the occupant
 	items -= announce //or the autosay radio.
 
-	SSminimaps.remove_marker(src)
+	SSmapview.remove_marker(src)
 
 	var/list/dept_console = GLOB.frozen_items["REQ"]
 	if(ishuman(occupant))
@@ -346,10 +346,9 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_MARINE_1 = list(), SQUAD_MARINE_2 = li
 					if(set_name && !available_specialist_sets.Find(set_name))
 						available_specialist_sets += set_name
 
-	SSticker.mode.latejoin_tally-- //Cryoing someone out removes someone from the Marines, blocking further larva spawns until accounted for
-
 	//Handle job slot/tater cleanup.
-	RoleAuthority.free_role(GET_MAPPED_ROLE(occupant.job), TRUE)
+	SSticker.role_authority.free_role(GET_MAPPED_ROLE(occupant.job), TRUE)
+	SSautobalancer.balance_action(occupant, "remove")
 
 	var/occupant_ref = WEAKREF(occupant)
 	//Delete them from datacore.
@@ -407,7 +406,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_MARINE_1 = list(), SQUAD_MARINE_2 = li
 			return
 
 		if(M.client)
-			if(alert(M,"Would you like to enter cryosleep?", , "Yes", "No") == "Yes")
+			if(alert(M, "Would you like to enter cryosleep?", , M.client.auto_lang(LANGUAGE_YES), M.client.auto_lang(LANGUAGE_NO)) == M.client.auto_lang(LANGUAGE_YES))
 				if(!M || !G || !G.grabbed_thing) return
 				willing = 1
 		else
@@ -449,7 +448,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_MARINE_1 = list(), SQUAD_MARINE_2 = li
 		to_chat(usr, SPAN_WARNING("You can't drag people out of hypersleep!"))
 		return
 
-	if(!silent_exit && alert(usr, "Would you like eject out of the hypersleep chamber?", "Confirm", "Yes", "No") != "Yes")
+	if(!silent_exit && alert(usr, "Would you like eject out of the hypersleep chamber?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 
 	go_out() //Not adding a delay for this because for some reason it refuses to work. Not a big deal imo
@@ -515,7 +514,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_MARINE_1 = list(), SQUAD_MARINE_2 = li
 			to_chat(M, SPAN_NOTICE("You feel cool air surround you. You go numb as your senses turn inward."))
 			to_chat(M, SPAN_BOLDNOTICE("If you log out or close your client now, your character will permanently removed from the round in 10 minutes. If you ghost, timer will be decreased to 2 minutes."))
 		var/area/location = get_area(src)
-		if(M.job != GET_MAPPED_ROLE(JOB_SQUAD_MARINE))
+		if(!(GET_DEFAULT_ROLE(M.job) in JOB_SQUAD_NORMAL_LIST))
 			message_admins("[key_name_admin(M)], [M.job], has entered \a [src] at [location] after playing for [duration2text(world.time - M.life_time_start)].")
 		playsound(src, 'sound/machines/hydraulics_3.ogg', 30)
 	silent_exit = silent

@@ -104,7 +104,7 @@
 			turns_since_move++
 			if(turns_since_move >= turns_per_move)
 				if(!(stop_automated_movement_when_pulled && pulledby)) //Soma animals don't move when pulled
-					var/move_dir = pick(cardinal)
+					var/move_dir = pick( GLOB.cardinals)
 					Move(get_step(src, move_dir ))
 					setDir(move_dir)
 					turns_since_move = 0
@@ -249,7 +249,7 @@
 	switch(M.a_intent)
 
 		if(INTENT_HELP)
-			if (health > 0)
+			if(health > 0)
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
 						O.show_message(SPAN_NOTICE("[M] [response_help] [src]"), SHOW_MESSAGE_VISIBLE)
@@ -331,11 +331,11 @@
 	health = Clamp(health - damage, 0, maxHealth)
 
 /mob/living/simple_animal/proc/SA_attackable(target_mob)
-	if (isliving(target_mob))
+	if(isliving(target_mob))
 		var/mob/living/L = target_mob
 		if(!L.stat)
 			return (0)
-	if (istype(target_mob,/obj/structure/machinery/bot))
+	if(istype(target_mob,/obj/structure/machinery/bot))
 		var/obj/structure/machinery/bot/B = target_mob
 		if(B.health > 0)
 			return (0)
@@ -346,7 +346,7 @@
 	if(!targeted_by && target_locked)
 		QDEL_NULL(target_locked)
 	overlays = null
-	if (targeted_by && target_locked)
+	if(targeted_by && target_locked)
 		overlays += target_locked
 
 /mob/living/simple_animal/say(message)

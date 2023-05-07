@@ -10,7 +10,7 @@
 
 /obj/structure/blocker/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
-	if (PF)
+	if(PF)
 		PF.flags_can_pass_all = NONE
 
 /obj/structure/blocker/ex_act(severity)
@@ -48,7 +48,7 @@
 
 /obj/structure/blocker/fog/New()
 	..()
-	dir  = pick(CARDINAL_DIRS)
+	dir = pick(CARDINAL_DIRS)
 
 /obj/structure/blocker/fog/attack_hand(mob/M)
 	to_chat(M, SPAN_NOTICE("You peer through the fog, but it's impossible to tell what's on the other side..."))
@@ -56,6 +56,43 @@
 /obj/structure/blocker/fog/attack_alien(M)
 	attack_hand(M)
 	return XENO_NONCOMBAT_ACTION
+
+/obj/structure/blocker/fog/xeno
+	name = "dense fog"
+	desc = "It looks way too dangerous to traverse. Best wait until it has cleared up."
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "smoke"
+	var/is_whitelist = FALSE
+	var/strict_types = FALSE
+
+	var/list/types = list()
+	types = list(
+	/mob/living/carbon/human,
+	/obj/vehicle/,
+	/obj/item/projectile/
+)
+
+/obj/structure/blocker/fog/xeno/New()
+	..()
+	dir  = pick(CARDINAL_DIRS)
+
+/obj/structure/blocker/fog/xeno/get_projectile_hit_boolean(obj/item/projectile/P)
+	if(!is_whitelist)
+		return FALSE
+	. = ..()
+
+/obj/structure/blocker/fog/xeno/BlockedPassDirs(atom/movable/AM, target_dir)
+	var/whitelist_no_block = is_whitelist? NO_BLOCKED_MOVEMENT : BLOCKED_MOVEMENT
+
+	if(strict_types)
+		if(AM.type in types)
+			return whitelist_no_block
+	else
+		for(var/type in types)
+			if(istype(AM, type))
+				return whitelist_no_block
+
+	return !whitelist_no_block
 
 
 /obj/structure/blocker/forcefield
@@ -96,7 +133,6 @@
 
 	if(!visible)
 		invisibility = 101
-
 
 /obj/structure/blocker/forcefield/vehicles
 	types = list(/obj/vehicle/)

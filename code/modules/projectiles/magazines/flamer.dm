@@ -9,11 +9,12 @@
 	icon_state = "flametank_custom"
 	item_state = "flametank"
 	max_rounds = 100
-	default_ammo = /datum/ammo/flamethrower //doesn't actually need bullets. But we'll get null ammo error messages if we don't
+	ammo_preset = list(/datum/ammo/flamethrower)
 	w_class = SIZE_MEDIUM //making sure you can't sneak this onto your belt.
 	gun_type = /obj/item/weapon/gun/flamer
 	caliber = "UT-Napthal Fuel" //Ultra Thick Napthal Fuel, from the lore book.
 
+	var/glob_flame = FALSE
 	var/flamer_chem = "utnapthal"
 	flags_magazine = AMMUNITION_HIDE_AMMO
 
@@ -21,8 +22,14 @@
 	var/max_range = 5
 	var/max_duration = 30
 
+
+	var/hud_state = "flame"
+	var/hud_state_empty = "flame_empty"
+
 	var/fuel_pressure = 1 //How much fuel is used per tile fired
 	var/max_pressure = 10
+
+	shrapnel_type = /datum/ammo/bullet/shrapnel/incendiary
 
 /obj/item/ammo_magazine/flamer_tank/empty
 	flamer_chem = null
@@ -44,6 +51,24 @@
 
 	update_icon()
 
+/obj/item/ammo_magazine/flamer_tank/prime(datum/cause_data/weapon_cause_data)
+	if(!explosing_check())
+		return
+	explosing = TRUE
+	playsound(src, 'sound/effects/explosion_psss.ogg', 2, 1)
+	if(!weapon_cause_data)
+		weapon_cause_data = create_cause_data(cause_data)
+	var/shrapnel_count
+	if(flamer_chem)
+		shrapnel_count = ammo_position
+	if(shrapnel_count)
+		create_shrapnel(src, shrapnel_count, , , shrapnel_type, weapon_cause_data)
+		reagents.handle_volatiles()
+		cell_explosion(src, 50, 200, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data)
+	else
+		create_shrapnel(src, 2, , , shrapnel_type, weapon_cause_data)
+	qdel(src)
+
 /obj/item/ammo_magazine/flamer_tank/verb/remove_reagents()
 	set name = "Empty canister"
 	set category = "Object"
@@ -53,7 +78,7 @@
 	if(usr.get_active_hand() != src)
 		return
 
-	if(alert(usr, "Do you really want to empty out [src]?", "Empty canister", "Yes", "No") != "Yes")
+	if(alert(usr, "Do you really want to empty out [src]?", "Empty canister", usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 
 	reagents.clear_reagents()
@@ -144,7 +169,7 @@
 	max_range = 7
 	max_duration = 50
 
-/obj/item/ammo_magazine/flamer_tank/EX
+/obj/item/ammo_magazine/flamer_tank/ex
 	name = "incinerator tank (EX)"
 	desc = "A fuel tank of Ultra Thick Napthal Fuel type EX, a sticky combustible liquid chemical that burns so hot it melts straight through flame-resistant material, for use in the M240-T incinerator unit. Handle with care."
 	caliber = "Napalm EX"
@@ -194,6 +219,8 @@
 	max_range = 5
 	max_duration = 50
 
+	hud_state = "flame_green"
+
 /obj/item/ammo_magazine/flamer_tank/large/empty
 	flamer_chem = null
 
@@ -207,6 +234,7 @@
 	flamer_chem = "napalmb"
 
 	max_range = 6
+	hud_state = "flame_green"
 
 // This is the blue flamer fuel for the pyro.
 /obj/item/ammo_magazine/flamer_tank/large/X
@@ -216,6 +244,20 @@
 	flamer_chem = "napalmx"
 
 	max_range = 6
+	hud_state = "flame_blue"
+
+// This is the blue flamer fuel for the pyro.
+/obj/item/ammo_magazine/flamer_tank/large/G
+	name = "large incinerator tank (G)"
+	desc = "A large fuel tank of Ultra Thick Napthal Fuel type G, a phosphorus combustible gas chemical that burns extremely hot under roof and spread quickly, for use in the M240-T incinerator unit. Handle with care."
+	caliber = "Napalm G"
+	flamer_chem = "napalmg"
+
+	ammo_preset = list(/datum/ammo/flamethrower/sentry_flamer/glob)
+
+	glob_flame = TRUE
+	max_range = 6
+	hud_state = "flame_light_blue"
 
 /obj/item/ammo_magazine/flamer_tank/large/EX
 	name = "large incinerator tank (EX)"
@@ -224,6 +266,7 @@
 	flamer_chem = "napalmex"
 
 	max_range = 7
+	hud_state = "flame_blue"
 
 //Custom pyro tanks
 /obj/item/ammo_magazine/flamer_tank/custom/large

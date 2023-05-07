@@ -8,12 +8,12 @@
 	for (var/datum/shuttle/ferry/shuttle in process_shuttles)
 
 		// Hacky bullshit that should only apply for shuttle/marine's for now.
-		if (shuttle.move_scheduled && shuttle.already_moving == 0)
+		if(shuttle.move_scheduled && shuttle.already_moving == 0)
 			shuttle.already_moving = 1
 			spawn(-1)
 				move_shuttle_to(shuttle.target_turf, 0, shuttle.shuttle_turfs, 0, shuttle.target_rotation, shuttle)
 
-		if (shuttle.process_state)
+		if(shuttle.process_state)
 			shuttle.process()
 
 /datum/controller/shuttle_controller/New()
@@ -42,110 +42,6 @@
 	process_shuttles += shuttle
 
 	supply_controller.shuttle = shuttle
-
-//---ELEVATOR---//
-	// Elevator I
-	shuttle = new /datum/shuttle/ferry/elevator()
-	shuttle.location = 0
-	shuttle.warmup_time = 10 SECONDS
-	shuttle.recharge_time = ELEVATOR_RECHARGE
-
-	for(var/area/A in all_areas)
-		if(A.type == /area/shuttle/elevator1/underground)
-			shuttle.area_offsite = A
-			break
-
-	for(var/area/A in all_areas)
-		if(A.type == /area/shuttle/elevator1/ground)
-			shuttle.area_station = A
-			break
-
-	for(var/area/A in all_areas)
-		if(A.type == /area/shuttle/elevator1/transit)
-			shuttle.area_transition = A
-			break
-
-	shuttle.move_time = ELEVATOR_TRANSIT_DURATION
-	shuttle.iselevator = 1
-	shuttles["Elevator 1"] = shuttle
-	process_shuttles += shuttle
-
-	// Elevator II
-	shuttle = new /datum/shuttle/ferry/elevator()
-	shuttle.location = 0
-	shuttle.warmup_time = 10 SECONDS
-	shuttle.recharge_time = ELEVATOR_RECHARGE
-
-	for(var/area/A in all_areas)
-		if(A.type == /area/shuttle/elevator2/underground)
-			shuttle.area_offsite = A
-			break
-
-	for(var/area/A in all_areas)
-		if(A.type == /area/shuttle/elevator2/ground)
-			shuttle.area_station = A
-			break
-
-	for(var/area/A in all_areas)
-		if(A.type == /area/shuttle/elevator2/transit)
-			shuttle.area_transition = A
-			break
-
-	shuttle.transit_direction = NORTH
-	shuttle.move_time = ELEVATOR_TRANSIT_DURATION
-	shuttle.iselevator = 1
-	shuttles["Elevator 2"] = shuttle
-	process_shuttles += shuttle
-
-	// Elevator III
-	shuttle = new /datum/shuttle/ferry/elevator()
-	shuttle.location = 0
-	shuttle.warmup_time = 10 SECONDS
-	shuttle.recharge_time = ELEVATOR_RECHARGE
-	for(var/area/A in all_areas)
-		if(A.type == /area/shuttle/elevator3/underground)
-			shuttle.area_offsite = A
-			break
-
-	for(var/area/A in all_areas)
-		if(A.type == /area/shuttle/elevator3/ground)
-			shuttle.area_station = A
-			break
-
-	for(var/area/A in all_areas)
-		if(A.type == /area/shuttle/elevator3/transit)
-			shuttle.area_transition = A
-			break
-	shuttle.transit_direction = NORTH
-	shuttle.move_time = ELEVATOR_TRANSIT_DURATION
-	shuttle.iselevator = 1
-	shuttles["Elevator 3"] = shuttle
-	process_shuttles += shuttle
-
-	// Elevator IV
-	shuttle = new /datum/shuttle/ferry/elevator()
-	shuttle.location = 0
-	shuttle.warmup_time = 10 SECONDS
-	shuttle.recharge_time = ELEVATOR_RECHARGE
-	for(var/area/A in all_areas)
-		if(A.type == /area/shuttle/elevator4/underground)
-			shuttle.area_offsite = A
-			break
-
-	for(var/area/A in all_areas)
-		if(A.type == /area/shuttle/elevator4/ground)
-			shuttle.area_station = A
-			break
-
-	for(var/area/A in all_areas)
-		if(A.type == /area/shuttle/elevator4/transit)
-			shuttle.area_transition = A
-			break
-	shuttle.transit_direction = NORTH
-	shuttle.move_time = ELEVATOR_TRANSIT_DURATION
-	shuttle.iselevator = 1
-	shuttles["Elevator 4"] = shuttle
-	process_shuttles += shuttle
 
 	// Trijent Transit I
 	shuttle = new /datum/shuttle/ferry/elevator()
@@ -217,7 +113,7 @@
 	//search for the controllers, if we have one.
 	if(dock_controller_map.len)
 		for(var/obj/structure/machinery/embedded_controller/radio/C in machines) //only radio controllers are supported at the moment
-			if (istype(C.program, /datum/computer/file/embedded_program/docking))
+			if(istype(C.program, /datum/computer/file/embedded_program/docking))
 				if(dock_controller_map[C.id_tag])
 					shuttle = dock_controller_map[C.id_tag]
 					shuttle.docking_controller = C.program
@@ -226,10 +122,10 @@
 
 	//sanity check
 	//NO SANITY
-// if (dock_controller_map.len || dock_controller_map_station.len || dock_controller_map_offsite.len)
-// var/dat = ""
-// for (var/dock_tag in dock_controller_map + dock_controller_map_station + dock_controller_map_offsite)
-// dat += "\"[dock_tag]\", "
+//	if(dock_controller_map.len || dock_controller_map_station.len || dock_controller_map_offsite.len)
+//		var/dat = ""
+//		for (dock_tag in dock_controller_map + dock_controller_map_station + dock_controller_map_offsite)
+//			dat += "\"[dock_tag]\", "
 
 	//makes all shuttles docked to something at round start go into the docked state
 	for(var/shuttle_tag in shuttles)

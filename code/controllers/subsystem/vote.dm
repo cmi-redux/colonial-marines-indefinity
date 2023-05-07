@@ -1,6 +1,6 @@
 SUBSYSTEM_DEF(vote)
 	name = "Vote"
-	wait = 10
+	wait = 1 SECONDS
 
 	init_order = SS_INIT_VOTE
 	priority = SS_PRIORITY_VOTE
@@ -128,24 +128,24 @@ SUBSYSTEM_DEF(vote)
 			if(votes)
 				msg += " ("
 				if(votes)
-					msg += "[votes] new vote[votes > 1 ? "s" : ""]; "
+					msg += "[votes] новы[votes > 1 ? "е" : "й"] голос[votes > 1 ? "а" : ""]; "
 				if(adjustment)
-					msg += "[abs(adjustment)] vote[abs(adjustment) > 1 ? "s" : ""] [adjustment < 0 ? "removed" : "added"] for adjustment; "
+					msg += "[abs(adjustment)] голос[abs(adjustment) > 1 ? "а" : ""] [adjustment < 0 ? "removed" : "added"] для регулирования; "
 				// Remove the trailing "; "
 				msg = copytext(msg, 1, length(msg)-1)
 				msg += ")"
 			text += msg
 		if(mode != "custom")
 			if(length(winners) > 1)
-				text = "<br><b>Vote Tied Between:</b>"
+				text = "<br><b>Голоса разделились между:</b>"
 				for(var/option in winners)
 					text += "<br>[FOURSPACES][option]"
 			. = pick(winners)
-			text += "<br><b>Vote Result: [.]</b>"
+			text += "<br><b>Результаты голосования: [.]</b>"
 		else
-			text += "<br><b>Did not vote:</b> [length(GLOB.clients) - length(voted)]"
+			text += "<br><b>Не проголосовавшие:</b> [length(GLOB.clients) - length(voted)]"
 	else
-		text += "<b>Vote Result: Inconclusive - No Votes!</b>"
+		text += "<b>Результаты голосования: безрезультатные - Нет голосов!</b>"
 	log_vote(text)
 	remove_action_buttons()
 	to_chat(world, "<br><font color='purple'>[text]</font>")
@@ -160,7 +160,10 @@ SUBSYSTEM_DEF(vote)
 			if("gamemode")
 				SSticker.save_mode(.)
 				GLOB.master_mode = .
-				to_chat(world, SPAN_BOLDNOTICE("Notice: The Gamemode for next round has been set to [.]"))
+				if(. == MODE_NAME_WISKEY_OUTPOST)
+					var/datum/map_config/VM = config.maplist[GROUND_MAP][.]
+					SSmapping.changemap(VM, GROUND_MAP)
+				to_chat(world, SPAN_BOLDNOTICE("Уведомление: Игровой режим для следующего раунда выставлен [.]"))
 			if("restart")
 				if(. == "Restart Round")
 					restart = TRUE
@@ -183,10 +186,10 @@ SUBSYSTEM_DEF(vote)
 				active_admins = TRUE
 				break
 		if(!active_admins)
-			world.Reboot("Restart vote successful.")
+			world.Reboot(SSticker.graceful, "Рестарт голосование выполнено успешно.")
 		else
-			to_chat(world, "<span style='boltnotice'>Notice:Restart vote will not restart the server automatically because there are active admins on.</span>")
-			message_admins("A restart vote has passed, but there are active admins on with +SERVER, so it has been canceled. If you wish, you may restart the server.")
+			to_chat(world, "<span style='boltnotice'>Уведомление:Рестарт голосование не перезапускает сервер автоматически, если есть активные админы.</span>")
+			message_admins("Голосование за рестарт прошло успешно, но на сервере есть администраторы с +SERVER, по этому рестарт отменен. Если вы пожелаете, вы можете перезапустить сервер.")
 
 	return .
 
@@ -196,7 +199,7 @@ SUBSYSTEM_DEF(vote)
 
 	var/datum/action/innate/vote/V = give_action(C.mob, /datum/action/innate/vote)
 	if(question)
-		V.set_name("Vote: [question]")
+		V.set_name("Голосование: [question]")
 	C.player_details.player_actions += V
 
 /datum/controller/subsystem/vote/proc/submit_vote(vote)
@@ -233,7 +236,7 @@ SUBSYSTEM_DEF(vote)
 
 /datum/controller/subsystem/vote/proc/initiate_vote(vote_type, initiator_key, datum/callback/on_end, send_clients_vote = FALSE)
 	var/vote_sound = 'sound/ambience/alarm4.ogg'
-	var/vote_sound_vol = 5
+	var/vote_sound_vol = 80
 	var/randomize_entries = FALSE
 
 	if(!mode)
@@ -257,11 +260,11 @@ SUBSYSTEM_DEF(vote)
 		if(started_time)
 			var/next_allowed_time = (started_time + CONFIG_GET(number/vote_delay))
 			if(mode)
-				to_chat(usr, SPAN_WARNING("There is already a vote in progress! Please wait for it to finish."))
+				to_chat(usr, SPAN_WARNING("Голосование уже идет! Пожалуйста подождите его окончания."))
 				return FALSE
 
 			if(next_allowed_time > world.time && !admin)
-				to_chat(usr, SPAN_WARNING("A vote was initiated recently, you must wait [DisplayTimeText(next_allowed_time-world.time)] before a new vote can be started!"))
+				to_chat(usr, SPAN_WARNING("Недавно было запущенно голосование, вы должны подождать [DisplayTimeText(next_allowed_time-world.time, language = CLIENT_LANGUAGE_RUSSIAN)] после чего новое голосование может начаться!"))
 				return FALSE
 
 		reset()
@@ -281,7 +284,7 @@ SUBSYSTEM_DEF(vote)
 			if("groundmap")
 				question = "Ground map vote"
 				vote_sound = 'sound/voice/start_your_voting.ogg'
-				vote_sound_vol = 15
+				vote_sound_vol = 55
 				randomize_entries = TRUE
 				var/list/maps = list()
 				for(var/i in config.maplist[GROUND_MAP])
@@ -332,7 +335,7 @@ SUBSYSTEM_DEF(vote)
 				if(!question)
 					return FALSE
 				for(var/i = 1 to 10)
-					var/option = capitalize(input(usr, "Please enter an option or hit cancel to finish"))
+					var/option = capitalize(input(usr, "Пожалуйста добавте вариант или нажмите cancel для завершения"))
 					if(!option || mode || !usr.client)
 						break
 					choices.Add(option)
@@ -353,19 +356,19 @@ SUBSYSTEM_DEF(vote)
 		initiator = initiator_key
 		started_time = world.time
 		on_vote_end = on_end
-		var/text = "[capitalize(mode)] vote started by [initiator]."
+		var/text = "[capitalize(mode)] голосование инициированно by [initiator]."
 		if(mode == "custom")
 			text += "<br>[question]"
 		log_vote(text)
 		var/vp = CONFIG_GET(number/vote_period)
 		SEND_SOUND(world, sound(vote_sound, channel = SOUND_CHANNEL_VOX, volume = vote_sound_vol))
-		to_chat(world, SPAN_CENTERBOLD("<br><br><font color='purple'<b>[text]</b><br>Type <b>vote</b> or click <a href='?src=[REF(src)]'>here</a> to place your votes.<br>You have [DisplayTimeText(vp)] to vote.</font><br><br>"))
+		to_chat(world, SPAN_CENTERBOLD("<br><br><font color='purple'<b>[text]</b><br>Type <b>vote</b> or click <a href='?src=[REF(src)]'>here</a> to place your votes.<br>You have [DisplayTimeText(vp, language = CLIENT_LANGUAGE_RUSSIAN)] to vote.</font><br><br>"))
 		time_remaining = round(vp/10)
 		for(var/c in GLOB.clients)
 			var/client/C = c
 			var/datum/action/innate/vote/V = give_action(C.mob, /datum/action/innate/vote)
 			if(question)
-				V.set_name("Vote: [question]")
+				V.set_name("Голосование: [question]")
 			C.player_details.player_actions += V
 			if(send_clients_vote)
 				C.mob.vote()
@@ -377,7 +380,7 @@ SUBSYSTEM_DEF(vote)
 
 /datum/controller/subsystem/vote/proc/map_vote_adjustment(current_votes, carry_over, total_votes)
 	// Get 10% of the total map votes and remove them from the pool
-	var/total_vote_adjustment = round(total_votes * CONFIG_GET(number/vote_adjustment_callback))
+	var/total_vote_adjustment = round(total_votes * CONFIG_GET(number/vote_adjustment))
 
 	// Do not remove more votes than were made for the map
 	return -(min(current_votes, total_vote_adjustment))

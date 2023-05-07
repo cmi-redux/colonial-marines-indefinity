@@ -337,6 +337,83 @@
 	path = /obj/item/ammo_magazine/flamer_tank/custom/large
 	category = AUTOLATHE_CATEGORY_EXPLOSIVES
 
+/datum/autolathe/recipe/armylathe/ammo/casing
+	name = "Bullet Casing"
+	path = /obj/item/ammo_parts/casing
+	category = "Explosives"
+
+/datum/autolathe/recipe/armylathe/ammo/shell
+	name = "Shell"
+	path = /obj/item/ammo_parts/part/shell
+	category = "Explosives"
+
+/datum/autolathe/recipe/armylathe/ammo
+
+/datum/autolathe/recipe/armylathe/ammo/container
+	name = "Bullet Internal Container"
+	path = /obj/item/ammo_parts/part/container
+	category = "Explosives"
+
+/datum/autolathe/recipe/armylathe/ammo/cast_small
+	name = "Small Cast"
+	path = /obj/item/ammo_parts/part/cast/small
+	category = "Explosives"
+
+/datum/autolathe/recipe/armylathe/ammo/cast_medium
+	name = "Medium Cast"
+	path = /obj/item/ammo_parts/part/cast/medium
+	category = "Explosives"
+
+/datum/autolathe/recipe/armylathe/ammo/cast_big
+	name = "Big Cast"
+	path = /obj/item/ammo_parts/part/cast/big
+	category = "Explosives"
+
+/datum/autolathe/recipe/armylathe/ammo/cast_expanent
+	name = "Expanent Cast"
+	path = /obj/item/ammo_parts/part/cast/expanent
+	category = "Explosives"
+
+/datum/autolathe/recipe/armylathe/ammo/cast_shrapnel
+	name = "Shrapnel Cast"
+	path = /obj/item/ammo_parts/part/cast/shrapnel
+	category = "Explosives"
+
+/datum/autolathe/recipe/armylathe/ammo/cast_shrapnel_big
+	name = "Big Shrapnel Cast"
+	path = /obj/item/ammo_parts/part/cast/shrapnel/big
+	category = "Explosives"
+
+/datum/autolathe/recipe/armylathe/ammo/detonator
+	name = "Bullet Detonator"
+	path = /obj/item/ammo_parts/part/detonator
+	category = "Explosives"
+
+/datum/autolathe/recipe/armylathe/ammo/detonator/electric
+	name = "Bullet Electronic Detonator"
+	path = /obj/item/ammo_parts/part/detonator/electric
+	category = "Explosives"
+
+/datum/autolathe/recipe/armylathe/ammo/detonator/electric/iff
+	name = "Bullet Electronic IFF Moduled Detonator"
+	path = /obj/item/ammo_parts/part/detonator/electric/iff
+	category = "Explosives"
+
+/datum/autolathe/recipe/armylathe/ammo/ammo_charge
+	name = "Internal Explosive Container"
+	path = /obj/item/explosive/ammo_charge
+	category = "Explosives"
+
+/datum/autolathe/recipe/armylathe/ammo/capsule
+	name = "Capsule"
+	path = /obj/item/ammo_parts/part/capsule
+	category = "Explosives"
+
+/datum/autolathe/recipe/armylathe/ammo/capsule_internal_container
+	name = "Container For Capsule"
+	path = /obj/item/reagent_container/glass/capsule_internal
+	category = "Explosives"
+
 //Medilathe recipes
 /datum/autolathe/recipe/medilathe
 	category = AUTOLATHE_CATEGORY_MEDICAL

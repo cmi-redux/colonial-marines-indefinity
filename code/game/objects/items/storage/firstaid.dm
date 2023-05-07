@@ -415,7 +415,7 @@
 	..()
 	update_icon()
 
-/obj/item/storage/pill_bottle/on_exit_storage()
+/obj/item/storage/pill_bottle/on_exit_storage(obj/item/storage/storage)
 	..()
 	update_icon()
 
@@ -574,28 +574,28 @@
 /obj/item/storage/pill_bottle/ultrazine/proc/id_check(mob/user)
 
 	if(!idlock)
-		return 1
+		return TRUE
 
 	var/mob/living/carbon/human/H = user
 
 	if(!allowed(user))
 		to_chat(user, SPAN_NOTICE("It must have some kind of ID lock..."))
-		return 0
+		return FALSE
 
 	var/obj/item/card/id/I = H.wear_id
 	if(!istype(I)) //not wearing an ID
 		to_chat(H, SPAN_NOTICE("It must have some kind of ID lock..."))
-		return 0
+		return FALSE
 
 	if(I.registered_name != H.real_name)
 		to_chat(H, SPAN_WARNING("Wrong ID card owner detected."))
-		return 0
+		return FALSE
 
-	if(req_role && I.rank != req_role)
+	if(req_role && !(I.rank & req_role))
 		to_chat(H, SPAN_NOTICE("It must have some kind of ID lock..."))
-		return 0
+		return FALSE
 
-	return 1
+	return TRUE
 
 /obj/item/storage/pill_bottle/ultrazine/attack_self(mob/living/user)
 	if(!id_check(user))

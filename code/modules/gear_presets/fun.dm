@@ -7,7 +7,7 @@
 	skills = /datum/skills/civilian
 	idtype = /obj/item/card/id
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/fun/pirate
 	name = "Fun - Pirate"
@@ -29,13 +29,13 @@
 	H.equip_to_slot(new /obj/item/attachable/bayonet(H), WEAR_L_STORE)
 	H.equip_to_slot(new /obj/item/device/flashlight(H), WEAR_R_STORE)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/fun/pirate/captain
 	name = "Fun - Pirate Captain"
 	flags = EQUIPMENT_PRESET_EXTRA
 
-	skills = /datum/skills/SL
+	skills = /datum/skills/sl
 	idtype = /obj/item/card/id/silver
 
 /datum/equipment_preset/fun/pirate/captain/load_gear(mob/living/carbon/human/H)
@@ -52,7 +52,7 @@
 	H.equip_to_slot(new /obj/item/attachable/bayonet(H), WEAR_L_STORE)
 	H.equip_to_slot(new /obj/item/device/flashlight(H), WEAR_R_STORE)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/fun/clown
 	name = "Fun - Clown"
@@ -68,7 +68,7 @@
 	H.equip_to_slot(new /obj/item/toy/bikehorn(H), WEAR_L_STORE)
 	H.equip_to_slot(new /obj/item/device/flashlight(H), WEAR_R_STORE)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 /datum/equipment_preset/fun/dutch
 	name = JOB_DUTCH_RIFLEMAN
 	paygrade = "DTC"
@@ -187,6 +187,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3/m1911(H), WEAR_WAIST)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine/veteran(H), WEAR_HANDS)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/flamertank(H), WEAR_L_STORE)
+	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/flamer_tank/large/G(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/flamer_tank/large/X(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/flamer_tank/large/B(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/ert(H), WEAR_R_STORE)
@@ -282,7 +283,6 @@
 	flags = EQUIPMENT_PRESET_EXTRA
 	uses_special_name = TRUE
 	faction = FACTION_HEFA
-	faction_group = list(FACTION_HEFA, FACTION_MARINE)
 
 	// Cooperate!
 	idtype = /obj/item/card/id/gold
@@ -443,8 +443,7 @@
 	paygrade = "C"
 	flags = EQUIPMENT_PRESET_EXTRA
 	skills = /datum/skills/everything
-	faction = FACTION_MARINE
-	faction_group = FACTION_LIST_MARINE
+	faction = FACTION_USCM
 	assignment = "Santa"
 
 	skills = null
@@ -509,13 +508,13 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/ivan, WEAR_BACK)
 	//back filled with random guns, it's awesome
 	//face
-	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/UPP, WEAR_L_EAR)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/upp, WEAR_L_EAR)
 	//body + webbing
-	var/obj/item/clothing/under/marine/veteran/UPP/UPP = new()
+	var/obj/item/clothing/under/marine/veteran/upp/upp = new()
 	var/obj/item/clothing/accessory/storage/webbing/W = new()
-	UPP.attach_accessory(H, W)
-	H.equip_to_slot_or_del(UPP, WEAR_BODY)
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/faction/UPP/jacket/ivan, WEAR_JACKET)
+	upp.attach_accessory(H, W)
+	H.equip_to_slot_or_del(upp, WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/faction/upp/jacket/ivan, WEAR_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/weapon/gun/m60, WEAR_J_STORE)
 	//webbing
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/m60, WEAR_IN_ACCESSORY)
@@ -613,7 +612,7 @@
 /datum/equipment_preset/fun/monkey
 	name = "Fun - Monkey"
 	flags = EQUIPMENT_PRESET_EXTRA
-	faction = FACTION_MONKEY
+	faction = FACTION_NEUTRAL
 
 	uses_special_name = TRUE
 
@@ -663,9 +662,9 @@
 	return H.gender == MALE ? pick(first_names_male_upp) : pick(first_names_female_upp)
 
 /datum/equipment_preset/fun/monkey/soldier/load_gear(mob/living/carbon/human/H)
-	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/veteran/UPP(H), WEAR_BODY)
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/faction/UPP(H), WEAR_JACKET)
-	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/veteran/UPP(H), WEAR_HEAD)
+	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/veteran/upp(H), WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/faction/upp(H), WEAR_JACKET)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/veteran/upp(H), WEAR_HEAD)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/monkey(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/type71/rifleman(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/type71(H), WEAR_IN_JACKET)

@@ -40,7 +40,7 @@ var/global/list/deployed_fultons = list()
 
 /obj/item/stack/fulton/update_icon()
 	..()
-	if (attached_atom)
+	if(attached_atom)
 		if(istype(attached_atom, /obj/structure/closet/crate))
 			icon_state = "fulton_crate"
 		else
@@ -59,7 +59,7 @@ var/global/list/deployed_fultons = list()
 	return
 
 /obj/item/stack/fulton/attack_hand(mob/user as mob)
-	if (attached_atom)
+	if(attached_atom)
 		to_chat(user, SPAN_WARNING("It's firmly secured to [attached_atom], and there's no way to remove it now!"))
 		return
 	else
@@ -77,8 +77,9 @@ var/global/list/deployed_fultons = list()
 		to_chat(user, SPAN_WARNING("You can't attach [src] to something here."))
 		return
 
-	var/area/A = get_area(target_atom)
-	if(A && CEILING_IS_PROTECTED(A.ceiling, CEILING_PROTECTION_TIER_2))
+	var/turf/source_turf = get_turf(target_atom)
+	var/turf/ceiling_turf = source_turf.get_real_roof()
+	if(ceiling_turf != source_turf)
 		to_chat(usr, SPAN_WARNING("You can't attach [src] to something when underground!"))
 		return
 
@@ -114,7 +115,7 @@ var/global/list/deployed_fultons = list()
 		user.visible_message(SPAN_WARNING("[user] begins attaching [src] onto [target_atom]."), \
 					SPAN_WARNING("You begin to attach [src] onto [target_atom]."))
 		if(do_after(user, 50 * user.get_skill_duration_multiplier(SKILL_INTEL), INTERRUPT_ALL, BUSY_ICON_GENERIC))
-			if(!amount || get_dist(target_atom,user) > 1)
+			if(!amount || get_dist(target_atom, user) > 1)
 				return
 			for(var/obj/item/stack/fulton/F in get_turf(target_atom))
 				return
@@ -122,7 +123,7 @@ var/global/list/deployed_fultons = list()
 			transfer_fingerprints_to(F)
 			src.add_fingerprint(user)
 			F.add_fingerprint(user)
-			user.count_niche_stat(STATISTICS_NICHE_FULTON)
+			user.count_statistic_stat(STATISTICS_FULTON)
 			use(1)
 			F.deploy_fulton()
 	else
@@ -166,7 +167,7 @@ var/global/list/deployed_fultons = list()
 	playsound(attached_atom.loc,'sound/effects/bamf.ogg', 50, 1)
 
 	if(intel_system)
-		if (!LAZYISIN(GLOB.failed_fultons, attached_atom))
+		if(!LAZYISIN(GLOB.failed_fultons, attached_atom))
 			//Giving marines an objective to retrieve that fulton (so they'd know what they lost and where)
 			var/datum/cm_objective/retrieve_item/fulton/objective = new /datum/cm_objective/retrieve_item/fulton(attached_atom)
 			intel_system.store_single_objective(objective)

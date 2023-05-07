@@ -243,8 +243,8 @@
 /obj/structure/machinery/reagentgrinder/proc/is_allowed(obj/item/reagent_container/O)
 	for(var/i in blend_items)
 		if(istype(O, i))
-			return 1
-	return 0
+			return TRUE
+	return FALSE
 
 /obj/structure/machinery/reagentgrinder/proc/get_allowed_by_id(obj/item/grown/O)
 	for(var/i in blend_items)

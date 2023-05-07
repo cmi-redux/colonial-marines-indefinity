@@ -31,7 +31,7 @@
 	armor_internaldamage = CLOTHING_ARMOR_MEDIUMLOW
 	flags_inventory = NOPRESSUREDMAGE|BLOCKSHARPOBJ
 	flags_inv_hide = HIDEEYES
-	flags_armor_protection = 0
+	flags_armor_protection = NO_FLAGS
 	siemens_coefficient = 0.9
 
 /obj/item/clothing/suit/space/pirate
@@ -40,7 +40,7 @@
 	icon_state = "pirate"
 	item_state = "pirate"
 	w_class = SIZE_MEDIUM
-	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/handcuffs,/obj/item/tank/emergency_oxygen)
+	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_magazine,/obj/item/ammo_parts,/obj/item/weapon/melee/baton,/obj/item/handcuffs,/obj/item/tank/emergency_oxygen)
 	slowdown = 0
 	armor_melee = CLOTHING_ARMOR_MEDIUM
 	armor_bullet = CLOTHING_ARMOR_MEDIUM
@@ -90,7 +90,7 @@
 /obj/item/clothing/suit/space/compression/uscm
 	name = "\improper MK.50 compression suit"
 	desc = "A heavy, bulky civilian space suit, fitted with armored plates. This specific suit has found its way into the ragtag inventory of the USCM's patrol boat requisitions system."
-	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/handcuffs,/obj/item/tank)
+	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_magazine,/obj/item/ammo_parts,/obj/item/weapon/melee/baton,/obj/item/handcuffs,/obj/item/tank)
 
 // Souto man
 
@@ -109,7 +109,7 @@
 	armor_internaldamage = CLOTHING_ARMOR_HARDCORE
 	flags_inventory = CANTSTRIP|BLOCKSHARPOBJ
 	unacidable = TRUE
-	flags_inv_hide = null
+	flags_inv_hide = NO_FLAGS
 	slowdown = 0
 
 /obj/item/clothing/head/helmet/space/souto
@@ -127,4 +127,4 @@
 	armor_internaldamage = CLOTHING_ARMOR_HARDCORE
 	flags_inventory = CANTSTRIP|COVEREYES|COVERMOUTH|ALLOWINTERNALS|ALLOWREBREATH|BLOCKGASEFFECT|ALLOWCPR|BLOCKSHARPOBJ
 	unacidable = TRUE
-	flags_inv_hide = null
+	flags_inv_hide = NO_FLAGS

@@ -8,7 +8,7 @@ SUBSYSTEM_DEF(acid_pillar)
 	var/list/currentrun = list()
 
 /datum/controller/subsystem/acid_pillar/fire(resumed = FALSE)
-	if (!resumed)
+	if(!resumed)
 		currentrun = queuedrun.Copy()
 
 	while (currentrun.len)
@@ -29,7 +29,7 @@ SUBSYSTEM_DEF(acid_pillar)
 			qdel(data)
 			queuedrun -= hash
 
-		if (MC_TICK_CHECK)
+		if(MC_TICK_CHECK)
 			return
 
 

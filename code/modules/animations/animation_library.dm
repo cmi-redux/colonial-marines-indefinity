@@ -172,12 +172,9 @@ Can look good elsewhere as well.*/
 	return speed*9*/
 
 
-
-/mob/living/proc/animation_attack_on(atom/A, pixel_offset = 8)
-	if(A.clone)
-		if(src.Adjacent(A.clone))
-			A = A.clone
-	if(buckled || anchored) return //it would look silly.
+/mob/living/proc/animation_attack_on(atom/A, pixel_offset = 8, fov_effect = TRUE)
+	if(buckled || anchored)
+		return //it would look silly.
 	var/pixel_x_diff = 0
 	var/pixel_y_diff = 0
 	var/direction = get_dir(src, A)
@@ -203,6 +200,10 @@ Can look good elsewhere as well.*/
 		if(SOUTHWEST)
 			pixel_x_diff = -pixel_offset
 			pixel_y_diff = -pixel_offset
+
+//	if(fov_effect)
+//		play_fov_effect(A, 5, "attack")
+
 	animate(src, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff, time = 2, flags = ANIMATION_PARALLEL)
 	animate(pixel_x = initial(pixel_x), pixel_y = initial(pixel_y), time = 2)
 
@@ -250,6 +251,7 @@ Can look good elsewhere as well.*/
 	alpha = 20
 	dir = WEST
 	canmove = FALSE
+	can_action = FALSE
 	var/matrix/initial_matrix = matrix()
 	initial_matrix.Turn(45)
 	apply_transform(initial_matrix)
@@ -258,3 +260,4 @@ Can look good elsewhere as well.*/
 	animate(src, 3, transform = reset_matrix, pixel_y = 0, alpha = pre_rappel_alpha, flags = ANIMATION_PARALLEL)
 	sleep(3)
 	canmove = TRUE
+	can_action = TRUE

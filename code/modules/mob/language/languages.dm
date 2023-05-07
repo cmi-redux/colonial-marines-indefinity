@@ -140,10 +140,10 @@
 	if(iscarbon(speaker))
 		var/mob/living/carbon/C = speaker
 
-		if(!(C.hivenumber in GLOB.hive_datum))
+		if(!C.faction)
 			return
 
-		C.hivemind_broadcast(message, GLOB.hive_datum[C.hivenumber])
+		C.hivemind_broadcast(message, C.faction)
 
 /datum/language/apollo
 	name = LANGUAGE_APOLLO
@@ -159,20 +159,20 @@
 	if(!speaker.hear_apollo())
 		return
 
-	if (!message)
+	if(!message)
 		return
 
 	var/message_start = "<i><span class='game say'>[name], <span class='name'>[speaker.name]</span>"
 	var/message_body = "<span class='message'>broadcasts, \"[message]\"</span></span></i>"
 	GLOB.STUI.game.Add("\[[time_stamp()]]<font color='#FFFF00'>APOLLO: [key_name(speaker)] : [message]</font><br>")
 	GLOB.STUI.processing |= STUI_LOG_GAME_CHAT
-	for (var/mob/dead in GLOB.dead_mob_list)
+	for(var/mob/dead in GLOB.dead_mob_list)
 		if(!istype(dead,/mob/new_player) && !istype(dead,/mob/living/brain)) //No meta-evesdropping
 			dead.show_message("<span class='[color]'>[message_start] [message_body]</span>", SHOW_MESSAGE_VISIBLE)
 
-	for (var/mob/living/listener in GLOB.alive_mob_list)
+	for(var/mob/living/listener in GLOB.alive_mob_list)
 
-		if (!listener.hear_apollo())
+		if(!listener.hear_apollo())
 			continue
 		else if(isAI(listener))
 			message_start = "<i><span class='game say'>[name], <a href='byond://?src=\ref[listener];track2=\ref[listener];track=\ref[speaker];trackname=[html_encode(speaker.name)]'><span class='name'>[speaker.name]</span></a>"
@@ -182,13 +182,13 @@
 	var/list/listening = hearers(1, src)
 	listening -= src
 
-	for (var/mob/living/M in listening)
+	for(var/mob/living/M in listening)
 		if(isSilicon(M) || M.hear_apollo())
 			continue
 		M.show_message("<i><span class='game say'><span class='name'>synthesised voice</span> <span class='message'>beeps, \"beep beep beep\"</span></span></i>",2)
 
 	//robot binary xmitter component power usage
-	if (isrobot(speaker))
+	if(isrobot(speaker))
 		var/mob/living/silicon/robot/R = speaker
 		var/datum/robot_component/C = R.components["comms"]
 		R.cell_use_power(C.active_usage)

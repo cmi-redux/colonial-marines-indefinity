@@ -32,9 +32,9 @@
 	{
 		ui = get_open_ui(user, src_object, ui_key)
 	}
-	if (!isnull(ui))
+	if(!isnull(ui))
 		// The UI is already open
-		if (!force_open)
+		if(!force_open)
 			ui.push_data(data)
 			return ui
 		else
@@ -53,15 +53,15 @@
 */
 /datum/nanomanager/proc/get_open_ui(mob/user, src_object, ui_key)
 	var/src_object_key = "\ref[src_object]"
-	if (isnull(open_uis[src_object_key]) || !istype(open_uis[src_object_key], /list))
+	if(isnull(open_uis[src_object_key]) || !istype(open_uis[src_object_key], /list))
 		//testing("nanomanager/get_open_ui mob [user.name] [src_object:name] [ui_key] - there are no uis open")
 		return null
-	else if (isnull(open_uis[src_object_key][ui_key]) || !istype(open_uis[src_object_key][ui_key], /list))
+	else if(isnull(open_uis[src_object_key][ui_key]) || !istype(open_uis[src_object_key][ui_key], /list))
 		//testing("nanomanager/get_open_ui mob [user.name] [src_object:name] [ui_key] - there are no uis open for this object")
 		return null
 
 	for (var/datum/nanoui/ui in open_uis[src_object_key][ui_key])
-		if (ui.user == user)
+		if(ui.user == user)
 			return ui
 
 	//testing("nanomanager/get_open_ui mob [user.name] [src_object:name] [ui_key] - ui not found")
@@ -76,7 +76,7 @@
 */
 /datum/nanomanager/proc/update_uis(src_object)
 	var/src_object_key = "\ref[src_object]"
-	if (isnull(open_uis[src_object_key]) || !istype(open_uis[src_object_key], /list))
+	if(isnull(open_uis[src_object_key]) || !istype(open_uis[src_object_key], /list))
 		return 0
 
 	var/update_count = 0
@@ -102,7 +102,7 @@
 
 	var/update_count = 0
 	for (var/datum/nanoui/ui in user.open_uis)
-		if ((isnull(src_object) || ui.src_object == src_object) && (isnull(ui_key) || ui.ui_key == ui_key))
+		if((isnull(src_object) || ui.src_object == src_object) && (isnull(ui_key) || ui.ui_key == ui_key))
 			ui.process(1)
 			update_count++
 
@@ -124,7 +124,7 @@
 
 	var/close_count = 0
 	for (var/datum/nanoui/ui in user.open_uis)
-		if ((isnull(src_object) || ui.src_object == src_object) && (isnull(ui_key) || ui.ui_key == ui_key))
+		if((isnull(src_object) || ui.src_object == src_object) && (isnull(ui_key) || ui.ui_key == ui_key))
 			ui.close()
 			close_count++
 
@@ -142,9 +142,9 @@
 */
 /datum/nanomanager/proc/ui_opened(datum/nanoui/ui)
 	var/src_object_key = "\ref[ui.src_object]"
-	if (isnull(open_uis[src_object_key]) || !istype(open_uis[src_object_key], /list))
+	if(isnull(open_uis[src_object_key]) || !istype(open_uis[src_object_key], /list))
 		open_uis[src_object_key] = list(ui.ui_key = list())
-	else if (isnull(open_uis[src_object_key][ui.ui_key]) || !istype(open_uis[src_object_key][ui.ui_key], /list))
+	else if(isnull(open_uis[src_object_key][ui.ui_key]) || !istype(open_uis[src_object_key][ui.ui_key], /list))
 		open_uis[src_object_key][ui.ui_key] = list();
 
 	ui.user.open_uis.Add(ui)
@@ -163,9 +163,9 @@
 */
 /datum/nanomanager/proc/ui_closed(datum/nanoui/ui)
 	var/src_object_key = "\ref[ui.src_object]"
-	if (isnull(open_uis[src_object_key]) || !istype(open_uis[src_object_key], /list))
+	if(isnull(open_uis[src_object_key]) || !istype(open_uis[src_object_key], /list))
 		return 0 // wasn't open
-	else if (isnull(open_uis[src_object_key][ui.ui_key]) || !istype(open_uis[src_object_key][ui.ui_key], /list))
+	else if(isnull(open_uis[src_object_key][ui.ui_key]) || !istype(open_uis[src_object_key][ui.ui_key], /list))
 		return 0 // wasn't open
 
 	processing_uis.Remove(ui)
@@ -204,11 +204,11 @@
 	//testing("nanomanager/user_transferred from mob [oldMob.name] to mob [newMob.name]")
 	if(QDELETED(oldMob) || QDELETED(newMob))
 		return FALSE //ERROR
-	if (isnull(oldMob.open_uis) || !istype(oldMob.open_uis, /list) || open_uis.len == 0)
+	if(isnull(oldMob.open_uis) || !istype(oldMob.open_uis, /list) || open_uis.len == 0)
 		//testing("nanomanager/user_transferred mob [oldMob.name] has no open uis")
 		return 0 // has no open uis
 
-	if (isnull(newMob.open_uis) || !istype(newMob.open_uis, /list))
+	if(isnull(newMob.open_uis) || !istype(newMob.open_uis, /list))
 		newMob.open_uis = list()
 
 	for (var/datum/nanoui/ui in oldMob.open_uis)

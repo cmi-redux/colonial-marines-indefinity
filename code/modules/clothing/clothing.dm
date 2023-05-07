@@ -20,6 +20,9 @@
 	var/list/clothing_traits // Trait modification, lazylist of traits to add/take away, on equipment/drop in the correct slot
 	var/clothing_traits_active = TRUE //are the clothing traits that are applied to the item active (acting on the mob) or not?
 
+	light_system = MOVABLE_LIGHT
+	light_color = COLOR_WHITE
+
 /obj/item/clothing/get_examine_line(mob/user)
 	. = ..()
 	var/list/ties = list()
@@ -28,7 +31,7 @@
 			ties += "\a [accessory.get_examine_line(user)]"
 	if(ties.len)
 		.+= " with [english_list(ties)] attached"
-	if(LAZYLEN(accessories) > ties.len)
+	if(length(accessories) > ties.len)
 		.+= ". <a href='?src=\ref[src];list_acc=1'>\[See accessories\]</a>"
 
 /obj/item/clothing/Topic(href, href_list)
@@ -36,7 +39,7 @@
 	if(.)
 		return
 	if(href_list["list_acc"])
-		if(LAZYLEN(accessories))
+		if(length(accessories))
 			var/list/ties = list()
 			for(var/accessory in accessories)
 				ties += "[icon2html(accessory)] \a [accessory]"
@@ -100,7 +103,7 @@
 		var/image/bloodsies = overlay_image(blood_icon, "[blood_overlay_type]_blood", blood_color, RESET_COLOR|NO_CLIENT_COLOR)
 		ret.overlays += bloodsies
 
-	if(LAZYLEN(accessories))
+	if(length(accessories))
 		for(var/obj/item/clothing/accessory/A in accessories)
 			ret.overlays |= A.get_mob_overlay(user_mob, slot)
 	return ret
@@ -114,7 +117,7 @@
 	flags_equip_slot = SLOT_EAR
 
 /obj/item/clothing/ears/update_clothing_icon()
-	if (ismob(src.loc))
+	if(ismob(src.loc))
 		var/mob/M = src.loc
 		M.update_inv_ears()
 
@@ -166,15 +169,22 @@
 	w_class = SIZE_MEDIUM
 	sprite_sheets = list(SPECIES_MONKEY = 'icons/mob/humans/species/monkeys/onmob/suit_monkey_0.dmi')
 
+	light_system = MOVABLE_LIGHT_DIRECTIONAL
+	light_range = 7
+	light_power = 1
+	light_on = FALSE
+
+	var/flags_armor_features
+
 /obj/item/clothing/suit/update_clothing_icon()
-	if (ismob(src.loc))
+	if(ismob(src.loc))
 		var/mob/M = src.loc
 		M.update_inv_wear_suit()
 
 
 /obj/item/clothing/suit/mob_can_equip(mob/M, slot, disable_warning = 0)
 	//if we can't equip the item anyway, don't bother with other checks.
-	if (!..())
+	if(!..())
 		return 0
 
 	if(ishuman(M))
@@ -192,6 +202,30 @@
 		var/image/I = image(C, icon_state)
 		I.color = color
 		return I
+
+/obj/item/clothing/suit/unequipped(mob/user)
+	turn_light(user, FALSE)
+	..()
+
+/obj/item/clothing/suit/turn_light(mob/user, toggle_on)
+	. = ..()
+	if(. != CHECKS_PASSED)
+		return
+	set_light_on(toggle_on)
+	flags_armor_features ^= ARMOR_LAMP_ON
+	playsound(src,'sound/handling/light_on_1.ogg', 50, TRUE)
+	update_icon(user)
+	for(var/X in actions)
+		var/datum/action/action = X
+		action.update_button_icon()
+
+/obj/item/clothing/suit/pickup(mob/living/M)
+	RegisterSignal(M, COMSIG_ATOM_OFF_LIGHT, TYPE_PROC_REF(/atom, turn_light), FALSE, override = TRUE)
+	..()
+
+/obj/item/clothing/suit/dropped(mob/living/M)
+	UnregisterSignal(M, COMSIG_ATOM_OFF_LIGHT)
+	..()
 
 /////////////////////////////////////////////////////////
 //Gloves
@@ -212,7 +246,7 @@
 	var/hide_prints = FALSE
 
 /obj/item/clothing/gloves/update_clothing_icon()
-	if (ismob(src.loc))
+	if(ismob(src.loc))
 		var/mob/M = src.loc
 		M.update_inv_gloves()
 
@@ -220,7 +254,7 @@
 	if(cell)
 		//why is this not part of the powercell code?
 		cell.charge -= 1000 / severity
-		if (cell.charge < 0)
+		if(cell.charge < 0)
 			cell.charge = 0
 		if(cell.reliability != 100 && prob(50/severity))
 			cell.reliability -= 10 / severity
@@ -242,7 +276,7 @@
 	var/anti_hug = 0
 
 /obj/item/clothing/mask/update_clothing_icon()
-	if (ismob(src.loc))
+	if(ismob(src.loc))
 		var/mob/M = src.loc
 		M.update_inv_wear_mask()
 
@@ -290,10 +324,10 @@
 						if("nitrogen")
 							if(t.gas_type == GAS_TYPE_NITROGEN)
 								goodtank = TRUE
-						if ("oxygen")
+						if("oxygen")
 							if(t.gas_type == GAS_TYPE_OXYGEN || t.gas_type == GAS_TYPE_AIR)
 								goodtank = TRUE
-						if ("carbon dioxide")
+						if("carbon dioxide")
 							if(t.gas_type == GAS_TYPE_CO2)
 								goodtank = TRUE
 				if(goodtank)
@@ -336,7 +370,7 @@
 	var/shoes_blood_amt = 0
 
 /obj/item/clothing/shoes/update_clothing_icon()
-	if (ismob(src.loc))
+	if(ismob(src.loc))
 		var/mob/M = src.loc
 		M.update_inv_shoes()
 
@@ -372,7 +406,7 @@
 
 /obj/item/clothing/equipped(mob/user, slot, silent)
 	if(is_valid_slot(slot, TRUE)) //is it going to a matching clothing slot?
-		if(!silent && LAZYLEN(equip_sounds))
+		if(!silent && length(equip_sounds))
 			playsound_client(user.client, pick(equip_sounds), null, ITEM_EQUIP_VOLUME)
 		if(clothing_traits_active)
 			for(var/trait in clothing_traits)

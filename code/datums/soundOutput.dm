@@ -68,6 +68,11 @@
 		target_ambience = target_area.get_sound_ambience(owner)
 	if(target_area)
 		soundscape_playlist = target_area.soundscape_playlist
+		if(target_area.background_planet_sounds)
+			if(SSsunlighting.current_step_datum.position_number <= 2)
+				soundscape_playlist += SCAPE_PL_BACKGROUND_SOUNDS_DAY_SUMMER
+//			else
+//				soundscape_playlist += SCAPE_PL_BACKGROUND_SOUNDS_NIGHT_SUMMER
 
 	var/sound/S = sound(null,1,0,SOUND_CHANNEL_AMBIENCE)
 
@@ -85,17 +90,16 @@
 
 	if(target_area)
 		S.environment = target_area.sound_environment
+		var/turf/turf = SSmapping.get_turf_above(get_turf(owner.mob))
 		var/muffle
-		if(target_area.ceiling_muffle)
-			switch(target_area.ceiling)
-				if(CEILING_NONE)
-					muffle = 0
-				if(CEILING_GLASS)
-					muffle = MUFFLE_MEDIUM
-				if(CEILING_METAL)
-					muffle = MUFFLE_HIGH
-				else
-					S.volume = 0
+		if(istype(turf, /turf/open/openspace) || istype(turf, /turf/open/floor/glass))
+			muffle = 0
+		if(istype(turf, /turf/open/floor/roof/metal) || istype(turf, /turf/open/floor/roof/sheet) || istype(turf, /turf/open/floor/roof/ship_hull))
+			muffle = MUFFLE_HIGH
+		if(istype(turf, /turf/open) || istype(turf, /turf/closed))
+			muffle = MUFFLE_MEDIUM
+		else
+			S.volume = 0
 		muffle += target_area.base_muffle
 		S.echo = list(muffle)
 	sound_to(owner, S)

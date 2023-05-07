@@ -47,7 +47,7 @@
 	if(W.sharp == IS_SHARP_ITEM_BIG)
 		user.show_message(SPAN_NOTICE("You make planks out of \the [src]!"), SHOW_MESSAGE_VISIBLE)
 		for(var/i=0,i<2,i++)
-			var/obj/item/stack/sheet/wood/NG = new (user.loc)
+			var/obj/item/stack/sheet/wood/NG = new(user.loc)
 			for (var/obj/item/stack/sheet/wood/G in user.loc)
 				if(G==NG)
 					continue
@@ -110,8 +110,8 @@
 				user.UpdateDamageIcon()
 		else
 			user.take_limb_damage(0,force)
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 /obj/item/grown/nettle/proc/lose_leaves(mob/user)
 	if(force > 0)

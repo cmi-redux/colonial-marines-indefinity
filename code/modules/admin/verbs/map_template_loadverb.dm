@@ -14,7 +14,7 @@
 		return
 
 	var/centered = alert(src, "Do you want this to be created from the center, or from the bottom left corner of your map?", "Spawn Position", "Center", "Bottom Left") == "Center" ? TRUE : FALSE
-	var/delete = alert(src, "Do you want to delete atoms in your load area?", "Atom Deletion", "Yes", "No") == "Yes" ? TRUE : FALSE
+	var/delete = alert(src, "Do you want to delete atoms in your load area?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) == usr.client.auto_lang(LANGUAGE_YES) ? TRUE : FALSE
 
 	var/list/preview = list()
 	for(var/S in template.get_affected_turfs(T, centered))
@@ -22,7 +22,7 @@
 		item.plane = ABOVE_LIGHTING_PLANE
 		preview += item
 	images += preview
-	if(alert(src,"Confirm location.","Template Confirm","Yes","No") == "Yes")
+	if(alert(src, "Templete location.", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) == usr.client.auto_lang(LANGUAGE_YES))
 		if(template.load(T, centered, delete))
 			/*var/affected = template.get_affected_turfs(T, centered=TRUE)
 			for(var/AT in affected)

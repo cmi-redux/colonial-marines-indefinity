@@ -4,7 +4,7 @@
 
 	melee_damage_lower = XENO_DAMAGE_TIER_6
 	melee_damage_upper = XENO_DAMAGE_TIER_6
-	melee_vehicle_damage = XENO_DAMAGE_TIER_7 //Queen and Ravs have extra multiplier when dealing damage in multitile_interaction.dm
+	melee_vehicle_damage = XENO_DAMAGE_TIER_7 //queen and Ravs have extra multiplier when dealing damage in multitile_interaction.dm
 	max_health = XENO_HEALTH_TIER_9
 	plasma_gain = XENO_PLASMA_GAIN_TIER_9
 	plasma_max = XENO_PLASMA_TIER_3
@@ -23,14 +23,12 @@
 	evolution_allowed = FALSE
 	deevolves_to = list(XENO_CASTE_LURKER)
 	caste_desc = "A brutal, devastating front-line attacker."
-	fire_immunity = FIRE_IMMUNITY_NO_DAMAGE|FIRE_IMMUNITY_XENO_FRENZY
+	fire_immunity = FIRE_IMMUNITY_XENO_FRENZY|FIRE_IMMUNITY_NO_DAMAGE
 	attack_delay = -1
 
 	behavior_delegate_type = /datum/behavior_delegate/ravager_base
 
 	minimum_evolve_time = 15 MINUTES
-
-	minimap_icon = "ravager"
 
 /mob/living/carbon/xenomorph/ravager
 	caste_type = XENO_CASTE_RAVAGER
@@ -61,6 +59,13 @@
 	icon_xeno = 'icons/mob/xenos/ravager.dmi'
 	icon_xenonid = 'icons/mob/xenonids/ravager.dmi'
 
+	balance_formulas = list(BALANCE_FORMULA_XENO_ABILITER, BALANCE_FORMULA_XENO_FIGHTER)
+
+/mob/living/carbon/xenomorph/ravager/Initialize(mapload, mob/living/carbon/xenomorph/old_xeno, datum/faction/hive_to_set)
+	. = ..()
+
+	AddComponent(/datum/component/footstep, FOOTSTEP_XENO_HEAVY)
+
 
 // Mutator delegate for base ravager
 /datum/behavior_delegate/ravager_base
@@ -83,14 +88,14 @@
 	..()
 
 	var/datum/action/xeno_action/activable/pounce/charge/cAction = get_xeno_action_by_type(bound_xeno, /datum/action/xeno_action/activable/pounce/charge)
-	if (!cAction.action_cooldown_check())
+	if(!cAction.action_cooldown_check())
 		cAction.reduce_cooldown(slash_charge_cdr)
 
 /datum/behavior_delegate/ravager_base/append_to_stat()
 	. = list()
 	var/shield_total = 0
 	for (var/datum/xeno_shield/XS in bound_xeno.xeno_shields)
-		if (XS.shield_source == XENO_SHIELD_SOURCE_RAVAGER)
+		if(XS.shield_source == XENO_SHIELD_SOURCE_RAVAGER)
 			shield_total += XS.amount
 
 	. += "Empower Shield: [shield_total]"
@@ -99,11 +104,11 @@
 /datum/behavior_delegate/ravager_base/on_life()
 	var/datum/xeno_shield/rav_shield
 	for (var/datum/xeno_shield/XS in bound_xeno.xeno_shields)
-		if (XS.shield_source == XENO_SHIELD_SOURCE_RAVAGER)
+		if(XS.shield_source == XENO_SHIELD_SOURCE_RAVAGER)
 			rav_shield = XS
 			break
 
-	if (rav_shield && ((rav_shield.last_damage_taken + shield_decay_time) < world.time))
+	if(rav_shield && ((rav_shield.last_damage_taken + shield_decay_time) < world.time))
 		QDEL_NULL(rav_shield)
 		to_chat(bound_xeno, SPAN_XENODANGER("You feel your shield decay!"))
 		bound_xeno.overlay_shields()

@@ -32,8 +32,6 @@
 
 	minimum_evolve_time = 15 MINUTES
 
-	minimap_icon = "boiler"
-
 /mob/living/carbon/xenomorph/boiler
 	caste_type = XENO_CASTE_BOILER
 	name = XENO_CASTE_BOILER
@@ -56,7 +54,9 @@
 	icon_xeno = 'icons/mob/xenos/boiler.dmi'
 	icon_xenonid = 'icons/mob/xenonids/boiler.dmi'
 
+	var/is_bombarding = FALSE
 	var/datum/effect_system/smoke_spread/xeno_acid/smoke
+	var/turf/bomb_turf = null
 
 	base_actions = list(
 		/datum/action/xeno_action/onclick/xeno_resting,
@@ -72,7 +72,9 @@
 
 	)
 
-/mob/living/carbon/xenomorph/boiler/Initialize(mapload, mob/living/carbon/xenomorph/oldxeno, h_number)
+	balance_formulas = list(BALANCE_FORMULA_XENO_ABILITER)
+
+/mob/living/carbon/xenomorph/boiler/Initialize(mapload, mob/living/carbon/xenomorph/oldxeno, datum/faction/hive_to_set)
 	. = ..()
 	smoke = new /datum/effect_system/smoke_spread/xeno_acid
 	smoke.attach(src)
@@ -82,6 +84,8 @@
 	spit_types = list(/datum/ammo/xeno/boiler_gas/acid, /datum/ammo/xeno/boiler_gas)
 
 	update_icon_source()
+
+	AddComponent(/datum/component/footstep, FOOTSTEP_XENO_MEDIUM)
 
 /mob/living/carbon/xenomorph/boiler/Destroy()
 	if(smoke)

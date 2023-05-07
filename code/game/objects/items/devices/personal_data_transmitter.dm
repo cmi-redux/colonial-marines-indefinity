@@ -113,10 +113,8 @@
 /obj/item/device/pdt_locator_tube/proc/locate_bracelet(mob/user)
 	var/turf/self_turf = get_turf(src)
 	var/turf/bracelet_turf = get_turf(linked_bracelet)
-	var/area/self_area = get_area(self_turf)
-	var/area/bracelet_area = get_area(bracelet_turf)
 
-	if(self_turf.z != bracelet_turf.z || self_area.fake_zlevel != bracelet_area.fake_zlevel)
+	if(self_turf.z != bracelet_turf.z)
 		to_chat(user, SPAN_BOLDWARNING("The display on \the [src] lights up: <b> UNABLE TO CONNECT TO LINKED BRACELET<b>"))
 		playsound(src, 'sound/machines/buzz-sigh.ogg', 15, TRUE)
 		return

@@ -1,9 +1,9 @@
 GLOBAL_SUBTYPE_PATHS_LIST_INDEXED(nightmare_node_map, /datum/nmnode, id)
 
 SUBSYSTEM_DEF(nightmare)
-	name    = "Nightmare"
-	init_order = SS_INIT_NIGHTMARE
-	flags = SS_NO_FIRE
+	name		= "Nightmare"
+	init_order	= SS_INIT_NIGHTMARE
+	flags		= SS_NO_FIRE
 
 	var/stat = NIGHTMARE_STATUS_STANDBY
 	var/start_time = 0

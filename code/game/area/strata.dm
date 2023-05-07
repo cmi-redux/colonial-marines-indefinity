@@ -18,13 +18,11 @@ EXTERIOR is FUCKING FREEZING, and refers to areas out in the open and or exposed
 /area/shuttle/drop1/strata //Not in Sulaco.DM because holy shit we need to sort things.
 	name = "Dropship Alamo Landing Zone"
 	icon_state = "shuttle"
-	lighting_use_dynamic = 0 //No bad
 	minimap_color = MINIMAP_AREA_LZ
 
 /area/shuttle/drop2/strata
 	name = "Dropship Normandy Landing Zone"
 	icon_state = "shuttle2"
-	lighting_use_dynamic = 0
 	minimap_color = MINIMAP_AREA_LZ
 
 
@@ -36,7 +34,6 @@ However, this might break the tacmap. This entire system might be replaced by Sl
 /area/strata/ag
 	name = "Above Ground Area"
 	icon_state = "ag"
-	fake_zlevel = 1 //'Above' ground fake Z
 
 /area/strata/ag/exterior
 	name = "Exterior Above Ground Area"
@@ -55,7 +52,6 @@ However, this might break the tacmap. This entire system might be replaced by Sl
 	icon_state = "ag_i"
 	requires_power = 1
 	temperature = T20C //Nice and room temp
-	ceiling = CEILING_METAL
 
 /area/strata/ag/interior/restricted
 	is_resin_allowed = FALSE
@@ -67,8 +63,6 @@ However, this might break the tacmap. This entire system might be replaced by Sl
 /area/strata/ug
 	name = "Under Ground Area"
 	icon_state = "ug"
-	fake_zlevel = 2 //'Underground', because numbers are fun
-	ceiling = CEILING_UNDERGROUND_ALLOW_CAS
 
 /area/strata/ug/interior
 	name = "Interior Under Ground Area"
@@ -81,7 +75,6 @@ However, this might break the tacmap. This entire system might be replaced by Sl
 	icon_state = "ug_i"
 	requires_power = 1
 	temperature = T20C
-	ceiling = CEILING_NONE
 
 //END PARENT ENTITIES
 
@@ -92,7 +85,6 @@ However, this might break the tacmap. This entire system might be replaced by Sl
 /area/strata/ag/interior/landingzone_1
 	name = "Landing Zone 1 Pad - Mining Aerodrome"
 	icon_state = "landingzone_1"
-	weather_enabled = FALSE
 	unlimited_power = 1 //So the DS computer always works for the Queen
 	is_landing_zone = TRUE
 	minimap_color = MINIMAP_AREA_LZ
@@ -100,7 +92,6 @@ However, this might break the tacmap. This entire system might be replaced by Sl
 /area/strata/ag/exterior/landingzone_2
 	name = "Landing Zone 2 Pad - Ice Fields"
 	icon_state = "landingzone_2"
-	weather_enabled = FALSE
 	unlimited_power = 1 //So the DS computer always works for the Queen
 	is_landing_zone = TRUE
 	minimap_color = MINIMAP_AREA_LZ
@@ -108,14 +99,12 @@ However, this might break the tacmap. This entire system might be replaced by Sl
 /area/strata/ag/interior/nearlz1
 	name = "Landing Zone 1 - Mining Aerodrome"
 	icon_state = "nearlz1"
-	weather_enabled = FALSE
 	is_resin_allowed = FALSE
 	minimap_color = MINIMAP_AREA_LZ
 
 /area/strata/ag/exterior/nearlz2
 	name = "Landing Zone 2 - Ice Fields"
 	icon_state = "nearlz2"
-	weather_enabled = TRUE //This LZ is outside, but consider disabling if it destroys the meta.
 	minimap_color = MINIMAP_AREA_LZ
 
 /area/strata/ag/exterior/landingzone_valley
@@ -157,8 +146,8 @@ However, this might break the tacmap. This entire system might be replaced by Sl
 ////////close to research/////////
 
 /area/strata/ag/exterior/paths/southresearch
-	minimap_color = MINIMAP_AREA_RESEARCH
 	name = "South Of The Outpost"
+	minimap_color = MINIMAP_AREA_RESEARCH
 
 /area/strata/ag/exterior/shed_five_caves
 	name = "Terminal Five Topside Caves"
@@ -206,7 +195,6 @@ However, this might break the tacmap. This entire system might be replaced by Sl
 /area/strata/ag/interior/engi_shed/one
 	name = "Generator Shed One"
 	icon_state = "shed_1_ag"
-	ceiling = CEILING_METAL
 
 /area/strata/ug/interior/engi_shed/one
 	name = "Generator Terminal One"
@@ -259,7 +247,6 @@ However, this might break the tacmap. This entire system might be replaced by Sl
 /area/strata/ug/interior/engi_shed/seven
 	name = "Generator Terminal Seven"
 	icon_state = "shed_7_ug"
-	ceiling = CEILING_DEEP_UNDERGROUND_METAL
 
 /area/strata/ag/interior/engi_shed/eight
 	name = "Generator Shed Eight"
@@ -845,14 +832,12 @@ However, this might break the tacmap. This entire system might be replaced by Sl
 
 /area/strata/ug/interior/jungle/deep
 	name = "Deep Jungle"
-	ceiling = CEILING_DEEP_UNDERGROUND
 
 /area/strata/ug/interior/jungle/deep/carplake
 	name = "Deep Jungle - Carp Lake Shores"
 	icon_state = "ug_jung_2"
 
 /area/strata/ug/exterior
-	ceiling = CEILING_NONE
 
 /area/strata/ug/exterior/jungle/deep/carplake_water
 	name = "Deep Jungle - Carp Lake Waters"
@@ -906,7 +891,6 @@ However, this might break the tacmap. This entire system might be replaced by Sl
 /area/strata/ug/interior/jungle/deep/structures
 	name = "Deep Jungle - Unknown Structure"
 	icon_state = "ug_jung_1"
-	ceiling = CEILING_DEEP_UNDERGROUND_METAL
 
 /area/strata/ug/interior/jungle/deep/structures/res
 	icon_state = "ug_jung_2"

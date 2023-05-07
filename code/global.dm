@@ -56,11 +56,8 @@ var/station_name = "[MAIN_SHIP_NAME]"
 var/game_version = "Colonial Marines"
 var/game_year = 2182
 
-var/going = 1
-var/master_mode = "Distress Signal"
-
-/// If this is anything but "secret", the secret rotation will forceably choose this mode.
-var/secret_force_mode = "secret"
+var/going = 1.0
+var/secret_force_mode = "secret" // if this is anything but "secret", the secret rotation will forceably choose this mode
 
 var/host = null
 var/ooc_allowed = 1
@@ -70,6 +67,7 @@ var/dooc_allowed = 1
 var/dlooc_allowed = 0
 var/abandon_allowed = 1
 var/enter_allowed = 1
+var/locked_conect = 0
 var/shuttle_frozen = 0
 var/shuttle_left = 0
 var/midi_playing = 0
@@ -88,13 +86,7 @@ var/VehicleGearConsole
 
 //Spawnpoints.
 var/list/fallen_list = list()
-/// This is for dogtags placed on crosses- they will show up at the end-round memorial.
 var/list/fallen_list_cross = list()
-var/list/cardinal = list(NORTH, SOUTH, EAST, WEST)
-var/list/diagonals = list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
-var/list/alldirs = list(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
-var/list/reverse_dir = list(2, 1, 3, 8, 10, 9, 11, 4, 6, 5, 7, 12, 14, 13, 15, 32, 34, 33, 35, 40, 42, 41, 43, 36, 38, 37, 39, 44, 46, 45, 47, 16, 18, 17, 19, 24, 26, 25, 27, 20, 22, 21, 23, 28, 30, 29, 31, 48, 50, 49, 51, 56, 58, 57, 59, 52, 54, 53, 55, 60, 62, 61, 63)
-
 var/list/combatlog = list()
 var/list/IClog = list()
 var/list/OOClog = list()
@@ -135,8 +127,8 @@ var/list/AAlarmWireColorToIndex
 
 var/sqladdress = "localhost"
 var/sqlport = "3306"
-var/sqldb = "cmdb"
-var/sqllogin = "root"
+var/sqldb = "ss13"
+var/sqllogin = "ss13"
 var/sqlpass = ""
 
 
@@ -161,9 +153,9 @@ var/destroy_cancel = 0
 //Coordinate obsfucator
 //Used by the rangefinders and linked systems to prevent coords collection/prefiring
 
-/// A number between -500 and 500.
+/// A number between -2000 and 2000.
 var/global/obfs_x = 0
-/// A number between -500 and 500.
+/// A number between -2000 and 2000.
 var/global/obfs_y = 0
 
 // Which lobby art is on display

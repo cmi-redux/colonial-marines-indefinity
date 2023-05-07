@@ -67,13 +67,6 @@
 /datum/automata_cell/explosion/birth()
 	shockwave = new(in_turf)
 
-	var/obj/effect/step_trigger/teleporter_vector/V = locate() in in_turf
-	if(!V)
-		return
-
-	var/turf/new_turf = locate(in_turf.x + V.vector_x, in_turf.y + V.vector_y, in_turf.z)
-	transfer_turf(new_turf)
-
 /datum/automata_cell/explosion/death()
 	if(shockwave)
 		qdel(shockwave)
@@ -109,7 +102,7 @@
 		survivor.power += dying.power
 
 	// Two waves travling towards each other weakens the explosion
-	if(survivor.direction == reverse_dir[dying.direction])
+	if(survivor.direction == GLOB.reverse_dir[dying.direction])
 		survivor.power -= dying.power
 
 	return is_stronger
@@ -120,11 +113,11 @@
 
 	// If the cell is the epicenter, propagate in all directions
 	if(isnull(direction))
-		return alldirs
+		return GLOB.alldirs
 
-	var/dir = reflected ? reverse_dir[direction] : direction
+	var/dir = reflected ? GLOB.reverse_dir[direction] : direction
 
-	if(dir in cardinal)
+	if(dir in GLOB.cardinals)
 		propagation_dirs += list(dir, turn(dir, 45), turn(dir, -45))
 	else
 		propagation_dirs += dir
@@ -180,7 +173,7 @@
 	for(var/dir in to_spread)
 		// Diagonals are longer, that should be reflected in the power falloff
 		var/dir_falloff = 1
-		if(dir in diagonals)
+		if(dir in GLOB.diagonals)
 			dir_falloff = 1.414
 
 		if(isnull(direction))
@@ -210,7 +203,7 @@
 			// Set the direction the explosion is traveling in
 			E.direction = dir
 			//Diagonal cells have a small delay when branching off the center. This helps the explosion look circular
-			if(!direction && (dir in diagonals))
+			if(!direction && (dir in GLOB.diagonals))
 				E.delay = 1
 
 			setup_new_cell(E)
@@ -273,25 +266,30 @@ as having entered the turf.
 	else
 		playsound(epicenter, "explosion", 90, 1, max(round(power,1),7))
 
-	var/datum/automata_cell/explosion/E = new /datum/automata_cell/explosion(epicenter)
-	if(power > EXPLOSION_MAX_POWER)
-		log_debug("[explosion_cause_data.cause_name] exploded with force of [power]. Overriding to capacity of [EXPLOSION_MAX_POWER].")
-		power = EXPLOSION_MAX_POWER
+	var/datum/automata_cell/explosion/E
+	var/turf/above_epicenter = SSmapping.get_turf_above(epicenter)
+	var/turf/below_epicenter = SSmapping.get_turf_below(epicenter)
+	for(var/turf/turf in list(above_epicenter, below_epicenter, epicenter))
+		E = new /datum/automata_cell/explosion(turf)
 
-	// something went wrong :(
-	if(QDELETED(E))
-		return
+		// something went wrong :(
+		if(QDELETED(E))
+			continue
 
-	E.power = power
-	E.power_falloff = falloff
-	E.falloff_shape = falloff_shape
-	E.direction = direction
-	E.explosion_cause_data = explosion_cause_data
+		new /obj/effect/temp_visual/shockwave(turf, power/50)
 
-	if(power >= 100) // powerful explosions send out some special effects
-		epicenter = get_turf(epicenter) // the ex_acts might have changed the epicenter
-		create_shrapnel(epicenter, rand(5,9), , ,/datum/ammo/bullet/shrapnel/light/effect/ver1, explosion_cause_data)
-		create_shrapnel(epicenter, rand(5,9), , ,/datum/ammo/bullet/shrapnel/light/effect/ver2, explosion_cause_data)
+		if(turf != epicenter)
+			E.power = power/4
+		else
+			E.power = power
+		E.power_falloff = falloff
+		E.falloff_shape = falloff_shape
+		E.direction = direction
+		E.explosion_cause_data = explosion_cause_data
+
+		if(power >= 100) // powerful explosions send out some special effects
+			create_shrapnel(turf, rand(5,9), , ,/datum/ammo/bullet/shrapnel/light/effect/ver1, explosion_cause_data)
+			create_shrapnel(turf, rand(5,9), , ,/datum/ammo/bullet/shrapnel/light/effect/ver2, explosion_cause_data)
 
 /proc/log_explosion(atom/A, datum/automata_cell/explosion/E)
 	if(isliving(A))
@@ -322,11 +320,12 @@ as having entered the turf.
 				M.attack_log += "\[[time_stamp()]\] <b>[key_name(firing_mob)]</b> blew up <b>[key_name(M)]</b> with \a <b>[explosion_source]</b> in [get_area(T)]."
 
 				firing_mob.attack_log += "\[[time_stamp()]\] <b>[key_name(firing_mob)]</b> blew up <b>[key_name(M)]</b> with \a <b>[explosion_source]</b> in [get_area(T)]."
-				var/ff_msg = "[key_name(firing_mob)] blew up [key_name(M)] with \a [explosion_source] in [get_area(T)] (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP LOC</a>) (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[location_of_mob.x];Y=[location_of_mob.y];Z=[location_of_mob.z]'>JMP SRC</a>) ([firing_mob.client ? "<a href='?priv_msg=[firing_mob.client.ckey]'>PM</a>" : "NO CLIENT"])"
+				var/ff_msg = "[key_name(firing_mob)] blew up [key_name(M)] with \a [explosion_source] in [get_area(T)]"
+				var/ffl = "(<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP LOC</a>) (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[location_of_mob.x];Y=[location_of_mob.y];Z=[location_of_mob.z]'>JMP SRC</a>) ([firing_mob.client ? "<a href='?priv_msg=[firing_mob.client.ckey]'>PM</a>" : "NO CLIENT"])"
 				var/ff_living = TRUE
 				if(M.stat == DEAD)
 					ff_living = FALSE
-				msg_admin_ff(ff_msg, ff_living)
+				msg_admin_ff("[ff_msg] [ffl]", ff_msg, ff_living)
 
 				if(ishuman(firing_mob))
 					var/mob/living/carbon/human/H = firing_mob

@@ -45,12 +45,13 @@
 	health = 450
 	tcomms_machine = TRUE
 	freq_listening = DEPT_FREQS
+	sensor_radius = 40
+	faction_to_get = FACTION_MARINE
 
 /obj/structure/machinery/telecomms/relay/preset/tower/Initialize()
 	. = ..()
 
-	if(z)
-		SSminimaps.add_marker(src, z, MINIMAP_FLAG_USCM, "supply")
+	SSmapview.add_marker(src, "telecomms")
 
 // doesn't need power, instead uses health
 /obj/structure/machinery/telecomms/relay/preset/tower/inoperable(additional_flags)
@@ -65,11 +66,12 @@
 	if(on)
 		playsound(src, 'sound/machines/tcomms_on.ogg', vol = 80, vary = FALSE, sound_range = 16, falloff = 0.5)
 		msg_admin_niche("Portable communication relay started for Z-Level [src.z] (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[src.x];Y=[src.y];Z=[src.z]'>JMP</a>)")
+		GLOB.towers += src
 
-		if(SSobjectives && SSobjectives.comms)
+		if(faction && faction.objectives_controller.comms)
 			// This is the first time colony comms have been established.
-			if (SSobjectives.comms.state != OBJECTIVE_COMPLETE && is_ground_level(loc.z) && operable())
-				SSobjectives.comms.complete()
+			if(faction.objectives_controller.comms.state != OBJECTIVE_COMPLETE && is_ground_level(loc.z) && operable())
+				faction.objectives_controller.comms.complete()
 
 /obj/structure/machinery/telecomms/relay/preset/tower/tcomms_shutdown()
 	. = ..()
@@ -255,7 +257,7 @@ GLOBAL_LIST_EMPTY(all_static_telecomms_towers)
 			if(!do_after(user, 10, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 				return
 			switch(user.faction)
-				if(FACTION_SURVIVOR)
+				if(FACTION_COLONIST)
 					freq_listening |= COLONY_FREQ
 				if(FACTION_CLF)
 					freq_listening |= CLF_FREQS

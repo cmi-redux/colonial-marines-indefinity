@@ -76,7 +76,7 @@
 		to_chat(user, SPAN_WARNING("You're already a specialist! Give this to a lesser trained marine."))
 		return FALSE
 
-	if(user.job != JOB_SQUAD_MARINE)
+	if(!(GET_DEFAULT_ROLE(user.job) in JOB_SQUAD_NORMAL_LIST))
 		to_chat(user, SPAN_WARNING("Only squad riflemen can use this."))
 		return
 

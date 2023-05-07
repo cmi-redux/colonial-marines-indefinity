@@ -57,14 +57,45 @@ INITIALIZE_IMMEDIATE(/atom/movable/plane_master_controller)
 		var/atom/movable/screen/plane_master/pm_iterator = controlled_planes[i]
 		pm_iterator.transition_filter(name, time, new_params, easing, loop)
 
+///Full override so we can just use filterrific
+/atom/movable/plane_master_controller/add_atom_colour(coloration, colour_priority)
+	. = ..()
+	for(var/i in controlled_planes)
+		var/atom/movable/screen/plane_master/pm_iterator = controlled_planes[i]
+		pm_iterator.add_atom_colour(coloration, colour_priority)
+
+
+///Removes an instance of colour_type from the atom's atom_colours list
+/atom/movable/plane_master_controller/remove_atom_colour(colour_priority, coloration)
+	. = ..()
+	for(var/i in controlled_planes)
+		var/atom/movable/screen/plane_master/pm_iterator = controlled_planes[i]
+		pm_iterator.remove_atom_colour(colour_priority, coloration)
+
+
+///Resets the atom's color to null, and then sets it to the highest priority colour available
+/atom/movable/plane_master_controller/update_atom_colour()
+	for(var/i in controlled_planes)
+		var/atom/movable/screen/plane_master/pm_iterator = controlled_planes[i]
+		pm_iterator.update_atom_colour()
+
 
 /atom/movable/plane_master_controller/game
 	name = PLANE_MASTERS_GAME
 	controlled_planes = list(
-		GAME_PLANE,
 		FLOOR_PLANE,
-		LIGHTING_PLANE,
-		EXTERIOR_LIGHTING_PLANE,
+		OVER_TILE_PLANE,
+		WALL_PLANE,
+		GAME_PLANE,
+		GAME_PLANE_FOV_HIDDEN,
+		GAME_PLANE_UPPER,
+		GAME_PLANE_UPPER_FOV_HIDDEN,
+		ABOVE_GAME_PLANE,
+		UNDER_FRILL_PLANE,
+		FRILL_PLANE,
+		OVER_FRILL_PLANE,
+		GHOST_PLANE,
+		LIGHTING_PLANE
 	)
 
 /// Exists for convienience when referencing all non-master render plates.

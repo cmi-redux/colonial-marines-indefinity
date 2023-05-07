@@ -10,11 +10,11 @@
 	transfer_ammo(O, user)
 
 /obj/item/ammo_magazine/hardpoint/transfer_ammo(obj/item/ammo_magazine/source, mob/user)
-	if(current_rounds == max_rounds)
+	if(ammo_position == max_rounds)
 		to_chat(user, SPAN_WARNING("[src] is already full."))
 		return
 
-	if(source.current_rounds == 0)
+	if(!source.ammo_position)
 		to_chat(user, SPAN_WARNING("[source] is empty, find a new one."))
 		return
 
@@ -28,10 +28,13 @@
 		user.visible_message(SPAN_WARNING("[user] stops refilling [src]."), SPAN_WARNING("You stop refilling [src]."))
 		return
 
-	var/S = min(max_rounds - current_rounds, source.current_rounds)
+	var/S = min(max_rounds - ammo_position, source.ammo_position)
 
-	source.current_rounds -= S
-	current_rounds += S
+	for(var/i=0;i<S;i++)
+		var/obj/item/projectile/P = source.transfer_bullet_out()
+		P.forceMove(src)
+		ammo_position++
+		current_rounds[ammo_position] = P
 	source.update_icon()
 	update_icon()
-	user.visible_message(SPAN_WARNING("[user] finishes refilling [src]."), SPAN_WARNING("You finish refilling [src]. Ammo count: [current_rounds]."))
+	user.visible_message(SPAN_WARNING("[user] finishes refilling [src]."), SPAN_WARNING("You finish refilling [src]. Ammo count: [ammo_position]."))

@@ -79,7 +79,7 @@
 
 /obj/item/reagent_container/borghypo/get_examine_text(mob/user)
 	. = ..()
-	if (user != loc) return
+	if(user != loc) return
 
 	var/datum/reagent/R = chemical_reagents_list[reagent_ids[mode]]
 

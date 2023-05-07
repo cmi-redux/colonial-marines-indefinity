@@ -120,6 +120,7 @@
 
 /mob/living/proc/revive(keep_viruses)
 	rejuvenate()
+	SSautobalancer.balance_action(src, "revive")
 
 
 /mob/living/proc/rejuvenate()

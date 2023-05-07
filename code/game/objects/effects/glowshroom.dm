@@ -39,18 +39,18 @@
 	else //if on the floor, glowshroom on-floor sprite
 		icon_state = "glowshroomf"
 
-	SetLuminosity(round(potency/15))
+	set_light(round(potency/15))
 	lastTick = world.timeofday
 
 /obj/effect/glowshroom/Destroy()
-	SetLuminosity(0)
+	set_light(0)
 	. = ..()
 
 /obj/effect/glowshroom/proc/CalcDir(turf/location = loc)
-	set background = 1
+	set background = TRUE
 	var/direction = 16
 
-	for(var/wallDir in cardinal)
+	for(var/wallDir in  GLOB.cardinals)
 		var/turf/newTurf = get_step(location,wallDir)
 		if(istype(newTurf, /turf/closed/wall))
 			direction |= wallDir
@@ -89,11 +89,11 @@
 /obj/effect/glowshroom/ex_act(severity)
 	switch(severity)
 		if(0 to EXPLOSION_THRESHOLD_LOW)
-			if (prob(5))
+			if(prob(5))
 				deconstruct(FALSE)
 				return
 		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
-			if (prob(50))
+			if(prob(50))
 				deconstruct(FALSE)
 				return
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)

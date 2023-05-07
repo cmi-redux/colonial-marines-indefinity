@@ -115,6 +115,7 @@
 			return 0
 
 	//general preferences
+	S["client_language"] >> client_language
 	S["ooccolor"] >> ooccolor
 	S["lastchangelog"] >> lastchangelog
 	S["be_special"] >> be_special
@@ -194,6 +195,7 @@
 	S["autofit_viewport"] >> auto_fit_viewport
 
 	//Sanitize
+	client_language = sanitize_text(client_language, initial(client_language))
 	ooccolor = sanitize_hexcolor(ooccolor, CONFIG_GET(string/ooc_color_default))
 	lastchangelog = sanitize_text(lastchangelog, initial(lastchangelog))
 	UI_style = sanitize_inlist(UI_style, list("white", "dark", "midnight", "orange", "old"), initial(UI_style))
@@ -242,12 +244,12 @@
 	predator_h_style = sanitize_inlist(predator_h_style, GLOB.yautja_hair_styles_list, initial(predator_h_style))
 	predator_skin_color = sanitize_inlist(predator_skin_color, PRED_SKIN_COLOR, initial(predator_skin_color))
 	predator_flavor_text = predator_flavor_text ? sanitize_text(predator_flavor_text, initial(predator_flavor_text)) : initial(predator_flavor_text)
-	commander_status = sanitize_inlist(commander_status, whitelist_hierarchy, initial(commander_status))
+	commander_status = sanitize_inlist(commander_status, WHITELIST_HIERARCHY, initial(commander_status))
 	commander_sidearm   = sanitize_inlist(commander_sidearm, list("Mateba","Colonel's Mateba","Golden Desert Eagle","Desert Eagle"), initial(commander_sidearm))
 	sea_path = sanitize_inlist(sea_path, list("Command", "Technical"), initial(sea_path))
 	preferred_survivor_variant = sanitize_inlist(preferred_survivor_variant, SURVIVOR_VARIANT_LIST, ANY_SURVIVOR)
-	yautja_status = sanitize_inlist(yautja_status, whitelist_hierarchy + list("Elder"), initial(yautja_status))
-	synth_status = sanitize_inlist(synth_status, whitelist_hierarchy, initial(synth_status))
+	yautja_status = sanitize_inlist(yautja_status, WHITELIST_HIERARCHY + list("Elder"), initial(yautja_status))
+	synth_status = sanitize_inlist(synth_status, WHITELIST_HIERARCHY, initial(synth_status))
 	key_bindings = sanitize_keybindings(key_bindings)
 	remembered_key_bindings = sanitize_islist(remembered_key_bindings, null)
 	hotkeys = sanitize_integer(hotkeys, FALSE, TRUE, TRUE)
@@ -259,12 +261,12 @@
 			if(!(i in remembered_key_bindings))
 				var/datum/keybinding/instance = GLOB.keybindings_by_name[i]
 				// Classic
-				if(LAZYLEN(instance.classic_keys))
+				if(length(instance.classic_keys))
 					for(var/bound_key in instance.classic_keys)
 						LAZYADD(key_bindings[bound_key], list(instance.name))
 
 				// Hotkey
-				if(LAZYLEN(instance.hotkey_keys))
+				if(length(instance.hotkey_keys))
 					for(var/bound_key in instance.hotkey_keys)
 						LAZYADD(key_bindings[bound_key], list(instance.name))
 
@@ -291,6 +293,7 @@
 	S["version"] << savefile_version
 
 	//general preferences
+	S["client_language"] << client_language
 	S["ooccolor"] << ooccolor
 	S["lastchangelog"] << lastchangelog
 	S["UI_style"] << UI_style
@@ -515,10 +518,14 @@
 	trait_points = initial(trait_points)
 	close_browser(owner, "character_traits")
 
-	if(!origin) origin = ORIGIN_USCM
-	if(!faction)  faction =  "None"
-	if(!religion) religion = RELIGION_AGNOSTICISM
-	if(!preferred_squad) preferred_squad = "None"
+	if(!origin)
+		origin = ORIGIN_USCM
+	if(!faction)
+		faction =  "None"
+	if(!religion)
+		religion = RELIGION_AGNOSTICISM
+	if(!preferred_squad)
+		preferred_squad = "None"
 
 	return 1
 

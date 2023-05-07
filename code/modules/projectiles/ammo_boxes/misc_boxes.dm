@@ -1,7 +1,7 @@
 //-----------------------MISC SUPPLIES BOXES-----------------------
 
 /obj/item/ammo_box/magazine/misc
-	name = "\improper miscellaneous equipment box"
+	name = "miscellaneous equipment box"
 	desc = "A box for miscellaneous equipment."
 	icon_state = "supply_crate"
 	overlay_ammo_type = "blank"
@@ -11,16 +11,6 @@
 	limit_per_tile = 4
 
 //---------------------FIRE HANDLING PROCS
-
-/obj/item/ammo_box/magazine/misc/flamer_fire_act(damage, datum/cause_data/flame_cause_data)
-	if(burning)
-		return
-	burning = TRUE
-	process_burning()
-	return
-
-/obj/item/ammo_box/magazine/misc/get_severity()
-	return
 
 /obj/item/ammo_box/magazine/misc/process_burning(datum/cause_data/flame_cause_data)
 	var/obj/structure/magazine_box/host_box
@@ -34,11 +24,11 @@
 /obj/item/ammo_box/magazine/misc/handle_side_effects(obj/structure/magazine_box/host_box)
 	if(host_box)
 		host_box.apply_fire_overlay()
-		host_box.SetLuminosity(3)
+		host_box.set_light_on(TRUE)
 		host_box.visible_message(SPAN_WARNING("\The [src] catches on fire!"))
 	else
 		apply_fire_overlay()
-		SetLuminosity(3)
+		set_light_on(TRUE)
 		visible_message(SPAN_WARNING("\The [src] catches on fire!"))
 
 /obj/item/ammo_box/magazine/misc/apply_fire_overlay(will_explode = FALSE)
@@ -56,7 +46,7 @@
 //------------------------MRE Box--------------------------
 
 /obj/item/ammo_box/magazine/misc/mre
-	name = "\improper box of MREs"
+	name = "box of MREs"
 	desc = "A box of MREs. Nutritious, but not delicious."
 	magazine_type = /obj/item/storage/box/MRE
 	num_of_magazines = 12
@@ -68,39 +58,24 @@
 //------------------------M94 Marking Flare Packs Box--------------------------
 
 /obj/item/ammo_box/magazine/misc/flares
-	name = "\improper box of M94 marking flare packs"
+	name = "box of M94 marking flare packs"
 	desc = "A box of M94 marking flare packs, to brighten up your day."
 	magazine_type = /obj/item/storage/box/m94
 	num_of_magazines = 10
 	overlay_gun_type = "_m94"
 	overlay_content = "_flares"
 
-//---------------------FIRE HANDLING PROCS
-
-//flare box has unique stuff
-/obj/item/ammo_box/magazine/misc/flares/flamer_fire_act(damage, datum/cause_data/flame_cause_data)
-	if(burning)
-		return
-	burning = TRUE
-	process_burning()
-
-/obj/item/ammo_box/magazine/misc/flares/get_severity()
-	var/flare_amount = 0
-	for(var/obj/item/storage/box/m94/flare_box in contents)
-		flare_amount += flare_box.contents.len
-	flare_amount = round(flare_amount / 8) //10 packs, 8 flares each, maximum total of 10 flares we can throw out
-	return flare_amount
-
 /obj/item/ammo_box/magazine/misc/flares/process_burning(datum/cause_data/flame_cause_data)
 	var/obj/structure/magazine_box/host_box
 	if(istype(loc, /obj/structure/magazine_box))
 		host_box = loc
-	var/flare_amount = get_severity()
-	//need to make sure we delete the structure box if it exists, it will handle the deletion of ammo box inside
-	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(qdel), (host_box ? host_box : src)), 7 SECONDS)
+	var/flare_amount
+	for(var/obj/item/storage/box/m94/flare_box in contents)
+		flare_amount += flare_box.contents.len
+	addtimer(CALLBACK(GLOBAL_PROC, PROC_REF(qdel), (host_box ? host_box : src)), 7 SECONDS)
 	if(flare_amount > 0)
 		handle_side_effects(host_box, TRUE)
-
+		playsound(src, 'sound/effects/explosion_psss.ogg', 2, 1)
 		var/list/turf_list = list()
 		for(var/turf/T in range(5, (host_box ? host_box : src)))
 			turf_list += T
@@ -117,11 +92,11 @@
 
 	if(host_box)
 		host_box.apply_fire_overlay()
-		host_box.SetLuminosity(3)
+		host_box.set_light_on(TRUE)
 		host_box.visible_message(SPAN_WARNING(shown_message))
 	else
 		apply_fire_overlay()
-		SetLuminosity(3)
+		set_light_on(TRUE)
 		visible_message(SPAN_WARNING(shown_message))
 
 //for flare box, instead of actually exploding, we throw out a flare at random direction
@@ -130,7 +105,7 @@
 	var/speed = pick(SPEED_SLOW, SPEED_AVERAGE, SPEED_FAST)
 
 	var/turf/target_turf = pick(turf_list)
-	var/obj/item/device/flashlight/flare/on/F = new (get_turf(host_box ? host_box : src))
+	var/obj/item/device/flashlight/flare/on/F = new(get_turf(host_box ? host_box : src))
 	playsound(src,'sound/handling/flare_activate_2.ogg', 50, 1)
 
 	INVOKE_ASYNC(F, TYPE_PROC_REF(/atom/movable, throw_atom), target_turf, range, speed, null, TRUE)
@@ -142,7 +117,7 @@
 //------------------------Flashlight Box--------------------------
 
 /obj/item/ammo_box/magazine/misc/flashlight
-	name = "\improper box of flashlights"
+	name = "box of flashlights"
 	desc = "A box of flashlights to brighten your day!"
 	magazine_type = /obj/item/device/flashlight
 	num_of_magazines = 8
@@ -156,7 +131,7 @@
 //------------------------Battery Box--------------------------
 
 /obj/item/ammo_box/magazine/misc/power_cell
-	name = "\improper box of High-Capacity Power Cells"
+	name = "box of High-Capacity Power Cells"
 	desc = "A box of High-Capacity Power Cells to keep your electronics going all night long!"
 	magazine_type = /obj/item/cell/high
 	num_of_magazines = 8

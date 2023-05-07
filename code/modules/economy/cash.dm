@@ -38,7 +38,7 @@
 		if(!istype(W, /obj/item/spacecash/bundle))
 			var/obj/item/spacecash/cash = W
 			user.temp_drop_inv_item(cash)
-			bundle = new (src.loc)
+			bundle = new(src.loc)
 			bundle.worth += cash.worth
 			bundle.update_value()
 			qdel(cash)
@@ -104,7 +104,7 @@
 		var/obj/cash = new cashtype (usr.loc)
 		user.put_in_hands(cash)
 	else
-		var/obj/item/spacecash/bundle/bundle = new (usr.loc)
+		var/obj/item/spacecash/bundle/bundle = new(usr.loc)
 		bundle.worth = amount
 		bundle.update_icon()
 		user.put_in_hands(bundle)
@@ -175,10 +175,10 @@
 		if(ishuman(human_user) && !human_user.get_active_hand())
 			human_user.put_in_hands(cash)
 	else
-		var/obj/item/spacecash/bundle/bundle = new (spawnloc)
+		var/obj/item/spacecash/bundle/bundle = new(spawnloc)
 		bundle.worth = sum
 		bundle.update_icon()
-		if (ishuman(human_user) && !human_user.get_active_hand())
+		if(ishuman(human_user) && !human_user.get_active_hand())
 			human_user.put_in_hands(bundle)
 	return
 

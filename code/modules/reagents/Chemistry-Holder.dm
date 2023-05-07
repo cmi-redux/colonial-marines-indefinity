@@ -1,5 +1,5 @@
 /datum/reagents
-	var/list/datum/reagent/reagent_list = new/list()
+	var/list/datum/reagent/reagent_list = list()
 	var/total_volume = 0
 	var/maximum_volume = 100
 	var/atom/my_atom = null
@@ -61,7 +61,7 @@
 
 /proc/global_prepare_reagents()
 	//I dislike having these here but map-objects are initialised before world/New() is called. >_>
-	set waitfor = 0
+	set waitfor = FALSE
 	//Chemical Reagents - Initialises all /datum/reagent into a list indexed by reagent id
 	//Generated chemicals should be initialized last, hence the substract then readd.
 	var/list/paths = subtypesof(/datum/reagent) - typesof(/datum/reagent/generated) -  subtypesof(/datum/reagent/generated) + subtypesof(/datum/reagent/generated)
@@ -306,7 +306,7 @@
 				var/total_matching_catalysts= 0
 				var/matching_container = 0
 				var/matching_other = 0
-				var/list/multipliers = new/list()
+				var/list/multipliers = list()
 
 				for(var/B in C.required_reagents)
 					if(!has_reagent(B, C.required_reagents[B]))
@@ -591,9 +591,9 @@
 	add_reagent(result, amount)
 	return TRUE
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 //**************************************Explosions and Fire********************************************/
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/reagents/proc/handle_volatiles()
 	if(isliving(my_atom))
@@ -759,7 +759,7 @@
 /turf/proc/reset_chemexploded()
 	chemexploded = FALSE
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 // Convenience proc to create a reagents holder for an atom
 // Max vol is maximum volume of holder

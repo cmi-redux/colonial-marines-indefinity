@@ -1,22 +1,22 @@
+#define WAIT_SSPERFLOGGING_READY while(!SSperf_logging.round) {stoplag();}
+
 SUBSYSTEM_DEF(perf_logging)
-	name = "Perf Logging"
-	wait = 60 SECONDS
-	flags = SS_NO_INIT | SS_KEEP_TIMING
-	priority = SS_PRIORITY_PERFLOGGING
+	name		= "Perf Logging"
+	wait		= 1 MINUTES
+	init_order	= SS_INIT_PREF_LOGGING
+	flags		= SS_KEEP_TIMING
+	priority	= SS_PRIORITY_PERFLOGGING
 	var/datum/entity/mc_round/round
 	var/list/datum/entity/mc_controller/controller_assoc = list()
 	var/list/datum/controller/subsystem/currentrun
 	var/ord = 0 // Amount of measurements
 	var/tcost = 0 // Total cost for current tick
 
+/datum/controller/subsystem/perf_logging/Initialize(timeofday)
+	start_logging()
+	return SS_INIT_SUCCESS
+
 /datum/controller/subsystem/perf_logging/fire(resumed = FALSE)
-	if(SSticker?.current_state < GAME_STATE_PLAYING)
-		return // Not started yet
-	if(!SSentity_manager?.ready)
-		return // DB not ready
-	if(!round) // Init
-		start_logging()
-		return
 	if(!resumed)
 		ord++
 		tcost = 0
@@ -39,8 +39,9 @@ SUBSYSTEM_DEF(perf_logging)
 /// Setup to begin performance logging when game starts
 /datum/controller/subsystem/perf_logging/proc/start_logging()
 	SHOULD_NOT_SLEEP(TRUE)
-	var/datum/map_config/ground = SSmapping.configs[GROUND_MAP]
-	if(!ground) return
+	var/datum/map_config/ground = SSmapping.configs?[GROUND_MAP]
+	if(!ground)
+		return
 	ord = 0
 	round = SSentity_manager.select(/datum/entity/mc_round)
 	round.map_name = ground.map_name
@@ -48,7 +49,8 @@ SUBSYSTEM_DEF(perf_logging)
 	var/datum/entity/mc_controller/C
 	for(var/datum/controller/subsystem/SS in Master.subsystems)
 		C = SSentity_manager.select_by_key(/datum/entity/mc_controller, "[SS.type]")
-		if(!C) continue
+		if(!C)
+			continue
 		C.wait_time = SS.wait
 		C.save()
 		controller_assoc[SS.type] = C
@@ -78,6 +80,6 @@ SUBSYSTEM_DEF(perf_logging)
 	timing_info.save() && timing_info.detach()
 
 /datum/controller/subsystem/perf_logging/stat_entry(msg)
-	if(round) msg = "ACTIVE | Round: [round.id] | Time: #[ord]"
+	if(round) msg = "ACTIVE|Round:[round.id]|Time:#[ord]"
 	else msg = "INACTIVE"
 	return ..()

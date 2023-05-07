@@ -1,15 +1,21 @@
 //This is the proc for gibbing a mob. Cannot gib ghosts.
 //added different sort of gibs and animations. N
-/mob/proc/gib(datum/cause_data/cause = create_cause_data("gibbing", src))
+/mob/proc/gib(datum/cause_data/cause = create_cause_data("разрыва", src))
+	var/datum/shape/rectangle/zone = RECT(x, y, 7, 7)
+	for(var/mob/living/carbon/human/human in SSquadtree.players_in_range(zone, z))
+		spawn(rand(1, 20))
+			if(prob(50))
+				human << sound('sound/effects/Heart Beat.ogg', repeat = rand(1, 60), wait = 0, volume = 100, channel = 2) //play on same channel as ambience
+				human.emote("scream")
 	gibbing = TRUE
 	death(cause, TRUE)
 	gib_animation()
-	if(!SSticker?.mode?.hardcore)
+	if(MODE_HAS_FLAG(MODE_HARDCORE))
 		spawn_gibs()
 
 	// You're not coming back from being gibbed. Stop tracking here
 	SSround_recording.recorder.stop_tracking(src)
-	SSminimaps.remove_marker(src)
+	SSmapview.remove_marker(src)
 
 	qdel(src)
 
@@ -31,7 +37,7 @@
 //This is the proc for turning a mob into ash. Mostly a copy of gib code (above).
 //Originally created for wizard disintegrate. I've removed the virus code since it's irrelevant here.
 //Dusting robots does not eject the MMI, so it's a bit more powerful than gib() /N
-/mob/proc/dust(cause = "dusting")
+/mob/proc/dust(cause = "испепеления")
 	death(cause, 1)
 	dust_animation()
 	spawn_dust_remains()
@@ -47,6 +53,8 @@
 /mob/proc/death(datum/cause_data/cause_data, gibbed = 0, deathmessage = "seizes up and falls limp...")
 	if(stat == DEAD)
 		return 0
+
+	SSautobalancer.balance_action(src, "death")
 
 	if(!gibbed)
 		visible_message("<b>\The [src.name]</b> [deathmessage]")
@@ -85,7 +93,7 @@
 
 	timeofdeath = world.time
 	life_time_total = world.time - life_time_start
-	if(mind) mind.store_memory("Time of death: [worldtime2text()]", 0)
+	if(mind) mind.store_memory("Time of death: [game_time_timestamp()]", 0)
 	GLOB.alive_mob_list -= src
 	GLOB.dead_mob_list += src
 

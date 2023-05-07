@@ -9,11 +9,11 @@
 	name = "storage"
 	icon = 'icons/obj/items/storage.dmi'
 	w_class = SIZE_MEDIUM
-	var/list/can_hold = new/list() //List of objects which this item can store (if set, it can't store anything else)
-	var/list/cant_hold = new/list() //List of objects which this item can't store (in effect only if can_hold isn't set)
-	var/list/bypass_w_limit = new/list() //a list of objects which this item can store despite not passing the w_class limit
-	var/list/click_border_start = new/list() //In slotless storage, stores areas where clicking will refer to the associated item
-	var/list/click_border_end = new/list()
+	var/list/can_hold = list() //List of objects which this item can store (if set, it can't store anything else)
+	var/list/cant_hold = list() //List of objects which this item can't store (in effect only if can_hold isn't set)
+	var/list/bypass_w_limit = list() //a list of objects which this item can store despite not passing the w_class limit
+	var/list/click_border_start = list() //In slotless storage, stores areas where clicking will refer to the associated item
+	var/list/click_border_end = list()
 	var/list/hearing_items //A list of items that use hearing for the purpose of performance
 	var/max_w_class = SIZE_SMALL //Max size of objects that this object can store
 	var/max_storage_space = 14 //The sum of the storage costs of all the items in this storage item.
@@ -84,7 +84,7 @@
 		L += S.return_inv()
 	for(var/obj/item/gift/G in src)
 		L += G.gift
-		if (isstorage(G.gift))
+		if(isstorage(G.gift))
 			L += G.gift:return_inv()
 	return L
 
@@ -153,10 +153,10 @@
 	if(!opened)
 		orient2hud()
 		opened = 1
-	if (use_sound)
+	if(use_sound)
 		playsound(loc, use_sound, 25, TRUE, 3)
 
-	if (user.s_active)
+	if(user.s_active)
 		user.s_active.storage_close(user)
 	show_to(user)
 	update_icon()
@@ -173,7 +173,7 @@
 	var/cy = 2+rows
 	boxes.screen_loc = "4:16,2:16 to [4+cols]:16,[2+rows]:16"
 
-	if (storage_flags & STORAGE_CONTENT_NUM_DISPLAY)
+	if(storage_flags & STORAGE_CONTENT_NUM_DISPLAY)
 		for (var/datum/numbered_display/ND in display_contents)
 			ND.sample_object.mouse_opacity = MOUSE_OPACITY_OPAQUE
 			ND.sample_object.screen_loc = "[cx]:16,[cy]:16"
@@ -181,7 +181,7 @@
 			ND.sample_object.layer = ABOVE_HUD_LAYER
 			ND.sample_object.plane = ABOVE_HUD_PLANE
 			cx++
-			if (cx > (4+cols))
+			if(cx > (4+cols))
 				cx = 4
 				cy--
 	else
@@ -191,11 +191,11 @@
 			O.layer = ABOVE_HUD_LAYER
 			O.plane = ABOVE_HUD_PLANE
 			cx++
-			if (cx > (4+cols))
+			if(cx > (4+cols))
 				cx = 4
 				cy--
 	closer.screen_loc = "[4+cols+1]:16,2:16"
-	if (storage_flags & STORAGE_SHOW_FULLNESS)
+	if(storage_flags & STORAGE_SHOW_FULLNESS)
 		boxes.update_fullness(src)
 
 var/list/global/item_storage_box_cache = list()
@@ -312,15 +312,15 @@ var/list/global/item_storage_box_cache = list()
 					return TRUE
 	return FALSE
 
-/obj/item/storage/Entered(atom/movable/AM, oldloc)
+/obj/item/storage/Entered(atom/movable/arrived, old_loc)
 	. = ..()
-	AM.layer = ABOVE_HUD_LAYER
-	AM.plane = ABOVE_HUD_PLANE
+	arrived.layer = ABOVE_HUD_LAYER
+	arrived.plane = ABOVE_HUD_PLANE
 
-/obj/item/storage/Exited(atom/movable/AM, newloc)
+/obj/item/storage/Exited(atom/movable/gone, direction)
 	. = ..()
-	AM.layer = initial(AM.layer)
-	AM.plane = initial(AM.plane)
+	gone.layer = initial(gone.layer)
+	gone.plane = initial(gone.plane)
 
 /datum/numbered_display
 	var/obj/item/sample_object
@@ -343,26 +343,26 @@ var/list/global/item_storage_box_cache = list()
 
 	//Numbered contents display
 	var/list/datum/numbered_display/numbered_contents
-	if (storage_flags & STORAGE_CONTENT_NUM_DISPLAY)
+	if(storage_flags & STORAGE_CONTENT_NUM_DISPLAY)
 		numbered_contents = list()
 		adjusted_contents = 0
 		for (var/obj/item/I in contents)
 			var/found = 0
 			for (var/datum/numbered_display/ND in numbered_contents)
-				if (ND.sample_object.type == I.type)
+				if(ND.sample_object.type == I.type)
 					ND.number++
 					found = 1
 					break
-			if (!found)
+			if(!found)
 				adjusted_contents++
 				numbered_contents.Add( new/datum/numbered_display(I) )
 
-	if (storage_slots == null)
+	if(storage_slots == null)
 		space_orient_objs(numbered_contents)
 	else
 		var/row_num = 0
 		var/col_count = min(7,storage_slots) -1
-		if (adjusted_contents > 7)
+		if(adjusted_contents > 7)
 			row_num = round((adjusted_contents-1) / 7) // 7 is the maximum allowed width.
 		slot_orient_objs(row_num, col_count, numbered_contents)
 	return
@@ -372,7 +372,7 @@ var/list/global/item_storage_box_cache = list()
 	if(storage_slots != null && contents.len < storage_slots)
 		return TRUE //At least one open slot.
 	//calculate storage space only for containers that don't have slots
-	if (storage_slots == null)
+	if(storage_slots == null)
 		var/sum_storage_cost = W_class_override ? W_class_override : W.get_storage_cost() //Takes the override if there is one, the given item otherwise.
 		for(var/obj/item/I in contents)
 			sum_storage_cost += I.get_storage_cost() //Adds up the combined storage costs which will be in the storage item if the item is added to it.
@@ -421,7 +421,7 @@ var/list/global/item_storage_box_cache = list()
 				w_limit_bypassed = 1
 				break
 
-	if (!w_limit_bypassed && W.w_class > max_w_class)
+	if(!w_limit_bypassed && W.w_class > max_w_class)
 		if(!stop_messages)
 			to_chat(usr, SPAN_NOTICE("[W] is too long for this [src]."))
 		return 0
@@ -464,7 +464,7 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 /obj/item/storage/proc/_item_insertion(obj/item/W, prevent_warning = 0, mob/user)
 	W.on_enter_storage(src)
 	if(user)
-		if (user.client && user.s_active != src)
+		if(user.client && user.s_active != src)
 			user.client.screen -= W
 		add_fingerprint(user)
 		if(!prevent_warning)
@@ -475,7 +475,7 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 	orient2hud()
 	for(var/mob/M in can_see_content())
 		show_to(M)
-	if (storage_slots)
+	if(storage_slots)
 		W.mouse_opacity = MOUSE_OPACITY_OPAQUE //not having to click the item's tiny sprite to take it out of the storage.
 	update_icon()
 
@@ -541,7 +541,7 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 	return handle_item_insertion(W, prevent_warning, user)
 
 /obj/item/storage/attack_hand(mob/user, mods)
-	if (loc == user)
+	if(loc == user)
 		if((mods && mods["alt"] || storage_flags & STORAGE_USING_DRAWING_METHOD) && ishuman(user) && length(contents)) //Alt mod can reach attack_hand through the clicked() override.
 			var/obj/item/I
 			if(storage_flags & STORAGE_USING_FIFO_DRAWING)
@@ -562,7 +562,7 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 	set category = "Object"
 	set src in usr
 	storage_flags ^= STORAGE_GATHER_SIMULTAENOUSLY
-	if (storage_flags & STORAGE_GATHER_SIMULTAENOUSLY)
+	if(storage_flags & STORAGE_GATHER_SIMULTAENOUSLY)
 		to_chat(usr, "[src] now picks up all items in a tile at once.")
 	else
 		to_chat(usr, "[src] now picks up one item at a time.")
@@ -580,7 +580,7 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 	set category = "Object"
 	set src in usr
 	storage_flags ^= STORAGE_CLICK_EMPTY
-	if (storage_flags & STORAGE_CLICK_EMPTY)
+	if(storage_flags & STORAGE_CLICK_EMPTY)
 		to_chat(usr, "Clicking on a tile with [src] in your hand now empties its contents on that tile.")
 	else
 		to_chat(usr, "Clicking on a tile with [src] in your hand will no longer do anything.")
@@ -593,10 +593,10 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 	empty(H, get_turf(H))
 
 /obj/item/storage/proc/empty(mob/user, turf/T)
-	if (!(storage_flags & STORAGE_ALLOW_EMPTY) || !ishuman(user) || !(user.l_hand == src || user.r_hand == src) || user.is_mob_incapacitated())
+	if(!(storage_flags & STORAGE_ALLOW_EMPTY) || !ishuman(user) || !(user.l_hand == src || user.r_hand == src) || user.is_mob_incapacitated())
 		return
 
-	if (!isturf(T) || get_dist(src, T) > 1)
+	if(!isturf(T) || get_dist(src, T) > 1)
 		T = get_turf(src)
 
 	if(!allowed(user))
@@ -607,14 +607,14 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 		to_chat(user, SPAN_WARNING("[src] is already empty."))
 		return
 
-	if (!(storage_flags & STORAGE_QUICK_EMPTY))
+	if(!(storage_flags & STORAGE_QUICK_EMPTY))
 		user.visible_message(SPAN_NOTICE("[user] starts to empty \the [src]..."),
 			SPAN_NOTICE("You start to empty \the [src]..."))
-		if (!do_after(user, 2 SECONDS, INTERRUPT_ALL, BUSY_ICON_GENERIC))
+		if(!do_after(user, 2 SECONDS, INTERRUPT_ALL, BUSY_ICON_GENERIC))
 			return
 
 	storage_close(user)
-	for (var/obj/item/I in contents)
+	for(var/obj/item/I in contents)
 		remove_from_storage(I, T)
 	user.visible_message(SPAN_NOTICE("[user] empties \the [src]."),
 		SPAN_NOTICE("You empty \the [src]."))
@@ -683,22 +683,16 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 		return
 
 	if(ammo_dumping.flags_magazine & AMMUNITION_HANDFUL_BOX)
-		var/handfuls = round(ammo_dumping.current_rounds / amount_to_dump, 1) //The number of handfuls, we round up because we still want the last one that isn't full
-		if(ammo_dumping.current_rounds != 0)
+		var/handfuls = round(ammo_dumping.ammo_position / amount_to_dump, 1) //The number of handfuls, we round up because we still want the last one that isn't full
+		if(ammo_dumping.ammo_position != 0)
 			if(contents.len < storage_slots)
 				to_chat(user, SPAN_NOTICE("You start refilling [src] with [ammo_dumping]."))
 				if(!do_after(user, 1.5 SECONDS, INTERRUPT_ALL, BUSY_ICON_GENERIC)) return
 				for(var/i = 1 to handfuls)
 					if(contents.len < storage_slots)
-						//Hijacked from /obj/item/ammo_magazine/proc/create_handful because it had to be handled differently
-						//All this because shell types are instances and not their own objects :)
-
-						var/obj/item/ammo_magazine/handful/new_handful = new /obj/item/ammo_magazine/handful
-						var/transferred_handfuls = min(ammo_dumping.current_rounds, amount_to_dump)
-						new_handful.generate_handful(ammo_dumping.default_ammo, ammo_dumping.caliber, amount_to_dump, transferred_handfuls, ammo_dumping.gun_type)
-						ammo_dumping.current_rounds -= transferred_handfuls
-						handle_item_insertion(new_handful, TRUE,user)
-						update_icon(-transferred_handfuls)
+						var/list/transferred = ammo_dumping.retrieve_ammo(amount_to_dump, user, FALSE)
+						handle_item_insertion(transferred[2], TRUE, user)
+						update_icon(-transferred[1])
 					else
 						break
 				playsound(user.loc, "rustle", 15, TRUE, 6)
@@ -734,13 +728,13 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 
 /obj/item/storage/Initialize()
 	. = ..()
-	if (!(storage_flags & STORAGE_QUICK_GATHER))
+	if(!(storage_flags & STORAGE_QUICK_GATHER))
 		verbs -= /obj/item/storage/verb/toggle_gathering_mode
 
-	if (!(storage_flags & STORAGE_ALLOW_DRAWING_METHOD_TOGGLE))
+	if(!(storage_flags & STORAGE_ALLOW_DRAWING_METHOD_TOGGLE))
 		verbs -= /obj/item/storage/verb/toggle_draw_mode
 
-	if (!(storage_flags & STORAGE_ALLOW_EMPTY))
+	if(!(storage_flags & STORAGE_ALLOW_EMPTY))
 		verbs -= /obj/item/storage/verb/empty_verb
 		verbs -= /obj/item/storage/verb/toggle_click_empty
 		verbs -= /obj/item/storage/verb/shake_verb
@@ -846,7 +840,7 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 		I.hear_talk(M, msg, verb, speaking, italics)
 
 /obj/item/proc/get_storage_cost() //framework for adjusting storage costs
-	if (storage_cost)
+	if(storage_cost)
 		return storage_cost
 	else
 		return w_class

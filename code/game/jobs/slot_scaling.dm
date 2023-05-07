@@ -1,8 +1,9 @@
-/proc/get_total_marines()
+/proc/get_total_population(faction_name = FACTION_MARINE)
 	var/count = 0
 	for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
-		if(H.faction == FACTION_MARINE)
-			count++
+		if(H.faction)
+			if(H.faction == GLOB.faction_datum[faction_name])
+				count++
 	return count
 
 // https://docs.google.com/spreadsheets/d/1PlnIwKhq-bVWWFPoBrzWYh1mWK04pyBSQUtUMEw3qSw/edit#gid=1290768907
@@ -37,7 +38,7 @@
 	return job_slot_formula(playercount,30,0,2,3)
 
 /proc/int_slot_formula(playercount)
-	return job_slot_formula(playercount,30,1,1,3)
+	return job_slot_formula(playercount,20,1,1,6)
 
 /proc/spec_slot_formula(playercount)
 	return job_slot_formula(playercount,20,1,2,4)
@@ -47,3 +48,6 @@
 
 /proc/synth_slot_formula(playercount)
 	return job_slot_formula(playercount,120,1,1,2)
+
+/proc/vc_slot_formula(playercount)
+	return job_slot_formula(playercount,60,0,1,2)

@@ -5,44 +5,25 @@
 
 //flags_atom
 
-/// You can't interact with it, at all. Useful when doing certain animations.
-#define NOINTERACT (1<<0)
-/// takes a fingerprint
-#define FPRINT (1<<1)
-/// conducts electricity (metal etc.)
-#define CONDUCT (1<<2)
-/// 'border object'. item has priority to check when entering or leaving
-#define ON_BORDER (1<<3)
-/// Don't want a blood overlay on this one.
-#define NOBLOODY (1<<4)
-/// movable atom won't change direction when Moving()ing. Useful for items that have several dir states.
-#define DIRLOCK (1<<5)
-/// Reagents dont' react inside this container.
-#define NOREACT (1<<6)
-/// is an open container for chemistry purposes
-#define OPENCONTAINER (1<<7)
-/// This is used for /obj/ that relay your clicks via handle_click(), mostly for MGs ~Art
-#define RELAY_CLICK (1<<8)
-/// The item can't be caught out of the air.
-#define ITEM_UNCATCHABLE (1<<9)
-/// Used for nonstandard marine clothing to ignore 'specialty' var.
-#define NO_NAME_OVERRIDE (1<<10)
-/// Used for armors or uniforms that don't have a snow icon state.
-#define NO_SNOW_TYPE (1<<11)
-
-#define INVULNERABLE (1<<12)
-
-/// syringes can inject or drain reagents in this even if it isn't an OPENCONTAINER
-#define CAN_BE_SYRINGED (1<<13)
-/// Chem dispenser can dispense in this even if it isn't an OPENCONTAINER
-#define CAN_BE_DISPENSED_INTO (1<<14)
-/// Initialized by SSatoms.
-#define INITIALIZED (1<<15)
-/// Has run Decorate() as part of subsystem init
-#define ATOM_DECORATED (1<<16)
-/// Whether or not the object uses hearing
-#define USES_HEARING (1<<17)
-
+#define NOINTERACT                (1<<0)  // You can't interact with it, at all. Useful when doing certain animations.
+#define FPRINT                    (1<<1)  // takes a fingerprint
+#define CONDUCT                   (1<<2)  // conducts electricity (metal etc.)
+#define ON_BORDER                 (1<<3)  // 'border object'. item has priority to check when entering or leaving
+#define NOBLOODY                  (1<<4)  // Don't want a blood overlay on this one.
+#define DIRLOCK                   (1<<5)  // movable atom won't change direction when Moving()ing. Useful for items that have several dir states.
+#define NOREACT                   (1<<6)  //Reagents dont' react inside this container.
+#define OPENCONTAINER             (1<<7)  //is an open container for chemistry purposes
+#define RELAY_CLICK               (1<<8)  //This is used for /obj/ that relay your clicks via handle_click(), mostly for MGs ~Art
+#define ITEM_UNCATCHABLE          (1<<9)  // The item can't be caught out of the air.
+#define NO_NAME_OVERRIDE          (1<<10) // Used for nonstandard marine clothing to ignore 'specialty' var.
+#define NO_SNOW_TYPE              (1<<11) // Used for armors or uniforms that don't have a snow icon state.
+#define INVULNERABLE              (1<<12)
+#define CAN_BE_SYRINGED           (1<<13) // syringes can inject or drain reagents in this even if it isn't an OPENCONTAINER
+#define CAN_BE_DISPENSED_INTO     (1<<14) // Chem dispenser can dispense in this even if it isn't an OPENCONTAINER
+#define INITIALIZED               (1<<15) // Initialized by SSatoms.
+#define ATOM_DECORATED            (1<<16) // Has run Decorate() as part of subsystem init
+#define USES_HEARING              (1<<17) // Whether or not the object uses hearing
+#define OVERLAY_QUEUED            (1<<18)
 //==========================================================================================
 
 #define HANDLE_BARRIER_CHANCE 1
@@ -512,6 +493,11 @@ var/global/list/uniform_categories = list(
 #define AUTOLATHE_FAILED 0
 #define AUTOLATHE_START_PRINTING 1
 #define AUTOLATHE_QUEUED 2
+
+#define BULLETPROCESSOR_MAX_QUEUE		80
+#define BULLETPROCESSOR_FAILED			0
+#define BULLETPROCESSOR_START_PRINTING	1
+#define BULLETPROCESSOR_QUEUED			2
 
 
 // Storage flags

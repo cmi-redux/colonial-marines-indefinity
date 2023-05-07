@@ -13,8 +13,10 @@
 /turf/open/space,
 /area/template_noop)
 "c" = (
-/obj/structure/cargo_container/grant/left{
-	desc = "A huge industrial shipping container. This one is in space."
+/obj/structure/cargo_container{
+	desc = "A huge industrial shipping container. This one is in space.";
+	icon_state = "red 0,0";
+	tag = "icon-red 0,0"
 	},
 /turf/open/space,
 /area/template_noop)
@@ -27,7 +29,8 @@
 /area/template_noop)
 "e" = (
 /turf/open/floor/prison{
-	icon_state = "floor_plate"
+	icon_state = "floor_plate";
+	tag = "icon-floor_plate"
 	},
 /area/template_noop)
 "f" = (
@@ -70,11 +73,13 @@
 /turf/open/space/basic,
 /area/template_noop)
 "m" = (
-/turf/open/floor/almayer_hull,
+/turf/open/floor/roof/ship_hull,
 /area/template_noop)
 "n" = (
-/obj/structure/cargo_container/grant/right{
-	desc = "A huge industrial shipping container. You're not sure how it got here."
+/obj/structure/cargo_container{
+	desc = "A huge industrial shipping container. You're not sure how it got here.";
+	icon_state = "red 2,0";
+	tag = "icon-red 2,0"
 	},
 /turf/open/space,
 /area/template_noop)
@@ -111,7 +116,7 @@
 	name = "solar lattice";
 	pixel_y = 6
 	},
-/turf/open/floor/almayer_hull,
+/turf/open/floor/roof/ship_hull,
 /area/template_noop)
 "x" = (
 /turf/closed/wall/r_wall/prison_unmeltable,
@@ -224,7 +229,7 @@
 /obj/structure/platform/kutjevo/smooth{
 	dir = 8
 	},
-/turf/open/floor/almayer_hull,
+/turf/open/floor/roof/ship_hull,
 /area/template_noop)
 "Q" = (
 /turf/open/auto_turf/sand/layer1,
@@ -257,7 +262,7 @@
 /obj/structure/platform/kutjevo/smooth{
 	dir = 4
 	},
-/turf/open/floor/almayer_hull,
+/turf/open/floor/roof/ship_hull,
 /area/template_noop)
 "X" = (
 /turf/open/floor/prison{

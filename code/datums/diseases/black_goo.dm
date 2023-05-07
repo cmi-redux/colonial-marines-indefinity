@@ -24,15 +24,15 @@
 /datum/disease/black_goo/stage_act()
 	..()
 	if(!ishuman(affected_mob)) return
-	var/mob/living/carbon/human/H = affected_mob
+	var/mob/living/carbon/human/human = affected_mob
 
 	if(age > 1.5*stage_minimum_age) stage_prob = 100 //if it takes too long we force a stage increase
 	else stage_prob = initial(stage_prob)
-	if(H.stat == DEAD) stage_minimum_age = 75 //the virus progress faster when the host is dead.
+	if(human.stat == DEAD) stage_minimum_age = 75 //the virus progress faster when the host is dead.
 	switch(stage)
 		if(1)
-			if(H.stat == DEAD && stage_counter != stage)
-				to_chat(H, SPAN_CENTERBOLD("Your zombie infection is now at Stage One! Zombie transformation begins at Stage Four."))
+			if(human.stat == DEAD && stage_counter != stage)
+				to_chat(human, SPAN_CENTERBOLD("Your zombie infection is now at Stage One! Zombie transformation begins at Stage Four."))
 				stage_counter = stage
 			survive_mob_death = TRUE //changed because infection rate was REALLY horrible.
 			if(goo_message_cooldown < world.time )
@@ -40,63 +40,63 @@
 					to_chat(affected_mob, SPAN_DANGER("You feel really warm..."))
 					goo_message_cooldown = world.time + 100
 		if(2)
-			if(H.stat == DEAD && stage_counter != stage)
-				to_chat(H, SPAN_CENTERBOLD("Your zombie infection is now at Stage Two! Zombie transformation begins at Stage Four."))
+			if(human.stat == DEAD && stage_counter != stage)
+				to_chat(human, SPAN_CENTERBOLD("Your zombie infection is now at Stage Two! Zombie transformation begins at Stage Four."))
 				stage_counter = stage
 			if(goo_message_cooldown < world.time)
-				if (prob(3)) to_chat(affected_mob, SPAN_DANGER("Your throat is really dry..."))
-				else if (prob(6)) to_chat(affected_mob, SPAN_DANGER("You feel really warm..."))
-				else if (prob(2)) H.vomit_on_floor()
+				if(prob(3)) to_chat(affected_mob, SPAN_DANGER("Your throat is really dry..."))
+				else if(prob(6)) to_chat(affected_mob, SPAN_DANGER("You feel really warm..."))
+				else if(prob(2)) human.vomit_on_floor()
 				goo_message_cooldown = world.time + 100
 		if(3)
-			if(H.stat == DEAD && stage_counter != stage)
-				to_chat(H, SPAN_CENTERBOLD("Your zombie infection is now at Stage Three! Zombie transformation begins at Stage Four, which will be soon."))
+			if(human.stat == DEAD && stage_counter != stage)
+				to_chat(human, SPAN_CENTERBOLD("Your zombie infection is now at Stage Three! Zombie transformation begins at Stage Four, which will be soon."))
 				stage_counter = stage
 			hidden = list(0,0)
 			//survive_mob_death = TRUE //even if host dies now, the transformation will occur.
-			H.next_move_slowdown = max(H.next_move_slowdown, 1)
+			human.next_move_slowdown = max(human.next_move_slowdown, 1)
 			if(goo_message_cooldown < world.time)
-				if (prob(3))
+				if(prob(3))
 					to_chat(affected_mob, SPAN_DANGER("You cough up some black fluid..."))
 					goo_message_cooldown = world.time + 100
-				else if (prob(6))
+				else if(prob(6))
 					to_chat(affected_mob, SPAN_DANGER("Your throat is really dry..."))
 					goo_message_cooldown = world.time + 100
-				else if (prob(9))
+				else if(prob(9))
 					to_chat(affected_mob, SPAN_DANGER("You feel really warm..."))
 					goo_message_cooldown = world.time + 100
 				else if(prob(5))
 					goo_message_cooldown = world.time + 100
-					H.vomit_on_floor()
+					human.vomit_on_floor()
 		if(4)
-			if(H.stat == DEAD && stage_counter != stage)
-				to_chat(H, SPAN_CENTERBOLD("Your zombie infection is now at Stage Four! Your transformation will happen any moment now."))
+			if(human.stat == DEAD && stage_counter != stage)
+				to_chat(human, SPAN_CENTERBOLD("Your zombie infection is now at Stage Four! Your transformation will happen any moment now."))
 				stage_counter = stage
-			H.next_move_slowdown = max(H.next_move_slowdown, 2)
+			human.next_move_slowdown = max(human.next_move_slowdown, 2)
 			if(prob(5) || age >= stage_minimum_age-1)
 				if(!zombie_transforming)
-					zombie_transform(H)
+					zombie_transform(human)
 			else if(prob(5))
-				H.vomit_on_floor()
+				human.vomit_on_floor()
 		if(5)
-			if(H.stat == DEAD && stage_counter != stage)
+			if(human.stat == DEAD && stage_counter != stage)
 				stage_counter = stage
-				if(H.species.name != SPECIES_ZOMBIE && !zombie_transforming)
-					to_chat(H, SPAN_CENTERBOLD("Your zombie infection is now at Stage Five! Your transformation should have happened already, but will be forced now."))
-					zombie_transform(H)
+				if(human.species.name != SPECIES_ZOMBIE && !zombie_transforming)
+					to_chat(human, SPAN_CENTERBOLD("Your zombie infection is now at Stage Five! Your transformation should have happened already, but will be forced now."))
+					zombie_transform(human)
 			if(!zombie_transforming && prob(50))
-				if(H.stat != DEAD)
+				if(human.stat != DEAD)
 					var/healamt = 2
-					if(H.health < H.maxHealth)
-						H.apply_damage(-healamt, BURN)
-						H.apply_damage(-healamt, BRUTE)
-						H.apply_damage(-healamt, TOX)
-						H.apply_damage(-healamt, OXY)
-				H.nutrition = NUTRITION_MAX //never hungry
+					if(human.health < human.maxHealth)
+						human.apply_damage(-healamt, BURN)
+						human.apply_damage(-healamt, BRUTE)
+						human.apply_damage(-healamt, TOX)
+						human.apply_damage(-healamt, OXY)
+				human.nutrition = NUTRITION_MAX //never hungry
 
 
 /datum/disease/black_goo/proc/zombie_transform(mob/living/carbon/human/human)
-	set waitfor = 0
+	set waitfor = FALSE
 	zombie_transforming = TRUE
 	human.vomit_on_floor()
 	human.adjust_effect(5, STUN)
@@ -112,7 +112,6 @@
 		human.jitteriness = 0
 		human.set_species(SPECIES_ZOMBIE)
 		stage = 5
-		human.faction = FACTION_ZOMBIE
 		zombie_transforming = FALSE
 
 

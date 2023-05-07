@@ -61,7 +61,7 @@
 		to_chat(H, SPAN_WARNING("Wrong ID card owner detected."))
 		return
 
-	if(req_role && I.rank != req_role)
+	if(req_role && !(I.rank & req_role))
 		to_chat(H, SPAN_WARNING("This device isn't for you."))
 		return
 
@@ -103,7 +103,7 @@
 
 	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
 
-	if (!ui)
+	if(!ui)
 		ui = new(user, src, ui_key, "portable_vendor.tmpl", name , 600, 700)
 		ui.set_initial_data(data)
 		ui.open()
@@ -119,9 +119,9 @@
 	if(usr.is_mob_incapacitated())
 		return
 
-	if (in_range(src, usr) && ishuman(usr))
+	if(in_range(src, usr) && ishuman(usr))
 		usr.set_interaction(src)
-		if (href_list["vend"])
+		if(href_list["vend"])
 
 			if(!allowed(usr))
 				to_chat(usr, SPAN_WARNING("Access denied."))
@@ -137,7 +137,7 @@
 				to_chat(H, SPAN_WARNING("Wrong ID card owner detected."))
 				return
 
-			if(req_role && I.rank != req_role)
+			if(req_role && !(I.rank & req_role))
 				to_chat(H, SPAN_WARNING("This device isn't for you."))
 				return
 
@@ -181,11 +181,13 @@
 		ui_interact(usr) //updates the nanoUI window
 
 
-/obj/item/device/portable_vendor/proc/update_overlays()
-	if(overlays) overlays.Cut()
-	if (broken)
+/obj/item/device/portable_vendor/update_overlays()
+	. = ..()
+	if(overlays)
+		overlays.Cut()
+	if(broken)
 		overlays += image(icon, "securespark")
-	else if (fabricating)
+	else if(fabricating)
 		overlays += image(icon, "secureb")
 	else
 		overlays += image(icon, "secure0")
@@ -218,9 +220,9 @@
 	s.start()
 
 /obj/item/device/portable_vendor/emp_act(severity)
-	if (broken)
+	if(broken)
 		return
-	if (prob(40*severity))
+	if(prob(40*severity))
 		malfunction()
 
 /obj/item/device/portable_vendor/ex_act(severity)
@@ -247,14 +249,14 @@
 	special_prods = list(/obj/item/implanter/neurostim, /obj/item/reagent_container/hypospray/autoinjector/ultrazine/liaison)
 
 	req_access = list(ACCESS_WY_CORPORATE)
-	req_role = JOB_CORPORATE_LIAISON
+	req_role = list(JOB_CORPORATE_LIAISON, JOB_UPP_CORPORATE_LIAISON)
 	listed_products = list(
 		list("INCENTIVES", 0, null, null, null),
 		list("Neurostimulator Implant", 30, /obj/item/implanter/neurostim, "white", "Implant which regulates nociception and sensory function. Benefits include pain reduction, improved balance, and improved resistance to overstimulation and disorientation. To encourage compliance, negative stimulus is applied if the implant hears a (non-radio) spoken codephrase. Implant will be degraded by the body's immune system over time, and thus malfunction with gradually increasing frequency. Personal use not recommended."),
 		list("Ultrazine Injector", 25, /obj/item/reagent_container/hypospray/autoinjector/ultrazine/liaison, "white", "Highly-addictive stimulant. Enhances short-term physical performance, particularly running speed. Effects last approximately 10 minutes per injection. More than two injections at a time will result in overdose. Withdrawal causes extreme discomfort and hallucinations. Long-term use results in halluciations and organ failure. Conditional distribution secures subject compliance. Not for personal use."),
 		list("Ceramic Plate", 10, /obj/item/trash/ceramic_plate, "white", "A ceramic plate, useful in a variety of situations."),
 		list("Cash", 5, /obj/item/spacecash/c1000/counterfeit, "white", "$1000 USD, unmarked bills"),
-		list("WY Encryption Key", 5, /obj/item/device/encryptionkey/WY, "white", "WY private comms encryption key, for conducting private business."),
+		list("WY Encryption Key", 5, /obj/item/device/encryptionkey/wy, "white", "WY private comms encryption key, for conducting private business."),
 
 		list("SMOKABLES", 0, null, null, null),
 		list("Cigars", 5, /obj/item/storage/fancy/cigar, "white", "Case of premium cigars, untampered."),

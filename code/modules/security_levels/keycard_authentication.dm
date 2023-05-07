@@ -271,7 +271,7 @@ var/global/maint_all_access = 1
 		text_timeleft = "[timeleft] seconds"
 	var/input = "Station shutter locks lifting in [text_timeleft] per manual override."
 	var/title = announce_title
-	marine_announcement(input, title, 'sound/AI/commandreport.ogg')
+	faction_announcement(input, title, 'sound/AI/commandreport.ogg')
 	for(var/mob/M in GLOB.player_list)
 		if(isxeno(M))
 			sound_to(M, sound(get_sfx("queen"), wait = 0, volume = 50))
@@ -281,7 +281,7 @@ var/global/maint_all_access = 1
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/structure/machinery/keycard_auth/lockdown, timed_countdown), new_timeleft), next_interval)
 
 /obj/structure/machinery/keycard_auth/lockdown/trigger_event()
-	set waitfor = 0
+	set waitfor = FALSE
 	switch(event)
 		if("Lift Lockdown")
 			if(istype(SSticker.mode, /datum/game_mode/colonialmarines))

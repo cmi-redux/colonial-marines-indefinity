@@ -73,6 +73,10 @@
 #define PULSE_2FAST 4 //>120 bpm
 #define PULSE_THREADY 5 //occurs during hypovolemic shock
 
+//Lights define
+#define CHECKS_PASSED 1
+#define NO_LIGHT_STATE_CHANGE 2
+
 //proc/get_pulse methods
 #define GETPULSE_HAND 0 //less accurate (hand)
 #define GETPULSE_TOOL 1 //more accurate (med scanner, sleeper, etc)
@@ -153,13 +157,18 @@ var/list/RESTRICTED_CAMERA_NETWORKS = list( //Those networks can only be accesse
 #define INGEST 2
 
 /// Marks an object as organic. Used for alien structures and any other organic material
-#define OBJ_ORGANIC (1<<0)
+#define OBJ_ORGANIC				(1<<0)
 /// Makes the item not spawn a band around the helmet if it's used as a helmet garb
-#define OBJ_NO_HELMET_BAND (1<<1)
+#define OBJ_NO_HELMET_BAND		(1<<1)
 /// Marks the object as helmet garb
-#define OBJ_IS_HELMET_GARB (1<<2)
+#define OBJ_IS_HELMET_GARB		(1<<2)
 /// can you customize the description/name of the thing?
-#define OBJ_UNIQUE_RENAME (1<<3)
+#define OBJ_UNIQUE_RENAME		(1<<3)
+/// Should this object block z falling from loc?
+#define OBJ_BLOCK_Z_OUT_DOWN	(1<<4)
+#define OBJ_BLOCK_Z_OUT_UP		(1<<5)
+#define OBJ_BLOCK_Z_IN_DOWN		(1<<6)
+#define OBJ_BLOCK_Z_IN_UP		(1<<7)
 
 // For reinforced table status
 #define RTABLE_WEAKENED 1

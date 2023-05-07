@@ -9,3 +9,17 @@
 	desc = "Better keep this safe."
 	icon_state = "nucleardisk"
 	w_class = SIZE_TINY
+
+/obj/item/disk/nuclear/red
+	name = "red nuclear authentication disk"
+	icon_state = "disk_8"
+
+
+/obj/item/disk/nuclear/green
+	name = "green nuclear authentication disk"
+	icon_state = "disk_6"
+
+
+/obj/item/disk/nuclear/blue
+	name = "blue nuclear authentication disk"
+	icon_state = "disk_13"

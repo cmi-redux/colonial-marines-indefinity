@@ -4,61 +4,63 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/item/trash/plate,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "ac" = (
 /obj/structure/machinery/light{
-	dir = 1
+	dir = 1;
+	tag = "icon-tube1 (NORTH)"
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "ad" = (
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "ae" = (
 /obj/structure/machinery/camera/autoname{
 	dir = 1
 	},
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "af" = (
 /obj/structure/machinery/power/apc{
 	dir = 1;
 	name = "Fitness APC"
 	},
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "ag" = (
 /obj/structure/machinery/light{
-	dir = 1
+	dir = 1;
+	tag = "icon-tube1 (NORTH)"
 	},
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "ah" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "ai" = (
 /obj/item/reagent_container/food/drinks/bottle/absinthe,
 /obj/effect/landmark/corpsespawner/colonist/random,
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aj" = (
 /obj/structure/bed/chair,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "al" = (
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "an" = (
 /obj/item/trash/chunk,
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "ao" = (
 /obj/item/trash/chunk{
 	pixel_x = 3;
@@ -67,7 +69,7 @@
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "ap" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 6
@@ -75,72 +77,73 @@
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aq" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "ar" = (
 /obj/structure/bed/chair{
 	dir = 4
 	},
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "as" = (
 /obj/structure/surface/table,
 /obj/item/toy/deck,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "at" = (
 /obj/structure/surface/table,
 /obj/item/ashtray/bronze,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "au" = (
 /obj/structure/surface/table,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "av" = (
 /obj/structure/surface/table,
 /obj/item/storage/donut_box/empty,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aw" = (
 /obj/structure/bed/chair{
 	dir = 8
 	},
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "ax" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/reagent_dispensers/beerkeg,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "ay" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/landmark/good_item,
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "az" = (
 /obj/structure/pipes/vents/pump,
 /obj/effect/decal/cleanable/blood/gibs/limb,
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aA" = (
 /obj/effect/decal/cleanable/blood{
-	icon_state = "xgib4"
+	icon_state = "xgib4";
+	tag = "icon-xgib4"
 	},
 /obj/effect/landmark/corpsespawner/colonist/random,
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aB" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/item/trash/chunk{
@@ -149,41 +152,41 @@
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aC" = (
 /obj/structure/machinery/camera/autoname{
 	dir = 4
 	},
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aD" = (
 /obj/effect/landmark/corpsespawner/colonist/random,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aE" = (
 /obj/structure/bed/chair{
 	dir = 4
 	},
 /obj/effect/landmark/survivor_spawner,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aF" = (
 /obj/structure/surface/table,
 /obj/structure/pipes/vents/pump,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aG" = (
 /obj/structure/surface/table,
 /obj/item/trash/plate,
 /obj/item/reagent_container/food/snacks/meatpizzaslice,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aH" = (
 /obj/structure/surface/table,
 /obj/item/poster,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aI" = (
 /obj/structure/surface/table,
 /obj/item/pizzabox/margherita,
@@ -192,20 +195,20 @@
 	pixel_y = 12
 	},
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aJ" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aK" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aL" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/trash/chunk{
@@ -216,7 +219,7 @@
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aM" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/pipes/standard/simple/hidden/green,
@@ -224,34 +227,34 @@
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aN" = (
 /obj/item/trash/chunk,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aO" = (
 /obj/structure/bed/chair{
 	dir = 1
 	},
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aP" = (
 /obj/structure/bed/chair{
 	dir = 1
 	},
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aR" = (
 /obj/item/reagent_container/food/drinks/bottle/rum,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aS" = (
 /obj/item/device/megaphone,
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aT" = (
 /obj/structure/pipes/standard/manifold/hidden/green{
 	dir = 8
@@ -260,7 +263,7 @@
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aU" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
@@ -270,7 +273,7 @@
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aV" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/pipes/standard/simple/hidden/green{
@@ -279,7 +282,7 @@
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aW" = (
 /obj/item/device/radio/intercom{
 	freerange = 1;
@@ -288,41 +291,41 @@
 	pixel_x = 30
 	},
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aX" = (
 /obj/effect/landmark/good_item,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "aY" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "ba" = (
 /obj/effect/landmark/survivor_spawner,
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "bb" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 5
 	},
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "bc" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "bd" = (
 /obj/structure/pipes/standard/manifold/hidden/green{
 	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "bf" = (
 /obj/structure/machinery/vending/snack{
 	icon_state = "snack-broken";
@@ -332,26 +335,26 @@
 	dir = 4
 	},
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "bg" = (
 /obj/structure/machinery/vending/cigarette/colony,
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "bh" = (
 /obj/structure/machinery/vending/cola,
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "bi" = (
 /obj/structure/machinery/light,
 /obj/structure/pipes/standard/manifold/hidden/green,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "bj" = (
 /obj/structure/noticeboard{
 	dir = 1;
@@ -362,7 +365,7 @@
 	},
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "bk" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -376,40 +379,41 @@
 	network = list("interrogation")
 	},
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "bl" = (
 /obj/structure/pipes/standard/manifold/hidden/green{
 	dir = 1
 	},
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "bm" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
 /obj/structure/machinery/alarm{
 	dir = 1;
-	pixel_y = -30
+	pixel_y = -30;
+	tag = "icon-alarm0 (NORTH)"
 	},
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "bn" = (
 /obj/structure/pipes/standard/manifold/hidden/green,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "bo" = (
 /obj/structure/machinery/light,
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "dl" = (
 /obj/item/reagent_container/food/drinks/bottle/rum,
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "do" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/landmark/corpsespawner/colonist/random,
@@ -417,12 +421,12 @@
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "el" = (
 /obj/effect/landmark/corpsespawner/colonist/random,
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "iE" = (
 /obj/structure/machinery/camera/autoname{
 	dir = 1
@@ -430,13 +434,13 @@
 /obj/effect/landmark/corpsespawner/colonist/random,
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "lN" = (
 /obj/structure/machinery/cm_vending/sorted/boozeomat,
 /turf/open/floor{
 	icon_state = "grimy"
 	},
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "zO" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4;
@@ -445,11 +449,11 @@
 /obj/effect/landmark/corpsespawner/colonist/random,
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 "XP" = (
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor,
-/area/bigredv2/outside/dorms)
+/area/bigredv2/outside/building/dorms)
 
 (1,1,1) = {"
 aY

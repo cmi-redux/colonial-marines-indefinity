@@ -1,3 +1,4 @@
 /datum/faction/contractor
-	name = "Vanguard's Arrow Incorporated"
-	faction_tag = FACTION_CONTRACTOR
+	name = NAME_FACTION_CONTRACTOR
+	faction_name = FACTION_CONTRACTOR
+	faction_iff_tag_type = /obj/item/faction_tag/contractor

@@ -214,8 +214,8 @@
 	t = replacetext(t, "\[sign\]", "<font face=\"[signfont]\"><i>[user ? user.real_name : "Anonymous"]</i></font>")
 	t = replacetext(t, "\[date\]", "<font face=\"[signfont]\"><i>[time2text(REALTIMEOFDAY, "Day DD Month [game_year]")]</i></font>")
 	t = replacetext(t, "\[shortdate\]", "<font face=\"[signfont]\"><i>[time2text(REALTIMEOFDAY, "DD/MM/[game_year]")]</i></font>")
-	t = replacetext(t, "\[time\]", "<font face=\"[signfont]\"><i>[worldtime2text("hh:mm")]</i></font>")
-	t = replacetext(t, "\[date+time\]", "<font face=\"[signfont]\"><i>[worldtime2text("hh:mm")], [time2text(REALTIMEOFDAY, "Day DD Month [game_year]")]</i></font>")
+	t = replacetext(t, "\[time\]", "<font face=\"[signfont]\"><i>[game_time_timestamp("hh:mm")]</i></font>")
+	t = replacetext(t, "\[date+time\]", "<font face=\"[signfont]\"><i>[game_time_timestamp("hh:mm")], [time2text(REALTIMEOFDAY, "Day DD Month [game_year]")]</i></font>")
 	t = replacetext(t, "\[field\]", "<span class=\"paper_field\"></span>")
 
 	t = replacetext(t, "\[h1\]", "<H1>")
@@ -370,17 +370,17 @@
 		clown = 1
 
 	if(istype(P, /obj/item/paper) || istype(P, /obj/item/photo))
-		if (istype(P, /obj/item/paper/carbon))
+		if(istype(P, /obj/item/paper/carbon))
 			var/obj/item/paper/carbon/C = P
-			if (!C.iscopy && !C.copied)
+			if(!C.iscopy && !C.copied)
 				to_chat(user, SPAN_NOTICE("Take off the carbon copy first."))
 				add_fingerprint(user)
 				return
 		if(loc != user) return
 		var/obj/item/paper_bundle/B = new(get_turf(user))
-		if (name != "paper")
+		if(name != "paper")
 			B.name = name
-		else if (P.name != "paper" && P.name != "photo")
+		else if(P.name != "paper" && P.name != "photo")
 			B.name = P.name
 		user.drop_inv_item_on_ground(P)
 		user.drop_inv_item_on_ground(src)
@@ -395,7 +395,7 @@
 			if(!p.on)
 				to_chat(user, SPAN_NOTICE("Your pen is not on!"))
 				return
-		if ( istype(P, /obj/item/tool/pen/robopen) && P:mode == 2 )
+		if( istype(P, /obj/item/tool/pen/robopen) && P:mode == 2 )
 			P:RenamePaper(user,src)
 		else
 			show_browser(user, "<BODY class='paper'>[info_links][stamps]</BODY>", name, name) // Update the window

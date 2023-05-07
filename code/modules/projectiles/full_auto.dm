@@ -79,7 +79,7 @@
 		return
 
 	// fun's also over
-	if(!user.canmove || user.stat || user.is_mob_restrained() || !user.loc || !isturf(user.loc))
+	if(!user.can_action || user.is_mob_restrained() || !user.loc || !isturf(user.loc))
 		return
 
 	// you abandoned the f u n

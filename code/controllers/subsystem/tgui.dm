@@ -12,7 +12,7 @@
 
 SUBSYSTEM_DEF(tgui)
 	name = "tgui"
-	wait = 9
+	wait = 0.9 SECONDS
 	flags = SS_NO_INIT
 	priority = SS_PRIORITY_TGUI
 	runlevels = RUNLEVEL_LOBBY | RUNLEVELS_DEFAULT

@@ -3,12 +3,17 @@
 	hunter_data = new /datum/huntdata
 	hunter_data.name = "[src.real_name]'s Hunter Data"
 	hunter_data.owner = src
+	if(faction?.organ_faction_iff_tag_type)
+		organ_faction_tag = new faction.organ_faction_iff_tag_type
+	if(faction?.faction_iff_tag_type)
+		faction_tag = new faction.faction_iff_tag_type
+	SSmapview.add_marker(src, "mob")
 
 /mob/living/carbon/Life(delta_time)
 	..()
 
 	handle_fire() //Check if we're on fire
-	if(SSweather.is_weather_event)
+	if(SSparticle_weather.running_weather)
 		handle_weather(delta_time)
 
 	if(stat != CONSCIOUS)
@@ -65,7 +70,7 @@
 			playsound(user.loc, 'sound/effects/attackblob.ogg', 25, 1)
 
 			if(prob(max(4*(100*getBruteLoss()/maxHealth - 75),0))) //4% at 24% health, 80% at 5% health
-				last_damage_data = create_cause_data("chestbursting", user)
+				last_damage_data = create_cause_data("грудолома", user)
 				gib(last_damage_data)
 	else if(!chestburst && (status_flags & XENO_HOST) && islarva(user))
 		var/mob/living/carbon/xenomorph/larva/L = user
@@ -114,6 +119,7 @@
 	. = ..(cause)
 
 /mob/living/carbon/revive()
+	tacmap_visibly = TRUE
 	if(handcuffed && !initial(handcuffed))
 		drop_inv_item_on_ground(handcuffed)
 	handcuffed = initial(handcuffed)
@@ -202,7 +208,7 @@
 			apply_effect(6, STUN)//This should work for now, more is really silly and makes you lay there forever
 			apply_effect(6, WEAKEN)
 
-		count_niche_stat(STATISTICS_NICHE_SHOCK)
+		count_statistic_stat(STATISTICS_SHOCK)
 
 	else
 		src.visible_message(
@@ -284,6 +290,8 @@
 
 	playsound(loc, 'sound/weapons/thudswoosh.ogg', 25, 1, 5)
 
+/mob/living/carbon/fall(forced)
+    loc.handle_fall(src, forced)//it's loc so it doesn't call the mob's handle_fall which does nothing
 
 //Throwing stuff
 
@@ -435,7 +443,7 @@
 	if(usr.sleeping)
 		to_chat(usr, SPAN_DANGER("You are already sleeping"))
 		return
-	if(alert(src,"You sure you want to sleep for a while?","Sleep","Yes","No") == "Yes")
+	if(alert(src,"You sure you want to sleep for a while?","Sleep", client.auto_lang(LANGUAGE_YES), client.auto_lang(LANGUAGE_NO)) == client.auto_lang(LANGUAGE_YES))
 		usr.sleeping = 20 //Short nap
 
 
@@ -445,9 +453,11 @@
 	. = ..()
 
 /mob/living/carbon/slip(slip_source_name, stun_level, weaken_level, run_only, override_noslip, slide_steps)
-	set waitfor = 0
-	if(buckled) return FALSE //can't slip while buckled
-	if(lying) return FALSE //can't slip if already lying down.
+	set waitfor = FALSE
+	if(buckled)
+		return FALSE //can't slip while buckled
+	if(lying)
+		return FALSE //can't slip if already lying down.
 	stop_pulling()
 	to_chat(src, SPAN_WARNING("You slipped on \the [slip_source_name? slip_source_name : "floor"]!"))
 	playsound(src.loc, 'sound/misc/slip.ogg', 25, 1)
@@ -462,7 +472,14 @@
 			if(!lying)
 				break
 
+/mob/living/carbon/verb/faction()
+	set name = "View Your Faction"
+	set category = "IC"
 
+	if(!faction)
+		return
+
+	show_browser(src, "[faction]", "Ваша фракция", "faction", "size=200x200")
 
 /mob/living/carbon/on_stored_atom_del(atom/movable/AM)
 	..()
@@ -472,13 +489,13 @@
 				stomach_contents -= AM
 				break
 
-/mob/living/carbon/proc/extinguish_mob(mob/living/carbon/C)
+/mob/living/carbon/proc/extinguish_mob(mob/living/carbon/carbon)
 	adjust_fire_stacks(-5, min_stacks = 0)
 	playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 25, 1, 7)
-	C.visible_message(SPAN_DANGER("[C] tries to put out the fire on [src]!"), \
+	carbon.visible_message(SPAN_DANGER("[carbon] tries to put out the fire on [src]!"), \
 	SPAN_WARNING("You try to put out the fire on [src]!"), null, 5)
 	if(fire_stacks <= 0)
-		C.visible_message(SPAN_DANGER("[C] has successfully extinguished the fire on [src]!"), \
+		carbon.visible_message(SPAN_DANGER("[carbon] has successfully extinguished the fire on [src]!"), \
 		SPAN_NOTICE("You extinguished the fire on [src]."), null, 5)
 
 /mob/living/carbon/resist_buckle()

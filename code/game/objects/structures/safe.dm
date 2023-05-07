@@ -81,8 +81,8 @@ FLOOR SAFES
 			to_chat(user, SPAN_NOTICE("You hear a [pick("tink", "krink", "plink")] from [src]."))
 	if(tumbler_1_pos == tumbler_1_open && tumbler_2_pos == tumbler_2_open)
 		if(user) visible_message("<b>[pick("Spring", "Sprang", "Sproing", "Clunk", "Click")]!</b>")
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 
 /obj/structure/safe/proc/decrement()

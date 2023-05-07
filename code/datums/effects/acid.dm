@@ -40,8 +40,8 @@
 		return FALSE
 
 	if(ishuman(A))
-		var/mob/living/carbon/human/H = A
-		if(H.status_flags & XENO_HOST && HAS_TRAIT(H, TRAIT_NESTED) || H.stat == DEAD)
+		var/mob/living/carbon/human/human = A
+		if(human.status_flags & XENO_HOST && HAS_TRAIT(human, TRAIT_NESTED) || human.stat == DEAD)
 			return FALSE
 
 	. = ..()
@@ -72,12 +72,12 @@
 		LAZYREMOVE(affected_atom.effects_list, src)
 
 	if(ishuman(affected_atom))
-		var/mob/living/carbon/human/H = affected_atom
-		H.update_effects()
+		var/mob/living/carbon/human/human = affected_atom
+		human.update_effects()
 
 	if(isobj(affected_atom))
-		var/obj/O = affected_atom
-		O.update_icon()
+		var/obj/obj = affected_atom
+		obj.update_icon()
 	return ..()
 
 /datum/effects/acid/proc/enhance_acid()
@@ -100,16 +100,9 @@
 /datum/effects/acid/proc/handle_weather()
 	SIGNAL_HANDLER
 
-	var/area/acids_area = get_area(src)
-	if(!acids_area)
-		return
+	var/turf/turf = get_turf(src)
 
-	if(SSweather.is_weather_event && locate(acids_area.master) in SSweather.weather_areas)
-		//smothering_strength is 1-10, we use this to take a proportional amount off the stats
-		duration = duration - (duration * (SSweather.weather_event_instance.fire_smothering_strength * 0.1))
-		damage_in_total_human = damage_in_total_human - (damage_in_total_human * (SSweather.weather_event_instance.fire_smothering_strength * 0.1))
-		damage_in_total_obj = damage_in_total_obj - (damage_in_total_obj * (SSweather.weather_event_instance.fire_smothering_strength * 0.1))
-		//ideally this would look like the rain dilutting the acid
-		//but since we dont want to check every process if we're in weather etc...
-		//its just a one permenant time stat change
-
+	if(SSparticle_weather.running_weather && turf.turf_flags & TURF_WEATHER)
+		duration = duration - (duration * (SSparticle_weather.running_weather.fire_smothering_strength * 0.1))
+		damage_in_total_human = damage_in_total_human - (damage_in_total_human * (SSparticle_weather.running_weather.fire_smothering_strength * 0.1))
+		damage_in_total_obj = damage_in_total_obj - (damage_in_total_obj * (SSparticle_weather.running_weather.fire_smothering_strength * 0.1))

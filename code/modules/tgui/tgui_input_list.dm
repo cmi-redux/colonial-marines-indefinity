@@ -29,12 +29,12 @@
  * * theme - The ui theme to use for the TGUI window.
  */
 /proc/tgui_input_list(mob/user, message, title, list/buttons, timeout = 0, theme = null)
-	if (!user)
+	if(!user)
 		user = usr
 	if(!length(buttons))
 		return
-	if (!istype(user))
-		if (istype(user, /client))
+	if(!istype(user))
+		if(istype(user, /client))
 			var/client/client = user
 			user = client.mob
 		else
@@ -42,7 +42,7 @@
 	var/datum/tgui_list_input/input = new(user, message, title, buttons, timeout, theme)
 	input.tgui_interact(user)
 	input.wait()
-	if (input)
+	if(input)
 		. = input.choice
 		qdel(input)
 
@@ -60,12 +60,12 @@
  * * theme - The ui theme to use for the TGUI window.
  */
 /proc/tgui_input_list_async(mob/user, message, title, list/buttons, datum/callback/callback, timeout = 60 SECONDS, theme = null)
-	if (!user)
+	if(!user)
 		user = usr
 	if(!length(buttons))
 		return
-	if (!istype(user))
-		if (istype(user, /client))
+	if(!istype(user))
+		if(istype(user, /client))
 			var/client/client = user
 			user = client.mob
 		else
@@ -115,7 +115,7 @@
 		src.buttons += string_key
 		src.buttons_map[string_key] = i
 
-	if (timeout)
+	if(timeout)
 		src.timeout = timeout
 		start_time = world.time
 		QDEL_IN(src, timeout)
@@ -161,11 +161,11 @@
 
 /datum/tgui_list_input/ui_act(action, list/params)
 	. = ..()
-	if (.)
+	if(.)
 		return
 	switch(action)
 		if("choose")
-			if (!(params["choice"] in buttons))
+			if(!(params["choice"] in buttons))
 				return
 			choice = buttons_map[params["choice"]]
 			SStgui.close_uis(src)
@@ -198,7 +198,7 @@
 
 /datum/tgui_list_input/async/ui_act(action, list/params)
 	. = ..()
-	if (!. || choice == null)
+	if(!. || choice == null)
 		return
 	callback.InvokeAsync(choice)
 	qdel(src)

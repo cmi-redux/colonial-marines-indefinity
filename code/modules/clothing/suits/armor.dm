@@ -19,7 +19,7 @@
 
 /obj/item/clothing/suit/armor/mob_can_equip(mob/living/carbon/human/M, slot, disable_warning = 0)
 	. = ..()
-	if (.)
+	if(.)
 		if(issynth(M) && M.allow_gun_usage == FALSE)
 			M.visible_message(SPAN_DANGER("Your programming prevents you from wearing this!"))
 			return 0
@@ -235,7 +235,7 @@
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.01
 	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_LEGS|BODY_FLAG_FEET|BODY_FLAG_ARMS
-	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/handcuffs,/obj/item/tank/emergency_oxygen)
+	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_magazine,/obj/item/ammo_parts,/obj/item/weapon/melee/baton,/obj/item/handcuffs,/obj/item/tank/emergency_oxygen)
 	slowdown = 1
 	armor_melee = CLOTHING_ARMOR_HIGH
 	armor_bullet = CLOTHING_ARMOR_HIGH
@@ -302,14 +302,14 @@
 
 /obj/item/clothing/suit/armor/reactive/IsShield()
 	if(active)
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 /obj/item/clothing/suit/armor/reactive/attack_self(mob/user)
 	..()
 
 	active = !active
-	if (active)
+	if(active)
 		to_chat(user, SPAN_NOTICE(" The reactive armor is now active."))
 		icon_state = "reactive"
 		item_state = "reactive"
@@ -407,7 +407,7 @@
 			to_chat(usr, SPAN_NOTICE(" You need your gun equiped to holster it."))
 			return
 		var/obj/item/weapon/gun/W = usr.get_active_hand()
-		if (W.w_class > SIZE_MEDIUM)
+		if(W.w_class > SIZE_MEDIUM)
 			to_chat(usr, SPAN_DANGER("This gun won't fit in \the belt!"))
 			return
 		holstered = usr.get_active_hand()

@@ -58,8 +58,8 @@
 
 /obj/item/weapon/melee/energy/sword/IsShield()
 	if(active)
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 /obj/item/weapon/melee/energy/sword/New()
 	if(!sword_color)
@@ -69,7 +69,7 @@
 	..()
 
 	active = !active
-	if (active)
+	if(active)
 		force = 30
 		heat_source = 3500
 		if(base_sword_icon != "sword")

@@ -8,6 +8,7 @@ SUBSYSTEM_DEF(stats_collector)
 
 	var/stat_ticks = 0
 	var/players_counter = 0
+	var/initial_players_counter = 0
 
 /datum/controller/subsystem/stats_collector/fire(resumed = FALSE)
 	players_counter += length(GLOB.clients)

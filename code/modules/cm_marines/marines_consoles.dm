@@ -17,12 +17,12 @@
 	var/obj/item/card/id/user_id_card
 	var/obj/item/card/id/target_id_card
 	// What factions we are able to modify
-	var/list/factions = list(FACTION_MARINE)
+	var/list/datum/faction/factions = list()
+	faction_to_get = FACTION_MARINE
 	var/printing
 
 	var/is_centcom = FALSE
 	var/authenticated = FALSE
-
 /obj/structure/machinery/computer/card/proc/authenticate(mob/user, obj/item/card/id/id_card)
 	if(!id_card)
 		visible_message("[SPAN_BOLD("[src]")] states, \"AUTH ERROR: Authority confirmation card is missing!\"")
@@ -32,6 +32,10 @@
 		authenticated = TRUE
 		visible_message("[SPAN_BOLD("[src]")] states, \"AUTH LOGIN: Welcome, [id_card.registered_name]. Access granted.\"")
 		update_static_data(user)
+		factions = list()
+		factions += user.faction
+		for(var/datum/faction/faction in user.faction.allies)
+			factions += faction
 		return TRUE
 
 	visible_message("[SPAN_BOLD("[src]")] states, \"AUTH ERROR: You have not enough authority! Access denied.\"")
@@ -39,11 +43,11 @@
 
 /obj/structure/machinery/computer/card/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
-	if (!ui)
+	if(!ui)
 		ui = new(user, src, "CardMod", name)
 		ui.open()
 
-/obj/structure/machinery/computer/card/ui_act(action, params)
+/obj/structure/machinery/computer/card/ui_act(action, list/params)
 	. = ..()
 	if(.)
 		return
@@ -54,7 +58,7 @@
 	switch(action)
 		if("PRG_authenticate")
 			var/obj/item/I = user.get_active_hand()
-			if (istype(I, /obj/item/card/id))
+			if(istype(I, /obj/item/card/id))
 				if(user.drop_held_item())
 					I.forceMove(src)
 					user_id_card = I
@@ -90,18 +94,12 @@
 					printing = TRUE
 					playsound(src.loc, 'sound/machines/fax.ogg', 15, 1)
 					sleep(40)
-					var/faction = "N/A"
-					if(target_id_card.faction_group && islist(target_id_card.faction_group))
-						faction = jointext(target_id_card.faction_group, ", ")
-					if(isnull(target_id_card.faction_group))
-						target_id_card.faction_group = list()
-					else
-						faction = target_id_card.faction_group
+
 					var/contents = {"<center><h4>Access Report</h4></center>
 								<u>Prepared By:</u> [user_id_card?.registered_name ? user_id_card.registered_name : "Unknown"]<br>
 								<u>For:</u> [target_id_card.registered_name ? target_id_card.registered_name : "Unregistered"]<br>
 								<hr>
-								<u>Faction:</u> [faction]<br>
+								<u>Faction:</u> [target_id_card.faction]<br>
 								<u>Assignment:</u> [target_id_card.assignment]<br>
 								<u>Account Number:</u> #[target_id_card.associated_account_number]<br>
 								<u>Blood Type:</u> [target_id_card.blood_type]<br><br>
@@ -121,10 +119,10 @@
 					playsound(src.loc, 'sound/machines/fax.ogg', 15, 1)
 					sleep(40)
 					var/obj/item/paper/P = new /obj/item/paper(src.loc)
-					P.name = text("Crew Manifest ([])", worldtime2text())
+					P.name = text("Crew Manifest ([])", game_time_timestamp())
 					P.info = {"<center><h4>Crew Manifest</h4></center>
 						<br>
-						[GLOB.data_core.get_manifest(TRUE)]
+						[GLOB.data_core.get_manifest(TRUE, faction)]
 					"}
 				visible_message(SPAN_NOTICE("\The [src] prints out a paper."))
 				printing = FALSE
@@ -153,7 +151,7 @@
 				return TRUE
 			else
 				var/obj/item/I = user.get_active_hand()
-				if (istype(I, /obj/item/card/id))
+				if(istype(I, /obj/item/card/id))
 					if(user.drop_held_item())
 						I.forceMove(src)
 						target_id_card = I
@@ -197,7 +195,7 @@
 				if(is_centcom)
 					new_access = get_centcom_access(target)
 				else
-					var/datum/job/job = RoleAuthority.roles_for_mode[target]
+					var/datum/job/job = GET_MAPPED_ROLE(target)
 
 					if(!job)
 						visible_message("[SPAN_BOLD("[src]")] states, \"DATA ERROR: Can not find next entry in database: [target]\"")
@@ -212,18 +210,7 @@
 		if("PRG_access")
 			if(!authenticated)
 				return
-			var/access_type = params["access_target"]
-			if(params["access_target"] in factions)
-				if(!target_id_card.faction_group)
-					target_id_card.faction_group = list()
-				if(params["access_target"] in target_id_card.faction_group)
-					target_id_card.faction_group -= params["access_target"]
-					log_idmod(target_id_card, "<font color='red'> [key_name_admin(usr)] revoked [access_type] IFF. </font>")
-				else
-					target_id_card.faction_group |= params["access_target"]
-					log_idmod(target_id_card, "<font color='green'> [key_name_admin(usr)] granted [access_type] IFF. </font>")
-				return TRUE
-			access_type = text2num(params["access_target"])
+			var/access_type = text2num(params["access_target"])
 			if(access_type in (is_centcom ? get_all_centcom_access() : get_all_accesses()))
 				if(access_type in target_id_card.access)
 					target_id_card.access -= access_type
@@ -236,24 +223,18 @@
 			if(!authenticated)
 				return
 			target_id_card.access |= (is_centcom ? get_all_centcom_access() : get_all_accesses())
-			target_id_card.faction_group |= factions
-			log_idmod(target_id_card, "<font color='green'> [key_name_admin(usr)] granted the ID all access and USCM IFF. </font>")
+			log_idmod(target_id_card, "<font color='green'> [key_name_admin(usr)] granted the ID all access. </font>")
 			return TRUE
 		if("PRG_denyall")
 			if(!authenticated)
 				return
 			var/list/access = target_id_card.access
 			access.Cut()
-			target_id_card.faction_group -= factions
-			log_idmod(target_id_card, "<font color='red'> [key_name_admin(usr)] removed all accesses and USCM IFF. </font>")
+			log_idmod(target_id_card, "<font color='red'> [key_name_admin(usr)] removed all accesses. </font>")
 			return TRUE
 		if("PRG_grantregion")
 			if(!authenticated)
 				return
-			if(params["region"] == "Faction (IFF system)")
-				target_id_card.faction_group |= factions
-				log_idmod(target_id_card, "<font color='green'> [key_name_admin(usr)] granted USCM IFF. </font>")
-				return TRUE
 			var/region = text2num(params["region"])
 			if(isnull(region))
 				return
@@ -264,10 +245,6 @@
 		if("PRG_denyregion")
 			if(!authenticated)
 				return
-			if(params["region"] == "Faction (IFF system)")
-				target_id_card.faction_group -= factions
-				log_idmod(target_id_card, "<font color='red'> [key_name_admin(usr)] revoked USCM IFF. </font>")
-				return TRUE
 			var/region = text2num(params["region"])
 			if(isnull(region))
 				return
@@ -287,7 +264,7 @@
 	var/list/data = list()
 	data["station_name"] = station_name
 	data["centcom_access"] = is_centcom
-	data["manifest"] = GLOB.data_core.get_manifest(FALSE, FALSE, TRUE)
+	data["manifest"] = GLOB.data_core.get_manifest(FALSE, faction, FALSE, TRUE)
 
 	var/list/departments
 	if(is_centcom)
@@ -295,24 +272,36 @@
 	else if(Check_WO())
 		// I am not sure about WOs departments so it may need adjustment
 		departments = list(
-			CARDCON_DEPARTMENT_COMMAND = ROLES_CIC & ROLES_WO,
-			CARDCON_DEPARTMENT_AUXCOM = ROLES_AUXIL_SUPPORT & ROLES_WO,
-			CARDCON_DEPARTMENT_MISC = ROLES_MISC & ROLES_WO,
-			CARDCON_DEPARTMENT_SECURITY = ROLES_POLICE & ROLES_WO,
-			CARDCON_DEPARTMENT_ENGINEERING = ROLES_ENGINEERING & ROLES_WO,
-			CARDCON_DEPARTMENT_SUPPLY = ROLES_REQUISITION & ROLES_WO,
-			CARDCON_DEPARTMENT_MEDICAL = ROLES_MEDICAL & ROLES_WO,
+			CARDCON_DEPARTMENT_COMMAND = ROLES_CIC & ROLES_WO_USCM,
+			CARDCON_DEPARTMENT_AUXCOM = ROLES_AUXIL_SUPPORT & ROLES_WO_USCM,
+			CARDCON_DEPARTMENT_MISC = ROLES_MISC & ROLES_WO_USCM,
+			CARDCON_DEPARTMENT_SECURITY = ROLES_POLICE & ROLES_WO_USCM,
+			CARDCON_DEPARTMENT_ENGINEERING = ROLES_ENGINEERING & ROLES_WO_USCM,
+			CARDCON_DEPARTMENT_SUPPLY = ROLES_REQUISITION & ROLES_WO_USCM,
+			CARDCON_DEPARTMENT_MEDICAL = ROLES_MEDICAL & ROLES_WO_USCM,
+			CARDCON_DEPARTMENT_MARINE = ROLES_MARINES
+		)
+	else if(Check_Crash())
+		// I am not sure about WOs departments so it may need adjustment
+		departments = list(
+			CARDCON_DEPARTMENT_COMMAND = ROLES_CIC & ROLES_CRASH_USCM,
+			CARDCON_DEPARTMENT_AUXCOM = ROLES_AUXIL_SUPPORT & ROLES_CRASH_USCM,
+			CARDCON_DEPARTMENT_MISC = ROLES_MISC & ROLES_CRASH_USCM,
+			CARDCON_DEPARTMENT_SECURITY = ROLES_POLICE & ROLES_CRASH_USCM,
+			CARDCON_DEPARTMENT_ENGINEERING = ROLES_ENGINEERING & ROLES_CRASH_USCM,
+			CARDCON_DEPARTMENT_SUPPLY = ROLES_REQUISITION & ROLES_CRASH_USCM,
+			CARDCON_DEPARTMENT_MEDICAL = ROLES_MEDICAL & ROLES_CRASH_USCM,
 			CARDCON_DEPARTMENT_MARINE = ROLES_MARINES
 		)
 	else
 		departments = list(
-			CARDCON_DEPARTMENT_COMMAND = ROLES_CIC - ROLES_WO,
-			CARDCON_DEPARTMENT_AUXCOM = ROLES_AUXIL_SUPPORT - ROLES_WO,
-			CARDCON_DEPARTMENT_MISC = ROLES_MISC - ROLES_WO,
-			CARDCON_DEPARTMENT_SECURITY = ROLES_POLICE - ROLES_WO,
-			CARDCON_DEPARTMENT_ENGINEERING = ROLES_ENGINEERING - ROLES_WO,
-			CARDCON_DEPARTMENT_SUPPLY = ROLES_REQUISITION - ROLES_WO,
-			CARDCON_DEPARTMENT_MEDICAL = ROLES_MEDICAL - ROLES_WO,
+			CARDCON_DEPARTMENT_COMMAND = ROLES_CIC & ROLES_REGULAR_USCM,
+			CARDCON_DEPARTMENT_AUXCOM = ROLES_AUXIL_SUPPORT & ROLES_REGULAR_USCM,
+			CARDCON_DEPARTMENT_MISC = ROLES_MISC & ROLES_REGULAR_USCM,
+			CARDCON_DEPARTMENT_SECURITY = ROLES_POLICE & ROLES_REGULAR_USCM,
+			CARDCON_DEPARTMENT_ENGINEERING = ROLES_ENGINEERING & ROLES_REGULAR_USCM,
+			CARDCON_DEPARTMENT_SUPPLY = ROLES_REQUISITION & ROLES_REGULAR_USCM,
+			CARDCON_DEPARTMENT_MEDICAL = ROLES_MEDICAL & ROLES_REGULAR_USCM,
 			CARDCON_DEPARTMENT_MARINE = ROLES_MARINES
 		)
 	data["jobs"] = list()
@@ -332,7 +321,7 @@
 
 		var/list/accesses = list()
 		for(var/access in get_region_accesses(i))
-			if (get_access_desc(access))
+			if(get_access_desc(access))
 				accesses += list(list(
 					"desc" = replacetext(get_access_desc(access), "&nbsp", " "),
 					"ref" = access,
@@ -344,12 +333,9 @@
 			"accesses" = accesses
 		))
 
-	// Factions goes here
-	if(target_id_card && target_id_card.faction_group && isnull(target_id_card.faction_group))
-		target_id_card.faction_group = list()
 	var/list/localfactions = list()
 	// We can see only those factions which have our console tuned on
-	for(var/faction in factions)
+	for(var/datum/faction/faction in factions)
 		localfactions += list(list(
 			"desc" = faction,
 			"ref" = faction,
@@ -376,7 +362,7 @@
 	if(target_id_card)
 		data["id_rank"] = target_id_card.assignment ? target_id_card.assignment : "Unassigned"
 		data["id_owner"] = target_id_card.registered_name ? target_id_card.registered_name : "-----"
-		data["access_on_card"] = target_id_card.access + target_id_card.faction_group
+		data["access_on_card"] = target_id_card.access + target_id_card.faction
 		data["id_account"] = target_id_card.associated_account_number
 
 	return data
@@ -424,7 +410,8 @@
 	set name = "Eject ID Card"
 	set src in oview(1)
 
-	if(!usr || usr.stat || usr.lying) return
+	if(!usr || usr.stat || usr.lying)
+		return
 
 	if(user_id_card)
 		user_id_card.loc = get_turf(src)
@@ -483,14 +470,15 @@
 	req_access = list(ACCESS_MARINE_DATABASE)
 	var/obj/item/card/id/ID_to_modify = null
 	var/mob/living/carbon/human/person_to_modify = null
-	var/faction = FACTION_MARINE
+	faction_to_get = FACTION_MARINE
 
 /obj/structure/machinery/computer/squad_changer/verb/eject_id()
 	set category = "Object"
 	set name = "Eject ID Card"
 	set src in view(1)
 
-	if(!usr || usr.stat || usr.lying) return
+	if(!usr || usr.stat || usr.lying)
+		return
 
 	if(ishuman(usr) && ID_to_modify)
 		to_chat(usr, "You remove \the [ID_to_modify] from \the [src].")
@@ -505,11 +493,11 @@
 
 /obj/structure/machinery/computer/squad_changer/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
-	if (!ui)
+	if(!ui)
 		ui = new(user, src, "SquadMod", name)
 		ui.open()
 
-/obj/structure/machinery/computer/squad_changer/ui_act(action, params)
+/obj/structure/machinery/computer/squad_changer/ui_act(action, list/params)
 	. = ..()
 	if(.)
 		return
@@ -536,7 +524,7 @@
 				return TRUE
 			else
 				var/obj/item/I = user.get_active_hand()
-				if (istype(I, /obj/item/card/id))
+				if(istype(I, /obj/item/card/id))
 					if(user.drop_held_item())
 						I.forceMove(src)
 						ID_to_modify = I
@@ -552,7 +540,7 @@
 				var/datum/squad/selected = get_squad_by_name(params["name"])
 				if(!selected)
 					return
-				if(RoleAuthority.check_squad_capacity(person_to_modify, selected))
+				if(SSticker.role_authority.check_squad_capacity(person_to_modify, selected))
 					visible_message("[SPAN_BOLD("[src]")] states, \"CAPACITY ERROR: [selected] can't have another [person_to_modify.job].\"")
 					return TRUE
 				if(transfer_marine_to_squad(person_to_modify, selected, person_to_modify.assigned_squad, ID_to_modify))
@@ -586,8 +574,8 @@
 /obj/structure/machinery/computer/squad_changer/ui_static_data(mob/user)
 	var/list/data = list()
 	var/list/squads = list()
-	for(var/datum/squad/S in RoleAuthority.squads)
-		if(S.name != "Root" && !S.locked && S.active && S.faction == faction)
+	for(var/datum/squad/S in SSticker.role_authority.squads)
+		if(S.name != "Root" && !S.locked && S.active && S.faction == faction.faction_name)
 			var/list/squad = list(list(
 				"name" = S.name,
 				"color" = S.color-1
@@ -670,7 +658,7 @@
 	use_power = USE_POWER_IDLE
 	idle_power_usage = 250
 	active_power_usage = 500
-	var/faction = FACTION_MARINE
+	faction_to_get = FACTION_MARINE
 
 /obj/structure/machinery/computer/crew/Initialize()
 	. = ..()
@@ -707,19 +695,19 @@
 	density = FALSE
 
 /obj/structure/machinery/computer/crew/upp
-	faction = FACTION_UPP
+	faction_to_get = FACTION_UPP
 
 /obj/structure/machinery/computer/crew/clf
-	faction = FACTION_CLF
+	faction_to_get = FACTION_CLF
 
 /obj/structure/machinery/computer/crew/pmc
-	faction = FACTION_PMC
+	faction_to_get = FACTION_WY
 
 /obj/structure/machinery/computer/crew/colony
-	faction = FACTION_COLONIST
+	faction_to_get = FACTION_NEUTRAL
 
 /obj/structure/machinery/computer/crew/yautja
-	faction = FACTION_YAUTJA
+	faction_to_get = FACTION_YAUTJA
 
 GLOBAL_LIST_EMPTY_TYPED(crewmonitor, /datum/crewmonitor)
 
@@ -740,16 +728,22 @@ GLOBAL_LIST_EMPTY_TYPED(crewmonitor, /datum/crewmonitor)
 	var/last_update
 	/// Map of job to ID for sorting purposes
 	var/list/jobs
-	var/faction = FACTION_MARINE
+	var/faction_to_get = FACTION_MARINE
+	var/datum/faction/faction
 
-/datum/crewmonitor/New(set_faction = FACTION_MARINE)
+/datum/crewmonitor/New(datum/faction/faction_to_set)
 	..()
-	faction = set_faction
-	setup_for_faction(faction)
+
+	if(!faction_to_get && faction_to_get)
+		faction = GLOB.faction_datum[faction_to_get]
+	else
+		faction = faction_to_set
+
+	setup_for_faction()
 
 /datum/crewmonitor/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
-	if (!ui)
+	if(!ui)
 		ui = new(user, src, "CrewConsole")
 		ui.set_autoupdate(FALSE)
 		ui.open()
@@ -796,7 +790,7 @@ GLOBAL_LIST_EMPTY_TYPED(crewmonitor, /datum/crewmonitor)
 		if(!C || !istype(C))
 			continue
 		// Check that sensors are present and active
-		if(!C.has_sensor || !C.sensor_mode || faction != H.faction)
+		if(!C.has_sensor || !C.sensor_mode || faction.faction_name != C.sensor_faction)
 			continue
 
 		// Check if z-level is correct
@@ -815,18 +809,18 @@ GLOBAL_LIST_EMPTY_TYPED(crewmonitor, /datum/crewmonitor)
 
 		// ID and id-related data
 		var/obj/item/card/id/id_card = H.get_idcard()
-		if (id_card)
+		if(id_card)
 			entry["name"] = id_card.registered_name
 			entry["assignment"] = id_card.assignment
 			if(id_card.assignment in jobs)
 				entry["ijob"] = jobs[id_card.assignment]
 
 		// Binary living/dead status
-		if (C.sensor_mode >= SENSOR_LIVING)
+		if(C.sensor_mode >= SENSOR_LIVING)
 			entry["life_status"] = !H.stat
 
 		// Damage
-		if (C.sensor_mode >= SENSOR_VITALS)
+		if(C.sensor_mode >= SENSOR_VITALS)
 			entry += list(
 				"oxydam" = round(H.getOxyLoss(), 1),
 				"toxdam" = round(H.getToxLoss(), 1),
@@ -835,7 +829,7 @@ GLOBAL_LIST_EMPTY_TYPED(crewmonitor, /datum/crewmonitor)
 			)
 
 		// Location
-		if (C.sensor_mode >= SENSOR_COORDS)
+		if(C.sensor_mode >= SENSOR_COORDS)
 			if(is_mainship_level(pos.z))
 				entry["side"] = "Almayer"
 			var/area/A = get_area(H)
@@ -857,7 +851,7 @@ GLOBAL_LIST_EMPTY_TYPED(crewmonitor, /datum/crewmonitor)
 	if(.)
 		return
 	switch (action)
-		if ("select_person")
+		if("select_person")
 			// May work badly cause currently there is no player-controlled AI
 			var/mob/living/silicon/ai/AI = usr
 			if(!istype(AI))
@@ -873,8 +867,9 @@ GLOBAL_LIST_EMPTY_TYPED(crewmonitor, /datum/crewmonitor)
 				// We do not care is there camera or no - we just know his location
 				AI.ai_actual_track(H)
 
-/datum/crewmonitor/proc/setup_for_faction(set_faction = FACTION_MARINE)
-	switch(set_faction)
+/datum/crewmonitor/proc/setup_for_faction()
+	var/faction_name = faction.faction_name
+	switch(faction_name)
 		if(FACTION_MARINE)
 			jobs = list(
 				// Note that jobs divisible by 10 are considered heads of staff, and bolded
@@ -954,7 +949,6 @@ GLOBAL_LIST_EMPTY_TYPED(crewmonitor, /datum/crewmonitor)
 				JOB_WO_REQUISITION = 61,
 				// 70-139: SQUADS (look below)
 				// 140+: Civilian/other
-				JOB_WO_CORPORATE_LIAISON = 140,
 				JOB_WO_SYNTH = 150,
 
 				// ANYTHING ELSE = UNKNOWN_JOB_ID, Unknowns/custom jobs will appear after civilians, and before stowaways

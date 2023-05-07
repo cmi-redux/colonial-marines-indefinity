@@ -68,7 +68,8 @@
 		icon_state = "ladder00"
 
 /obj/structure/ladder/attack_hand(mob/user)
-	if(user.stat || get_dist(user, src) > 1 || user.blinded || user.lying || user.buckled || user.anchored) return
+	if(user.stat || get_dist(user, src) > 1 || user.blinded || !user.canmove || user.buckled || user.anchored)
+		return
 	if(busy)
 		to_chat(user, SPAN_WARNING("Someone else is currently using [src]."))
 		return
@@ -94,7 +95,7 @@
 	SPAN_NOTICE("You start climbing [ladder_dir_name] [src]."))
 	busy = TRUE
 	if(do_after(user, 20, INTERRUPT_INCAPACITATED|INTERRUPT_OUT_OF_RANGE|INTERRUPT_RESIST, BUSY_ICON_GENERIC, src, INTERRUPT_NONE))
-		if(!user.is_mob_incapacitated() && get_dist(user, src) <= 1 && !user.blinded && !user.lying && !user.buckled && !user.anchored)
+		if(!user.is_mob_incapacitated() && get_dist(user, src) <= 1 && !user.blinded && user.canmove && !user.buckled && !user.anchored)
 			visible_message(SPAN_NOTICE("[user] climbs [ladder_dir_name] [src].")) //Hack to give a visible message to the people here without duplicating user message
 			user.visible_message(SPAN_NOTICE("[user] climbs [ladder_dir_name] [src]."),
 			SPAN_NOTICE("You climb [ladder_dir_name] [src]."))
@@ -105,26 +106,26 @@
 
 /obj/structure/ladder/check_eye(mob/user)
 	//Are we capable of looking?
-	if(user.is_mob_incapacitated() || get_dist(user, src) > 1 || user.blinded || user.lying || !user.client)
+	if(user.is_mob_incapacitated() || get_dist(user, src) > 1 || user.blinded || !user.canmove || !user.client)
 		user.unset_interaction()
 
 	//Are ladder cameras ok?
-	else if (is_watching == 1)
-		if (istype(down) && down.cam && !down.cam.can_use()) //Camera doesn't work or is gone
+	else if(is_watching == 1)
+		if(istype(down) && down.cam && !down.cam.can_use()) //Camera doesn't work or is gone
 			user.unset_interaction()
-	else if (is_watching == 2)
-		if (istype(up) && up.cam && !up.cam.can_use()) //Camera doesn't work or is gone
+	else if(is_watching == 2)
+		if(istype(up) && up.cam && !up.cam.can_use()) //Camera doesn't work or is gone
 			user.unset_interaction()
 
 
 
 /obj/structure/ladder/on_set_interaction(mob/user)
-	if (is_watching == 1)
-		if (istype(down) && down.cam && down.cam.can_use()) //Camera works
+	if(is_watching == 1)
+		if(istype(down) && down.cam && down.cam.can_use()) //Camera works
 			user.reset_view(down.cam)
 			return
-	else if (is_watching == 2)
-		if (istype(up) && up.cam && up.cam.can_use())
+	else if(is_watching == 2)
+		if(istype(up) && up.cam && up.cam.can_use())
 			user.reset_view(up.cam)
 			return
 
@@ -140,7 +141,7 @@
 //Peeking up/down
 /obj/structure/ladder/MouseDrop(over_object, src_location, over_location)
 	if((over_object == usr && (in_range(src, usr))))
-		if(islarva(usr) || isobserver(usr) || usr.is_mob_incapacitated() || usr.blinded || usr.lying)
+		if(islarva(usr) || isobserver(usr) || usr.is_mob_incapacitated() || usr.blinded || !usr.canmove)
 			to_chat(usr, "You can't do that in your current state.")
 			return
 		if(is_watching)
@@ -206,7 +207,7 @@
 			ladder_dest = down
 		else return //just in case
 
-		if(G.antigrief_protection && user.faction == FACTION_MARINE && explosive_antigrief_check(G, user))
+		if(G.antigrief_protection && user.faction == GLOB.faction_datum[FACTION_MARINE] && explosive_antigrief_check(G, user))
 			to_chat(user, SPAN_WARNING("\The [G.name]'s safe-area accident inhibitor prevents you from priming the grenade!"))
 			// Let staff know, in case someone's actually about to try to grief
 			msg_admin_niche("[key_name(user)] attempted to prime \a [G.name] in [get_area(src)] (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[src.loc.x];Y=[src.loc.y];Z=[src.loc.z]'>JMP</a>)")

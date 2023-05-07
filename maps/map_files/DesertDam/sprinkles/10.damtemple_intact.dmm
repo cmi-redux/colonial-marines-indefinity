@@ -98,7 +98,7 @@
 /area/desert_dam/interior/caves/temple)
 "hh" = (
 /turf/closed/wall/mineral/sandstone/runed/decor{
-	hull = 1
+	hull = TRUE
 	},
 /area/desert_dam/interior/caves/temple)
 "ik" = (
@@ -721,7 +721,7 @@
 /area/desert_dam/interior/caves/temple)
 "Vz" = (
 /turf/closed/wall/mineral/sandstone/runed{
-	hull = 1
+	hull = TRUE
 	},
 /area/desert_dam/interior/caves/temple)
 "WM" = (

@@ -64,6 +64,10 @@
 #define UNCONSCIOUS 1
 #define DEAD 2
 
+//Morale flags
+#define MORALE_FLAG_NO_AUTO_CAP (1<<0)
+#define MORALE_FLAG_NO_SELF_CAP (1<<1)
+
 //Damage things
 //Way to waste perfectly good damagetype names (BRUTE) on this... If you were really worried about case sensitivity, you could have just used lowertext(damagetype) in the proc...
 #define BRUTE "brute"
@@ -118,23 +122,6 @@
 #define CANDAZE (1<<18)
 #define CANSLOW (1<<19)
 #define NO_PERMANENT_DAMAGE (1<<20)
-
-// =============================
-// hive types
-
-#define XENO_HIVE_NORMAL "xeno_hive_normal"
-#define XENO_HIVE_CORRUPTED "xeno_hive_corrupted"
-#define XENO_HIVE_ALPHA "xeno_hive_alpha"
-#define XENO_HIVE_BRAVO "xeno_hive_bravo"
-#define XENO_HIVE_CHARLIE "xeno_hive_charlie"
-#define XENO_HIVE_DELTA "xeno_hive_delta"
-#define XENO_HIVE_FERAL "xeno_hive_feral"
-#define XENO_HIVE_TAMED "xeno_hive_tamed"
-#define XENO_HIVE_MUTATED "xeno_hive_mutated"
-#define XENO_HIVE_FORSAKEN "xeno_hive_forsaken"
-#define XENO_HIVE_YAUTJA "xeno_hive_yautja"
-
-#define ALL_XENO_HIVES list(XENO_HIVE_NORMAL, XENO_HIVE_CORRUPTED, XENO_HIVE_ALPHA, XENO_HIVE_BRAVO, XENO_HIVE_CHARLIE, XENO_HIVE_DELTA, XENO_HIVE_FERAL, XENO_HIVE_TAMED, XENO_HIVE_MUTATED, XENO_HIVE_FORSAKEN, XENO_HIVE_YAUTJA)
 
 //=================================================
 
@@ -336,6 +323,8 @@
 // Boiler strain flags
 #define BOILER_NORMAL "Normal"
 #define BOILER_TRAPPER "Trapper"
+#define BOILER_RAILGUN "Railgun"
+#define BOILER_SHATTER "Shatter"
 
 // Runner strain flags
 #define RUNNER_NORMAL "Normal"

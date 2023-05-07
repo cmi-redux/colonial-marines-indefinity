@@ -1,7 +1,6 @@
 /datum/equipment_preset/uscm
 	name = "USCM"
 	faction = FACTION_MARINE
-	faction_group = FACTION_LIST_MARINE
 	languages = list(LANGUAGE_ENGLISH)
 	idtype = /obj/item/card/id/dogtag
 
@@ -21,7 +20,6 @@
 	dress_hat = list(/obj/item/clothing/head/marine/peaked)
 	dress_gloves = list(/obj/item/clothing/gloves/marine/dress)
 	dress_shoes = list(/obj/item/clothing/shoes/dress)
-	var/auto_squad_name
 
 /datum/equipment_preset/uscm/load_status(mob/living/carbon/human/H)
 	H.nutrition = rand(NUTRITION_VERYLOW, NUTRITION_LOW)
@@ -39,7 +37,7 @@
 	if(!auto_squad.active)
 		auto_squad.engage_squad(FALSE)
 
-	H.marine_buy_flags &= ~MARINE_CAN_BUY_EAR
+	H.vendor_datum.buy_flags &= ~VENDOR_CAN_BUY_EAR
 	H.sec_hud_set_ID()
 	H.hud_set_squad()
 
@@ -53,7 +51,7 @@
 			equipped_headset.add_hud_tracker(H)
 
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 /datum/equipment_preset/uscm/pfc
 	name = "USCM Squad Rifleman"
 	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
@@ -65,11 +63,9 @@
 	role_comm_title = "RFN"
 	skills = /datum/skills/pfc
 
-	minimap_icon = "private"
-
 /datum/equipment_preset/uscm/pfc/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine
 
 	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
@@ -88,7 +84,7 @@
 	..()
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/marine/cryo(H), WEAR_L_EAR)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm/sg
 	name = "USCM Squad Smartgunner"
@@ -101,11 +97,9 @@
 	role_comm_title = "SG"
 	skills = /datum/skills/smartgunner
 
-	minimap_icon = "smartgunner"
-
 /datum/equipment_preset/uscm/sg/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine
 
 	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
@@ -118,7 +112,7 @@
 	..()
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/marine/cryo(H), WEAR_L_EAR)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm/sg/full
 	name = "USCM Squad Smartgunner"
@@ -138,7 +132,7 @@
 /datum/equipment_preset/uscm/sg/full/load_status()
 	return //No cryo munchies
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm/tank
 	name = "USCM Vehicle Crewman (CRMN) (Cryo)"
@@ -159,11 +153,9 @@
 	minimum_age = 30
 	skills = /datum/skills/tank_crew
 
-	minimap_icon = "vc"
-
 /datum/equipment_preset/uscm/tank/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine
 
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mcom/vc(H), WEAR_L_EAR)
@@ -175,7 +167,7 @@
 /datum/equipment_preset/uscm/tank/load_status()
 	return
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm/tank/full
 	name = "USCM Vehicle Crewman (CRMN)"
@@ -197,7 +189,7 @@
 
 	spawn_weapon(/obj/item/weapon/gun/smg/m39, /obj/item/ammo_magazine/smg/m39/extended, H, 0, 3)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm/intel
 	name = "USCM Intelligence Officer (IO) (Cryo)"
@@ -215,17 +207,15 @@
 	)
 	assignment = JOB_INTEL
 	rank = JOB_INTEL
-	paygrade = "MO1"
+	paygrade = "NO1"
 	role_comm_title = "IO"
 	skills = /datum/skills/intel
 
 	utility_under = list(/obj/item/clothing/under/marine/officer/intel)
 
-	minimap_icon = "io"
-
 /datum/equipment_preset/uscm/intel/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine
 
 	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
@@ -235,7 +225,8 @@
 /datum/equipment_preset/uscm/intel/load_status()
 	return //No cryo munchies
 
-//*****************************************************************************************************/
+
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm/intel/full
 	name = "USCM Intelligence Officer (IO)"
@@ -252,16 +243,14 @@
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mcom(H), WEAR_L_EAR)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3/vp78(H), WEAR_WAIST)
-	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/rto/intel(H), WEAR_HEAD)
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/rto/intel(src), WEAR_JACKET)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/intel(H), WEAR_HEAD)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/intel(src), WEAR_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/yellow(src), WEAR_HANDS)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel/intel(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/large(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/document(H), WEAR_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/device/binoculars(H), WEAR_L_HAND)
 
-
-	H.hud_set_squad()
 
 /*****************************************************************************************************/
 /datum/equipment_preset/uscm/spec
@@ -275,11 +264,9 @@
 	role_comm_title = "Spc"
 	skills = /datum/skills/specialist
 
-	minimap_icon = "spec"
-
 /datum/equipment_preset/uscm/spec/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine
 
 	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
@@ -293,7 +280,7 @@
 	..()
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/marine/cryo(H), WEAR_L_EAR)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm/spec/full_armor
 	name = "USCM Weapons Specialist (B18 Armor)"
@@ -318,7 +305,7 @@
 /datum/equipment_preset/uscm/spec/full_armor/load_status()
 	return //No cryo munchies
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm/medic
 	name = "USCM Squad Hospital Corpsman"
@@ -331,13 +318,11 @@
 	role_comm_title = "HM"
 	skills = /datum/skills/combat_medic
 
-	minimap_icon = "medic"
-
 	utility_under = list(/obj/item/clothing/under/marine/medic)
 
 /datum/equipment_preset/uscm/medic/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel/medic
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine/medic
 
 	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
@@ -350,7 +335,7 @@
 	..()
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/marine/cryo/med(H), WEAR_L_EAR)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm/rto
 	name = "USCM Squad Radio Telephone Operator"
@@ -363,11 +348,9 @@
 	role_comm_title = "RTO"
 	skills = /datum/skills/rto
 
-	minimap_icon = "rto"
-
 /datum/equipment_preset/uscm/rto/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine
 
 	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
@@ -393,13 +376,11 @@
 	role_comm_title = "ComTech"
 	skills = /datum/skills/combat_engineer
 
-	minimap_icon = "engi"
-
 	utility_under = list(/obj/item/clothing/under/marine/engineer)
 
 /datum/equipment_preset/uscm/engineer/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel/tech
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine/tech
 
 	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
@@ -412,7 +393,7 @@
 	..()
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/marine/cryo/engi(H), WEAR_L_EAR)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm/leader
 	name = "USCM Squad Leader"
@@ -424,13 +405,11 @@
 	paygrade = "ME5"
 	role_comm_title = "SL"
 	minimum_age = 27
-	skills = /datum/skills/SL
-
-	minimap_icon = "leader"
+	skills = /datum/skills/sl
 
 /datum/equipment_preset/uscm/leader/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel
-	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
+	if(H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine
 
 	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
@@ -444,7 +423,7 @@
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/marine/cryo/lead(H), WEAR_L_EAR)
 
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 // ERT members that spawn with full gear from DEFCON
 
 /datum/equipment_preset/uscm/private_equipped
@@ -457,8 +436,6 @@
 	paygrade = "ME2"
 	role_comm_title = "RFN"
 	skills = /datum/skills/pfc/crafty
-
-	minimap_icon = "private"
 
 /datum/equipment_preset/uscm/private_equipped/load_rank(mob/living/carbon/human/H)
 	if(H.client)
@@ -490,7 +467,7 @@
 	auto_squad_name = SQUAD_MARINE_CRYO
 
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm/leader_equipped
 	name = "USCM Squad Leader (Equipped)"
@@ -502,9 +479,7 @@
 	paygrade = "ME5"
 	role_comm_title = "SL"
 	minimum_age = 27
-	skills = /datum/skills/SL
-
-	minimap_icon = "leader"
+	skills = /datum/skills/sl
 
 /datum/equipment_preset/uscm/leader_equipped/load_gear(mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine(H), WEAR_BODY)
@@ -528,7 +503,7 @@
 	name = "USCM Cryo Squad Leader (Equipped)"
 	auto_squad_name = SQUAD_MARINE_CRYO
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm/smartgunner_equipped
 	name = "USCM Squad Smartgunner (Equipped)"
@@ -540,8 +515,6 @@
 	paygrade = "ME3"
 	role_comm_title = "SG"
 	skills = /datum/skills/smartgunner
-
-	minimap_icon = "smartgunner"
 
 /datum/equipment_preset/uscm/smartgunner_equipped/load_gear(mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine(H), WEAR_BODY)
@@ -566,7 +539,7 @@
 	auto_squad_name = SQUAD_MARINE_CRYO
 
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm/engineer_equipped
 	name = "USCM Squad Combat Technician (Equipped)"
@@ -578,8 +551,6 @@
 	paygrade = "ME3"
 	role_comm_title = "ComTech"
 	skills = /datum/skills/combat_engineer
-
-	minimap_icon = "engi"
 
 	utility_under = list(/obj/item/clothing/under/marine/engineer)
 
@@ -612,7 +583,7 @@
 	name = "USCM Cryo Squad Combat Technician (Equipped)"
 	auto_squad_name = SQUAD_MARINE_CRYO
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm/medic_equipped
 	name = "USCM Squad Hospital Corpsman (Equipped)"
@@ -624,8 +595,6 @@
 	paygrade = "ME3"
 	role_comm_title = "HM"
 	skills = /datum/skills/combat_medic
-
-	minimap_icon = "medic"
 
 	utility_under = list(/obj/item/clothing/under/marine/medic)
 
@@ -664,7 +633,7 @@
 	auto_squad_name = SQUAD_MARINE_CRYO
 
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm/specialist_equipped
 	name = "USCM Squad Weapons Specialist (Equipped)"
@@ -676,8 +645,6 @@
 	paygrade = "ME3"
 	role_comm_title = "Spc"
 	skills = /datum/skills/specialist
-
-	minimap_icon = "spec"
 
 /datum/equipment_preset/uscm/specialist_equipped/load_gear(mob/living/carbon/human/H)
 	//TODO: add backpacks and satchels
@@ -705,7 +672,7 @@
 	name = "USCM Cryo Squad Weapons Specialist (Equipped)"
 	auto_squad_name = SQUAD_MARINE_CRYO
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm/specialist_equipped/sniper
 	name = "USCM Sniper Specialist (Equipped)"
@@ -731,7 +698,7 @@
 
 	spawn_weapon(/obj/item/weapon/gun/rifle/sniper/M42A, /obj/item/ammo_magazine/sniper, H, 0, 5)
 
-//*****************************************************************************************************/
+//*****************************************************************************************************//
 
 /datum/equipment_preset/uscm/rto_equipped
 	name = "USCM Squad Radio Telephone Operator (Equipped)"
@@ -743,8 +710,6 @@
 	paygrade = "ME4"
 	role_comm_title = "RTO"
 	skills = /datum/skills/rto
-
-	minimap_icon = "rto"
 
 /datum/equipment_preset/uscm/rto_equipped/load_gear(mob/living/carbon/human/H)
 	//TODO: add backpacks and satchels
@@ -773,15 +738,14 @@
 /datum/equipment_preset/uscm/marsoc
 	name = "Marine Raider"
 	flags = EQUIPMENT_PRESET_EXTRA
+	faction = FACTION_MARSOC
 	assignment = "Marine Raider"
 	rank = JOB_MARINE_RAIDER
 	role_comm_title = "Op."
 	languages = list(LANGUAGE_ENGLISH, LANGUAGE_TSL)
 	skills = /datum/skills/commando/deathsquad
-	auto_squad_name = SQUAD_SOF
+	auto_squad_name = SQUAD_MARINE_SOF
 	paygrade = "ME6"
-
-	minimap_icon = "private"
 
 /datum/equipment_preset/uscm/marsoc/load_status(mob/living/carbon/human/H)
 	H.nutrition = NUTRITION_NORMAL
@@ -855,8 +819,6 @@
 	role_comm_title = "TL."
 	paygrade = "MO1"
 	skills = /datum/skills/commando/deathsquad/leader
-
-	minimap_icon = "leader"
 
 /datum/equipment_preset/uscm/marsoc/sl/load_rank(mob/living/carbon/human/H)
 	if(H.client)
