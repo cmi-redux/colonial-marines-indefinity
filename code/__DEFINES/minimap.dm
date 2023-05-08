@@ -21,7 +21,7 @@
 #define MINIMAP_ICE "#93cae0b0"
 #define MINIMAP_WATER "#94b0d59c"
 
-//Area colours
+//Area colors
 #define MINIMAP_AREA_ENGI "#c19504e7"
 #define MINIMAP_AREA_ENGI_CAVE "#5a4501e7"
 #define MINIMAP_AREA_MEDBAY "#3dbf75ee"

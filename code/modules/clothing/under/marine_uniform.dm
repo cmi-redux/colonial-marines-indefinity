@@ -102,9 +102,8 @@
 	icon_state = "MP_jumpsuit"
 	worn_state = "MP_jumpsuit"
 	suit_restricted = list(/obj/item/clothing/suit/storage/marine, /obj/item/clothing/suit/armor/riot/marine, /obj/item/clothing/suit/storage/jacket/marine/service/mp)
-	flags_jumpsuit = UNIFORM_SLEEVE_ROLLABLE
+	flags_jumpsuit = UNIFORM_SLEEVE_ROLLABLE|UNIFORM_SLEEVE_CUTTABLE|UNIFORM_JACKET_REMOVABLE
 	specialty = "military police"
-	flags_atom = NO_SNOW_TYPE
 
 /obj/item/clothing/under/marine/officer/intel
 	name = "\improper marine intelligence officer sweatsuit"
@@ -120,7 +119,7 @@
 	icon_state = "warden_jumpsuit"
 	worn_state = "warden_jumpsuit"
 	suit_restricted = list(/obj/item/clothing/suit/storage/marine, /obj/item/clothing/suit/armor/riot/marine, /obj/item/clothing/suit/storage/jacket/marine/service/warden)
-	flags_jumpsuit = UNIFORM_SLEEVE_ROLLABLE
+	flags_jumpsuit = UNIFORM_SLEEVE_ROLLABLE|UNIFORM_SLEEVE_CUTTABLE|UNIFORM_JACKET_REMOVABLE
 	specialty = "military warden"
 	flags_atom = NO_SNOW_TYPE
 
@@ -211,7 +210,7 @@
 
 /obj/item/clothing/under/marine/officer/exec
 	name = "executive officer uniform"
-	desc = "A uniform typically worn by a commander Executive Officer in the USCM. It has shards of light Kevlar to help protect against stabbing weapons and bullets."
+	desc = "A uniform typically worn by an Executive Officer in the USCM. It has shards of light Kevlar to help protect against stabbing weapons and bullets."
 	icon_state = "BO_jumpsuit"
 	worn_state = "BO_jumpsuit"
 	specialty = "executive officer"
@@ -274,7 +273,7 @@
 	flags_atom = NO_SNOW_TYPE
 
 /obj/item/clothing/under/marine/officer/formal/servicedress
-	name = "captain's dress shirt"
+	name = "commanding officer's dress shirt"
 	desc = "The shirt and tie of a two-piece Navy service dress uniform for high-ranking officers. Wear with style and substance."
 	specialty = "captain's service dress"
 	icon_state = "CO_service"
@@ -282,7 +281,7 @@
 	flags_atom = NO_SNOW_TYPE
 
 /obj/item/clothing/under/marine/officer/formal/white
-	name = "captain's white formal uniform"
+	name = "Commanding Officer's white formal uniform"
 	desc = "A well-ironed USCM officer uniform in brilliant white with gold accents, intended for parades or hot weather. Wear this with pride."
 	icon_state = "CO_formal_white"
 	worn_state = "CO_formal_white"
@@ -290,7 +289,7 @@
 	flags_atom = NO_SNOW_TYPE
 
 /obj/item/clothing/under/marine/officer/formal/black
-	name = "captain's gray formal uniform"
+	name = "Commanding Officer's gray formal uniform"
 	desc = "A well-ironed USCM officer uniform in subdued gray with gold accents, intended for more formal or somber events. Wear this with pride."
 	icon_state = "CO_formal_black"
 	worn_state = "CO_formal_black"
@@ -483,6 +482,7 @@
 		/obj/item/clothing/suit/storage/marine/veteran/pmc,
 		/obj/item/clothing/suit/storage/marine/smartgunner/veteran/pmc,
 		/obj/item/clothing/suit/armor/vest/security,
+		/obj/item/clothing/suit/storage/hazardvest,
 	)
 
 /obj/item/clothing/under/marine/veteran/pmc/leader
@@ -625,6 +625,19 @@
 	item_state = "van_bandolier_clothes"
 	flags_cold_protection = ICE_PLANET_MIN_COLD_PROT
 	has_sensor = UNIFORM_NO_SENSORS
+
+//=========================//OWLF\\================================\\
+
+/obj/item/clothing/under/marine/veteran/owlf
+	name = "\improper OWLF thermal field uniform"
+	desc = "A high-tech uniform with built-in thermal cloaking technology. It looks like it's worth more than your life."
+	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_LEGS //This is all a copy and paste of the Dutch's stuff for now.
+	flags_cold_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_LEGS
+	flags_heat_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_LEGS
+	icon_state = "owlf_uniform"
+	worn_state = "owlf_uniform"
+	has_sensor = UNIFORM_NO_SENSORS
+	hood_state = /obj/item/clothing/head/owlf_hood
 
 //===========================//HELGHAST - MERCENARY\\================================\\
 //=====================================================================\\
@@ -789,6 +802,15 @@
 	desc = "A collared shirt, complimented by a pair of suspenders. Worn by Weyland-Yutani employees who ask the tough questions. Smells faintly of cigars and bad acting."
 	icon_state = "liaison_suspenders"
 	worn_state = "liaison_suspenders"
+
+/obj/item/clothing/under/marine/reporter
+	name = "combat correspondent uniform"
+	desc = "A relaxed and robust uniform fit for any potential reporting needs."
+	icon = 'icons/mob/humans/onmob/contained/war_correspondent.dmi'
+	icon_state = "wc_uniform"
+	worn_state = "wc_uniform"
+	contained_sprite = TRUE
+	flags_atom = NO_NAME_OVERRIDE
 
 /obj/item/clothing/under/twe_suit
 	name = "representative's fine suit"

@@ -434,7 +434,7 @@ bullets/shells. ~N
 	name = "generic handful"
 	desc = "A handful of rounds to reload on the go."
 	icon = 'icons/obj/items/weapons/guns/handful.dmi'
-	icon_state = "bullet"
+	icon_state = "bullet_1"
 	matter = list("metal" = 50) //This changes based on the ammo ammount. 5k is the base of one shell/bullet.
 	flags_equip_slot = null // It only fits into pockets and such.
 	w_class = SIZE_SMALL

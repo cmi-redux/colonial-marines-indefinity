@@ -159,8 +159,8 @@
 	else
 		var/leader_text = ""
 		var/leader_count = 0
-		var/rto_text = ""
-		var/rto_count = 0
+		var/tl_text = ""
+		var/tl_count = 0
 		var/spec_text = ""
 		var/spec_count = 0
 		var/medic_text = ""
@@ -289,8 +289,8 @@
 				leader_text += marine_infos
 				leader_count++
 			else if(real_job in JOB_SQUAD_SUP_LIST)
-				rto_text += marine_infos
-				rto_count++
+				tl_text += marine_infos
+				tl_count++
 			else if(real_job in JOB_SQUAD_SPEC_LIST)
 				spec_text += marine_infos
 				spec_count++
@@ -309,7 +309,7 @@
 			else
 				misc_text += marine_infos
 		dat += "<b>[leader_count ? "Squad Leader Deployed" : SET_CLASS("No Squad Leader Deployed!", INTERFACE_RED)]</b><BR>"
-		dat += "<b>Squad Radio Telephone Operators: [rto_count ? "[rto_count]" : SET_CLASS("No Squad Radio Telephone Operators Deployed!", INTERFACE_RED)]</b><BR>"
+		dat += "<b>Fireteam Leaders: [tl_count ? "[tl_count]" : SET_CLASS("No Fireteam Leaders Deployed!", INTERFACE_RED)]</b><BR>"
 		dat += "<b>[spec_count ? "Squad Specialist Deployed" : SET_CLASS("No Specialist Deployed!", INTERFACE_RED)]</b><BR>"
 		dat += "<b>[smart_count ? "Squad Smartgunner Deployed" : SET_CLASS("No Smartgunner Deployed!", INTERFACE_RED)]</b><BR>"
 		dat += "<b>Squad Hospital Corpsmen: [medic_count] Deployed | Squad Combat Technicians: [engi_count] Deployed</b><BR>"
@@ -320,7 +320,7 @@
 		dat += "<table id='marine_list' border='2px' style='width: 100%; border-collapse: collapse;' align='center'><tr>"
 		dat += "<th>Name</th><th>Role</th><th>State</th><th>Location</th><th>SL Distance</th><th>Filter</th></tr>"
 		if(!living_marines_sorting)
-			dat += leader_text + rto_text + spec_text + medic_text + engi_text + smart_text + marine_text + misc_text
+			dat += leader_text + tl_text + spec_text + medic_text + engi_text + smart_text + marine_text + misc_text
 		else
 			dat += conscious_text + unconscious_text + dead_text
 		dat += "</table>"

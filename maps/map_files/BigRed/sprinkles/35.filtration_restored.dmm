@@ -470,7 +470,7 @@
 /turf/open/floor/plating,
 /area/bigredv2/outside/building/filtration_plant)
 "bJ" = (
-/obj/item/weapon/melee/twohanded/fireaxe,
+/obj/item/weapon/twohanded/fireaxe,
 /turf/open/floor,
 /area/bigredv2/outside/building/filtration_plant)
 "bK" = (

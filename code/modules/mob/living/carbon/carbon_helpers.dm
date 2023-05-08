@@ -94,3 +94,7 @@
 
 	converter.faction.add_mob(src)
 	return TRUE
+
+///Checks if something prevents sharp objects from interacting with the mob (such as armor blocking surgical tools / surgery)
+/mob/living/carbon/proc/get_sharp_obj_blocker(obj/limb/limb)
+	return null

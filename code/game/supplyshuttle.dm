@@ -1307,6 +1307,10 @@ var/datum/controller/supply/supply_controller = new()
 	if(!VehicleElevatorConsole)
 		VehicleElevatorConsole = src
 
+/obj/structure/machinery/computer/supplycomp/vehicle/Destroy()
+	VehicleElevatorConsole = null
+	return ..()
+
 /obj/structure/machinery/computer/supplycomp/vehicle/attack_hand(mob/living/carbon/human/H as mob)
 	if(inoperable())
 		return

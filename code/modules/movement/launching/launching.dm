@@ -21,6 +21,11 @@
 	// Tracked information
 	var/dist = 0
 
+/datum/launch_metadata/Destroy(force, ...)
+	target = null
+	thrower = null
+	return ..()
+
 
 /datum/launch_metadata/proc/get_collision_callbacks(atom/A)
 	var/highest_matching = null
@@ -207,6 +212,7 @@
 					CB.Invoke(src)
 				else
 					CB.Invoke()
+	QDEL_NULL(launch_metadata)
 
 	if(!currently_z_moving) // I don't think you can zfall while thrown but hey, just in case.
 		var/turf/T = get_turf(src)

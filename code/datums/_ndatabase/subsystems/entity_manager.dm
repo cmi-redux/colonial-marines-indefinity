@@ -27,6 +27,8 @@ var/datum/controller/subsystem/entity_manager/SSentity_manager
 	init_stage = INITSTAGE_EARLY
 	priority   = SS_PRIORITY_ENTITY
 	runlevels = RUNLEVELS_DEFAULT|RUNLEVEL_LOBBY
+	flags = SS_NO_INIT
+
 	var/datum/db/adapter/adapter
 	var/list/datum/entity_meta/tables
 	var/list/datum/entity_meta/tables_unsorted
@@ -287,3 +289,9 @@ var/datum/controller/subsystem/entity_manager/SSentity_manager
 		var/V = new meta.destination_entity()
 		meta.map(V, r)
 		to_write.Add(V)
+
+/datum/controller/subsystem/entity_manager/proc/setup_round_id()
+	round = SSentity_manager.select(/datum/entity/mc_round)
+	round.save()
+	round.sync_then(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(start_logging)))
+

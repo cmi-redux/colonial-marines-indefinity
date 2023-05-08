@@ -33,6 +33,7 @@ GLOBAL_DATUM(escape_menu_details, /atom/movable/screen/escape_menu/details)
 /atom/movable/screen/escape_menu/details/proc/update_text()
 	var/new_maptext = {"
 		<span style='text-align: right; line-height: 0.7'>
+			Round ID: [GLOB.round_id || "NULL"]<br />
 			Round Time: [duration2text()]<br />
 			[SSmapping.configs[GROUND_MAP].disable_ship_map ? "" : "Ship: [SSmapping.configs[SHIP_MAP].map_name]<br />"]
 			Ground: [SSmapping.configs[GROUND_MAP].map_name]<br />

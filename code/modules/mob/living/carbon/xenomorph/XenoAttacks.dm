@@ -161,9 +161,11 @@
 			src.attack_log += text("\[[time_stamp()]\] <font color='orange'>was [slash_verb]ed by [key_name(xeno)]</font>")
 			xeno.attack_log += text("\[[time_stamp()]\] <font color='red'>[slash_verb]ed [key_name(src)]</font>")
 			log_attack("[key_name(xeno)] [slash_verb]ed [key_name(src)]")
-
-			xeno.flick_attack_overlay(src, "slash")
-			playsound(loc, slash_sound, 25, 1)
+			M.flick_attack_overlay(src, "slash")
+			if(custom_slashed_sound)
+				playsound(loc, custom_slashed_sound, 25, 1)
+			else
+				playsound(loc, slash_sound, 25, 1)
 			apply_armoured_damage(damage, ARMOR_MELEE, BRUTE, effectiveness_mult = XVX_ARMOR_EFFECTIVEMULT)
 
 			if(xeno.behavior_delegate)

@@ -170,7 +170,7 @@
 			else if(real_job in JOB_SQUAD_SPEC_LIST)
 				rank = "Spc"
 			else if(real_job in JOB_SQUAD_SUP_LIST)
-				rank = "RTO"
+				rank = "TL"
 			else if(real_job in JOB_SQUAD_LEADER_LIST)
 				rank = "SL"
 			else
@@ -247,7 +247,7 @@
 				else if(real_job in JOB_SQUAD_SPEC_LIST)
 					rank = "Spc"
 				else if(real_job in JOB_SQUAD_SUP_LIST)
-					rank = "RTO"
+					rank = "TL"
 				else if(real_job in JOB_SQUAD_LEADER_LIST)
 					rank = "SL"
 				else
@@ -294,7 +294,7 @@
 				else if(real_job in JOB_SQUAD_SPEC_LIST)
 					rank = "Spc"
 				else if(real_job in JOB_SQUAD_SUP_LIST)
-					rank = "RTO"
+					rank = "TL"
 				else if(real_job in JOB_SQUAD_LEADER_LIST)
 					rank = "SL"
 				else

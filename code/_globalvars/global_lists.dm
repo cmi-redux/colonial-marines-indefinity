@@ -3,9 +3,11 @@ GLOBAL_LIST_EMPTY_TYPED(player_entities, /datum/player_entity)
 
 var/list/unansweredAhelps = list() //This feels inefficient, but I can't think of a better way. Stores the message indexed by CID
 
+GLOBAL_LIST_EMPTY(PressFaxes)
 GLOBAL_LIST_EMPTY(WYFaxes) //Departmental faxes
 GLOBAL_LIST_EMPTY(USCMFaxes)
 GLOBAL_LIST_EMPTY(ProvostFaxes)
+GLOBAL_LIST_EMPTY(CMBFaxes)
 GLOBAL_LIST_EMPTY(GeneralFaxes) //Inter-machine faxes
 GLOBAL_LIST_EMPTY(fax_contents) //List of fax contents to maintain it even if source paper is deleted
 GLOBAL_LIST_EMPTY(failed_fultons) //A list of fultoned items which weren't collected and fell back down
@@ -69,7 +71,6 @@ GLOBAL_LIST_INIT(resin_build_order_drone, list(
 	/datum/resin_construction/resin_turf/wall,
 	/datum/resin_construction/resin_turf/membrane,
 	/datum/resin_construction/resin_obj/door,
-	/datum/resin_construction/resin_obj/nest,
 	/datum/resin_construction/resin_obj/sticky_resin,
 	/datum/resin_construction/resin_obj/fast_resin
 ))

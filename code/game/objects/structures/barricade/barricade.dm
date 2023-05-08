@@ -38,6 +38,8 @@
 
 /obj/structure/barricade/Initialize(mapload, mob/user)
 	. = ..()
+	if(health != maxhealth) //Update cades mapped with a custom health
+		update_health(0, TRUE)
 	if(user)
 		user.count_statistic_stat(STATISTICS_CADES)
 		faction = user.faction

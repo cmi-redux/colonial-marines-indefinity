@@ -155,17 +155,6 @@ of predators), but can be added to include variant game modes (like humans vs. h
 	SPAN_XENODANGER("You burrow out of the ground and awaken from your slumber. For the Hive!"))
 	new_xeno << sound('sound/effects/xeno_newlarva.ogg')
 
-//Disperses fog, doing so gradually.
-/datum/game_mode/proc/disperse_fog()
-	set waitfor = FALSE
-	flags_round_type &= ~MODE_FOG_ACTIVATED
-	var/i
-	for(i in round_fog)
-		round_fog -= i
-		qdel(i)
-		CHECK_TICK
-	round_fog = null
-
 // Open podlocks with the given ID if they aren't already opened.
 // DO NOT USE THIS WITH ID's CORRESPONDING TO SHUTTLES OR THEY WILL BREAK!
 /datum/game_mode/proc/open_podlocks(podlock_id)
@@ -173,14 +162,18 @@ of predators), but can be added to include variant game modes (like humans vs. h
 		if(mob.id == podlock_id && mob.density)
 			mob.open()
 
-//Variables for the below function that we need to keep throught the round
-var/peakHumans = 1
-var/peakXenos = 1
+// Variables for the below function that we need to keep throught the round
+GLOBAL_VAR_INIT(peak_humans, 1)
+GLOBAL_VAR_INIT(peak_xenos, 1)
 
-var/lastXenoBioscan = 30 MINUTES//30 minutes in (we will add to that!)
-var/lastHumanBioscan = 30 MINUTES//30 minutes in (we will add to that!)
-var/nextPredatorBioscan = 5 MINUTES//5 minutes in
-var/nextAdminBioscan = 30 MINUTES//30 minutes in
+// 30 minutes in (we will add to that!)
+GLOBAL_VAR_INIT(last_xeno_bioscan, 30 MINUTES)
+// 30 minutes in (we will add to that!)
+GLOBAL_VAR_INIT(last_human_bioscan, 30 MINUTES)
+// 5 minutes in
+GLOBAL_VAR_INIT(next_predator_bioscan, 5 MINUTES)
+// 30 minutes in
+GLOBAL_VAR_INIT(next_admin_bioscan, 30 MINUTES)
 
 /datum/game_mode/proc/select_lz(obj/structure/machinery/computer/shuttle/dropship/flight/console)
 	if(active_lz)
@@ -193,143 +186,27 @@ var/nextAdminBioscan = 30 MINUTES//30 minutes in
 	var/input = "Командный ордер.\n\n[active_lz.loc.loc] определена как главная зона высадки."
 	faction_announcement(input, name)
 
-//Delta is the randomness interval, in +/-. Might not be the exact mathematical definition
-/datum/game_mode/proc/announce_bioscans(delta = 2)
-	var/numHostsPlanet = 0
-	var/numHostsShip = 0
-	var/numXenosPlanet = 0
-	var/numXenosShip = 0
-	var/numXenosShipAres = 0 //ARES scan doesn't count containment xenos
-
-	//We're assembling a list of locations so we can give hint about a random one
-	var/list/hostsPlanetLocations = list()
-	var/list/hostsShipLocations = list()
-	var/list/xenosPlanetLocations = list()
-	var/list/xenosShipLocations = list()
-
-	var/larva = 0
-	//Count all larva across all hives
-	for(var/faction_to_get in FACTION_LIST_ALL)
-		var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
-		larva += faction.stored_larva
-
-	//Keeping track of peak numbers to determine when a side is "losing"
-	if(peakHumans < length(GLOB.alive_human_list))
-		peakHumans = length(GLOB.alive_human_list)
-	if(peakXenos < length(GLOB.living_xeno_list))
-		peakXenos = length(GLOB.living_xeno_list)
-
-	for(var/mob/mob in GLOB.living_xeno_list)
-		if(mob.mob_flags & NOBIOSCAN)
-			continue
-		var/area/A = get_area(mob)
-		if(A?.flags_area & AREA_AVOID_BIOSCAN)
-			numXenosShip++
-			continue
-		var/atom/where = mob
-		if(where.z == 0 && mob.loc)
-			where = mob.loc
-		if(where.z in SSmapping.levels_by_any_trait(list(ZTRAIT_GROUND, ZTRAIT_RESERVED)))
-			numXenosPlanet++
-			xenosPlanetLocations+=where
-		else if(is_mainship_level(where.z))
-			numXenosShip++
-			numXenosShipAres++
-			xenosShipLocations+=where
-
-
-	for(var/i in GLOB.alive_human_list)
-		var/mob/living/carbon/human/mob = i
-		if(mob.mob_flags & NOBIOSCAN)
-			continue
-		var/atom/where = mob
-		if(isspecieshuman(mob))
-			if(where.z == 0 && mob.loc)
-				where = mob.loc
-			if(where.z in SSmapping.levels_by_any_trait(list(ZTRAIT_GROUND, ZTRAIT_RESERVED)))
-				numHostsPlanet++
-				hostsPlanetLocations += where
-			else if(is_mainship_level(where.z))
-				numHostsShip++
-				hostsShipLocations += where
-
-	if(world.time > nextAdminBioscan)
-		nextAdminBioscan += 30 MINUTES//every 30 minutes, straight
-		//Message the admins first before we tweak the numbers
-		message_admins("A bioscan/queen Mother message has completed. Humans: [numHostsPlanet] on the planet and [numHostsShip] on the ship. Xenos: [numXenosPlanet] on the planet and [numXenosShip] on the ship.")
-
-	//Pick one random location to disclose
-	var/RandomHostsPlanetLocation = ""
-	if(hostsPlanetLocations.len>0)
-		RandomHostsPlanetLocation = get_area_name(pick(hostsPlanetLocations))
-	var/RandomHostsShipLocation = ""
-	if(hostsShipLocations.len>0)
-		RandomHostsShipLocation = get_area_name(pick(hostsShipLocations))
-	var/RandomXenosPlanetLocation = ""
-	if(xenosPlanetLocations.len>0)
-		RandomXenosPlanetLocation = get_area_name(pick(xenosPlanetLocations))
-	var/RandomXenosShipLocation = ""
-	if(xenosShipLocations.len>0)
-		RandomXenosShipLocation = get_area_name(pick(xenosShipLocations))
-
-	if(world.time > nextPredatorBioscan)
-		nextPredatorBioscan += 5 MINUTES//5 minutes, straight
-		var/xeno_colony_location = "[RandomXenosPlanetLocation?", including one in [RandomXenosPlanetLocation]":""]"
-		var/xeno_ship_location = "[RandomXenosShipLocation?", including one in [RandomXenosShipLocation].":"."]"
-		var/marine_colony_location = "[RandomHostsPlanetLocation?", including one in [RandomHostsPlanetLocation].":"."]"
-		var/marine_ship_location = "[RandomHostsShipLocation?", including one in [RandomHostsShipLocation].":"."]"
-		for(var/mob/mob in GLOB.player_list)
-			//Announce the numbers to Yautja, they have good scanners
-			if(isyautja(mob))
-				to_chat(mob, "<h2 class='alert'>Bioscan complete</h2>")
-				to_chat(mob, SPAN_ALERT("[numXenosPlanet] serpents present in the hunting ground[xeno_colony_location], with [larva] larva.\n[numXenosShip] serpents present on the human ship[xeno_ship_location]\n[numHostsPlanet] humans present in the hunting ground[marine_colony_location]\n[numHostsShip] humans present on the human ship[marine_ship_location]"))
-
-			//Let the ghosts know what's up, they also get good numbers
-			if(isobserver(mob))
-				to_chat(mob, "<h2 class='alert'>Bioscan complete</h2>")
-				to_chat(mob, SPAN_ALERT("[numXenosPlanet] xenos on planet, with [larva] larva.\n[numXenosShip] xenos on the ship.\n[numHostsPlanet] humans on the planet.\n[numHostsShip] humans on the ship."))
-
-	//Adjust the randomness there so everyone gets the same thing
-	numHostsShip = max(0, numHostsShip + rand(-delta, delta))
-	numXenosPlanet = max(0, numXenosPlanet + rand(-delta, delta))
-
+/datum/game_mode/proc/announce_bioscans()
 	//Depending on how either side is doing, we speed up the bioscans
 	//Formula is - last bioscan time, plus 30 minutes multiplied by ratio of current pop divided by highest pop
 	//So if you have peak 30 xenos, if you still have 30 xenos, humans will have to wait 30 minutes between bioscans
 	//But if you fall down to 15 xenos, humans will get them every 15 minutes
 	//But never more often than 5 minutes apart
-	var/nextXenoBioscan = lastXenoBioscan + max(30 MINUTES * length(GLOB.alive_human_list) / peakHumans, 5 MINUTES)
-	var/nextHumanBioscan = lastHumanBioscan + max(30 MINUTES * length(GLOB.living_xeno_list) / peakXenos, 5 MINUTES)
+	var/nextXenoBioscan = GLOB.last_xeno_bioscan + max(30 MINUTES * length(GLOB.alive_human_list) / GLOB.peak_humans, 5 MINUTES)
+	var/nextHumanBioscan = GLOB.last_human_bioscan + max(30 MINUTES * length(GLOB.living_xeno_list) / GLOB.peak_xenos, 5 MINUTES)
+	GLOB.bioscan_data.get_scan_data()
+	if(world.time > GLOB.next_predator_bioscan)
+		GLOB.bioscan_data.yautja_bioscan()//Also does ghosts
+		GLOB.next_predator_bioscan += 5 MINUTES//5 minutes, straight
 
 	if(world.time > nextXenoBioscan)
-		lastXenoBioscan = world.time
-		// The announcement to all Xenos. Slightly off for the human ship, accurate otherwise.
-		for(var/i in GLOB.living_xeno_list)
-			var/mob/mob = i
-			mob << sound(get_sfx("queen"), wait = 0, volume = 50)
-			to_chat(mob, SPAN_XENOANNOUNCE("Королева Мать пробирается в твой разум из очень далеких миров."))
-			var/metalhive_hosts = "[numHostsShip ? "примерное [numHostsShip]":""]"
-			var/plural = "[!numHostsShip || numHostsShip > 1 ? "ей":"ь"]"
-			var/metalfaction_location = "[numHostsShip&&RandomHostsShipLocation ? ", включая одну в [RandomHostsShipLocation],":""]"
-			var/planet_location = "[numHostsPlanet&&RandomHostsPlanetLocation ? ", включая одну в [RandomHostsPlanetLocation]":""]"
-			var/planet_hosts = "[numHostsPlanet ? " и [numHostsPlanet] расположенных где-то еще[planet_location]":""]"
-			to_chat(mob, SPAN_XENOANNOUNCE("Для моих Детей и их Королевы. Я чувствую [metalhive_hosts] носител[plural] в металическом улье [metalfaction_location][planet_hosts]."))
-
+		GLOB.last_xeno_bioscan = world.time
+		GLOB.bioscan_data.qm_bioscan()
 
 	if(world.time > nextHumanBioscan)
-		lastHumanBioscan = world.time
-		// The announcement to all Humans. Slightly off for the planet and elsewhere, accurate for the ship.
-		var/name = "[MAIN_AI_SYSTEM] Bioscan Status"
-		var/ship_detailed = numXenosShipAres ? "[numXenosShipAres] неизвестн[!numXenosShipAres || numXenosShipAres > 1 ? "ые":"ую"] сигнатур[!numXenosShipAres || numXenosShipAres > 1 ? "ы":"у"] жизненной формы на [MAIN_SHIP_NAME][numXenosShipAres&&RandomXenosShipLocation ? ", включая одну в [RandomXenosShipLocation],":""]":"0 неизвестных сигнатур жизенных форм на [MAIN_SHIP_NAME]"
-		var/ground_detailed = numXenosPlanet ? "примерно [numXenosPlanet] неизвестн[!numXenosShipAres || numXenosShipAres > 1 ? "ые":"ую"] сигнатур[!numXenosPlanet || numXenosPlanet > 1 ? "ы":"у"] жизненной формы на [SSmapping.configs[GROUND_MAP].map_name] находящуюся где-то еще[numXenosPlanet&&RandomXenosPlanetLocation ? ", вкдючая одну в [RandomXenosPlanetLocation]":""]":"не обнаружили неизвестных сигнатур жизенных форм на [SSmapping.configs[GROUND_MAP].map_name]"
-		var/input = "Bioscan complete.\n\nСенсоры обнаружили [ship_detailed] и [ground_detailed]."
-		faction_announcement(input, name, 'sound/AI/bioscan.ogg')
+		GLOB.last_human_bioscan = world.time
+		GLOB.bioscan_data.ares_bioscan(FALSE)
 
-/*
-Count up surviving humans and aliens.
-Can't be in a locker, in space, in the thunderdome, or distress.
-Only checks living mobs with a client attached.
-*/
 
 /datum/game_mode/proc/count_xenos(list/z_levels = SSmapping.levels_by_any_trait(list(ZTRAIT_GROUND, ZTRAIT_RESERVED, ZTRAIT_MARINE_MAIN_SHIP)))
 	var/num_xenos = 0

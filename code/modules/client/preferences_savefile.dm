@@ -179,7 +179,6 @@
 
 	S["preferred_survivor_variant"]	>> preferred_survivor_variant
 
-	S["grade_path"] >> sea_path
 	var/list/remembered_key_bindings
 	S["remembered_key_bindings"] >> remembered_key_bindings
 
@@ -193,6 +192,8 @@
 
 	S["custom_cursors"] >> custom_cursors
 	S["autofit_viewport"] >> auto_fit_viewport
+
+	S["pref_special_job_options"] >> pref_special_job_options
 
 	//Sanitize
 	client_language = sanitize_text(client_language, initial(client_language))
@@ -246,7 +247,6 @@
 	predator_flavor_text = predator_flavor_text ? sanitize_text(predator_flavor_text, initial(predator_flavor_text)) : initial(predator_flavor_text)
 	commander_status = sanitize_inlist(commander_status, WHITELIST_HIERARCHY, initial(commander_status))
 	commander_sidearm   = sanitize_inlist(commander_sidearm, list("Mateba","Colonel's Mateba","Golden Desert Eagle","Desert Eagle"), initial(commander_sidearm))
-	sea_path = sanitize_inlist(sea_path, list("Command", "Technical"), initial(sea_path))
 	preferred_survivor_variant = sanitize_inlist(preferred_survivor_variant, SURVIVOR_VARIANT_LIST, ANY_SURVIVOR)
 	yautja_status = sanitize_inlist(yautja_status, WHITELIST_HIERARCHY + list("Elder"), initial(yautja_status))
 	synth_status = sanitize_inlist(synth_status, WHITELIST_HIERARCHY, initial(synth_status))
@@ -254,6 +254,7 @@
 	remembered_key_bindings = sanitize_islist(remembered_key_bindings, null)
 	hotkeys = sanitize_integer(hotkeys, FALSE, TRUE, TRUE)
 	custom_cursors = sanitize_integer(custom_cursors, FALSE, TRUE, TRUE)
+	pref_special_job_options = sanitize_islist(pref_special_job_options, list())
 	vars["fps"] = fps
 
 	if(remembered_key_bindings)
@@ -355,7 +356,6 @@
 	S["co_sidearm"] << commander_sidearm
 	S["yautja_status"] << yautja_status
 	S["synth_status"] << synth_status
-	S["grade_path"] << sea_path
 
 	S["lang_chat_disabled"] << lang_chat_disabled
 	S["show_permission_errors"] << show_permission_errors
@@ -370,6 +370,8 @@
 	S["no_radials_preference"] << no_radials_preference
 	S["no_radial_labels_preference"] << no_radial_labels_preference
 	S["custom_cursors"] << custom_cursors
+
+	S["pref_special_job_options"] << pref_special_job_options
 
 	return TRUE
 
@@ -621,16 +623,17 @@
 		var/addedbind = FALSE
 		if(hotkeys)
 			for(var/hotkeytobind in kb.hotkey_keys)
-				if(!length(key_bindings[hotkeytobind]))
+				if(!length(key_bindings[hotkeytobind]) || hotkeytobind == "Unbound") //Only bind to the key if nothing else is bound expect for Unbound
 					LAZYADD(key_bindings[hotkeytobind], kb.name)
 					addedbind = TRUE
 		else
 			for(var/classickeytobind in kb.classic_keys)
-				if(!length(key_bindings[classickeytobind]))
+				if(!length(key_bindings[classickeytobind]) || classickeytobind == "Unbound") //Only bind to the key if nothing else is bound expect for Unbound
 					LAZYADD(key_bindings[classickeytobind], kb.name)
 					addedbind = TRUE
 		if(!addedbind)
 			notadded += kb
+	save_preferences()
 	if(length(notadded))
 		addtimer(CALLBACK(src, PROC_REF(announce_conflict), notadded), 5 SECONDS)
 
@@ -642,10 +645,10 @@
 
 		if(hotkeys)
 			for(var/entry in conflicted.hotkey_keys)
-				key_bindings[entry] -= conflicted.name
+				LAZYREMOVE(key_bindings[entry], conflicted.name)
 		else
 			for(var/entry in conflicted.classic_keys)
-				key_bindings[entry] -= conflicted.name
+				LAZYREMOVE(key_bindings[entry], conflicted.name)
 
 		LAZYADD(key_bindings["Unbound"], conflicted.name) // set it to unbound to prevent this from opening up again in the future
 

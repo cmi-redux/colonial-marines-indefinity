@@ -59,8 +59,8 @@
 	ammo_band_color = AMMO_BAND_COLOR_CLUSTER
 
 /obj/item/ammo_magazine/smg/m39/toxin
-	name = "M39 toxin magazine"
-	desc = "A 10x20mm caseless toxin bullet submachinegun magazine, containing toxin bullets. Great at stripping away armour and destroying biological structures."
+	name = "M39 toxin magazine (10x20mm)"
+	desc = "A 10x20mm caseless toxin bullet submachinegun magazine, containing toxin bullets. Great at stripping away armor and destroying biological structures."
 	ammo_preset = list(/datum/ammo/bullet/smg/ap/toxin)
 	ammo_band_color = AMMO_BAND_COLOR_TOXIN
 

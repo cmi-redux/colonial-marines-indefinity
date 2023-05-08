@@ -142,7 +142,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 
 	hacked = !hacked
 	if(hacked)
-		to_chat(user, SPAN_WARNING("You have succesfully removed access restrictions in [src]."))
+		to_chat(user, SPAN_WARNING("You have successfully removed access restrictions in [src]."))
 		if(user && is_mainship_level(z))
 			SSclues.create_print(get_turf(user), user, "A small piece of cut wire is found on the fingerprint.")
 	else
@@ -243,7 +243,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 				return
 	//Machete holsters handling
 	else if(istype(item_to_stock, /obj/item/storage/large_holster/machete))
-		var/obj/item/weapon/melee/claymore/mercsword/machete/mac = locate(/obj/item/weapon/melee/claymore/mercsword/machete) in item_to_stock
+		var/obj/item/weapon/claymore/mercsword/machete/mac = locate(/obj/item/weapon/claymore/mercsword/machete) in item_to_stock
 		if(!mac)
 			if(user)
 				to_chat(user, SPAN_WARNING("\The [item_to_stock] is empty."))
@@ -760,7 +760,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 /obj/structure/machinery/cm_vending/gear
 	name = "ColMarTech Automated Gear Rack"
 	desc = "An automated equipment rack hooked up to a colossal storage of standard-issue gear."
-	icon_state = "gear_rack"
+	icon_state = "gear"
 	type_used_points = USING_BASE_POINTS
 	vendor_theme = VENDOR_THEME_USCM
 	vend_flags = VEND_CLUTTER_PROTECTION|VEND_CATEGORY_CHECK|VEND_TO_HAND
@@ -862,9 +862,9 @@ GLOBAL_LIST_EMPTY(vending_products)
 //Hacking can be added if we need it. Do we need it, tho?
 
 /obj/structure/machinery/cm_vending/sorted
-	name = "\improper ColMarTech generic sorted rack/vending_machine"
-	desc = "This is pure vending_machine without points system."
-	icon_state = "guns_rack"
+	name = "ColMarTech generic sorted rack/vendor"
+	desc = "This is pure vendor without points system."
+	icon_state = "guns"
 	vendor_theme = VENDOR_THEME_USCM
 	vend_flags = VEND_CLUTTER_PROTECTION | VEND_LIMITED_INVENTORY | VEND_TO_HAND
 	show_points = FALSE
@@ -979,9 +979,9 @@ GLOBAL_LIST_EMPTY(vending_products)
 //------------GEAR VENDORS---------------
 //For vendors with their own points available
 /obj/structure/machinery/cm_vending/own_points
-	name = "\improper ColMarTech generic vending_machine"
-	desc = "This is a vending_machine with its own points system."
-	icon_state = "guns_rack"
+	name = "ColMarTech generic vendor"
+	desc = "This is a vendor with its own points system."
+	icon_state = "gear"
 	vendor_theme = VENDOR_THEME_USCM
 	type_used_points = USING_BASE_POINTS
 

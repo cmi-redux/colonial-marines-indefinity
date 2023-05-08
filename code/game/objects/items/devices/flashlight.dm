@@ -507,7 +507,7 @@
 	STOP_PROCESSING(SSobj, src)
 	if(signal)
 		cas_groups[faction.faction_name].remove_signal(signal)
-		qdel(signal)
+		QDEL_NULL(signal)
 	return ..()
 
 /obj/item/device/flashlight/flare/signal/burn_out()

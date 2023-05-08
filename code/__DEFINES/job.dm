@@ -46,7 +46,7 @@
 #define JOB_SQUAD_ENGI "Squad Combat Technician"
 #define JOB_SQUAD_MEDIC "Squad Hospital Corpsman"
 #define JOB_SQUAD_SPECIALIST "Squad Weapons Specialist"
-#define JOB_SQUAD_RTO "Squad Radio Telephone Operator"
+#define JOB_SQUAD_TEAM_LEADER "Squad Fireteam Leader"
 #define JOB_SQUAD_SMARTGUN "Squad Smartgunner"
 
 //------------Colonist roles-------------//
@@ -79,11 +79,14 @@
 //------------Medic roles----------------//
 #define JOB_CMO "Chief Medical Officer"
 #define JOB_DOCTOR "Doctor"
+#define JOB_SURGEON "Surgeon"
+
 #define JOB_NURSE "Nurse"
 #define JOB_RESEARCHER "Researcher"
 
 //------------Assist roles---------------//
 #define JOB_CORPORATE_LIAISON "Corporate Liaison"
+#define JOB_COMBAT_REPORTER "Combat Correspondent"
 #define JOB_MESS_SERGEANT "Mess Technician"
 #define JOB_SYNTH "Synthetic"
 #define JOB_WORKING_JOE "Working Joe"
@@ -194,6 +197,8 @@
 #define JOB_PMC_DIRECTOR "PMC Site Director"
 #define JOB_PMC_SYNTH    "PMC Support Synthetic"
 
+#define JOB_PMC_GRUNT_LIST list(JOB_PMC, JOB_PMC_ENGINEER, JOB_PMC_MEDIC, JOB_PMC_INVESTIGATOR, JOB_PMC_ELITE, JOB_PMC_GUNNER, JOB_PMC_SNIPER, JOB_PMC_CREWMAN, JOB_PMC_NINJA, JOB_PMC_XENO_HANDLER, JOB_PMC_COMMANDO, JOB_PMC_LEADER, JOB_PMC_LEAD_INVEST)
+
 //-------- WY --------//
 
 #define JOB_TRAINEE "Corporate Trainee"
@@ -210,6 +215,9 @@
 //-------- WY Goons --------//
 #define JOB_WY_GOON "WY Corporate Security"
 #define JOB_WY_GOON_LEAD "WY Corporate Security Lead"
+#define JOB_WY_GOON_RESEARCHER "WY Research Consultant"
+
+#define JOB_WY_GOON_LIST list(JOB_WY_GOON, JOB_WY_GOON_LEAD)
 
 //---- Contractors ----//
 #define JOB_CONTRACTOR "VAIPO Mercenary"
@@ -226,6 +234,17 @@
 #define JOB_CONTRACTOR_COVMG "VAISO Automatic Rifleman"
 #define JOB_CONTRACTOR_COVTL "VAISO Team Leader"
 #define JOB_CONTRACTOR_COVSYN "VAISO Support Synthetic"
+
+#define CONTRACTOR_JOB_LIST list(JOB_CONTRACTOR, JOB_CONTRACTOR_ST, JOB_CONTRACTOR_MEDIC, JOB_CONTRACTOR_ENGI, JOB_CONTRACTOR_MG, JOB_CONTRACTOR_TL, JOB_CONTRACTOR_COV, JOB_CONTRACTOR_COVST, JOB_CONTRACTOR_COVMED, JOB_CONTRACTOR_COVENG, JOB_CONTRACTOR_COVTL)
+
+//-------- CMB --------//
+#define JOB_CMB "CMB Deputy"
+#define JOB_CMB_TL "CMB Marshal"
+#define JOB_CMB_SYN "CMB Investigative Synthetic"
+#define JOB_CMB_ICC "Interstellar Commerce Commission Corporate Liaison"
+#define JOB_CMB_OBS "Interstellar Human Rights Observer"
+
+#define CMB_GRUNT_LIST list(JOB_CMB, JOB_CMB_TL)
 
 //-------- UPP --------//
 #define JOB_UPP "UPP Private"
@@ -302,6 +321,7 @@
 #define JOB_RIOT "Riot Control"
 #define JOB_RIOT_CHIEF "Chief Riot Control"
 
+#define RIOT_JOB_LIST list(JOB_RIOT, JOB_RIOT_CHIEF)
 //-------- UAAC --------//
 #define JOB_TIS_IO "UAAC-TIS Intelligence Officer"
 #define JOB_TIS_SA "UAAC-TIS Special Agent"
@@ -322,10 +342,10 @@
 #define JOB_XENOMORPH_QUEEN		"Queen"
 
 // For colouring the ranks in the statistics menu
-#define JOB_PLAYTIME_TIER_1         (25 HOURS)
-#define JOB_PLAYTIME_TIER_2         (75 HOURS)
-#define JOB_PLAYTIME_TIER_3         (150 HOURS)
-#define JOB_PLAYTIME_TIER_4         (300 HOURS)
+#define JOB_PLAYTIME_TIER_1		(25 HOURS)
+#define JOB_PLAYTIME_TIER_2		(75 HOURS)
+#define JOB_PLAYTIME_TIER_3		(150 HOURS)
+#define JOB_PLAYTIME_TIER_4		(300 HOURS)
 
 #define XENO_NO_AGE  -1
 #define XENO_NORMAL 0
@@ -349,7 +369,7 @@
 
 //SQUAD
 #define JOB_SQUAD_ROLES /datum/timelock/squad
-#define JOB_SQUAD_ROLES_LIST list(JOB_SQUAD_MARINE, JOB_SQUAD_LEADER, JOB_SQUAD_ENGI, JOB_SQUAD_MEDIC, JOB_SQUAD_SPECIALIST, JOB_SQUAD_SMARTGUN, JOB_SQUAD_RTO, JOB_UPP, JOB_UPP_CONSCRIPT, JOB_UPP_LEADER, JOB_UPP_ENGI, JOB_UPP_MEDIC, JOB_UPP_SPECIALIST)
+#define JOB_SQUAD_ROLES_LIST list(JOB_SQUAD_MARINE, JOB_SQUAD_LEADER, JOB_SQUAD_ENGI, JOB_SQUAD_MEDIC, JOB_SQUAD_SPECIALIST, JOB_SQUAD_SMARTGUN, JOB_SQUAD_TEAM_LEADER, JOB_UPP, JOB_UPP_CONSCRIPT, JOB_UPP_LEADER, JOB_UPP_ENGI, JOB_UPP_MEDIC, JOB_UPP_SPECIALIST)
 
 //MEDIC
 #define JOB_MEDIC_ROLES /datum/timelock/medic
@@ -402,7 +422,7 @@
 #define JOB_SQUAD_NORMAL_LIST list(JOB_SQUAD_MARINE, JOB_WO_SQUAD_MARINE, JOB_MARINE_RAIDER, JOB_UPP)
 #define JOB_SQUAD_MEDIC_LIST list(JOB_SQUAD_MEDIC, JOB_WO_SQUAD_MEDIC, JOB_UPP_MEDIC)
 #define JOB_SQUAD_ENGI_LIST list(JOB_SQUAD_ENGI, JOB_WO_SQUAD_ENGINEER, JOB_UPP_ENGI)
-#define JOB_SQUAD_SUP_LIST list(JOB_SQUAD_RTO, JOB_UPP_CONSCRIPT)
+#define JOB_SQUAD_SUP_LIST list(JOB_SQUAD_TEAM_LEADER, JOB_UPP_CONSCRIPT)
 #define JOB_SQUAD_SPEC_LIST list(JOB_SQUAD_SPECIALIST, JOB_WO_SQUAD_SPECIALIST, JOB_UPP_SPECIALIST)
 #define JOB_SQUAD_MAIN_SUP_LIST list(JOB_SQUAD_SMARTGUN, JOB_WO_SQUAD_SMARTGUNNER)
 #define JOB_SQUAD_LEADER_LIST list(JOB_SQUAD_LEADER, JOB_WO_SQUAD_LEADER, JOB_MARINE_RAIDER_SL, JOB_UPP_LEADER)

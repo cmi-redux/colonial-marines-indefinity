@@ -35,6 +35,8 @@
 	var/handle_spawn_and_equip = FALSE
 
 	var/balance_formulas = list("misc")
+	/// When set you will be able to choose between the different job options when selecting your role, try to keep the job option string small to not offset the menu
+	var/job_options
 
 /datum/job/New()
 	. = ..()
@@ -302,3 +304,11 @@
 		SSround_recording.recorder.track_player(human)
 
 	return TRUE
+
+/// Intended to be overwritten to handle when a job has variants that can be selected.
+/datum/job/proc/handle_job_options(option)
+	return
+
+/// Intended to be overwritten to handle any requirements for specific job variations that can be selected
+/datum/job/proc/filter_job_option(mob/job_applicant)
+	return job_options

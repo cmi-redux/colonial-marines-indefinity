@@ -317,6 +317,7 @@
 /obj/structure/mineral_door/resin
 	name = "resin door"
 	icon = 'icons/mob/xenos/effects.dmi'
+	icon_state = "resin"
 	mineralType = "resin"
 	hardness = 1.5
 	health = HEALTH_DOOR_XENO
@@ -473,6 +474,7 @@
 
 /obj/structure/mineral_door/resin/thick
 	name = "thick resin door"
+	icon_state = "thick resin"
 	health = HEALTH_DOOR_XENO_THICK
 	hardness = 2
 	mineralType = "thick resin"

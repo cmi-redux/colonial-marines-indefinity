@@ -42,9 +42,11 @@
 
 //Projectile block probabilities for different types of cover
 #define PROJECTILE_COVERAGE_NONE 0
+#define PROJECTILE_COVERAGE_MINIMAL 10
 #define PROJECTILE_COVERAGE_LOW 35
 #define PROJECTILE_COVERAGE_MEDIUM 60
 #define PROJECTILE_COVERAGE_HIGH 85
+#define PROJECTILE_COVERAGE_MAX 100
 //=================================================
 
 #define ARMOR_MELEE 1

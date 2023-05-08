@@ -1,5 +1,3 @@
-
-
 //turfs with density = TRUE
 /turf/closed
 	plane = WALL_PLANE
@@ -40,6 +38,7 @@
 		if(istype(turf_to_check,/turf/open))
 			turf_to_check.overlays += image('icons/turf/walls/walls.dmi', "rock_side_[direction]", 2.99) //Really high since it's an overhead turf and it shouldn't collide with anything else
 
+
 //Ground map dense jungle
 /turf/closed/gm
 	name = "dense jungle"
@@ -70,8 +69,6 @@
 		icon_state = "wall2"
 
 
-
-
 //desertdam rock
 /turf/closed/desert_rock
 	name = "rockwall"
@@ -79,14 +76,8 @@
 	icon_state = "cavewall1"
 
 
-
-
-
-
-
-
-
 //ICE WALLS-----------------------------------//
+
 //Ice Wall
 /turf/closed/ice
 	name = "dense ice wall"
@@ -112,6 +103,27 @@
 /turf/closed/ice/intersection
 	icon_state = "Intersection"
 
+//Ice Secret Wall
+/turf/closed/ice/secret
+	desc = "There is something inside..."
+
+/turf/closed/ice/secret/single
+	icon_state = "Single"
+
+/turf/closed/ice/secret/end
+	icon_state = "End"
+
+/turf/closed/ice/secret/straight
+	icon_state = "Straight"
+
+/turf/closed/ice/secret/corner
+	icon_state = "Corner"
+
+/turf/closed/ice/secret/junction
+	icon_state = "T-Junction"
+
+/turf/closed/ice/secret/intersection
+	icon_state = "Intersection"
 
 
 //Ice Thin Wall
@@ -140,11 +152,27 @@
 /turf/closed/ice/thin/intersection
 	icon_state = "Intersection"
 
-
-//Ice Secret Wall
-/turf/closed/ice/secret
-	icon_state = "ice_wall_0"
+//Thin Ice Secret Wall
+/turf/closed/ice/thin/secret
 	desc = "There is something inside..."
+
+/turf/closed/ice/thin/secret/single
+	icon_state = "Single"
+
+/turf/closed/ice/thin/secret/end
+	icon_state = "End"
+
+/turf/closed/ice/thin/secret/straight
+	icon_state = "Straight"
+
+/turf/closed/ice/thin/secret/corner
+	icon_state = "Corner"
+
+/turf/closed/ice/thin/secret/junction
+	icon_state = "T-Junction"
+
+/turf/closed/ice/thin/secret/intersection
+	icon_state = "Intersection"
 
 
 //ROCK WALLS------------------------------//
@@ -204,11 +232,6 @@
 	icon_state = "corner_overlay"
 
 
-
-
-
-
-
 //SHUTTLE 'WALLS'
 //not a child of turf/closed/wall because shuttle walls are magical, don't smoothes with normal walls, etc
 
@@ -216,6 +239,9 @@
 	name = "wall"
 	icon_state = "wall1"
 	icon = 'icons/turf/shuttle.dmi'
+
+/turf/closed/shuttle/is_weedable()
+	return FULLY_WEEDABLE
 
 /turf/closed/shuttle/dropship
 	icon = 'icons/turf/walls/walls.dmi'

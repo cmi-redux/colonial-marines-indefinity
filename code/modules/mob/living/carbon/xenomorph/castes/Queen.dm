@@ -508,10 +508,10 @@
 						egg_amount--
 						new /obj/item/xeno_egg(loc, faction)
 
-/mob/living/carbon/xenomorph/queen/Stat()
-	..()
-	var/xeno_leader_num = faction?.queen_leader_limit - faction?.open_xeno_leader_positions.len
+/mob/living/carbon/xenomorph/queen/get_status_tab_items()
+	. = ..()
 
+	var/xeno_leader_num = faction?.queen_leader_limit - faction?.open_xeno_leader_positions.len
 	. += "Pooled Larvae: [faction.stored_larva]"
 	. += "Leaders: [xeno_leader_num] / [faction?.queen_leader_limit]"
 	if(queen_age_timer_id != TIMER_ID_NULL)

@@ -366,15 +366,8 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/suppressor/New()
 	..()
-	accuracy_mod = HIT_ACCURACY_MULT_TIER_3
-	damage_mod = -BULLET_DAMAGE_MULT_TIER_1
-	recoil_mod = -RECOIL_AMOUNT_TIER_5
-	scatter_mod = -SCATTER_AMOUNT_TIER_10
+	damage_falloff_mod = 0.1
 	attach_icon = pick("suppressor_a","suppressor2_a")
-
-	recoil_unwielded_mod = -RECOIL_AMOUNT_TIER_5
-	scatter_unwielded_mod = -SCATTER_AMOUNT_TIER_10
-	damage_falloff_mod = 0.4
 
 /obj/item/attachable/suppressor/xm40_integral
 	name = "XM40 integral suppressor"
@@ -383,13 +376,6 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/suppressor/xm40_integral/New()
 	..()
-	accuracy_mod = HIT_ACCURACY_MULT_TIER_3
-	damage_mod = -BULLET_DAMAGE_MULT_TIER_1
-	recoil_mod = -RECOIL_AMOUNT_TIER_5
-	scatter_mod = -SCATTER_AMOUNT_TIER_10
-	recoil_unwielded_mod = -RECOIL_AMOUNT_TIER_5
-	scatter_unwielded_mod = -SCATTER_AMOUNT_TIER_10
-	damage_falloff_mod = 0.1
 	attach_icon = "m40sd_suppressor_a"
 
 /obj/item/attachable/bayonet
@@ -445,22 +431,22 @@ Defined in conflicts.dm of the #defines folder.
 	throw_range = 7
 	pry_delay = 1 SECONDS
 
-/obj/item/attachable/bayonet/c02
+/obj/item/attachable/bayonet/co2
 	name = "M8 cartridge bayonet"
 	desc = "A back issue USCM approved exclusive for Boots subscribers found in issue #255 'Inside the Night Raider - morale breaking alternatives with 2nd LT. Juliane Gerd'. A pressurized tube runs along the inside of the blade, and a button allows one to inject compressed CO2 into the stab wound. It feels cheap to the touch. Faulty even."
-	icon_state = "c02_knife"
-	attach_icon = "c02_bayonet_a"
+	icon_state = "co2_knife"
+	attach_icon = "co2_bayonet_a"
 	var/filled = FALSE
 
-/obj/item/attachable/bayonet/c02/update_icon()
-	icon_state = "c02_knife[filled ? "-f" : ""]"
-	attach_icon = "c02_bayonet[filled ? "-f" : ""]_a"
+/obj/item/attachable/bayonet/co2/update_icon()
+	icon_state = "co2_knife[filled ? "-f" : ""]"
+	attach_icon = "co2_bayonet[filled ? "-f" : ""]_a"
 
-/obj/item/attachable/bayonet/c02/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/c02_cartridge))
+/obj/item/attachable/bayonet/co2/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/co2_cartridge))
 		if(!filled)
 			filled = TRUE
-			user.visible_message(SPAN_NOTICE("[user] slots a C02 cartridge into [src]. A second later, \he apparently looks dismayed."), SPAN_WARNING("You slot a fresh C02 cartridge into [src] and snap the slot cover into place. Only then do you realize \the [W]'s valve broke inside \the [src]. Fuck."))
+			user.visible_message(SPAN_NOTICE("[user] slots a CO2 cartridge into [src]. A second later, \he apparently looks dismayed."), SPAN_WARNING("You slot a fresh CO2 cartridge into [src] and snap the slot cover into place. Only then do you realize \the [W]'s valve broke inside \the [src]. Fuck."))
 			playsound(src, 'sound/machines/click.ogg')
 			qdel(W)
 			update_icon()
@@ -473,9 +459,9 @@ Defined in conflicts.dm of the #defines folder.
 		return
 	..()
 
-/obj/item/c02_cartridge //where tf else am I gonna put this?
-	name = "C02 cartridge"
-	desc = "A cartridge of compressed C02 for the M8 cartridge bayonet. Do not consume or puncture."
+/obj/item/co2_cartridge //where tf else am I gonna put this?
+	name = "CO2 cartridge"
+	desc = "A cartridge of compressed CO2 for the M8 cartridge bayonet. Do not consume or puncture."
 	icon = 'icons/obj/items/items.dmi'
 	icon_state = "co2_cartridge"
 	item_state = ""
@@ -1310,7 +1296,7 @@ Defined in conflicts.dm of the #defines folder.
 	select_gamemode_skin(type)
 
 /obj/item/attachable/stock/double
-	name = "\improper double barrel shotgun stock"
+	name = "double barrel shotgun stock"
 	desc = "A chunky piece of wood coated in varnish and age."
 	slot = "stock"
 	icon_state = "db_stock"
@@ -1354,7 +1340,7 @@ Defined in conflicts.dm of the #defines folder.
 	scatter_unwielded_mod = SCATTER_AMOUNT_TIER_4
 
 /obj/item/attachable/stock/xm88
-	name = "\improper XM88 padded stock"
+	name = "XM88 padded stock"
 	desc = "A specially made compound polymer stock reinforced with aluminum rods and thick rubber padding to shield the user from recoil. Fitted specifically for the XM88 Heavy Rifle."
 	icon_state = "boomslang-stock"
 	wield_delay_mod = WIELD_DELAY_NORMAL
@@ -1499,7 +1485,7 @@ Defined in conflicts.dm of the #defines folder.
 	aim_speed_mod = CONFIG_GET(number/slowdown_med)
 
 /obj/item/attachable/stock/rifle/collapsible
-	name = "\improper M41A folding stock"
+	name = "M41A folding stock"
 	desc = "The standard back end of any gun starting with \"M41\". Compatible with the M41A series, this stock reduces recoil and improves accuracy, but at a reduction to handling and agility. Also enhances the thwacking of things with the stock-end of the rifle."
 	slot = "stock"
 	melee_mod = 5
@@ -1575,8 +1561,62 @@ Defined in conflicts.dm of the #defines folder.
 /obj/item/attachable/stock/m16/New()//no stats, its cosmetic
 	..()
 
+/obj/item/attachable/stock/m16/xm177
+	name = "collapsible M16 stock"
+	desc = "Very illegal in the state of California."
+	icon_state = "m16_folding"
+	attach_icon = "m16_folding"
+	flags_attach_features = NO_FLAGS
+	hud_offset_mod = 3
+	collapsible = TRUE
+	stock_activated = FALSE
+	wield_delay_mod = WIELD_DELAY_NONE //starts collapsed so no delay mod
+	collapse_delay = 0.5 SECONDS
+	flags_attach_features = ATTACH_ACTIVATION
+	attachment_action_type = /datum/action/item_action/toggle
+
+/obj/item/attachable/stock/m16/xm177/Initialize()
+	.=..()
+	accuracy_mod = 0
+	recoil_mod = 0
+	scatter_mod = 0
+	movement_onehanded_acc_penalty_mod = 0
+	accuracy_unwielded_mod = 0
+	recoil_unwielded_mod = 0
+	scatter_unwielded_mod = 0
+	aim_speed_mod = 0
+	wield_delay_mod = WIELD_DELAY_NONE
+
+/obj/item/attachable/stock/m16/xm177/apply_on_weapon(obj/item/weapon/gun/gun)
+	if(stock_activated)
+		accuracy_mod = HIT_ACCURACY_MULT_TIER_2
+		recoil_mod = -RECOIL_AMOUNT_TIER_5
+		scatter_mod = -SCATTER_AMOUNT_TIER_9
+		aim_speed_mod = CONFIG_GET(number/slowdown_med)
+		hud_offset_mod = 5
+		icon_state = "m16_folding"
+		attach_icon = "m16_folding_on"
+		wield_delay_mod = WIELD_DELAY_VERY_FAST
+
+	else
+		accuracy_mod = 0
+		recoil_mod = 0
+		scatter_mod = 0
+		movement_onehanded_acc_penalty_mod = 0
+		accuracy_unwielded_mod = 0
+		recoil_unwielded_mod = 0
+		scatter_unwielded_mod = 0
+		aim_speed_mod = 0
+		hud_offset_mod = 3
+		icon_state = "m16_folding"
+		attach_icon = "m16_folding"
+		wield_delay_mod = WIELD_DELAY_NONE //stock is folded so no wield delay
+	gun.recalculate_attachment_bonuses()
+	gun.update_overlays(src, "stock")
+
+
 /obj/item/attachable/stock/ar10
-	name = "\improper AR10 wooden stock"
+	name = "AR10 wooden stock"
 	desc = "The spring's in here, don't take it off!"
 	icon_state = "ar10_stock"
 	attach_icon = "ar10_stock"
@@ -1597,7 +1637,7 @@ Defined in conflicts.dm of the #defines folder.
 	hud_offset_mod = 2
 
 /obj/item/attachable/stock/mod88
-	name = "\improper Mod 88 burst stock"
+	name = "Mod 88 burst stock"
 	desc = "Increases the fire rate and burst amount on the Mod 88. Some versions act as a holster for the weapon when un-attached. This is a test item and should not be used in normal gameplay (yet)."
 	icon_state = "mod88_stock"
 	attach_icon = "mod88_stock_a"
@@ -1647,7 +1687,7 @@ Defined in conflicts.dm of the #defines folder.
 	scatter_unwielded_mod = SCATTER_AMOUNT_TIER_8
 
 /obj/item/attachable/stock/carbine/wood
-	name = "\improper ABR-40 \"wooden\" stock"
+	name = "ABR-40 \"wooden\" stock"
 	desc = "The default \"wooden\" stock for the ABR-40 hunting rifle, the civilian version of the military L42A battle rifle. Theoretically compatible with an L42. Wait, did you just take the stock out of a weapon with no grip...? Great job, genius."
 	icon_state = "abr40stock"
 	attach_icon = "abr40stock_a"
@@ -1661,7 +1701,7 @@ Defined in conflicts.dm of the #defines folder.
 	scatter_mod = (-SCATTER_AMOUNT_TIER_8) - SCATTER_AMOUNT_TIER_5
 
 /obj/item/attachable/stock/carbine/wood/tactical
-	name = "\improper ABR-40 tactical stock"
+	name = "ABR-40 tactical stock"
 	desc = "An ABR-40 stock with a sleek paintjob. Wait, did you just take the stock out of a weapon with no grip...? Great job, genius."
 	icon_state = "abr40stock_tac"
 	attach_icon = "abr40stock_tac_a"
@@ -2207,13 +2247,27 @@ Defined in conflicts.dm of the #defines folder.
 
 //For the Mk1
 /obj/item/attachable/attached_gun/grenade/mk1
-	name = "\improper MK1 underslung grenade launcher"
+	name = "MK1 underslung grenade launcher"
 	desc = "An older version of the classic underslung grenade launcher. Can store five grenades, and fire them farther, but fires them slower."
 	icon_state = "grenade-mk1"
 	attach_icon = "grenade-mk1_a"
 	max_rounds = 5
 	max_range = 10
 	attachment_firing_delay = 30
+
+/obj/item/attachable/attached_gun/grenade/m203 //M16 GL, only DD have it.
+	name = "M203 Grenade Launcher"
+	desc = "An antique underbarrel grenade launcher. Adopted in 1969 for the M16, it was made obsolete centuries ago; how its ended up here is a mystery to you. Holds only one propriatary 40mm grenade, does not have modern IFF systems, it won't pass through your friends."
+	icon_state = "grenade-m203"
+	attach_icon = "grenade-m203_a"
+	current_rounds = 0
+	max_rounds = 1
+	max_range = 14
+	attachment_firing_delay = 5 //one shot, so if you can reload fast you can shoot fast
+
+/obj/item/attachable/attached_gun/grenade/m203/Initialize()
+	. = ..()
+	grenade_pass_flags = NO_FLAGS
 
 //"ammo/flamethrower" is a bullet, but the actual process is handled through fire_attachment, linked through Fire().
 /obj/item/attachable/attached_gun/flamer

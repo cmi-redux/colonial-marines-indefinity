@@ -175,7 +175,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/latex(H), WEAR_HANDS)
 	H.equip_to_slot_or_del(new /obj/item/clothing/mask/surgical(H), WEAR_FACE)
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/chef/classic(H), WEAR_JACKET)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/labcoat(H), WEAR_JACKET)
 	var/random_gear = rand(0,4)
 	switch(random_gear)
 		if(0)
@@ -379,7 +379,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/head_of_security/navyblue(H), WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/sec(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/beret/marine/mp/mpcap(H), WEAR_HEAD)
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/CMB(H), WEAR_JACKET)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/det_suit/black(H), WEAR_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/jackboots(H), WEAR_FEET)
 
 	..()
@@ -754,7 +754,6 @@
 
 /datum/equipment_preset/survivor/engineer/trijent/hydro/load_gear(mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/engineer(H), WEAR_BODY)
-	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mt(H), WEAR_L_EAR)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/hazardvest(H), WEAR_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/eng(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/jackboots(H), WEAR_FEET)
@@ -937,12 +936,22 @@
 // ---- Colonial Marshal Survivor
 
 /datum/equipment_preset/survivor/colonial_marshal
-	name = "Survivor - Colonial Marshal"
-	assignment = "Colonial Marshal"
+	name = "Survivor - Colonial Marshal Deputy"
+	assignment = "CMB Deputy"
+	paygrade = "GS-9"
 	skills = /datum/skills/civilian/survivor/marshal
 	flags = EQUIPMENT_PRESET_START_OF_ROUND
-	idtype = /obj/item/card/id/silver/cl
-	access = list(ACCESS_CIVILIAN_PUBLIC,ACCESS_CIVILIAN_BRIG,ACCESS_CIVILIAN_COMMAND)
+	idtype = /obj/item/card/id/deputy
+	role_comm_title = "CMB DEP"
+	access = list(
+		ACCESS_CIVILIAN_PUBLIC,
+		ACCESS_CIVILIAN_RESEARCH,
+		ACCESS_CIVILIAN_ENGINEERING,
+		ACCESS_CIVILIAN_LOGISTICS,
+		ACCESS_CIVILIAN_BRIG,
+		ACCESS_CIVILIAN_MEDBAY,
+		ACCESS_CIVILIAN_COMMAND,
+	)
 
 	survivor_variant = SECURITY_SURVIVOR
 
@@ -951,7 +960,7 @@
 	if(SSmapping.configs[GROUND_MAP].environment_traits[MAP_COLD])
 		add_ice_colony_survivor_equipment(H)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/sec(H), WEAR_BACK)
-	H.equip_to_slot_or_del(new /obj/item/clothing/head/beret/centcom/officer(H), WEAR_HEAD)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/CMB(H), WEAR_HEAD)
 	if(H.disabilities & NEARSIGHTED)
 		H.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses/sechud/prescription(H), WEAR_EYES)
 	else
@@ -991,20 +1000,20 @@
 	..()
 
 /datum/equipment_preset/survivor/colonial_marshal/solaris
-	name = "Survivor - Solaris Colonial Marshal"
-	assignment = "Solaris Colonial Marshal"
+	name = "Survivor - Solaris Colonial Marshal Deputy"
+	assignment = "CMB Deputy"
 
 /datum/equipment_preset/survivor/colonial_marshal/solaris/load_gear(mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/CM_uniform(H), WEAR_BODY)
-	H.equip_to_slot_or_del(new /obj/item/clothing/head/beret/centcom/officer(H), WEAR_HEAD)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/CMB(H), WEAR_HEAD)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/sec(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 
 	..()
 
 /datum/equipment_preset/survivor/colonial_marshal/kutjevo
-	name = "Survivor - Kutjevo Colonial Marshal"
-	assignment = "Kutjevo Colonial Marshal"
+	name = "Survivor - Kutjevo Colonial Marshal Deputy"
+	assignment = "CMB Deputy"
 
 /datum/equipment_preset/survivor/colonial_marshal/kutjevo/load_gear(mob/living/carbon/human/H)
 	add_random_kutjevo_survivor_uniform(H)
@@ -1014,8 +1023,8 @@
 	..()
 
 /datum/equipment_preset/survivor/colonial_marshal/shiva
-	name = "Survivor - Shiva Colonial Marshal"
-	assignment = "Shiva Snowball Colonial Marshal"
+	name = "Survivor - Shivas Colonial Marshal Deputy"
+	assignment = "CMB Deputy"
 
 /datum/equipment_preset/survivor/colonial_marshal/shiva/load_gear(mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/security/corp(H), WEAR_BODY)
@@ -1032,8 +1041,11 @@
 
 /datum/equipment_preset/survivor/interstellar_commerce_commission_liason
 	name = "Survivor - Interstellar Commerce Commission Liaison"
-	assignment = "Interstellar Commerce Commission Liaison"
+	assignment = "Interstellar Commerce Commission Corporate Liaison"
 	skills = /datum/skills/civilian/survivor
+	idtype = /obj/item/card/id/silver/cl
+	paygrade = "WYC2"
+	role_comm_title = "ICC Rep."
 	flags = EQUIPMENT_PRESET_START_OF_ROUND
 	access = list(ACCESS_CIVILIAN_PUBLIC,ACCESS_WY_CORPORATE,ACCESS_CIVILIAN_COMMAND)
 
@@ -1056,10 +1068,11 @@
 
 /datum/equipment_preset/survivor/interstellar_commerce_commission_liason/corsat
 	name = "Survivor - Interstellar Commerce Commission Liaison CORSAT"
-	assignment = "Interstellar Commerce Commission Liaison"
+	assignment = "Interstellar Commerce Commission Corporate Liaison"
 
 /datum/equipment_preset/survivor/interstellar_commerce_commission_liason/corsat/load_gear(mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/liaison_suit/formal(H), WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/hardhat/white(H), WEAR_HEAD)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest(H), WEAR_JACKET)
 
 
@@ -1094,7 +1107,7 @@
 
 /datum/equipment_preset/survivor/interstellar_human_rights_observer
 	name = "Survivor - Interstellar Human Rights Observer"
-	assignment = "Interstellar Human Rights Observer"
+	assignment = "Interstellar Human Rights Observer(Colony)"
 	skills = /datum/skills/civilian/survivor
 	flags = EQUIPMENT_PRESET_START_OF_ROUND
 	access = list(ACCESS_CIVILIAN_PUBLIC,ACCESS_CIVILIAN_COMMAND)
@@ -1114,8 +1127,8 @@
 	..()
 
 /datum/equipment_preset/survivor/interstellar_human_rights_observer/soro
-	name = "Survivor - Soro Interstellar Human Rights Observer"
-	assignment = "Interstellar Human Rights Observer"
+	name = "Survivor - Sorokyne Interstellar Human Rights Observer"
+	assignment = "Interstellar Human Rights Observer(Sorokyne)"
 
 
 /datum/equipment_preset/survivor/interstellar_human_rights_observer/soro/load_gear(mob/living/carbon/human/H)
@@ -1148,7 +1161,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/corporate, WEAR_FEET)
 
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/lightpack/five_slot, WEAR_BACK)
-	H.equip_to_slot_or_del(new /obj/item/weapon/melee/baton, WEAR_IN_BACK)
+	H.equip_to_slot_or_del(new /obj/item/weapon/baton, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/stack/sheet/metal/large_stack(H), WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle(H), WEAR_IN_BACK)
@@ -1277,6 +1290,8 @@
 	skills = /datum/skills/civilian/survivor/clf
 	languages = list(LANGUAGE_ENGLISH, LANGUAGE_JAPANESE)
 	faction = FACTION_CLF
+	access = list(ACCESS_CIVILIAN_PUBLIC)
+	survivor_variant = HOSTILE_SURVIVOR
 
 /datum/equipment_preset/survivor/clf/load_gear(mob/living/carbon/human/H)
 

@@ -35,7 +35,7 @@
 		return
 
 	if(xeno.mutation_type == LURKER_NORMAL)
-		RegisterSignal(xeno, COMSIG_XENO_SLASH_ADDITIONAL_EFFECTS_SELF, PROC_REF(remove_freeze))
+		RegisterSignal(xeno, COMSIG_XENO_SLASH_ADDITIONAL_EFFECTS_SELF, PROC_REF(remove_freeze), TRUE)
 
 /datum/action/xeno_action/activable/pounce/lurker/proc/remove_freeze(mob/living/carbon/xenomorph/xeno)
 	SIGNAL_HANDLER

@@ -83,7 +83,7 @@
 
 	var/active_role_names = SSticker.mode.active_roles_pool
 	if(!active_role_names)
-		active_role_names = ROLES_REGULAR_ALL
+		active_role_names = ROLES_DISTRESS_SIGNAL
 
 	for(var/role_name as anything in active_role_names)
 		var/datum/job/job = GET_MAPPED_ROLE(role_name)
@@ -183,11 +183,15 @@
 	set desc = "Start the round RIGHT NOW"
 	set category = "Server.Round"
 
-	if(!SSticker)
-		alert("Unable to start the game as it is not set up.")
+	if(alert("Are you sure you want to start the round early?",,"Yes","No") != "Yes")
 		return
-	if(alert("Are you sure you want to start the round early?", , usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
-		return
+
+	if(SSticker.current_state == GAME_STATE_STARTUP)
+		message_admins("Game is setting up and will launch as soon as it is ready.")
+		message_admins(SPAN_ADMINNOTICE("[usr.key] has started the process to start the game when loading is finished."))
+		while(SSticker.current_state == GAME_STATE_STARTUP)
+			stoplag()
+
 	if(SSticker.current_state == GAME_STATE_PREGAME)
 		SSticker.request_start()
 		message_admins(SPAN_BLUE("[usr.key] has started the game."))

@@ -33,6 +33,7 @@
             "Baseturf": "/turf/open/openspace"
         }
    ],
+   "environment_traits": { "Fog": true },
     "xvx_hives": {
         "alpha_xenomorph": 0,
         "bravo_xenomorph": 0,

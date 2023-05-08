@@ -252,6 +252,7 @@
 	msg = emoji_parse(src, msg)
 
 	log_adminpm("ADMIN : [key_name(src)] : [msg]")
+	REDIS_PUBLISH("byond.asay", "author" = src.key, "message" = strip_html(msg), "host" = ishost(src), "rank" = admin_holder.rank)
 
 	var/color = "adminsay"
 	if(ishost(usr))
@@ -360,6 +361,8 @@
 
 	if(!msg)
 		return
+
+	REDIS_PUBLISH("byond.msay", "author" = src.key, "message" = strip_html(msg), "admin" = CLIENT_HAS_RIGHTS(src, R_ADMIN), "rank" = admin_holder.rank)
 
 	msg = emoji_parse(src, msg)
 

@@ -3,6 +3,9 @@
 		return TRUE
 	return FALSE
 
+#define HIJACK_EXPLOSION_COUNT 5
+#define MARINE_MAJOR_ROUND_END_DELAY 3 MINUTES
+
 /datum/game_mode/colonialmarines
 	name = MODE_NAME_DISTRESS_SIGNAL
 	config_tag = MODE_NAME_DISTRESS_SIGNAL
@@ -48,26 +51,38 @@
 /datum/game_mode/colonialmarines/announce()
 	to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDHEADER("В данный момент карта - [SSmapping.configs[GROUND_MAP].map_name]!"))
 
+/datum/game_mode/colonialmarines/get_roles_list()
+	return ROLES_DISTRESS_SIGNAL
+
 ////////////////////////////////////////////////////////////////////////////////////////
 //Temporary, until we sort this out properly.
 /obj/effect/landmark/lv624
-	icon = 'icons/old_stuff/mark.dmi'
+	icon = 'icons/landmarks.dmi'
 
 /obj/effect/landmark/lv624/fog_blocker
 	name = "fog blocker"
-	icon_state = "spawn_event"
+	icon_state = "fog"
+
+	var/time_to_dispel = 25 MINUTES
+
+/obj/effect/landmark/lv624/fog_blocker/short
+	time_to_dispel = 15 MINUTES
 
 /obj/effect/landmark/lv624/fog_blocker/Initialize(mapload, ...)
 	. = ..()
-	GLOB.fog_blockers += src
 
-/obj/effect/landmark/lv624/fog_blocker/Destroy()
-	GLOB.fog_blockers -= src
-	return ..()
+	return INITIALIZE_HINT_ROUNDSTART
+
+/obj/effect/landmark/lv624/fog_blocker/LateInitialize()
+	if(!(SSticker.mode.flags_round_type & MODE_FOG_ACTIVATED) || !SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_FOG])
+		return
+
+	new /obj/structure/blocker/fog(loc, time_to_dispel)
+	qdel(src)
 
 /obj/effect/landmark/lv624/xeno_tunnel
 	name = "xeno tunnel"
-	icon_state = "spawn_event"
+	icon_state = "xeno_tunnel"
 
 /obj/effect/landmark/lv624/xeno_tunnel/Initialize(mapload, ...)
 	. = ..()
@@ -81,21 +96,10 @@
 
 /* Pre-setup */
 /datum/game_mode/colonialmarines/pre_setup()
-	for(var/i in GLOB.fog_blockers)
-		var/obj/effect/landmark/lv624/fog_blocker/FB = i
-		round_fog += new /obj/structure/blocker/fog(FB.loc)
-		qdel(FB)
-
 	QDEL_LIST(GLOB.hunter_primaries)
 	QDEL_LIST(GLOB.hunter_secondaries)
 	QDEL_LIST(GLOB.crap_items)
 	QDEL_LIST(GLOB.good_items)
-
-	if(!length(round_fog))
-		round_fog = null //No blockers?
-	else
-		flags_round_type |= MODE_FOG_ACTIVATED
-
 	//desert river test
 	if(!length(round_toxic_river))
 		round_toxic_river = null //No tiles?
@@ -166,7 +170,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
 
-#define FOG_DELAY_INTERVAL (25 MINUTES)
 #define PODLOCKS_OPEN_WAIT (45 MINUTES) // CORSAT pod doors drop at 12:45
 
 //This is processed each tick, but check_win is only checked 5 ticks, so we don't go crazy with scanning for mobs.
@@ -204,8 +207,6 @@
 			bioscan_current_interval += bioscan_ongoing_interval //Add to the interval based on our set interval time.
 
 		if(++round_checkwin >= 5) //Only check win conditions every 5 ticks.
-			if(flags_round_type & MODE_FOG_ACTIVATED && SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_FOG] && world.time >= (FOG_DELAY_INTERVAL + SSticker.round_start_time))
-				disperse_fog() //Some RNG thrown in.
 			if(!(round_status_flags & ROUNDSTATUS_PODDOORS_OPEN))
 				if(SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_LOCKDOWN])
 					if(world.time >= (PODLOCKS_OPEN_WAIT + round_time_lobby))
@@ -248,7 +249,7 @@
 		return
 
 	var/list/shortly_exploding_pipes = list()
-	for(var/i = 1 to 5)
+	for(var/i = 1 to HIJACK_EXPLOSION_COUNT)
 		shortly_exploding_pipes += pick(GLOB.mainship_pipes)
 
 	for(var/obj/structure/pipes/exploding_pipe as anything in shortly_exploding_pipes)
@@ -268,7 +269,6 @@
 
 	playsound_z(SSmapping.levels_by_any_trait(list(ZTRAIT_MARINE_MAIN_SHIP)), 'sound/effects/double_klaxon.ogg', volume = 10)
 
-#undef FOG_DELAY_INTERVAL
 #undef PODLOCKS_OPEN_WAIT
 
 /datum/game_mode/colonialmarines/ds_first_drop(obj/docking_port/mobile/marine_dropship)
@@ -311,7 +311,9 @@
 			if(SSticker.mode && SSticker.mode.is_in_endgame)
 				round_finished = MODE_INFESTATION_X_MINOR //Evacuation successfully took place.
 			else
+				SSticker.roundend_check_paused = TRUE
 				round_finished = MODE_INFESTATION_M_MAJOR //Humans destroyed the xenomorphs.
+				addtimer(VARSET_CALLBACK(SSticker, roundend_check_paused, FALSE), MARINE_MAJOR_ROUND_END_DELAY)
 		else if(!num_humans && !num_xenos)
 			round_finished = MODE_INFESTATION_DRAW_DEATH //Both were somehow destroyed.
 
@@ -355,6 +357,7 @@
 	declare_completion_announce_predators()
 	declare_completion_announce_medal_awards()
 	declare_fun_facts()
+
 
 	add_current_round_status_to_end_results("Round End")
 	handle_round_results_statistics_output()
@@ -453,3 +456,6 @@
 	for(var/datum/http_request/request in requests)
 		addtimer(CALLBACK(request, TYPE_PROC_REF(/datum/http_request, begin_async)), (2 * incrementer) SECONDS)
 		incrementer++
+
+#undef HIJACK_EXPLOSION_COUNT
+#undef MARINE_MAJOR_ROUND_END_DELAY

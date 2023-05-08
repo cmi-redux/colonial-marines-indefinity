@@ -79,7 +79,6 @@
 	selected_ability = null
 	remembered_dropped_objects = null
 
-	focus = null
 	overlays_standing = null
 
 	//Equipment slots
@@ -1106,6 +1105,11 @@
 		msg += "[self ? "Your" : "Their"] skin is slightly green\n"
 	if(is_bleeding())
 		msg += "[self ? "You" : "They"] have bleeding wounds on [self ? "your" : "their"] body\n"
+
+	if(!self && skillcheck(usr, SKILL_SURGERY, SKILL_SURGERY_NOVICE))
+		for(var/datum/effects/bleeding/internal/internal_bleed in effects_list)
+			msg += "They have bloating and discoloration on their [internal_bleed.limb.display_name]\n"
+
 	if(knocked_out && stat != DEAD)
 		msg += "They seem to be unconscious\n"
 	if(stat == DEAD)
@@ -1322,11 +1326,12 @@
 
 	if(length(SQUAD_BY_FACTION[faction.faction_name]))
 		squad_leader_trackers = list(
-			TRACKER_ASL = SQUAD_BY_FACTION[faction.faction_name][1],
-			TRACKER_BSL = SQUAD_BY_FACTION[faction.faction_name][2],
-			TRACKER_CSL = SQUAD_BY_FACTION[faction.faction_name][3],
-			TRACKER_DSL = SQUAD_BY_FACTION[faction.faction_name][4],
-			TRACKER_ESL = SQUAD_BY_FACTION[faction.faction_name][5]
+			TRACKER_ASL = SQUAD_BY_FACTION[faction.faction_name]?[1],
+			TRACKER_BSL = SQUAD_BY_FACTION[faction.faction_name]?[2],
+			TRACKER_CSL = SQUAD_BY_FACTION[faction.faction_name]?[3],
+			TRACKER_DSL = SQUAD_BY_FACTION[faction.faction_name]?[4],
+			TRACKER_ESL = SQUAD_BY_FACTION[faction.faction_name]?[5],
+			TRACKER_FSL = SQUAD_BY_FACTION[faction.faction_name]?[6],
 		)
 	switch(tracker_setting)
 		if(TRACKER_SL)

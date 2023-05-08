@@ -2246,11 +2246,11 @@ CUSTOM_AMMO_PENETRATION
 	hud_state_empty = "rifle_empty"
 	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
 
-	accuracy = -HIT_ACCURACY_TIER_3
+	accuracy = HIT_ACCURACY_TIER_2
 	accuracy_var_low = PROJECTILE_VARIANCE_TIER_8
 	accuracy_var_high = PROJECTILE_VARIANCE_TIER_6
 	accurate_range = 12
-	damage = 25
+	damage = 45 //7.62x51 is scary
 	penetration= ARMOR_PENETRATION_TIER_6
 	shrapnel_chance = SHRAPNEL_CHANCE_TIER_2
 
@@ -3141,7 +3141,7 @@ CUSTOM_AMMO_PENETRATION
 	name = "glob of neuro gas"
 	icon_state = "neuro_glob"
 	ping = "ping_x"
-	debilitate = list(2,2,0,0,11,12,1,10) // Stun,knockdown,knockout,irradiate,stutter,eyeblur,drowsy,agony
+	debilitate = list(2,2,0,1,11,12,1,10) // Stun,knockdown,knockout,irradiate,stutter,eyeblur,drowsy,agony
 	flags_ammo_behavior = AMMO_SKIPS_ALIENS|AMMO_EXPLOSIVE|AMMO_IGNORE_RESIST|AMMO_HITS_TARGET_TURF|AMMO_ACIDIC
 	var/datum/effect_system/smoke_spread/smoke_system
 
@@ -3154,6 +3154,7 @@ CUSTOM_AMMO_PENETRATION
 	accuracy_var_low = PROJECTILE_VARIANCE_TIER_4
 	accuracy = HIT_ACCURACY_TIER_8
 	scatter = SCATTER_AMOUNT_TIER_4
+	shell_speed = 0.75
 	max_range = 16
 	/// range on the smoke in tiles from center
 	var/smokerange = 4
@@ -3239,7 +3240,6 @@ CUSTOM_AMMO_PENETRATION
 	icon_state = "acid_glob"
 	ping = "ping_x"
 	accuracy_var_high = PROJECTILE_VARIANCE_TIER_4
-	max_range = 16
 	smokerange = 3
 
 

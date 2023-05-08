@@ -1,6 +1,6 @@
 /datum/game_mode/extended
-	name = "extended"
-	config_tag = "extended"
+	name = "Extended"
+	config_tag = "Extended"
 	required_players = 0
 	latejoin_larva_drop = 0
 	votable = FALSE
@@ -55,4 +55,6 @@
 	calculate_end_statistics()
 	declare_completion_announce_predators()
 	declare_completion_announce_medal_awards()
+
+
 	return TRUE

@@ -487,6 +487,8 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 
 	var/job_whitelist = job.title
 	var/whitelist_status = job.get_whitelist_status(roles_whitelist, human.client)
+	if(job.job_options && H?.client?.prefs?.pref_special_job_options[job.title])
+		job.handle_job_options(H.client.prefs.pref_special_job_options[job.title])
 
 	if(whitelist_status)
 		job_whitelist = "[job.title][whitelist_status]"
@@ -682,7 +684,7 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 		else if(real_job in JOB_SQUAD_SUP_LIST)
 			for(var/datum/squad/S in mixed_squads)
 				if(S.usable && S.roundstart)
-					if(!skip_limit && S.num_rto >= S.max_rto)
+					if(!skip_limit && S.num_tl >= S.max_tl)
 						continue
 					if(S == preferred_squad)
 						S.put_marine_in_squad(human) //fav squad has a spot for us.
@@ -690,7 +692,7 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 
 					if(!lowest)
 						lowest = S
-					else if(S.num_rto < lowest.num_rto)
+					else if(S.num_tl < lowest.num_tl)
 						lowest = S
 
 		else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
@@ -825,6 +827,6 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 		if(new_squad.num_smartgun >= new_squad.max_smartgun)
 			return TRUE
 	else if(real_job in JOB_SQUAD_SUP_LIST)
-		if(new_squad.num_rto >= new_squad.max_rto)
+		if(new_squad.num_tl >= new_squad.max_tl)
 			return TRUE
 	return FALSE

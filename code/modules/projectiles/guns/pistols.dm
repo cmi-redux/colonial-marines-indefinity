@@ -63,7 +63,7 @@
 //M4A3 PISTOL
 
 /obj/item/weapon/gun/pistol/m4a3
-	name = "M4A3 service pistol"//1911
+	name = "M4A3 service pistol"
 	desc = "An M4A3 Service Pistol, once the standard issue sidearm of the Colonial Marines but has recently been replaced with the 88 Mod 4 combat pistol. Fires 9mm pistol rounds."
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/uscm.dmi'
 	icon_state = "m4a3"
@@ -139,7 +139,7 @@
 /obj/item/weapon/gun/pistol/m1911/set_gun_config_values()
 	..()
 	fire_delay = FIRE_DELAY_TIER_8
-	accuracy_mult = BASE_ACCURACY_MULT
+	accuracy_mult = BASE_ACCURACY_MULT + HIT_ACCURACY_MULT_TIER_4
 	accuracy_mult_unwielded = BASE_ACCURACY_MULT
 	scatter = SCATTER_AMOUNT_TIER_6
 	burst_scatter_mult = SCATTER_AMOUNT_TIER_6
@@ -148,7 +148,7 @@
 
 
 /obj/item/weapon/gun/pistol/m1911/socom
-	name = "\improper M48A4 service pistol"
+	name = "M48A4 service pistol"
 	desc = "A timeless classic since the first World War, the M1911A1 has limited use with the USCM, and is often used as a sidearm by non-governmental bodies due to its reliability. This is a modernized version with an ammo counter and a polymer grip, designated M48A4. Chambered in .45 ACP."
 	icon_state = "m4a345_s"
 	item_state = "m4a3"
@@ -158,7 +158,7 @@
 	..()
 	fire_delay = FIRE_DELAY_TIER_8
 	accuracy_mult = BASE_ACCURACY_MULT + HIT_ACCURACY_MULT_TIER_4
-	accuracy_mult_unwielded = BASE_ACCURACY_MULT
+	accuracy_mult_unwielded = BASE_ACCURACY_MULT + HIT_ACCURACY_MULT_TIER_2
 	scatter = SCATTER_AMOUNT_TIER_8
 	burst_scatter_mult = SCATTER_AMOUNT_TIER_6
 	scatter_unwielded = SCATTER_AMOUNT_TIER_6
@@ -181,7 +181,7 @@
 /obj/item/weapon/gun/pistol/b92fs/Initialize(mapload, spawn_empty)
 	. = ..()
 	if(prob(10))
-		name = "\improper Beretta 93FR burst pistol"
+		name = "Beretta 93FR burst pistol"
 		desc += " This specific pistol is a burst-fire, limited availability, police-issue 93FR type Beretta. Not too accurate, aftermarket modififcations are recommended."
 		var/obj/item/attachable/burstfire_assembly/BFA = new(src)
 		BFA.flags_attach_features &= ~ATTACH_REMOVABLE
@@ -522,7 +522,7 @@
 
 //unimplemented
 /obj/item/weapon/gun/pistol/highpower/tactical
-	name = "\improper MK-44 SOCOM Automagnum"
+	name = "MK-44 SOCOM Automagnum"
 	desc = "Originally designed as a replacement for the USCM's M44 combat revolver, it was rejected at the last minute by a committee, citing its need to be cocked after every loaded magazine to be too cumbersone and antiquated. The design has recently been purchased by the Henjin-Garcia company and sold to the Colonial Marshals and other various unscrupulous armed groups. This one has a sleek, dark design."
 	current_mag = /obj/item/ammo_magazine/pistol/highpower/black
 	icon_state = "highpower_tac"

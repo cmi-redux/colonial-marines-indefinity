@@ -65,4 +65,5 @@
 	template.owner = src
 	template.build_loc = get_turf(src)
 	template.faction = faction
+	template.on_template_creation()
 	update_icon()

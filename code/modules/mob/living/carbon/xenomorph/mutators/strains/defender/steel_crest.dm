@@ -1,10 +1,14 @@
 /datum/xeno_mutation/strain/steel_crest
 	name = LANGUAGE_STRAIN_STEEL
 	description = LANGUAGE_STRAIN_DESC_STEEL
+	flavor_description = LANGUAGE_STRAIN_FLAV_DESC_STEEL
 	cost = MUTATOR_COST_EXPENSIVE
 	caste_whitelist = list(XENO_CASTE_DEFENDER)
 	mutation_actions_to_remove = list(
 		/datum/action/xeno_action/onclick/tail_sweep,
+	)
+	mutator_actions_to_add = list(
+		/datum/action/xeno_action/onclick/soak,
 	)
 	behavior_delegate_type = /datum/behavior_delegate/defender_steel_crest
 	keystone = TRUE

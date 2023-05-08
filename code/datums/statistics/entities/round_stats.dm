@@ -248,7 +248,7 @@
 
 	stats += "[log_end]"
 
-	round_stats << stats // Logging to data/logs/round_stats.log
+	WRITE_LOG(GLOB.round_stats, stats)
 
 /datum/action/show_round_statistics
 	name = "View End-Round Statistics"

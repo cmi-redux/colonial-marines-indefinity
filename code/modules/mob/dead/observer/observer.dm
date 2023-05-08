@@ -145,8 +145,9 @@
 	change_real_name(src, name)
 
 	//To prevent weirdly offset ghosts.
-	pixel_x = 0
-	pixel_y = 0
+	if(ishuman(body))
+		pixel_x = 0
+		pixel_y = 0
 
 	if(MODE_HAS_FLAG(MODE_PREDATOR))
 		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), src, "<span style='color: red;'>This is a <B>PREDATOR ROUND</B>! If you are whitelisted, you may Join the Hunt!</span>"), 2 SECONDS)
@@ -830,6 +831,22 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	if(SSticker.mode.check_predator_late_join(src))
 		SSticker.mode.attempt_to_join_as_predator(src)
+
+/mob/dead/verb/join_as_joe()
+	set category = "Ghost.Join"
+	set name = "Join as a Working Joe"
+	set desc = "If you are whitelisted, you'll be able to join in."
+
+	if (!client)
+		return
+
+	if(SSticker.current_state < GAME_STATE_PLAYING || !SSticker.mode)
+		to_chat(src, SPAN_WARNING("The game hasn't started yet!"))
+		return
+
+	if(SSticker.mode.check_joe_late_join(src))
+		SSticker.mode.attempt_to_join_as_joe(src)
+
 
 /mob/dead/verb/drop_vote()
 	set category = "Ghost"

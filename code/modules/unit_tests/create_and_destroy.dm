@@ -11,6 +11,9 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 		//Never meant to be created, errors out the ass for mobcode reasons
 		/mob/living/carbon,
 		/obj/item/seeds/cutting,
+		// These use walkaway() after initialization, which causes false positives
+		/obj/item/explosive/grenade/flashbang/cluster/segment,
+		/obj/item/explosive/grenade/flashbang/cluster_piece,
 	)
 	//This turf existing is an error in and of itself
 	ignore += typesof(/turf/baseturf_skipover)

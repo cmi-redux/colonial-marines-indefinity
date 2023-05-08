@@ -1,6 +1,10 @@
 // Areas.dm
 
 // ===
+
+///define used to mute an area base_muffle = AREA_MUTED
+#define AREA_MUTED -10000
+
 /area
 	var/atmosalm = 0
 	var/poweralm = 1
@@ -87,7 +91,6 @@
 	master = src //moved outside the spawn(1) to avoid runtimes in lighting.dm when it references loc.loc.master ~Carn
 
 	related = list(src)
-	initialize_power_and_lighting()
 
 /area/Initialize(mapload, ...)
 	icon_state = ""

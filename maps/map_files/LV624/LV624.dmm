@@ -2092,7 +2092,7 @@
 /turf/open/gm/coast,
 /area/lv624/ground/river/central_river)
 "ajt" = (
-/obj/item/weapon/melee/broken_bottle,
+/obj/item/weapon/broken_bottle,
 /obj/effect/landmark/lv624/fog_blocker,
 /turf/open/gm/coast,
 /area/lv624/ground/river/central_river)
@@ -5142,7 +5142,7 @@
 "axx" = (
 /obj/effect/landmark/corpsespawner/chef,
 /obj/effect/decal/cleanable/blood/splatter,
-/obj/item/weapon/melee/harpoon,
+/obj/item/weapon/harpoon,
 /turf/open/gm/river,
 /area/lv624/ground/jungle/west_jungle)
 "axz" = (
@@ -12964,7 +12964,7 @@
 /turf/open/gm/grass,
 /area/lv624/ground/jungle/south_east_jungle)
 "btr" = (
-/obj/item/weapon/melee/harpoon/yautja{
+/obj/item/weapon/harpoon/yautja{
 	anchored = 1;
 	name = "Alien Harpoon";
 	pixel_x = -7
@@ -16580,7 +16580,7 @@
 	icon_state = "Synthetic_Template";
 	name = "Eternal guardian"
 	},
-/obj/item/weapon/melee/harpoon/yautja{
+/obj/item/weapon/harpoon/yautja{
 	anchored = 1;
 	name = "Alien Harpoon";
 	pixel_x = -7
@@ -17841,7 +17841,7 @@
 /turf/open/gm/coast,
 /area/lv624/ground/caves/sand_temple)
 "mVg" = (
-/obj/item/weapon/melee/harpoon/yautja{
+/obj/item/weapon/harpoon/yautja{
 	anchored = 1;
 	name = "Alien Harpoon";
 	pixel_x = 6
@@ -18091,7 +18091,7 @@
 	icon_state = "Synthetic_Template";
 	name = "Eternal guardian"
 	},
-/obj/item/weapon/melee/harpoon/yautja{
+/obj/item/weapon/harpoon/yautja{
 	anchored = 1;
 	name = "Alien Harpoon";
 	pixel_x = 6
