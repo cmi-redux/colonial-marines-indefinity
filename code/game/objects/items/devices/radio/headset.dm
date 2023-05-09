@@ -709,9 +709,9 @@
 					name = "[SQUAD_MARINE_5] radio headset"
 					desc = "This is used by [SQUAD_MARINE_5] squad members."
 					frequency = ECHO_FREQ
-				if(SQUAD_MARINE_CRYO)
-					name = "[SQUAD_MARINE_CRYO] radio headset"
-					desc = "This is used by [SQUAD_MARINE_CRYO] squad members."
+				if(SQUAD_MARINE_6)
+					name = "[SQUAD_MARINE_6] radio headset"
+					desc = "This is used by [SQUAD_MARINE_6] squad members."
 					frequency = CRYO_FREQ
 
 			switch(GET_DEFAULT_ROLE(H.job))
@@ -894,7 +894,7 @@
 	has_hud = TRUE
 
 //CMB Headsets
-/obj/item/device/radio/headset/distress/CMB
+/obj/item/device/radio/headset/distress/cmb
 	name = "\improper CMB Earpiece"
 	desc = "A sleek headset used by The Colonial Marshal Bureau, crafted in Sol. Low profile and comfortable. No one is above the law. Featured channels include: ; - CMB, :g - public, :v - marine command, :m - medbay, :t - intel."
 	frequency = CMB_FREQ
@@ -903,12 +903,12 @@
 	has_hud = TRUE
 	hud_type = MOB_HUD_FACTION_USCM
 
-/obj/item/device/radio/headset/distress/CMB/ICC
+/obj/item/device/radio/headset/distress/cmb/icc
 	name = "\improper ICC Liaison Headset"
 	desc = "An expensive headset used by The Interstellar Commerce Commission. This one in particular has a liaison chip with the CMB. Featured channels include: ; - CMB, :g - public, :v - marine command, :m - medbay, :t - intel, :y - Weyland-Yutani."
 	frequency = CMB_FREQ
 	icon_state = "wy_headset"
-	initial_keys = list(/obj/item/device/encryptionkey/WY, /obj/item/device/encryptionkey/cmb)
+	initial_keys = list(/obj/item/device/encryptionkey/wy, /obj/item/device/encryptionkey/cmb)
 	has_hud = TRUE
 
 /obj/item/device/radio/headset/almayer/highcom

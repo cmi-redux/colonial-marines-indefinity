@@ -856,14 +856,14 @@ Additional game mode variables.
 	if(!joe_candidate.client)
 		return
 
-	var/datum/job/joe_job = RoleAuthority.roles_by_name[JOB_WORKING_JOE]
+	var/datum/job/joe_job = SSticker.role_authority.roles_by_name[JOB_WORKING_JOE]
 
 	if(!joe_job)
 		if(show_warning)
 			to_chat(joe_candidate, SPAN_WARNING("Something went wrong!"))
 		return
 
-	if(!(RoleAuthority.roles_whitelist[joe_candidate.ckey] & WHITELIST_JOE))
+	if(!(SSticker.role_authority.roles_whitelist[joe_candidate.ckey] & WHITELIST_JOE))
 		if(show_warning)
 			to_chat(joe_candidate, SPAN_WARNING("You are not whitelisted! You may apply on the forums to be whitelisted as a synth."))
 		return
@@ -874,7 +874,7 @@ Additional game mode variables.
 		return
 
 	// council doesn't count towards this conditional.
-	if(joe_job.get_whitelist_status(RoleAuthority.roles_whitelist, joe_candidate.client) == WHITELIST_NORMAL)
+	if(joe_job.get_whitelist_status(SSticker.role_authority.roles_whitelist, joe_candidate.client) == WHITELIST_NORMAL)
 		var/joe_max = joe_job.total_positions
 		if(joe_job.current_positions >= joe_max)
 			if(show_warning)
@@ -898,17 +898,17 @@ Additional game mode variables.
 		log_debug("Null client attempted to transform_joe")
 		return
 
-	var/turf/spawn_point = get_turf(pick(GLOB.latejoin))
-	var/mob/living/carbon/human/synthetic/new_joe = new(spawn_point)
+	var/mob/living/carbon/human/synthetic/new_joe = new()
+	new_joe.forceMove(get_latejoin_spawn(new_joe))
 	joe_candidate.mind.transfer_to(new_joe, TRUE)
-	var/datum/job/joe_job = RoleAuthority.roles_by_name[JOB_WORKING_JOE]
+	var/datum/job/joe_job = SSticker.role_authority.roles_by_name[JOB_WORKING_JOE]
 
 	if(!joe_job)
 		qdel(new_joe)
 		return
 	// This is usually done in assign_role, a proc which is not executed in this case, since check_joe_late_join is running its own checks.
 	joe_job.current_positions++
-	RoleAuthority.equip_role(new_joe, joe_job, new_joe.loc)
+	SSticker.role_authority.equip_role(new_joe, joe_job, new_joe.loc)
 	GLOB.data_core.manifest_inject(new_joe)
 	SSticker.minds += new_joe.mind
 	return new_joe

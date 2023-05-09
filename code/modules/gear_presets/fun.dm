@@ -175,7 +175,7 @@
 /datum/equipment_preset/fun/hefa/melee
 	name = "HEFA Knight - Melee"
 
-/datum/equipment_preset/fun/hefa/melee/load_gear(mob/living/carbon/human/H)
+/datum/equipment_preset/fun/hefa/load_gear(mob/living/carbon/human/H)
 	var/obj/item/clothing/under/marine/M = new(H)
 	M.name = "HEFA Knight uniform"
 	var/obj/item/clothing/accessory/storage/webbing/W = new()

@@ -1373,7 +1373,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	desc = "The hauberk of a colonist militia member, created from boiled leather and some modern armored plates. While not the most powerful form of armor, and primitive compared to most modern suits of armor, it gives the wearer almost perfect mobility, which suits the needs of the local colonists. It is also quick to don, easy to hide, and cheap to produce in large workshops. This one has straps interweaved with the plates, that allow the user to fire a captured smartgun, if a bit uncomfortably."
 	flags_inventory = BLOCKSHARPOBJ|SMARTGUN_HARNESS
 
-/obj/item/clothing/suit/storage/CMB
+/obj/item/clothing/suit/storage/cmb
 	name = "CMB jacket"
 	desc = "A black jacket worn by Colonial Marshals. The back is enscribed with the powerful letters of 'MARSHAL' representing justice, authority, and protection in the outer rim. The laws of the Earth stretch beyond the Sol."
 	icon_state = "CMB_jacket"
@@ -1408,7 +1408,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	valid_accessory_slots = list(ACCESSORY_SLOT_ARMBAND, ACCESSORY_SLOT_DECOR)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_ARMBAND)
 
-/obj/item/clothing/suit/storage/CMB/Initialize()
+/obj/item/clothing/suit/storage/cmb/Initialize()
 	. = ..()
 	pockets.max_w_class = SIZE_SMALL //Can contain small items AND rifle magazines.
 	pockets.bypass_w_limit = list(

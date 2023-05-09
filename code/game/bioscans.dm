@@ -40,8 +40,8 @@ GLOBAL_DATUM_INIT(bioscan_data, /datum/bioscan_data, new)
 
 
 	/// Count all larva across all hives
-	for(var/hivenumber in GLOB.hive_datum)
-		larva += GLOB.hive_datum[hivenumber].stored_larva
+	for(var/faction_to_get in FACTION_LIST_XENOMORPH)
+		larva += GLOB.faction_datum[faction_to_get].stored_larva
 
 	/// Keeping track of peak numbers to determine when a side is "losing"
 	if(GLOB.peak_humans < length(GLOB.alive_human_list))
@@ -120,7 +120,7 @@ GLOBAL_DATUM_INIT(bioscan_data, /datum/bioscan_data, new)
 
 	var/name = "[MAIN_AI_SYSTEM] Bioscan Status"
 	var/input = "Bioscan complete.\n\nSensors indicate [xenos_on_ship_uncontained ? "[xenos_on_ship_uncontained]" : "no"] unknown lifeform signature[!xenos_on_ship_uncontained || xenos_on_ship_uncontained > 1 ? "s":""] present on the ship[xenos_on_ship_uncontained && xenos_ship_location ? ", including one in [xenos_ship_location]," : ""] and [fake_xenos_on_planet ? "approximately [fake_xenos_on_planet]" : "no"] signature[!fake_xenos_on_planet || fake_xenos_on_planet > 1 ? "s":""] located elsewhere[fake_xenos_on_planet && xenos_planet_location ? ", including one in [xenos_planet_location]":""]."
-	marine_announcement(input, name, 'sound/AI/bioscan.ogg')
+	faction_announcement(input, name, 'sound/AI/bioscan.ogg')
 
 /// The announcement to all Xenos. Slightly off for the human ship, accurate otherwise.
 /datum/bioscan_data/proc/qm_bioscan(variance = 2)

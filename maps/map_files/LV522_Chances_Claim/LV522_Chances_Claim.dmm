@@ -6250,11 +6250,11 @@
 /turf/open/auto_turf/shale/layer0,
 /area/lv522/landing_zone_2)
 "dlI" = (
-/obj/item/clothing/suit/storage/marine/mp/SO{
+/obj/item/clothing/suit/storage/marine/mp/so{
 	pixel_x = 6;
 	pixel_y = -4
 	},
-/obj/item/clothing/head/helmet/marine/mp/SO{
+/obj/item/clothing/head/helmet/marine/mp/so{
 	pixel_x = -9;
 	pixel_y = 5
 	},
@@ -8511,7 +8511,7 @@
 /area/lv522/indoors/a_block/hallway)
 "elX" = (
 /obj/structure/surface/table/almayer,
-/obj/item/clothing/suit/storage/CMB,
+/obj/item/clothing/suit/storage/cmb,
 /turf/open/floor/prison{
 	icon_state = "floor_plate";
 	tag = "icon-floor_plate"
@@ -12613,7 +12613,7 @@
 /turf/open/gm/river,
 /area/lv522/landing_zone_1/tunnel)
 "gfi" = (
-/obj/item/weapon/melee/twohanded/folded_metal_chair,
+/obj/item/weapon/twohanded/folded_metal_chair,
 /obj/item/clothing/mask/facehugger{
 	desc = "It has some sort of a tube at the end of its tail. What the hell is this thing?";
 	icon_state = "facehugger_impregnated";
@@ -14145,7 +14145,7 @@
 	},
 /area/lv522/atmos/east_reactor)
 "gQy" = (
-/obj/item/weapon/melee/twohanded/folded_metal_chair,
+/obj/item/weapon/twohanded/folded_metal_chair,
 /obj/item/clothing/mask/facehugger{
 	desc = "It has some sort of a tube at the end of its tail. What the hell is this thing?";
 	icon_state = "facehugger_impregnated";
@@ -29151,7 +29151,7 @@
 /turf/open/auto_turf/shale/layer1,
 /area/lv522/outdoors/colony_streets/north_west_street)
 "mOP" = (
-/obj/item/weapon/melee/twohanded/folded_metal_chair,
+/obj/item/weapon/twohanded/folded_metal_chair,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "floor_marked";
@@ -43311,7 +43311,7 @@
 /turf/open/auto_turf/shale/layer1,
 /area/lv522/outdoors/colony_streets/south_street)
 "sjd" = (
-/obj/item/weapon/melee/twohanded/folded_metal_chair,
+/obj/item/weapon/twohanded/folded_metal_chair,
 /turf/open/floor/prison,
 /area/lv522/landing_zone_1)
 "sje" = (
@@ -45634,7 +45634,7 @@
 	},
 /area/lv522/indoors/a_block/medical)
 "tiC" = (
-/obj/item/weapon/melee/twohanded/folded_metal_chair,
+/obj/item/weapon/twohanded/folded_metal_chair,
 /turf/open/floor/prison{
 	icon_state = "darkpurplefull2";
 	tag = "icon-darkpurplefull2"
@@ -50304,7 +50304,7 @@
 	},
 /area/lv522/oob)
 "uXp" = (
-/obj/item/weapon/melee/twohanded/folded_metal_chair,
+/obj/item/weapon/twohanded/folded_metal_chair,
 /turf/open/auto_turf/shale/layer0,
 /area/lv522/outdoors/colony_streets/south_street)
 "uXu" = (

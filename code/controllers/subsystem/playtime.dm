@@ -9,6 +9,12 @@ SUBSYSTEM_DEF(playtime)
 	var/list/currentrun = list()
 
 /datum/controller/subsystem/playtime/Initialize()
+	get_best_playtimes()
+	return SS_INIT_SUCCESS
+
+/datum/controller/subsystem/playtime/proc/get_best_playtimes()
+	set waitfor = FALSE
+
 	var/list/datum/view_record/playtime/PTs = DB_VIEW(/datum/view_record/playtime/)
 	var/list/real_best_playtimes = list()
 	for(var/datum/view_record/playtime/PT in PTs)
@@ -29,8 +35,6 @@ SUBSYSTEM_DEF(playtime)
 		var/datum/entity/player/player = DB_ENTITY(/datum/entity/player, PT.player_id)
 		player.sync()
 		best_playtimes += list(list("ckey" = player.ckey) + PT.get_nanoui_data())
-
-	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/playtime/fire(resumed = FALSE)
 	if(!resumed)

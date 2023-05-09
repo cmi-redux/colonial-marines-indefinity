@@ -80,7 +80,7 @@
 								100; /obj/item/storage/backpack/cultpack, \
 								100; /obj/item/storage/backpack/satchel, \
 								75; /obj/item/clothing/gloves/brown, \
-								100; /obj/item/clothing/suit/storage/CMB \
+								100; /obj/item/clothing/suit/storage/cmb \
 								)
 
 var/waiting_for_drop_votes = 0

@@ -975,7 +975,7 @@
 //*****************************************************************************************************//
 
 /datum/equipment_preset/reporter
-	name = "Combat Reporter"
+	name = JOB_COMBAT_REPORTER_CORPORATE_LIAISON
 	flags = EQUIPMENT_PRESET_START_OF_ROUND
 
 	access = list(

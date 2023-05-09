@@ -95,7 +95,6 @@
 		computer_to_disable.stat |= BROKEN
 		computer_to_disable.update_icon()
 
-	QDEL_LIST(GLOB.fog_blockers)
 	QDEL_LIST(GLOB.hunter_primaries)
 	QDEL_LIST(GLOB.hunter_secondaries)
 	QDEL_LIST(GLOB.crap_items)
@@ -199,9 +198,7 @@
 			bioscan_current_interval += bioscan_ongoing_interval //Add to the interval based on our set interval time.
 
 
-		if(++round_checkwin >= 5) //Only check win conditions every 5 ticks.
-			if(flags_round_type & MODE_FOG_ACTIVATED && SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_FOG] && world.time >= (FOG_DELAY_INTERVAL + SSticker.round_start_time))
-				disperse_fog() //Some RNG thrown in.
+		if(++round_checkwin >= 5) //Only check win conditions every 5 ticks..
 			if(!(round_status_flags & ROUNDSTATUS_PODDOORS_OPEN))
 				if(SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_LOCKDOWN])
 					if(world.time >= (PODLOCKS_OPEN_WAIT + round_time_lobby))

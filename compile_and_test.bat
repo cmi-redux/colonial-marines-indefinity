@@ -1,5 +1,5 @@
 @echo off
-call dm colonialmarines.dme
+call dm ColonialMarinesRU.dme
 if %ERRORLEVEL% == 0 goto :run_server
 goto :end
 

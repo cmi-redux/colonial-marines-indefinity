@@ -96,7 +96,7 @@
 			continue
 
 		var/mob/living/carbon/xenomorph/xeno_dummy = new spawn_path(get_turf(spawn_loc))
-		xeno_dummy.hardcore = TRUE
+		xeno_dummy.statistic_exempt = TRUE
 		delete_targets += xeno_dummy
 
 	addtimer(CALLBACK(src, PROC_REF(sim_turf_garbage_collection)), 30 SECONDS, TIMER_STOPPABLE)

@@ -203,9 +203,9 @@ var/list/alldepartments = list()
 			embed.description = "[usr.client.ckey] отправил факс"
 			embed.fields = list(
 				"ИМЯ ОТПРАВИТЕЛЯ" = usr,
-				"НАЗВАНИЕ" = tofax.name,
+				"НАЗВАНИЕ" = original_fax.name,
 				"ОТДЕЛ" = "[network], [target_department]",
-				"СООБЩЕНИЕ" = tofax.info,
+				"СООБЩЕНИЕ" = original_fax.info,
 				"АДМИНИСТРАЦИЯ" = length(GLOB.admins),
 			)
 			embed.color = COLOR_WEBHOOK_DEFAULT
@@ -269,7 +269,8 @@ var/list/alldepartments = list()
 		if("select")
 			var/last_target_department = target_department
 			target_department = tgui_input_list(ui.user, "Which department?", "Choose a department", alldepartments)
-			if(!target_department) target_department = last_target_department
+			if(!target_department)
+				target_department = last_target_department
 			. = TRUE
 
 		if("auth")

@@ -79,7 +79,6 @@ GLOBAL_LIST_INIT(resin_build_order_hivelord, list(
 	/datum/resin_construction/resin_turf/wall/thick,
 	/datum/resin_construction/resin_turf/membrane/thick,
 	/datum/resin_construction/resin_obj/door/thick,
-	/datum/resin_construction/resin_obj/nest,
 	/datum/resin_construction/resin_obj/sticky_resin,
 	/datum/resin_construction/resin_obj/fast_resin
 ))
@@ -88,7 +87,6 @@ GLOBAL_LIST_INIT(resin_build_order_queen, list(
 	/datum/resin_construction/resin_turf/wall/queen,
 	/datum/resin_construction/resin_turf/membrane/queen,
 	/datum/resin_construction/resin_obj/door/queen,
-	/datum/resin_construction/resin_obj/nest,
 	/datum/resin_construction/resin_obj/sticky_resin,
 	/datum/resin_construction/resin_obj/fast_resin,
 ))
@@ -97,7 +95,6 @@ GLOBAL_LIST_INIT(resin_build_order_queen_ovi, list(
 	/datum/resin_construction/resin_turf/wall/thick,
 	/datum/resin_construction/resin_turf/membrane/thick,
 	/datum/resin_construction/resin_obj/door/thick,
-	/datum/resin_construction/resin_obj/nest,
 	/datum/resin_construction/resin_obj/sticky_resin,
 	/datum/resin_construction/resin_obj/fast_resin,
 ))

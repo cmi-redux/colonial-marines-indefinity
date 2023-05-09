@@ -18,7 +18,7 @@
 /turf/template_noop,
 /area/template_noop)
 "l" = (
-/obj/item/weapon/melee/broken_bottle{
+/obj/item/weapon/broken_bottle{
 	pixel_x = -5;
 	pixel_y = -6
 	},
@@ -53,7 +53,7 @@
 /turf/template_noop,
 /area/template_noop)
 "t" = (
-/obj/item/weapon/melee/broken_bottle{
+/obj/item/weapon/broken_bottle{
 	pixel_x = 5;
 	pixel_y = 2
 	},

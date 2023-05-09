@@ -317,7 +317,7 @@
 /obj/item/device/motiondetector/hacked/dutch
 	name = "hacked motion detector"
 	desc = "A device that usually picks up non-USCM signals, but this one's been hacked to detect all non-Dutch's Dozen movement instead. Fight fire with fire!"
-	iff_signal = FACTION_DUTCH
+	faction_to_get = FACTION_DUTCH
 
 /obj/item/device/motiondetector/hacked/contractor
 	name = "modified motion detector"

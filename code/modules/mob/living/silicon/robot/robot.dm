@@ -336,8 +336,8 @@ var/list/robot_verbs_default = list(
 	if(!is_component_functioning("diagnosis unit"))
 		to_chat(src, SPAN_DANGER("Your self-diagnosis component isn't functioning."))
 
-	var/datum/robot_component/CO = get_component("diagnosis unit")
-	if(!cell_use_power(CO.active_usage))
+	var/datum/robot_component/co = get_component("diagnosis unit")
+	if(!cell_use_power(co.active_usage))
 		to_chat(src, SPAN_DANGER("Low Power."))
 	var/dat = self_diagnosis()
 	src << browse(dat, "window=robotdiagnosis")

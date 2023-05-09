@@ -960,12 +960,12 @@
 	if(SSmapping.configs[GROUND_MAP].environment_traits[MAP_COLD])
 		add_ice_colony_survivor_equipment(H)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/sec(H), WEAR_BACK)
-	H.equip_to_slot_or_del(new /obj/item/clothing/head/CMB(H), WEAR_HEAD)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/cmb(H), WEAR_HEAD)
 	if(H.disabilities & NEARSIGHTED)
 		H.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses/sechud/prescription(H), WEAR_EYES)
 	else
 		H.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses/sechud(H), WEAR_EYES)
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/CMB(H), WEAR_JACKET)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/cmb(H), WEAR_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/magazine/large(H), WEAR_R_STORE)
 	add_survivor_weapon_security(H)
@@ -1005,7 +1005,7 @@
 
 /datum/equipment_preset/survivor/colonial_marshal/solaris/load_gear(mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/CM_uniform(H), WEAR_BODY)
-	H.equip_to_slot_or_del(new /obj/item/clothing/head/CMB(H), WEAR_HEAD)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/cmb(H), WEAR_HEAD)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/sec(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 

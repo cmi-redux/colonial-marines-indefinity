@@ -1075,7 +1075,7 @@
 			if(is_alien_whitelisted(human,"Yautja Elder"))
 				mob.change_real_name(human, "Elder [y_name]")
 				human.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/yautja/hunter/full(mob), WEAR_JACKET)
-				human.equip_to_slot_or_del(new /obj/item/weapon/melee/twohanded/yautja/glaive(mob), WEAR_L_HAND)
+				human.equip_to_slot_or_del(new /obj/item/weapon/twohanded/yautja/glaive(mob), WEAR_L_HAND)
 			else
 				human.change_real_name(human, y_name)
 			human.name = "Unknown"	// Yautja names are not visible for oomans

@@ -78,7 +78,7 @@
 
 /datum/equipment_preset/uscm/pfc/cryo
 	name = "USCM Cryo Squad Rifleman"
-	auto_squad_name = SQUAD_MARINE_CRYO
+	auto_squad_name = SQUAD_MARINE_6
 
 /datum/equipment_preset/uscm/pfc/cryo/load_gear(mob/living/carbon/human/H)
 	..()
@@ -106,7 +106,7 @@
 
 /datum/equipment_preset/uscm/sg/cryo
 	name = "USCM Cryo Squad Smartgunner"
-	auto_squad_name = SQUAD_MARINE_CRYO
+	auto_squad_name = SQUAD_MARINE_6
 
 /datum/equipment_preset/uscm/sg/cryo/load_gear(mob/living/carbon/human/H)
 	..()
@@ -274,7 +274,7 @@
 
 /datum/equipment_preset/uscm/spec/cryo
 	name = "USCM Cryo Squad Weapons Specialist"
-	auto_squad_name = SQUAD_MARINE_CRYO
+	auto_squad_name = SQUAD_MARINE_6
 
 /datum/equipment_preset/uscm/spec/cryo/load_gear(mob/living/carbon/human/H)
 	..()
@@ -330,7 +330,7 @@
 
 /datum/equipment_preset/uscm/medic/cryo
 	name = "USCM Cryo Squad Hospital Corpsman"
-	auto_squad_name = SQUAD_MARINE_CRYO
+	auto_squad_name = SQUAD_MARINE_6
 
 /datum/equipment_preset/uscm/medic/cryo/load_gear(mob/living/carbon/human/H)
 	..()
@@ -358,7 +358,7 @@
 
 /datum/equipment_preset/uscm/tl/cryo
 	name = "USCM Cryo Fireteam Leader"
-	auto_squad_name = SQUAD_MARINE_CRYO
+	auto_squad_name = SQUAD_MARINE_6
 
 /datum/equipment_preset/uscm/tl/cryo/load_gear(mob/living/carbon/human/H)
 	..()
@@ -388,7 +388,7 @@
 
 /datum/equipment_preset/uscm/engineer/cryo
 	name = "USCM Cryo Squad Combat Technician"
-	auto_squad_name = SQUAD_MARINE_CRYO
+	auto_squad_name = SQUAD_MARINE_6
 
 /datum/equipment_preset/uscm/engineer/cryo/load_gear(mob/living/carbon/human/H)
 	..()
@@ -417,7 +417,7 @@
 
 /datum/equipment_preset/uscm/leader/cryo
 	name = "USCM Cryo Squad Leader"
-	auto_squad_name = SQUAD_MARINE_CRYO
+	auto_squad_name = SQUAD_MARINE_6
 
 /datum/equipment_preset/uscm/leader/cryo/load_gear(mob/living/carbon/human/H)
 	..()
@@ -465,7 +465,7 @@
 
 /datum/equipment_preset/uscm/private_equipped/cryo
 	name = "USCM Cryo Squad Rifleman (Equipped)"
-	auto_squad_name = SQUAD_MARINE_CRYO
+	auto_squad_name = SQUAD_MARINE_6
 
 
 //*****************************************************************************************************//
@@ -503,7 +503,7 @@
 
 /datum/equipment_preset/uscm/leader_equipped/cryo
 	name = "USCM Cryo Squad Leader (Equipped)"
-	auto_squad_name = SQUAD_MARINE_CRYO
+	auto_squad_name = SQUAD_MARINE_6
 
 //*****************************************************************************************************//
 
@@ -538,7 +538,7 @@
 
 /datum/equipment_preset/uscm/smartgunner_equipped/cryo
 	name = "USCM Cryo Squad Smartgunner (Equipped)"
-	auto_squad_name = SQUAD_MARINE_CRYO
+	auto_squad_name = SQUAD_MARINE_6
 
 
 //*****************************************************************************************************//
@@ -580,7 +580,7 @@
 
 /datum/equipment_preset/uscm/engineer_equipped/cryo
 	name = "USCM Cryo Squad Combat Technician (Equipped)"
-	auto_squad_name = SQUAD_MARINE_CRYO
+	auto_squad_name = SQUAD_MARINE_6
 
 //*****************************************************************************************************//
 
@@ -628,7 +628,7 @@
 
 /datum/equipment_preset/uscm/medic_equipped/cryo
 	name = "USCM Cryo Hospital Corpsman (Equipped)"
-	auto_squad_name = SQUAD_MARINE_CRYO
+	auto_squad_name = SQUAD_MARINE_6
 
 
 //*****************************************************************************************************//
@@ -668,7 +668,7 @@
 
 /datum/equipment_preset/uscm/specialist_equipped/cryo
 	name = "USCM Cryo Squad Weapons Specialist (Equipped)"
-	auto_squad_name = SQUAD_MARINE_CRYO
+	auto_squad_name = SQUAD_MARINE_6
 
 //*****************************************************************************************************//
 
@@ -729,7 +729,7 @@
 
 /datum/equipment_preset/uscm/tl_equipped/cryo
 	name = "USCM Cryo Fireteam Leader (Equipped)"
-	auto_squad_name = SQUAD_MARINE_CRYO
+	auto_squad_name = SQUAD_MARINE_6
 
 //############ Marine Raiders #############
 //Operator

@@ -87,13 +87,11 @@
 
 	return
 
-//Hot hot Aliens on Aliens action.
-//Actually just used for eating people.
 /mob/living/carbon/xenomorph/attack_alien(mob/living/carbon/xenomorph/xeno)
 	if(xeno.fortify || xeno.burrow)
 		return XENO_NO_DELAY_ACTION
 
-	if(islarva(xeno)) //Larvas can't eat people
+	if(islarva(xeno))
 		xeno.visible_message(SPAN_DANGER("[xeno] nudges its head against \the [src]."), \
 		SPAN_DANGER("You nudge your head against \the [src]."), null, null, CHAT_TYPE_XENO_FLUFF)
 		return
@@ -161,7 +159,7 @@
 			src.attack_log += text("\[[time_stamp()]\] <font color='orange'>was [slash_verb]ed by [key_name(xeno)]</font>")
 			xeno.attack_log += text("\[[time_stamp()]\] <font color='red'>[slash_verb]ed [key_name(src)]</font>")
 			log_attack("[key_name(xeno)] [slash_verb]ed [key_name(src)]")
-			M.flick_attack_overlay(src, "slash")
+			xeno.flick_attack_overlay(src, "slash")
 			if(custom_slashed_sound)
 				playsound(loc, custom_slashed_sound, 25, 1)
 			else

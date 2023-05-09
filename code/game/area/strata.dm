@@ -25,12 +25,6 @@ EXTERIOR is FUCKING FREEZING, and refers to areas out in the open and or exposed
 	icon_state = "shuttle2"
 	minimap_color = MINIMAP_AREA_LZ
 
-
-/*A WHOLE BUNCH OF PARENT ENTITIES
-fake_zlevel = 1 or 2. 1 is 'above' 2 is 'below', however ladders are flipped and think that 1 is below, and 2 is above.
-But, players don't actually care where they are so long as the ladders look correct going up and down. They shouldn't notice.
-However, this might break the tacmap. This entire system might be replaced by Slywater's fake-Z smooth transition anyway.*/
-
 /area/strata/ag
 	name = "Above Ground Area"
 	icon_state = "ag"

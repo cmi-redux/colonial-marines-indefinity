@@ -51,9 +51,6 @@
 /datum/game_mode/colonialmarines/announce()
 	to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDHEADER("В данный момент карта - [SSmapping.configs[GROUND_MAP].map_name]!"))
 
-/datum/game_mode/colonialmarines/get_roles_list()
-	return ROLES_DISTRESS_SIGNAL
-
 ////////////////////////////////////////////////////////////////////////////////////////
 //Temporary, until we sort this out properly.
 /obj/effect/landmark/lv624
@@ -431,13 +428,15 @@
 		var/job_final_text = ""
 		var/list/job_report = round_status_report["counted faction mobs"]
 		for(var/faction in job_report)
-			job_final_text += "\n\n**[faction]**\n"
-			job_final_text += "\ntotal alive mobs ([length(job_report[faction]["alive mobs"])]):\n"
 			var/list/alive_mob_report = job_report[faction]["alive mobs"]
+			if(!length(alive_mob_report))
+				continue
+			var/list/dead_mob_report = job_report[faction]["dead mobs"]
+			job_final_text += "\n\n**[faction]**\n"
+			job_final_text += "\ntotal alive mobs ([length(alive_mob_report)]):\n"
 			for(var/mob_info in alive_mob_report)
 				job_final_text += "[mob_info] [alive_mob_report[mob_info]]\n"
-			job_final_text += "\ntotal dead mobs ([length(job_report[faction]["dead mobs"])]):\n"
-			var/list/dead_mob_report = job_report[faction]["dead mobs"]
+			job_final_text += "\ntotal dead mobs ([length(dead_mob_report)]):\n"
 			for(var/mob_info in dead_mob_report)
 				job_final_text += "[mob_info] [dead_mob_report[mob_info]]\n"
 

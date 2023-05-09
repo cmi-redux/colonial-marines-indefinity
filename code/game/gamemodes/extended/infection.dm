@@ -1,4 +1,3 @@
-//THIS IS A BLANK LABEL ONLY SO PEOPLE CAN SEE WHEN WE RUNNIN DIS BITCH.   Should probably write a real one one day.  Maybe.
 /datum/game_mode/infection
 	name = MODE_NAME_INFECTION
 	config_tag = MODE_NAME_INFECTION
@@ -13,9 +12,6 @@
 	to_world("<B>Just have fun and role-play!</B>")
 	to_world("<B>If you die as a zombie, you come back.  NO MATTER HOW MUCH DAMAGE.</B>")
 	to_world("<B>Don't ahelp asking for specific details, you won't get them.</B>")
-
-/datum/game_mode/infection/get_roles_list()
-	return ROLES_USCM
 
 /datum/game_mode/infection/pre_setup()
 	return ..()

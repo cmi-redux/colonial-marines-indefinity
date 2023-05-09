@@ -28,7 +28,7 @@
 	ravager.plasma_max = 0
 	ravager.small_explosives_stun = FALSE
 	ravager.health_modifier += XENO_HEALTH_MOD_MED
-	ravager.armor_modifier += XENO_ARMOR_MOD_VERYSMALL
+	ravager.armor_modifier += XENO_ARMOR_MOD_VERY_SMALL
 	ravager.explosivearmor_modifier += XENO_EXPOSIVEARMOR_MOD_SMALL
 	ravager.speed_modifier += XENO_SPEED_SLOWMOD_TIER_8
 

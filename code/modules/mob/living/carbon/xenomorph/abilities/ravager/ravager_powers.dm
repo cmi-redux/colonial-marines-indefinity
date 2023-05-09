@@ -253,7 +253,7 @@
 	xeno.recalculate_speed()
 
 	addtimer(CALLBACK(src, PROC_REF(apprehend_off)), buff_duration, TIMER_UNIQUE)
-	X.add_filter("apprehend_on", 1, list("type" = "outline", "color" = "#522020ff", "size" = 1)) // Dark red because the berserker is scary in this state
+	xeno.add_filter("apprehend_on", 1, list("type" = "outline", "color" = "#522020ff", "size" = 1)) // Dark red because the berserker is scary in this state
 
 	apply_cooldown()
 
@@ -261,7 +261,7 @@
 
 /datum/action/xeno_action/onclick/apprehend/proc/apprehend_off()
 	var/mob/living/carbon/xenomorph/xeno = owner
-	X.remove_filter("apprehend_on")
+	xeno.remove_filter("apprehend_on")
 	if(istype(xeno))
 		xeno.speed_modifier += speed_buff
 		xeno.recalculate_speed()

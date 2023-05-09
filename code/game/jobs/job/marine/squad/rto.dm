@@ -15,23 +15,23 @@ AddTimelock(/datum/job/marine/rto, list(
 	JOB_SQUAD_ROLES = 8 HOURS
 ))
 
-/obj/effect/landmark/start/marine/rto
+/obj/effect/landmark/start/marine/tl
 	name = JOB_SQUAD_RTO
 	icon_state = "rto_spawn"
 	job = /datum/job/marine/rto
 
-/obj/effect/landmark/start/marine/rto/alpha
+/obj/effect/landmark/start/marine/tl/alpha
 	icon_state = "rto_spawn_alpha"
 	squad = SQUAD_MARINE_1
 
-/obj/effect/landmark/start/marine/rto/bravo
+/obj/effect/landmark/start/marine/tl/bravo
 	icon_state = "rto_spawn_bravo"
 	squad = SQUAD_MARINE_2
 
-/obj/effect/landmark/start/marine/rto/charlie
+/obj/effect/landmark/start/marine/tl/charlie
 	icon_state = "rto_spawn_charlie"
 	squad = SQUAD_MARINE_3
 
-/obj/effect/landmark/start/marine/rto/delta
+/obj/effect/landmark/start/marine/tl/delta
 	icon_state = "rto_spawn_delta"
 	squad = SQUAD_MARINE_4

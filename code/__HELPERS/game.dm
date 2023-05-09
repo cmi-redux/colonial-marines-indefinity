@@ -171,10 +171,10 @@
 			var/obj/item/device/radio/borg/BR = R
 			if(istype(BR) && BR.myborg)
 				var/mob/living/silicon/robot/borg = BR.myborg
-				var/datum/robot_component/CO = borg.get_component("radio")
-				if(!CO)
+				var/datum/robot_component/co = borg.get_component("radio")
+				if(!co)
 					continue //No radio component (Shouldn't happen)
-				if(!borg.is_component_functioning("radio") || !borg.cell_use_power(CO.active_usage))
+				if(!borg.is_component_functioning("radio") || !borg.cell_use_power(co.active_usage))
 					continue //No power.
 
 			var/turf/speaker = get_turf(R)

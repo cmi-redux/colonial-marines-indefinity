@@ -598,10 +598,10 @@
 	color = "#6b675e";
 	layer = 2.79
 	},
-/obj/item/weapon/melee/harpoon/yautja,
-/obj/item/weapon/melee/harpoon/yautja,
-/obj/item/weapon/melee/harpoon/yautja,
-/obj/item/weapon/melee/harpoon/yautja,
+/obj/item/weapon/harpoon/yautja,
+/obj/item/weapon/harpoon/yautja,
+/obj/item/weapon/harpoon/yautja,
+/obj/item/weapon/harpoon/yautja,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
@@ -2107,7 +2107,7 @@
 	color = "#6b675e"
 	},
 /obj/item/storage/large_holster/katana,
-/obj/item/weapon/melee/katana,
+/obj/item/weapon/katana,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
@@ -2147,10 +2147,10 @@
 	dir = 4;
 	pixel_y = 22
 	},
-/obj/item/weapon/melee/twohanded/yautja/spear,
-/obj/item/weapon/melee/twohanded/yautja/spear,
-/obj/item/weapon/melee/twohanded/yautja/spear,
-/obj/item/weapon/melee/twohanded/yautja/spear,
+/obj/item/weapon/twohanded/yautja/spear,
+/obj/item/weapon/twohanded/yautja/spear,
+/obj/item/weapon/twohanded/yautja/spear,
+/obj/item/weapon/twohanded/yautja/spear,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
@@ -2432,7 +2432,7 @@
 /obj/structure/surface/table/reinforced/prison{
 	color = "#6b675e"
 	},
-/obj/item/weapon/melee/claymore/mercsword/ceremonial,
+/obj/item/weapon/claymore/mercsword/ceremonial,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
@@ -2890,7 +2890,7 @@
 /obj/structure/surface/table/reinforced/prison{
 	color = "#6b675e"
 	},
-/obj/item/weapon/melee/chainofcommand,
+/obj/item/weapon/chainofcommand,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/corsat{
 	dir = 1;
@@ -3431,12 +3431,12 @@
 /obj/structure/surface/table/reinforced/prison{
 	color = "#6b675e"
 	},
-/obj/item/weapon/melee/baton/cattleprod,
-/obj/item/weapon/melee/baton/cattleprod,
-/obj/item/weapon/melee/baton/cattleprod,
-/obj/item/weapon/melee/baton/cattleprod,
-/obj/item/weapon/melee/baton/cattleprod,
-/obj/item/weapon/melee/baton/cattleprod,
+/obj/item/weapon/baton/cattleprod,
+/obj/item/weapon/baton/cattleprod,
+/obj/item/weapon/baton/cattleprod,
+/obj/item/weapon/baton/cattleprod,
+/obj/item/weapon/baton/cattleprod,
+/obj/item/weapon/baton/cattleprod,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/predship,
 /area/yautja)

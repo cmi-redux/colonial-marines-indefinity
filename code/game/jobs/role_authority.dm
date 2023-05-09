@@ -444,8 +444,8 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 				to_chat(user, "There are no [job.title] slots occupied in [sq.name] Squad.")
 				return
 		else if(real_job in JOB_SQUAD_SUP_LIST)
-			if(sq.num_rto > 0)
-				sq.num_rto--
+			if(sq.num_tl > 0)
+				sq.num_tl--
 			else
 				to_chat(user, "There are no [job.title] slots occupied in [sq.name] Squad.")
 				return
@@ -487,8 +487,8 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 
 	var/job_whitelist = job.title
 	var/whitelist_status = job.get_whitelist_status(roles_whitelist, human.client)
-	if(job.job_options && H?.client?.prefs?.pref_special_job_options[job.title])
-		job.handle_job_options(H.client.prefs.pref_special_job_options[job.title])
+	if(job.job_options && human?.client?.prefs?.pref_special_job_options[job.title])
+		job.handle_job_options(human.client.prefs.pref_special_job_options[job.title])
 
 	if(whitelist_status)
 		job_whitelist = "[job.title][whitelist_status]"
@@ -510,8 +510,8 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 		randomize_squad(human)
 
 	if(Check_WO() && JOB_SQUAD_ROLES_LIST & GET_DEFAULT_ROLE(human.job)) //activates self setting proc for marine headsets for WO
-		var/datum/game_mode/whiskey_outpost/WO = SSticker.mode
-		WO.self_set_headset(human)
+		var/datum/game_mode/whiskey_outpost/wo = SSticker.mode
+		wo.self_set_headset(human)
 
 	var/assigned_squad
 	if(human.assigned_squad)

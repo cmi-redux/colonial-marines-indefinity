@@ -27,7 +27,7 @@
 	drone.mutation_type = DRONE_HEALER
 	drone.phero_modifier += XENO_PHERO_MOD_LARGE
 	drone.plasma_types += PLASMA_PHEROMONE
-	drone.health_modifier += XENO_HEALTH_MOD_VERYLARGE
+	drone.health_modifier += XENO_HEALTH_MOD_VERY_LARGE
 	drone.damage_modifier += XENO_DAMAGE_MOD_VERY_SMALL
 	drone.max_placeable = 3
 	drone.available_fruits = list(/obj/effect/alien/resin/fruit)

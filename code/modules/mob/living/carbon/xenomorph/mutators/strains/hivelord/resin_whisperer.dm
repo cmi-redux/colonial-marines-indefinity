@@ -35,7 +35,7 @@
 	mutator_set.recalculate_actions(description, flavor_description)
 	hivelord.recalculate_plasma()
 
-	hivelord.set_resin_build_order(GLOB.resin_build_order_hivelord_whisperer)
+	hivelord.set_resin_build_order(GLOB.resin_build_order_drone)
 	for(var/datum/action/xeno_action/action in hivelord.actions)
 		// Also update the choose_resin icon since it resets
 		if(istype(action, /datum/action/xeno_action/onclick/choose_resin))

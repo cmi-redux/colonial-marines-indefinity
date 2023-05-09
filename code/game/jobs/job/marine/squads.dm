@@ -135,7 +135,7 @@
 	locked = TRUE
 
 /datum/squad/marine/cryo
-	name = SQUAD_MARINE_CRYO
+	name = SQUAD_MARINE_6
 	color = 6
 	access = list(ACCESS_MARINE_ALPHA, ACCESS_MARINE_BRAVO, ACCESS_MARINE_CHARLIE, ACCESS_MARINE_DELTA)
 	minimap_color = MINIMAP_SQUAD_FOXTROT

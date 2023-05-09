@@ -286,7 +286,7 @@ DEFINE_BITFIELD(reactor_flags, list(
 	start_processing()
 	desired_k = 1
 	set_light_on(TRUE)
-	var/startup_sound = pick('sound/effects/ship/reactor/startup.ogg', 'sound/effects/ship/reactor/startup2.ogg')
+	var/startup_sound = pick('sound/effects/rbmk/startup.ogg', 'sound/effects/rbmk/startup2.ogg')
 	playsound(loc, startup_sound, 100)
 
 //Shuts off the fuel rods, ambience, etc. Keep in mind that your temperature may still go up!
@@ -494,7 +494,7 @@ DEFINE_BITFIELD(reactor_flags, list(
 	if(!fuel_rod)
 		return
 	playsound(src, pick('sound/effects/rbmk/switch.ogg', 'sound/effects/rbmk/switch2.ogg', 'sound/effects/rbmk/switch3.ogg'), 100, FALSE)
-	playsound(reactor, 'sound/effects/ship/freespace2/crane_1.wav', 100, FALSE)
+	playsound(reactor, 'sound/effects/rbmk/crane_1.wav', 100, FALSE)
 	fuel_rod.forceMove(get_turf(reactor))
 	reactor.fuel_rods -= fuel_rod
 

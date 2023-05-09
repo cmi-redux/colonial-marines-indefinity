@@ -1753,7 +1753,7 @@
 	},
 /area/almayer/hull/upper_hull/u_a_s)
 "ahL" = (
-/obj/structure/machinery/cm_vending/clothing/rto/alpha{
+/obj/structure/machinery/cm_vending/clothing/tl/alpha{
 	density = 0;
 	pixel_x = 32
 	},
@@ -1951,7 +1951,7 @@
 	},
 /area/almayer/squads/alpha_bravo_shared)
 "aiH" = (
-/obj/structure/machinery/cm_vending/gear/rto{
+/obj/structure/machinery/cm_vending/gear/tl{
 	density = 0;
 	pixel_x = -32;
 	vend_x_offset = 1
@@ -1964,7 +1964,7 @@
 	},
 /area/almayer/squads/alpha)
 "aiI" = (
-/obj/structure/machinery/cm_vending/clothing/rto/alpha{
+/obj/structure/machinery/cm_vending/clothing/tl/alpha{
 	density = 0;
 	pixel_x = 32
 	},
@@ -4568,7 +4568,7 @@
 "awu" = (
 /obj/structure/safe,
 /obj/item/moneybag,
-/obj/item/weapon/melee/telebaton,
+/obj/item/weapon/telebaton,
 /obj/item/book/codebook,
 /obj/item/coin/silver{
 	desc = "A small coin, bearing the falling falcons insignia.";
@@ -4952,7 +4952,7 @@
 /turf/open/floor/wood/ship,
 /area/almayer/living/commandbunks)
 "ayo" = (
-/obj/effect/landmark/start/marine/rto/bravo,
+/obj/effect/landmark/start/marine/tl/bravo,
 /obj/effect/landmark/late_join/marine/bravo,
 /turf/open/floor/plating/plating_catwalk,
 /area/almayer/squads/bravo)
@@ -6888,7 +6888,7 @@
 	},
 /area/almayer/living/pilotbunks)
 "aHP" = (
-/obj/structure/machinery/door/airlock/almayer/marine/bravo/rto,
+/obj/structure/machinery/door/airlock/almayer/marine/bravo/tl,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -8112,7 +8112,7 @@
 	},
 /area/almayer/squads/alpha_bravo_shared)
 "aNg" = (
-/obj/structure/machinery/cm_vending/clothing/rto/bravo{
+/obj/structure/machinery/cm_vending/clothing/tl/bravo{
 	density = 0;
 	pixel_x = 32
 	},
@@ -9509,7 +9509,7 @@
 	},
 /area/almayer/squads/alpha_bravo_shared)
 "aSL" = (
-/obj/structure/machinery/cm_vending/gear/rto{
+/obj/structure/machinery/cm_vending/gear/tl{
 	density = 0;
 	pixel_x = -32;
 	vend_x_offset = 1
@@ -9521,7 +9521,7 @@
 	},
 /area/almayer/squads/bravo)
 "aSQ" = (
-/obj/structure/machinery/cm_vending/clothing/rto/bravo{
+/obj/structure/machinery/cm_vending/clothing/tl/bravo{
 	density = 0;
 	pixel_x = 32
 	},
@@ -19806,7 +19806,7 @@
 	},
 /area/almayer/living/cryo_cells)
 "bGW" = (
-/obj/structure/machinery/cm_vending/gear/rto{
+/obj/structure/machinery/cm_vending/gear/tl{
 	density = 0;
 	pixel_x = -32;
 	vend_x_offset = 1
@@ -20380,7 +20380,7 @@
 /turf/open/floor/plating/plating_catwalk,
 /area/almayer/shipboard/brig/cells)
 "bKj" = (
-/obj/structure/machinery/door/airlock/almayer/marine/alpha/rto,
+/obj/structure/machinery/door/airlock/almayer/marine/alpha/tl,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -20751,7 +20751,7 @@
 	},
 /area/almayer/squads/alpha)
 "bLI" = (
-/obj/effect/landmark/start/marine/rto/alpha,
+/obj/effect/landmark/start/marine/tl/alpha,
 /obj/effect/landmark/late_join/marine/alpha,
 /turf/open/floor/plating/plating_catwalk,
 /area/almayer/squads/alpha)
@@ -32255,7 +32255,7 @@
 	},
 /area/almayer/medical/lower_medical_lobby)
 "cTP" = (
-/obj/structure/machinery/cm_vending/gear/rto{
+/obj/structure/machinery/cm_vending/gear/tl{
 	density = 0;
 	pixel_x = -32;
 	vend_x_offset = 1
@@ -32854,10 +32854,6 @@
 	tag = "icon-intact-supply (EAST)"
 	},
 /obj/structure/surface/table/reinforced/almayer_B,
-/obj/item/storage/box/c02_knife{
-	pixel_x = 8;
-	pixel_y = 9
-	},
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -37167,7 +37163,7 @@
 /turf/open/floor/plating/plating_catwalk,
 /area/almayer/lifeboat_pumps/south1)
 "dQx" = (
-/obj/structure/machinery/cm_vending/gear/rto{
+/obj/structure/machinery/cm_vending/gear/tl{
 	density = 0;
 	pixel_x = -32;
 	vend_x_offset = 1
@@ -38670,7 +38666,7 @@
 /turf/open/floor/wood/ship,
 /area/almayer/squads/req)
 "eux" = (
-/obj/structure/machinery/cm_vending/gear/rto{
+/obj/structure/machinery/cm_vending/gear/tl{
 	density = 0;
 	pixel_x = -32;
 	vend_x_offset = 1
@@ -39685,7 +39681,7 @@
 	},
 /area/almayer/engineering/upper_engineering/port)
 "ePf" = (
-/obj/docking_port/stationary/lifeboat_dock/almayer/port,
+/obj/docking_port/stationary/lifeboat_dock/port,
 /turf/open/floor/roof/ship_hull{
 	icon_state = "outerhull_dir"
 	},
@@ -41456,7 +41452,7 @@
 	pixel_y = 6
 	},
 /obj/item/handcuffs,
-/obj/item/weapon/melee/baton{
+/obj/item/weapon/baton{
 	pixel_x = -12
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -51125,7 +51121,7 @@
 /area/almayer/hallways/hangar)
 "kca" = (
 /obj/structure/largecrate/random/secure,
-/obj/item/weapon/melee/baseballbat/metal{
+/obj/item/weapon/baseballbat/metal{
 	pixel_x = -2;
 	pixel_y = 8
 	},
@@ -51887,7 +51883,7 @@
 	},
 /area/almayer/squads/charlie_delta_shared)
 "ktX" = (
-/obj/structure/machinery/cm_vending/clothing/rto/charlie{
+/obj/structure/machinery/cm_vending/clothing/tl/charlie{
 	density = 0;
 	pixel_x = 32
 	},
@@ -53627,7 +53623,7 @@
 	},
 /area/almayer/hull/upper_hull/u_a_s)
 "lfD" = (
-/obj/structure/machinery/cm_vending/gear/rto{
+/obj/structure/machinery/cm_vending/gear/tl{
 	density = 0;
 	pixel_x = -32;
 	vend_x_offset = 1
@@ -53654,7 +53650,7 @@
 	},
 /area/almayer/hull/upper_hull/u_m_p)
 "lgm" = (
-/obj/structure/machinery/cm_vending/clothing/rto/charlie{
+/obj/structure/machinery/cm_vending/clothing/tl/charlie{
 	density = 0;
 	pixel_x = 32
 	},
@@ -60420,7 +60416,7 @@
 	},
 /area/almayer/squads/charlie_delta_shared)
 "nYg" = (
-/obj/docking_port/stationary/lifeboat_dock/almayer/starboard,
+/obj/docking_port/stationary/lifeboat_dock/starboard,
 /turf/open/floor/roof/ship_hull,
 /area/space)
 "nYh" = (
@@ -64919,7 +64915,7 @@
 	},
 /area/almayer/squads/charlie_delta_shared)
 "pZI" = (
-/obj/structure/machinery/door/airlock/almayer/marine/delta/rto,
+/obj/structure/machinery/door/airlock/almayer/marine/delta/tl,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -65876,7 +65872,7 @@
 	},
 /area/almayer/squads/charlie_delta_shared)
 "qtY" = (
-/obj/structure/machinery/cm_vending/clothing/rto/delta{
+/obj/structure/machinery/cm_vending/clothing/tl/delta{
 	density = 0;
 	pixel_x = 32
 	},
@@ -66904,7 +66900,7 @@
 	},
 /area/almayer/squads/charlie_delta_shared)
 "qUR" = (
-/obj/structure/machinery/cm_vending/gear/rto{
+/obj/structure/machinery/cm_vending/gear/tl{
 	density = 0;
 	pixel_x = -32;
 	vend_x_offset = 1
@@ -66929,7 +66925,7 @@
 /turf/open/floor/almayer,
 /area/almayer/squads/alpha_bravo_shared)
 "qVB" = (
-/obj/structure/machinery/cm_vending/clothing/rto/delta{
+/obj/structure/machinery/cm_vending/clothing/tl/delta{
 	density = 0;
 	pixel_x = 32
 	},
@@ -69299,7 +69295,7 @@
 	},
 /area/almayer/hallways/port_hallway)
 "rRZ" = (
-/obj/effect/landmark/start/marine/rto/delta,
+/obj/effect/landmark/start/marine/tl/delta,
 /obj/effect/landmark/late_join/marine/delta,
 /turf/open/floor/plating/plating_catwalk,
 /area/almayer/squads/delta)
@@ -71105,7 +71101,7 @@
 	},
 /area/almayer/powered/agent)
 "sDl" = (
-/obj/effect/landmark/start/marine/rto/charlie,
+/obj/effect/landmark/start/marine/tl/charlie,
 /obj/effect/landmark/late_join/marine/charlie,
 /turf/open/floor/plating/plating_catwalk,
 /area/almayer/squads/charlie)
@@ -82547,7 +82543,7 @@
 	},
 /area/almayer/hull/lower_hull/l_m_s)
 "xqv" = (
-/obj/structure/machinery/door/airlock/almayer/marine/charlie/rto,
+/obj/structure/machinery/door/airlock/almayer/marine/charlie/tl,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"

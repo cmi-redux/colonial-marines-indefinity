@@ -8,7 +8,6 @@
 	selection_class = "job_cl"
 	supervisors = "the acting commanding officer"
 	gear_preset = /datum/equipment_preset/uscm_ship/reporter
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT
 	selection_class = "job_cl"
 
 	job_options = list(CIVILIAN_VARIANT, MILITARY_VARIANT)

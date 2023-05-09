@@ -303,7 +303,7 @@
 	if(overlays)
 		overlays.Cut()
 
-/obj/item/device/paddles/place_offhand(obj/item/weapon/melee/twohanded/offhand/offhand)
+/obj/item/device/paddles/place_offhand(obj/item/weapon/twohanded/offhand/offhand)
 	. = ..(offhand)
 	update_icon()
 

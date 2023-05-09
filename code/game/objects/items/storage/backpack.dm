@@ -468,8 +468,7 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 	flags_item = ITEM_OVERRIDE_NORTHFACE
 
 	var/obj/structure/transmitter/internal/internal_transmitter
-	var/phone_category = PHONE_RTO
-	var/base_icon
+	var/phone_category = PHONE_MARINE
 
 /datum/action/item_action/rto_pack/use_phone/New(mob/living/user, obj/item/holder)
 	..()

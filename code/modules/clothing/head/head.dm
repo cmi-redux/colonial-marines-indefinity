@@ -610,7 +610,7 @@ D
 	flags_inventory = COVEREYES|COVERMOUTH|BLOCKSHARPOBJ
 	flags_inv_hide = HIDEEARS
 
-/obj/item/clothing/head/CMB
+/obj/item/clothing/head/cmb
 	name = "\improper Colonial Marshal Bureau cap"
 	desc = "A dark cap enscribed with the powerful letters of 'MARSHAL' representing justice, authority, and protection in the outer rim. The laws of the Earth stretch beyond the Sol."
 	icon = 'icons/obj/items/clothing/cm_hats.dmi'

@@ -224,7 +224,7 @@ GLOBAL_VAR_INIT(next_admin_bioscan, 30 MINUTES)
 		if(mob.z && (mob.z in z_levels) && mob.stat != DEAD && !istype(mob.loc, /turf/open/space)) //If they have a z var, they are on a turf.
 			if(ishuman(mob) && !isyautja(mob) && !(mob.status_flags & XENO_HOST) && !iszombie(mob))
 				var/mob/living/carbon/human/human = mob
-				if(((human.species && human.species.name == "Human") || (human.is_important)) && !human.faction) //only real humans count, or those we have set to also be included
+				if(((human.species && human.species.name == "Human") || (human.is_important)) && human.faction) //only real humans count, or those we have set to also be included
 					num_humans++
 			else
 				var/area/area = get_area(mob)

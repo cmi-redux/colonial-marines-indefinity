@@ -223,17 +223,16 @@
 			if(old_fruit)
 				old_fruit.unregister_weed_expiration_signal()
 
-			qdel(W)
 			qdel(weeds)
 
 		if(istype(turf, /turf/closed/wall/resin) || !turf.density)
 			continue
 
 		if(istype(turf, /turf/closed/wall))
-			weeds.Add(new /obj/effect/alien/weeds/weedwall(turf, node))
+			all_weeds += new /obj/effect/alien/weeds/weedwall(turf, node)
 			continue
 		else if(istype(turf, /turf/closed))
-			weeds.Add(new /obj/effect/alien/weeds(turf, node, TRUE, FALSE))
+			all_weeds += new /obj/effect/alien/weeds(turf, node, TRUE, FALSE)
 			continue
 
 		if(!weed_expand_objects(turf, dirn))
@@ -341,7 +340,7 @@
 	take_damage(severity * WEED_EXPLOSION_DAMAGEMULT)
 
 /obj/effect/alien/weeds/attack_alien(mob/living/carbon/xenomorph/attacking_xeno)
-	if(!indestructible && !(xeno.faction == faction || xeno.ally(faction)))
+	if(!indestructible && !(attacking_xeno.faction == faction || attacking_xeno.ally(faction)))
 		attacking_xeno.animation_attack_on(src)
 		attacking_xeno.visible_message(SPAN_DANGER("\The [attacking_xeno] slashes [src]!"), \
 		SPAN_DANGER("You slash [src]!"), null, 5)

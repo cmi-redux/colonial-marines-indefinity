@@ -514,7 +514,7 @@
 	paygrade = "MO1"
 	role_comm_title = "SO"
 	minimum_age = 25
-	skills = /datum/skills/SO
+	skills = /datum/skills/so
 
 /datum/equipment_preset/uscm_ship/so/load_gear(mob/living/carbon/human/H)
 	var/back_item = /obj/item/storage/backpack/satchel

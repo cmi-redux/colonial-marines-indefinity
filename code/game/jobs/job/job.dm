@@ -274,8 +274,8 @@
 			SSticker.role_authority.randomize_squad(human)
 
 		if(Check_WO() && JOB_SQUAD_ROLES_LIST & GET_DEFAULT_ROLE(human.job)) //activates self setting proc for marine headsets for WO
-			var/datum/game_mode/whiskey_outpost/WO = SSticker.mode
-			WO.self_set_headset(human)
+			var/datum/game_mode/whiskey_outpost/wo = SSticker.mode
+			wo.self_set_headset(human)
 
 		var/assigned_squad
 		if(human.assigned_squad)

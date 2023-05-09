@@ -304,14 +304,14 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth_snowflake, list(
 		list("Experemental Medic Essentials", 30, /obj/effect/essentials_set/experemental_medic_kit, null, VENDOR_ITEM_REGULAR),
 
 		list("ENGINEERING", 0, null, null, null),
-		list("Breaching Hammer", 15, /obj/item/weapon/melee/twohanded/breacher, null, VENDOR_ITEM_REGULAR),
+		list("Breaching Hammer", 15, /obj/item/weapon/twohanded/breacher, null, VENDOR_ITEM_REGULAR),
 		list("Compact Nailgun kit", 15, /obj/effect/essentials_set/cnailgun, null, VENDOR_ITEM_REGULAR),
 		list("Maintenance Jack", 15, /obj/item/maintenance_jack, null, VENDOR_ITEM_REGULAR),
 		list("Backpack Firefighting Watertank", 15, /obj/item/reagent_container/glass/watertank/atmos, null, VENDOR_ITEM_REGULAR),
 		list("Experimental Meson Goggles", 15, /obj/item/clothing/glasses/night/experimental_mesons, null, VENDOR_ITEM_REGULAR),
 
 		list("DEFENSIVE", 0, null, null, null),
-		list("Telescopic Baton", 15, /obj/item/weapon/melee/telebaton, null, VENDOR_ITEM_REGULAR),
+		list("Telescopic Baton", 15, /obj/item/weapon/telebaton, null, VENDOR_ITEM_REGULAR),
 	)
 
 //------------EXPERIMENTAL TOOL KITS---------------

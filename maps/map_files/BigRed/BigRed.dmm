@@ -1432,7 +1432,7 @@
 /area/bigredv2/outside/building/marshal_office)
 "adT" = (
 /obj/structure/closet/secure_closet/marshal,
-/obj/item/clothing/suit/storage/CMB,
+/obj/item/clothing/suit/storage/cmb,
 /turf/open/floor{
 	icon_state = "floor4";
 	tag = "icon-floor4"
@@ -2224,7 +2224,7 @@
 	dir = 4;
 	tag = "icon-tube1 (EAST)"
 	},
-/obj/item/clothing/suit/storage/CMB,
+/obj/item/clothing/suit/storage/cmb,
 /turf/open/floor{
 	icon_state = "floor4";
 	tag = "icon-floor4"
@@ -3306,7 +3306,7 @@
 /area/bigredv2/outside/building/marshal_office)
 "aiL" = (
 /obj/structure/surface/table,
-/obj/item/clothing/suit/storage/CMB,
+/obj/item/clothing/suit/storage/cmb,
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
 /turf/open/floor,
 /area/bigredv2/outside/building/marshal_office)

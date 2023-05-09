@@ -791,15 +791,15 @@ var/datum/controller/supply/supply_controller = new()
 	else if (href_list["vieworders"])
 		temp = "Current approved orders: <BR><BR>"
 		for(var/S in supply_controller.shoppinglist)
-			var/datum/supply_order/SO = S
-			temp += "[SO.object.name] approved by [SO.approvedby]<BR>"
+			var/datum/supply_order/so = S
+			temp += "[so.object.name] approved by [so.approvedby]<BR>"
 		temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 
 	else if (href_list["viewrequests"])
 		temp = "Current requests: <BR><BR>"
 		for(var/S in supply_controller.requestlist)
-			var/datum/supply_order/SO = S
-			temp += "#[SO.ordernum] - [SO.object.name] requested by [SO.orderedby]<BR>"
+			var/datum/supply_order/so = S
+			temp += "#[so.ordernum] - [so.object.name] requested by [so.orderedby]<BR>"
 		temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 
 	else if (href_list["mainmenu"])
@@ -1004,9 +1004,9 @@ var/datum/controller/supply/supply_controller = new()
 			return
 
 		for(var/i=1, i<=supply_controller.requestlist.len, i++)
-			var/datum/supply_order/SO = supply_controller.requestlist[i]
-			if(SO.ordernum == ordernum)
-				supply_order = SO
+			var/datum/supply_order/so = supply_controller.requestlist[i]
+			if(so.ordernum == ordernum)
+				supply_order = so
 				supply_pack = supply_order.object
 				if(supply_controller.points >= round(supply_pack.cost) && supply_controller.black_market_points >= supply_pack.dollar_cost)
 					supply_controller.requestlist.Cut(i,i+1)
@@ -1026,8 +1026,8 @@ var/datum/controller/supply/supply_controller = new()
 	else if (href_list["vieworders"])
 		temp = "Current approved orders: <BR><BR>"
 		for(var/S in supply_controller.shoppinglist)
-			var/datum/supply_order/SO = S
-			temp += "#[SO.ordernum] - [SO.object.name] approved by [SO.approvedby]<BR>"// <A href='?src=\ref[src];cancelorder=[S]'>(Cancel)</A><BR>"
+			var/datum/supply_order/so = S
+			temp += "#[so.ordernum] - [so.object.name] approved by [so.approvedby]<BR>"// <A href='?src=\ref[src];cancelorder=[S]'>(Cancel)</A><BR>"
 		temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 /*
 	else if (href_list["cancelorder"])
@@ -1036,15 +1036,15 @@ var/datum/controller/supply/supply_controller = new()
 		supply_shuttle_points += remove_supply.object.cost
 		temp += "Canceled: [remove_supply.object.name]<BR><BR><BR>"
 		for(var/S in supply_shuttle_shoppinglist)
-			var/datum/supply_order/SO = S
-			temp += "[SO.object.name] approved by [SO.orderedby] <A href='?src=\ref[src];cancelorder=[S]'>(Cancel)</A><BR>"
+			var/datum/supply_order/so = S
+			temp += "[so.object.name] approved by [so.orderedby] <A href='?src=\ref[src];cancelorder=[S]'>(Cancel)</A><BR>"
 		temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 */
 	else if (href_list["viewrequests"])
 		temp = "Current requests: <BR><BR>"
 		for(var/S in supply_controller.requestlist)
-			var/datum/supply_order/SO = S
-			temp += "#[SO.ordernum] - [SO.object.name] requested by [SO.orderedby] <A href='?src=\ref[src];confirmorder=[SO.ordernum]'>Approve</A> <A href='?src=\ref[src];rreq=[SO.ordernum]'>Remove</A><BR>"
+			var/datum/supply_order/so = S
+			temp += "#[so.ordernum] - [so.object.name] requested by [so.orderedby] <A href='?src=\ref[src];confirmorder=[so.ordernum]'>Approve</A> <A href='?src=\ref[src];rreq=[so.ordernum]'>Remove</A><BR>"
 
 		temp += "<BR><A href='?src=\ref[src];clearreq=1'>Clear list</A>"
 		temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
@@ -1053,8 +1053,8 @@ var/datum/controller/supply/supply_controller = new()
 		var/ordernum = text2num(href_list["rreq"])
 		temp = "Invalid Request.<BR>"
 		for(var/i=1, i<=supply_controller.requestlist.len, i++)
-			var/datum/supply_order/SO = supply_controller.requestlist[i]
-			if(SO.ordernum == ordernum)
+			var/datum/supply_order/so = supply_controller.requestlist[i]
+			if(so.ordernum == ordernum)
 				supply_controller.requestlist.Cut(i,i+1)
 				temp = "Request removed.<BR>"
 				break
@@ -1315,7 +1315,7 @@ var/datum/controller/supply/supply_controller = new()
 	if(inoperable())
 		return
 
-	if(length(allowed_roles) && !allowed_roles.Find(H.job)) //replaced Z-level restriction with role restriction.
+	if(length(allowed_roles) && !allowed_roles.Find(H.job))
 		to_chat(H, SPAN_WARNING("This console isn't for you."))
 		return
 
@@ -1388,15 +1388,13 @@ var/datum/controller/supply/supply_controller = new()
 	if(href_list["get_vehicle"])
 		if(is_mainship_level(SSshuttle.vehicle_elevator.z))
 			return
-		// dunno why the +1 is needed but the vehicles spawn off-center
+
 		var/turf/middle_turf = get_turf(SSshuttle.vehicle_elevator)
-
 		var/obj/vehicle/multitile/ordered_vehicle
-
 		var/datum/vehicle_order/VO = locate(href_list["get_vehicle"])
-
 		if(!VO)
 			return
+
 		if(VO.has_vehicle_lock())
 			return
 

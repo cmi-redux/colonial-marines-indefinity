@@ -644,7 +644,7 @@
 	},
 /area/shuttle/uss_heart_of_gold)
 "bi" = (
-/obj/structure/machinery/cm_vending/clothing/rto/alpha{
+/obj/structure/machinery/cm_vending/clothing/tl/alpha{
 	req_access = null;
 	req_one_access = null;
 	special_mode_rest = 1;
@@ -709,7 +709,7 @@
 	name = "General Listening Channel";
 	pixel_y = 28
 	},
-/obj/structure/machinery/cm_vending/gear/rto{
+/obj/structure/machinery/cm_vending/gear/tl{
 	req_access = null;
 	req_one_access = null;
 	special_mode_rest = 1

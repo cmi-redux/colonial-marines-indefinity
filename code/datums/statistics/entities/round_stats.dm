@@ -179,7 +179,7 @@
 	total_deaths[faction]++
 
 /datum/entity/statistic_round/proc/log_round_statistics()
-	if(!round_stats)
+	if(!GLOB.round_stats)
 		return
 
 	var/total_xenos_created = 0

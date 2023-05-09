@@ -51,7 +51,7 @@
 
 	bound_xeno = xeno
 	faction = xeno.faction
-	bound_weed = W
+	bound_weed = weeds
 	RegisterSignal(weeds, COMSIG_PARENT_QDELETING, PROC_REF(on_weed_expire))
 	RegisterSignal(xeno, COMSIG_PARENT_QDELETING, PROC_REF(handle_xeno_qdel))
 	timer_id = addtimer(CALLBACK(src, PROC_REF(mature)), time_to_mature * weeds.fruit_growth_multiplier, TIMER_UNIQUE | TIMER_STOPPABLE)

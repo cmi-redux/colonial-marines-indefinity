@@ -597,7 +597,7 @@ COMMAND STAFF
 		SKILL_NAVIGATIONS = SKILL_NAVIGATIONS_TRAINED,
 	)
 
-/datum/skills/SO
+/datum/skills/so
 	name = "Staff Officer"
 	skills = list(
 		SKILL_ENGINEER = SKILL_ENGINEER_ENGI,

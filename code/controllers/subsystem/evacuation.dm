@@ -81,10 +81,10 @@ SUBSYSTEM_DEF(evacuation)
 
 /datum/controller/subsystem/evacuation/proc/get_affected_zlevels() //This proc returns the ship's z level list (or whatever specified), when an evac/self destruct happens.
 	if(dest_status < NUKE_EXPLOSION_IN_PROGRESS && evac_status == EVACUATION_STATUS_COMPLETE) //Nuke is not in progress and evacuation finished, end the round on ship and low orbit (dropships in transit) only.
-		. = SSmapping.levels_by_any_trait(list(ZTRAIT_MARINE_MAIN_SHIP, ZTRAIT_LOWORBIT))
+		. = SSmapping.levels_by_any_trait(list(ZTRAIT_RESERVED, ZTRAIT_MARINE_MAIN_SHIP))
 	else
 		if(SSticker.mode && SSticker.mode.is_in_endgame)
-			. = SSmapping.levels_by_any_trait(list(ZTRAIT_MARINE_MAIN_SHIP, ZTRAIT_LOWORBIT))
+			. = SSmapping.levels_by_any_trait(list(ZTRAIT_RESERVED, ZTRAIT_MARINE_MAIN_SHIP))
 
 /datum/controller/subsystem/evacuation/proc/initiate_ship_evacuation(force = FALSE) //Begins the evacuation procedure.
 	if((force || (get_security_level() == "red" && (critical_marine_loses() || all_faction_mobs_onboard(GLOB.faction_datum[FACTION_MARINE]) && shuttels_onboard()))) && !ship_evacuating)

@@ -49,7 +49,7 @@
 	idtype = /obj/item/card/id/deputy
 	languages = list(LANGUAGE_ENGLISH, LANGUAGE_JAPANESE)
 	var/human_versus_human = FALSE
-	var/headset_type = /obj/item/device/radio/headset/distress/CMB
+	var/headset_type = /obj/item/device/radio/headset/distress/cmb
 
 /datum/equipment_preset/cmb/New()
 	. = ..()
@@ -116,12 +116,12 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/CM_uniform, WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/accessory/holobadge/cord, WEAR_ACCESSORY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/mask/cigarette, WEAR_FACE)
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/CMB, WEAR_JACKET)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/cmb, WEAR_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/device/binoculars, WEAR_IN_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/weapon/telebaton, WEAR_IN_JACKET)
-	H.equip_to_slot_or_del(new /obj/item/storage/belt/security/MP/CMB/full, WEAR_WAIST)
+	H.equip_to_slot_or_del(new /obj/item/storage/belt/security/mp/cmb/full, WEAR_WAIST)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine/veteran, WEAR_HANDS)
-	H.equip_to_slot_or_del(new /obj/item/clothing/head/CMB, WEAR_HEAD)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/cmb, WEAR_HEAD)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/veteran/pmc/knife, WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses/sechud, WEAR_EYES)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/full, WEAR_L_STORE)
@@ -206,13 +206,13 @@
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/revolver/cmb/normalpoint, WEAR_IN_ACCESSORY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/accessory/holobadge/cord, WEAR_ACCESSORY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/mask/cigarette/cigar, WEAR_FACE)
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/CMB, WEAR_JACKET)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/cmb, WEAR_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/device/binoculars/range, WEAR_IN_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/weapon/telebaton, WEAR_IN_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/weapon/gun/shotgun/pump/dual_tube/cmb/m3717, WEAR_J_STORE)
-	H.equip_to_slot_or_del(new /obj/item/storage/belt/security/MP/CMB/full, WEAR_WAIST)
+	H.equip_to_slot_or_del(new /obj/item/storage/belt/security/mp/cmb/full, WEAR_WAIST)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine/veteran, WEAR_HANDS)
-	H.equip_to_slot_or_del(new /obj/item/clothing/head/CMB, WEAR_HEAD)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/cmb, WEAR_HEAD)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/veteran/pmc/knife, WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses/sechud, WEAR_EYES)
 	//pouches
@@ -302,7 +302,7 @@
 	H.equip_to_slot_or_del(new headset_type, WEAR_L_EAR)
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight/pen, WEAR_R_EAR)
 	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses/sechud, WEAR_EYES)
-	H.equip_to_slot_or_del(new /obj/item/clothing/head/CMB, WEAR_HEAD)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/cmb, WEAR_HEAD)
 	//uniform
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/CM_uniform, WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/accessory/health/ceramic_plate, WEAR_ACCESSORY)
@@ -311,12 +311,12 @@
 	H.equip_to_slot_or_del(new /obj/item/device/defibrillator/upgraded, WEAR_IN_ACCESSORY)
 	H.equip_to_slot_or_del(new /obj/item/device/healthanalyzer, WEAR_IN_ACCESSORY)
 	H.equip_to_slot_or_del(new /obj/item/reagent_container/food/snacks/candy, WEAR_IN_ACCESSORY)
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/CMB, WEAR_JACKET)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/cmb, WEAR_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/device/binoculars/range/designator, WEAR_IN_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/weapon/telebaton, WEAR_IN_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/device/motiondetector, WEAR_J_STORE)
 	//belt
-	H.equip_to_slot_or_del(new /obj/item/storage/belt/security/MP/CMB/synth, WEAR_WAIST)
+	H.equip_to_slot_or_del(new /obj/item/storage/belt/security/mp/cmb/synth, WEAR_WAIST)
 	//holding
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/veteran/pmc/knife, WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine/veteran, WEAR_HANDS)
@@ -355,7 +355,7 @@
 /datum/equipment_preset/cmb/liaison/load_gear(mob/living/carbon/human/H)
 
 	//clothes
-	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/CMB/ICC, WEAR_L_EAR)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/cmb/icc, WEAR_L_EAR)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/liaison_suit/formal, WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/accessory/storage/holster, WEAR_ACCESSORY)
 	H.equip_to_slot_or_del(new /obj/item/weapon/gun/pistol/mod88, WEAR_IN_ACCESSORY)
@@ -511,7 +511,7 @@
 	paygrade = "ME6"
 	role_comm_title = "A-TL"
 	minimum_age = 25
-	skills = /datum/skills/SL
+	skills = /datum/skills/sl
 
 /datum/equipment_preset/uscm/cmb/leader/load_gear(mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine, WEAR_BODY)

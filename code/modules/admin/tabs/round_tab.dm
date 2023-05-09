@@ -82,9 +82,6 @@
 	var/datum/job/J
 
 	var/active_role_names = SSticker.mode.active_roles_pool
-	if(!active_role_names)
-		active_role_names = ROLES_DISTRESS_SIGNAL
-
 	for(var/role_name as anything in active_role_names)
 		var/datum/job/job = GET_MAPPED_ROLE(role_name)
 		if(!job)

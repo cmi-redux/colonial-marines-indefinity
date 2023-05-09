@@ -531,7 +531,7 @@ var/const/MAX_SAVE_SLOTS = 10
 			if(SSticker.role_authority.roles_whitelist[user.ckey] & WHITELIST_MENTOR)
 				dat += "<div id='column1'>"
 				dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_MENTOR_SET)]:</u></b></h2>"
-				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_SEA)]:</b> <a href='?_src_=prefs;preference=grade_path;task=input'><b>[sea_path]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_SEA)]:</b> nothing<br>"
 				dat += "</div>"
 			else
 				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_NO_WL)]</b>"
@@ -1590,7 +1590,7 @@ var/const/MAX_SAVE_SLOTS = 10
 					preferred_survivor_variant = new_preferred_survivor_variant
 
 				if("special_job_select")
-					var/datum/job/job = RoleAuthority.roles_by_name[href_list["text"]]
+					var/datum/job/job = SSticker.role_authority.roles_by_name[href_list["text"]]
 					if(!job)
 						close_browser(user, "mob_occupation")
 						ShowChoices(user)

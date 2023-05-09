@@ -78,7 +78,6 @@
 
 /area/shuttle/trijent_shuttle/elevator
 	requires_power = FALSE
-	lighting_use_dynamic = FALSE
 
 /area/shuttle/trijent_shuttle/lz1
 	name = "Trijent LZ1"

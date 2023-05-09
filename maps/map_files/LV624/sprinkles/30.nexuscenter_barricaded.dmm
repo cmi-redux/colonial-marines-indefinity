@@ -103,8 +103,8 @@
 /area/lv624/lazarus/main_hall)
 "ap" = (
 /obj/item/weapon/twohanded/fireaxe,
-/obj/item/ammo_casing,
-/obj/item/ammo_casing,
+/obj/item/ammo_parts,
+/obj/item/ammo_parts,
 /turf/open/floor{
 	icon_state = "white"
 	},

@@ -126,7 +126,7 @@
 	allowed = list(
 		/obj/item/weapon/gun,
 		/obj/item/ammo_magazine,
-		/obj/item/ammo_casing,
+		/obj/item/ammo_parts,
 		/obj/item/weapon/baton,
 		/obj/item/handcuffs,
 		/obj/item/storage/fancy/cigarettes,
@@ -151,7 +151,7 @@
 	allowed = list(
 		/obj/item/weapon/gun,
 		/obj/item/ammo_magazine,
-		/obj/item/ammo_casing,
+		/obj/item/ammo_parts,
 		/obj/item/weapon/baton,
 		/obj/item/handcuffs,
 		/obj/item/storage/fancy/cigarettes,

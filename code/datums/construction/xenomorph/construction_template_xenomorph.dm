@@ -75,10 +75,10 @@
 	if(!owner || !get_turf(owner))
 		log_debug("Constuction template ([name]) completed construction without a build location")
 		return
-	if(hive_ref)
-		hive_ref.remove_construction(owner)
+	if(faction)
+		faction.remove_construction(owner)
 	build_loc = get_turf(owner)
-	var/obj/effect/alien/resin/special/nest/newly_builtor = new build_type(build_loc, hive_ref)
+	var/obj/effect/alien/resin/special/nest/newly_builtor = new build_type(build_loc, faction)
 	playsound(build_loc, "alien_resin_build", 25)
 	if(newly_builtor)
 		newly_builtor.pred_nest.dir = direction_to_put_nest
@@ -98,6 +98,7 @@
 			if(stepped_turf.density)
 				direction_to_put_nest = get_dir(stepped_turf, owner)
 				return
-	xeno_message(SPAN_XENOWARNING("This structure needs to be built directly next to an vertical surface."), 7, XENO_HIVE_NORMAL)
+
+	xeno_message(SPAN_XENOWARNING("This structure needs to be built directly next to an vertical surface."), 7, faction)
 	qdel(owner)
 	qdel(src)

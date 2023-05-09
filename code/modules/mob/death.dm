@@ -7,6 +7,11 @@
 			if(prob(50))
 				human << sound('sound/effects/Heart Beat.ogg', repeat = rand(1, 60), wait = 0, volume = 100, channel = 2) //play on same channel as ambience
 				human.emote("scream")
+
+	if(stat != DEAD)
+		SSautobalancer.balance_action(src, "death")
+		faction.remove_mob(src)
+
 	gibbing = TRUE
 	death(cause, TRUE)
 	gib_animation()
@@ -55,6 +60,7 @@
 		return 0
 
 	SSautobalancer.balance_action(src, "death")
+	faction.remove_mob(src)
 
 	if(!gibbed)
 		visible_message("<b>\The [src.name]</b> [deathmessage]")

@@ -241,7 +241,7 @@
 		/obj/item/tool/lighter,
 		/obj/item/weapon/baton,
 		/obj/item/ammo_magazine,
-		/obj/item/ammo_casing,
+		/obj/item/ammo_parts,
 		/obj/item/weapon/baton,
 		/obj/item/handcuffs,
 		/obj/item/device/binoculars,

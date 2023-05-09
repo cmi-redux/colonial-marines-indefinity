@@ -721,7 +721,7 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	flags_item = MOB_LOCK_ON_EQUIP
 	specialty = "M45 ghillie"
 
-/obj/item/clothing/head/helmet/marine/CO
+/obj/item/clothing/head/helmet/marine/co
 	name = "\improper M10 pattern commanding officer helmet"
 	desc = "A special M10 Pattern Helmet worn by Commanding Officers of the USCM. It reads on the label, 'The difference between an open-casket and closed-casket funeral. Wear on head for best results.'."
 	icon_state = "co_officer"
@@ -741,14 +741,14 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	armor_energy = CLOTHING_ARMOR_MEDIUMLOW
 	specialty = "M10 pattern military police"
 
-/obj/item/clothing/head/helmet/marine/MP/wo
+/obj/item/clothing/head/helmet/marine/mp/wo
 	name = "\improper M3 pattern chief MP helmet"
 	desc = "A well-crafted variant of the M10 Helmet typically distributed to Chief MPs. Useful for letting your men know who is in charge."
 	icon_state = "cmp_helmet"
 	item_state = "cmp_helmet"
 	specialty = "M10 pattern chief MP"
 
-/obj/item/clothing/head/helmet/marine/mp/SO
+/obj/item/clothing/head/helmet/marine/mp/so
 	name = "\improper M10 pattern Officer Helmet"
 	desc = "A special variant of the M10 Pattern Helmet worn by Officers of the USCM, attracting the attention of the grunts and sniper fire alike."
 	icon_state = "helmet"

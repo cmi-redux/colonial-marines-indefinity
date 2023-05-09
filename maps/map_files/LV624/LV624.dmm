@@ -340,7 +340,7 @@
 "aby" = (
 /obj/effect/decal/cleanable/blood,
 /obj/effect/landmark/corpsespawner/chef,
-/obj/item/weapon/melee/twohanded/fireaxe,
+/obj/item/weapon/twohanded/fireaxe,
 /turf/open/floor/wood,
 /area/lv624/ground/caves/north_central_caves)
 "abz" = (
@@ -1966,11 +1966,11 @@
 /area/lv624/lazarus/landing_zones/lz2)
 "aiJ" = (
 /obj/structure/surface/rack,
-/obj/item/weapon/melee/baton/cattleprod{
+/obj/item/weapon/baton/cattleprod{
 	pixel_x = -2;
 	pixel_y = 1
 	},
-/obj/item/weapon/melee/baton/cattleprod{
+/obj/item/weapon/baton/cattleprod{
 	pixel_x = 4;
 	pixel_y = -2
 	},
@@ -4723,7 +4723,7 @@
 	},
 /area/lv624/lazarus/robotics)
 "awj" = (
-/obj/item/weapon/melee/harpoon/yautja{
+/obj/item/weapon/harpoon/yautja{
 	anchored = 1;
 	name = "Alien Harpoon";
 	pixel_x = 6
@@ -5648,7 +5648,7 @@
 	},
 /area/lv624/lazarus/robotics)
 "azh" = (
-/obj/item/weapon/melee/claymore/mercsword{
+/obj/item/weapon/claymore/mercsword{
 	pixel_x = 6;
 	pixel_y = 7
 	},
@@ -6012,7 +6012,7 @@
 /obj/structure/surface/table/woodentable/poor,
 /obj/item/device/flashlight/lantern,
 /obj/structure/barricade/sandbags/wired,
-/obj/item/weapon/melee/baseballbat/metal,
+/obj/item/weapon/baseballbat/metal,
 /turf/open/floor/wood{
 	icon_state = "wood-broken6"
 	},
@@ -6523,7 +6523,7 @@
 /area/lv624/lazarus/sleep_male)
 "aCv" = (
 /obj/structure/closet,
-/obj/item/weapon/melee/baseballbat,
+/obj/item/weapon/baseballbat,
 /obj/item/clothing/head/beret/jan,
 /obj/item/stack/medical/splint,
 /obj/structure/machinery/light{
@@ -7938,7 +7938,7 @@
 /obj/structure/foamed_metal{
 	layer = 3.1
 	},
-/obj/item/weapon/melee/baseballbat/metal,
+/obj/item/weapon/baseballbat/metal,
 /obj/item/device/lightreplacer,
 /turf/open/floor{
 	icon_state = "dark"
@@ -8407,8 +8407,8 @@
 	},
 /area/lv624/lazarus/robotics)
 "aJv" = (
-/obj/item/weapon/melee/baseballbat/metal,
-/obj/item/weapon/melee/baseballbat/metal{
+/obj/item/weapon/baseballbat/metal,
+/obj/item/weapon/baseballbat/metal{
 	pixel_x = 5
 	},
 /obj/structure/surface/rack,
@@ -10005,7 +10005,7 @@
 	icon_state = "Synthetic_Template";
 	name = "Eternal guardian"
 	},
-/obj/item/weapon/melee/claymore/mercsword{
+/obj/item/weapon/claymore/mercsword{
 	layer = 3.1;
 	pixel_x = 6;
 	pixel_y = 7
@@ -12087,7 +12087,7 @@
 /area/lv624/ground/jungle/east_central_jungle)
 "aXs" = (
 /obj/structure/surface/table,
-/obj/item/weapon/melee/twohanded/fireaxe,
+/obj/item/weapon/twohanded/fireaxe,
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
 /turf/open/floor{
 	dir = 9;
@@ -12856,7 +12856,7 @@
 	},
 /area/lv624/ground/jungle/south_east_jungle)
 "bhL" = (
-/obj/item/weapon/melee/harpoon/yautja{
+/obj/item/weapon/harpoon/yautja{
 	anchored = 1;
 	name = "Alien Harpoon";
 	pixel_x = -7
@@ -14802,7 +14802,7 @@
 	},
 /area/lv624/ground/barrens/north_east_barrens)
 "fAz" = (
-/obj/item/weapon/melee/claymore/mercsword{
+/obj/item/weapon/claymore/mercsword{
 	pixel_x = -6;
 	pixel_y = 7
 	},
@@ -16872,7 +16872,7 @@
 /obj/structure/surface/table/reinforced/prison{
 	color = "#6b675e"
 	},
-/obj/item/weapon/melee/twohanded/yautja/spear,
+/obj/item/weapon/twohanded/yautja/spear,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -17428,7 +17428,7 @@
 	icon_state = "Synthetic_Template";
 	name = "Eternal guardian"
 	},
-/obj/item/weapon/melee/claymore/mercsword{
+/obj/item/weapon/claymore/mercsword{
 	layer = 3.1;
 	pixel_x = -6;
 	pixel_y = 7
@@ -19654,7 +19654,7 @@
 /area/lv624/lazarus/quartstorage)
 "qDg" = (
 /obj/structure/morgue/sarcophagus,
-/obj/item/weapon/melee/twohanded/yautja/glaive/damaged{
+/obj/item/weapon/twohanded/yautja/glaive/damaged{
 	name = "damaged war glaive"
 	},
 /turf/open/floor/corsat{
@@ -20934,7 +20934,7 @@
 /turf/open/gm/grass,
 /area/lv624/ground/jungle/north_west_jungle)
 "tLS" = (
-/obj/item/weapon/melee/butterfly/switchblade,
+/obj/item/weapon/butterfly/switchblade,
 /turf/open/floor/plating,
 /area/lv624/ground/barrens/east_barrens)
 "tLU" = (

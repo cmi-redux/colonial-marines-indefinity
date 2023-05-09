@@ -770,10 +770,3 @@
 	applicable_nest.dir = dir_to_nest
 	if(!applicable_nest.buckle_mob(host_to_nest, src))
 		qdel(applicable_nest)
-
-/mob/living/carbon/xenomorph/proc/update_minimap_icon()
-	if(istype(caste, /datum/caste_datum/queen))
-		return
-
-	SSminimaps.remove_marker(src)
-	add_minimap_marker()

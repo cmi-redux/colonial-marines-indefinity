@@ -368,16 +368,16 @@
 	idtype = /obj/item/card/id/deputy
 	role_comm_title = "CMB Syn"
 	equipment_to_spawn = list(
-		WEAR_HEAD = /obj/item/clothing/head/CMB,
-		WEAR_L_EAR = /obj/item/device/radio/headset/distress/CMB,
+		WEAR_HEAD = /obj/item/clothing/head/cmb,
+		WEAR_L_EAR = /obj/item/device/radio/headset/distress/cmb,
 		WEAR_EYES = /obj/item/clothing/glasses/sunglasses/sechud,
 		WEAR_BODY = /obj/item/clothing/under/CM_uniform,
 		WEAR_BACK = /obj/item/storage/backpack/satchel/sec,
 		WEAR_IN_BACK = /obj/item/device/camera,
 		WEAR_IN_BACK = /obj/item/device/taperecorder,
-		WEAR_JACKET = /obj/item/clothing/suit/storage/CMB,
+		WEAR_JACKET = /obj/item/clothing/suit/storage/cmb,
 		WEAR_IN_JACKET = /obj/item/weapon/telebaton,
-		WEAR_WAIST = /obj/item/storage/belt/security/MP/CMB/synth,
+		WEAR_WAIST = /obj/item/storage/belt/security/mp/cmb/synth,
 		WEAR_HANDS = /obj/item/clothing/gloves/marine/veteran,
 		WEAR_R_STORE = /obj/item/storage/pouch/tools/full,
 		WEAR_FEET = /obj/item/clothing/shoes/marine/knife,
@@ -391,13 +391,13 @@
 	idtype = /obj/item/card/id/silver/cl
 	equipment_to_spawn = list(
 		WEAR_HEAD = /obj/item/clothing/head/soft/sec/corp,
-		WEAR_L_EAR = /obj/item/device/radio/headset/distress/WY,
+		WEAR_L_EAR = /obj/item/device/radio/headset/distress/wy,
 		WEAR_EYES = /obj/item/clothing/glasses/sunglasses/sechud,
 		WEAR_BODY = /obj/item/clothing/under/marine/officer/formal/servicedress,
 		WEAR_BACK = /obj/item/storage/backpack/satchel/sec,
 		WEAR_IN_BACK = /obj/item/weapon/telebaton,
 		WEAR_JACKET = /obj/item/clothing/suit/storage/webbing,
-		WEAR_WAIST = /obj/item/storage/belt/security/MP/full,
+		WEAR_WAIST = /obj/item/storage/belt/security/mp/full,
 		WEAR_HANDS = /obj/item/clothing/gloves/black,
 		WEAR_R_STORE = /obj/item/storage/pouch/tools/full,
 		WEAR_FEET = /obj/item/clothing/shoes/marine/knife,
@@ -432,7 +432,7 @@
 /datum/equipment_preset/synth/survivor/corporate_synth
 	name = "Survivor - Synthetic - Corporate Clerical Synth"
 	equipment_to_spawn = list(
-		WEAR_L_EAR = /obj/item/device/radio/headset/distress/WY,
+		WEAR_L_EAR = /obj/item/device/radio/headset/distress/wy,
 		WEAR_BODY = /obj/item/clothing/under/suit_jacket/trainee,
 		WEAR_BACK = /obj/item/storage/backpack/satchel/lockable,
 		WEAR_IN_BACK = /obj/item/paper,

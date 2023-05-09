@@ -17,7 +17,7 @@
 /obj/structure/dps_tester/bullet_act(obj/item/projectile/projectile)
 	damaged(armor_damage_reduction(GLOB.xeno_ranged, projectile.calculate_damage(), armor_simulation, projectile.ammo.penetration, projectile.ammo.pen_armor_punch, projectile.ammo.damage_armor_punch, armor_simulation))
 
-/obj/structure/dps_tester/attackby(obj/item/weapon/melee/weapon, mob/user)
+/obj/structure/dps_tester/attackby(obj/item/weapon/weapon, mob/user)
 	var/power = weapon.force
 	if(user.skills)
 		power = round(power * (1 + 0.25 * user.skills.get_skill_level(SKILL_MELEE_WEAPONS)))

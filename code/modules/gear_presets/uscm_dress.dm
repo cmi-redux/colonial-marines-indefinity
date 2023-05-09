@@ -82,7 +82,7 @@
 	name = "Dress Blues - (O-1) 2nd Lieutenant"
 	paygrade = "MO1"
 	idtype = /obj/item/card/id/silver
-	skills = /datum/skills/SO
+	skills = /datum/skills/so
 	access = list(ACCESS_MARINE_COMMAND, ACCESS_MARINE_DROPSHIP, ACCESS_MARINE_DATABASE, ACCESS_MARINE_MEDBAY)
 
 	dress_under = list(/obj/item/clothing/under/marine/dress/blues/senior)

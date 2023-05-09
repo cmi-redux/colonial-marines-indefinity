@@ -1,4 +1,4 @@
-// DM Environment file for colonialmarines.dme.
+// DM Environment file for ColonialMarinesRU.dme.
 // All manual changes should be made outside the BEGIN_ and END_ blocks.
  // New source code should be placed in .dm files: choose File/New --> Code File.
 // BEGIN_INTERNALS
@@ -153,8 +153,8 @@
 #include "code\__HELPERS\filters.dm"
 #include "code\__HELPERS\game.dm"
 #include "code\__HELPERS\generators.dm"
-#include "code\__HELPERS\icon_smoothing.dm"
 #include "code\__HELPERS\guid.dm"
+#include "code\__HELPERS\icon_smoothing.dm"
 #include "code\__HELPERS\icons.dm"
 #include "code\__HELPERS\job.dm"
 #include "code\__HELPERS\level_traits.dm"
@@ -2183,8 +2183,8 @@
 #include "code\modules\shuttle\vehicle_elevator.dm"
 #include "code\modules\shuttle\computers\dropship_computer.dm"
 #include "code\modules\shuttle\computers\escape_pod_computer.dm"
-#include "code\modules\shuttle\gamemodes\crash.dm"
 #include "code\modules\shuttle\computers\trijent_elevator_control.dm"
+#include "code\modules\shuttle\gamemodes\crash.dm"
 #include "code\modules\shuttle\shuttles\dropship.dm"
 #include "code\modules\shuttle\shuttles\ert.dm"
 #include "code\modules\shuttle\shuttles\escape_shuttle.dm"

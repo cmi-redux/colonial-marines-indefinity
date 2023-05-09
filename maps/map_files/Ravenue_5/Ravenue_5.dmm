@@ -1542,7 +1542,7 @@
 	},
 /area/ravenue_5/civilian/substation)
 "bcb" = (
-/obj/structure/machinery/cm_vending/clothing/rto/delta{
+/obj/structure/machinery/cm_vending/clothing/tl/delta{
 	density = 0;
 	pixel_x = 32
 	},
@@ -1920,7 +1920,7 @@
 	},
 /area/ravenue_5/cm/armory/charlie)
 "bsX" = (
-/obj/structure/machinery/cm_vending/gear/rto{
+/obj/structure/machinery/cm_vending/gear/tl{
 	density = 0;
 	pixel_x = -32;
 	vend_x_offset = 1
@@ -2346,7 +2346,7 @@
 	},
 /area/ravenue_5/ground/east_central_wasteland)
 "bJw" = (
-/obj/structure/machinery/cm_vending/clothing/rto/delta{
+/obj/structure/machinery/cm_vending/clothing/tl/delta{
 	density = 0;
 	pixel_x = 32
 	},
@@ -4238,7 +4238,7 @@
 	},
 /area/ravenue_5/cm/armory/delta)
 "cNF" = (
-/obj/structure/machinery/cm_vending/clothing/rto/bravo{
+/obj/structure/machinery/cm_vending/clothing/tl/bravo{
 	density = 0;
 	pixel_x = 32
 	},
@@ -10581,7 +10581,7 @@
 	},
 /area/ravenue_5/ground/east_central_wasteland)
 "hhI" = (
-/obj/structure/machinery/cm_vending/gear/rto{
+/obj/structure/machinery/cm_vending/gear/tl{
 	density = 0;
 	pixel_x = -32;
 	vend_x_offset = 1
@@ -10746,7 +10746,7 @@
 	},
 /area/ravenue_5/cm/med)
 "hoL" = (
-/obj/structure/machinery/cm_vending/gear/rto{
+/obj/structure/machinery/cm_vending/gear/tl{
 	density = 0;
 	pixel_x = -32;
 	vend_x_offset = 1
@@ -10760,7 +10760,7 @@
 	},
 /area/ravenue_5/cm/armory/bravo)
 "hoO" = (
-/obj/structure/machinery/cm_vending/gear/rto{
+/obj/structure/machinery/cm_vending/gear/tl{
 	density = 0;
 	pixel_x = -32;
 	vend_x_offset = 1
@@ -11947,7 +11947,7 @@
 	},
 /area/ravenue_5/ground/east_central_wasteland)
 "iew" = (
-/obj/structure/machinery/door/airlock/almayer/marine/delta/rto,
+/obj/structure/machinery/door/airlock/almayer/marine/delta/tl,
 /turf/open/floor/prison{
 	icon_state = "cell_stripe";
 	tag = "icon-cell_stripe"
@@ -14443,7 +14443,7 @@
 /turf/open/floor/wood/ship,
 /area/ravenue_5/ground/east_central_wasteland)
 "kau" = (
-/obj/structure/machinery/cm_vending/clothing/rto/alpha{
+/obj/structure/machinery/cm_vending/clothing/tl/alpha{
 	density = 0;
 	pixel_x = 32
 	},
@@ -15032,7 +15032,7 @@
 	},
 /area/ravenue_5/upp/office/two)
 "kxd" = (
-/obj/structure/machinery/cm_vending/gear/rto{
+/obj/structure/machinery/cm_vending/gear/tl{
 	density = 0;
 	pixel_x = -32;
 	vend_x_offset = 1
@@ -16189,7 +16189,7 @@
 	},
 /area/ravenue_5/cm/brig)
 "lrd" = (
-/obj/structure/machinery/cm_vending/clothing/rto/charlie{
+/obj/structure/machinery/cm_vending/clothing/tl/charlie{
 	density = 0;
 	pixel_x = 32
 	},
@@ -17108,7 +17108,7 @@
 "lTG" = (
 /obj/structure/safe,
 /obj/item/moneybag,
-/obj/item/weapon/melee/telebaton,
+/obj/item/weapon/telebaton,
 /obj/item/book/codebook,
 /obj/item/coin/silver{
 	desc = "A small coin, bearing the falling falcons insignia.";
@@ -17563,7 +17563,7 @@
 	},
 /area/ravenue_5/cm/briefing)
 "miv" = (
-/obj/structure/machinery/cm_vending/clothing/rto/bravo{
+/obj/structure/machinery/cm_vending/clothing/tl/bravo{
 	density = 0;
 	pixel_x = 32
 	},
@@ -19155,7 +19155,7 @@
 	},
 /area/ravenue_5/ground/east_central_wasteland)
 "nsm" = (
-/obj/structure/machinery/cm_vending/clothing/rto/charlie{
+/obj/structure/machinery/cm_vending/clothing/tl/charlie{
 	density = 0;
 	pixel_x = 32
 	},
@@ -19241,7 +19241,7 @@
 	},
 /area/ravenue_5/cm/armory/delta)
 "nvS" = (
-/obj/structure/machinery/door/airlock/almayer/marine/charlie/rto,
+/obj/structure/machinery/door/airlock/almayer/marine/charlie/tl,
 /turf/open/floor/prison{
 	dir = 1;
 	icon_state = "cell_stripe";
@@ -20486,7 +20486,7 @@
 	},
 /area/ravenue_5/ground/east_central_wasteland)
 "oul" = (
-/obj/structure/machinery/cm_vending/gear/rto{
+/obj/structure/machinery/cm_vending/gear/tl{
 	density = 0;
 	pixel_x = -32;
 	vend_x_offset = 1
@@ -21251,7 +21251,7 @@
 	},
 /area/ravenue_5/ground/east_central_wasteland)
 "oXq" = (
-/obj/structure/machinery/door/airlock/almayer/marine/alpha/rto,
+/obj/structure/machinery/door/airlock/almayer/marine/alpha/tl,
 /turf/open/floor/prison{
 	dir = 1;
 	icon_state = "cell_stripe";
@@ -28760,7 +28760,7 @@
 	},
 /area/ravenue_5/upp/office/one)
 "uga" = (
-/obj/structure/machinery/cm_vending/gear/rto{
+/obj/structure/machinery/cm_vending/gear/tl{
 	density = 0;
 	pixel_x = -32;
 	vend_x_offset = 1
@@ -29873,7 +29873,7 @@
 /area/ravenue_5/civilian/substation)
 "uRy" = (
 /obj/structure/closet/secure_closet/marshal,
-/obj/item/clothing/suit/storage/CMB,
+/obj/item/clothing/suit/storage/cmb,
 /obj/item/clothing/suit/armor/vest/security,
 /turf/open/floor/prison{
 	icon_state = "darkredfull2"
@@ -30326,7 +30326,7 @@
 	},
 /area/ravenue_5/cm/briefing)
 "vgo" = (
-/obj/structure/machinery/door/airlock/almayer/marine/bravo/rto,
+/obj/structure/machinery/door/airlock/almayer/marine/bravo/tl,
 /turf/open/floor/prison{
 	icon_state = "cell_stripe";
 	tag = "icon-cell_stripe"
@@ -30469,7 +30469,7 @@
 /turf/open/floor/prison,
 /area/ravenue_5/ground/east_central_wasteland)
 "vkj" = (
-/obj/structure/machinery/cm_vending/gear/rto{
+/obj/structure/machinery/cm_vending/gear/tl{
 	density = 0;
 	pixel_x = -32;
 	vend_x_offset = 1
@@ -31908,8 +31908,8 @@
 /area/ravenue_5/upp/agro)
 "wgX" = (
 /obj/structure/surface/rack,
-/obj/item/weapon/melee/baton,
-/obj/item/weapon/melee/baton,
+/obj/item/weapon/baton,
+/obj/item/weapon/baton,
 /turf/open/floor/prison,
 /area/ravenue_5/ground/east_central_wasteland)
 "whh" = (
@@ -32063,7 +32063,7 @@
 	},
 /area/ravenue_5/upp/brig/camers)
 "wmV" = (
-/obj/structure/machinery/cm_vending/clothing/rto/alpha{
+/obj/structure/machinery/cm_vending/clothing/tl/alpha{
 	density = 0;
 	pixel_x = 32
 	},

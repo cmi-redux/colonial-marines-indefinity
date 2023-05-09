@@ -488,8 +488,8 @@
 #define LANGUAGE_STRAIN_DESC_BERSERK		"You decrease your health and increase your speed to become a close range melee monster. Build up rage by slashing to increase your attack speed, movement speed, and armor; once you reach max rage you can go nuclear with eviscerate."
 #define LANGUAGE_STRAIN_FLAV_DESC_BERSERK	"Crush and butcher, maim and rage, until the tallhosts are finished."
 #define LANGUAGE_STRAIN_HEDGEHOG			"Ravager - Hedgehog"
-#define LANGUAGE_STRAIN_DESC_HEDGEHOG		"You build up shards internally over time and also when taking damage that increase your armor's resilience. You can use these to power several abilities, offensive and defensive in nature."
-#define LANGUAGE_STRAIN_FLAV_DESC_HEDGEHOG	"In the midst of the Chaos of the battlefield, there is also opportunity."
+#define LANGUAGE_STRAIN_DESC_HEDGEHOG		"You lose your empower, charge, and scissor cut and a decent amount of your speed for a bit more explosive resistance, immunity to small explosions, and you gain several new abilities that allow you to become a spiky tank. You build up shards internally over time and also when taking damage that increase your armor's resilience. You can use these shards to power three new abilities: Spike Shield, which gives you a temporary shield that spits bone shards around you when damaged, Fire Spikes, which launches spikes at your target that slows them and does extra damage if they move, and finally, Spike Shed, which launches spikes all around yourself and gives you a temporary speed boost as an escape plan at the cost of all your stored shards and being unable to gain shards for thirty seconds."
+#define LANGUAGE_STRAIN_FLAV_DESC_HEDGEHOG	"They will be of iron will and steely muscle. In great armor shall they be clad, and with the mightiest spikes will they be armed."
 #define LANGUAGE_STRAIN_DANCER				"Praetorian - Dancer"
 #define LANGUAGE_STRAIN_DESC_DANCER			"You are now a paragon of agility. You lose the ability to spit and lose some armor. You gain an ability that lets you dodge through tallhosts (cancelled on slash) and two powerful tail abilities each enhanced by a tag placed on your opponents via slashing."
 #define LANGUAGE_STRAIN_FLAV_DESC_DANCER	"You are the Queen's scalpel. Don't think you are. Know you are."
@@ -503,13 +503,16 @@
 #define LANGUAGE_STRAIN_DESC_WARDEN			"You trade your corrosive acid and your dash for an internal hitpoint pool. The pool is filled by your spits and slashes, and can be spent to protect your allies and yourself."
 #define LANGUAGE_STRAIN_FLAV_DESC_WARDEN	"Only in Death does your sisters' service to the Queen end. Keep them fighting using your own blood and claws."
 #define LANGUAGE_STRAIN_WHISPER				"Hivelord - Resin Whisperer"
-#define LANGUAGE_STRAIN_DESC_WHISPER		"You lose the ability to make thick resin and offer up some of your acid and plasma reserves to enhance your vision and gain a stronger connection to the resin. You can now remotely place resin structures!"
+#define LANGUAGE_STRAIN_DESC_WHISPER		"You lose your corrosive acid, your ability to secrete thick resin, your ability to reinforce resin secretions, sacrifice your ability to plant resin nodes outside of weeds, and you sacrifice a fifth of your plasma reserves to enhance your vision and gain a stronger connection to the resin. You can now remotely place resin secretions including resin nodes up to a distance of twelve paces!"
+#define LANGUAGE_STRAIN_FLAV_DESC_WHISPER	"Let the resin guide you. It whispers, so listen closely."
 #define LANGUAGE_STRAIN_GARDENER			"Drone - Gardener"
 #define LANGUAGE_STRAIN_DESC_GARDENER		"You trade most of your abilities aside from pheromones and planting weeds to gain the abilities to plant potent resin fruits for your sisters."
 #define LANGUAGE_STRAIN_HEALER				"Drone - Healer"
-#define LANGUAGE_STRAIN_DESC_HEALER			"In exchange for your ability to build, you gain better pheromones, lesser resin fruits, and the ability to transfer life to other Xenomorphs. Be wary, this is a dangerous process, overexert yourself and you might die..."
+#define LANGUAGE_STRAIN_DESC_HEALER			"You lose your choice of resin secretions, a chunk of your slash damage, and you will experience a slighty-increased difficulty in tackling tallhosts in exchange for strong pheromones, the ability to use a bit of your health to plant a maximum of three lesser resin fruits, and the ability to heal your sisters' wounds by secreting a regenerative resin salve by using your vital fluids and a fifth of your plasma. Be wary, this is a dangerous process; overexert yourself and you may exhaust yourself to unconsciousness, or die..."
+#define LANGUAGE_STRAIN_FLAV_DESC_HEALER	"To the very last drop, your blood belongs to The Hive; share it with your sisters to keep them fighting."
 #define LANGUAGE_STRAIN_STEEL				"Defender - Steel Crest"
-#define LANGUAGE_STRAIN_DESC_STEEL			"You trade a small amount of your already weak damage and your tail swipe for slightly increased headbutt knockback and damage, and the ability to slowly move and headbutt while fortified."
+#define LANGUAGE_STRAIN_DESC_STEEL			"You trade your tail sweep and a small amount of your slash damage for slightly increased headbutt knockback and damage and the ability to slowly move and headbutt while fortified. Along with this, you gain a unique ability to accumulate damage, and use it to recover a slight amount of health and refresh your tail slam."
+#define LANGUAGE_STRAIN_FLAV_DESC_STEEL		"To handle yourself, use your head. To handle others, use your head."
 #define LANGUAGE_STRAIN_CHARGER				"Crusher - Charger"
 #define LANGUAGE_STRAIN_DESC_CHARGER		"Your charge is now momentum based, the further you go, the more damage and speed you will get until you achieve max momentum when you roar. Your armor is now directional, being the toughest on the front, weaker on the sides and weakest at the back. Your shield is also removed. In return you gain more health, gain an ability to tumble to avoid enemies, and gain an ability to forcefully move enemies via ramming. Finally, you trade being able to resist slowdowns from tall autospitters for being unaffected by frenzy pheros."
 #define LANGUAGE_STRAIN_FLAV_DESC_CHARGER	"We're just getting started. Nothing stops this train."
@@ -970,12 +973,15 @@ GLOBAL_LIST_INIT(client_language_ru, list(
 	LANGUAGE_STRAIN_FLAV_DESC_WARDEN = "Only in Death does your sisters' service to the Queen end. Keep them fighting using your own blood and claws.",
 	LANGUAGE_STRAIN_WHISPER = "Hivelord - Resin Whisperer (awaiting for translating)",
 	LANGUAGE_STRAIN_DESC_WHISPER = "You lose the ability to make thick resin and offer up some of your acid and plasma reserves to enhance your vision and gain a stronger connection to the resin. You can now remotely place resin structures!",
+	LANGUAGE_STRAIN_FLAV_DESC_WHISPER = "Let the resin guide you. It whispers, so listen closely.",
 	LANGUAGE_STRAIN_GARDENER = "Drone - Gardener (awaiting for translating)",
 	LANGUAGE_STRAIN_DESC_GARDENER = "You trade most of your abilities aside from pheromones and planting weeds to gain the abilities to plant potent resin fruits for your sisters.",
 	LANGUAGE_STRAIN_HEALER = "Drone - Healer (awaiting for translating)",
 	LANGUAGE_STRAIN_DESC_HEALER = "In exchange for your ability to build, you gain better pheromones, lesser resin fruits, and the ability to transfer life to other Xenomorphs. Be wary, this is a dangerous process, overexert yourself and you might die...",
+	LANGUAGE_STRAIN_FLAV_DESC_HEALER = "To the very last drop, your blood belongs to The Hive; share it with your sisters to keep them fighting.",
 	LANGUAGE_STRAIN_STEEL = "Defender - Steel Crest (awaiting for translating)",
 	LANGUAGE_STRAIN_DESC_STEEL = "You trade a small amount of your already weak damage and your tail swipe for slightly increased headbutt knockback and damage, and the ability to slowly move and headbutt while fortified.",
+	LANGUAGE_STRAIN_FLAV_DESC_STEEL = "To handle yourself, use your head. To handle others, use your head.",
 	LANGUAGE_STRAIN_CHARGER = "Crusher - Charger (awaiting for translating)",
 	LANGUAGE_STRAIN_DESC_CHARGER = "Your charge is now momentum based, the further you go, the more damage and speed you will get until you achieve max momentum when you roar. Your armor is now directional, being the toughest on the front, weaker on the sides and weakest at the back. Your shield is also removed. In return you gain more health, gain an ability to tumble to avoid enemies, and gain an ability to forcefully move enemies via ramming. Finally, you trade being able to resist slowdowns from tall autospitters for being unaffected by frenzy pheros.",
 	LANGUAGE_STRAIN_FLAV_DESC_CHARGER = "We're just getting started. Nothing stops this train.",

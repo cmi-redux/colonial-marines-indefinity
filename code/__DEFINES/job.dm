@@ -12,7 +12,7 @@
 #define SQUAD_MARINE_3 "Charlie"
 #define SQUAD_MARINE_4 "Delta"
 #define SQUAD_MARINE_5 "Echo"
-#define SQUAD_MARINE_CRYO "Foxtrot"
+#define SQUAD_MARINE_6 "Foxtrot"
 #define SQUAD_MARINE_SOF "SOF"
 
 //------------UPP squad------------------//
@@ -365,6 +365,10 @@
 #define FLAG_SHOW_MARINES 128
 #define FLAG_SHOW_ALL_JOBS FLAG_SHOW_CIC|FLAG_SHOW_AUXIL_SUPPORT|FLAG_SHOW_MISC|FLAG_SHOW_POLICE|FLAG_SHOW_ENGINEERING|FLAG_SHOW_REQUISITION|FLAG_SHOW_MEDICAL|FLAG_SHOW_MARINES
 
+///For denying certain traits being applied to people. ie. bad leg
+///'Grunt' lists are for people who wouldn't logically get the bad leg trait, ie. UPP marine counterparts.
+#define JOB_ERT_GRUNT_LIST list(DUTCH_JOB_LIST, RIOT_JOB_LIST, PROVOST_JOB_LIST, CMB_GRUNT_LIST, CLF_JOB_LIST, UPP_COMMANDO_JOB_LIST, CONTRACTOR_JOB_LIST, JOB_WY_GOON_LIST, JOB_PMC_GRUNT_LIST)
+
 //Timelock things
 
 //SQUAD
@@ -430,7 +434,7 @@
 #define SQUAD_SELECTOR list("First" = 1, "Second" = 2, "Third" = 3, "Fourth" = 4)
 
 #define SQUAD_BY_FACTION list(\
-	FACTION_MARINE = list(/datum/squad/marine/alpha, /datum/squad/marine/bravo, /datum/squad/marine/charlie, /datum/squad/marine/delta, /datum/squad/marine/echo),\
+	FACTION_MARINE = list(/datum/squad/marine/alpha, /datum/squad/marine/bravo, /datum/squad/marine/charlie, /datum/squad/marine/delta, /datum/squad/marine/echo, /datum/squad/marine/cryo),\
 	FACTION_UPP = list(/datum/squad/upp/red_daragon, /datum/squad/upp/sun_rise, /datum/squad/upp/veiled_threat, /datum/squad/upp/death_seekers, /datum/squad/upp/echo),\
 	FACTION_CLF = list(/datum/squad/clf/python, /datum/squad/clf/viper, /datum/squad/clf/cobra, /datum/squad/clf/boa, /datum/squad/clf/engagers),\
 )

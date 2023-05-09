@@ -37,6 +37,8 @@ var/datum/controller/subsystem/entity_manager/SSentity_manager
 
 	var/list/datum/entity_meta/currentrun
 
+	var/datum/entity/mc_round/round
+
 /datum/controller/subsystem/entity_manager/New()
 	tables = list()
 	tables_unsorted = list()
@@ -64,7 +66,7 @@ var/datum/controller/subsystem/entity_manager/SSentity_manager
 
 	NEW_SS_GLOBAL(SSentity_manager)
 
-/datum/controller/subsystem/entity_manager/Initialize()
+/datum/controller/subsystem/entity_manager/proc/start_up()
 	set waitfor = FALSE
 	UNTIL(SSdatabase.connection.connection_ready())
 	adapter = SSdatabase.connection.get_adapter()
