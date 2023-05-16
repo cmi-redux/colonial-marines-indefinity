@@ -34,7 +34,7 @@
 					var/obj/item/clothing/accessory/ranks/R = new rankpath()
 					C.attach_accessory(H, R)
 
-		var/list/factions = list()
+		var/list/datum/faction/factions = list()
 		for(var/faction_to_get in FACTION_LIST_HUMANOID)
 			var/datum/faction/faction_to_set = GLOB.faction_datum[faction_to_get]
 			LAZYSET(factions, faction_to_set.name, faction_to_set)
@@ -43,11 +43,10 @@
 		if(!choice)
 			return FALSE
 
-		GLOB.faction_datum[choice].add_mob(H)
+		factions[choice].add_mob(H)
 	else
 		switch(newrank)
 			if("Weyland-Yutani")
-
 				GLOB.faction_datum[FACTION_WY].add_mob(H)
 
 				var/newskillset = tgui_input_list(usr, "Select a skillset", "Skill Set", (list("Keep Skillset") +SSticker.role_authority.roles_by_name))

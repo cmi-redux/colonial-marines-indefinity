@@ -22,8 +22,6 @@ use roles_by_path as it is an accurate account of every specific role path (with
 #define MED_PRIORITY 2
 #define LOW_PRIORITY 3
 
-#define SHIPSIDE_ROLE_WEIGHT 0.5
-
 var/global/players_preassigned = 0
 
 
@@ -67,6 +65,7 @@ var/global/players_preassigned = 0
 											/datum/job/upp,
 											/datum/job/upp/command,
 											/datum/job/upp/squad,
+											/datum/job/special/cmb,
 											)
 	var/squads_all[] = typesof(/datum/squad) - /datum/squad
 	var/castes_all[] = subtypesof(/datum/caste_datum)

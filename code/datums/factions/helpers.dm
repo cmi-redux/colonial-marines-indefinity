@@ -25,17 +25,6 @@ GLOBAL_LIST_INIT_TYPED(custom_event_info_list, /datum/custom_event_info, setup_c
 		custom_event_info_list[CEI.faction_name] = CEI
 	return custom_event_info_list
 
-//FACTION ALLIANCES
-/mob/living/carbon/verb/faction_alliance_status()
-	set name = "Faction Alliance Status"
-	set desc = "Check the status of your alliances."
-	set category = "IC"
-
-	if(!faction || !faction.faction_ui)
-		return
-
-	faction.faction_ui.tgui_interact(src)
-
 GLOBAL_LIST_INIT(alliable_factions, generate_alliable_factions())
 
 /proc/generate_alliable_factions()

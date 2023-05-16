@@ -97,7 +97,7 @@
 			message_admins(WRAP_STAFF_LOG(owner.mob, "mass-teleported [targets.len] mobs in [collect_range] tiles range to themselves in [get_area(owner.mob)] ([owner.mob.x],[owner.mob.y],[owner.mob.z])."), owner.mob.x, owner.mob.y, owner.mob.z)
 
 		if("teleport_mobs_by_faction")
-			var/list/factions = list()
+			var/list/datum/faction/factions = list()
 			for(var/faction_to_get in FACTION_LIST_ALL)
 				var/datum/faction/faction_to_set = GLOB.faction_datum[faction_to_get]
 				LAZYSET(factions, faction_to_set.name, faction_to_set)
@@ -106,7 +106,7 @@
 			if(!choice)
 				return
 
-			var/list/targets = GLOB.faction_datum[choice].totalMobs
+			var/list/targets = factions[choice].totalMobs
 			for(var/mob/living/carbon/mob in targets)
 				var/area/area = get_area(mob)
 				if(mob.stat == DEAD || area.statistic_exempt)

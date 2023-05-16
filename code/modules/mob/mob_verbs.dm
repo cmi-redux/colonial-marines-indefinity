@@ -3,7 +3,6 @@
 /mob/verb/mode()
 	set name = "Activate Held Object"
 	set category = "Object"
-	set src = usr
 
 	if(usr.is_mob_incapacitated())
 		return
@@ -26,7 +25,6 @@
 	set name = "Toggle Normal Throw"
 	set category = "IC"
 	set hidden = TRUE
-	set src = usr
 
 	to_chat(usr, SPAN_DANGER("This mob type cannot throw items."))
 	return
@@ -47,12 +45,13 @@
 	set category = "OOC"
 	set name = "Discord Connect"
 	set desc = "View your discord info."
-	if(!SSentity_manager.initialized)
+
+	if(!SSentity_manager.initialized || !client?.player_data?.discord_loaded)
 		to_chat(src, client.auto_lang(LANGUAGE_LOBBY_WAIT_DB))
 		return
 
-	if(client.discord)
-		client.discord.ui_interact(src)
+	if(client.player_data.discord)
+		client.player_data.discord.ui_interact(src)
 	else
 		discord_create()
 
@@ -73,11 +72,9 @@
 				to_chat(src, "<font color='red'>This is discord account already connected!</font>")
 				return
 			else
-				if(client.discord)
-					return
 				var/datum/entity/discord/PS = DB_ENTITY(/datum/entity/discord)
-				client.discord = PS
-				client.discord.discord_id = discord_id
+				client.player_data.discord = PS
+				client.player_data.discord.discord_id = discord_id
 
 				var/discord_key = "[rand(0,9)][rand(0,9)][rand(0,9)][pick(alphabet_uppercase)][pick(alphabet_uppercase)][pick(alphabet_uppercase)]"
 				var/list/datum/view_record/discord_view/same_discord_keys = DB_VIEW(/datum/view_record/discord_view/, DB_COMP("discord_key", DB_EQUALS, discord_key))
@@ -88,8 +85,8 @@
 					discord_key = "[rand(0,9)][rand(0,9)][rand(0,9)][pick(alphabet_uppercase)][pick(alphabet_uppercase)][pick(alphabet_uppercase)]"
 
 				to_chat(src, "<font color='red'>Generated DISCORD KEY - [discord_key].</font>")
-				client.discord.discord_key = discord_key
-				client.discord.save_discord(discord_id, discord_key, client.player_data.id)
+				client.player_data.discord.discord_key = discord_key
+				client.player_data.discord.save_discord(discord_id, discord_key, client.player_data.id)
 
 				var/datum/discord_embed/embed = new()
 				embed.title = "Верефикация аккаунта"
@@ -162,6 +159,7 @@
 /mob/verb/memory()
 	set name = "Notes"
 	set category = "IC"
+
 	if(mind)
 		mind.show_memory(src)
 	else
@@ -182,34 +180,6 @@
 			message_admins("[key_name(usr)] auto-slept for attempting to exceed mob memory limit. (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[src.loc.x];Y=[src.loc.y];Z=[src.loc.z]'>JMP</a>)")
 	else
 		to_chat(src, "The game appears to have misplaced your mind datum, so we can't show you your notes.")
-
-/mob/verb/view_objective_memory()
-	set name = "View objectives clues"
-	set category = "IC"
-
-	if(!mind)
-		to_chat(src, "The game appears to have misplaced your mind datum.")
-		return
-
-	mind.view_objective_memories(src)
-
-/mob/living/carbon/xenomorph/view_objective_memory()
-	set hidden = 1
-	return
-
-/mob/verb/view_faction_tasks()
-	set name = "View faction tasks"
-	set category = "IC"
-
-	if(!mind)
-		to_chat(src, "The game appears to have misplaced your mind datum.")
-		return
-
-	mind.view_task_interface(src)
-
-/mob/living/carbon/xenomorph/view_objective_memory()
-	set hidden = 1
-	return
 
 /mob/verb/abandon_mob()
 	set name = "Respawn"
@@ -370,3 +340,18 @@
 	set category = "IC"
 
 	stop_pulling()
+
+/mob/living/carbon/human/verb/lookup()
+	set name = "Look up"
+	set category = "IC"
+
+	if(!shadow)
+		var/turf/above = SSmapping.get_turf_above(loc)
+		if(above && istransparentturf(above))
+			to_chat(src, SPAN_NOTICE("You look up."))
+			shadow = new(above)
+			reset_view(shadow)
+		else
+			to_chat(src, SPAN_NOTICE("You can see [above]."))
+	else
+		handle_watch_above()

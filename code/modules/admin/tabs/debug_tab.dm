@@ -18,14 +18,6 @@
 	remove_verb(src, debug_verbs)
 	add_verb(src, /client/proc/enable_debug_verbs)
 
-/client/proc/purge_data_tab()
-	set category = "Debug"
-	set name = "Reset Intel Data Tab"
-
-	if(tgui_alert(src, "Clear the data tab?", usr.client.auto_lang(LANGUAGE_CONFIRM), list(auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)), 10 SECONDS) == usr.client.auto_lang(LANGUAGE_YES))
-		for(var/datum/cm_objective/Objective in intel_system.oms.disks)
-			intel_system.oms.disks -= Objective
-
 /client/proc/check_round_statistics()
 	set category = "Debug"
 	set name = "Round Statistics"

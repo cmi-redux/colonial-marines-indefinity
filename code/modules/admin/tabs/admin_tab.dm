@@ -170,11 +170,6 @@
 		to_chat(usr, "Error: you are not an admin!")
 		return
 
-	var/datum/entity/player/P = get_player_from_key(key)
-	if(!P.migrated_notes)
-		to_chat(usr, "Error: notes not yet migrated for that key. Please try again in 5 minutes.")
-		return
-
 	var/dat = "<html>"
 	dat += "<body>"
 

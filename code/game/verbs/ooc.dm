@@ -51,7 +51,7 @@
 			display_colour = CONFIG_GET(string/ooc_color_admin)
 		if(admin_holder.rights & R_COLOR)
 			display_colour = prefs.ooccolor
-	else if(donator_info.patreon_function_available("ooc_color"))
+	else if(player_data.donator_info.patreon_function_available("ooc_color"))
 		display_colour = prefs.ooccolor
 	if(!display_colour) // if invalid R_COLOR choice
 		display_colour = CONFIG_GET(string/ooc_color_default)
@@ -70,7 +70,7 @@
 			if(CONFIG_GET(flag/ooc_country_flags))
 				if(prefs.toggle_prefs & TOGGLE_OOC_FLAG)
 					display_name = "[country2chaticon(src.country, GLOB.clients)][display_name]"
-			to_chat(C, "<font color='[display_colour]'><span class='ooc linkify'>[C.donator_info.patreon_function_available("ooc_color") ? "\[D\] " : ""]<span class='prefix'>OOC: [display_name]</span>: <span class='message'>[msg]</span></span></font>")
+			to_chat(C, "<font color='[display_colour]'><span class='ooc linkify'>[C.player_data.donator_info.patreon_function_available("ooc_color") ? "\[D\] " : ""]<span class='prefix'>OOC: [display_name]</span>: <span class='message'>[msg]</span></span></font>")
 
 /client/proc/set_ooc_color_global(newColor as color)
 	set name = "OOC Text Color - Global"

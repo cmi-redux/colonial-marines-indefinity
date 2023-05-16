@@ -125,6 +125,7 @@ var/global/list/deployed_fultons = list()
 			F.add_fingerprint(user)
 			user.count_statistic_stat(STATISTICS_FULTON)
 			use(1)
+			F.faction = user.faction
 			F.deploy_fulton()
 	else
 		to_chat(user, SPAN_WARNING("You can't attach [src] to [target_atom]."))
@@ -166,10 +167,10 @@ var/global/list/deployed_fultons = list()
 	attached_atom.anchored = FALSE
 	playsound(attached_atom.loc,'sound/effects/bamf.ogg', 50, 1)
 
-	if(intel_system)
+	if(faction)
 		if(!LAZYISIN(GLOB.failed_fultons, attached_atom))
 			//Giving marines an objective to retrieve that fulton (so they'd know what they lost and where)
 			var/datum/cm_objective/retrieve_item/fulton/objective = new /datum/cm_objective/retrieve_item/fulton(attached_atom)
-			intel_system.store_single_objective(objective)
+			faction.objective_memory.store_single_objective(objective)
 	qdel(src)
 	return

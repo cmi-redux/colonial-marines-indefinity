@@ -42,7 +42,7 @@
 	var/list/Lines = list()
 	if(admin_holder && ((R_ADMIN & admin_holder.rights) || (R_MOD & admin_holder.rights)))
 		for(var/client/C in GLOB.clients)
-			var/entry = C.donator_info.patreon_function_available("ooc_color") ? "<font color='#D4AF37'>[C.key]</font>" : "[C.key]"
+			var/entry = C.player_data.donator_info.patreon_function_available("ooc_color") ? "<font color='#D4AF37'>[C.key]</font>" : "[C.key]"
 			if(C.mob)
 				if(istype(C.mob, /mob/new_player))
 					entry += " - [auto_lang(LANGUAGE_WHO_LOBBY)]"

@@ -1,5 +1,7 @@
 /datum/faction/yautja
 	name = NAME_FACTION_YAUTJA
+	desc = "Unable to extract addition information."
+
 	faction_name = FACTION_YAUTJA
 	faction_tag = SIDE_FACTION_YAUTJA
 	relations_pregen = RELATIONS_HOSTILE

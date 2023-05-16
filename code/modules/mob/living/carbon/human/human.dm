@@ -261,7 +261,7 @@
 			O.show_message(SPAN_DANGER("<B>[M]</B> [M.attacktext] [src]!"), SHOW_MESSAGE_VISIBLE)
 		last_damage_data = create_cause_data(initial(M.name), M)
 		M.attack_log += text("\[[time_stamp()]\] <font color='red'>attacked [key_name(src)]</font>")
-		src.attack_log += text("\[[time_stamp()]\] <font color='orange'>was attacked by [key_name(M)]</font>")
+		attack_log += text("\[[time_stamp()]\] <font color='orange'>was attacked by [key_name(M)]</font>")
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
 		var/dam_zone = pick("chest", "l_hand", "r_hand", "l_leg", "r_leg")
 		var/obj/limb/affecting = get_limb(rand_zone(dam_zone))
@@ -985,7 +985,7 @@
 	apply_effect(5, STUN)
 	if(stat == 2) //One last corpse check
 		return
-	src.visible_message(SPAN_WARNING("[src] throws up!"), SPAN_WARNING("You throw up!"), null, 5)
+	visible_message(SPAN_WARNING("[src] throws up!"), SPAN_WARNING("You throw up!"), null, 5)
 	playsound(loc, 'sound/effects/splat.ogg', 25, 1, 7)
 
 	var/turf/location = loc
@@ -1052,7 +1052,7 @@
 	var/datum/internal_organ/lungs/L = internal_organs_by_name["lungs"]
 
 	if(L && !L.organ_status >= ORGAN_BRUISED)
-		src.custom_pain("You feel a stabbing pain in your chest!", 1)
+		custom_pain("You feel a stabbing pain in your chest!", 1)
 		L.damage = L.min_bruised_damage
 
 
@@ -1093,8 +1093,8 @@
 	var/self = (usr == src)
 	var/msg = ""
 
-
-	if(usr.stat > 0 || usr.is_mob_restrained() || !ishuman(usr)) return
+	if(usr.stat > 0 || usr.is_mob_restrained() || !ishuman(usr))
+		return
 
 	if(self)
 		var/list/L = get_broken_limbs() - list("chest","head","groin")
@@ -1125,63 +1125,6 @@
 
 
 	to_chat(usr,SPAN_WARNING(msg))
-
-
-/mob/living/carbon/human/verb/view_manifest()
-	set name = "View Crew Manifest"
-	set category = "IC"
-
-	if(!faction)
-		return
-
-	faction.get_faction_info(src)
-
-/mob/living/carbon/human/view_objective_memory()
-	set name = "View objectives clues"
-	set category = "IC"
-
-	if(!mind)
-		to_chat(src, "The game appears to have misplaced your mind datum.")
-		return
-
-	if(!skillcheck(usr, SKILL_INTEL, SKILL_INTEL_TRAINED))
-		to_chat(usr, SPAN_WARNING("You have no access to the [faction] intel network."))
-		return
-
-	mind.view_objective_memories(src)
-
-/mob/living/carbon/human/verb/view_research_objective_memory()
-	set name = "View research objectives"
-	set category = "IC"
-
-	if(!mind)
-		to_chat(src, "The game appears to have misplaced your mind datum.")
-		return
-
-	if(!skillcheck(usr, SKILL_RESEARCH, SKILL_RESEARCH_TRAINED) || faction != FACTION_MARINE && !(faction in FACTION_LIST_WY))
-		to_chat(usr, SPAN_WARNING("You have no access to the [MAIN_SHIP_NAME] research network."))
-		return
-
-	mind.view_research_objective_memories(src)
-
-/mob/living/carbon/human/verb/purge_objective_memory()
-	set name = "Reset view objectives"
-	set category = "OOC.Fix"
-
-	if(!mind)
-		to_chat(src, "The game appears to have misplaced your mind datum.")
-		return
-
-	if(tgui_alert(src, "Remove the faulty entry?", "Confirm", list(client.auto_lang(LANGUAGE_YES), client.auto_lang(LANGUAGE_NO)), 10 SECONDS) == client.auto_lang(LANGUAGE_YES))
-		for(var/datum/cm_objective/retrieve_data/disk/Objective in src.mind.objective_memory.disks)
-			if(!Objective.disk.disk_color || !Objective.disk.display_color)
-				src.mind.objective_memory.disks -= Objective
-	else
-		return
-
-	if(tgui_alert(src, "Did it work?", "Confirm", list(client.auto_lang(LANGUAGE_YES), client.auto_lang(LANGUAGE_NO)), 10 SECONDS) != client.auto_lang(LANGUAGE_YES))
-		for(var/datum/cm_objective/Objective in src.mind.objective_memory.disks)
-			src.mind.objective_memory.disks -= Objective
 
 /mob/living/carbon/human/proc/set_species(new_species, default_colour)
 	if(!new_species)

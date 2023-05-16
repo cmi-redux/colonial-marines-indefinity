@@ -10,14 +10,14 @@
 	bound_height = 32
 
 /obj/structure/painting_table/attackby(obj/item/item as obj, mob/user as mob)
-	if(user && user.client)
-		if(user.client.donator_info.skins["[item.type]"] && !user.client.donator_info.skins_used["[item.type]"])
+	if(user?.client?.player_data?.donator_info)
+		if(user.client.player_data.donator_info.skins["[item.type]"] && !user.client.player_data.donator_info.skins_used["[item.type]"])
 			handle_skinning(item, user)
 			return
 	. = ..()
 
 /proc/handle_skinning(obj/item, mob/user)
-	var/datum/entity/skin/skin_selection = user.client.donator_info.skins["[item.type]"]
+	var/datum/entity/skin/skin_selection = user.client.player_data.donator_info.skins["[item.type]"]
 	if(!skin_selection)
 		return
 	var/list/skins_choice = list()
@@ -27,5 +27,5 @@
 	if(!skin)
 		to_chat(user, SPAN_WARNING("Vending base skin."))
 		return
-	user.client.donator_info.skins_used["[item.type]"] = skin_selection
+	user.client.player_data.donator_info.skins_used["[item.type]"] = skin_selection
 	item.skin(skin)

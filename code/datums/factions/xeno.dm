@@ -1,5 +1,7 @@
 /datum/faction/xenomorph
 	name = NAME_FACTION_XENOMORPH
+	desc = "Xenomorph hive among the all other hives."
+
 	faction_name = FACTION_XENOMORPH
 	faction_tag = SIDE_FACTION_XENOMORPH
 	organ_faction_iff_tag_type = /obj/item/faction_tag/organ/xenomorph

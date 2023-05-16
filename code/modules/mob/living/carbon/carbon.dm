@@ -472,14 +472,14 @@
 			if(!lying)
 				break
 
-/mob/living/carbon/verb/faction()
+/mob/living/carbon/verb/view_faction()
 	set name = "View Your Faction"
 	set category = "IC"
 
 	if(!faction)
 		return
 
-	show_browser(src, "[faction]", "Ваша фракция", "faction", "size=200x200")
+	faction.tgui_interact(src)
 
 /mob/living/carbon/on_stored_atom_del(atom/movable/AM)
 	..()

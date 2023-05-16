@@ -45,7 +45,7 @@
 		if(!level_triggers_modificator)
 			return "ERROR"
 		var/percentage = last_objectives_scored_points / player_points_defcon
-		return percentage
+		return percentage * 100
 
 /datum/objectives_datum/proc/check_defcon_level()
 	var/list/answer = list()

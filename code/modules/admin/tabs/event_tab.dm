@@ -380,7 +380,7 @@
 		return
 
 	// Mostly replicated code from observer.dm.hive_status()
-	var/list/factions = list()
+	var/list/datum/faction/factions = list()
 	for(var/faction_to_get in FACTION_LIST_XENOMORPH)
 		var/datum/faction/faction_to_set = GLOB.faction_datum[faction_to_get]
 		if(!length(faction_to_set.totalMobs) && !length(faction_to_set.totalDeadMobs))
@@ -450,7 +450,7 @@
 		to_chat(src, "Only administrators may use this command.")
 		return FALSE
 
-	var/list/factions = list()
+	var/list/datum/faction/factions = list()
 	LAZYSET(factions, "All Humans", "Everyone (-Yautja)")
 	for(var/faction_to_get in FACTION_LIST_HUMANOID)
 		var/datum/faction/faction_to_set = GLOB.faction_datum[faction_to_get]
@@ -497,7 +497,7 @@
 		to_chat(src, "Only administrators may use this command.")
 		return FALSE
 
-	var/list/factions = list()
+	var/list/datum/faction/factions = list()
 	LAZYSET(factions, "All Hives", "Everyone")
 	for(var/faction_to_get in FACTION_LIST_XENOMORPH)
 		var/datum/faction/faction_to_set = GLOB.faction_datum[faction_to_get]
@@ -507,18 +507,14 @@
 	if(!choice)
 		return FALSE
 
-	var/datum/faction/chosen_faction
-	if(choice != "All Hives")
-		chosen_faction = factions[choice]
-
 	var/input = input(usr, "This should be a message from the ruler of the Xenomorph race.", "What?", "") as message|null
 	if(!input)
 		return FALSE
 
-	if(!chosen_faction)
-		xeno_announcement(input, choice, HIGHER_FORCE_ANNOUNCE)
+	if(choice != "All Hives")
+		xeno_announcement(input, factions[choice], SPAN_ANNOUNCEMENT_HEADER_BLUE("[factions[choice].prefix][QUEEN_MOTHER_ANNOUNCE]"))
 	else
-		xeno_announcement(input, chosen_faction, SPAN_ANNOUNCEMENT_HEADER_BLUE("[chosen_faction.prefix][QUEEN_MOTHER_ANNOUNCE]"))
+		xeno_announcement(input, choice, HIGHER_FORCE_ANNOUNCE)
 
 	message_admins("[key_name_admin(src)] has created a [choice] Queen Mother report")
 	log_admin("[key_name_admin(src)] Queen Mother ([choice]): [input]")

@@ -17,6 +17,7 @@
 		mind = null
 
 	QDEL_NULL(skills)
+	QDEL_NULL(shadow)
 	QDEL_NULL_LIST(actions)
 	QDEL_NULL_LIST(viruses)
 	resistances?.Cut()
@@ -326,7 +327,8 @@
 	return 0
 
 /mob/proc/reset_view(atom/A)
-	if(SEND_SIGNAL(src, COMSIG_MOB_RESET_VIEW, A) & COMPONENT_OVERRIDE_VIEW) return TRUE
+	if(SEND_SIGNAL(src, COMSIG_MOB_RESET_VIEW, A) & COMPONENT_OVERRIDE_VIEW)
+		return TRUE
 
 	if(client)
 		if(istype(A, /atom/movable))
@@ -968,7 +970,6 @@ note dizziness decrements automatically in the mob's Life() proc.
 	if(!pulling)
 		return zMove(target = destination, z_move_flags = ZMOVE_STAIRS_FLAGS) //No need for a special proc if there's nothing being pulled.
 
-	pulledby?.stop_pulling() //The leader of the choo-choo train breaks the pull
 	var/list/conga_line = list()
 	var/end_of_conga = FALSE
 	var/mob/S = src
@@ -1004,30 +1005,12 @@ note dizziness decrements automatically in the mob's Life() proc.
 				var/mob/buckled_mob = O.buckled_mob
 				if(!buckled_mob.pulling)
 					continue
-				buckled_mob.stop_pulling() //No support for wheelchair trains yet.
 			var/obj/structure/bed/B = O
 			if(istype(B) && B.buckled_bodybag)
 				conga_line += B.buckled_bodybag
 			end_of_conga = TRUE //Only mobs can continue the cycle.
-	var/area/new_area = get_area(destination)
 	for(var/atom/movable/AM in conga_line)
-		var/old_loc
-		if(AM.loc)
-			old_loc = AM.loc
-			AM.loc.Exited(AM, destination)
-		AM.loc = destination
-		AM.loc.Entered(AM, old_loc)
-		var/area/old_area
-		if(old_loc)
-			old_area = get_area(old_loc)
-		if(new_area && old_area != new_area)
-			new_area.Entered(AM, old_loc)
-		for(var/atom/movable/CR in destination)
-			if(CR in conga_line)
-				continue
-			CR.Crossed(AM)
-		if(old_loc)
-			AM.zMove(target = old_loc, z_move_flags = ZMOVE_STAIRS_FLAGS)
+		AM.zMove(target = destination, z_move_flags = ZMOVE_STAIRS_FLAGS)
 
 	return TRUE
 
@@ -1097,3 +1080,17 @@ note dizziness decrements automatically in the mob's Life() proc.
 		return
 	. = stat //old stat
 	stat = new_stat
+
+/mob/Move()
+	. = ..()
+	if(shadow)
+		var/turf/above = SSmapping.get_turf_above(loc)
+		handle_watch_above(above)
+
+/mob/proc/handle_watch_above(turf/above)
+	if(above && istransparentturf(above))
+		shadow.forceMove(above)
+	else
+		to_chat(src, SPAN_NOTICE("You stop looking up."))
+		reset_view(0)
+		QDEL_NULL(shadow)

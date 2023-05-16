@@ -127,6 +127,9 @@ DEFINE_BITFIELD(iff_flag_flags, list(
 /obj/item/faction_tag/uscm/marine
 	faction_to_get = FACTION_MARINE
 
+/obj/item/faction_tag/uscm/cmb
+	faction_to_get = FACTION_CMB
+
 /obj/item/faction_tag/uscm/marsoc
 	ally_factions_initialize = FALSE
 	faction_to_get = FACTION_MARSOC

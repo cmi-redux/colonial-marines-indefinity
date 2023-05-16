@@ -180,12 +180,11 @@
 	SIGNAL_HANDLER
 
 	if(leaving == src)
-		return //Let's not block ourselves.
+		return
 
 	if(isTerminator() && direction == dir)
 		leaving.set_currently_z_moving(CURRENTLY_Z_ASCENDING)
 		INVOKE_ASYNC(src, PROC_REF(stair_ascend), leaving)
-		leaving.Bump(src)
 		return COMPONENT_ATOM_BLOCK_EXIT
 
 /obj/structure/stairs/Cross(atom/movable/AM)
@@ -201,8 +200,8 @@
 		return
 	var/turf/target = get_step_multiz(get_turf(src), (dir|UP))
 	if(istype(target) && !climber.can_z_move(DOWN, target, z_move_flags = ZMOVE_FALL_FLAGS)) //Don't throw them into a tile that will just dump them back down.
-		var/mob/mob = climber
-		if(istype(mob))
+		if(istype(climber, /mob))
+			var/mob/mob = climber
 			mob.trainteleport(target, z_move_flags = ZMOVE_STAIRS_FLAGS)
 		else
 			climber.zMove(target = target, z_move_flags = ZMOVE_STAIRS_FLAGS)

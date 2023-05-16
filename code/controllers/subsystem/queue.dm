@@ -36,7 +36,7 @@ SUBSYSTEM_DEF(queue)
 	GLOB.que_clients |= new_player.client
 	var/datum/queued_player/info = new()
 
-	var/donater = new_player.client.donator_info.patreon_function_available("queue")
+	var/donater = new_player.client.player_data.donator_info.patreon_function_available("queue")
 	if(new_player.client.admin_holder)
 		GLOB.que_admins |= new_player.client
 		info.priority = 1

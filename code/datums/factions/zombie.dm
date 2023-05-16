@@ -1,5 +1,7 @@
 /datum/faction/zombie
 	name = NAME_FACTION_YAUTJA
+	desc = "Unknow virus that makes all dead rise back and fight, for additional information required access 6X-X / XC-X or higher..."
+
 	faction_name = FACTION_ZOMBIE
 	faction_tag = SIDE_FACTION_ZOMBIE
 	relations_pregen = RELATIONS_MAP_HOSTILE

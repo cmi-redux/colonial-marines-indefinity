@@ -6,6 +6,7 @@
 	animate_movement = 2
 	rebounds = TRUE
 	animate_movement = SLIDE_STEPS
+	var/obj/shadow/shadow = null
 	var/mob_flags = NO_FLAGS
 	var/datum/mind/mind
 	var/start_time_que = 0
@@ -441,3 +442,9 @@
 
 		src.regenerate_icons()
 
+/obj/shadow
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	alpha = 0
+
+/obj/shadow/can_z_move(direction, turf/start, turf/destination, z_move_flags = ZMOVE_FLIGHT_FLAGS, mob/living/rider)
+	return FALSE

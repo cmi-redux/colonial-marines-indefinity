@@ -335,7 +335,7 @@
 	if(!istype(H))
 		return
 
-	var/list/factions = list()
+	var/list/datum/faction/factions = list()
 	for(var/faction_to_get in FACTION_LIST_ALL)
 		var/datum/faction/faction_to_set = GLOB.faction_datum[faction_to_get]
 		LAZYSET(factions, faction_to_set.name, faction_to_set)
@@ -358,7 +358,7 @@
 				was_leader = TRUE
 			H.faction.leading_cult_sl = null
 
-		GLOB.faction_datum[choice].add_mob(H)
+		factions[choice].add_mob(H)
 
 		if(was_leader && (!H.faction.leading_cult_sl || H.faction.leading_cult_sl.stat == DEAD))
 			H.faction.leading_cult_sl = H

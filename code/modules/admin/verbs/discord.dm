@@ -3,7 +3,7 @@
 	set name = "Discord Player Info"
 	set waitfor = FALSE
 
-	if(!check_rights(R_MOD))
+	if(!check_rights(R_MOD) || !player_data.discord_loaded)
 		return
 
-	discord.show_discord_admin(usr)
+	player_data.discord.show_discord_admin(usr)

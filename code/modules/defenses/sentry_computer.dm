@@ -378,7 +378,7 @@
 
 		if(istype(defense, /obj/structure/machinery/defenses/sentry))
 			var/obj/structure/machinery/defenses/sentry/sentrygun = defense
-			sentry_holder["rounds"] = sentrygun.ammo.current_rounds
+			sentry_holder["rounds"] = sentrygun.ammo.ammo_position
 			sentry_holder["max_rounds"] = sentrygun.ammo.max_rounds
 			sentry_holder["engaged"] = length(sentrygun.targets)
 

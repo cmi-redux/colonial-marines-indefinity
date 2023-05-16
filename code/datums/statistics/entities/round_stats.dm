@@ -257,7 +257,7 @@
 	if(!..())
 		return FALSE
 
-	if(!owner.client || !owner.client.player_entity)
+	if(!owner.client || !owner?.client?.player_data?.player_entity)
 		return FALSE
 	return TRUE
 
@@ -265,4 +265,4 @@
 	if(!can_use_action())
 		return
 
-	owner.client.player_entity.tgui_interact(owner)
+	owner.client.player_data.player_entity.tgui_interact(owner)

@@ -5,6 +5,7 @@
 	var/ambience = null //The file currently being played as ambience
 	var/status_flags = 0 //For things like ear deafness, psychodelic effects, and other things that change how all sounds behave
 	var/list/echo
+
 /datum/soundOutput/New(client/C)
 	if(!C)
 		qdel(src)
@@ -23,6 +24,7 @@
 	S.falloff = T.falloff
 	S.status = T.status
 	S.echo = T.echo
+	var/list/echo_list = new(18)
 	if(T.x && T.y && T.z)
 		var/turf/owner_turf = get_turf(owner.mob)
 		if(owner_turf)
@@ -32,21 +34,29 @@
 				if(VI && VI.exterior)
 					var/turf/candidate = get_turf(VI.exterior)
 					if(candidate.z != T.z)
-						return // Invalid location
+						return
 					S.falloff /= 2
 					owner_turf = candidate
+
 			S.x = T.x - owner_turf.x
-			S.y = 0
+			var/dy = (T.z - owner_turf.z) * ZSOUND_DISTANCE_PER_Z
+			S.y = (dy < 0) ? dy - 1 : dy + 1
 			S.z = T.y - owner_turf.y
 			var/area/A = owner_turf.loc
 			S.environment = A.sound_environment
+
 		S.y += T.y_s_offset
 		S.x += T.x_s_offset
+
+		echo_list[ECHO_DIRECT] = abs(T.z - owner_turf.z) * ZSOUND_DRYLOSS_PER_Z
+
 	if(owner.mob.ear_deaf > 0)
 		S.status |= SOUND_MUTE
 
 	if(owner.mob.sound_environment_override != SOUND_ENVIRONMENT_NONE)
 		S.environment = owner.mob.sound_environment_override
+
+	S.echo = echo_list
 
 	sound_to(owner,S)
 

@@ -234,23 +234,10 @@ var/world_topic_spam_protect_time = world.timeofday
 		..(reason)
 
 //	if(TgsAvailable())
-//		send_tgs_restart()
 //		TgsReboot()
 //		TgsEndProcess()
 //	else
 //		shutdown()
-
-/world/proc/send_tgs_restart()
-	if(CONFIG_GET(string/new_round_alert_channel) && CONFIG_GET(string/new_round_alert_role_id))
-		if(SSticker.mode.round_statistics)
-			send2chat("[SSticker.mode.round_statistics.round_name][GLOB.round_id ? " (Round [GLOB.round_id])" : ""] completed!", CONFIG_GET(string/new_round_alert_channel))
-		if(SSmapping.next_map_configs)
-			var/datum/map_config/next_map = SSmapping.next_map_configs[GROUND_MAP]
-			if(next_map)
-				send2chat("<@&[CONFIG_GET(string/new_round_alert_role_id)]> Restarting! Next map is [next_map.map_name]", CONFIG_GET(string/new_round_alert_channel))
-		else
-			send2chat("<@&[CONFIG_GET(string/new_round_alert_role_id)]> Restarting!", CONFIG_GET(string/new_round_alert_channel))
-	return
 
 /world/proc/send_reboot_sound()
 	var/reboot_sound = SAFEPICK(reboot_sfx)

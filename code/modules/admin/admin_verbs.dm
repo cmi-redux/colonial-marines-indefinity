@@ -194,7 +194,6 @@ var/list/admin_verbs_debug = list(
 	/client/proc/generate_sound_queues,
 	/client/proc/sound_debug_query,
 	/client/proc/debug_game_history,
-	/client/proc/purge_data_tab,
 )
 var/list/admin_verbs_debug_advanced = list(
 	/client/proc/callproc_datum,
@@ -358,7 +357,7 @@ var/list/roundstart_mod_verbs = list(
 /client/proc/set_ooc_color_self()
 	set category = "OOC.OOC"
 	set name = "OOC Text Color - Self"
-	if(!admin_holder || !donator_info.patreon_function_available("ooc_color"))
+	if(!admin_holder || !player_data.donator_info.patreon_function_available("ooc_color"))
 		return
 	var/new_ooccolor = input(src, "Please select your OOC color.", "OOC color") as color|null
 	if(new_ooccolor)

@@ -31,8 +31,9 @@
 
 	SSobjectives.statistics["documents_total_points_earned"] += value
 
-	if(user && user.mind)
-		user.mind.store_objective(document.retrieve_objective)
+	if(user && user.faction)
+		user.faction.store_objective(document.retrieve_objective)
+		controller = user.faction.faction_name
 
 	// Enable child objectives
 	for(var/datum/cm_objective/child_objective in enables_objectives)
@@ -40,9 +41,6 @@
 			child_objective.state = OBJECTIVE_ACTIVE
 			if(child_objective.objective_flags & OBJECTIVE_START_PROCESSING_ON_DISCOVERY)
 				child_objective.activate()
-
-	if(user.faction)
-		controller = user.faction.faction_name
 
 /datum/cm_objective/document/get_clue()
 	return SPAN_DANGER("[document.name] in <u>[initial_area]</u>")
@@ -142,7 +140,8 @@
 
 /obj/item/document_objective/proc/display_read_message(mob/living/user)
 	if(user && user.mind)
-		user.mind.store_objective(objective)
+		user.faction.store_objective(objective)
+
 	var/related_labels = ""
 	for(var/datum/cm_objective/D in objective.enables_objectives)
 		var/clue = D.get_clue()

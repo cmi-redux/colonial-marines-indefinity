@@ -9,8 +9,6 @@
 	// Holds the client's current mentorhelp thread
 	var/datum/mentorhelp/current_mhelp = null
 
-	var/datum/donator_info/donator_info
-
 	var/last_message = "" //Contains the last message sent by this client - used to protect against copy-paste spamming.
 	var/last_message_count = 0 //contins a number of how many times a message identical to last_message was sent.
 	var/talked = 0
@@ -72,8 +70,6 @@
 	var/xeno_name_ban = FALSE
 
 	var/datum/entity/player/player_data = null
-	var/datum/player_entity/player_entity = null
-	var/datum/entity/discord/discord = null
 	var/datum/skins/skins = null
 
 	//Asset cache

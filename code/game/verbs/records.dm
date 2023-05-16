@@ -23,11 +23,6 @@
 	to_chat(usr, SPAN_NOTICE("Displaying your [choice] Record."))
 
 /client/proc/show_own_notes(note_category, category_text)
-	var/datum/entity/player/P = get_player_from_key(ckey)
-	if(!P.migrated_notes)
-		to_chat(usr, "Error: notes not yet migrated for that key. Please try again in 5 minutes.")
-		return
-
 	var/dat = "<html>"
 	dat += "<body>"
 
@@ -134,11 +129,6 @@
 
 
 /client/proc/show_other_record(note_category, category_text, target, can_edit = FALSE, can_del = FALSE)
-	var/datum/entity/player/P = get_player_from_key(target)
-	if(!P?.migrated_notes)
-		to_chat(usr, "Error: notes not yet migrated for that key. Please try again in 5 minutes.")
-		return
-
 	var/dat = "<html>"
 	dat += "<body>"
 

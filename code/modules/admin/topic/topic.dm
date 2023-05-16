@@ -784,7 +784,7 @@
 		if(alert(usr, "Are you sure you want to infect them with a xeno larva?", "Message", usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 			return
 
-		var/list/factions = list()
+		var/list/datum/faction/factions = list()
 		for(var/faction_to_get in FACTION_LIST_XENOMORPH)
 			var/datum/faction/faction_to_set = GLOB.faction_datum[faction_to_get]
 			LAZYSET(factions, faction_to_set.name, faction_to_set)
@@ -829,7 +829,7 @@
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
 			return
 
-		var/list/factions = list()
+		var/list/datum/faction/factions = list()
 		for(var/faction_to_get in FACTION_LIST_XENOMORPH)
 			var/datum/faction/faction_to_set = GLOB.faction_datum[faction_to_get]
 			LAZYSET(factions, faction_to_set.name, faction_to_set)
@@ -850,7 +850,7 @@
 			preset.load_status(H)
 			message_admins("[key_name_admin(usr)] has made [key_name_admin(H)] into a cultist leader for [choice].")
 
-		GLOB.faction_datum[choice].add_mob(H)
+		factions[choice].add_mob(H)
 
 	else if(href_list["forceemote"])
 		if(!check_rights(R_ADMIN)) return

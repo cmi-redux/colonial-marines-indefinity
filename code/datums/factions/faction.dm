@@ -2,6 +2,7 @@
 
 /datum/faction
 	var/name = NAME_FACTION_NEUTRAL
+	var/desc = "ASK A DEV IF YOU SAW THAT"
 
 	var/faction_name = FACTION_NEUTRAL
 	var/faction_tag = SIDE_FACTION_NEUTRAL//Pointing to the faction trees
@@ -117,6 +118,10 @@
 	var/list/list/faction_constructions = list() //Stringref list of structures that are being built
 	var/datum/mark_menu_ui/mark_ui
 	var/datum/hive_status_ui/faction_ui
+	var/datum/faction_task_ui/task_interface
+	var/datum/objective_memory_storage/objective_memory
+	var/datum/objective_memory_interface/objective_interface
+	var/datum/research_objective_memory_interface/research_objective_interface
 	var/list/tunnels = list()
 	var/list/resin_marks = list()
 	var/list/banished_ckeys = list()
@@ -131,19 +136,23 @@
 /datum/faction/New()
 	tcmp_faction_datum = new(src)
 	objectives_controller = GLOB.objective_controller[faction_name]
+	task_interface = new()
+	objective_memory = new()
+	objective_interface = new()
+	research_objective_interface = new()
 
 /datum/faction/proc/generate_relations_helper()
 	spawn(30 SECONDS)
 		for(var/i in FACTION_LIST_ALL)
+			if(i == faction_name)
+				relations[i] = RELATIONS_SELF
+				continue
 			if(i in relations_pregen)
-				relations["[i]"] = relations_pregen[i]
-				if(RELATIONS_NEUTRAL < relations_pregen[i])
+				relations[i] = rand(relations_pregen[i][1], relations_pregen[i][2])
+				if(RELATIONS_FRIENDLY[2] < relations_pregen[i])
 					allies += GLOB.faction_datum[i]
 				continue
-			if(i == faction_name)
-				relations["[i]"] = FACTION_SELF
-				continue
-			relations["[i]"] = RELATIONS_UNKNOWN
+			relations[i] = RELATIONS_UNKNOWN
 
 /datum/faction/can_vv_modify()
 	return FALSE
@@ -787,7 +796,73 @@
 		return coefficient_per_role[role_name]
 	return 1
 
-//MAKE THAT SHOW RELATION AND SOME SHIT TOOOO
+/datum/faction/proc/store_objective(datum/cm_objective/O)
+	if(objective_memory)
+		objective_memory.store_objective(O)
+
+//FACTION INFO PANEL
+/datum/faction/ui_state(mob/user)
+	return GLOB.not_incapacitated_state
+
+/datum/faction/ui_status(mob/user, datum/ui_state/state)
+	. = ..()
+	if(isobserver(user))
+		return UI_INTERACTIVE
+
+/datum/faction/ui_data(mob/user)
+	. = list()
+	var/list/relations_mapping = list()
+	for(var/i in relations)
+		if(relations[i] == null || relations[i] > 1000)
+			continue
+		relations_mapping += list(list("name" = GLOB.faction_datum[i].name, "desc" = GLOB.faction_datum[i].desc, "color" = GLOB.faction_datum[i].ui_color, "value" = relations[i]))
+
+	.["faction_relations"] = relations_mapping
+	.["faction_orders"] = orders
+
+/datum/faction/ui_static_data(mob/user)
+	. = list()
+	.["faction_color"] = ui_color
+	.["faction_name"] = name
+	.["faction_desc"] = desc
+	.["actions"] = get_faction_actions()
+
+/datum/faction/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "FactionStatus", "[name] Статус")
+		ui.set_autoupdate(FALSE)
+		ui.open()
+
+/datum/faction/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
+		return
+
+	switch(action)
+		if("tasks")
+			task_interface.tgui_interact(usr)
+		if("clues")
+			if(!skillcheck(usr, SKILL_INTEL, SKILL_INTEL_TRAINED))
+				to_chat(usr, SPAN_WARNING("You have no access to the [name] intel network."))
+				return
+			objective_interface.tgui_interact(usr)
+		if("researchs")
+			if(!skillcheck(usr, SKILL_RESEARCH, SKILL_RESEARCH_TRAINED))
+				to_chat(usr, SPAN_WARNING("You have no access to the [name] research network."))
+				return
+			research_objective_interface.tgui_interact(usr)
+		if("status")
+			get_faction_info(usr)
+
+/datum/faction/proc/get_faction_actions(mob/user)
+	. = list()
+	. += list(list("name" = "Faction Tasks", "action" = "tasks"))
+	. += list(list("name" = "Faction Clues", "action" = "clues"))
+	. += list(list("name" = "Faction Researchs", "action" = "researchs"))
+	. += list(list("name" = "Faction Status", "action" = "status"))
+	return .
+
 /datum/faction/proc/get_faction_info(mob/user)
 	var/dat = GLOB.data_core.get_manifest(FALSE, src)
 	if(!dat)

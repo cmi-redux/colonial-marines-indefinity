@@ -219,7 +219,7 @@
 	name = "Access Playtimes"
 
 /datum/player_action/access_playtimes/act(client/user, mob/target, list/params)
-	target?.client?.player_data.tgui_interact(user.mob)
+	target?.client?.player_data?.tgui_interact(user.mob)
 
 	return TRUE
 
@@ -237,7 +237,7 @@
 	name = "Access Discord"
 
 /datum/player_action/access_discord/act(client/user, mob/target, list/params)
-	target?.client?.discord.ui_interact(user.mob)
+	target?.client?.player_data?.discord?.ui_interact(user.mob)
 
 	return TRUE
 

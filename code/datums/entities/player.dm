@@ -18,24 +18,18 @@
 	var/time_ban_expiration
 	var/time_ban_date
 
-	var/migrated_notes = FALSE
-	var/migrated_bans = FALSE
-	var/migrated_jobbans = FALSE
-
 	var/stickyban_whitelisted = FALSE
 
 
 // UNTRACKED FIELDS
-	var/name // Used for NanoUI statistics menu
+	var/name
 
 	var/warning_count = 0
 	var/refs_loaded = FALSE
 	var/notes_loaded = FALSE
 	var/jobbans_loaded = FALSE
 	var/playtime_loaded = FALSE
-	var/migrating_notes = FALSE
-	var/migrating_bans = FALSE
-	var/migrating_jobbans = FALSE
+	var/discord_loaded = FALSE
 
 	var/datum/entity/player/permaban_admin
 	var/datum/entity/player/time_ban_admin
@@ -45,7 +39,7 @@
 	var/datum/player_entity/player_entity
 	var/datum/entity/discord/discord
 	var/datum/donator_info/donator_info
-	var/list/playtime_data // For the NanoUI menu
+	var/list/playtime_data
 	var/client/owning_client
 
 BSQL_PROTECT_DATUM(/datum/entity/player)
@@ -68,9 +62,6 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		"time_ban_expiration" = DB_FIELDTYPE_BIGINT,
 		"time_ban_admin_id" = DB_FIELDTYPE_BIGINT,
 		"time_ban_date" = DB_FIELDTYPE_STRING_LARGE,
-		"migrated_notes" = DB_FIELDTYPE_INT,
-		"migrated_bans" = DB_FIELDTYPE_INT,
-		"migrated_jobbans" = DB_FIELDTYPE_INT,
 		"stickyban_whitelisted" = DB_FIELDTYPE_INT,
 	)
 
@@ -337,14 +328,11 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	player.notes_loaded = FALSE
 	player.jobbans_loaded = FALSE
 	player.playtime_loaded = FALSE
+	player.discord_loaded = FALSE
 
 	player.is_permabanned = text2num(player.is_permabanned)
 	player.is_time_banned = text2num(player.is_time_banned)
 	player.time_ban_expiration = text2num(player.time_ban_expiration)
-
-	player.migrated_notes = text2num(player.migrated_notes)
-	player.migrated_bans = text2num(player.migrated_bans)
-	player.migrated_jobbans = text2num(player.migrated_jobbans)
 
 	player.load_rels()
 
@@ -356,36 +344,12 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	player.notes_loaded = FALSE
 	player.jobbans_loaded = FALSE
 	player.playtime_loaded = FALSE
+	player.discord_loaded = FALSE
 	player.stickyban_whitelisted = FALSE
 
 	player.load_rels()
 
-/datum/entity/player/proc/load_rels()
-	if(migrated_notes)
-		DB_FILTER(/datum/entity/player_note, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, on_read_notes)))
-	else if(!migrating_notes)
-		migrating_notes = TRUE
-		INVOKE_ASYNC(src, TYPE_PROC_REF(/datum/entity/player, migrate_notes))
-
-	if(migrated_jobbans)
-		DB_FILTER(/datum/entity/player_job_ban, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, on_read_job_bans)))
-	else if(!migrating_jobbans)
-		migrating_jobbans = TRUE
-		INVOKE_ASYNC(src, TYPE_PROC_REF(/datum/entity/player, migrate_jobbans))
-
-	DB_FILTER(/datum/entity/player_time, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, on_read_timestat)))
-
-	if(!migrated_bans && !migrating_bans)
-		migrating_bans = TRUE
-		INVOKE_ASYNC(src, TYPE_PROC_REF(/datum/entity/player, migrate_bans))
-
-	if(permaban_admin_id)
-		permaban_admin = DB_ENTITY(/datum/entity/player, permaban_admin_id)
-	if(time_ban_admin_id)
-		time_ban_admin = DB_ENTITY(/datum/entity/player, time_ban_admin_id)
-
-	setup_statistics()
-
+/datum/entity/player/proc/load_donator_info()
 	if(GLOB.donators_info["[ckey]"])
 		donator_info = GLOB.donators_info["[ckey]"]
 	else
@@ -396,14 +360,24 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		GLOB.donaters |= owning_client
 		add_verb(owning_client, /client/proc/set_ooc_color_self)
 
+/datum/entity/player/proc/load_rels()
+	DB_FILTER(/datum/entity/player_note, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, on_read_notes)))
+	DB_FILTER(/datum/entity/player_job_ban, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, on_read_job_bans)))
+	DB_FILTER(/datum/entity/player_time, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, on_read_timestat)))
+
+	if(permaban_admin_id)
+		permaban_admin = DB_ENTITY(/datum/entity/player, permaban_admin_id)
+	if(time_ban_admin_id)
+		time_ban_admin = DB_ENTITY(/datum/entity/player, time_ban_admin_id)
+
+	setup_statistics()
+
 	DB_FILTER(/datum/entity/discord, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, load_discord)))
 
 /datum/entity/player/proc/setup_statistics()
 	if(!player_entity)
 		player_entity = setup_player_entity(ckey)
 		player_entity.player = src
-		if(owning_client)
-			owning_client.player_entity = player_entity
 	player_entity.setup_entity()
 
 /datum/entity/player/proc/on_read_notes(list/datum/entity/player_note/_notes)
@@ -432,12 +406,11 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 			LAZYSET(playtimes, S.role_id, S)
 
 //DISCORD//
-/datum/entity/player/proc/load_discord(list/datum/entity/discord/discord_entities)
-	var/datum/entity/discord/discord_entity
-	if(length(discord_entities))
-		discord_entity = pick(discord_entities)
-		discord_entity.sync()
-		discord = discord_entity
+/datum/entity/player/proc/load_discord(list/datum/entity/discord/_discord)
+	discord_loaded = TRUE
+	if(_discord)
+		discord = pick(_discord)
+		discord.sync()
 
 /proc/get_player_from_key(key)
 	var/safe_key = ckey(key)
@@ -470,11 +443,8 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	player_data.last_login = "[time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")]"
 	player_data.last_known_ip = address
 	player_data.last_known_cid = computer_id
-	player_entity = player_data.player_entity
-	donator_info = player_data.donator_info
-	discord = player_data.discord
-	player_data.save()
 	record_login_triplet(player.ckey, address, computer_id)
+	player_data.load_donator_info()
 	player_data.sync()
 
 /datum/entity/player/proc/check_ban(computer_id, address)
@@ -546,126 +516,6 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		return .
 	// shouldn't be here
 	return FALSE
-
-/datum/entity/player/proc/migrate_notes()
-	var/savefile/info = new("data/player_saves/[copytext(ckey, 1, 2)]/[ckey]/info.sav")
-	var/list/infos
-	info >> infos
-	if(!infos)
-		notes_loaded = TRUE
-		migrated_notes = TRUE
-		save()
-		return
-	if(!notes)
-		notes = list()
-	for(var/datum/player_info/I in infos)
-		var/datum/entity/player_note/note = DB_ENTITY(/datum/entity/player_note)
-		notes.Add(note)
-		note.player = src
-		note.player_id = id
-		note.admin_rank = I.rank
-		if(!note.admin_rank)
-			note.admin_rank = "N/A"
-		note.date = I.timestamp
-		var/list/splitting = splittext(I.content, "|")
-		if(splitting.len == 1)
-			note.text = I.content
-			note.is_ban = FALSE
-		if(splitting.len == 3)
-			note.text = splitting[3]
-			note.ban_time = text2num(replacetext(replacetext(splitting[2],"Duration: ","")," minutes",""))
-			note.is_ban = TRUE
-		if(splitting.len == 2)
-			note.text = I.content
-			note.is_ban = TRUE
-
-		var/admin_ckey = "[ckey(I.author)]"
-		var/datum/entity/player/admin = get_player_from_key(admin_ckey)
-		admin.sync()
-
-		if(admin)
-			note.admin_id = admin.id
-			note.admin = admin
-
-		note.save()
-		CHECK_TICK
-	notes_loaded = TRUE
-	migrated_notes = TRUE
-	save()
-
-/datum/entity/player/proc/migrate_bans()
-	if(!Banlist) // if Banlist cannot be located for some reason
-		LoadBans() // try to load the bans
-		if(!Banlist) // uh oh, can't find bans!
-			return
-
-	var/reason
-	var/expiration
-	var/banned_by
-
-	Banlist.cd = "/base"
-
-	for(var/A in Banlist.dir)
-		Banlist.cd = "/base/[A]"
-
-		if(ckey != Banlist["key"])
-			continue
-
-		if(Banlist["temp"])
-			if(!GetExp(Banlist["minutes"]))
-				return
-
-		if(expiration > Banlist["minutes"])
-			return // found longer ban
-
-		reason = Banlist["reason"]
-		banned_by = Banlist["bannedby"]
-		expiration = Banlist["minutes"]
-
-	migrated_bans = TRUE
-	save()
-
-	if(!expiration)
-		return
-
-	var/admin_ckey = "[ckey(banned_by)]"
-	var/datum/entity/player/admin = get_player_from_key(admin_ckey)
-	admin.sync()
-
-	is_time_banned = TRUE
-	time_ban_reason = reason
-	time_ban_admin_id = admin.id
-	time_ban_expiration = expiration
-	time_ban_admin = admin
-
-	save()
-
-/datum/entity/player/proc/migrate_jobbans()
-	if(!job_bans)
-		job_bans = list()
-	for(var/name in SSticker.role_authority.roles_by_name)
-		var/safe_job_name = ckey(name)
-		if(!jobban_keylist[safe_job_name])
-			continue
-		if(!safe_job_name)
-			continue
-		var/reason = jobban_keylist[safe_job_name][ckey]
-		if(!reason)
-			continue
-
-		var/datum/entity/player_job_ban/PJB = DB_ENTITY(/datum/entity/player_job_ban)
-		PJB.player_id = id
-		PJB.text = reason
-		PJB.role = safe_job_name
-
-		PJB.save()
-
-		job_bans["[safe_job_name]"] = PJB
-		CHECK_TICK
-
-	jobbans_loaded = TRUE
-	migrated_jobbans = TRUE
-	save()
 
 /datum/entity_link/player_to_banning_admin
 	parent_entity = /datum/entity/player

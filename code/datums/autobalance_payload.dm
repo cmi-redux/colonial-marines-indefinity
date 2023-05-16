@@ -3,9 +3,9 @@
 	var/esteminated_power = 0
 	var/weight = 0
 	var/average_fires = 0
-	var/list/round_start_pop = list(0, 0, 0)
-	var/list/average_pop = list(0, 0, 0)
-	var/list/last_pop = list(0, 0, 0)
+	var/list/round_start_pop = new(3)
+	var/list/average_pop = new(3)
+	var/list/last_pop = new(3)
 
 /datum/autobalance_row_faction_info/New(datum/faction/faction_to_set)
 	..()
@@ -15,7 +15,7 @@
 	var/new_esteminated_power = 0
 	var/new_weight = 0
 	average_fires++
-	last_pop = list(0, 0, 0)
+	last_pop = new(3)
 	for(var/potantial_row in SSautobalancer.balance_rows)
 		var/datum/autobalance_row_info/balance_row = SSautobalancer.balance_rows[potantial_row]
 		if(balance_row.faction_to_set() == faction)
@@ -83,8 +83,8 @@
 
 /datum/autobalance_formula_row/field/formula_calculate(mob/calculationg_mob, datum/player_entity/entity, list/stats = list())
 	var/final_calculations = 0
-	var/list/kda[2]
-	var/list/shots[2]
+	var/list/kda = new(2)
+	var/list/shots = new(2)
 	var/damage = 0
 	for(var/potential_stat in stats)
 		switch(potential_stat)
@@ -197,7 +197,7 @@
 
 /datum/autobalance_formula_row/xeno_fighter/formula_calculate(mob/calculationg_mob, datum/player_entity/entity, list/stats = list())
 	var/final_calculations = 0
-	var/list/kda[2]
+	var/list/kda = new(2)
 	var/slashes = 0
 	var/damage = 0
 	for(var/potential_stat in stats)

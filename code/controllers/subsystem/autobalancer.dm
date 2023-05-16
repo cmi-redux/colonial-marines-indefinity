@@ -64,12 +64,12 @@ SUBSYSTEM_DEF(autobalancer)
 	return TRUE
 
 /datum/controller/subsystem/autobalancer/proc/balance_action(mob/player_mob, action)
-	if(!player_mob || !player_mob.client || !player_mob.faction)
+	if(!player_mob?.client?.player_data?.player_entity || !player_mob.faction)
 		return
 
 	switch(action)
 		if("add")
-			balance_rows[player_mob.ckey] = new /datum/autobalance_row_info(player_mob.client, player_mob.client.player_entity)
+			balance_rows[player_mob.ckey] = new /datum/autobalance_row_info(player_mob.client, player_mob.client.player_data.player_entity)
 		if("remove")
 			QDEL_NULL(balance_rows[player_mob.ckey])
 		else

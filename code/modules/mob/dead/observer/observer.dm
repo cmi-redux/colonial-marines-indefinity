@@ -74,7 +74,7 @@
 	set desc = "Allow you to respawn"
 	set category = "Ghost"
 
-	if(!client.donator_info.patreon_function_available("respawn"))
+	if(!client.player_data.donator_info.patreon_function_available("respawn"))
 		to_chat(usr, SPAN_NOTICE("You don't have enought donat level to do that, req [DONATER_VIETNAM] or higher."))
 		return FALSE
 
@@ -680,11 +680,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	else
 		alpha = initial(alpha)
 
-/mob/dead/observer/verb/view_manifest()
-	set name = "View Faction Info"
+/mob/dead/observer/verb/view_faction()
+	set name = "View Factions"
 	set category = "Ghost.View"
 
-	var/list/factions = list()
+	var/list/datum/faction/factions = list()
 	for(var/faction_to_get in FACTION_LIST_ALL)
 		var/datum/faction/faction_to_set = GLOB.faction_datum[faction_to_get]
 		if(!length(faction_to_set.totalMobs))
@@ -695,7 +695,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(!choice)
 		return FALSE
 
-	return GLOB.faction_datum[faction_to_get].get_faction_info(src)
+	factions[choice].tgui_interact(src)
 
 /mob/dead/verb/join_as_alien()
 	set category = "Ghost.Join"
@@ -905,8 +905,8 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "View Statistics"
 	set desc = "View global and player statistics tied to the game."
 
-	if(client && client.player_entity)
-		client.player_entity.tgui_interact(src)
+	if(client?.player_data?.player_entity)
+		client.player_data.player_entity.tgui_interact(src)
 
 /mob/dead/observer/get_status_tab_items()
 	. = ..()

@@ -386,23 +386,23 @@
 		for(var/mob/mob in faction.totalMobs)
 			if(istype(mob, /mob/living/carbon/xenomorph))
 				var/mob/living/carbon/xenomorph/xeno = mob
-				faction_payload["alive mobs"] += list(xeno.name, "as [xeno.mutation_type]")
+				faction_payload["alive mobs"] += list("[xeno.name] as [xeno.mutation_type]")
 			else
 				if(istype(mob, /mob/living/carbon/human))
 					var/mob/living/carbon/human/human = mob
 					if(human.spawned_corpse)
 						continue
-				faction_payload["alive mobs"] += list(mob.name, "as [mob.job]")
+				faction_payload["alive mobs"] += list("[mob.name] as [mob.job]")
 		for(var/mob/mob in faction.totalDeadMobs)
 			if(istype(mob, /mob/living/carbon/xenomorph))
 				var/mob/living/carbon/xenomorph/xeno = mob
-				faction_payload["dead mobs"] += list(xeno.name, "as [xeno.mutation_type]")
+				faction_payload["dead mobs"] += list("[xeno.name] as [xeno.mutation_type]")
 			else
 				if(istype(mob, /mob/living/carbon/human))
 					var/mob/living/carbon/human/human = mob
 					if(human.spawned_corpse)
 						continue
-				faction_payload["dead mobs"] += list(mob.name, "as [mob.job]")
+				faction_payload["dead mobs"] += list("[mob.name] as [mob.job]")
 		counted_mobs[faction.name] = faction_payload
 
 	var/list/total_data = list("special round status" = special_round_status, "round time" = duration2text(), "counted faction mobs" = counted_mobs)
@@ -435,10 +435,10 @@
 			job_final_text += "\n\n**[faction]**\n"
 			job_final_text += "\ntotal alive mobs ([length(alive_mob_report)]):\n"
 			for(var/mob_info in alive_mob_report)
-				job_final_text += "[mob_info] [alive_mob_report[mob_info]]\n"
+				job_final_text += "[mob_info]\n"
 			job_final_text += "\ntotal dead mobs ([length(dead_mob_report)]):\n"
 			for(var/mob_info in dead_mob_report)
-				job_final_text += "[mob_info] [dead_mob_report[mob_info]]\n"
+				job_final_text += "[mob_info]\n"
 
 		var/datum/discord_embed/per_report_embed = new()
 		per_report_embed.title = "[field_name]"

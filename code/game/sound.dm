@@ -11,12 +11,24 @@
 	var/falloff = 1
 	var/volume_cat = VOLUME_SFX
 	var/range = 0
+	var/zrange = 0
 	var/list/echo
 	var/x //Map coordinates, not sound coordinates
 	var/y
 	var/z
 	var/y_s_offset // Vertical sound offset
 	var/x_s_offset // Horizontal sound offset
+
+/datum/sound_template/proc/get_hearers()
+	var/list/hearers_to_return = list()
+	var/datum/shape/rectangle/zone = RECT(x, y, range * 2, range * 2)
+	hearers_to_return += SSquadtree.players_in_range(zone, z)
+	for(var/i = 1 to zrange)
+		zone = RECT(x + i, y, range / i, range / i)
+		hearers_to_return += SSquadtree.players_in_range(zone, z)
+		zone = RECT(x - i, y, range / i, range / i)
+		hearers_to_return += SSquadtree.players_in_range(zone, z)
+	return hearers_to_return
 
 /proc/get_free_channel()
 	var/static/cur_chan = 1
@@ -35,7 +47,7 @@
 //status: the regular 4 sound flags
 //falloff: max range till sound volume starts dropping as distance increases
 
-/proc/playsound(atom/source, soundin, vol = 100, vary = FALSE, sound_range, vol_cat = VOLUME_SFX, channel = 0, status , falloff = 1, echo, y_s_offset,x_s_offset)
+/proc/playsound(atom/source, soundin, vol = 100, vary = FALSE, sound_range, vol_cat = VOLUME_SFX, channel = 0, status , falloff = 1, list/echo, y_s_offset,x_s_offset)
 	if(isarea(source))
 		error("[source] is an area and is trying to make the sound: [soundin]")
 		return FALSE

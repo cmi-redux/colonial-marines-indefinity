@@ -98,8 +98,8 @@
 			if(!SSentity_manager.initialized)
 				to_chat(src, client.auto_lang(LANGUAGE_LOBBY_WAIT_DB))
 				return
-			if(client.player_entity)
-				client.player_entity.tgui_interact(src)
+			if(client?.player_data?.player_entity)
+				client.player_data.player_entity.tgui_interact(src)
 			return 1
 
 		if("ready")
@@ -275,8 +275,7 @@
 	if(!choice)
 		return
 
-	var/datum/faction/faction = GLOB.faction_datum[SSticker.mode.factions_pool[choice]]
-	faction.get_join_status(src)
+	GLOB.faction_datum[SSticker.mode.factions_pool[choice]].get_join_status(src)
 
 
 /mob/new_player/proc/create_character()
@@ -326,8 +325,8 @@
 	return new_character
 
 /mob/new_player/proc/ViewManifest()
-	var/list/factions = list()
-	for(var/faction_to_get in FACTION_LIST_HUMANOID)
+	var/list/datum/faction/factions = list()
+	for(var/faction_to_get in FACTION_LIST_ALL)
 		var/datum/faction/faction_to_set = GLOB.faction_datum[faction_to_get]
 		if(!length(faction_to_set.totalMobs))
 			continue
@@ -337,7 +336,7 @@
 	if(!choice)
 		return FALSE
 
-	return GLOB.faction_datum[faction_to_get].get_faction_info(src)
+	return factions[choice].tgui_interact(src)
 
 /mob/new_player/proc/ViewHiveLeaders()
 	if(!GLOB.hive_leaders_tgui)

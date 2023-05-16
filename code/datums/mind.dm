@@ -13,25 +13,11 @@
 	//put this here for easier tracking ingame
 	var/datum/money_account/initial_account
 
-	// List of objectives you have knowledge about
-	var/datum/faction_task_ui/task_interface
-	var/datum/objective_memory_storage/objective_memory
-	var/datum/objective_memory_interface/objective_interface
-	var/datum/research_objective_memory_interface/research_objective_interface
-
 /datum/mind/New(key, ckey)
 	src.key = key
 	src.ckey = ckey
-	task_interface = new()
-	objective_memory = new()
-	objective_interface = new()
-	research_objective_interface = new()
 
 /datum/mind/Destroy()
-	QDEL_NULL(task_interface)
-	QDEL_NULL(objective_memory)
-	QDEL_NULL(objective_interface)
-	QDEL_NULL(research_objective_interface)
 	return ..()
 
 /datum/mind/proc/transfer_to(mob/living/new_character, force = FALSE)
@@ -110,26 +96,3 @@
 		. = 1 //successfully created a new mind
 	if(!mind.name) mind.name = real_name
 	mind.current = src
-
-//Faction tasks
-/datum/mind/proc/view_task_interface(mob/recipient)
-	if(!task_interface)
-		return
-
-	task_interface.tgui_interact(current)
-
-//this is an objective that the player has just completed
-//and we want to store the objective clues generated based on it -spookydonut
-/datum/mind/proc/store_objective(datum/cm_objective/O)
-	if(objective_memory)
-		objective_memory.store_objective(O)
-
-/datum/mind/proc/view_objective_memories(mob/recipient)
-	if(!objective_memory)
-		return
-
-	objective_memory.synchronize_objectives()
-	objective_interface.tgui_interact(current)
-
-/datum/mind/proc/view_research_objective_memories(mob/recipient)
-	research_objective_interface.tgui_interact(current)
