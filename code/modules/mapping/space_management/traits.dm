@@ -61,7 +61,7 @@
 	if(!T)
 		return
 	var/offset = level_trait(T.z, ZTRAIT_UP)
-	if (!offset)
+	if(!offset)
 		return
 	return locate(T.x, T.y, T.z + offset)
 

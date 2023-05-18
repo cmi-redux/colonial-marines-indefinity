@@ -146,17 +146,17 @@
 /obj/item/projectile/Crossed(atom/movable/AM) //A mob moving on a tile with a projectile is hit by it.
 	. = ..()
 	if(AM && !QDELETED(src) && !(AM in permutated) && fire_ready)
+		permutated |= AM
 		if(scan_a_turf(get_turf(AM)))
 			SSprojectiles.stop_projectile(src)
 			qdel(src)
-		permutated |= AM //Don't want to hit them again.
 
 /obj/item/projectile/Collided(atom/movable/AM)
 	if(AM && !QDELETED(src) && !(AM in permutated) && fire_ready)
+		permutated |= AM
 		if(scan_a_turf(get_turf(AM)))
 			SSprojectiles.stop_projectile(src)
 			qdel(src)
-		permutated |= AM //Don't want to hit them again.
 
 /obj/item/projectile/proc/apply_bullet_trait(list/entry)
 	bullet_traits += list(entry.Copy())

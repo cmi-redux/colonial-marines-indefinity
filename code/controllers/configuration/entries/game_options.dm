@@ -1,10 +1,3 @@
-/datum/config_entry/keyed_list/probability
-	key_mode = KEY_MODE_TEXT
-	value_mode = VALUE_MODE_NUM
-
-/datum/config_entry/keyed_list/probability/ValidateListEntry(key_name)
-	return key_name in config.modes
-
 /datum/config_entry/keyed_list/max_pop
 	key_mode = KEY_MODE_TEXT
 	value_mode = VALUE_MODE_NUM
@@ -22,9 +15,6 @@
 
 /datum/config_entry/flag/emojis
 	config_entry_value = TRUE
-
-/datum/config_entry/string/alert_delta
-	config_entry_value = "Destruction of the station is imminent. All crew are instructed to obey all instructions given by heads of staff. Any violations of these orders can be punished by death. This is not a drill."
 
 /datum/config_entry/number/revival_brain_life
 	config_entry_value = -1

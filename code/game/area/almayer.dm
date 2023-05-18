@@ -15,6 +15,10 @@
 	ambience_exterior = AMBIENCE_ALMAYER
 	ceiling_muffle = FALSE
 
+/area/almayer/Initialize(mapload, ...)
+	. = ..()
+	GLOB.ship_areas += src
+
 /area/shuttle/almayer/elevator_maintenance/upperdeck
 	name = "\improper Maintenance Elevator"
 	icon_state = "shuttle"

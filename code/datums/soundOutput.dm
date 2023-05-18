@@ -24,15 +24,14 @@
 	S.falloff = T.falloff
 	S.status = T.status
 	S.echo = T.echo
-	var/list/echo_list = new(18)
 	if(T.x && T.y && T.z)
 		var/turf/owner_turf = get_turf(owner.mob)
 		if(owner_turf)
 			// We're in an interior and sound came from outside
 			if(SSinterior.in_interior(owner_turf) && owner_turf.z != T.z)
-				var/datum/interior/VI = SSinterior.get_interior_by_coords(owner_turf.x, owner_turf.y, owner_turf.z)
-				if(VI && VI.exterior)
-					var/turf/candidate = get_turf(VI.exterior)
+				var/datum/interior/interior = SSinterior.get_interior_by_coords(owner_turf.x, owner_turf.y, owner_turf.z)
+				if(interior && interior.exterior)
+					var/turf/candidate = get_turf(interior.exterior)
 					if(candidate.z != T.z)
 						return
 					S.falloff /= 2
@@ -48,15 +47,13 @@
 		S.y += T.y_s_offset
 		S.x += T.x_s_offset
 
-		echo_list[ECHO_DIRECT] = abs(T.z - owner_turf.z) * ZSOUND_DRYLOSS_PER_Z
+		S.echo[ECHO_DIRECT] = abs(T.z - owner_turf.z) * ZSOUND_DRYLOSS_PER_Z
 
 	if(owner.mob.ear_deaf > 0)
 		S.status |= SOUND_MUTE
 
 	if(owner.mob.sound_environment_override != SOUND_ENVIRONMENT_NONE)
 		S.environment = owner.mob.sound_environment_override
-
-	S.echo = echo_list
 
 	sound_to(owner,S)
 
@@ -84,8 +81,8 @@
 //			else
 //				soundscape_playlist += SCAPE_PL_BACKGROUND_SOUNDS_NIGHT_SUMMER
 
-	var/sound/S = sound(null,1,0,SOUND_CHANNEL_AMBIENCE)
-
+	var/sound/S = sound(null, 1, 0, SOUND_CHANNEL_AMBIENCE)
+	var/list/echo_list = new(18)
 	if(ambience == target_ambience)
 		if(!force_update)
 			return
@@ -100,18 +97,10 @@
 
 	if(target_area)
 		S.environment = target_area.sound_environment
-		var/turf/turf = SSmapping.get_turf_above(get_turf(owner.mob))
-		var/muffle
-		if(istype(turf, /turf/open/openspace) || istype(turf, /turf/open/floor/glass))
-			muffle = 0
-		if(istype(turf, /turf/open/floor/roof/metal) || istype(turf, /turf/open/floor/roof/sheet) || istype(turf, /turf/open/floor/roof/ship_hull))
-			muffle = MUFFLE_HIGH
-		if(istype(turf, /turf/open) || istype(turf, /turf/closed))
-			muffle = MUFFLE_MEDIUM
-		else
-			S.volume = 0
-		muffle += target_area.base_muffle
-		S.echo = list(muffle)
+	echo_list[ECHO_ROOM] = get_muffle(target_area, SSmapping.get_turf_above(get_turf(owner.mob)))
+	if(!echo_list[ECHO_ROOM])
+		S.volume = 0
+	S.echo = echo_list
 	sound_to(owner, S)
 
 

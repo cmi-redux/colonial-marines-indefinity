@@ -23,7 +23,7 @@
 
 //											SEND REPLACE
 #define LANGUAGE_WELC_ENG					"Welcome to"
-#define LANGUAGE_WELC_RU					"Добропожаловать в"
+#define LANGUAGE_WELC_RU					"Добро пожаловать в"
 #define LANGUAGE_WELCOME_ENG				"Welcome to pregame lobby"
 #define LANGUAGE_WELCOME_RU					"Добро пожаловать в перед игровое лобби"
 #define LANGUAGE_WELCOME_SET_ENG			"Please, setup your character and ready up. Game start in"

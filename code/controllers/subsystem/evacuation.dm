@@ -202,8 +202,8 @@ SUBSYSTEM_DEF(evacuation)
 					escape_shuttle.evac_launch() //May or may not launch, will do everything on its own.
 					sleep(5 SECONDS) //Sleeps 5 seconds each launch.
 
-			var/obj/docking_port/mobile/lifeboat/L1 = SSshuttle.getShuttle("lifeboat1")
-			var/obj/docking_port/mobile/lifeboat/L2 = SSshuttle.getShuttle("lifeboat2")
+			var/obj/docking_port/mobile/lifeboat/L1 = SSshuttle.getShuttle(MOBILE_SHUTTLE_LIFEBOAT_PORT)
+			var/obj/docking_port/mobile/lifeboat/L2 = SSshuttle.getShuttle(MOBILE_SHUTTLE_LIFEBOAT_STARBOARD)
 			while(L1.available || L2.available)
 				sleep(5 SECONDS) //Sleep 5 more seconds to make sure everyone had a chance to leave. And wait for lifeboats
 

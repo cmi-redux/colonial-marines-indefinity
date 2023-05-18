@@ -63,7 +63,7 @@
 	output += "</div>"
 	if(refresh)
 		close_browser(src, "lobby")
-	show_browser(src, output, client.auto_lang(LANGUAGE_LOBBY), "lobby", "size=240x[round_start ? 360 : 500];can_close=0;can_minimize=0")
+	show_browser(src, output, client.auto_lang(LANGUAGE_LOBBY), "lobby", "size=240x500;can_close=0;can_minimize=0")
 	return
 
 /mob/new_player/Topic(href, href_list[])

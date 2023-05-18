@@ -44,7 +44,7 @@
 	output += "</div>"
 	if(refresh)
 		close_browser(src, "que")
-	show_browser(src, output, client.auto_lang(LANGUAGE_QUEUE), "que", "size=240x300;can_close=0;can_minimize=0")
+	show_browser(src, output, client.auto_lang(LANGUAGE_QUEUE), "que", "size=240x500;can_close=0;can_minimize=0")
 	return
 
 /mob/new_player/proc/lobby()

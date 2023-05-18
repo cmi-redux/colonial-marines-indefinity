@@ -42,7 +42,7 @@
 	var/list/playtime_data
 	var/client/owning_client
 
-BSQL_PROTECT_DATUM(/datum/entity/player)
+//BSQL_PROTECT_DATUM(/datum/entity/player)
 
 /datum/entity_meta/player
 	entity_type = /datum/entity/player
@@ -408,7 +408,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 //DISCORD//
 /datum/entity/player/proc/load_discord(list/datum/entity/discord/_discord)
 	discord_loaded = TRUE
-	if(_discord)
+	if(length(_discord))
 		discord = pick(_discord)
 		discord.sync()
 

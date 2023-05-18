@@ -8,39 +8,38 @@
 BSQL_PROTECT_DATUM(/datum/entity/discord)
 
 /datum/entity_meta/discord
-    entity_type = /datum/entity/discord
-    table_name = "player_discord"
-    field_types = list("player_id" = DB_FIELDTYPE_BIGINT,
-    "discord_id" = DB_FIELDTYPE_STRING_LARGE,
-    "discord_key" = DB_FIELDTYPE_STRING_LARGE)
-    key_field = "player_id"
+	entity_type = /datum/entity/discord
+	table_name = "player_discord"
+	field_types = list(
+	"player_id" = DB_FIELDTYPE_BIGINT,
+	"discord_id" = DB_FIELDTYPE_STRING_LARGE,
+	"discord_key" = DB_FIELDTYPE_STRING_LARGE,
+	)
 
 /datum/entity_link/player_to_discord
-    parent_entity = /datum/entity/player
-    child_entity = /datum/entity/discord
-    child_field = "player_id"
+	parent_entity = /datum/entity/player
+	child_entity = /datum/entity/discord
+	child_field = "player_id"
 
-    parent_name = "player"
-    child_name = "discord"
+	parent_name = "player"
+	child_name = "discord"
 
 /datum/view_record/discord_view
-    var/player_id
-    var/discord_view_id
-    var/discord_id
-    var/discord_key
-    var/ckey
+	var/player_id
+	var/discord_id
+	var/discord_key
+	var/ckey
 
 /datum/entity_view_meta/discord_view
-    root_record_type = /datum/entity/discord
-    destination_entity = /datum/view_record/discord_view
-    fields = list(
-        "player_id",
-        "discord_id",
-        "discord_key",
-        "discord_view_id" = "id",
-        "ckey" = "player.ckey"
-    )
-    order_by = list("discord_view_id" = DB_ORDER_BY_DESC)
+	root_record_type = /datum/entity/discord
+	destination_entity = /datum/view_record/discord_view
+	fields = list(
+		"player_id",
+		"discord_id",
+		"discord_key",
+		"ckey" = "player.ckey",
+	)
+	order_by = list("ckey" = DB_ORDER_BY_DESC)
 
 /datum/entity/discord/proc/show_discord(mob/user, update_data = TRUE)
 	if(update_data)

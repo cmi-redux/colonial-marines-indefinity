@@ -25,14 +25,14 @@ export const FactionStatus = (props, context) => {
         <FactionCollapsible
           title="General Faction Information"
           faction_color={faction_color}>
-          <Stack direction="column" align="center">
+          <Box direction="column" align="center">
             <Box>
               <h3 className="whiteTitle">{faction_desc}</h3>
             </Box>
             <Box>
               <i>Orders: {faction_orders}</i>
             </Box>
-          </Stack>
+          </Box>
         </FactionCollapsible>
         <Divider />
         <FactionCollapsible

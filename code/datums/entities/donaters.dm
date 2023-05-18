@@ -1,4 +1,5 @@
 /datum/entity/donater
+	var/player_id
 	var/ckey
 	var/rank
 
@@ -8,6 +9,7 @@ BSQL_PROTECT_DATUM(/datum/entity/donater)
 	entity_type = /datum/entity/donater
 	table_name = "donaters"
 	field_types = list(
+	"player_id" = DB_FIELDTYPE_BIGINT,
 	"ckey" = DB_FIELDTYPE_STRING_MAX,
 	"rank" = DB_FIELDTYPE_STRING_MAX,
 	)
@@ -20,10 +22,11 @@ BSQL_PROTECT_DATUM(/datum/entity/donater)
 	root_record_type = /datum/entity/donater
 	destination_entity = /datum/view_record/donater_view
 	fields = list(
+		"player_id",
 		"ckey",
 		"rank",
 	)
-	order_by = list("ckey" = DB_ORDER_BY_ASC)
+	order_by = list("ckey" = DB_ORDER_BY_DESC)
 
 
 /datum/entity/skin
@@ -42,7 +45,6 @@ BSQL_PROTECT_DATUM(/datum/entity/skin)
 		"skin_name" = DB_FIELDTYPE_STRING_LARGE,
 		"skins_db" = DB_FIELDTYPE_STRING_MAX,
 	)
-	key_field = "player_id"
 
 /datum/entity_meta/skin/map(datum/entity/skin/ET, list/values)
 	..()
@@ -53,31 +55,6 @@ BSQL_PROTECT_DATUM(/datum/entity/skin)
 	. = ..()
 	if(length(ET.skin))
 		.["skins_db"] = json_encode(ET.skin)
-
-/datum/entity_link/player_to_skin
-	parent_entity = /datum/entity/player
-	child_entity = /datum/entity/skin
-	child_field = "player_id"
-
-	parent_name = "player"
-	child_name = "skin"
-
-/datum/view_record/skins
-	var/player_id
-	var/skin_name
-	var/skins_db
-	var/list/skin = list()
-
-/datum/entity_view_meta/skins_view
-	root_record_type = /datum/entity/skin
-	destination_entity = /datum/view_record/skins
-	fields = list(
-		"player_id",
-		"skin_name",
-		"skins_db",
-	)
-	order_by = list("skin_name" = DB_ORDER_BY_DESC)
-
 
 /proc/patron_tier_decorated(tier)
 	if(tier == DONATER_NONE)
@@ -94,6 +71,9 @@ BSQL_PROTECT_DATUM(/datum/entity/skin)
 
 /datum/donator_info/New(datum/entity/player/owner_datum)
 	player_datum = owner_datum
+	load_info()
+
+/datum/donator_info/proc/load_info()
 	DB_FILTER(/datum/entity/skin, DB_COMP("player_id", DB_EQUALS, player_datum.id), CALLBACK(src, TYPE_PROC_REF(/datum/donator_info, load_skins)))
 
 /datum/donator_info/proc/load_skins(list/datum/entity/skin/skins)

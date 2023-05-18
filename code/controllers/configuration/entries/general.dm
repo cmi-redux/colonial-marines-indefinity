@@ -9,8 +9,6 @@ Basics, the most important.
 
 /datum/config_entry/string/title //The title of the main window
 
-/datum/config_entry/string/hostedby // Sets the hosted by name on unix platforms.
-
 /datum/config_entry/string/resource_url
 
 /datum/config_entry/string/new_round_alert_channel

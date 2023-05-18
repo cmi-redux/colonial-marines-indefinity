@@ -5,7 +5,7 @@
 	for(var/mob/living/carbon/human/human in SSquadtree.players_in_range(zone, z))
 		spawn(rand(1, 20))
 			if(prob(50))
-				human << sound('sound/effects/Heart Beat.ogg', repeat = rand(1, 60), wait = 0, volume = 100, channel = 2) //play on same channel as ambience
+				human << sound('sound/effects/Heart Beat.ogg', repeat = rand(20, 120), wait = 0, volume = 100, channel = 2) //play on same channel as ambience
 				human.emote("scream")
 
 	if(stat != DEAD)
