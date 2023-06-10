@@ -83,10 +83,10 @@
 	template.falloff = falloff
 	template.volume = vol
 	template.volume_cat = vol_cat
-	for(var/i = 1 to length(echo))
-		if(!echo[i])
+	for(var/pos = 1 to length(echo))
+		if(!echo[pos])
 			continue
-		template.echo[i] = echo[i]
+		template.echo[pos] = echo[pos]
 
 	template.y_s_offset = y_s_offset
 	template.x_s_offset = x_s_offset
@@ -127,6 +127,7 @@
 				template.z = new_turf_source.z
 			else
 				sound_range = 0
+
 	// Range for 'nearby interiors' aswell
 	for(var/datum/interior/interior in SSinterior.interiors)
 		if(interior?.ready && interior.exterior?.z == turf_source.z && get_dist(interior.exterior, turf_source) <= sound_range)
@@ -137,14 +138,16 @@
 
 //This is the replacement for playsound_local. Use this for sending sounds directly to a client
 /proc/playsound_client(client/C, soundin, atom/origin, vol = 100, random_freq, vol_cat = VOLUME_SFX, channel = 0, status, list/echo, y_s_offset, x_s_offset)
-	if(!istype(C) || !C.soundOutput) return FALSE
+	if(!istype(C) || !C.soundOutput)
+		return FALSE
+
 	var/datum/sound_template/template = new()
 	if(origin)
-		var/turf/T = get_turf(origin)
-		if(T)
-			template.x = T.x
-			template.y = T.y
-			template.z = T.z
+		var/turf/turf = get_turf(origin)
+		if(turf)
+			template.x = turf.x
+			template.y = turf.y
+			template.z = turf.z
 
 	var/sound/sound = soundin
 	if(istype(sound))
@@ -161,10 +164,10 @@
 	template.volume_cat = vol_cat
 	template.channel = channel
 	template.status = status
-	for(var/i = 1 to length(echo))
-		if(!echo[i])
+	for(var/pos = 1 to length(echo))
+		if(!echo[pos])
 			continue
-		template.echo[i] = echo[i]
+		template.echo[pos] = echo[pos]
 
 	template.y_s_offset = y_s_offset
 	template.x_s_offset = x_s_offset
@@ -188,21 +191,23 @@
 	template.channel = channel
 	template.status = status
 	template.volume_cat = vol_cat
-	for(var/i = 1 to length(echo))
-		if(!echo[i])
+	for(var/pos = 1 to length(echo))
+		if(!echo[pos])
 			continue
-		template.echo[i] = echo[i]
+		template.echo[pos] = echo[pos]
 
 	var/list/hearers = list()
 	for(var/mob/living/M in A.contents)
 		if(!M || !M.client || !M.client.soundOutput)
 			continue
 		hearers += M.client
+
 	SSsound.queue(template, hearers)
 
 /client/proc/playtitlemusic()
 	if(!SSticker?.login_music)
 		return FALSE
+
 	if(prefs && prefs.toggles_sound & SOUND_LOBBY)
 		playsound_client(src, SSticker.login_music, null, 70, 0, VOLUME_LOBBY, SOUND_CHANNEL_LOBBY, SOUND_STREAM)
 
@@ -220,10 +225,10 @@
 	template.volume = volume
 	template.channel = SOUND_CHANNEL_Z
 	template.volume_cat = vol_cat
-	for(var/i = 1 to length(echo))
-		if(!echo[i])
+	for(var/pos = 1 to length(echo))
+		if(!echo[pos])
 			continue
-		template.echo[i] = echo[i]
+		template.echo[pos] = echo[pos]
 
 	template.y_s_offset = y_s_offset
 	template.x_s_offset = x_s_offset
