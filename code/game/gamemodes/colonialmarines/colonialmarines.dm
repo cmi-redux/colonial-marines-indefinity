@@ -236,7 +236,7 @@
 
 		if(next_stat_check <= world.time)
 			add_current_round_status_to_end_results((next_stat_check ? "" : "Round Start"))
-			next_stat_check = world.time + 10 MINUTES
+			next_stat_check = world.time + 30 MINUTES
 
 /**
  * Primes and fires off the explodey-pipes during hijack.
