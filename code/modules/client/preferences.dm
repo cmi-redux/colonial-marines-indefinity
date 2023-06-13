@@ -54,6 +54,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/be_special = 0 // Special role selection
 	var/toggle_prefs = TOGGLE_MIDDLE_MOUSE_CLICK|TOGGLE_DIRECTIONAL_ATTACK|TOGGLE_MEMBER_PUBLIC|TOGGLE_AMBIENT_OCCLUSION|TOGGLE_VEND_ITEM_TO_HAND // flags in #define/mode.dm
 	var/auto_fit_viewport = FALSE
+	var/adaptive_zoom = 0
 	var/UI_style = "midnight"
 	var/toggles_admin = TOGGLES_ADMIN_DEFAULT
 	var/toggles_chat = TOGGLES_CHAT_DEFAULT
@@ -100,12 +101,11 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/predator_flavor_text = ""
 	//CO-specific preferences
 	var/commander_sidearm = "Mateba"
+	var/affiliation = "Unaligned"
 	//SEA specific preferences
 
 	///holds our preferred job options for jobs
 	var/pref_special_job_options = list()
-
-	var/preferred_survivor_variant = ANY_SURVIVOR
 
 	//WL Council preferences.
 	var/yautja_status = WHITELIST_NORMAL
@@ -125,6 +125,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/underwear = "Boxers (Camo Conforming)" //underwear type
 	var/undershirt = "Undershirt (Tan)" //undershirt type
 	var/backbag = 2 //backpack type
+	var/preferred_armor = "Random" //preferred armor type (from their primary prep vendor)
 
 	var/h_style = "Crewcut" //Hair type
 	var/r_hair = 0 //Hair color
@@ -374,6 +375,8 @@ var/const/MAX_SAVE_SLOTS = 10
 
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_BACKPACK)]:</b> <a href ='?_src_=prefs;preference=bag;task=input'><b>[backbaglist[backbag]]</b></a><br>"
 
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ARMOR)]:</b> <a href ='?_src_=prefs;preference=prefarmor;task=input'><b>[preferred_armor]</b></a><br>"
+
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_SHOW_GEAR)]:</b> <a href ='?_src_=prefs;preference=toggle_job_gear'><b>[show_job_gear ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_BACKGROUND)]:</b> <a href ='?_src_=prefs;preference=cycle_bg'><b>[user.client.auto_lang(LANGUAGE_PREF_CYCLE_BACK)]</b></a><br>"
 
@@ -386,7 +389,7 @@ var/const/MAX_SAVE_SLOTS = 10
 			if(length(gear))
 				dat += "<br>"
 				for(var/i = 1; i <= gear.len; i++)
-					var/datum/gear/G = gear_datums[gear[i]]
+					var/datum/gear/G = gear_datums_by_name[gear[i]]
 					if(G)
 						total_cost += G.cost
 						dat += "[gear[i]] ([G.cost]  [user.client.auto_lang(LANGUAGE_POINTS)]) <a href='byond://?src=\ref[user];preference=loadout;task=remove;gear=[i]'><b>[user.client.auto_lang(LANGUAGE_REMOVE)]</b></a><br>"
@@ -478,6 +481,7 @@ var/const/MAX_SAVE_SLOTS = 10
 				dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_COM_SET)]:</u></b></h2>"
 				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_COM_WL)]:</b> <a href='?_src_=prefs;preference=commander_status;task=input'><b>[commander_status]</b></a><br>"
 				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_COM_SIDE_ARM)]:</b> <a href='?_src_=prefs;preference=co_sidearm;task=input'><b>[commander_sidearm]</b></a><br>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_COM_AFL)]:</b> <a href='?_src_=prefs;preference=co_affiliation;task=input'><b>[affiliation]</b></a><br>"
 				dat += "</div>"
 			else
 				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_NO_WL)]</b>"
@@ -571,6 +575,7 @@ var/const/MAX_SAVE_SLOTS = 10
 			dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_GAME_SET)]:</u></b></h2>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_AO)]:</b> <a href='?_src_=prefs;preference=ambientocclusion'><b>[toggle_prefs & TOGGLE_AMBIENT_OCCLUSION ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_FIT_VIEW)]:</b> <a href='?_src_=prefs;preference=auto_fit_viewport'>[auto_fit_viewport ? user.client.auto_lang(LANGUAGE_PREF_AUTO) : user.client.auto_lang(LANGUAGE_PREF_MANUAL)]</a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ZOOM)]:</b> <a href='?_src_=prefs;preference=adaptive_zoom'>[adaptive_zoom ? "[adaptive_zoom * 2]x" : user.client.auto_lang(LANGUAGE_DISABLED)]</a><br>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_WINDOW_MODE)]:</b> <a href='?_src_=prefs;preference=tgui_fancy'><b>[(tgui_fancy) ? user.client.auto_lang(LANGUAGE_PREF_FANCY) : user.client.auto_lang(LANGUAGE_PREF_COMPATIBLE)]</b></a><br>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_WINDOW_PLACE)]:</b> <a href='?_src_=prefs;preference=tgui_lock'><b>[(tgui_lock) ? user.client.auto_lang(LANGUAGE_PREF_PRIMARYM) : user.client.auto_lang(LANGUAGE_PREF_FREE_PLACE)]</b></a><br>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_MIDIS)]:</b> <a href='?_src_=prefs;preference=hear_midis'><b>[(toggles_sound & SOUND_MIDI) ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
@@ -628,11 +633,6 @@ var/const/MAX_SAVE_SLOTS = 10
 			if(SSticker.role_authority.roles_whitelist[user.ckey] & WHITELIST_SYNTHETIC)
 				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ERT_SYNTH)]:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_SYNTH]'><b>[toggles_ert & PLAY_SYNTH ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ERT_MISC)]:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_MISC]'><b>[toggles_ert & PLAY_MISC ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
-			dat += "</div>"
-
-			dat += "<div id='column2'>"
-			dat += "<h2><b><u>Survivor Settings:</u></b></h2>"
-			dat += "<b>Preferred Survivor Variant:</b> <a href='?_src_=prefs;preference=preferred_survivor_variant;task=input'><b>[preferred_survivor_variant]</b></a>"
 			dat += "</div>"
 
 	dat += "</div></body>"
@@ -694,10 +694,12 @@ var/const/MAX_SAVE_SLOTS = 10
 		HTML += "<b>[job.disp_title]</b></td><td width='10%' align='center'>"
 
 		if(job.job_options)
-			if(!pref_special_job_options || !pref_special_job_options[role_name])
+			if(pref_special_job_options)
+				pref_special_job_options[role_name] = sanitize_inlist(pref_special_job_options[role_name], job.job_options, job.job_options[1])
+			else
 				pref_special_job_options[role_name] = job.job_options[1]
 
-			var/txt = pref_special_job_options[role_name]
+			var/txt = job.job_options[pref_special_job_options[role_name]]
 			HTML += "<a href='?_src_=prefs;preference=special_job_select;task=input;text=[job.title]'><b>[txt]</b></a>"
 
 		HTML += "</td><td width='50%'>"
@@ -882,36 +884,29 @@ var/const/MAX_SAVE_SLOTS = 10
 		if("loadout")
 			switch(href_list["task"])
 				if("input")
+					var/gear_category = tgui_input_list(user, "Select gear category: ", "Gear to add", gear_datums_by_category)
+					if(!gear_category)
+						return
+					var/choice = tgui_input_list(user, "Select gear to add: ", gear_category, gear_datums_by_category[gear_category])
+					if(!choice)
+						return
 
-					var/list/valid_gear_choices = list()
+					var/total_cost = 0
+					var/datum/gear/G
+					if(isnull(gear) || !islist(gear))
+						gear = list()
+					if(gear.len)
+						for(var/gear_name in gear)
+							G = gear_datums_by_name[gear_name]
+							total_cost += G?.cost
 
-					for(var/gear_name in gear_datums)
-						var/datum/gear/G = gear_datums[gear_name]
-						if(G.whitelisted && !is_alien_whitelisted(user, G.whitelisted))
-							continue
-						valid_gear_choices += gear_name
-
-					var/choice = tgui_input_list(user, "Select gear to add: ", "Gear to add", valid_gear_choices)
-
-					if(choice && gear_datums[choice])
-
-						var/total_cost = 0
-
-						if(isnull(gear) || !islist(gear)) gear = list()
-
-						if(gear && gear.len)
-							for(var/gear_name in gear)
-								if(gear_datums[gear_name])
-									var/datum/gear/G = gear_datums[gear_name]
-									total_cost += G.cost
-
-						var/datum/gear/C = gear_datums[choice]
-						total_cost += C.cost
-						if(C && total_cost <= MAX_GEAR_COST)
-							gear += choice
-							to_chat(user, SPAN_NOTICE("Added \the '[choice]' for [C.cost] points ([MAX_GEAR_COST - total_cost] points remaining)."))
-						else
-							to_chat(user, SPAN_WARNING("Adding \the '[choice]' will exceed the maximum loadout cost of [MAX_GEAR_COST] points."))
+					G = gear_datums_by_category[gear_category][choice]
+					total_cost += G.cost
+					if(total_cost <= MAX_GEAR_COST)
+						gear += G.display_name
+						to_chat(user, SPAN_NOTICE("Added \the '[G.display_name]' for [G.cost] points ([MAX_GEAR_COST - total_cost] points remaining)."))
+					else
+						to_chat(user, SPAN_WARNING("Adding \the '[choice]' will exceed the maximum loadout cost of [MAX_GEAR_COST] points."))
 
 				if("remove")
 					var/i_remove = text2num(href_list["gear"])
@@ -1222,6 +1217,13 @@ var/const/MAX_SAVE_SLOTS = 10
 						return
 					commander_sidearm = new_co_sidearm
 
+				if("co_affiliation")
+					var/new_co_affiliation = tgui_input_list(user, "Choose your faction affiliation.", "Commanding Officer's Affiliation", FACTION_ALLEGIANCE_USCM_COMMANDER)
+					if(!new_co_affiliation)
+						return
+					affiliation = new_co_affiliation
+
+
 				if("yautja_status")
 					var/list/options = list("Normal" = WHITELIST_NORMAL)
 
@@ -1494,6 +1496,11 @@ var/const/MAX_SAVE_SLOTS = 10
 					if(new_pref_squad)
 						preferred_squad = new_pref_squad
 
+				if("prefarmor")
+					var/new_pref_armor = tgui_input_list(user, "Choose your character's default style of armor:", "Character Preferences", GLOB.armor_style_list)
+					if(new_pref_armor)
+						preferred_armor = new_pref_armor
+
 				if("limbs")
 					var/limb_name = tgui_input_list(user, "Which limb do you want to change?", list("Left Leg","Right Leg","Left Arm","Right Arm","Left Foot","Right Foot","Left Hand","Right Hand"))
 					if(!limb_name) return
@@ -1582,12 +1589,6 @@ var/const/MAX_SAVE_SLOTS = 10
 							religion = strip_html(raw_choice) // This only updates itself in the UI when another change is made, eg. save slot or changing other char settings.
 						return
 					religion = choice
-
-				if("preferred_survivor_variant")
-					var/new_preferred_survivor_variant = tgui_input_list(user, "Choose your preferred survivor variant:", "Preferred Survivor Variant", SURVIVOR_VARIANT_LIST)
-					if(!new_preferred_survivor_variant)
-						return
-					preferred_survivor_variant = new_preferred_survivor_variant
 
 				if("special_job_select")
 					var/datum/job/job = SSticker.role_authority.roles_by_name[href_list["text"]]
@@ -1749,6 +1750,12 @@ var/const/MAX_SAVE_SLOTS = 10
 					auto_fit_viewport = !auto_fit_viewport
 					if(auto_fit_viewport && owner)
 						owner.fit_viewport()
+
+				if("adaptive_zoom")
+					adaptive_zoom += 1
+					if(adaptive_zoom == 3)
+						adaptive_zoom = 0
+					owner?.adaptive_zoom()
 
 				if("inputstyle")
 					var/result = tgui_alert(user, "Which input style do you want?", "Input Style", list("Modern", "Legacy"))

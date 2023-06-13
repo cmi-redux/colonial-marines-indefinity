@@ -243,7 +243,7 @@
 		hijack(xeno)
 		return
 
-/obj/structure/machinery/computer/shuttle/dropship/flight/proc/hijack(mob/user)
+/obj/structure/machinery/computer/shuttle/dropship/flight/proc/hijack(mob/user, force = FALSE)
 
 	// select crash location
 	var/turf/source_turf = get_turf(src)
@@ -251,11 +251,11 @@
 	var/result = tgui_input_list(user, "Where to 'land'?", "Dropship Hijack", almayer_ship_sections , timeout = 10 SECONDS)
 	if(!result)
 		return
-	if(result)
-		if(!user.Adjacent(source_turf))
-			return
+	if(!user.Adjacent(source_turf) && !force)
+		return
 	if(dropship.is_hijacked)
 		return
+
 	var/datum/dropship_hijack/almayer/hijack = new()
 	dropship.hijack = hijack
 	hijack.shuttle = dropship

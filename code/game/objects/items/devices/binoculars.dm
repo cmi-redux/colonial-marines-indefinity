@@ -327,8 +327,7 @@
 		var/obj/effect/overlay/temp/laser_target/laser_target = new(target_turf, las_name, user, tracking_id)
 		laser = laser_target
 
-		var/turf/userloc = get_turf(user)
-		msg_admin_niche("Laser target [las_name] has been designated by [key_name(user, 1)] at ([target_turf.x], [target_turf.y], [target_turf.z]). (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[userloc.x];Y=[userloc.y];Z=[userloc.z]'>JMP SRC</a>) (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[target_turf.x];Y=[target_turf.y];Z=[target_turf.z]'>JMP LOC</a>)")
+		msg_admin_niche("Laser target [las_name] has been designated by [key_name(user, 1)] at ([target_turf.x], [target_turf.y], [target_turf.z]). [ADMIN_JMP(get_turf(user))]")
 		log_game("Laser target [las_name] has been designated by [key_name(user, 1)] at ([target_turf.x], [target_turf.y], [target_turf.z]).")
 
 		playsound(src, 'sound/effects/binoctarget.ogg', 35)
@@ -429,7 +428,6 @@
 	if(!check_can_use(target))
 		return
 
-	COOLDOWN_START(designator, spotting_cooldown, designator.spotting_cooldown_delay)
 	human.face_atom(target)
 
 	///Add a decisecond to the default 1.5 seconds for each two tiles to hit.
@@ -464,6 +462,7 @@
 		qdel(laser_beam)
 		REMOVE_TRAIT(target, TRAIT_SPOTTER_LAZED, TRAIT_SOURCE_EQUIPMENT(designator.tracking_id))
 		return
+
 	target.overlays -= I
 	designator.is_spotting = FALSE
 	designator.update_icon()
@@ -485,6 +484,7 @@
 		to_chat(human, SPAN_WARNING("\The [target] is too close to laze!"))
 		return FALSE
 
+	COOLDOWN_START(designator, spotting_cooldown, designator.spotting_cooldown_delay)
 	return TRUE
 
 //ADVANCED LASER DESIGNATER, was used for WO.
@@ -595,7 +595,7 @@
 		return 0
 
 	to_chat(user, SPAN_BOLDNOTICE(" You start lasing the target area."))
-	message_admins("ALERT: [user] ([user.key]) IS CURRENTLY LASING A TARGET: CURRENT MODE [las_mode], at ([target_turf.x],[target_turf.y],[target_turf.z]) (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[target_turf.x];Y=[target_turf.y];Z=[target_turf.z]'>JMP</a>).")
+	message_admins("ALERT: [user] ([user.key]) IS CURRENTLY LASING A TARGET: CURRENT MODE [las_mode], at ([target_turf.x],[target_turf.y],[Ttarget_turf.z]) [ADMIN_JMP(target_turf)].") // Alert all the admins to this asshole. Added the jmp command from the explosion code.
 	var/obj/effect/las_target/lasertarget = new(target_turf.loc, faction)
 	if(las_mode == 1 && !las_r) // Heres our IR bomb code.
 		lasing = TRUE

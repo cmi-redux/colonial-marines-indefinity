@@ -51,6 +51,8 @@
 
 	resin_build_order = GLOB.resin_build_order_queen
 
+	royal_caste = TRUE
+
 /proc/update_living_queens() // needed to update when you change a queen to a different hive
 	outer_loop:
 		for(var/faction_to_get in FACTION_LIST_ALL)

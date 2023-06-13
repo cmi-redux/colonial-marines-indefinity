@@ -14,6 +14,9 @@
 #define SLOWDOWN_ARMOR_HEAVY		1
 #define SLOWDOWN_ARMOR_VERY_HEAVY	1.15
 
+///This is how long you must wait after throwing something to throw again
+#define THROW_DELAY (0.4 SECONDS)
+
 //Explosion level thresholds. Upper bounds
 #define EXPLOSION_THRESHOLD_VLOW 50
 #define EXPLOSION_THRESHOLD_LOW 100

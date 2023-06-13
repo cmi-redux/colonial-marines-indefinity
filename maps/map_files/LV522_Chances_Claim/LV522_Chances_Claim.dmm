@@ -679,7 +679,6 @@
 /area/lv522/indoors/a_block/security)
 "att" = (
 /obj/structure/prop/invuln/lifeboat_hatch_placeholder/terminal{
-	icon_state = "closed";
 	layer = 2.1
 	},
 /obj/structure/barricade/handrail{
@@ -5253,7 +5252,6 @@
 /area/lv522/atmos/north_command_centre)
 "cRT" = (
 /obj/structure/prop/vehicles/crawler{
-	density = 1;
 	dir = 8;
 	layer = 3.1
 	},
@@ -5842,8 +5840,7 @@
 /obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 10;
-	icon_state = "floor_marked";
-	tag = null
+	icon_state = "floor_marked"
 	},
 /area/lv522/atmos/cargo_intake)
 "ddq" = (
@@ -8677,6 +8674,7 @@
 /area/lv522/atmos/west_reactor)
 "epb" = (
 /obj/effect/landmark/xeno_hive_spawn,
+/obj/effect/landmark/ert_spawns/groundside_xeno,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
@@ -12016,7 +12014,6 @@
 /area/lv522/indoors/a_block/admin)
 "fRP" = (
 /obj/structure/prop/vehicles/crawler{
-	density = 1;
 	layer = 3.3
 	},
 /obj/structure/barricade/wooden{
@@ -19826,7 +19823,6 @@
 /area/lv522/indoors/a_block/dorms)
 "jhp" = (
 /obj/structure/prop/invuln/lifeboat_hatch_placeholder/terminal{
-	icon_state = "closed";
 	layer = 2.1
 	},
 /obj/structure/barricade/handrail{
@@ -21454,8 +21450,7 @@
 "jNk" = (
 /obj/structure/machinery/door/airlock/multi_tile/almayer/generic{
 	dir = 1;
-	name = "\improper Westlock";
-	welded = null
+	name = "\improper Westlock"
 	},
 /turf/open/floor/corsat{
 	icon_state = "marked"
@@ -25942,8 +25937,7 @@
 /area/lv522/indoors/a_block/dorms)
 "ltI" = (
 /obj/structure/machinery/door/airlock/multi_tile/almayer/generic{
-	name = "\improper Westlock";
-	welded = null
+	name = "\improper Westlock"
 	},
 /turf/open/floor/corsat{
 	icon_state = "marked"
@@ -30020,10 +30014,10 @@
 /turf/open/floor/plating,
 /area/lv522/atmos/filt)
 "nhi" = (
-/obj/structure/machinery/landinglight/ds1/delaythree{
+/obj/effect/landmark/lv624/fog_blocker/short,
+/obj/structure/machinery/landinglight/ds1/delaytwo{
 	dir = 4
 	},
-/obj/effect/landmark/lv624/fog_blocker/short,
 /turf/open/floor/plating,
 /area/lv522/landing_zone_1)
 "nhs" = (
@@ -31151,8 +31145,7 @@
 	icon_state = "plate"
 	},
 /turf/open/floor/prison{
-	icon_state = "floor_plate";
-	tag = null
+	icon_state = "floor_plate"
 	},
 /area/lv522/outdoors/colony_streets/north_street)
 "nHi" = (
@@ -31350,8 +31343,7 @@
 	pixel_x = 1
 	},
 /turf/open/floor/prison{
-	icon_state = "floor_plate";
-	tag = null
+	icon_state = "floor_plate"
 	},
 /area/lv522/outdoors/colony_streets/north_street)
 "nLW" = (
@@ -31427,8 +31419,7 @@
 	icon_state = "W"
 	},
 /turf/open/floor/prison{
-	icon_state = "floor_plate";
-	tag = null
+	icon_state = "floor_plate"
 	},
 /area/lv522/outdoors/colony_streets/north_street)
 "nMP" = (
@@ -31457,8 +31448,7 @@
 	pixel_x = 1
 	},
 /turf/open/floor/prison{
-	icon_state = "floor_plate";
-	tag = null
+	icon_state = "floor_plate"
 	},
 /area/lv522/outdoors/colony_streets/north_street)
 "nNh" = (
@@ -31552,8 +31542,7 @@
 	icon_state = "S"
 	},
 /turf/open/floor/prison{
-	icon_state = "floor_plate";
-	tag = null
+	icon_state = "floor_plate"
 	},
 /area/lv522/outdoors/colony_streets/north_street)
 "nOl" = (
@@ -31614,8 +31603,7 @@
 	pixel_x = 1
 	},
 /turf/open/floor/prison{
-	icon_state = "floor_plate";
-	tag = null
+	icon_state = "floor_plate"
 	},
 /area/lv522/outdoors/colony_streets/north_street)
 "nOT" = (
@@ -31818,6 +31806,7 @@
 /area/lv522/indoors/a_block/dorm_north)
 "nTl" = (
 /obj/effect/landmark/xeno_hive_spawn,
+/obj/effect/landmark/ert_spawns/groundside_xeno,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
@@ -37083,7 +37072,6 @@
 /area/lv522/indoors/a_block/dorms)
 "pTa" = (
 /obj/structure/prop/vehicles/crawler{
-	density = 1;
 	layer = 3.1
 	},
 /turf/open/floor/prison{
@@ -38820,8 +38808,7 @@
 /area/lv522/oob)
 "qBR" = (
 /obj/structure/machinery/door/airlock/multi_tile/almayer/generic{
-	name = "\improper Northlock";
-	welded = null
+	name = "\improper Northlock"
 	},
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/corsat{
@@ -40421,7 +40408,6 @@
 /area/lv522/outdoors/n_rockies)
 "rbV" = (
 /obj/structure/prop/vehicles/crawler{
-	density = 1;
 	dir = 8;
 	layer = 3.1
 	},
@@ -40763,14 +40749,14 @@
 	},
 /area/lv522/landing_zone_1/ceiling)
 "rhk" = (
-/obj/structure/machinery/door/airlock/dropship_hatch/two{
-	dir = 8
+/obj/structure/machinery/landinglight/ds1/delayone{
+	dir = 4
 	},
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin3";
 	tag = "icon-rasputin3"
 	},
-/area/lv522/landing_zone_forecon/UD6_Typhoon)
+/area/lv522/landing_zone_1)
 "rhz" = (
 /obj/structure/pipes/standard/tank/oxygen{
 	dir = 1
@@ -44121,10 +44107,10 @@
 	},
 /area/lv522/indoors/c_block/mining)
 "sCk" = (
-/obj/structure/machinery/landinglight/ds1/delayone{
+/obj/effect/landmark/lv624/fog_blocker/short,
+/obj/structure/machinery/landinglight/ds1{
 	dir = 8
 	},
-/obj/effect/landmark/lv624/fog_blocker/short,
 /turf/open/floor/plating,
 /area/lv522/landing_zone_1)
 "sCp" = (
@@ -46563,7 +46549,6 @@
 /area/lv522/outdoors/colony_streets/south_east_street)
 "tBw" = (
 /obj/structure/prop/invuln/lifeboat_hatch_placeholder{
-	icon_state = "closed";
 	layer = 2.1
 	},
 /obj/structure/barricade/handrail{
@@ -46613,8 +46598,7 @@
 "tBT" = (
 /obj/structure/machinery/door/airlock/multi_tile/almayer/generic{
 	dir = 1;
-	name = "\improper Eastlock";
-	welded = null
+	name = "\improper Eastlock"
 	},
 /turf/open/floor/corsat{
 	icon_state = "marked"
@@ -49228,8 +49212,11 @@
 	dir = 1;
 	tag = "icon-comfychair (NORTH)"
 	},
-/turf/open/floor/prison,
-/area/lv522/indoors/a_block/dorms)
+/turf/open/floor/prison{
+	dir = 4;
+	icon_state = "greenfull"
+	},
+/area/lv522/landing_zone_1)
 "uEP" = (
 /obj/structure/machinery/disposal,
 /obj/effect/decal/cleanable/dirt,
@@ -62937,8 +62924,8 @@ pUc
 qst
 qLz
 qVl
-rhk
-rhk
+qzp
+qzp
 rFp
 sdE
 sIx
@@ -74115,7 +74102,7 @@ nwj
 nLm
 qxb
 wqn
-uEH
+cve
 vJT
 sLQ
 nLm
@@ -84755,7 +84742,7 @@ sjy
 kqb
 kqb
 mUS
-wmg
+egP
 kqb
 kqb
 pGl

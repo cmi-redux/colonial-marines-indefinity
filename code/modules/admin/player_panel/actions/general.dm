@@ -232,15 +232,6 @@
 
 	return TRUE
 
-/datum/player_action/access_discord
-	action_tag = "access_discord"
-	name = "Access Discord"
-
-/datum/player_action/access_discord/act(client/user, mob/target, list/params)
-	target?.client?.player_data?.discord?.ui_interact(user.mob)
-
-	return TRUE
-
 /datum/player_action/access_admin_datum
 	action_tag = "access_admin_datum"
 	name = "Access Admin Datum"

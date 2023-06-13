@@ -65,19 +65,13 @@
 	QDEL_NULL_LIST(embedded_items)
 	QDEL_LIST_ASSOC_VAL(internal_organs_by_name)
 	QDEL_NULL_LIST(limbs)
-	remove_from_all_mob_huds()
+
+	if(hud_used)
+		QDEL_NULL(hud_used)
 
 	faction.remove_mob(src)
 
 	. = ..()
-
-	species = null
-	limbs_to_process = null
-	brute_mod_override = null
-	burn_mod_override = null
-	assigned_squad = null
-	selected_ability = null
-	remembered_dropped_objects = null
 
 	overlays_standing = null
 
@@ -104,7 +98,6 @@
 	assigned_squad = null
 	selected_ability = null
 	remembered_dropped_objects = null
-
 
 /mob/living/carbon/human/get_status_tab_items()
 	. = ..()

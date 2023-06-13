@@ -10799,7 +10799,7 @@
 	},
 /area/prison/residential/north)
 "aBn" = (
-/obj/structure/flora/tree/dead,
+/obj/structure/flora/tree/dead/tree_1,
 /turf/open/organic/grass,
 /area/prison/residential/north)
 "aBo" = (
@@ -35944,7 +35944,7 @@
 	},
 /area/prison/residential/south)
 "bTF" = (
-/obj/structure/flora/tree/dead,
+/obj/structure/flora/tree/dead/tree_1,
 /turf/open/organic/grass,
 /area/prison/residential/south)
 "bTG" = (
@@ -45337,6 +45337,7 @@
 	tag = "icon-intact (SOUTHWEST)"
 	},
 /obj/effect/landmark/xeno_hive_spawn,
+/obj/effect/landmark/ert_spawns/groundside_xeno,
 /turf/open/floor/plating,
 /area/prison/pirate)
 "cwm" = (
@@ -46679,6 +46680,7 @@
 /area/prison/storage/vip)
 "dqf" = (
 /obj/effect/landmark/xeno_hive_spawn,
+/obj/effect/landmark/ert_spawns/groundside_xeno,
 /turf/open/floor/plating,
 /area/prison/hanger/main)
 "duu" = (
@@ -47315,6 +47317,7 @@
 /area/prison/residential/north)
 "fGf" = (
 /obj/effect/landmark/xeno_hive_spawn,
+/obj/effect/landmark/ert_spawns/groundside_xeno,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "sterile_white";
@@ -52556,6 +52559,7 @@
 	icon_state = "wood_siding2"
 	},
 /obj/effect/landmark/xeno_hive_spawn,
+/obj/effect/landmark/ert_spawns/groundside_xeno,
 /turf/open/floor{
 	icon_state = "asteroid"
 	},

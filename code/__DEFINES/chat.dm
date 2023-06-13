@@ -10,6 +10,7 @@
 #define MESSAGE_TYPE_ADMINCHAT "adminchat"
 #define MESSAGE_TYPE_MODCHAT "modchat"
 #define MESSAGE_TYPE_MENTOR "mentor"
+#define MESSAGE_TYPE_STAFF_IC "staff_ic"
 #define MESSAGE_TYPE_EVENTCHAT "eventchat"
 #define MESSAGE_TYPE_ADMINLOG "adminlog"
 #define MESSAGE_TYPE_ATTACKLOG "attacklog"
@@ -138,6 +139,7 @@
 #define LANGUAGE_PREF_HUMAN_UNDERWEAR		"Underwear"
 #define LANGUAGE_PREF_HUMAN_UNDERSHIRT		"Undershirt"
 #define LANGUAGE_PREF_BACKPACK				"Backpack Type"
+#define LANGUAGE_PREF_ARMOR					"Preferred Armor"
 #define LANGUAGE_PREF_SHOW_GEAR				"Show Job Gear"
 #define LANGUAGE_PREF_BACKGROUND			"Background"
 #define LANGUAGE_PREF_CYCLE_BACK			"Cycle Background"
@@ -165,6 +167,7 @@
 #define LANGUAGE_PREF_NO_WL					"You do not have the whitelist for this role."
 #define LANGUAGE_PREF_COM_SET				"Commander Settings"
 #define LANGUAGE_PREF_COM_WL				"Commander Whitelist Status"
+#define LANGUAGE_PREF_COM_AFL				"Commander Affiliation"
 #define LANGUAGE_PREF_COM_SIDE_ARM			"Commander Sidearm"
 #define LANGUAGE_PREF_SYNTH_SET				"Synthetic Settings"
 #define LANGUAGE_PREF_SYNTH_NAME			"Synthetic Name"
@@ -217,6 +220,7 @@
 #define LANGUAGE_PREF_AH_EMOTES_G			"Abovehead Emotes"
 #define LANGUAGE_PREF_GAME_SET				"Game Settings"
 #define LANGUAGE_PREF_FIT_VIEW				"Fit Viewport"
+#define LANGUAGE_PREF_ZOOM					"Adaptive Zoom"
 #define LANGUAGE_PREF_AUTO					"Auto"
 #define LANGUAGE_PREF_MANUAL				"Manual"
 #define LANGUAGE_PREF_AO					"Ambient Occlusion"
@@ -608,6 +612,7 @@ GLOBAL_LIST_INIT(client_language_ru, list(
 	LANGUAGE_PREF_HUMAN_UNDERWEAR = "Нижнее Белье",
 	LANGUAGE_PREF_HUMAN_UNDERSHIRT = "Нижняя Рубашка",
 	LANGUAGE_PREF_BACKPACK = "Тип Рюкзака",
+	LANGUAGE_PREF_ARMOR = "Предпочитаемая Броня",
 	LANGUAGE_PREF_SHOW_GEAR = "Показать Вещи Профессии",
 	LANGUAGE_PREF_BACKGROUND = "Фон",
 	LANGUAGE_PREF_CYCLE_BACK = "Сменить Фон",
@@ -635,6 +640,7 @@ GLOBAL_LIST_INIT(client_language_ru, list(
 	LANGUAGE_PREF_NO_WL = "Вы не в белом списке на эту роль.",
 	LANGUAGE_PREF_COM_SET = "Настройки Командира",
 	LANGUAGE_PREF_COM_WL = "СБС Командира",
+	LANGUAGE_PREF_COM_AFL = "Командирская принадлежность",
 	LANGUAGE_PREF_COM_SIDE_ARM = "Оружие Командира",
 	LANGUAGE_PREF_SYNTH_SET = "Настройки Синтетика",
 	LANGUAGE_PREF_SYNTH_NAME = "Имя Синтетика",
@@ -687,6 +693,7 @@ GLOBAL_LIST_INIT(client_language_ru, list(
 	LANGUAGE_PREF_AH_EMOTES_G = "Эмоции над Головой",
 	LANGUAGE_PREF_GAME_SET = "Настройки Игры",
 	LANGUAGE_PREF_FIT_VIEW = "Фит Виевпорт",
+	LANGUAGE_PREF_ZOOM = "Адаптивный Зум"
 	LANGUAGE_PREF_AUTO = "Авто",
 	LANGUAGE_PREF_MANUAL = "Ручной",
 	LANGUAGE_PREF_AO = "Окружающая Окклюзия",

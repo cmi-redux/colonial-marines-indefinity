@@ -17,6 +17,7 @@
 	var/time_of_death
 	var/total_time_alive
 	var/total_damage_taken
+	var/total_revives_done = 0
 
 	var/total_brute = 0
 	var/total_burn = 0
@@ -51,6 +52,7 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic_death)
 		"time_of_death" = DB_FIELDTYPE_BIGINT,
 		"total_time_alive" = DB_FIELDTYPE_BIGINT,
 		"total_damage_taken" = DB_FIELDTYPE_INT,
+		"total_revives_done" = DB_FIELDTYPE_INT,
 
 		"total_brute" = DB_FIELDTYPE_INT,
 		"total_burn" = DB_FIELDTYPE_INT,
@@ -173,8 +175,9 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic_death)
 
 	Dlog.total_steps = life_steps_total
 	Dlog.total_kills = life_kills_total
-	Dlog.total_time_alive = duration2text(life_time_total)
+	Dlog.total_time_alive = life_time_total
 	Dlog.total_damage_taken = life_damage_taken_total
+	Dlog.total_revives_done = life_revives_total
 
 	var/observer_message = "<b>[real_name]</b> умер"
 	if(Dlog.cause_name)
@@ -187,7 +190,7 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic_death)
 	if(src)
 		to_chat(src, SPAN_DEADSAY(observer_message))
 	for(var/mob/dead/observer/g in GLOB.observer_list)
-		to_chat(g, SPAN_DEADSAY(observer_message + " (<a href='?src=\ref[g];jumptocoord=1;X=[death_loc.x];Y=[death_loc.y];Z=[death_loc.z]'>JMP</a>)"))
+		to_chat(g, SPAN_DEADSAY("[observer_message] [OBSERVER_JMP(g, death_loc)]"))
 
 	var/ff_type = Dlog.cause_faction_name == Dlog.faction_name ? 1 : 0
 	if(SSticker.mode.round_statistics)

@@ -171,6 +171,8 @@
 #define TRAIT_HOLDS_CANE "t_holds_cane"
 /// If the mob is buckled to a wheelchair.
 #define TRAIT_USING_WHEELCHAIR "t_using_wheelchair"
+/// If the mob will instantly go permadead upon death
+#define TRAIT_HARDCORE "t_hardcore"
 
 /// If weather have same trait check protection, you evade damage
 #define TRAIT_LAVA_IMMUNE "lava_immune"

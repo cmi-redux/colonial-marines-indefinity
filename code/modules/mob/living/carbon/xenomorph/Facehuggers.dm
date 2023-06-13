@@ -81,6 +81,9 @@
 	addtimer(CALLBACK(src, PROC_REF(check_turf)), 0.2 SECONDS)
 	if(stat == CONSCIOUS && loc) //Make sure we're conscious and not idle or dead.
 		go_idle()
+	if(attached)
+		attached = FALSE
+		die()
 
 /obj/item/clothing/mask/facehugger/proc/check_turf()
 	var/count = 0
@@ -176,8 +179,7 @@
 
 /obj/item/clothing/mask/facehugger/equipped(mob/M)
 	SHOULD_CALL_PARENT(FALSE) // ugh equip sounds
-	// So getting hugged or picking up a hugger does not
-	// prematurely kill the hugger
+	// So picking up a hugger does not prematurely kill it
 	go_idle()
 
 /obj/item/clothing/mask/facehugger/Crossed(atom/target)
@@ -249,7 +251,6 @@
 
 	// This is always going to be valid because of the can_hug check above
 	var/mob/living/carbon/human/H = M
-	attached = TRUE
 	if(!silent)
 		H.visible_message(SPAN_DANGER("[src] leaps at [H]'s face!"))
 
@@ -262,6 +263,8 @@
 
 	if(!H.handle_hugger_attachment(src))
 		return FALSE
+
+	attached = TRUE
 
 	forceMove(H)
 	icon_state = initial(icon_state)
@@ -404,6 +407,9 @@
 
 /obj/item/clothing/mask/facehugger/proc/die()
 	if(stat == DEAD)
+		return
+
+	if(attached && !impregnated)
 		return
 
 	if(jump_timer)

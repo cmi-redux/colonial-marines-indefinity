@@ -531,7 +531,7 @@
 
 //doing last preparation before actually firing gun
 /obj/item/hardpoint/proc/fire(mob/user, atom/A)
-	if(ammo.ammo_position <= 0)
+	if(ammo && ammo.ammo_position <= 0)
 		return
 
 	next_use = world.time + cooldown * owner.misc_multipliers["cooldown"]

@@ -46,11 +46,8 @@
 		else if(chance < CLUE_SCIENCE)
 			new /obj/effect/landmark/objective_landmark/science(loc)
 
-	if(!opened && fill_from_loc)		// if closed, any item at the crate's loc is put in the contents
-		for(var/obj/item/I in src.loc)
-			if(I.density || I.anchored || I == src)
-				continue
-			I.forceMove(src)
+	if(!opened && fill_from_loc) // if closed, any item at the crate's loc is put in the contents
+		store_items()
 	GLOB.closet_list += src
 	flags_atom |= USES_HEARING
 

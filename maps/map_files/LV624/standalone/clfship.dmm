@@ -392,7 +392,8 @@
 	},
 /area/lv624/lazarus/crashed_ship)
 "ky" = (
-/obj/structure/machinery/door/airlock/multi_tile/secure{
+/obj/structure/machinery/door/airlock/multi_tile/almayer/generic2{
+	dir = 8;
 	name = "\improper Bridge"
 	},
 /turf/open/floor{
@@ -490,6 +491,10 @@
 /turf/open/floor/plating{
 	icon_state = "platingdmg3"
 	},
+/area/lv624/lazarus/crashed_ship)
+"nj" = (
+/obj/effect/landmark/survivor_spawner/lv624_crashed_clf_engineer,
+/turf/open/floor/plating/plating_catwalk,
 /area/lv624/lazarus/crashed_ship)
 "nt" = (
 /turf/closed/shuttle/ert{
@@ -777,7 +782,7 @@
 /turf/open/floor/almayer,
 /area/lv624/lazarus/crashed_ship)
 "wG" = (
-/obj/structure/machinery/door/airlock/multi_tile/secure{
+/obj/structure/machinery/door/airlock/multi_tile/almayer/generic2{
 	dir = 1;
 	name = "\improper Side Entrance"
 	},
@@ -835,8 +840,9 @@
 /turf/open/gm/dirt,
 /area/lv624/ground/barrens/south_west_barrens)
 "xF" = (
-/obj/structure/machinery/door/airlock/multi_tile/secure{
-	name = "\improper Dining Room"
+/obj/structure/machinery/door/airlock/multi_tile/almayer/generic2{
+	dir = 8;
+	name = "\improper Dining Area"
 	},
 /turf/open/floor/plating/plating_catwalk,
 /area/lv624/lazarus/crashed_ship)
@@ -950,7 +956,7 @@
 /turf/open/gm/dirt,
 /area/lv624/ground/caves/south_west_caves)
 "Ac" = (
-/obj/effect/landmark/survivor_spawner/lv624_crashed_clf,
+/obj/effect/landmark/survivor_spawner/lv624_crashed_clf_medic,
 /turf/open/floor/plating/plating_catwalk,
 /area/lv624/lazarus/crashed_ship)
 "Ar" = (
@@ -1048,7 +1054,8 @@
 	},
 /area/lv624/lazarus/crashed_ship)
 "Ct" = (
-/obj/structure/machinery/door/airlock/secure{
+/obj/structure/machinery/door/airlock/almayer/generic{
+	dir = 8;
 	name = "\improper Engineering Storage"
 	},
 /turf/open/floor/plating/plating_catwalk,
@@ -1392,7 +1399,8 @@
 	},
 /area/lv624/lazarus/crashed_ship)
 "KK" = (
-/obj/structure/machinery/door/airlock/multi_tile/secure{
+/obj/structure/machinery/door/airlock/multi_tile/almayer/generic2{
+	dir = 8;
 	name = "\improper General Area"
 	},
 /turf/open/floor/plating/plating_catwalk,
@@ -1430,7 +1438,8 @@
 /turf/open/gm/dirt,
 /area/lv624/ground/caves/west_caves)
 "Mm" = (
-/obj/structure/machinery/door/airlock/multi_tile/secure{
+/obj/structure/machinery/door/airlock/multi_tile/almayer/generic2{
+	dir = 8;
 	name = "\improper Bunk Beds"
 	},
 /turf/open/floor/almayer,
@@ -1691,7 +1700,7 @@
 	},
 /area/lv624/lazarus/crashed_ship)
 "QE" = (
-/obj/structure/machinery/door/airlock/multi_tile/secure{
+/obj/structure/machinery/door/airlock/multi_tile/almayer/generic2{
 	dir = 1;
 	name = "\improper Medical Bay"
 	},
@@ -1881,8 +1890,9 @@
 /turf/open/gm/dirt,
 /area/lv624/ground/caves/south_west_caves)
 "VA" = (
-/obj/structure/machinery/door/airlock/multi_tile/secure{
-	name = "Cargo Airlock"
+/obj/structure/machinery/door/airlock/multi_tile/almayer/generic2{
+	dir = 8;
+	name = "\improper Cargo Hold"
 	},
 /turf/open/floor/almayer,
 /area/lv624/lazarus/crashed_ship)
@@ -2430,7 +2440,7 @@ Ab
 Ns
 Px
 Cq
-Ac
+nj
 lr
 Xq
 JO

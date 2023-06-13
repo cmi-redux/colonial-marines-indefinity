@@ -32,7 +32,7 @@
 /area/lv624/lazarus/hydroponics)
 "bM" = (
 /obj/structure/fence,
-/turf/open/gm/dirtgrassborder,
+/turf/open/gm/dirtgrassborder/north,
 /area/lv624/ground/colony/north_nexus_road)
 "ck" = (
 /obj/effect/decal/cleanable/blood/xeno,
@@ -54,15 +54,10 @@
 	},
 /area/lv624/lazarus/hydroponics)
 "eU" = (
-/turf/open/gm/dirtgrassborder{
-	dir = 4;
-	icon_state = "grassdirt_corner2"
-	},
+/turf/open/gm/dirtgrassborder/grassdirt_corner2/north_east,
 /area/lv624/ground/colony/north_nexus_road)
 "fk" = (
-/turf/open/gm/dirtgrassborder{
-	icon_state = "grassdirt_corner2"
-	},
+/turf/open/gm/dirtgrassborder/grassdirt_corner2/north_west,
 /area/lv624/ground/colony/south_medbay_road)
 "fX" = (
 /obj/item/device/analyzer/plant_analyzer,
@@ -91,7 +86,7 @@
 /area/lv624/lazarus/hydroponics)
 "jg" = (
 /obj/structure/flora/bush/ausbushes/var3/sparsegrass,
-/turf/open/gm/grass,
+/turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/north_jungle)
 "jy" = (
 /obj/structure/machinery/portable_atmospherics/hydroponics,
@@ -174,7 +169,7 @@
 /area/lv624/lazarus/medbay)
 "se" = (
 /obj/structure/fence,
-/turf/open/gm/dirtgrassborder,
+/turf/open/gm/dirtgrassborder/north,
 /area/lv624/ground/colony/south_medbay_road)
 "tK" = (
 /obj/effect/landmark/corpsespawner/pmc,
@@ -267,7 +262,7 @@
 /area/lv624/lazarus/hydroponics)
 "BL" = (
 /obj/structure/flora/bush/ausbushes/genericbush,
-/turf/open/gm/grass,
+/turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/north_jungle)
 "Cp" = (
 /obj/structure/surface/rack,
@@ -365,7 +360,7 @@
 	},
 /area/lv624/lazarus/hydroponics)
 "Km" = (
-/turf/open/gm/grass,
+/turf/open/gm/grass/grass1,
 /area/lv624/ground/colony/south_medbay_road)
 "Lk" = (
 /obj/effect/decal/cleanable/blood/xeno,
@@ -389,7 +384,7 @@
 /area/lv624/lazarus/hydroponics)
 "Mm" = (
 /obj/effect/landmark/crap_item,
-/turf/open/gm/grass,
+/turf/open/gm/grass/grass1,
 /area/lv624/ground/colony/south_medbay_road)
 "MM" = (
 /obj/structure/barricade/deployable{
@@ -535,11 +530,11 @@
 	},
 /area/lv624/lazarus/hydroponics)
 "XA" = (
-/turf/open/gm/grass,
+/turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/north_jungle)
 "XJ" = (
 /obj/structure/flora/bush/ausbushes/ausbush,
-/turf/open/gm/grass,
+/turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/north_jungle)
 "YJ" = (
 /obj/item/storage/firstaid,

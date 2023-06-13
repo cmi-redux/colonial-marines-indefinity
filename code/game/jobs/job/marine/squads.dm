@@ -304,6 +304,7 @@
 	return TRUE
 
 /// Clear references in squad listing upon deletion. Zap also erases the kept records.
+/// NOTE: zap will be set true for a forced COMSIG_PARENT_QDELETING
 /datum/squad/proc/personnel_deleted(mob/target_mob, zap = FALSE)
 	SIGNAL_HANDLER
 	if(target_mob == overwatch_officer)
@@ -378,15 +379,14 @@
 			if(!sl.stat && sl.client)
 				if(plus_name)
 					sl << sound('sound/effects/tech_notification.ogg')
-				to_chat(sl, "[SPAN_BLUE("<B>SL Overwatch:</b> [nametext][text]")]")
+				to_chat(sl, "[SPAN_BLUE("<B>SL Overwatch:</b> [nametext][text]")]", type = MESSAGE_TYPE_RADIO)
 				return
 	else
 		for(var/mob/living/carbon/human/human in marines_list)
 			if(!human.stat && human.client) //Only living and connected people in our squad
 				if(plus_name)
 					human << sound('sound/effects/tech_notification.ogg')
-				to_chat(human, "[SPAN_BLUE("<B>Overwatch:</b> [nametext][text]")]")
-
+				to_chat(human, "[SPAN_BLUE("<B>Overwatch:</b> [nametext][text]")]", type = MESSAGE_TYPE_RADIO)
 
 
 //Straight-up insert a marine into a squad.

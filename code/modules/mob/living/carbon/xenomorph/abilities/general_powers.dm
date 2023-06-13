@@ -60,13 +60,10 @@
 				new /obj/effect/alien/weeds(weed_target_turf, new_node)
 			qdel(weed)
 
-	playsound(xeno.loc, "alien_resin_build", 25)
-
-	apply_cooldown()
+	playsound(X.loc, "alien_resin_build", 25)
 	xeno.count_statistic_stat(STATISTIC_XENO_STRUCTURES_BUILD)
-
-	..()
-	return
+	apply_cooldown()
+	return ..()
 
 /mob/living/carbon/xenomorph/lay_down()
 	if(MODE_HAS_FLAG(MODE_HARDCORE))
@@ -91,6 +88,7 @@
 	var/mob/living/carbon/xenomorph/xeno = owner
 	xeno.lay_down()
 	button.icon_state = xeno.resting ? "template_active" : "template"
+	return ..()
 
 // Shift spits
 /datum/action/xeno_action/onclick/shift_spits/use_ability(atom/target_atom)
@@ -107,9 +105,7 @@
 	to_chat(xeno, SPAN_NOTICE("You will now spit [xeno.ammo.name] ([xeno.ammo.spit_cost] plasma)."))
 	button.overlays.Cut()
 	button.overlays += image('icons/mob/hud/actions_xeno.dmi', button, "shift_spit_[xeno.ammo.icon_state]")
-	..()
-	return
-
+	return ..()
 
 /datum/action/xeno_action/onclick/regurgitate/use_ability(atom/target_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
@@ -125,8 +121,7 @@
 			// Also has good reason to be a proc on all Xenos
 			xeno.regurgitate(M, TRUE)
 
-	..()
-	return
+	return ..()
 
 /datum/action/xeno_action/onclick/choose_resin/use_ability(atom/target_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
@@ -297,19 +292,19 @@
 
 
 // Destructive Acid
-/datum/action/xeno_action/activable/corrosive_acid/use_ability(atom/target_atom)
+/datum/action/xeno_action/activable/corrosive_acid/use_ability(atom/target)
 	var/mob/living/carbon/xenomorph/xeno = owner
-	xeno.corrosive_acid(target_atom, acid_type, acid_plasma_cost)
-	for(var/obj/item/explosive/plastic/explosive in target_atom.contents)
-		xeno.corrosive_acid(explosive, acid_type, acid_plasma_cost)
-	..()
+	xeno.corrosive_acid(target, acid_type, acid_plasma_cost)
+	for(var/obj/item/explosive/plastic/explosive in target.contents)
+		xeno.corrosive_acid(explosive,acid_type,acid_plasma_cost)
+	return ..()
 
-
-/datum/action/xeno_action/onclick/emit_pheromones/use_ability(atom/target_atom)
+/datum/action/xeno_action/onclick/emit_pheromones/use_ability(atom/target)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if(!istype(xeno))
 		return
 	xeno.emit_pheromones(emit_cost = plasma_cost)
+	return ..()
 
 /mob/living/carbon/xenomorph/proc/emit_pheromones(pheromone, emit_cost = 30)
 	if(!check_state(TRUE))
@@ -384,9 +379,12 @@
 	if(!check_and_use_plasma_owner())
 		return
 
-	if(xeno.layer == XENO_HIDING_LAYER) //Xeno is currently hiding, unhide him
-		xeno.layer = MOB_LAYER
-		xeno.update_wounds()
+	if(X.layer == XENO_HIDING_LAYER) //Xeno is currently hiding, unhide him
+		X.layer = MOB_LAYER
+		X.update_wounds()
+		var/datum/action/hide_ability = get_xeno_action_by_type(X, /datum/action/xeno_action/onclick/xenohide)
+		if(hide_ability)
+			hide_ability.button.icon_state = "template"
 
 	if(isravager(xeno))
 		xeno.emote("roar")
@@ -488,12 +486,11 @@
 	else if(spray_type == ACID_SPRAY_CONE)
 		xeno.do_acid_spray_cone(get_turf(target_atom), spray_effect_type, spray_distance)
 
-	..()
-	return
+	return ..()
 
 /datum/action/xeno_action/onclick/xenohide/use_ability(atom/target_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
-	if(!xeno.check_state(1))
+	if(!xeno.check_state(TRUE))
 		return
 	if(xeno.layer != XENO_HIDING_LAYER)
 		xeno.layer = XENO_HIDING_LAYER
@@ -504,6 +501,7 @@
 		to_chat(xeno, SPAN_NOTICE("You have stopped hiding."))
 		button.icon_state = "template"
 	xeno.update_wounds()
+	return ..()
 
 /datum/action/xeno_action/onclick/place_trap/use_ability(atom/A)
 	var/mob/living/carbon/xenomorph/xeno = owner
@@ -537,11 +535,11 @@
 
 	if(!xeno.check_plasma(plasma_cost))
 		return
-	xeno.use_plasma(plasma_cost)
-	playsound(xeno.loc, "alien_resin_build", 25)
-	new /obj/effect/alien/resin/trap(xeno.loc, xeno)
-	xeno.count_statistic_stat(STATISTIC_XENO_STRUCTURES_BUILD)
-	to_chat(xeno, SPAN_XENONOTICE("You place a resin hole on the weeds, it still needs a sister to fill it with acid."))
+	X.use_plasma(plasma_cost)
+	playsound(X.loc, "alien_resin_build", 25)
+	new /obj/effect/alien/resin/trap(T, X)
+	to_chat(X, SPAN_XENONOTICE("You place a resin hole on the weeds, it still needs a sister to fill it with acid."))
+	return ..()
 
 /turf/proc/check_xeno_trap_placement(mob/living/carbon/xenomorph/xeno)
 	if(weedable < FULLY_WEEDABLE || !can_xeno_build(src))
@@ -604,6 +602,9 @@
 		to_chat(xeno, SPAN_XENOWARNING("It's too tight in here to build."))
 		return FALSE
 
+	if(!X.check_alien_construction(T))
+		return FALSE
+
 	var/choice = XENO_STRUCTURE_CORE
 	if(xeno.faction.hivecore_cooldown)
 		to_chat(xeno, SPAN_WARNING("The weeds are still recovering from the death of the hive core, wait until the weeds have recovered!"))
@@ -616,9 +617,9 @@
 			var/message = "<br>Placing a construction node creates a template for special structures that can benefit the hive, which require the insertion of [MATERIAL_CRYSTAL] to construct the following:<br>"
 			for(var/structure_name in xeno.faction.hive_structure_types)
 				message += "[get_xeno_structure_desc(structure_name)]<br>"
-			to_chat(xeno, SPAN_NOTICE(message))
-			return
-	if(!xeno.check_state(1) || !xeno.check_plasma(400))
+			to_chat(X, SPAN_NOTICE(message))
+			return TRUE
+	if(!X.check_state(TRUE) || !X.check_plasma(400))
 		return FALSE
 	var/structure_type = xeno.faction.hive_structure_types[choice]
 	var/datum/construction_template/xenomorph/structure_template = new structure_type()
@@ -675,9 +676,11 @@
 		qdel(structure_template)
 		return FALSE
 
-	xeno.use_plasma(400)
-	xeno.place_construction(target_turf, structure_template)
+	X.use_plasma(400)
+	X.place_construction(T, structure_template)
 	xeno.count_statistic_stat(STATISTIC_XENO_STRUCTURES_BUILD)
+
+	return ..()
 
 // XSS Spacecheck
 
@@ -763,7 +766,7 @@
 	SEND_SIGNAL(xeno, COMSIG_XENO_POST_SPIT)
 
 	apply_cooldown()
-	..()
+	return ..()
 
 /datum/action/xeno_action/activable/bombard/use_ability(atom/target_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
@@ -883,6 +886,10 @@
 
 /datum/action/xeno_action/activable/tail_stab/use_ability(atom/targetted_atom)
 	var/mob/living/carbon/xenomorph/stabbing_xeno = owner
+
+	if(stabbing_xeno.burrow || stabbing_xeno.is_ventcrawling)
+		to_chat(stabbing_xeno, SPAN_XENOWARNING("You must be above ground to do this."))
+		return
 
 	if(!stabbing_xeno.check_state())
 		return FALSE

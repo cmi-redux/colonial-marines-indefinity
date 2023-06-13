@@ -168,8 +168,6 @@
 			else
 				color = null
 
-
-
 /atom/movable/screen/gun
 	name = "gun"
 	dir = SOUTH
@@ -669,7 +667,7 @@
 	name = "queen locator"
 	icon = 'icons/mob/hud/alien_standard.dmi'
 	icon_state = "trackoff"
-	var/track_state = TRACKER_QUEEN
+	var/list/track_state = list(TRACKER_QUEEN, 0)
 
 /atom/movable/screen/queen_locator/clicked(mob/living/carbon/xenomorph/user, mods)
 	if(!istype(user))
@@ -691,8 +689,14 @@
 		for(var/xeno in user.faction.xeno_leader_list)
 			var/mob/living/carbon/xenomorph/xeno_lead = user.faction.xeno_leader_list[xeno_leader_index]
 			if(xeno_lead)
-				options["Xeno Leader [xeno_lead]"] = "[xeno_leader_index]"
+				options["Xeno Leader [xeno_lead]"] = list(TRACKER_LEADER, xeno_leader_index)
 			xeno_leader_index++
+
+		var/tunnel_index = 1
+		for(var/obj/structure/tunnel/tracked_tunnel in user.hive.tunnels)
+			options["Tunnel [tracked_tunnel.tunnel_desc]"] = list(TRACKER_TUNNEL, tunnel_index)
+			tunnel_index++
+
 		var/selected = tgui_input_list(user, "Select what you want the locator to track.", "Locator Options", options)
 		if(selected)
 			track_state = options[selected]

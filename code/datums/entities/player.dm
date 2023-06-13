@@ -5,6 +5,8 @@
 	var/last_known_ip
 	var/last_known_cid
 
+	var/discord_link_id
+
 	var/last_login
 
 	var/is_permabanned = FALSE
@@ -31,13 +33,13 @@
 	var/playtime_loaded = FALSE
 	var/discord_loaded = FALSE
 
+	var/datum/entity/discord_link/discord_link
 	var/datum/entity/player/permaban_admin
 	var/datum/entity/player/time_ban_admin
 	var/list/datum/entity/player_note/notes
 	var/list/datum/entity/player_job_ban/job_bans
 	var/list/datum/entity/player_time/playtimes
 	var/datum/player_entity/player_entity
-	var/datum/entity/discord/discord
 	var/datum/donator_info/donator_info
 	var/list/playtime_data
 	var/client/owning_client
@@ -56,6 +58,7 @@
 		"is_permabanned" = DB_FIELDTYPE_INT,
 		"permaban_reason" = DB_FIELDTYPE_STRING_MAX,
 		"permaban_date" = DB_FIELDTYPE_STRING_LARGE,
+		"discord_link_id" = DB_FIELDTYPE_BIGINT,
 		"permaban_admin_id" = DB_FIELDTYPE_BIGINT,
 		"is_time_banned" = DB_FIELDTYPE_INT,
 		"time_ban_reason" = DB_FIELDTYPE_STRING_MAX,
@@ -369,10 +372,10 @@
 		permaban_admin = DB_ENTITY(/datum/entity/player, permaban_admin_id)
 	if(time_ban_admin_id)
 		time_ban_admin = DB_ENTITY(/datum/entity/player, time_ban_admin_id)
+	if(discord_link_id)
+		discord_link = DB_ENTITY(/datum/entity/discord_link, discord_link_id)
 
 	setup_statistics()
-
-	DB_FILTER(/datum/entity/discord, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, load_discord)))
 
 /datum/entity/player/proc/setup_statistics()
 	if(!player_entity)
@@ -404,13 +407,6 @@
 
 		for(var/datum/entity/player_time/S in _stat)
 			LAZYSET(playtimes, S.role_id, S)
-
-//DISCORD//
-/datum/entity/player/proc/load_discord(list/datum/entity/discord/_discord)
-	discord_loaded = TRUE
-	if(length(_discord))
-		discord = pick(_discord)
-		discord.sync()
 
 /proc/get_player_from_key(key)
 	var/safe_key = ckey(key)
@@ -532,10 +528,11 @@
 
 	parent_name = "permabanning_admin"
 
-/datum/view_record/player_ban_view
+/datum/view_record/players
 	var/id
 	var/ckey
 	var/is_permabanned
+	var/is_time_banned
 	var/ban_type
 	var/reason
 	var/date
@@ -543,19 +540,22 @@
 	var/admin
 	var/last_known_cid
 	var/last_known_ip
+	var/discord_link_id
 
-/datum/entity_view_meta/timed_ban_list
+/datum/entity_view_meta/players
 	root_record_type = /datum/entity/player
-	destination_entity = /datum/view_record/player_ban_view
+	destination_entity = /datum/view_record/players
 	fields = list(
 		"id",
 		"ckey",
 		"is_permabanned", // this one for the machine
+		"is_time_banned",
 		"ban_type" = DB_CASE(DB_COMP("is_permabanned", DB_EQUALS, 1), DB_CONST("permaban"), DB_CONST("timed ban")), // this one is readable
 		"reason" = DB_CASE(DB_COMP("is_permabanned", DB_EQUALS, 1), "permaban_reason", "time_ban_reason"),
 		"date" = DB_CASE(DB_COMP("is_permabanned", DB_EQUALS, 1), "permaban_date", "time_ban_date"),
 		"expiration" = "time_ban_expiration", //don't care if this is permaban, since it will be handled later
 		"admin" = DB_CASE(DB_COMP("is_permabanned", DB_EQUALS, 1), "permabanning_admin.ckey", "banning_admin.ckey"),
 		"last_known_ip",
-		"last_known_cid")
-	root_filter = DB_OR(DB_COMP("is_permabanned", DB_EQUALS, 1), DB_COMP("is_time_banned", DB_EQUALS, 1))
+		"last_known_cid",
+		"discord_link_id",
+		)

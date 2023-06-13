@@ -132,6 +132,8 @@
 	// IMPORTANT: this is ROUND_TIME, not world.time
 	var/minimum_evolve_time = 1 MINUTES
 
+	var/royal_caste = FALSE
+
 /datum/caste_datum/can_vv_modify()
 	return FALSE
 

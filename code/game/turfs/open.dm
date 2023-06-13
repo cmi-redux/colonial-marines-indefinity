@@ -390,12 +390,45 @@
 
 /turf/open/gm/grass
 	name = "grass"
-	icon_state = "grass1"
 	baseturfs = /turf/open/gm/grass
 	scorchable = "grass1"
 	shoefootstep = FOOTSTEP_GRASS
 	barefootstep = FOOTSTEP_GRASS
 	mediumxenofootstep = FOOTSTEP_GRASS
+
+/turf/open/gm/grass/grass1
+	icon_state = "grass1"
+
+/turf/open/gm/grass/grass2
+	icon_state = "grass2"
+
+/turf/open/gm/grass/grassbeach
+	icon_state = "grassbeach"
+
+/turf/open/gm/grass/grassbeach/north
+
+/turf/open/gm/grass/grassbeach/south
+	dir = 1
+
+/turf/open/gm/grass/grassbeach/west
+	dir = 4
+
+/turf/open/gm/grass/grassbeach/east
+	dir = 8
+
+/turf/open/gm/grass/gbcorner
+	icon_state = "gbcorner"
+
+/turf/open/gm/grass/gbcorner/north_west
+
+/turf/open/gm/grass/gbcorner/south_east
+	dir = 1
+
+/turf/open/gm/grass/gbcorner/south_west
+	dir = 4
+
+/turf/open/gm/grass/gbcorner/north_east
+	dir = 8
 
 /turf/open/gm/grass/Initialize(mapload, ...)
 	. = ..()
@@ -428,6 +461,45 @@
 	shoefootstep = FOOTSTEP_SAND
 	barefootstep = FOOTSTEP_SAND
 	mediumxenofootstep = FOOTSTEP_SAND
+
+/turf/open/gm/dirtgrassborder/north
+
+/turf/open/gm/dirtgrassborder/south
+	dir = 1
+
+/turf/open/gm/dirtgrassborder/west
+	dir = 4
+
+/turf/open/gm/dirtgrassborder/east
+	dir = 8
+
+/turf/open/gm/dirtgrassborder/grassdirt_corner
+	icon_state = "grassdirt_corner"
+
+/turf/open/gm/dirtgrassborder/grassdirt_corner/north_west
+
+/turf/open/gm/dirtgrassborder/grassdirt_corner/north_east
+	dir = 1
+
+/turf/open/gm/dirtgrassborder/grassdirt_corner/south_east
+	dir = 4
+
+/turf/open/gm/dirtgrassborder/grassdirt_corner/south_west
+	dir = 8
+
+/turf/open/gm/dirtgrassborder/grassdirt_corner2
+	icon_state = "grassdirt_corner2"
+
+/turf/open/gm/dirtgrassborder/grassdirt_corner2/north_west
+
+/turf/open/gm/dirtgrassborder/grassdirt_corner2/south_east
+	dir = 1
+
+/turf/open/gm/dirtgrassborder/grassdirt_corner2/north_east
+	dir = 4
+
+/turf/open/gm/dirtgrassborder/grassdirt_corner2/south_west
+	dir = 8
 
 /turf/open/gm/dirtgrassborder/Initialize(mapload, ...)
 	. = ..()
@@ -630,6 +702,45 @@
 	. = ..()
 	if(isliving(arrived))
 		arrived.AddComponent(/datum/component/mob_overlay_effect, type, -2)
+
+/turf/open/gm/coast/north
+
+/turf/open/gm/coast/south
+	dir = 1
+
+/turf/open/gm/coast/west
+	dir = 4
+
+/turf/open/gm/coast/east
+	dir = 8
+
+/turf/open/gm/coast/beachcorner
+	icon_state = "beachcorner"
+
+/turf/open/gm/coast/beachcorner/north_west
+
+/turf/open/gm/coast/beachcorner/north_east
+	dir = 1
+
+/turf/open/gm/coast/beachcorner/south_east
+	dir = 4
+
+/turf/open/gm/coast/beachcorner/south_west
+	dir = 8
+
+/turf/open/gm/coast/beachcorner2
+	icon_state = "beachcorner2"
+
+/turf/open/gm/coast/beachcorner2/north_west
+
+/turf/open/gm/coast/beachcorner2/north_east
+	dir = 1
+
+/turf/open/gm/coast/beachcorner2/south_west
+	dir = 4
+
+/turf/open/gm/coast/beachcorner2/south_east
+	dir = 8
 
 /turf/open/gm/riverdeep
 	name = "river"

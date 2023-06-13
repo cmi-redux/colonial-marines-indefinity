@@ -74,7 +74,9 @@
 
 		if(old_xeno)
 			to_chat(src, SPAN_XENOWARNING("You stop watching [old_xeno]."))
-			old_xeno.hud_set_queen_overwatch()
+			UnregisterSignal(old_xeno, COMSIG_PARENT_QDELETING)
+			if(!QDELETED(old_xeno))
+				old_xeno.hud_set_queen_overwatch()
 	else
 		if(!faction)
 			return
@@ -108,14 +110,20 @@
 			SEND_SIGNAL(src, COMSIG_XENO_STOP_OVERWATCH_XENO, old_xeno)
 			old_xeno.hud_set_queen_overwatch()
 			UnregisterSignal(src, COMSIG_MOB_MOVE_OR_LOOK)
+			UnregisterSignal(oldXeno, COMSIG_PARENT_QDELETING)
 
 		observed_xeno = targetXeno
 
 		observed_xeno.hud_set_queen_overwatch()
 		SEND_SIGNAL(src, COMSIG_XENO_OVERWATCH_XENO, observed_xeno)
 		RegisterSignal(src, COMSIG_MOB_MOVE_OR_LOOK, PROC_REF(overwatch_handle_mob_move_or_look))
+		RegisterSignal(observed_xeno, COMSIG_PARENT_QDELETING, PROC_REF(overwatch_handle_deletion))
 
 	src.reset_view()
+
+/mob/living/carbon/xenomorph/proc/overwatch_handle_deletion(mob/living/carbon/xenomorph/deleted, forced)
+	SIGNAL_HANDLER
+	overwatch(deleted, TRUE)
 
 // Called from xeno Life()
 // Makes sure that Xeno overwatch is reset when the overwatched Xeno dies.

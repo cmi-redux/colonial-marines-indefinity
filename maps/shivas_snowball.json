@@ -42,6 +42,7 @@
         "charlie_xenomorph": 0,
         "delta_xenomorph": 0
     },
+    "camouflage": "snow",
     "gamemodes": [
         "Distress Signal",
         "Crash",

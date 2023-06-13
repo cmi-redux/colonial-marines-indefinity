@@ -427,7 +427,7 @@ Make sure their actual health updates immediately.*/
 		return
 
 	var/atom/tracking_atom
-	switch(queen_locator.track_state)
+	switch(queen_locator.track_state[1])
 		if(TRACKER_QUEEN)
 			if(!faction || !faction.living_xeno_queen)
 				queen_locator.icon_state = "trackoff"
@@ -437,9 +437,14 @@ Make sure their actual health updates immediately.*/
 			if(!faction || !faction.faction_location)
 				queen_locator.icon_state = "trackoff"
 				return
-			tracking_atom = faction.faction_location
-		else
-			var/leader_tracker = text2num(queen_locator.track_state)
+			tracking_atom = faction.hive_location
+		if(TRACKER_LEADER)
+			if(!queen_locator.track_state[2])
+				queen_locator.icon_state = "trackoff"
+				return
+
+			var/leader_tracker = queen_locator.track_state[2]
+
 			if(!faction || !faction.xeno_leader_list)
 				queen_locator.icon_state = "trackoff"
 				return
@@ -450,6 +455,23 @@ Make sure their actual health updates immediately.*/
 				queen_locator.icon_state = "trackoff"
 				return
 			tracking_atom = faction.xeno_leader_list[leader_tracker]
+		if(TRACKER_TUNNEL)
+			if(!queen_locator.track_state[2])
+				queen_locator.icon_state = "trackoff"
+				return
+
+			var/tunnel_tracker = queen_locator.track_state[2]
+
+			if(!faction || !faction.tunnels)
+				queen_locator.icon_state = "trackoff"
+				return
+			if(tunnel_tracker > faction.tunnels.len)
+				queen_locator.icon_state = "trackoff"
+				return
+			if(!faction.tunnels[tunnel_tracker])
+				queen_locator.icon_state = "trackoff"
+				return
+			tracking_atom = faction.tunnels[tunnel_tracker]
 
 	if(!tracking_atom)
 		queen_locator.icon_state = "trackoff"

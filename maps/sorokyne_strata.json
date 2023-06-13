@@ -26,6 +26,7 @@
         "bravo_xenomorph": 0,
         "charlie_xenomorph": 70
     },
+    "camouflage": "snow",
     "gamemodes": [
         "Distress Signal",
         "Hunter Games",

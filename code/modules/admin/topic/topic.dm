@@ -1250,9 +1250,9 @@
 
 		to_chat(src.owner, "You sent [input] to [H] via a secure channel.")
 		log_admin("[src.owner] replied to [key_name(H)]'s USCM message with the message [input].")
-		for(var/client/xeno in GLOB.admins)
-			if((R_ADMIN|R_MOD) & xeno.admin_holder.rights)
-				to_chat(xeno, "<b>ADMINS/MODS: \red [src.owner] replied to [key_name(H)]'s USCM message with: \blue \"[input]\"</b>")
+		for(var/client/X in GLOB.admins)
+			if((R_ADMIN|R_MOD) & X.admin_holder.rights)
+				to_chat(X, SPAN_STAFF_IC("<b>ADMINS/MODS: \red [src.owner] replied to [key_name(H)]'s USCM message with: \blue \")[input]\"</b>"))
 		to_chat(H, SPAN_DANGER("You hear something crackle in your headset before a voice speaks, please stand by for a message from USCM:\" \blue <b>\"[input]\"</b>"))
 
 	else if(href_list["SyndicateReply"])
@@ -1356,7 +1356,7 @@
 						P.stamps += "<HR><i>This paper has been stamped by the Free Press Quantum Relay.</i>"
 
 				to_chat(src.owner, "Message reply to transmitted successfully.")
-				message_admins("[key_name_admin(src.owner)] replied to a fax message from [key_name_admin(H)]", 1)
+				message_admins(SPAN_STAFF_IC("[key_name_admin(src.owner)] replied to a fax message from [key_name_admin(H)]"), 1)
 				return
 		to_chat(src.owner, "/red Unable to locate fax!")
 	else if(href_list["USCMFaxReply"])
@@ -1410,37 +1410,36 @@
 		var/msg_ghost = SPAN_NOTICE("<b><font color='#1F66A0'>USCM FAX REPLY: </font></b> ")
 		msg_ghost += "Отправлен '[customname]' по защищенному соединению ... "
 		msg_ghost += "<a href='?FaxView=\ref[fax_message]'>Просмотреть сообщение</a>"
-		announce_fax(,msg_ghost)
+		announce_fax(msg_ghost = msg_ghost)
 		spawn(GLOB.ship_hc_delay)
 			for(var/obj/structure/machinery/faxmachine/F in machines)
-				if(F == fax)
-					if(!(F.inoperable()))
+				if(F != fax || F.inoperable())
+					to_chat(owner, "/red Unable to locate fax!")
+					continue
 
-						// animate! it's alive!
-						flick("faxreceive", F)
+				// animate! it's alive!
+				flick("faxreceive", F)
 
-						// give the sprite some time to flick
-						spawn(20)
-							var/obj/item/paper/P = new /obj/item/paper(F.loc)
-							P.name = "USCM High Command - [customname]"
-							P.info = fax_message
-							P.update_icon()
+				// give the sprite some time to flick
+				spawn(20)
+					var/obj/item/paper/P = new /obj/item/paper(F.loc)
+					P.name = "USCM High Command - [customname]"
+					P.info = fax_message
+					P.update_icon()
 
-							playsound(F.loc, "sound/machines/fax.ogg", 15)
+					playsound(F.loc, "sound/machines/fax.ogg", 15)
 
-							// Stamps
-							var/image/stampoverlay = image('icons/obj/items/paper.dmi')
-							stampoverlay.icon_state = "paper_stamp-uscm"
-							if(!P.stamped)
-								P.stamped = new
-							P.stamped += /obj/item/tool/stamp
-							P.overlays += stampoverlay
-							P.stamps += "<HR><i>This paper has been stamped by the USCM High Command Quantum Relay.</i>"
+					// Stamps
+					var/image/stampoverlay = image('icons/obj/items/paper.dmi')
+					stampoverlay.icon_state = "paper_stamp-uscm"
+					if(!P.stamped)
+						P.stamped = new
+					P.stamped += /obj/item/tool/stamp
+					P.overlays += stampoverlay
+					P.stamps += "<HR><i>This paper has been stamped by the USCM High Command Quantum Relay.</i>"
 
-					to_chat(src.owner, "Message reply to transmitted successfully.")
-					message_admins("[key_name_admin(src.owner)] replied to a fax message from [key_name_admin(H)]", 1)
-					return
-			to_chat(src.owner, "/red Unable to locate fax!")
+			to_chat(owner, "Message reply to transmitted successfully.")
+			message_admins(SPAN_STAFF_IC("[key_name_admin(owner)] replied to a fax message from [key_name_admin(H)]"), 1)
 
 	else if(href_list["CLFaxReply"])
 		var/mob/living/carbon/human/H = locate(href_list["CLFaxReply"])
@@ -1491,37 +1490,36 @@
 		var/msg_ghost = SPAN_NOTICE("<b><font color='#1F66A0'>WEYLAND-YUTANI FAX REPLY: </font></b> ")
 		msg_ghost += "Отправлен '[customname]' по защищенному соединению ... "
 		msg_ghost += "<a href='?FaxView=\ref[fax_message]'>Просмотреть сообщение</a>"
-		announce_fax(,msg_ghost)
+		announce_fax(msg_ghost = msg_ghost)
 		spawn(GLOB.ship_hc_delay)
 			for(var/obj/structure/machinery/faxmachine/F in machines)
-				if(F == fax)
-					if(!(F.inoperable()))
+				if(F != fax || F.inoperable())
+					to_chat(owner, "/red Unable to locate fax!")
+					continue
 
-						// animate! it's alive!
-						flick("faxreceive", F)
+				// animate! it's alive!
+				flick("faxreceive", F)
 
-						// give the sprite some time to flick
-						spawn(20)
-							var/obj/item/paper/P = new /obj/item/paper(F.loc)
-							P.name = "Weyland-Yutani - [customname]"
-							P.info = fax_message
-							P.update_icon()
+				// give the sprite some time to flick
+				spawn(20)
+					var/obj/item/paper/P = new /obj/item/paper(F.loc)
+					P.name = "Weyland-Yutani - [customname]"
+					P.info = fax_message
+					P.update_icon()
 
-							playsound(F.loc, "sound/machines/fax.ogg", 15)
+					playsound(F.loc, "sound/machines/fax.ogg", 15)
 
-							// Stamps
-							var/image/stampoverlay = image('icons/obj/items/paper.dmi')
-							stampoverlay.icon_state = "paper_stamp-cent"
-							if(!P.stamped)
-								P.stamped = new
-							P.stamped += /obj/item/tool/stamp
-							P.overlays += stampoverlay
-							P.stamps += "<HR><i>This paper has been stamped and encrypted by the Weyland-Yutani Quantum Relay (tm).</i>"
+					// Stamps
+					var/image/stampoverlay = image('icons/obj/items/paper.dmi')
+					stampoverlay.icon_state = "paper_stamp-cent"
+					if(!P.stamped)
+						P.stamped = new
+					P.stamped += /obj/item/tool/stamp
+					P.overlays += stampoverlay
+					P.stamps += "<HR><i>This paper has been stamped and encrypted by the Weyland-Yutani Quantum Relay (tm).</i>"
 
-					to_chat(src.owner, "Message reply to transmitted successfully.")
-					message_admins("[key_name_admin(src.owner)] replied to a fax message from [key_name_admin(H)]", 1)
-					return
-			to_chat(src.owner, "/red Unable to locate fax!")
+			to_chat(owner, "Message reply to transmitted successfully.")
+			message_admins(SPAN_STAFF_IC("[key_name_admin(owner)] replied to a fax message from [key_name_admin(H)]"), 1)
 
 	else if(href_list["CMBFaxReply"])
 		var/mob/living/carbon/human/H = locate(href_list["CMBFaxReply"])
@@ -1572,7 +1570,7 @@
 		var/msg_ghost = SPAN_NOTICE("<b><font color='#1b748c'>COLONIAL MARSHAL BUREAU FAX REPLY: </font></b> ")
 		msg_ghost += "Transmitting '[customname]' via secure connection ... "
 		msg_ghost += "<a href='?FaxView=\ref[fax_message]'>view message</a>"
-		announce_fax( ,msg_ghost)
+		announce_fax(msg_ghost = msg_ghost)
 
 
 		for(var/obj/structure/machinery/faxmachine/F in machines)
@@ -1601,7 +1599,7 @@
 						P.stamps += "<HR><i>This paper has been stamped by The Office of Colonial Marshals.</i>"
 
 				to_chat(src.owner, "Message reply to transmitted successfully.")
-				message_admins("[key_name_admin(src.owner)] replied to a fax message from [key_name_admin(H)]", 1)
+				message_admins(SPAN_STAFF_IC("[key_name_admin(src.owner)] replied to a fax message from [key_name_admin(H)]"), 1)
 				return
 		to_chat(src.owner, "/red Unable to locate fax!")
 

@@ -143,12 +143,6 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 /obj/item/weapon/gun/dropped(mob/user)
 	. = ..()
 
-	stop_aim()
-	if(user && user.client)
-		user.update_gun_icons()
-		user.client.mouse_pointer_icon = initial(user.client.mouse_pointer_icon)
-
-	var/delay_left = (last_fired + fire_delay + additional_fire_group_delay) - world.time
 	if(fire_delay_group && delay_left > 0)
 		for(var/group in fire_delay_group)
 			LAZYSET(user.fire_delay_next_fire, group, world.time + delay_left)
@@ -236,9 +230,6 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 
 /obj/item/weapon/gun/attack_self(mob/user)
 	..()
-	if(target)
-		lower_aim()
-		return
 
 	//There are only two ways to interact here.
 	if(flags_item & TWOHANDED)

@@ -153,6 +153,7 @@
 /obj/structure/pipes/standard/simple/hidden/cyan,
 /obj/effect/decal/cleanable/blood/splatter,
 /obj/effect/landmark/xeno_hive_spawn,
+/obj/effect/landmark/ert_spawns/groundside_xeno,
 /turf/open/floor{
 	icon_state = "white"
 	},
@@ -379,10 +380,6 @@
 /area/lv624/lazarus/main_hall)
 "bc" = (
 /obj/effect/decal/cleanable/blood/splatter,
-/obj/structure/surface/table{
-	dir = 4;
-	flipped = 1
-	},
 /obj/structure/surface/table{
 	flipped = 1
 	},
@@ -616,10 +613,6 @@
 "bJ" = (
 /obj/effect/decal/cleanable/blood/splatter,
 /obj/structure/surface/table{
-	flipped = 1
-	},
-/obj/structure/surface/table{
-	dir = 8;
 	flipped = 1
 	},
 /turf/open/floor{

@@ -1,7 +1,7 @@
 //job options for doctors surgeon pharmacy technician(preparation of medecine and distribution)
 
-#define DOCTOR_VARIANT "Doc"
-#define SURGEON_VARIANT "Sur"
+#define DOCTOR_VARIANT "Doctor"
+#define SURGEON_VARIANT "Surgeon"
 
 // Doctor
 /datum/job/civilian/doctor
@@ -17,7 +17,7 @@
 	balance_formulas = list("support", BALANCE_FORMULA_OPERATIONS, BALANCE_FORMULA_MEDIC)
 
 	// job option
-	job_options = list(DOCTOR_VARIANT, SURGEON_VARIANT)
+	job_options = list(DOCTOR_VARIANT = "Doc", SURGEON_VARIANT = "Sur")
 	/// If this job is a doctor variant of the doctor role
 	var/doctor = TRUE
 

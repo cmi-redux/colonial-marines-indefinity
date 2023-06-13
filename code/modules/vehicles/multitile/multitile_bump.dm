@@ -565,7 +565,7 @@
 		log_attack("[key_name(src)] was rammed by [key_name(driver)] with [V].")
 		if(faction == driver.faction)
 			var/ff_msg = "key_name(driver)] rammed [key_name(src)] with \the [V] in [get_area(src)]"
-			var/ffl = "(<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[driver.x];Y=[driver.y];Z=[driver.z]'>JMP</a>) ([driver.client ? "<a href='?priv_msg=[driver.client.ckey]'>PM</a>" : "NO CLIENT"])"
+			var/ffl = "[ADMIN_JMP(driver)] [ADMIN_PM(driver)]"
 			msg_admin_ff("[ff_msg] [ffl]", ff_msg)
 	else
 		log_attack("[key_name(src)] was friendly pushed by [key_name(driver)] with [V].") //to be able to determine whether vehicle was pushign friendlies
@@ -610,7 +610,7 @@
 		log_attack("[key_name(src)] was rammed by [key_name(driver)] with [V].")
 		if(faction == driver.faction)
 			var/ff_msg = "[key_name(driver)] rammed and damaged member of allied faction [key_name(src)] with \the [V] in [get_area(src)]"
-			var/ffl = "(<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[driver.x];Y=[driver.y];Z=[driver.z]'>JMP</a>) ([driver.client ? "<a href='?priv_msg=[driver.client.ckey]'>PM</a>" : "NO CLIENT"])"
+			var/ffl = "[ADMIN_JMP(driver)] [ADMIN_PM(driver)]"
 			msg_admin_ff("[ff_msg] [ffl]", ff_msg)
 	else
 		log_attack("[key_name(src)] was friendly pushed by [key_name(driver)] with [V].") //to be able to determine whether vehicle was pushing friendlies

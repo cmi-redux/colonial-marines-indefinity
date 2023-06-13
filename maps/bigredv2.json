@@ -38,6 +38,7 @@
         "charlie_xenomorph": 0,
         "delta_xenomorph": 100
     },
+    "camouflage": "desert",
     "gamemodes": [
         "Distress Signal",
         "Crash",

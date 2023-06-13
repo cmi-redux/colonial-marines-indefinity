@@ -201,7 +201,7 @@
 //Putting these here since it's power-related
 /obj/structure/machinery/colony_floodlight_switch
 	name = "Colony Floodlight Switch"
-	icon = 'icons/turf/ground_map.dmi'
+	icon = 'icons/obj/structures/machinery/power.dmi'
 	icon_state = "panelnopower"
 	desc = "This switch controls the floodlights surrounding the archaeology complex. It only functions when there is power."
 	density = FALSE
@@ -273,7 +273,7 @@
 	if(!ispowered)
 		to_chat(user, "Nothing happens.")
 		return FALSE
-	playsound(src,'sound/machines/click.ogg', 15, 1)
+	playsound(src,'sound/machines/click.ogg', 30, 1)
 	use_power(5)
 	toggle_lights(!light_on)
 	update_icon()
@@ -292,7 +292,7 @@
 	icon_state = "flood_s_off"
 	density = TRUE
 	anchored = TRUE
-	layer = WINDOW_LAYER
+	layer = ABOVE_XENO_LAYER
 	var/damaged = 0 //Can be smashed by xenos
 	unslashable = TRUE
 	unacidable = TRUE

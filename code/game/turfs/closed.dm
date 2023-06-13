@@ -239,6 +239,7 @@
 	name = "wall"
 	icon_state = "wall1"
 	icon = 'icons/turf/shuttle.dmi'
+	layer = ABOVE_TURF_LAYER
 
 /turf/closed/shuttle/dropship
 	icon = 'icons/turf/walls/walls.dmi'

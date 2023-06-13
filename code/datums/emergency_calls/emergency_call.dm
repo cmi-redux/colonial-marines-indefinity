@@ -293,6 +293,8 @@
 			create_member(null, override_spawn_loc)
 
 	candidates = list()
+	if(arrival_message && announce)
+		marine_announcement(arrival_message, "Intercepted Tranmission:")
 
 /datum/emergency_call/proc/add_candidate(mob/mob)
 	if(!mob.client || (mob.mind && (mob.mind in candidates)) || istype(mob, /mob/living/carbon/xenomorph))

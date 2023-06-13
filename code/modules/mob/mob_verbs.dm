@@ -41,83 +41,6 @@
 	if(client && client.player_data)
 		client.player_data.tgui_interact(src)
 
-/mob/verb/view_discord()
-	set category = "OOC"
-	set name = "Discord Connect"
-	set desc = "View your discord info."
-
-	if(!SSentity_manager.initialized || !client?.player_data?.discord_loaded)
-		to_chat(src, client.auto_lang(LANGUAGE_LOBBY_WAIT_DB))
-		return
-
-	if(client.player_data.discord)
-		client.player_data.discord.ui_interact(src)
-	else
-		discord_create()
-
-/mob/proc/discord_create()
-	var/discord_id = tgui_input_text(usr, "Insert your DISCORD ID (18-19 NUMBERS):", "Discord Connect", 0, 19, FALSE, timeout = 10 SECONDS)
-	if(!isnull(discord_id))
-		if(!(length(discord_id) == 18 || length(discord_id) == 19))
-			to_chat(src, "<font color='red'>Inserted incurrect ID!</font>")
-			return
-		if(alert("Вы уверены, это нельзя будет изменить без помощи админа?",,"Да","Нет")=="Нет")
-			return
-		else
-			if(!discord_id)
-				to_chat(src, "<font color='red'>Произошла ошибка, повторите попытку!</font>")
-				return
-			var/list/datum/view_record/discord_view/strikes_discord = DB_VIEW(/datum/view_record/discord_view/, DB_COMP("discord_id", DB_EQUALS, discord_id))
-			if(length(strikes_discord))
-				to_chat(src, "<font color='red'>This is discord account already connected!</font>")
-				return
-			else
-				var/datum/entity/discord/PS = DB_ENTITY(/datum/entity/discord)
-				client.player_data.discord = PS
-				client.player_data.discord.discord_id = discord_id
-
-				var/discord_key = "[rand(0,9)][rand(0,9)][rand(0,9)][pick(alphabet_uppercase)][pick(alphabet_uppercase)][pick(alphabet_uppercase)]"
-				var/list/datum/view_record/discord_view/same_discord_keys = DB_VIEW(/datum/view_record/discord_view/, DB_COMP("discord_key", DB_EQUALS, discord_key))
-				var/list/discord_keys = list()
-				for(var/datum/view_record/discord_view/discord in same_discord_keys)
-					discord_keys += discord.discord_key
-				while(discord_key in discord_keys)
-					discord_key = "[rand(0,9)][rand(0,9)][rand(0,9)][pick(alphabet_uppercase)][pick(alphabet_uppercase)][pick(alphabet_uppercase)]"
-
-				to_chat(src, "<font color='red'>Generated DISCORD KEY - [discord_key].</font>")
-				client.player_data.discord.discord_key = discord_key
-				client.player_data.discord.save_discord(discord_id, discord_key, client.player_data.id)
-
-				var/datum/discord_embed/embed = new()
-				embed.title = "Верефикация аккаунта"
-				embed.description = "Верефикация с ключом **[discord_key]**, в раунде **[SSperf_logging.round?.id]** ожидает проверки"
-				embed.color = COLOR_WEBHOOK_DEFAULT
-				embed.content = "<@[discord_id]>"
-				send2verefy_webhook(embed)
-	else
-		return
-
-/proc/send2verefy_webhook(message_or_embed)
-	var/webhook = CONFIG_GET(string/verefy_webhook_url)
-	if(!webhook)
-		return
-
-	var/list/webhook_info = list()
-	if(istext(message_or_embed))
-		var/message_content = replacetext(replacetext(message_or_embed, "\proper", ""), "\improper", "")
-		message_content = GLOB.has_discord_embeddable_links.Replace(replacetext(message_content, "`", ""), " ```$1``` ")
-		webhook_info["content"] = message_content
-	else
-		var/datum/discord_embed/embed = message_or_embed
-		webhook_info["embeds"] = list(embed.convert_to_list())
-		if(embed.content)
-			webhook_info["content"] = embed.content
-	var/list/headers = list()
-	headers["Content-Type"] = "application/json"
-	var/datum/http_request/request = new()
-	request.prepare(RUSTG_HTTP_METHOD_POST, webhook, json_encode(webhook_info), headers, "tmp/response.json")
-	request.begin_async()
-
 /mob/verb/toggle_high_toss()
 	set name = "Toggle High Toss"
 	set category = "IC"
@@ -177,7 +100,7 @@
 			mind.store_memory(msg)
 		else
 			src.sleeping = 9999999
-			message_admins("[key_name(usr)] auto-slept for attempting to exceed mob memory limit. (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[src.loc.x];Y=[src.loc.y];Z=[src.loc.z]'>JMP</a>)")
+			message_admins("[key_name(usr)] auto-slept for attempting to exceed mob memory limit. [ADMIN_JMP(src.loc)]")
 	else
 		to_chat(src, "The game appears to have misplaced your mind datum, so we can't show you your notes.")
 

@@ -40,6 +40,7 @@
         "charlie_xenomorph": 0,
         "delta_xenomorph": 0
     },
+    "camouflage": "classic",
 	"gamemodes": [
         "Distress Signal",
         "Hunter Games",

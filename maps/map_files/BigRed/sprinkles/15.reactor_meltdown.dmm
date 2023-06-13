@@ -671,12 +671,7 @@
 /turf/open/floor,
 /area/bigredv2/outside/building/engineering)
 "dj" = (
-/obj/effect/decal/cleanable/dirt{
-	acid_damage = 1;
-	icon_state = "greenglow";
-	luminosity = 1;
-	name = "glowing goo"
-	},
+/obj/effect/decal/cleanable/dirt/greenglow,
 /turf/open/gm/river,
 /area/bigredv2/outside/building/engineering)
 "dk" = (
@@ -707,12 +702,7 @@
 /area/bigredv2/outside/building/engineering)
 "dq" = (
 /obj/item/bananapeel,
-/obj/effect/decal/cleanable/dirt{
-	acid_damage = 1;
-	icon_state = "greenglow";
-	luminosity = 1;
-	name = "glowing goo"
-	},
+/obj/effect/decal/cleanable/dirt/greenglow,
 /turf/open/floor/plating,
 /area/bigredv2/outside/building/engineering)
 "dr" = (
@@ -733,12 +723,7 @@
 /turf/open/floor/plating,
 /area/bigredv2/outside/building/engineering)
 "dx" = (
-/obj/effect/decal/cleanable/dirt{
-	acid_damage = 1;
-	icon_state = "greenglow";
-	luminosity = 1;
-	name = "glowing goo"
-	},
+/obj/effect/decal/cleanable/dirt/greenglow,
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
@@ -840,33 +825,18 @@
 /turf/open/floor/plating,
 /area/bigredv2/outside/building/engineering)
 "dY" = (
-/obj/effect/decal/cleanable/dirt{
-	acid_damage = 1;
-	icon_state = "greenglow";
-	luminosity = 1;
-	name = "glowing goo"
-	},
+/obj/effect/decal/cleanable/dirt/greenglow,
 /turf/open/floor{
 	icon_state = "wall_thermite"
 	},
 /area/bigredv2/outside/building/engineering)
 "dZ" = (
-/obj/effect/decal/cleanable/dirt{
-	acid_damage = 1;
-	icon_state = "greenglow";
-	luminosity = 1;
-	name = "glowing goo"
-	},
+/obj/effect/decal/cleanable/dirt/greenglow,
 /turf/open/floor/plating,
 /area/bigredv2/outside/building/engineering)
 "eb" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/decal/cleanable/dirt{
-	acid_damage = 1;
-	icon_state = "greenglow";
-	luminosity = 1;
-	name = "glowing goo"
-	},
+/obj/effect/decal/cleanable/dirt/greenglow,
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
@@ -887,12 +857,7 @@
 /area/bigredv2/outside/building/engineering)
 "eh" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/decal/cleanable/dirt{
-	acid_damage = 1;
-	icon_state = "greenglow";
-	luminosity = 1;
-	name = "glowing goo"
-	},
+/obj/effect/decal/cleanable/dirt/greenglow,
 /turf/open/floor/plating,
 /area/bigredv2/outside/building/engineering)
 "ei" = (
@@ -938,12 +903,7 @@
 /turf/open/floor/plating,
 /area/bigredv2/outside/building/engineering)
 "eo" = (
-/obj/effect/decal/cleanable/dirt{
-	acid_damage = 1;
-	icon_state = "greenglow";
-	luminosity = 1;
-	name = "glowing goo"
-	},
+/obj/effect/decal/cleanable/dirt/greenglow,
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars_cave{
 	icon_state = "mars_cave_7";
@@ -984,12 +944,7 @@
 /area/bigredv2/outside/building/engineering)
 "ex" = (
 /obj/effect/decal/cleanable/molten_item,
-/obj/effect/decal/cleanable/dirt{
-	acid_damage = 1;
-	icon_state = "greenglow";
-	luminosity = 1;
-	name = "glowing goo"
-	},
+/obj/effect/decal/cleanable/dirt/greenglow,
 /turf/open/floor{
 	icon_state = "wall_thermite"
 	},
@@ -1016,12 +971,7 @@
 	},
 /area/bigredv2/outside/building/engineering)
 "eB" = (
-/obj/effect/decal/cleanable/dirt{
-	acid_damage = 1;
-	icon_state = "greenglow";
-	luminosity = 1;
-	name = "glowing goo"
-	},
+/obj/effect/decal/cleanable/dirt/greenglow,
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars_cave,
 /area/bigredv2/outside/lz2_south_cas)
@@ -1054,12 +1004,7 @@
 /area/bigredv2/outside/building/telecomm/engi)
 "eG" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/decal/cleanable/dirt{
-	acid_damage = 1;
-	icon_state = "greenglow";
-	luminosity = 1;
-	name = "glowing goo"
-	},
+/obj/effect/decal/cleanable/dirt/greenglow,
 /turf/open/floor{
 	icon_state = "wall_thermite"
 	},
@@ -1082,12 +1027,7 @@
 /area/bigredv2/outside/building/engineering)
 "eK" = (
 /obj/effect/decal/cleanable/molten_item,
-/obj/effect/decal/cleanable/dirt{
-	acid_damage = 1;
-	icon_state = "greenglow";
-	luminosity = 1;
-	name = "glowing goo"
-	},
+/obj/effect/decal/cleanable/dirt/greenglow,
 /turf/open/gm/river,
 /area/bigredv2/outside/building/engineering)
 "eL" = (
@@ -1097,22 +1037,12 @@
 	},
 /area/bigredv2/outside/building/engineering)
 "eM" = (
-/obj/effect/decal/cleanable/dirt{
-	acid_damage = 1;
-	icon_state = "greenglow";
-	luminosity = 1;
-	name = "glowing goo"
-	},
+/obj/effect/decal/cleanable/dirt/greenglow,
 /obj/effect/decal/cleanable/molten_item,
 /turf/open/gm/river,
 /area/bigredv2/outside/building/engineering)
 "eN" = (
-/obj/effect/decal/cleanable/dirt{
-	acid_damage = 1;
-	icon_state = "greenglow";
-	luminosity = 1;
-	name = "glowing goo"
-	},
+/obj/effect/decal/cleanable/dirt/greenglow,
 /turf/open/mars_cave{
 	icon_state = "mars_cave_5";
 	tag = "icon-mars_cave_5"

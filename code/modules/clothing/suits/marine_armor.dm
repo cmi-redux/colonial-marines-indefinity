@@ -140,7 +140,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	equip_sounds = list('sound/handling/putting_on_armor1.ogg')
 	var/armor_variation = 0
 
-/obj/item/clothing/suit/storage/marine/Initialize()
+/obj/item/clothing/suit/storage/marine/Initialize(mapload)
 	. = ..()
 	if(!(flags_atom & NO_NAME_OVERRIDE))
 		name = "[specialty]"
@@ -148,12 +148,12 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 			name += " snow armor" //Leave marine out so that armors don't have to have "Marine" appended (see: generals).
 		else
 			name += " armor"
-	if(armor_variation)
-		icon_state = replacetext(icon_state,"1","[rand(1,armor_variation)]")
 
 	if(!(flags_atom & NO_SNOW_TYPE))
 		select_gamemode_skin(type)
 	armor_overlays = list("lamp") //Just one for now, can add more later.
+	if(armor_variation && mapload)
+		post_vendor_spawn_hook()
 	update_icon()
 	pockets.max_w_class = SIZE_SMALL //Can contain small items AND rifle magazines.
 	pockets.bypass_w_limit = list(
@@ -176,14 +176,13 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 		I = image('icons/obj/items/clothing/cm_suits.dmi', src, flags_armor_features & ARMOR_LAMP_ON? "lamp-on" : "lamp-off")
 		armor_overlays["lamp"] = I
 		overlays += I
-	else
-		armor_overlays["lamp"] = null
-	if(user) user.update_inv_wear_suit()
+	if(user)
+		user.update_inv_wear_suit()
 
 /obj/item/clothing/suit/storage/marine/attack_self(mob/user)
 	..()
 	if(!isturf(user.loc))
-		to_chat(user, SPAN_WARNING("You cannot turn the light on while in [user.loc]."))
+		to_chat(user, SPAN_WARNING("You cannot turn the light [is_light_on() ? "off" : "on"] while in [user.loc]."))
 		return
 	if(!ishuman(user))
 		return
@@ -436,6 +435,30 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	armor_internaldamage = CLOTHING_ARMOR_LOW
 	storage_slots = 2
 
+/obj/item/clothing/suit/storage/marine/light/padded
+	icon_state = "L1"
+	armor_variation = 0
+
+/obj/item/clothing/suit/storage/marine/light/padless
+	icon_state = "L2"
+	armor_variation = 0
+
+/obj/item/clothing/suit/storage/marine/light/padless_lines
+	icon_state = "L3"
+	armor_variation = 0
+
+/obj/item/clothing/suit/storage/marine/light/carrier
+	icon_state = "L4"
+	armor_variation = 0
+
+/obj/item/clothing/suit/storage/marine/light/skull
+	icon_state = "L5"
+	armor_variation = 0
+
+/obj/item/clothing/suit/storage/marine/light/smooth
+	icon_state = "L6"
+	armor_variation = 0
+
 /obj/item/clothing/suit/storage/marine/light/vest
 	name = "M3-VL pattern ballistics vest"
 	desc = "Up until 2182 USCM non-combat personnel were issued non-standardized ballistics vests, though the lack of IMP compatibility and suit lamps proved time and time again inefficient. This modified M3-L shell is the result of a 6-year R&D program; It provides utility, protection, AND comfort to all USCM non-combat personnel."
@@ -500,6 +523,30 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	storage_slots = 2
 	slowdown = SLOWDOWN_ARMOR_LOWHEAVY
 	movement_compensation = SLOWDOWN_ARMOR_MEDIUM
+
+/obj/item/clothing/suit/storage/marine/heavy/padded
+	icon_state = "H1"
+	armor_variation = 0
+
+/obj/item/clothing/suit/storage/marine/heavy/padless
+	icon_state = "H2"
+	armor_variation = 0
+
+/obj/item/clothing/suit/storage/marine/heavy/padless_lines
+	icon_state = "H3"
+	armor_variation = 0
+
+/obj/item/clothing/suit/storage/marine/heavy/carrier
+	icon_state = "H4"
+	armor_variation = 0
+
+/obj/item/clothing/suit/storage/marine/heavy/skull
+	icon_state = "H5"
+	armor_variation = 0
+
+/obj/item/clothing/suit/storage/marine/heavy/smooth
+	icon_state = "H6"
+	armor_variation = 0
 
 //===========================//SPECIALIST\\================================\\
 //=======================================================================\\

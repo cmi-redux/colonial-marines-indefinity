@@ -1,17 +1,10 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
-"aa" = (
-/turf/open/floor{
-	tag = "icon-asteroidwarning";
-	icon_state = "asteroidwarning"
-	},
-/area/bigredv2/outside/c)
 "ab" = (
 /turf/open/floor{
-	tag = "icon-asteroidwarning (SOUTHEAST)";
-	icon_state = "asteroidwarning";
-	dir = 6
+	dir = 5;
+	icon_state = "asteroidwarning"
 	},
-/area/bigredv2/outside/c)
+/area/bigredv2/outside/e)
 "ac" = (
 /turf/open/mars_cave{
 	tag = "icon-mars_dirt_4";
@@ -27,16 +20,8 @@
 "ae" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor{
-	tag = "icon-asteroidwarning (WEST)";
-	icon_state = "asteroidwarning";
-	dir = 8
-	},
-/area/bigredv2/outside/c)
-"af" = (
-/turf/open/floor{
-	tag = "icon-asteroidwarning (EAST)";
-	icon_state = "asteroidwarning";
-	dir = 4
+	dir = 1;
+	icon_state = "asteroidfloor"
 	},
 /area/bigredv2/outside/c)
 "ag" = (
@@ -46,11 +31,11 @@
 	},
 /area/bigredv2/outside/e)
 "ah" = (
-/turf/open/mars{
-	tag = "icon-mars_dirt_14";
-	icon_state = "mars_dirt_14"
+/turf/open/floor{
+	dir = 1;
+	icon_state = "asteroidwarning"
 	},
-/area/bigredv2/outside/e)
+/area/bigredv2/outside/c)
 "ai" = (
 /turf/open/mars,
 /area/bigredv2/outside/e)
@@ -62,16 +47,14 @@
 /area/bigredv2/outside/e)
 "ak" = (
 /turf/open/floor{
-	tag = "icon-asteroidwarning (WEST)";
-	icon_state = "asteroidwarning";
-	dir = 8
+	dir = 8;
+	icon_state = "asteroidwarning"
 	},
 /area/bigredv2/outside/e)
 "al" = (
 /turf/open/floor{
-	tag = "icon-asteroidwarning (EAST)";
-	icon_state = "asteroidwarning";
-	dir = 4
+	dir = 4;
+	icon_state = "asteroidwarning"
 	},
 /area/bigredv2/outside/e)
 "am" = (
@@ -87,7 +70,10 @@
 	},
 /area/bigredv2/outside/c)
 "ao" = (
-/turf/open/mars,
+/turf/open/floor{
+	dir = 9;
+	icon_state = "asteroidwarning"
+	},
 /area/bigredv2/outside/c)
 "ap" = (
 /turf/closed/wall/solaris,
@@ -122,7 +108,10 @@
 /area/bigredv2/outside/e)
 "au" = (
 /obj/effect/landmark/crap_item,
-/turf/open/mars,
+/turf/open/floor{
+	dir = 1;
+	icon_state = "asteroidwarning"
+	},
 /area/bigredv2/outside/c)
 "av" = (
 /obj/structure/machinery/vending/snack,
@@ -166,16 +155,15 @@
 /area/bigredv2/outside/building/office_complex)
 "aA" = (
 /turf/open/floor{
-	tag = "icon-asteroidwarning (NORTH)";
-	icon_state = "asteroidwarning";
-	dir = 1
+	dir = 1;
+	icon_state = "asteroidwarning"
 	},
 /area/bigredv2/outside/e)
 "aB" = (
+/obj/effect/landmark/lv624/xeno_tunnel,
 /turf/open/floor{
-	tag = "icon-asteroidwarning (NORTHWEST)";
-	icon_state = "asteroidwarning";
-	dir = 9
+	dir = 1;
+	icon_state = "asteroidfloor"
 	},
 /area/bigredv2/outside/c)
 "aC" = (
@@ -200,16 +188,14 @@
 /area/bigredv2/outside/building/office_complex)
 "aG" = (
 /turf/open/floor{
-	tag = "icon-asteroidfloor (NORTH)";
-	icon_state = "asteroidfloor";
-	dir = 1
+	dir = 1;
+	icon_state = "asteroidfloor"
 	},
 /area/bigredv2/outside/e)
 "aH" = (
 /turf/open/floor{
-	tag = "icon-asteroidwarning (WEST)";
-	icon_state = "asteroidwarning";
-	dir = 8
+	dir = 8;
+	icon_state = "asteroidwarning"
 	},
 /area/bigredv2/outside/c)
 "aI" = (
@@ -478,9 +464,8 @@
 "bx" = (
 /obj/item/shard,
 /turf/open/floor{
-	tag = "icon-asteroidfloor (NORTH)";
-	icon_state = "asteroidfloor";
-	dir = 1
+	dir = 1;
+	icon_state = "asteroidfloor"
 	},
 /area/bigredv2/outside/e)
 "by" = (
@@ -596,9 +581,8 @@
 "bR" = (
 /obj/item/shard,
 /turf/open/floor{
-	tag = "icon-asteroidwarning (WEST)";
-	icon_state = "asteroidwarning";
-	dir = 8
+	dir = 8;
+	icon_state = "asteroidwarning"
 	},
 /area/bigredv2/outside/c)
 "bS" = (
@@ -645,8 +629,8 @@
 /area/bigredv2/outside/building/office_complex)
 "bY" = (
 /turf/open/floor{
-	icon_state = "redcorner";
-	dir = 4
+	dir = 4;
+	icon_state = "redcorner"
 	},
 /area/bigredv2/outside/building/office_complex)
 "bZ" = (
@@ -810,6 +794,10 @@
 	},
 /area/bigredv2/outside/building/office_complex)
 "cw" = (
+/obj/item/weapon/gun/rifle/nsg23/no_lock/stripped{
+	desc = "A rare sight, this rifle is seen most commonly in the hands of Weyland-Yutani PMCs. Compared to the M41A MK2, it has noticeably improved handling and vastly improved performance at long and medium range, but compares similarly up close. This one seems to have been heavily damaged from impact, you can still see some debris that resembles a scope and underbarrel attachment point on it.";
+	name = "smashed NSG 23 assault rifle"
+	},
 /turf/open/shuttle/dropship{
 	tag = "icon-rasputin5";
 	icon_state = "rasputin12"
@@ -973,8 +961,8 @@
 "cV" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
-	icon_state = "redcorner";
-	dir = 4
+	dir = 4;
+	icon_state = "redcorner"
 	},
 /area/bigredv2/outside/building/office_complex)
 "cW" = (
@@ -987,9 +975,8 @@
 /area/bigredv2/outside/building/office_complex)
 "cX" = (
 /turf/open/floor{
-	tag = "icon-asteroidwarning (SOUTHWEST)";
-	icon_state = "asteroidwarning";
-	dir = 10
+	dir = 1;
+	icon_state = "asteroidfloor"
 	},
 /area/bigredv2/outside/c)
 "cY" = (
@@ -998,15 +985,15 @@
 	icon_state = "gib6"
 	},
 /turf/open/floor{
-	tag = "icon-asteroidwarning";
-	icon_state = "asteroidwarning"
+	dir = 1;
+	icon_state = "asteroidfloor"
 	},
 /area/bigredv2/outside/c)
 "cZ" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
-	tag = "icon-asteroidwarning";
-	icon_state = "asteroidwarning"
+	dir = 1;
+	icon_state = "asteroidfloor"
 	},
 /area/bigredv2/outside/c)
 "da" = (
@@ -1126,7 +1113,9 @@
 "dt" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/mars,
+/turf/open/mars{
+	icon_state = "mars_dirt_12"
+	},
 /area/bigredv2/outside/se)
 "du" = (
 /obj/effect/decal/cleanable/dirt,
@@ -1144,17 +1133,15 @@
 /area/bigredv2/outside/se)
 "dw" = (
 /turf/open/floor{
-	tag = "icon-asteroidwarning (SOUTHWEST)";
-	icon_state = "asteroidwarning";
-	dir = 10
+	dir = 10;
+	icon_state = "asteroidwarning"
 	},
 /area/bigredv2/outside/se)
 "dx" = (
 /obj/item/tool/warning_cone,
 /turf/open/floor{
-	tag = "icon-asteroidwarning (SOUTHEAST)";
-	icon_state = "asteroidwarning";
-	dir = 6
+	dir = 6;
+	icon_state = "asteroidwarning"
 	},
 /area/bigredv2/outside/se)
 "dz" = (
@@ -1196,8 +1183,8 @@
 /area/bigredv2/outside/building/office_complex)
 "dE" = (
 /obj/effect/decal/cleanable/blood{
-	icon_state = "gib6";
-	dir = 1
+	dir = 1;
+	icon_state = "gib6"
 	},
 /turf/open/shuttle/dropship{
 	tag = "icon-rasputin3";
@@ -1355,17 +1342,15 @@
 "dW" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
-	tag = "icon-asteroidwarning (NORTH)";
-	icon_state = "asteroidwarning";
-	dir = 1
+	dir = 4;
+	icon_state = "asteroidwarning"
 	},
-/area/bigredv2/outside/e)
+/area/bigredv2/outside/se)
 "dX" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
-	tag = "icon-asteroidfloor (NORTH)";
-	icon_state = "asteroidfloor";
-	dir = 1
+	dir = 1;
+	icon_state = "asteroidfloor"
 	},
 /area/bigredv2/outside/e)
 "dY" = (
@@ -1430,9 +1415,8 @@
 "eg" = (
 /obj/item/stack/rods,
 /turf/open/floor{
-	tag = "icon-asteroidwarning (WEST)";
-	icon_state = "asteroidwarning";
-	dir = 8
+	dir = 8;
+	icon_state = "asteroidwarning"
 	},
 /area/bigredv2/outside/c)
 "eh" = (
@@ -1477,7 +1461,62 @@
 /turf/open/floor{
 	icon_state = "platingdmg1"
 	},
-/area/bigredv2/outside/building/office_complex)
+/area/bigredv2/outside/office_complex)
+"fv" = (
+/obj/structure/bed/chair/dropship/passenger{
+	dir = 8
+	},
+/obj/effect/landmark/survivor_spawner/bigred_crashed_pmc,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15"
+	},
+/area/bigredv2/outside/office_complex)
+"fG" = (
+/obj/structure/bed/chair/dropship/passenger{
+	dir = 8
+	},
+/obj/item/device/radio/headset/distress/pmc/hvh,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15"
+	},
+/area/bigredv2/outside/office_complex)
+"id" = (
+/obj/structure/bed/chair/dropship/passenger{
+	dir = 4
+	},
+/obj/effect/landmark/survivor_spawner/bigred_crashed_pmc,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15"
+	},
+/area/bigredv2/outside/office_complex)
+"jx" = (
+/obj/effect/decal/cleanable/blood{
+	dir = 1;
+	icon_state = "gib6"
+	},
+/obj/item/limb/leg/l_leg,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin3"
+	},
+/area/bigredv2/outside/office_complex)
+"od" = (
+/obj/structure/bed/chair/dropship/passenger{
+	dir = 4
+	},
+/obj/item/clothing/gloves/marine/veteran/pmc,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15"
+	},
+/area/bigredv2/outside/office_complex)
+"oF" = (
+/obj/structure/bed/chair/dropship/passenger{
+	dir = 4
+	},
+/obj/item/clothing/under/marine/veteran/pmc,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15"
+	},
+/area/bigredv2/outside/office_complex)
 "qX" = (
 /obj/effect/decal/cleanable/blood,
 /obj/effect/landmark/corpsespawner/pmc,
@@ -1492,7 +1531,47 @@
 	dir = 8
 	},
 /obj/effect/decal/cleanable/blood,
-/obj/effect/landmark/corpsespawner/pmc,
+/obj/effect/spawner/gibspawner/human,
+/obj/item/clothing/head/helmet/marine/veteran/pmc,
+/obj/item/clothing/under/marine/veteran/pmc,
+/obj/item/clothing/head/helmet/marine/veteran/pmc,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15"
+	},
+/area/bigredv2/outside/office_complex)
+"rK" = (
+/obj/structure/bed/chair/dropship/passenger{
+	dir = 8
+	},
+/obj/effect/decal/cleanable/blood,
+/obj/effect/landmark/corpsespawner/wygoon,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15"
+	},
+/area/bigredv2/outside/office_complex)
+"si" = (
+/obj/item/clothing/head/helmet/marine/veteran/pmc,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin3"
+	},
+/area/bigredv2/outside/office_complex)
+"sR" = (
+/obj/item/storage/firstaid,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin3"
+	},
+/area/bigredv2/outside/office_complex)
+"uC" = (
+/obj/effect/spawner/gibspawner/human,
+/obj/item/weapon/gun/rifle/m41a/corporate/no_lock{
+	desc = "A Weyland-Yutani creation, this M41A MK2 comes equipped in corporate white. Uses 10x24mm caseless ammunition. The IFF electronics appear to be non-functional.";
+	name = "battered M41A pulse rifle Mk2"
+	},
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin3"
+	},
+/area/bigredv2/outside/office_complex)
+"uL" = (
 /obj/item/weapon/gun/rifle/nsg23/no_lock,
 /turf/open/shuttle/dropship{
 	tag = "icon-rasputin15";
@@ -1520,20 +1599,46 @@
 	tag = "icon-rasputin15";
 	icon_state = "rasputin15"
 	},
-/area/bigredv2/outside/building/office_complex)
+/area/bigredv2/outside/office_complex)
+"Bu" = (
+/obj/effect/decal/cleanable/blood,
+/obj/effect/spawner/gibspawner/human,
+/obj/item/limb/arm/l_arm,
+/obj/item/limb/leg/l_leg,
+/obj/item/limb/hand/r_hand,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin3"
+	},
+/area/bigredv2/outside/office_complex)
+"EE" = (
+/obj/structure/bed/chair/dropship/passenger{
+	dir = 8
+	},
+/obj/item/limb/hand/l_hand,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15"
+	},
+/area/bigredv2/outside/office_complex)
+"GG" = (
+/obj/item/weapon/gun/rifle/m41a/corporate/no_lock{
+	desc = "A Weyland-Yutani creation, this M41A MK2 comes equipped in corporate white. Uses 10x24mm caseless ammunition. The IFF electronics appear to be non-functional.";
+	name = "battered M41A pulse rifle Mk2"
+	},
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin3"
+	},
+/area/bigredv2/outside/office_complex)
 "Ha" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
-	tag = "icon-asteroidfloor (NORTH)";
-	icon_state = "asteroidfloor";
-	dir = 1
+	dir = 1;
+	icon_state = "asteroidfloor"
 	},
 /area/bigredv2/outside/se)
 "PR" = (
 /turf/open/floor{
-	tag = "icon-asteroidfloor (NORTH)";
-	icon_state = "asteroidfloor";
-	dir = 1
+	dir = 1;
+	icon_state = "asteroidfloor"
 	},
 /area/bigredv2/outside/se)
 "Qc" = (
@@ -1552,20 +1657,13 @@
 	icon_state = "floor8";
 	tag = "icon-rasputin7"
 	},
-/area/bigredv2/outside/building/office_complex)
-"ZG" = (
-/obj/effect/landmark/objective_landmark/close,
-/turf/open/mars_cave{
-	tag = "icon-mars_dirt_4";
-	icon_state = "mars_dirt_4"
-	},
-/area/bigredv2/outside/e)
+/area/bigredv2/outside/office_complex)
 
 (1,1,1) = {"
-aa
+ac
 ad
 ao
-aB
+aH
 aH
 aH
 aH
@@ -1581,17 +1679,17 @@ bR
 aH
 eg
 aH
-aH
-aH
 cX
-ao
-ao
-ao
+cX
+cX
+cX
+cX
+cX
 "}
 (2,1,1) = {"
-aa
+ac
 ad
-ao
+ah
 ap
 ap
 ap
@@ -1610,15 +1708,15 @@ ax
 aY
 ap
 ap
-aa
-ao
-ao
+cX
+cX
+cX
 ap
 "}
 (3,1,1) = {"
-aa
+ac
 ad
-ao
+ah
 ap
 aI
 aR
@@ -1637,13 +1735,13 @@ cq
 ca
 cH
 ap
-aa
-ao
-ao
+cX
+cX
+cX
 ap
 "}
 (4,1,1) = {"
-aa
+ac
 ad
 au
 as
@@ -1664,15 +1762,15 @@ ck
 ej
 cI
 as
-aa
-ao
-ao
+cX
+cX
+cX
 ap
 "}
 (5,1,1) = {"
-aa
+ac
 ad
-ao
+ah
 as
 aK
 bB
@@ -1692,14 +1790,14 @@ ek
 cm
 cR
 cY
-ao
-ao
+cX
+cX
 ap
 "}
 (6,1,1) = {"
-aa
+ac
 ad
-ao
+ah
 as
 aL
 aR
@@ -1718,15 +1816,15 @@ eh
 aS
 ed
 as
-aa
-ao
-ao
+cX
+cX
+cX
 ap
 "}
 (7,1,1) = {"
-aa
+ac
 ad
-ao
+ah
 ap
 aJ
 aR
@@ -1746,14 +1844,14 @@ cr
 cr
 ap
 cZ
-ao
-ao
+cX
+aB
 ap
 "}
 (8,1,1) = {"
-aa
+ac
 ad
-ao
+ah
 ap
 aM
 aS
@@ -1778,9 +1876,9 @@ ap
 ap
 "}
 (9,1,1) = {"
-ab
+ac
 ad
-ao
+ah
 ap
 ap
 ap
@@ -1807,9 +1905,9 @@ dr
 (10,1,1) = {"
 ac
 an
-ao
-ao
-ao
+ah
+cX
+cX
 ap
 aC
 bj
@@ -1832,11 +1930,11 @@ bu
 ar
 "}
 (11,1,1) = {"
-ad
-ao
-ao
-ao
-ao
+aH
+aH
+cX
+cX
+cX
 by
 aN
 bk
@@ -1859,7 +1957,7 @@ bI
 bI
 "}
 (12,1,1) = {"
-ac
+cX
 ap
 ap
 ap
@@ -1883,10 +1981,10 @@ bk
 bk
 cE
 dm
-ds
+dW
 "}
 (13,1,1) = {"
-ac
+cX
 ap
 av
 ar
@@ -1940,7 +2038,7 @@ do
 ds
 "}
 (15,1,1) = {"
-af
+cX
 ar
 bt
 aD
@@ -1967,7 +2065,7 @@ dp
 du
 "}
 (16,1,1) = {"
-ag
+aA
 ba
 bb
 aE
@@ -1994,7 +2092,7 @@ dm
 dv
 "}
 (17,1,1) = {"
-ZG
+aA
 ap
 az
 bu
@@ -2021,7 +2119,7 @@ dn
 dw
 "}
 (18,1,1) = {"
-ah
+aA
 ap
 ap
 ap
@@ -2048,11 +2146,11 @@ do
 dq
 "}
 (19,1,1) = {"
-ai
-at
-dW
-dX
-dX
+ab
+al
+aG
+aG
+aG
 dY
 aN
 bp

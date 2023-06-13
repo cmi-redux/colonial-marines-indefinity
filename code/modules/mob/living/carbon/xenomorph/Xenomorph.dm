@@ -247,9 +247,9 @@
 	var/banished = FALSE // Banished xenos can be attacked by all other xenos
 	var/lock_evolve = FALSE //Prevents evolve/devolve (used when banished)
 	var/list/tackle_counter
-	var/evolving = FALSE // Whether the xenomorph is in the process of evolving
-	/// The damage dealt by a xenomorph whenever they take damage near someone
-	var/acid_blood_damage = 12
+	var/evolving = FALSE // Whether the xeno is in the process of evolving
+	/// The damage dealt by a xeno whenever they take damage near someone
+	var/acid_blood_damage = 20
 	var/nocrit = FALSE
 	var/deselect_timer = 0 // Much like Carbon.last_special is a short tick record to prevent accidental deselects of abilities
 	var/got_evolution_message = FALSE
@@ -1101,4 +1101,9 @@
 	return ..()
 
 /mob/living/carbon/xenomorph/handle_blood_splatter(splatter_dir, duration)
-	new /obj/effect/temp_visual/dir_setting/bloodsplatter/xenosplatter(loc, splatter_dir, duration)
+	var/color_override
+	if(special_blood)
+		var/datum/reagent/D = chemical_reagents_list[special_blood]
+		if(D)
+			color_override = D.color
+	new /obj/effect/temp_visual/dir_setting/bloodsplatter/xenosplatter(loc, splatter_dir, duration, color_override)

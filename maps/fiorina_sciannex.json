@@ -24,6 +24,7 @@
         "bravo_xenomorph": 0,
         "charlie_xenomorph": 0
     },
+    "camouflage": "classic",
     "gamemodes": [
         "Distress Signal",
         "Hunter Games",

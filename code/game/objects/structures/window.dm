@@ -830,7 +830,7 @@
 	desc = "A glass window with a special rod matrix inside a wall frame. This one has an automatic shutter system to prevent any atmospheric breach."
 	health = 200
 	//icon_state = "rwindow0_debug" //Uncomment to check hull in the map editor
-	var/triggered = 0 //indicates if the shutters have already been triggered
+	var/triggered = FALSE //indicates if the shutters have already been triggered
 
 /obj/structure/window/framed/prison/reinforced/hull/Destroy()
 	spawn_shutters()
@@ -839,9 +839,9 @@
 /obj/structure/window/framed/prison/reinforced/hull/proc/spawn_shutters(from_dir = 0)
 	if(triggered)
 		return
-	else
-		triggered = 1
-	for(var/direction in  GLOB.cardinals)
+
+	triggered = TRUE
+	for(var/direction in GLOB.cardinals)
 		if(direction == from_dir) continue //doesn't check backwards
 		for(var/obj/structure/window/framed/prison/reinforced/hull/W in get_step(src,direction) )
 			W.spawn_shutters(turn(direction,180))
@@ -851,8 +851,7 @@
 			P.setDir(SOUTH)
 		else
 			P.setDir(EAST)
-	spawn(0)
-		P.close()
+	P.close()
 
 /obj/structure/window/framed/prison/cell
 	name = "cell window"

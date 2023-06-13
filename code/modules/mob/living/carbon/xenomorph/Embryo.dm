@@ -164,8 +164,8 @@
 
 	if(faction)
 		faction.add_mob(new_xeno)
-		if(!affected_mob.first_xeno)
-			faction.stored_larva++
+		if(!affected_mob.first_xeno && faction.hive_location)
+			faction.increase_larva_after_burst()
 			faction.faction_ui.update_burrowed_larva()
 
 	new_xeno.update_icons()

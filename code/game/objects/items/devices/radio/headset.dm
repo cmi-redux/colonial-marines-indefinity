@@ -62,6 +62,7 @@
 
 /obj/item/device/radio/headset/Destroy()
 	wearer = null
+	QDEL_NULL_LIST(keys)
 	return ..()
 
 /obj/item/device/radio/headset/proc/set_volume_setting()

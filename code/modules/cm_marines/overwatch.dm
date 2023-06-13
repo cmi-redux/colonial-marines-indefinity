@@ -450,6 +450,7 @@
 			current_squad = null
 			if(cam && !ishighersilicon(usr))
 				usr.reset_view(null)
+				usr.UnregisterSignal(cam, COMSIG_PARENT_QDELETING)
 			cam = null
 			state = 0
 		if("pick_squad")
@@ -613,6 +614,7 @@
 					to_chat(usr, "[icon2html(src, usr)] [SPAN_WARNING("Searching for helmet cam. No helmet cam found for this marine! Tell your squad to put their helmets on!")]")
 				else if(cam && cam == new_cam)//click the camera you're watching a second time to stop watching.
 					visible_message("[icon2html(src, viewers(src))] [SPAN_BOLDNOTICE("Stopping helmet cam view of [cam_target].")]")
+					usr.UnregisterSignal(cam, COMSIG_PARENT_QDELETING)
 					cam = null
 //					var/mob/living/fov_mob = usr
 //					if(fov_mob)
@@ -621,11 +623,14 @@
 				else if(usr.client.view != world_view_size)
 					to_chat(usr, SPAN_WARNING("You're too busy peering through binoculars."))
 				else
+					if(cam)
+						usr.UnregisterSignal(cam, COMSIG_PARENT_QDELETING)
 					cam = new_cam
 //					var/mob/living/fov_mob = usr
 //					if(fov_mob)
 //						fov_mob.add_fov_trait(src, "no_fov")
 					usr.reset_view(cam)
+					usr.RegisterSignal(cam, COMSIG_PARENT_QDELETING, TYPE_PROC_REF(/mob, reset_observer_view_on_deletion))
 	attack_hand(usr) //The above doesn't ever seem to work.
 
 /obj/structure/machinery/computer/overwatch/check_eye(mob/user)
@@ -637,6 +642,8 @@
 /obj/structure/machinery/computer/overwatch/on_unset_interaction(mob/user)
 	..()
 	if(!isRemoteControlling(user))
+		if(cam)
+			user.UnregisterSignal(cam, COMSIG_PARENT_QDELETING)
 		cam = null
 		user.reset_view(null)
 
@@ -876,9 +883,9 @@
 		return
 
 	var/ob_name = lowertext(almayer_orbital_cannon.tray.warhead.name)
-	announce_dchat("\A [ob_name] targeting [target_area.name] has been fired!", target_turf)
-	message_admins(FONT_SIZE_HUGE("ALERT: [key_name(user)] fired an orbital bombardment in [target_area.name] for squad '[current_squad]' (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[target_turf.x];Y=[target_turf.y];Z=[target_turf.z]'>JMP</a>)"))
-	log_attack("[key_name(user)] fired an orbital bombardment in [target_area.name] for squad '[current_squad]'")
+	announce_dchat("\A [ob_name] targeting [A.name] has been fired!", T)
+	message_admins(FONT_SIZE_HUGE("ALERT: [key_name(user)] fired an orbital bombardment in [A.name] for squad '[current_squad]' [ADMIN_JMP(T)]"))
+	log_attack("[key_name(user)] fired an orbital bombardment in [A.name] for squad '[current_squad]'")
 
 	busy = FALSE
 	var/turf/target = locate(target_turf.x + rand(-3, 3), target_turf.y + rand(-3, 3), target_turf.z)

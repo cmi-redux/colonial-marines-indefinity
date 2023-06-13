@@ -114,26 +114,22 @@ var/global/list/limb_types_by_name = list(
 
 	return rand_zone
 
-/proc/stars(n, pr)
-	if(pr == null)
-		pr = 25
-	if(pr <= 0)
-		return null
-	else
-		if(pr >= 100)
-			return n
-	var/te = n
-	var/t = ""
-	n = length(n)
-	var/p = null
-	p = 1
-	while(p <= n)
-		if((copytext(te, p, p + 1) == " " || prob(pr)))
-			t = text("[][]", t, copytext(te, p, p + 1))
+/proc/stars(message, clear_char_probability = 25)
+	clear_char_probability = max(clear_char_probability, 0)
+	if(clear_char_probability >= 100)
+		return message
+
+	var/output_message = ""
+	var/message_length = length(message)
+	var/index = 1
+	while(index <= message_length)
+		var/char = copytext(message, index, index + 1)
+		if(char == " " || prob(clear_char_probability))
+			output_message += char
 		else
-			t = text("[]*", t)
-		p++
-	return t
+			output_message += "*"
+		index++
+	return output_message
 
 // This is temporary effect, often caused by alcohol
 /proc/slur(phrase)
@@ -162,17 +158,60 @@ var/global/list/limb_types_by_name = list(
 			)
 	return html_encode(new_phrase)
 
-/proc/stutter(phrase)
-	phrase = html_decode(phrase)
-	var/new_phrase = ""
-	for(var/i = 1, i <= length_char(phrase), i++)
-		var/letter = copytext_char(phrase, i, i + 1)
-		new_phrase += letter
-		if(lowertext(letter) in list("б", "г", "д", "к", "п", "т", "ц", "ч", "b", "c", "d", "f", "g", "j", "k", "p", "q", "t", "x"))
-			while(prob(45))
-				new_phrase += "-[letter]"
-	return html_encode(new_phrase)
+/proc/stutter(phrase, strength = 1)
+	if(strength < 1)
+		return phrase
+	else
+		strength = Ceiling(strength/5)
 
+	var/list/split_phrase = text2list(phrase," ") //Split it up into words.
+	var/list/unstuttered_words = split_phrase.Copy()
+
+	var/max_stutter = min(strength, split_phrase.len)
+	var/stutters = rand(max(max_stutter - 3, 1), max_stutter)
+
+	for(var/i = 0, i < stutters, i++)
+		if (!unstuttered_words.len)
+			break
+
+		var/word = pick(unstuttered_words)
+		unstuttered_words -= word //Remove from unstuttered words so we don't stutter it again.
+		var/index = split_phrase.Find(word) //Find the word in the split phrase so we can replace it.
+		var/regex/R = regex("^(\\W*)((?:\[Tt\]|\[Cc\]|\[Ss\])\[Hh\]|\\w)(\\w*)(\\W*)$")
+		var/regex/upper = regex("\[A-Z\]")
+
+		if(!R.Find(word))
+			continue
+
+		if (length(word) > 1)
+			if((prob(20) && strength > 1) || (prob(30) && strength > 4)) // stutter word instead
+				var/stuttered = R.group[2] + R.group[3]
+				if(upper.Find(stuttered) && !upper.Find(stuttered, 2)) // if they're screaming (all caps) or saying something like 'AI', keep the letter capitalized - else don't
+					stuttered = lowertext(stuttered)
+				word = R.Replace(word, "$1$2$3-[stuttered]$4")
+			else if(prob(25) && strength > 1) // prolong word
+				var/prolonged = ""
+				var/prolong_amt = min(length(word), 5)
+				prolong_amt = rand(1, prolong_amt)
+				for(var/j = 0, j < prolong_amt, j++)
+					prolonged += R.group[2]
+				if(!upper.Find(R.group[3]))
+					prolonged = lowertext(prolonged)
+				word = R.Replace(word, "$1$2[prolonged]$3$4")
+			else
+				if(prob(5 * strength)) // harder stutter if stronger
+					word = R.Replace(word, "$1$2-$2-$2-$2$3$4")
+				else if(prob(10 * strength))
+					word = R.Replace(word, "$1$2-$2-$2$3$4")
+				else // normal stutter
+					word = R.Replace(word, "$1$2-$2$3$4")
+
+		if(prob(3 * strength) && index != unstuttered_words.len - 1) // stammer / pause - don't pause at the end of sentences!
+			word = R.Replace(word, "$0 ...")
+
+		split_phrase[index] = word
+
+	return jointext(split_phrase, " ")
 
 /proc/Gibberish(t, p)//t is the inputted message, and any value higher than 70 for p will cause letters to be replaced instead of added
 	/* Turn text into complete gibberish! */
