@@ -109,13 +109,6 @@
 	if(istype(mymob) && mymob?.client?.prefs?.toggle_prefs & TOGGLE_AMBIENT_OCCLUSION)
 		add_filter("AO", 1, drop_shadow_filter(x = 0, y = -2, size = 4, color = "#04080FAA"))
 
-/atom/movable/screen/plane_master/layer_cutter
-	name = "layer cutter visual plane master"
-	plane = LAYER_CUTTER_VISUAL_PLANE
-	render_target = LAYER_CUTTER_VISUAL_RENDER_TARGET
-	render_relay_plane = null
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-
 /atom/movable/screen/plane_master/game_world_fov_hidden
 	name = "game world fov hidden plane master"
 	plane = GAME_PLANE_FOV_HIDDEN

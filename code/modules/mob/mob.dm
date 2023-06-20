@@ -72,8 +72,6 @@
 	langchat_make_image()
 	create_player_panel()
 
-	add_filter("cutterout", 1, alpha_mask_filter(render_source = LAYER_CUTTER_VISUAL_RENDER_TARGET, flags = MASK_INVERSE))
-
 	return ..()
 
 /mob/proc/create_player_panel()

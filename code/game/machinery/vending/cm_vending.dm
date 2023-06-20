@@ -1194,25 +1194,25 @@ GLOBAL_LIST_INIT(cm_vending_gear_corresponding_types_list, list(
 
 	var/list/stock_values = list()
 
-	var/mob/living/carbon/human/marine = user
+	var/mob/living/carbon/human/human = user
 	var/points = 0
 	if(vending_machine.instanced_vendor_points)
 		points = vending_machine.available_points_to_display
 	else
 		switch(vending_machine.type_used_points)
 			if(USING_BASE_POINTS)
-				points = marine.vendor_datum.base_vendor_points
+				points = human.vendor_datum.base_vendor_points
 			if(USING_SNOWFLAKE_POINTS)
-				points = marine.vendor_datum.snowflake_vendor_points
+				points = human.vendor_datum.snowflake_vendor_points
 			if(USING_AMMUNITION_POINTS)
-				points = marine.vendor_datum.ammunition_vendor_points
+				points = human.vendor_datum.ammunition_vendor_points
 
 	for(var/i in 1 to length(ui_listed_products))
 		var/list/myprod = ui_listed_products[i]	//we take one list from listed_products
 		var/prod_available = FALSE
 		var/p_cost = myprod[2]
 		var/category = myprod[4]
-		if(points >= p_cost && (!category || ((category in marine.marine_buyable_categories) && (marine.marine_buyable_categories[category]))))
+		if(points >= p_cost && (!category || ((category in human.vendor_datum.buy_flags) && (human.vendor_datum.buy_flags[category]))))
 			prod_available = TRUE
 		stock_values += list(prod_available)
 
@@ -1226,7 +1226,7 @@ GLOBAL_LIST_INIT(cm_vending_gear_corresponding_types_list, list(
 
 	var/vend_flags = vending_machine.vend_flags
 	var/turf/target_turf = vending_machine.get_appropriate_vend_turf(user)
-	if(LAZYLEN(itemspec)) //making sure it's not empty
+	if(length(itemspec)) //making sure it's not empty
 		if(vending_machine.vend_delay)
 			vending_machine.overlays.Cut()
 			vending_machine.icon_state = "[initial(vending_machine.icon_state)]_vend"
@@ -1302,11 +1302,11 @@ GLOBAL_LIST_INIT(cm_vending_gear_corresponding_types_list, list(
 		return TRUE
 	var/buying_category = listed_products[4]
 	if(buying_category)
-		if(!(buying_category in vending_human.marine_buyable_categories))
+		if(!(buying_category in vending_human.vendor_datum.buy_flags))
 			return FALSE
-		if(!vending_human.marine_buyable_categories[buying_category])
+		if(!vending_human.vendor_datum.buy_flags[buying_category])
 			return FALSE
-		vending_human.marine_buyable_categories[buying_category] -= 1
+		vending_human.vendor_datum.buy_flags[buying_category] -= 1
 	return TRUE
 
 // Unload ALL the items throwing them around randomly, optionally destroying the vending_machine

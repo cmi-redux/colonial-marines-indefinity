@@ -424,7 +424,6 @@
 		list("M44 Speed Loader (.44)", 0, /obj/item/ammo_magazine/revolver, VENDOR_ITEM_REGULAR),
 		list("M4A3 Magazine (9mm)", 0, /obj/item/ammo_magazine/pistol, VENDOR_ITEM_REGULAR),
 		list("M56D Drum Magazine", 0, /obj/item/ammo_magazine/m56d, VENDOR_ITEM_REGULAR),
-		list("M2C Box Magazine", 0, /obj/item/ammo_magazine/m2c, VENDOR_ITEM_REGULAR),
 
 		list("ARMOR", -1, null, null),
 		list("M10 Pattern Marine Helmet", 0, /obj/item/clothing/head/helmet/marine, VENDOR_ITEM_REGULAR),

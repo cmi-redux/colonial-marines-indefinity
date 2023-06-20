@@ -54,7 +54,7 @@
 	var/list/atom/movable/uncross_scheduled = list() // List of border movable atoms to check for when exiting a turf.
 
 	var/damage = 0
-	var/accuracy = 75 //Base projectile accuracy. Can maybe be later taken from the mob if desired.
+	var/accuracy = 50 //Base projectile accuracy. Can maybe be later taken from the mob if desired.
 
 	var/damage_falloff = 0 //how much effectiveness in damage the projectile loses per tiles travelled beyond the effective range
 	var/damage_buildup = 0 //how much effectiveness in damage the projectile loses before the effective range
@@ -1048,12 +1048,21 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 	. = proj.get_effective_accuracy()
 
 	if(src == proj.original_target)
-		if(lying && stat)
-			. += 50
+		if(lying)
+			if(stat)
+				. += 5
+			else
+				. += 10
 		else
-			. -= 25
+			. += 15
 	else
-		. -= 50
+		if(lying)
+			if(stat)
+				. -= 70
+			else
+				. -= 90
+		else
+			. -= 50
 
 
 	if(istype(get_turf(src), /turf/open/trench))

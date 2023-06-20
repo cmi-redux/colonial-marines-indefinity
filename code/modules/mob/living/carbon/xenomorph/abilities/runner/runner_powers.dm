@@ -204,7 +204,7 @@
 
 	behavior.caboom_trigger = FALSE
 	xeno.color = null
-	xeno.SetLuminosity(0)
+	xeno.set_light_on(FALSE)
 	behavior.modify_acid(-behavior.max_acid / 4)
 
 	// Done this way rather than setting to 0 in case something else slowed us

@@ -31,6 +31,7 @@ var/accuracy_mult //Attachments ADD an additional multiplier to the base config 
 var/accuracy_mult_unwielded
 */
 
+#define HIT_ACCURACY_TIER_0 0
 #define HIT_ACCURACY_TIER_1 5
 #define HIT_ACCURACY_TIER_2 10
 #define HIT_ACCURACY_TIER_3 15

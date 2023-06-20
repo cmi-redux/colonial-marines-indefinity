@@ -1340,12 +1340,12 @@
 	)
 	holster_slots = list("1" = list("icon_x" = -1))
 
-/obj/item/storage/belt/gun/type47/PK9/fill_preset_inventory()
+/obj/item/storage/belt/gun/type47/pk9/fill_preset_inventory()
 	handle_item_insertion(new /obj/item/weapon/gun/pistol/c99/upp())
 	for(var/i = 1 to storage_slots - 1)
 		new /obj/item/ammo_magazine/pistol/c99(src)
 
-/obj/item/storage/belt/gun/type47/PK9/tranq/fill_preset_inventory()
+/obj/item/storage/belt/gun/type47/pk9/tranq/fill_preset_inventory()
 	handle_item_insertion(new /obj/item/weapon/gun/pistol/c99/upp/tranq())
 	for(var/i = 1 to storage_slots - 1)
 		new /obj/item/ammo_magazine/pistol/c99/tranq(src)

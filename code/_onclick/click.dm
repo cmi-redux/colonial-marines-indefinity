@@ -287,13 +287,7 @@
 	face_dir(direction, specific_direction)
 
 
-
-
-
-
 // click catcher stuff
-
-
 /atom/movable/screen/click_catcher
 	icon = 'icons/mob/hud/screen1.dmi'
 	icon_state = "catcher"
@@ -318,7 +312,6 @@
 	var/matrix/M = new
 	M.Scale(px/sx, py/sy)
 	apply_transform(M)
-
 
 
 /client/proc/change_view(new_size, atom/source)

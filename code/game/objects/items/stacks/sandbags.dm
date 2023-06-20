@@ -85,8 +85,8 @@
 		to_chat(user, SPAN_WARNING("No. This area is needed for the dropships and personnel."))
 		return
 	if(!istype(user.loc, /turf/open))
-		var/turf/open/OT = user.loc
-		if(!OT.allow_construction)
+		var/turf/open/ot = user.loc
+		if(!ot.allow_construction)
 			to_chat(user, SPAN_WARNING("The sandbag barricade must be constructed on a proper surface!"))
 			return
 

@@ -45,7 +45,7 @@
 	return 1
 
 /obj/item/proc/unwield(mob/user)
-	if( (flags_item|TWOHANDED|WIELDED) != flags_item)
+	if((flags_item|TWOHANDED|WIELDED) != flags_item)
 		return FALSE//Have to be actually a twohander and wielded.
 	flags_item ^= WIELDED
 	SEND_SIGNAL(src, COMSIG_ITEM_UNWIELD, user)

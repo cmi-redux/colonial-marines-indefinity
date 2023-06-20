@@ -883,9 +883,9 @@
 		return
 
 	var/ob_name = lowertext(almayer_orbital_cannon.tray.warhead.name)
-	announce_dchat("\A [ob_name] targeting [A.name] has been fired!", T)
-	message_admins(FONT_SIZE_HUGE("ALERT: [key_name(user)] fired an orbital bombardment in [A.name] for squad '[current_squad]' [ADMIN_JMP(T)]"))
-	log_attack("[key_name(user)] fired an orbital bombardment in [A.name] for squad '[current_squad]'")
+	announce_dchat("\A [ob_name] targeting [target_area.name] has been fired!", target_turf)
+	message_admins(FONT_SIZE_HUGE("ALERT: [key_name(user)] fired an orbital bombardment in [target_area.name] for squad '[current_squad]' [ADMIN_JMP(target_turf)]"))
+	log_attack("[key_name(user)] fired an orbital bombardment in [target_area.name] for squad '[current_squad]'")
 
 	busy = FALSE
 	var/turf/target = locate(target_turf.x + rand(-3, 3), target_turf.y + rand(-3, 3), target_turf.z)

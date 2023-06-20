@@ -174,7 +174,7 @@
 	new_human.equip_to_slot_or_del(new /obj/item/clothing/gloves/yellow, WEAR_HANDS)
 	new_human.equip_to_slot_or_del(new /obj/item/clothing/head/welding, WEAR_HEAD)
 	new_human.equip_to_slot_or_del(new /obj/item/storage/belt/utility/full(new_human), WEAR_WAIST)
-	new_human.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/CLF/cct, WEAR_L_EAR)
+	new_human.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/clf/cct, WEAR_L_EAR)
 	new_human.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/engineerpack/ert, WEAR_BACK)
 	new_human.equip_to_slot_or_del(new /obj/item/explosive/plastic/breaching_charge, WEAR_IN_BACK)
 	new_human.equip_to_slot_or_del(new /obj/item/explosive/plastic/breaching_charge, WEAR_IN_BACK)
@@ -287,8 +287,8 @@
 
 	var/obj/item/clothing/under/colonist/clf/clf = new()
 	var/obj/item/clothing/accessory/storage/surg_vest/equipped/W = new()
-	CLF.attach_accessory(new_human, W)
-	new_human.equip_to_slot_or_del(CLF, WEAR_BODY)
+	clf.attach_accessory(new_human, W)
+	new_human.equip_to_slot_or_del(clf, WEAR_BODY)
 
 	spawn_rebel_suit(new_human)
 	spawn_rebel_helmet(new_human)
@@ -297,7 +297,7 @@
 	new_human.equip_to_slot_or_del(new /obj/item/storage/belt/medical/full/with_defib_and_analyzer(new_human), WEAR_WAIST)
 	new_human.equip_to_slot_or_del(new /obj/item/roller, WEAR_IN_BELT)
 
-	new_human.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/CLF/medic(new_human), WEAR_L_EAR)
+	new_human.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/clf/medic(new_human), WEAR_L_EAR)
 	new_human.equip_to_slot_or_del(new /obj/item/storage/backpack/lightpack(new_human), WEAR_BACK)
 	new_human.equip_to_slot_or_del(new /obj/item/explosive/grenade/custom/ied(new_human), WEAR_IN_BACK)
 	new_human.equip_to_slot_or_del(new /obj/item/storage/firstaid/adv(new_human), WEAR_IN_BACK)
@@ -444,8 +444,8 @@
 	//jumpsuit and their webbing
 	var/obj/item/clothing/under/colonist/clf/clf = new()
 	var/obj/item/clothing/accessory/storage/webbing/five_slots/W = new()
-	CLF.attach_accessory(new_human, W)
-	new_human.equip_to_slot_or_del(CLF, WEAR_BODY)
+	clf.attach_accessory(new_human, W)
+	new_human.equip_to_slot_or_del(clf, WEAR_BODY)
 	//clothing
 	new_human.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/militia(new_human), WEAR_JACKET)
 	new_human.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/swat(new_human), WEAR_HEAD)
@@ -454,7 +454,7 @@
 	new_human.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3/mod88(new_human), WEAR_WAIST)
 	new_human.equip_to_slot_or_del(new /obj/item/clothing/glasses/night(new_human), WEAR_EYES)
 
-	new_human.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/CLF/cct(new_human), WEAR_L_EAR)
+	new_human.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/clf/cct(new_human), WEAR_L_EAR)
 	//standard backpack stuff
 	new_human.equip_to_slot_or_del(new /obj/item/storage/backpack/lightpack(new_human), WEAR_BACK)
 	new_human.equip_to_slot_or_del(new /obj/item/device/flashlight(new_human), WEAR_IN_BACK)
@@ -560,7 +560,7 @@
 
 /datum/equipment_preset/clf/commander/load_gear(mob/living/carbon/human/new_human)
 	new_human.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/veteran/mercenary/miner(new_human), WEAR_HEAD)
-	new_human.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/CLF/command(new_human), WEAR_L_EAR)
+	new_human.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/clf/command(new_human), WEAR_L_EAR)
 	new_human.equip_to_slot_or_del(new /obj/item/clothing/under/colonist/clf(new_human), WEAR_BODY)
 	new_human.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/militia/smartgun(new_human), WEAR_JACKET)
 	new_human.equip_to_slot_or_del(new /obj/item/ammo_magazine/revolver/mateba/highimpact(new_human), WEAR_IN_JACKET)
@@ -698,7 +698,7 @@
 	else
 		new_human.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/sensor(new_human), WEAR_EYES)
 
-	new_human.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/CLF/command(new_human), WEAR_L_EAR)
+	new_human.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/clf/command(new_human), WEAR_L_EAR)
 	new_human.equip_to_slot_or_del(new /obj/item/storage/backpack/lightpack(new_human), WEAR_BACK)
 	new_human.equip_to_slot_or_del(new /obj/item/explosive/grenade/custom/ied_incendiary(new_human), WEAR_IN_BACK)
 	new_human.equip_to_slot_or_del(new /obj/item/explosive/grenade/custom/ied_incendiary(new_human), WEAR_IN_BACK)
@@ -723,7 +723,7 @@
 		list("CLF Armor", 0, /obj/item/clothing/suit/storage/militia, VENDOR_CAN_BUY_ARMOR, VENDOR_ITEM_MANDATORY),
 		list("Black Gloves", 0, /obj/item/clothing/gloves/black, VENDOR_CAN_BUY_GLOVES, VENDOR_ITEM_MANDATORY),
 		list("CLF Belt (Random)", 0, /obj/effect/essentials_set/random/clf_belt, VENDOR_CAN_BUY_BELT, VENDOR_ITEM_MANDATORY),
-		list("Headset", 0, /obj/item/device/radio/headset/distress/CLF/command, VENDOR_CAN_BUY_EAR, VENDOR_ITEM_MANDATORY),
+		list("Headset", 0, /obj/item/device/radio/headset/distress/clf/command, VENDOR_CAN_BUY_EAR, VENDOR_ITEM_MANDATORY),
 		list("Flashlight", 0, /obj/item/device/flashlight, VENDOR_CAN_BUY_MRE, VENDOR_ITEM_MANDATORY),
 		list("Combat Pack", 0, /obj/item/storage/backpack/lightpack, VENDOR_CAN_BUY_BACKPACK, VENDOR_ITEM_MANDATORY),
 
@@ -859,10 +859,10 @@
 
 /datum/equipment_preset/clf/synth/load_gear(mob/living/carbon/human/new_human)
 	load_name(new_human)
-	var/obj/item/clothing/under/colonist/clf/CLF = new()
+	var/obj/item/clothing/under/colonist/clf/clf = new()
 	var/obj/item/clothing/accessory/storage/webbing/W = new()
-	CLF.attach_accessory(new_human, W)
-	new_human.equip_to_slot_or_del(CLF, WEAR_BODY)
+	clf.attach_accessory(new_human, W)
+	new_human.equip_to_slot_or_del(clf, WEAR_BODY)
 
 	new_human.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/engineerpack/ert, WEAR_BACK)
 	new_human.equip_to_slot_or_del(new /obj/item/clothing/gloves/combat, WEAR_HANDS)
@@ -879,7 +879,7 @@
 	new_human.equip_to_slot_or_del(new /obj/item/tool/extinguisher/mini, WEAR_IN_BACK)
 	new_human.equip_to_slot_or_del(new /obj/item/explosive/plastic, WEAR_IN_BACK)
 	new_human.equip_to_slot_or_del(new /obj/item/attachable/bayonet/upp, WEAR_FACE)
-	new_human.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/CLF/command(new_human), WEAR_L_EAR)
+	new_human.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/clf/command(new_human), WEAR_L_EAR)
 	new_human.equip_to_slot_or_del(new /obj/item/tool/crowbar, WEAR_IN_BACK)
 	new_human.equip_to_slot_or_del(new /obj/item/storage/pouch/tools/synth, WEAR_L_STORE)
 	new_human.equip_to_slot_or_del(new /obj/item/storage/pouch/construction/full_barbed_wire, WEAR_R_STORE)
@@ -891,7 +891,7 @@
 /datum/equipment_preset/clf/synth/get_antag_clothing_equipment()
 	return list(
 		list("RADIO (TAKE ALL)", 0, null, null, null),
-		list("Headset", 0, /obj/item/device/radio/headset/distress/CLF/command, VENDOR_CAN_BUY_EAR, VENDOR_ITEM_MANDATORY),
+		list("Headset", 0, /obj/item/device/radio/headset/distress/clf/command, VENDOR_CAN_BUY_EAR, VENDOR_ITEM_MANDATORY),
 
 		list("WEBBING (CHOOSE 1)", 0, null, null, null),
 		list("Black Webbing Vest", 0, /obj/item/clothing/accessory/storage/black_vest, VENDOR_CAN_BUY_ACCESSORY, VENDOR_ITEM_REGULAR),
@@ -1017,7 +1017,7 @@
 
 /datum/equipment_preset/clf/commander/load_gear(mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/veteran/mercenary/miner(H), WEAR_HEAD)
-	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/CLF/command(H), WEAR_L_EAR)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/clf/command(H), WEAR_L_EAR)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/colonist/clf(H), WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/militia/smartgun(H), WEAR_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/revolver/mateba/highimpact(H), WEAR_IN_JACKET)
@@ -1039,7 +1039,7 @@
 		list("CLF Smartgun Armor", 0, /obj/item/clothing/suit/storage/militia/smartgun, VENDOR_CAN_BUY_ARMOR, VENDOR_ITEM_MANDATORY),
 		list("Black Gloves", 0, /obj/item/clothing/gloves/black, VENDOR_CAN_BUY_GLOVES, VENDOR_ITEM_MANDATORY),
 		list("CLF Smartgunner Belt", 0, /obj/item/storage/belt/gun/smartgunner/clf, VENDOR_CAN_BUY_BELT, VENDOR_ITEM_MANDATORY),
-		list("Headset", 0, /obj/item/device/radio/headset/distress/CLF/command, VENDOR_CAN_BUY_EAR, VENDOR_ITEM_MANDATORY),
+		list("Headset", 0, /obj/item/device/radio/headset/distress/clf/command, VENDOR_CAN_BUY_EAR, VENDOR_ITEM_MANDATORY),
 		list("Flashlight", 0, /obj/item/device/flashlight, VENDOR_CAN_BUY_MRE, VENDOR_ITEM_MANDATORY),
 		list("Combat Pack", 0, /obj/item/storage/backpack/lightpack, VENDOR_CAN_BUY_BACKPACK, VENDOR_ITEM_MANDATORY),
 

@@ -26,10 +26,10 @@
 				reenter_corpse()
 				return TRUE
 
-		if(ismob(target) || isVehicle(target))
+		if(ismob(target) || isvehicle(target))
 			if(isxeno(target) && SSticker.mode.check_xeno_late_join(src)) //if it's a xeno and all checks are alright, we are gonna try to take their body
 				var/mob/living/carbon/xenomorph/xeno = target
-				if(X.stat == DEAD || X.statistic_exempt || X.aghosted)
+				if(xeno.stat == DEAD || xeno.statistic_exempt || xeno.aghosted)
 					to_chat(src, SPAN_WARNING("You cannot join as [xeno]."))
 					ManualFollow(xeno)
 					return FALSE
@@ -65,7 +65,7 @@
 					SSticker.mode.transfer_xenomorph(src, xeno)
 					return TRUE
 				return FALSE
-			ManualFollow(A)
+			ManualFollow(target)
 			return TRUE
 
 		if(!istype(target, /atom/movable/screen))

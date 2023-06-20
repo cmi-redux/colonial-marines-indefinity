@@ -61,7 +61,7 @@
 
 	var/skill_req = SKILL_MEDICAL_MEDIC
 
-	var/range = 4
+	var/range = 2
 	var/list/difib_mode_choices = list(LOW_MODE_DEF, HALF_MODE_DEF, FULL_MODE_DEF)
 	var/defib_mode = LOW_MODE_DEF
 	var/defib_recharge = LOW_MODE_RECH //Recharge defib
@@ -231,15 +231,27 @@
 /obj/item/device/defibrillator/proc/recall_paddles()
 	if(ismob(paddles_type.loc))
 		var/mob/M = paddles_type.loc
-		M.drop_held_item(paddles_type)
 		paddles_type.unwield(M)
-		playsound(get_turf(src), "sparks", 25, 1, 4)
-		paddles_type.charged = FALSE
+		M.drop_held_item(paddles_type)
+		if(paddles_type.charged)
+			playsound(get_turf(src), "sparks", 25, 1, 4)
+			paddles_type.charged = FALSE
 		paddles_type.update_icon()
 
 	paddles_type.forceMove(src)
 
 	update_icon()
+
+/obj/item/device/defibrillator/pickup(obj/item/storage/storage)
+	. = ..()
+	if(!paddles_type)
+		return
+
+	if(paddles_type.loc == loc)
+		return
+
+	if(get_dist(paddles_type, src) > range)
+		recall_paddles()
 
 /obj/item/device/defibrillator/on_enter_storage(obj/item/storage/storage)
 	. = ..()
@@ -325,6 +337,7 @@
 	additional_charge_cost = 1.8
 	boost_recharge = 0.4
 	healing_mult = 1.25
+	range = 4
 	skill_req = SKILL_MEDICAL_TRAINED
 
 /obj/item/device/defibrillator/compact
@@ -335,3 +348,4 @@
 	w_class = SIZE_SMALL
 	charge_cost = 99
 	additional_charge_cost = 1.5
+	range = 1

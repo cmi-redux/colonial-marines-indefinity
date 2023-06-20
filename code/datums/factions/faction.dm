@@ -2,25 +2,27 @@
 
 /datum/faction
 	var/name = NAME_FACTION_NEUTRAL
-	var/desc = "ASK A DEV IF YOU SAW THAT"
+	var/desc = "Neutral Faction"
 
 	var/faction_name = FACTION_NEUTRAL
-	var/faction_tag = SIDE_FACTION_NEUTRAL//Pointing to the faction trees
+	var/faction_tag = SIDE_FACTION_NEUTRAL
+
 	var/organ_faction_iff_tag_type
 	var/faction_iff_tag_type
+
+	var/relations_pregen[] = RELATIONS_NEUTRAL
+	var/datum/faction_relations/relations_datum
+
 	var/hud_type = FACTION_HUD
 	var/orders = "Остаться в живых"
-	var/color = "#22888a"//Faction color, xenos use as color mobs/objects/etc
-	var/ui_color = "#22888a"//UI color faction interface
+	var/color = "#22888a"
+	var/ui_color = "#22888a"
 	var/prefix = ""
-	var/relations_pregen[] = RELATIONS_NEUTRAL//Relations with other factions at game start
-	var/relations[] = RELATIONS_MAP
-	var/list/allies = list()
-	var/list/totalMobs = list()//Our faction mobs
-	var/list/totalDeadMobs = list()//list of previously living mobs
+	var/list/totalMobs = list()
+	var/list/totalDeadMobs = list()
 	var/list/faction_leaders = list()
 	var/list/late_join_landmarks = list()
-	var/mob/living/carbon/faction_leader //aka leader ship
+	var/mob/living/carbon/faction_leader
 	var/datum/tacmap/faction_datum/tcmp_faction_datum
 	var/datum/objectives_datum/objectives_controller
 	var/obj/effect/alien/resin/special/pylon/core/hive_location
@@ -64,6 +66,7 @@
 	var/queen_leader_limit = 2
 	var/list/open_xeno_leader_positions = list(1, 2) // Ordered list of xeno leader positions (indexes in xeno_leader_list) that are not occupied
 	var/list/xeno_leader_list[2] // Ordered list (i.e. index n holds the nth xeno leader)
+	var/partial_larva = 0
 	var/stored_larva = 0
 	/// Assoc list of free slots available to specific castes
 	var/list/free_slots = list(
@@ -134,25 +137,13 @@
 
 //////////////
 /datum/faction/New()
+	relations_datum = new(src)
 	tcmp_faction_datum = new(src)
 	objectives_controller = GLOB.objective_controller[faction_name]
-	task_interface = new()
+	task_interface = new(src)
 	objective_memory = new()
 	objective_interface = new()
 	research_objective_interface = new()
-
-/datum/faction/proc/generate_relations_helper()
-	spawn(30 SECONDS)
-		for(var/i in FACTION_LIST_ALL)
-			if(i == faction_name)
-				relations[i] = RELATIONS_SELF
-				continue
-			if(i in relations_pregen)
-				relations[i] = rand(relations_pregen[i][1], relations_pregen[i][2])
-				if(RELATIONS_FRIENDLY[2] < relations_pregen[i])
-					allies += GLOB.faction_datum[i]
-				continue
-			relations[i] = RELATIONS_UNKNOWN
 
 /datum/faction/can_vv_modify()
 	return FALSE
@@ -236,7 +227,7 @@
 /mob/proc/ally(datum/faction/ally_faction)
 	var/list/factions = list()
 	factions += ally_faction
-	for(var/datum/faction/i in ally_faction.allies)
+	for(var/datum/faction/i in ally_faction.relations_datum.allies)
 		factions += i
 
 	if(isnull(factions) || !faction)
@@ -262,7 +253,7 @@
 	if(FT.faction == src)
 		return TRUE
 	for(var/datum/faction/faction in FT.factions + FT.faction)
-		if(allies[faction.faction_name])
+		if(relations_datum.allies[faction.faction_name])
 			return TRUE
 
 	return FALSE
@@ -271,7 +262,7 @@
 	if(FT.faction == src)
 		return TRUE
 	for(var/datum/faction/faction in FT.factions + FT.faction)
-		if(allies[faction.faction_name])
+		if(relations_datum.allies[faction.faction_name])
 			return TRUE
 		else if(faction.faction_tag == faction_tag)
 			return TRUE
@@ -282,19 +273,10 @@
 	if(faction_to_check.faction_tag == faction_tag)
 		return TRUE
 
-	if(allies[faction_to_check.faction_name])
+	if(relations_datum.allies[faction_to_check.faction_name])
 		return TRUE
 
 	return FALSE
-
-/datum/faction/proc/add_allies(datum/faction/faction)
-	if(faction in allies || faction.faction_tag == faction_tag)
-		return FALSE
-
-	allies[faction.faction_name] = faction
-	return TRUE
-
-/datum/faction/proc/change_relations(datum/faction/faction)
 
 /datum/faction/proc/get_antag_guns_snowflake_equipment()
 	return list()
@@ -770,6 +752,14 @@
 	stored_larva--
 	faction_ui.update_burrowed_larva()
 
+///Called by /obj/item/alien_embryo when a host is bursting to determine extra larva per burst
+/datum/faction/proc/increase_larva_after_burst()
+	var/extra_per_burst = CONFIG_GET(number/extra_larva_per_burst)
+	partial_larva += extra_per_burst
+	for(var/i = 1 to partial_larva)
+		partial_larva--
+		stored_larva++
+
 
 /datum/faction/proc/make_leader(mob/living/carbon/mob)
 	if(!istype(mob))
@@ -811,13 +801,6 @@
 
 /datum/faction/ui_data(mob/user)
 	. = list()
-	var/list/relations_mapping = list()
-	for(var/i in relations)
-		if(relations[i] == null || relations[i] > 1000)
-			continue
-		relations_mapping += list(list("name" = GLOB.faction_datum[i].name, "desc" = GLOB.faction_datum[i].desc, "color" = GLOB.faction_datum[i].ui_color, "value" = relations[i]))
-
-	.["faction_relations"] = relations_mapping
 	.["faction_orders"] = orders
 
 /datum/faction/ui_static_data(mob/user)
@@ -840,6 +823,8 @@
 		return
 
 	switch(action)
+		if("relations")
+			relations_datum.tgui_interact(usr)
 		if("tasks")
 			task_interface.tgui_interact(usr)
 		if("clues")
@@ -857,6 +842,7 @@
 
 /datum/faction/proc/get_faction_actions(mob/user)
 	. = list()
+	. += list(list("name" = "Faction Relations", "action" = "relations"))
 	. += list(list("name" = "Faction Tasks", "action" = "tasks"))
 	. += list(list("name" = "Faction Clues", "action" = "clues"))
 	. += list(list("name" = "Faction Researchs", "action" = "researchs"))

@@ -13,7 +13,7 @@
 
 /obj/effect/alien/Initialize(mapload, mob/builder, datum/faction/faction_to_set)
 	. = ..()
-	if(faction_to_set)
+	if(istype(faction_to_set) && !faction)
 		faction = faction_to_set
 
 	set_hive_data(src, faction)

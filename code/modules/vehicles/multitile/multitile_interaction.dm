@@ -318,7 +318,7 @@
 /obj/vehicle/multitile/proc/ally(datum/faction/ally_faction)
 	var/list/factions = list()
 	factions += ally_faction
-	for(var/datum/faction/i in ally_faction.allies)
+	for(var/datum/faction/i in ally_faction.relations_datum.allies)
 		factions += i
 	if(isnull(factions) || !faction)
 		return FALSE

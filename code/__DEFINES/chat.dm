@@ -693,7 +693,7 @@ GLOBAL_LIST_INIT(client_language_ru, list(
 	LANGUAGE_PREF_AH_EMOTES_G = "Эмоции над Головой",
 	LANGUAGE_PREF_GAME_SET = "Настройки Игры",
 	LANGUAGE_PREF_FIT_VIEW = "Фит Виевпорт",
-	LANGUAGE_PREF_ZOOM = "Адаптивный Зум"
+	LANGUAGE_PREF_ZOOM = "Адаптивный Зум",
 	LANGUAGE_PREF_AUTO = "Авто",
 	LANGUAGE_PREF_MANUAL = "Ручной",
 	LANGUAGE_PREF_AO = "Окружающая Окклюзия",

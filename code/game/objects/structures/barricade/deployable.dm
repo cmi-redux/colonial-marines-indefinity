@@ -148,10 +148,10 @@
 			to_chat(user, SPAN_WARNING("There is already \a [B] in this direction!"))
 			return
 
-	var/turf/open/OT = usr.loc
-	var/obj/structure/blocker/anti_cade/AC = locate(/obj/structure/blocker/anti_cade) in OT // for M2C HMG, look at smartgun_mount.dm
+	var/turf/open/ot = usr.loc
+	var/obj/structure/blocker/anti_cade/AC = locate(/obj/structure/blocker/anti_cade) in ot // for M2C HMG, look at smartgun_mount.dm
 
-	if(!OT.allow_construction)
+	if(!ot.allow_construction)
 		to_chat(usr, SPAN_WARNING("[src.singular_name] must be constructed on a proper surface!"))
 		return
 	if(AC)

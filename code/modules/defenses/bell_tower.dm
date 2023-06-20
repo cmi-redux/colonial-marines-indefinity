@@ -43,7 +43,7 @@
 /obj/structure/machinery/defenses/bell_tower/proc/setup_tripwires()
 	clear_tripwires()
 	for(var/turf/T in orange(BELL_TOWER_RANGE, loc))
-		var/obj/effect/bell_tripwire/FE = new /obj/effect/bell_tripwire(T, faction + faction.allies)
+		var/obj/effect/bell_tripwire/FE = new /obj/effect/bell_tripwire(T, faction + faction.relations_datum.allies)
 		FE.linked_bell = src
 		tripwires_placed += FE
 

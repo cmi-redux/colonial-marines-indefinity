@@ -14,7 +14,7 @@
 
 /datum/faction/xenomorph/New()
 	. = ..()
-	mutators.faction = src
+	mutators = new(src)
 	mark_ui = new(src)
 	faction_ui = new(src)
 

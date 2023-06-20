@@ -100,7 +100,6 @@
 	},
 /area/template_noop)
 "gB" = (
-/obj/effect/decal/cleanable/blood/tracks/footprints,
 /turf/open/floor/prison{
 	icon_state = "darkpurplefull2"
 	},
@@ -530,7 +529,6 @@
 	},
 /area/template_noop)
 "Hf" = (
-/obj/effect/decal/cleanable/blood/tracks/footprints,
 /turf/open/floor/prison{
 	dir = 1;
 	icon_state = "whitepurple"
@@ -718,7 +716,6 @@
 /turf/open/space/basic,
 /area/template_noop)
 "Pd" = (
-/obj/effect/decal/cleanable/blood/tracks/footprints,
 /turf/open/floor/prison{
 	dir = 4;
 	icon_state = "whitepurple"
@@ -774,7 +771,6 @@
 	},
 /area/template_noop)
 "TD" = (
-/obj/effect/decal/cleanable/blood/tracks/footprints,
 /turf/open/floor/prison{
 	icon_state = "whitepurple"
 	},

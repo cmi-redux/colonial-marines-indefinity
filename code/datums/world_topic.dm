@@ -109,7 +109,7 @@
 
 	data["mode"] = GLOB.master_mode
 	if(SSmapping && SSmapping?.configs?[GROUND_MAP])
-		s["map"] = SSmapping.configs[GROUND_MAP].map_name
+		data["map"] = SSmapping.configs[GROUND_MAP].map_name
 	data["vote"] = CONFIG_GET(flag/allow_vote_mode)
 	data["ai"] = CONFIG_GET(flag/allow_ai)
 	data["host"] = world.host ? world.host : null

@@ -138,7 +138,7 @@
 	// Mutator-related and other important vars
 	var/mutation_icon_state = null
 	var/mutation_type = null
-	var/datum/mutator_set/individual_mutations/mutators = new
+	var/datum/mutator_set/individual_mutations/mutators
 
 	// Hive-related vars
 	faction_to_get = FACTION_XENOMORPH_NORMAL
@@ -363,7 +363,7 @@
 	vis_contents += wound_icon_carrier
 
 	set_languages(list(LANGUAGE_XENOMORPH, LANGUAGE_HIVEMIND))
-	mutators.xeno = src
+	mutators = new(src)
 	if(old_xeno)
 		set_movement_intent(old_xeno.m_intent)
 		old_xeno.faction.add_mob(src)

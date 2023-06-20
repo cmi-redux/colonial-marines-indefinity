@@ -182,7 +182,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 /obj/item/clothing/suit/storage/marine/attack_self(mob/user)
 	..()
 	if(!isturf(user.loc))
-		to_chat(user, SPAN_WARNING("You cannot turn the light [is_light_on() ? "off" : "on"] while in [user.loc]."))
+		to_chat(user, SPAN_WARNING("You cannot turn the light [light_on ? "off" : "on"] while in [user.loc]."))
 		return
 	if(!ishuman(user))
 		return

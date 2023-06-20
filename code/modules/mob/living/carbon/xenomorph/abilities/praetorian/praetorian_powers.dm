@@ -105,7 +105,7 @@
 		return
 
 	activated_once = FALSE
-	button.icon_state = X.selected_ability == src ? "template_on" : "template"
+	button.icon_state = xeno.selected_ability == src ? "template_on" : "template"
 
 	var/list/target_mobs = list()
 	var/list/L = orange(1, xeno)

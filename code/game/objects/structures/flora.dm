@@ -677,10 +677,14 @@ ICEY GRASS. IT LOOKS LIKE IT'S MADE OF ICE.
 	name = "strange tree"
 	desc = "Some kind of bizarre alien tree. It oozes with a sickly yellow sap."
 	icon_state = "alienplant1"
-	luminosity = 2
+
+	light_color = COLOR_PALE_GREEN_GRAY
+	light_on = TRUE
+	light_power = 0.2
+	light_range = 3
 
 /obj/structure/flora/jungle/alienplant1/Destroy()
-	SetLuminosity(0)
+	set_light_on(FALSE)
 	return ..()
 
 /obj/structure/flora/jungle/planttop1

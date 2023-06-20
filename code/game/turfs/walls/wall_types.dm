@@ -242,8 +242,8 @@
 /turf/closed/wall/indestructible/splashscreen
 	name = "Lobby Art"
 	desc = "Assorted artworks."
-	icon = 'icons/lobby/title.dmi'
-	icon_state = ""
+	icon = 'icons/lobby/title_loading.dmi'
+	icon_state = "title"
 	layer = FLY_LAYER
 	special_icon = 1
 
@@ -256,8 +256,11 @@
 	var/turf/closed/wall/indestructible/splashscreen/SS = locate("LOBBYART")
 	var/list/lobby_arts = CONFIG_GET(str_list/lobby_art_images)
 	var/list/lobby_authors = CONFIG_GET(str_list/lobby_art_authors)
+	SS.icon = 'icons/lobby/title.dmi'
 	SS.icon_state = lobby_arts[displayed_lobby_art]
 	SS.desc = "Artwork by [lobby_authors[displayed_lobby_art]]"
+	SS.pixel_x = -288
+	SS.pixel_y = -288
 	for(var/client/C in GLOB.clients)
 		if(displayed_lobby_art != -1)
 			var/author = lobby_authors[displayed_lobby_art]

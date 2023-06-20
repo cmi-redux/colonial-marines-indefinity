@@ -39,10 +39,6 @@
 	. = ..()
 	maxhealth = health
 
-	if(faction_to_set)
-		faction = faction_to_set
-
-	set_hive_data(src, faction)
 	if(!faction.add_special_structure(src))
 		return INITIALIZE_HINT_QDEL
 

@@ -18,7 +18,7 @@
 		text_box.color = override_color
 
 	LAZYADD(client.screen_texts, text_box)
-	if(LAZYLEN(client.screen_texts) == 1) //lets only play one at a time, for thematic effect and prevent overlap
+	if(length(client.screen_texts) == 1) //lets only play one at a time, for thematic effect and prevent overlap
 		INVOKE_ASYNC(text_box, TYPE_PROC_REF(/atom/movable/screen/text/screen_text, play_to_client))
 
 /atom/movable/screen/text/screen_text
@@ -114,5 +114,5 @@
 		QDEL_NULL_LIST(player.screen_texts)
 		return
 
-	if(LAZYLEN(player.screen_texts))
+	if(length(player.screen_texts))
 		player.screen_texts[1].play_to_client() // Theres more?

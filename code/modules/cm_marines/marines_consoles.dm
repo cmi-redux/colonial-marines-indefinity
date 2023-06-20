@@ -34,7 +34,7 @@
 		update_static_data(user)
 		factions = list()
 		factions += user.faction
-		for(var/datum/faction/faction in user.faction.allies)
+		for(var/datum/faction/faction in user.faction.relations_datum.allies)
 			factions += faction
 		return TRUE
 

@@ -99,26 +99,8 @@
 /obj/structure/flora/bush/ausbushes/pointybush,
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/west_jungle)
-"aF" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
-	dir = 6
-	},
-/turf/open/gm/grass/grass2,
-/area/lv624/ground/jungle/west_jungle)
-"aG" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
-	dir = 10
-	},
-/turf/open/gm/grass/grass2,
-/area/lv624/ground/jungle/west_jungle)
 "aH" = (
 /obj/structure/flora/bush/ausbushes/var3/ywflowers,
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/west_jungle)
-"aI" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
-	dir = 10
-	},
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/west_jungle)
 "aJ" = (
@@ -329,7 +311,7 @@ FJ
 bt
 bV
 Za
-aF
+az
 "}
 (8,1,1) = {"
 bi
@@ -344,7 +326,7 @@ am
 bt
 au
 az
-aG
+az
 "}
 (9,1,1) = {"
 bx
@@ -374,7 +356,7 @@ aX
 ar
 bV
 aV
-aF
+az
 "}
 (11,1,1) = {"
 bi
@@ -389,7 +371,7 @@ bt
 as
 av
 aB
-aI
+aV
 "}
 (12,1,1) = {"
 bi

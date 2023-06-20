@@ -49,10 +49,7 @@
 		fruit_growth_multiplier = node.fruit_growth_multiplier
 	else if(xenomorph && xenomorph.faction)
 		faction = xenomorph.faction
-	else if(faction_to_set)
-		faction = faction_to_set
 
-	set_hive_data(src, faction)
 	if(spread_on_semiweedable)
 		if(color)
 			var/list/RGB = ReadRGB(color)
@@ -224,9 +221,6 @@
 				old_fruit.unregister_weed_expiration_signal()
 
 			qdel(weeds)
-
-		if(istype(turf, /turf/closed/wall/resin) || !turf.density)
-			continue
 
 		if(istype(turf, /turf/closed/wall))
 			all_weeds += new /obj/effect/alien/weeds/weedwall(turf, node)
@@ -495,8 +489,6 @@
 /obj/effect/alien/weeds/node/Initialize(mapload, obj/effect/alien/weeds/node/node, mob/living/carbon/xenomorph/builder, datum/faction/faction_to_set)
 	if(builder && builder.faction)
 		faction = builder.faction
-	else if(faction_to_set)
-		faction = faction_to_set
 
 	for(var/obj/effect/alien/weeds/weeds in loc)
 		if(weeds != src)

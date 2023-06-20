@@ -8,34 +8,15 @@
 /obj/structure/flora/jungle/vines/light_2,
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/south_west_jungle)
-"cP" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner,
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/south_west_jungle)
 "dy" = (
 /turf/open/gm/dirtgrassborder/grassdirt_corner/north_west,
 /area/lv624/ground/jungle/south_west_jungle)
-"eV" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
-	dir = 5
-	},
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/south_west_jungle)
 "fv" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
-	dir = 4
-	},
 /obj/effect/landmark/objective_landmark/far,
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/south_west_jungle)
 "gb" = (
 /obj/structure/flora/bush/ausbushes/var3/ywflowers,
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/south_west_jungle)
-"hq" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
-	dir = 10
-	},
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/south_west_jungle)
 "ja" = (
@@ -89,12 +70,6 @@
 /obj/structure/flora/bush/ausbushes/var3/leafybush,
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/south_west_jungle)
-"rK" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
-	dir = 1
-	},
-/turf/open/gm/grass/grass2,
-/area/lv624/ground/jungle/south_west_jungle)
 "ub" = (
 /obj/structure/flora/jungle/vines/light_1,
 /obj/structure/flora/jungle/vines/heavy,
@@ -102,10 +77,6 @@
 /area/lv624/ground/jungle/south_west_jungle)
 "ui" = (
 /obj/structure/flora/bush/ausbushes/var3/sparsegrass,
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/south_west_jungle)
-"uj" = (
-/obj/structure/flora/grass/tallgrass/jungle,
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/south_west_jungle)
 "up" = (
@@ -121,18 +92,6 @@
 /area/lv624/ground/jungle/south_west_jungle)
 "vt" = (
 /obj/structure/flora/jungle/vines/light_1,
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/south_west_jungle)
-"vT" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
-	dir = 6
-	},
-/turf/open/gm/grass/grass2,
-/area/lv624/ground/jungle/south_west_jungle)
-"zh" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
-	dir = 6
-	},
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/south_west_jungle)
 "AQ" = (
@@ -222,12 +181,6 @@
 "Ok" = (
 /turf/open/gm/dirtgrassborder/grassdirt_corner2/north_west,
 /area/lv624/ground/jungle/south_west_jungle)
-"QL" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
-	dir = 1
-	},
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/south_west_jungle)
 "Rj" = (
 /obj/structure/flora/jungle/vines/light_3,
 /obj/structure/flora/jungle/vines/light_1,
@@ -249,27 +202,9 @@
 /obj/structure/flora/jungle/vines,
 /turf/closed/wall/strata_ice/jungle,
 /area/lv624/ground/jungle/south_west_jungle)
-"Wp" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
-	dir = 3
-	},
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/south_west_jungle)
-"WQ" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
-	dir = 8
-	},
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/south_west_jungle)
 "XG" = (
 /obj/effect/landmark/yautja_teleport,
 /turf/open/gm/dirt,
-/area/lv624/ground/jungle/south_west_jungle)
-"ZL" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
-	dir = 9
-	},
-/turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/south_west_jungle)
 
 (1,1,1) = {"
@@ -341,8 +276,8 @@ LW
 oA
 lf
 LV
-vT
-eV
+pB
+oD
 oD
 LW
 dy
@@ -356,9 +291,9 @@ AQ
 LW
 oD
 DF
-zh
-uj
-rK
+oD
+oD
+pB
 oD
 oD
 Gi
@@ -371,12 +306,12 @@ LW
 (7,1,1) = {"
 LV
 Nq
-zh
-uj
-uj
-uj
+oD
+oD
+oD
+oD
 fv
-eV
+oD
 Lz
 jV
 NU
@@ -387,13 +322,13 @@ oD
 (8,1,1) = {"
 uV
 oD
-cP
-uj
-uj
-uj
-uj
-uj
-eV
+oD
+oD
+oD
+oD
+oD
+oD
+oD
 Lz
 Kn
 IP
@@ -403,13 +338,13 @@ El
 (9,1,1) = {"
 vt
 oD
-hq
-uj
-uj
-uj
-uj
-uj
-QL
+oD
+oD
+oD
+oD
+oD
+oD
+oD
 oD
 LW
 FE
@@ -420,12 +355,12 @@ LW
 DF
 oD
 oD
-Wp
-uj
-uj
-WQ
-WQ
-ZL
+oD
+oD
+oD
+oD
+oD
+oD
 oD
 LW
 LW
@@ -436,9 +371,9 @@ LW
 LW
 gb
 ui
-hq
-WQ
-ZL
+oD
+oD
+oD
 oD
 up
 oD

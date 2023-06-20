@@ -339,7 +339,7 @@
 	var/list/faction_stats = list("dead_enemy_factions" = 0, "total_friendly_factions" = 0)
 	for(var/faction_name in SSticker.mode.factions_pool)
 		var/datum/faction/faction = GLOB.faction_datum[SSticker.mode.factions_pool[faction_name]]
-		if(faction_owner.allies[faction.faction_name])
+		if(faction_owner.relations_datum.allies[faction.faction_name])
 			faction_stats["total_friendly_factions"]++
 
 		else if(!length(faction.totalMobs))
@@ -436,10 +436,10 @@
 /datum/faction_task_ui
 	var/datum/faction/faction
 
+/datum/faction_task_ui/New(datum/faction/faction_to_set)
+	faction = faction_to_set
+
 /datum/faction_task_ui/tgui_interact(mob/user, datum/tgui/ui)
-	if(!user.faction)
-		return
-	faction = user.faction
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "FactionTask", "[faction] Tasks")

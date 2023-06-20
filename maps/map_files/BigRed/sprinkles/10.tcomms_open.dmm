@@ -45,7 +45,6 @@
 /area/bigredv2/outside/building/telecomm)
 "h" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/decal/cleanable/blood/tracks,
 /turf/open/floor{
 	dir = 1;
 	icon_state = "asteroidfloor";
@@ -61,7 +60,6 @@
 	},
 /area/bigredv2/outside/building/telecomm)
 "k" = (
-/obj/effect/decal/cleanable/blood/tracks,
 /obj/effect/decal/cleanable/blood/drip,
 /turf/open/floor{
 	dir = 8;
@@ -76,7 +74,6 @@
 	},
 /area/bigredv2/outside/building/telecomm)
 "m" = (
-/obj/effect/decal/cleanable/blood/tracks,
 /obj/effect/decal/cleanable/blood/drip,
 /turf/open/floor{
 	dir = 8;
@@ -100,7 +97,6 @@
 /area/bigredv2/outside/building/telecomm)
 "p" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/decal/cleanable/blood/tracks,
 /obj/effect/decal/cleanable/blood/drip,
 /turf/open/floor{
 	dir = 8;
@@ -133,7 +129,6 @@
 /area/bigredv2/outside/building/telecomm)
 "u" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/decal/cleanable/blood/tracks,
 /obj/effect/decal/cleanable/blood/drip,
 /turf/open/floor{
 	icon_state = "platingdmg1"

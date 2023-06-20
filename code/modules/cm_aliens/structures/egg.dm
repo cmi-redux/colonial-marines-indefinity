@@ -19,11 +19,7 @@
 /obj/effect/alien/egg/Initialize(mapload, datum/faction/faction_to_set)
 	. = ..()
 
-	if(faction_to_set)
-		faction = faction_to_set
-
 	create_egg_triggers()
-	set_hive_data(src, faction)
 	update_icon()
 	addtimer(CALLBACK(src, PROC_REF(Grow)), rand(EGG_MIN_GROWTH_TIME, EGG_MAX_GROWTH_TIME))
 

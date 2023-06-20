@@ -17,11 +17,6 @@
 /obj/effect/alien/resin/construction/Initialize(mapload, datum/faction/faction_to_set)
 	. = ..()
 
-	if(faction_to_set)
-		faction = faction_to_set
-
-	set_hive_data(src, faction)
-
 /obj/effect/alien/resin/construction/Destroy()
 	if(template && faction && (template.crystals_stored < template.crystals_required))
 		faction.crystal_stored += template.crystals_stored

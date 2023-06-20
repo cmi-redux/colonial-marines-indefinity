@@ -430,8 +430,7 @@
 		log_admin("Error: Attempted to force a dropship hijack but the shuttle datum was null. Code: MSD_FSV_DIN")
 		return
 
-	var/confirm = tgui_alert(usr, "Are you sure you want to hijack [dropship]?", "Force hijack", list(usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO))) != usr.client.auto_lang(LANGUAGE_YES))
-	if(!confirm)
+	if(tgui_alert(usr, "Are you sure you want to hijack [dropship]?", "Force hijack", list(usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO))) != usr.client.auto_lang(LANGUAGE_YES))
 		return
 
 	var/obj/structure/machinery/computer/shuttle/dropship/flight/computer = dropship.getControlConsole()

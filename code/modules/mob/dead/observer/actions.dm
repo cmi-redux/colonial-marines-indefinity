@@ -50,20 +50,23 @@
 	var/mob/dead/observer/activator = owner
 	activator.join_as_yautja()
 
-/datum/action/observer_action/view_crew_manifest
-	name = "View Crew Manifest"
-	action_icon_state = "view_crew_manifest"
+/datum/action/observer_action/view_faction_status
+	name = "View Faction Status"
+	action_icon_state = "view_faction_status"
 
-/datum/action/observer_action/view_crew_manifest/action_activate()
-	show_browser(owner, GLOB.data_core.get_manifest(), "Crew Manifest", "manifest", "size=450x750")
+/datum/action/observer_action/view_faction_status/action_activate()
+	var/list/datum/faction/factions = list()
+	for(var/faction_to_get in FACTION_LIST_ALL)
+		var/datum/faction/faction_to_set = GLOB.faction_datum[faction_to_get]
+		if(!length(faction_to_set.totalMobs))
+			continue
+		LAZYSET(factions, faction_to_set.name, faction_to_set)
 
-/datum/action/observer_action/view_hive_status
-	name = "View Hive Status"
-	action_icon_state = "view_hive_status"
+	var/choice = tgui_input_list(owner, "Please choose faction status menu will to be show.", "Faction Selection", factions)
+	if(!choice)
+		return FALSE
 
-/datum/action/observer_action/view_hive_status/action_activate()
-	var/mob/dead/observer/activator = owner
-	activator.hive_status()
+	factions[choice].tgui_interact(owner)
 
 /datum/action/observer_action/join_xeno
 	name = "Join as Xeno"

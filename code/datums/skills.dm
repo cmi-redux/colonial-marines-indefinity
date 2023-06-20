@@ -785,7 +785,7 @@ MILITARY NONCOMBATANT
 		SKILL_MELEE_WEAPONS = SKILL_MELEE_TRAINED,
 	)
 
-/datum/skills/OT
+/datum/skills/ot
 	name = "Ordnance Technician"
 	skills = list(
 		SKILL_ENGINEER = SKILL_ENGINEER_MASTER,

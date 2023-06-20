@@ -178,6 +178,8 @@
 	base_state = "bulb"
 	fitting = "bulb"
 	brightness = 4
+	bulb_power = 0.2
+	light_color = COLOR_ORANGE
 	desc = "A small lighting fixture that is fitted with a bright fluorescent light bulb. Looking at it for too long makes your eyes go watery."
 	light_type = /obj/item/light_bulb/bulb
 

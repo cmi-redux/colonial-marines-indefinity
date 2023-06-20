@@ -527,7 +527,7 @@
 	rank = JOB_WO_ORDNANCE_TECH
 	paygrade = "ME4"
 	role_comm_title = "BC"
-	skills = /datum/skills/OT
+	skills = /datum/skills/ot
 	idtype = /obj/item/card/id
 
 /datum/equipment_preset/wo/bc/load_gear(mob/living/carbon/human/new_human)

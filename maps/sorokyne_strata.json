@@ -35,16 +35,16 @@
         "Infection"
     ],
     "map_day_night_modificator": {
-        "Midnight": 864000,
-        "Night": 90000,
-        "Dawn": 198000,
-        "Sunrise": 288000,
-        "Sunrise-Morning": 320000,
-        "Morning": 360000,
-        "Daytime": 480000,
-        "Evening": 526000,
-        "Sunset": 624000,
-        "Dusk": 752000
+        "Midnight": 1,
+        "Night": 0.083,
+        "Dawn": 0.16,
+        "Sunrise": 0.25,
+        "Sunrise-Morning": 0.29,
+        "Morning": 0.33,
+        "Daytime": 0.416,
+        "Evening": 0.66,
+        "Sunset": 0.7916,
+        "Dusk": 0.916
     },
-    "custom_time_rate_multiplier": 4
+    "custom_time_length": 1483925
 }

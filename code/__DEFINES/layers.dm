@@ -127,17 +127,16 @@
 #define ABOVE_XENO_LAYER 4.12
 /// for facehuggers
 #define FACEHUGGER_LAYER 4.13
-/// For WEATHER
-#define WEATHER_LAYER 4.14
+/// for vehicle
+#define VEHICLE_LAYER 4.14
+#define INTERIOR_DOOR_INSIDE_LAYER 4.19
+#define RIPPLE_LAYER 4.2
+#define INTERIOR_WALL_SOUTH_LAYER 4.21
+#define INTERIOR_DOOR_LAYER 4.22
+#define INTERIOR_WALLMOUNT_LAYER 4.3
+#define INTERIOR_ROOF_LAYER 4.5
 
 //#define FLY_LAYER 5
-
-#define RIPPLE_LAYER 5.1
-#define INTERIOR_DOOR_INSIDE_LAYER 5.19
-#define INTERIOR_WALL_SOUTH_LAYER 5.2
-#define INTERIOR_DOOR_LAYER 5.21
-#define INTERIOR_WALLMOUNT_LAYER 5.3
-#define INTERIOR_ROOF_LAYER 5.5
 
 #define ABOVE_FLY_LAYER 6
 
@@ -194,12 +193,50 @@
 /// NEVER HAVE ANYTHING BELOW THIS PLANE ADJUST IF YOU NEED MORE SPACE
 #define LOWEST_EVER_PLANE -200
 
-/// Floor plane, self explanatory. Used for Ambient Occlusion filter
-#define FLOOR_PLANE -7
-/// Game Plane, where most of the game objects reside
-#define GAME_PLANE -6
-/// Roof plane, disappearing when entering buildings
-#define ROOF_PLANE -4
+#define FIELD_OF_VISION_BLOCKER_PLANE -199
+#define FIELD_OF_VISION_BLOCKER_RENDER_TARGET "*FIELD_OF_VISION_BLOCKER_RENDER_TARGET"
+
+#define CLICKCATCHER_PLANE -99
+
+#define PLANE_SPACE -95
+#define PLANE_SPACE_PARALLAX -90
+
+#define WEATHER_OVERLAY_PLANE -80
+#define WEATHER_RENDER_TARGET "*WEATHER_OVERLAY_PLANE"
+
+#define GRAVITY_PULSE_PLANE -70
+#define GRAVITY_PULSE_RENDER_TARGET "*GRAVPULSE_RENDER_TARGET"
+
+#define DISPLACEMENT_MAP_PLANE -69
+
+#define OPENSPACE_LAYER 600 //Openspace layer over all
+#define TRANSPARENT_FLOOR_PLANE -62 //Transparent plane that shows openspace underneath the floor
+#define OPENSPACE_PLANE -61 //Openspace plane below all turfs
+#define OPENSPACE_BACKDROP_PLANE -60 //Black square just over openspace plane to guaranteed cover all in openspace turf
+
+#define FLOOR_PLANE -45
+
+#define OVER_TILE_PLANE -44
+
+#define WALL_PLANE -43
+
+#define GAME_PLANE -42
+
+#define ROOF_PLANE -31
+
+#define WEATHER_EFFECT_PLANE -30
+
+#define GAME_PLANE_FOV_HIDDEN -29
+#define GAME_PLANE_UPPER -28
+#define GAME_PLANE_UPPER_FOV_HIDDEN -27
+#define PARTICLES_PLANE -26
+
+#define ABOVE_GAME_PLANE -20
+
+#define UNDER_FRILL_PLANE -12 //MOJAVE SUN EDIT - Wallening Testmerge
+#define UNDER_FRILL_RENDER_TARGET "*UNDER_RENDER_TARGET" //MOJAVE SUN EDIT - Wallening Testmerge
+#define FRILL_PLANE -11 //MOJAVE SUN EDIT - Wallening Testmerge
+#define OVER_FRILL_PLANE -10 //MOJAVE SUN EDIT - Wallening Testmerge
 
 /// To keep from conflicts with SEE_BLACKNESS internals
 #define BLACKNESS_PLANE 0

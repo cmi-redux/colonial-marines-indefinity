@@ -415,7 +415,7 @@ CUSTOM_AMMO_PENETRATION
 	hud_state = "pistol"
 	hud_state_empty = "pistol_empty"
 	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
-	accuracy = -HIT_ACCURACY_TIER_3
+	accuracy = HIT_ACCURACY_TIER_0
 	accuracy_var_low = PROJECTILE_VARIANCE_TIER_6
 	damage = 40
 	penetration= ARMOR_PENETRATION_TIER_2
@@ -518,7 +518,7 @@ CUSTOM_AMMO_PENETRATION
 	hud_state = "pistol_eagle"
 	hud_state_empty = "pistol_eagle_empty"
 	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
-	accuracy = -HIT_ACCURACY_TIER_3
+	accuracy = HIT_ACCURACY_TIER_0
 	accuracy_var_low = PROJECTILE_VARIANCE_TIER_6
 	damage = 55
 	penetration= ARMOR_PENETRATION_TIER_3
@@ -563,7 +563,7 @@ CUSTOM_AMMO_PENETRATION
 	name = ".50 heavy pistol bullet"
 	damage = 45
 	headshot_state = HEADSHOT_OVERLAY_HEAVY
-	accuracy = -HIT_ACCURACY_TIER_3
+	accuracy = HIT_ACCURACY_TIER_0
 	accuracy_var_low = PROJECTILE_VARIANCE_TIER_6
 	penetration = ARMOR_PENETRATION_TIER_6
 	shrapnel_chance = SHRAPNEL_CHANCE_TIER_5
@@ -1046,7 +1046,7 @@ CUSTOM_AMMO_PENETRATION
 	bullet_color = COLOR_TAN_ORANGE
 
 	damage = 25
-	accuracy = -HIT_ACCURACY_TIER_2
+	accuracy = HIT_ACCURACY_TIER_0
 
 /datum/ammo/bullet/smg/incendiary/set_bullet_traits()
 	. = ..()
@@ -1164,7 +1164,7 @@ CUSTOM_AMMO_PENETRATION
 
 	damage = 25
 	accurate_range = 22
-	accuracy = 0
+	accuracy = HIT_ACCURACY_TIER_1
 	shell_speed = AMMO_SPEED_TIER_4
 	damage_falloff = DAMAGE_FALLOFF_TIER_9
 
@@ -1269,7 +1269,7 @@ CUSTOM_AMMO_PENETRATION
 
 	damage = 30
 	shell_speed = AMMO_SPEED_TIER_4
-	accuracy = -HIT_ACCURACY_TIER_2
+	accuracy = HIT_ACCURACY_TIER_1
 	damage_falloff = DAMAGE_FALLOFF_TIER_10
 
 /datum/ammo/bullet/rifle/incendiary/set_bullet_traits()
@@ -1317,7 +1317,7 @@ CUSTOM_AMMO_PENETRATION
 	flags_ammo_behavior = AMMO_BALLISTIC
 
 	damage = 40
-	accuracy = -HIT_ACCURACY_TIER_2
+	accuracy = HIT_ACCURACY_TIER_1
 	scatter = -SCATTER_AMOUNT_TIER_8
 	penetration = ARMOR_PENETRATION_TIER_10
 	shell_speed = AMMO_SPEED_TIER_6
@@ -1438,7 +1438,7 @@ CUSTOM_AMMO_PENETRATION
 
 	bullet_color = COLOR_TAN_ORANGE
 
-	accuracy = -HIT_ACCURACY_TIER_2
+	accuracy = HIT_ACCURACY_TIER_1
 	max_range = 12
 	damage = 55
 	penetration= ARMOR_PENETRATION_TIER_1
@@ -1856,7 +1856,6 @@ CUSTOM_AMMO_PENETRATION
 
 	bullet_color = COLOR_TAN_ORANGE
 
-	//Removed accuracy = 0, accuracy_var_high = Variance Tier 6, and scatter = 0. -Kaga
 	damage = 60
 	penetration = ARMOR_PENETRATION_TIER_4
 
@@ -2201,7 +2200,7 @@ CUSTOM_AMMO_PENETRATION
 	accurate_range = 10
 	damage =  50
 	penetration = ARMOR_PENETRATION_TIER_6
-	accuracy = HIT_ACCURACY_TIER_10 // 75 accuracy
+	accuracy = HIT_ACCURACY_TIER_10
 	shell_speed = AMMO_SPEED_TIER_2
 	max_range = 15
 	effective_range_max = 7
@@ -2216,7 +2215,7 @@ CUSTOM_AMMO_PENETRATION
 	hud_state_empty = "minigun_empty"
 	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
 
-	accuracy = -HIT_ACCURACY_TIER_3
+	accuracy = HIT_ACCURACY_TIER_0
 	accuracy_var_low = PROJECTILE_VARIANCE_TIER_6
 	accuracy_var_high = PROJECTILE_VARIANCE_TIER_6
 	accurate_range = 12
@@ -2235,7 +2234,7 @@ CUSTOM_AMMO_PENETRATION
 		damage = 15
 
 /datum/ammo/bullet/minigun/tank
-	accuracy = -HIT_ACCURACY_TIER_1
+	accuracy = HIT_ACCURACY_TIER_1
 	accuracy_var_low = PROJECTILE_VARIANCE_TIER_8
 	accuracy_var_high = PROJECTILE_VARIANCE_TIER_8
 	accurate_range = 12

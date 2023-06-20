@@ -138,7 +138,7 @@ var/global/datum/chemical_data/chemical_data = new /datum/chemical_data
 	SSobjectives.statistics["chemicals_total_points_earned"] += chem.objective_value
 
 	var/datum/objectives_datum/objectives_controller = GLOB.objective_controller[FACTION_MARINE]
-	objectives_controller.add_defcon_points(S.objective_value)
+	objectives_controller.add_defcon_points(chem.objective_value)
 
 
 /datum/chemical_data/proc/add_chemical_objective(datum/reagent/chem)

@@ -80,7 +80,7 @@
 	switch(random_equipment)
 		if(1)
 			new_human.equip_to_slot_or_del(new /obj/item/device/walkman(new_human), WEAR_IN_BACK)
-			new_human.equip_to_slot_or_del(new /obj/item/device/cassette_tape/indie(new_human), WEAR_IN_BACK)
+			new_human.equip_to_slot_or_del(new /obj/item/device/cassette_tape/lybe(new_human), WEAR_IN_BACK)
 		if(2)
 			new_human.equip_to_slot_or_del(new /obj/item/toy/deck(new_human), WEAR_IN_ACCESSORY)
 		if(3)

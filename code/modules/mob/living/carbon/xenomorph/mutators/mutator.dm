@@ -746,6 +746,9 @@
 	var/larva_gestation_multiplier = 1.0
 	var/bonus_larva_spawn_chance = 0
 
+/datum/mutator_set/hive_mutations/New(datum/faction/faction_to_set)
+	faction = faction_to_set
+
 /datum/mutator_set/hive_mutations/Destroy()
 	if(faction)
 		faction.mutators = null
@@ -906,6 +909,9 @@
 	var/regeneration = FALSE
 	var/vampirism = FALSE
 	var/additional_resist = FALSE
+
+/datum/mutator_set/New(mob/living/carbon/xenomorph/xenomorph_to_set)
+	xeno = xenomorph_to_set
 
 /datum/mutator_set/individual_mutations/Destroy()
 	if(xeno)

@@ -35,10 +35,14 @@
 	name = "glowing goo"
 	acid_damage = 1
 	icon_state = "greenglow"
-	luminosity = 1
+
+	light_color = COLOR_GREEN_GRAY
+	light_power = 0.4
+	light_range = 2
+	light_on = TRUE
 
 /obj/effect/decal/cleanable/dirt/greenglow/Destroy()
-	SetLuminosity(0)
+	set_light_on(FALSE)
 	return ..()
 
 /obj/effect/decal/cleanable/flour

@@ -53,7 +53,7 @@
 		if(!QDESTROYING(tether_effect))
 			qdel(tether_effect)
 		tether_effect = null
-	if(!do_zlevel_check())
+	if(!do_checks())
 		on_beam_removed()
 
 /obj/item/device/paddles/proc/on_beam_removed()
@@ -208,6 +208,14 @@
 	if(attached_to)
 		attached_to.recall_paddles()
 
+/obj/item/device/paddles/equipped(mob/user, slot, silent)
+	..()
+	if(get_dist(attached_to, user) > attached_to.range)
+		unwield(user)
+		user.drop_held_item(src)
+		attached_to.recall_paddles()
+		return
+
 /obj/item/device/paddles/forceMove(atom/dest)
 	. = ..()
 	if(.)
@@ -216,8 +224,11 @@
 			unwield(M)
 		reset_tether()
 
-/obj/item/device/paddles/proc/do_zlevel_check()
+/obj/item/device/paddles/proc/do_checks()
 	if(!attached_to || !loc.z || !attached_to.z)
+		return FALSE
+
+	if(get_dist(attached_to, src) > attached_to.range)
 		return FALSE
 
 	if(zlevel_transfer)

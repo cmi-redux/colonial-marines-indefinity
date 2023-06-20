@@ -10,7 +10,6 @@
 
 /obj/effect/landmark/New()
 	tag = "landmark*[name]"
-	invisibility = invisibility_value
 	return ..()
 
 /obj/effect/landmark/Initialize(mapload, ...)

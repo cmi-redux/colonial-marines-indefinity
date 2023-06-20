@@ -31,11 +31,11 @@
 		if (T && ignores_resin) // Will not target resin walls and doors if this is set to true. This is normally only set to true through a directional attack.
 			if(istype(T, /obj/structure/mineral_door/resin))
 				var/obj/structure/mineral_door/resin/attacked_door = T
-				if(hivenumber == attacked_door.hivenumber)
+				if(ally(attacked_door.faction))
 					return FALSE
 			if(istype(T, /turf/closed/wall/resin))
 				var/turf/closed/wall/resin/attacked_wall = T
-				if(hivenumber == attacked_wall.hivenumber)
+				if(ally(attacked_wall.faction))
 					return FALSE
 
 	target = target.handle_barriers(src, , (PASS_MOB_THRU_XENO|PASS_TYPE_CRAWLER)) // Checks if target will be attacked by the current alien OR if the blocker will be attacked
@@ -111,7 +111,7 @@ so that it doesn't double up on the delays) so that it applies the delay immedia
 	if(alt_pressed && shift_pressed)
 		if(istype(target, /mob/living/carbon/xenomorph))
 			var/mob/living/carbon/xenomorph/xeno = target
-			if(!QDELETED(xeno) && xeno.stat != DEAD && !is_admin_level(xeno.z) && xeno.check_state(TRUE) && xeno.hivenumber == hivenumber)
+			if(!QDELETED(xeno) && xeno.stat != DEAD && !is_admin_level(xeno.z) && xeno.check_state(TRUE) && xeno.ally(faction))
 				overwatch(xeno)
 				next_move = world.time + 3 // Some minimal delay so this isn't crazy spammy
 				return TRUE

@@ -513,7 +513,9 @@ var/list/ob_type_fuel_requirements
 /obj/structure/ob_ammo/warhead/nuke
 	name = "\improper Nucke orbital warhead"
 	warhead_kind = "nuke"
-	icon_state = "ob_warhead_4"
+	icon = 'icons/obj/structures/machinery/nuclearbomb.dmi'
+	icon_state = "nuke"
+	pixel_x = -16
 	var/clear_power = 4000
 	var/clear_falloff = 200
 	var/standard_power = 2000

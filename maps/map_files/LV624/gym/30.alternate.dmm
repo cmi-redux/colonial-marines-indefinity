@@ -274,10 +274,6 @@
 	icon_state = "whitepurplecorner"
 	},
 /area/lv624/lazarus/fitness)
-"vZ" = (
-/obj/structure/flora/grass/tallgrass/jungle,
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/central_jungle)
 "wA" = (
 /obj/structure/bed/chair,
 /turf/open/floor{
@@ -318,12 +314,6 @@
 	icon_state = "whitepurplecorner"
 	},
 /area/lv624/lazarus/fitness)
-"Aq" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
-	dir = 9
-	},
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/central_jungle)
 "AE" = (
 /turf/open/floor{
 	dir = 9;
@@ -509,12 +499,6 @@
 "Nt" = (
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/colony/south_medbay_road)
-"NW" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
-	dir = 10
-	},
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/central_jungle)
 "Od" = (
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/east_central_jungle)
@@ -552,12 +536,6 @@
 	icon_state = "whitepurplecorner"
 	},
 /area/lv624/lazarus/fitness)
-"Qh" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
-	dir = 5
-	},
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/central_jungle)
 "Qj" = (
 /obj/item/device/radio/intercom{
 	freerange = 1;
@@ -589,12 +567,6 @@
 	icon_state = "whitepurple"
 	},
 /area/lv624/lazarus/fitness)
-"SD" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
-	dir = 8
-	},
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/central_jungle)
 "To" = (
 /turf/open/floor{
 	dir = 5;
@@ -691,10 +663,10 @@ In
 JN
 sx
 DM
-NW
-vZ
-vZ
-Qh
+DM
+DM
+DM
+DM
 nl
 "}
 (2,1,1) = {"
@@ -709,9 +681,9 @@ IL
 fV
 fV
 DM
-NW
-SD
-Aq
+DM
+DM
+DM
 DM
 "}
 (3,1,1) = {"

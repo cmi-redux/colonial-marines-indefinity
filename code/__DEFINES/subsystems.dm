@@ -69,36 +69,39 @@
 // Subsystem defines.
 // All in one file so it's easier to see what everything is relative to.
 
-#define SS_INIT_EARLYRUNTIMES		1000
+
 #define SS_INIT_TICKER_SPAWN		999
 #define SS_INIT_TIMER				100
 #define SS_INIT_INPUT				95
-#define SS_INIT_RUST				94
-#define SS_INIT_OVERLAY				35
-#define SS_INIT_SUPPLY_SHUTTLE		34
-#define SS_INIT_GARBAGE				33
-#define SS_INIT_JOB					32
-#define SS_INIT_DATABASE			31
-#define SS_INIT_ENTITYMANAGER		30
-#define SS_INIT_TICKER				29
-#define SS_INIT_PLAYTIME			28
-#define SS_INIT_EVENTS				27
-#define SS_INIT_REDIS				26
-#define SS_INIT_MAPPING				25
-#define SS_INIT_PREF_LOGGING		24
-#define SS_INIT_DONATORS			23
-#define SS_INIT_NIGHTMARE			22
-#define SS_INIT_PLANT				21
-#define SS_INIT_TIMETRACK			20
-#define SS_INIT_HUMANS				19
-#define SS_INIT_MAP					18
-#define SS_INIT_COMPONENT			17
-#define SS_INIT_POWER				16
-#define SS_INIT_OBJECT				15
-#define SS_INIT_PIPENET				14
-#define SS_INIT_XENOARCH			13
-#define SS_INIT_MORE_INIT			12
-#define SS_INIT_AIR					11
+#define SS_INIT_FAIL_TO_TOPIC		90
+#define SS_INIT_TOPIC				85
+#define SS_INIT_RUST				80
+#define SS_INIT_OVERLAY				75
+#define SS_INIT_SUPPLY_SHUTTLE		70
+#define SS_INIT_GARBAGE				65
+#define SS_INIT_JOB					60
+#define SS_INIT_DATABASE			55
+#define SS_INIT_ENTITYMANAGER		50
+#define SS_INIT_TICKER				45
+#define SS_INIT_PLAYTIME			44
+#define SS_INIT_EVENTS				43
+#define SS_INIT_REDIS				42
+#define SS_INIT_REAGENTS			41
+#define SS_INIT_MAPPING				40
+#define SS_INIT_PREF_LOGGING		39
+#define SS_INIT_DONATORS			35
+#define SS_INIT_NIGHTMARE			34
+#define SS_INIT_PLANT				33
+#define SS_INIT_TIMETRACK			32
+#define SS_INIT_HUMANS				31
+#define SS_INIT_MAP					30
+#define SS_INIT_COMPONENT			25
+#define SS_INIT_POWER				24
+#define SS_INIT_OBJECT				23
+#define SS_INIT_PIPENET				22
+#define SS_INIT_XENOARCH			21
+#define SS_INIT_MORE_INIT			20
+#define SS_INIT_AIR					15
 #define SS_INIT_TELEPORTER			10
 #define SS_INIT_LIGHTING			9
 #define SS_INIT_DEFCON				8
@@ -127,6 +130,7 @@
 #define SS_INIT_STATPANELS			-98
 #define SS_INIT_QUEUE				-99
 #define SS_INIT_CHAT				-100 //Should be last to ensure chat remains smooth during init.
+#define SS_INIT_EARLYRUNTIMES		-500
 
 #define SS_PRIORITY_INPUT			1000
 #define SS_PRIORITY_SOUNDLOOPS		800

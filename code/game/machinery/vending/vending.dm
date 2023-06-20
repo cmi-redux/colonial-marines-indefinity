@@ -636,7 +636,7 @@ GLOBAL_LIST_EMPTY_TYPED(total_vending_machines, /obj/structure/machinery/vending
 		new_transaction.amount = "[transaction_amount]"
 	new_transaction.source_terminal = name
 	new_transaction.date = current_date_string
-	new_transaction.time = SSsunlighting.game_time_offseted()
+	new_transaction.time = game_time_timestamp()
 	user_account.transaction_log.Add(new_transaction)
 
 	new_transaction = new()
@@ -645,7 +645,7 @@ GLOBAL_LIST_EMPTY_TYPED(total_vending_machines, /obj/structure/machinery/vending
 	new_transaction.amount = "[transaction_amount]"
 	new_transaction.source_terminal = name
 	new_transaction.date = current_date_string
-	new_transaction.time = worldtime2text()
+	new_transaction.time = game_time_timestamp()
 	vendor_account.transaction_log.Add(new_transaction)
 
 	return TRUE
@@ -670,7 +670,7 @@ GLOBAL_LIST_EMPTY_TYPED(total_vending_machines, /obj/structure/machinery/vending
 	new_transaction.amount = "[transaction_amount]"
 	new_transaction.source_terminal = name
 	new_transaction.date = current_date_string
-	new_transaction.time = SSsunlighting.game_time_offseted()
+	new_transaction.time = game_time_timestamp()
 	vendor_account.transaction_log.Add(new_transaction)
 
 	return TRUE

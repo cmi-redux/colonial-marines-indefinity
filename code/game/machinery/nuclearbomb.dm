@@ -9,6 +9,7 @@ var/bomb_set = FALSE
 	unslashable = TRUE
 	unacidable = TRUE
 	anchored = FALSE
+	var/stationar = TRUE
 	var/crash_nuke = FALSE
 	var/timing = FALSE
 	var/deployable = FALSE
@@ -36,6 +37,9 @@ var/bomb_set = FALSE
 
 /obj/structure/machinery/nuclearbomb/update_icon()
 	overlays.Cut()
+	if(stationar)
+		var/image/I = image(icon, "+type")
+		overlays += I
 	if(anchored)
 		var/image/I = image(icon, "+deployed")
 		overlays += I

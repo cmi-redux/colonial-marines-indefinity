@@ -85,6 +85,7 @@ DEFINE_BITFIELD(reactor_flags, list(
 		id = "[pick(alphabet_uppercase)][pick(alphabet_uppercase)]-[rand(0,9)][rand(0,9)][rand(0,9)]"
 	GLOB.fusion_cores += src
 	connect_to_network() //Should start with a cable piece underneath, if it doesn't, something's messed up in mapping
+	lazy_startup()
 
 /obj/structure/machinery/power/rbmk/power_change()
 	return
@@ -101,6 +102,7 @@ DEFINE_BITFIELD(reactor_flags, list(
 	for(var/I=0;I<max_fuel_rods;I++)
 		fuel_rods += new /obj/item/fuel_rod(src)
 	start_up()
+	desired_k = 200
 
 /obj/structure/machinery/power/rbmk/proc/deplete()
 	for(var/obj/item/fuel_rod/FR in fuel_rods)

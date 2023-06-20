@@ -16815,9 +16815,6 @@
 /obj/structure/machinery/light{
 	dir = 1
 	},
-/obj/structure/machinery/light{
-	dir = 1
-	},
 /obj/structure/surface/table/almayer,
 /obj/item/tool/hand_labeler,
 /turf/open/floor/almayer{
@@ -50982,7 +50979,7 @@
 /area/almayer/hull/lower_hull/l_f_p)
 "jZO" = (
 /obj/structure/pipes/standard/simple/hidden/supply,
-/obj/structure/machinery/door/airlock/almayer/engineering/reinforced/OT{
+/obj/structure/machinery/door/airlock/almayer/engineering/reinforced/ot{
 	dir = 1
 	},
 /obj/structure/disposalpipe/segment,
@@ -68568,8 +68565,9 @@
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
+	dir = 6;
 	icon_state = "orange";
-	tag = "icon-orange (NORTH)"
+	tag = "icon-orange (SOUTHEAST)"
 	},
 /area/almayer/engineering/upper_engineering)
 "rCU" = (
@@ -70744,6 +70742,14 @@
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer,
 /area/almayer/lifeboat_pumps/south2)
+"svK" = (
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/light,
+/turf/open/floor/almayer{
+	icon_state = "orangecorner";
+	tag = "icon-orangecorner"
+	},
+/area/almayer/hallways/stern_hallway)
 "svL" = (
 /obj/structure/bed/chair/office/dark{
 	dir = 8
@@ -127839,7 +127845,7 @@ anG
 anG
 cPT
 aXL
-dff
+svK
 fwy
 eIG
 nlj
@@ -127935,7 +127941,7 @@ rvo
 anG
 cPT
 aXL
-dfe
+gKg
 xUk
 vDl
 meV

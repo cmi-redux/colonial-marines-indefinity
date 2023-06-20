@@ -69,7 +69,8 @@
 	if(hud_used)
 		QDEL_NULL(hud_used)
 
-	faction.remove_mob(src)
+	if(istype(faction))
+		faction.remove_mob(src)
 
 	. = ..()
 

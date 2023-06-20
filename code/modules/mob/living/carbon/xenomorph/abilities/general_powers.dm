@@ -60,7 +60,7 @@
 				new /obj/effect/alien/weeds(weed_target_turf, new_node)
 			qdel(weed)
 
-	playsound(X.loc, "alien_resin_build", 25)
+	playsound(xeno.loc, "alien_resin_build", 25)
 	xeno.count_statistic_stat(STATISTIC_XENO_STRUCTURES_BUILD)
 	apply_cooldown()
 	return ..()
@@ -379,10 +379,10 @@
 	if(!check_and_use_plasma_owner())
 		return
 
-	if(X.layer == XENO_HIDING_LAYER) //Xeno is currently hiding, unhide him
-		X.layer = MOB_LAYER
-		X.update_wounds()
-		var/datum/action/hide_ability = get_xeno_action_by_type(X, /datum/action/xeno_action/onclick/xenohide)
+	if(xeno.layer == XENO_HIDING_LAYER) //Xeno is currently hiding, unhide him
+		xeno.layer = MOB_LAYER
+		xeno.update_wounds()
+		var/datum/action/hide_ability = get_xeno_action_by_type(xeno, /datum/action/xeno_action/onclick/xenohide)
 		if(hide_ability)
 			hide_ability.button.icon_state = "template"
 
@@ -503,7 +503,7 @@
 	xeno.update_wounds()
 	return ..()
 
-/datum/action/xeno_action/onclick/place_trap/use_ability(atom/A)
+/datum/action/xeno_action/onclick/place_trap/use_ability(atom/target_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if(!xeno.check_state())
 		return
@@ -535,10 +535,10 @@
 
 	if(!xeno.check_plasma(plasma_cost))
 		return
-	X.use_plasma(plasma_cost)
-	playsound(X.loc, "alien_resin_build", 25)
-	new /obj/effect/alien/resin/trap(T, X)
-	to_chat(X, SPAN_XENONOTICE("You place a resin hole on the weeds, it still needs a sister to fill it with acid."))
+	xeno.use_plasma(plasma_cost)
+	playsound(xeno.loc, "alien_resin_build", 25)
+	new /obj/effect/alien/resin/trap(target_turf, xeno)
+	to_chat(xeno, SPAN_XENONOTICE("You place a resin hole on the weeds, it still needs a sister to fill it with acid."))
 	return ..()
 
 /turf/proc/check_xeno_trap_placement(mob/living/carbon/xenomorph/xeno)
@@ -602,7 +602,7 @@
 		to_chat(xeno, SPAN_XENOWARNING("It's too tight in here to build."))
 		return FALSE
 
-	if(!X.check_alien_construction(T))
+	if(!xeno.check_alien_construction(target_turf))
 		return FALSE
 
 	var/choice = XENO_STRUCTURE_CORE
@@ -617,9 +617,9 @@
 			var/message = "<br>Placing a construction node creates a template for special structures that can benefit the hive, which require the insertion of [MATERIAL_CRYSTAL] to construct the following:<br>"
 			for(var/structure_name in xeno.faction.hive_structure_types)
 				message += "[get_xeno_structure_desc(structure_name)]<br>"
-			to_chat(X, SPAN_NOTICE(message))
+			to_chat(xeno, SPAN_NOTICE(message))
 			return TRUE
-	if(!X.check_state(TRUE) || !X.check_plasma(400))
+	if(!xeno.check_state(TRUE) || !xeno.check_plasma(400))
 		return FALSE
 	var/structure_type = xeno.faction.hive_structure_types[choice]
 	var/datum/construction_template/xenomorph/structure_template = new structure_type()
@@ -676,8 +676,8 @@
 		qdel(structure_template)
 		return FALSE
 
-	X.use_plasma(400)
-	X.place_construction(T, structure_template)
+	xeno.use_plasma(400)
+	xeno.place_construction(target_turf, structure_template)
 	xeno.count_statistic_stat(STATISTIC_XENO_STRUCTURES_BUILD)
 
 	return ..()
@@ -774,21 +774,21 @@
 	if(!istype(xeno) || !xeno.check_state() || !action_cooldown_check() || xeno.action_busy)
 		return FALSE
 
-	var/turf/T = get_turf(target_atom)
+	var/turf/target_turf = get_turf(target_atom)
 
-	if(isnull(T) || istype(T, /turf/closed) || !T.can_bombard(owner))
+	if(isnull(target_turf) || istype(target_turf, /turf/closed) || !target_turf.can_bombard(owner))
 		to_chat(xeno, SPAN_XENODANGER("You can't bombard that!"))
 		return FALSE
 
 	if(!check_plasma_owner())
 		return FALSE
 
-	if(T.z != xeno.z)
+	if(target_turf.z != xeno.z)
 		to_chat(xeno, SPAN_WARNING("That target is too far away!"))
 		return FALSE
 
 	var/atom/bombard_source = get_bombard_source()
-	if(!xeno.can_bombard_turf(T, range, bombard_source))
+	if(!xeno.can_bombard_turf(target_turf, range, bombard_source))
 		return FALSE
 
 	xeno.visible_message(SPAN_XENODANGER("[xeno] digs itself into place!"), SPAN_XENODANGER("You dig yourself into place!"))
@@ -796,7 +796,7 @@
 		to_chat(xeno, SPAN_XENODANGER("You decide to cancel your bombard."))
 		return FALSE
 
-	if(!xeno.can_bombard_turf(T, range, bombard_source)) //Second check in case something changed during the do_after.
+	if(!xeno.can_bombard_turf(target_turf, range, bombard_source)) //Second check in case something changed during the do_after.
 		return FALSE
 
 	if(!check_and_use_plasma_owner())
@@ -807,7 +807,7 @@
 	xeno.visible_message(SPAN_XENODANGER("[xeno] launches a massive ball of acid at [target_atom]!"), SPAN_XENODANGER("You launch a massive ball of acid at [target_atom]!"))
 	playsound(get_turf(xeno), 'sound/effects/blobattack.ogg', 25, 1)
 
-	recursive_spread(T, effect_range, effect_range)
+	recursive_spread(target_turf, effect_range, effect_range)
 
 	return ..()
 

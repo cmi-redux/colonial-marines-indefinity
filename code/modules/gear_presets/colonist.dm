@@ -9,7 +9,6 @@
 	access = list(ACCESS_CIVILIAN_PUBLIC)
 	skills = /datum/skills/civilian
 	idtype = /obj/item/card/id/lanyard
-	minimap_icon = "surv"
 
 /datum/equipment_preset/colonist/load_gear(mob/living/carbon/human/new_human)
 	new_human.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel(new_human), WEAR_BACK)
@@ -34,7 +33,7 @@
 	assignment = "Colonial Engineer"
 
 	access = list(ACCESS_CIVILIAN_PUBLIC, ACCESS_CIVILIAN_ENGINEERING)
-	skills = /datum/skills/OT
+	skills = /datum/skills/ot
 
 /datum/equipment_preset/colonist/engineer/load_gear(mob/living/carbon/human/new_human)
 	new_human.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/eng(new_human), WEAR_BACK)

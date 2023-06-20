@@ -693,7 +693,7 @@
 			xeno_leader_index++
 
 		var/tunnel_index = 1
-		for(var/obj/structure/tunnel/tracked_tunnel in user.hive.tunnels)
+		for(var/obj/structure/tunnel/tracked_tunnel in user.faction.tunnels)
 			options["Tunnel [tracked_tunnel.tunnel_desc]"] = list(TRACKER_TUNNEL, tunnel_index)
 			tunnel_index++
 

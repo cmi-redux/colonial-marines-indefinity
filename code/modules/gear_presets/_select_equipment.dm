@@ -135,23 +135,23 @@ DEFINE_BITFIELD(equipment_preset_flags, list(
 /datum/equipment_preset/proc/load_languages(mob/living/carbon/human/new_human, client/mob_client)
 	new_human.set_languages(languages)
 
-/datum/equipment_preset/proc/load_preset(mob/living/carbon/human/H, randomise = FALSE, count_participant = FALSE, client/mob_client, show_job_gear = TRUE)
-	if(!istype(H, /mob/living/carbon/human/dummy))
+/datum/equipment_preset/proc/load_preset(mob/living/carbon/human/new_human, randomise = FALSE, count_participant = FALSE, client/mob_client, show_job_gear = TRUE)
+	if(!istype(new_human, /mob/living/carbon/human/dummy))
 		var/datum/faction/mob_faction
 		if(!faction)
 			mob_faction = GLOB.faction_datum[FACTION_NEUTRAL]
 		else
 			mob_faction = GLOB.faction_datum[faction]
 
-		if(mob_faction && (!H.faction || force_update_faction))
-			mob_faction.add_mob(H)
+		if(mob_faction && (!new_human.faction || force_update_faction))
+			mob_faction.add_mob(new_human)
 			if(mob_faction.organ_faction_iff_tag_type)
-				H.organ_faction_tag = new mob_faction.organ_faction_iff_tag_type
+				new_human.organ_faction_tag = new mob_faction.organ_faction_iff_tag_type
 
 			if(mob_faction.faction_iff_tag_type)
-				H.faction_tag = new mob_faction.faction_iff_tag_type
+				new_human.faction_tag = new mob_faction.faction_iff_tag_type
 
-	load_race(H, mob_client)
+	load_race(new_human, mob_client)
 	if(randomise || uses_special_name)
 		load_name(new_human, randomise, mob_client)
 	else if(origin_override)
@@ -173,15 +173,15 @@ DEFINE_BITFIELD(equipment_preset_flags, list(
 	load_traits(new_human, mob_client)
 
 	if(SSticker.mode.round_statistics && count_participant)
-		SSticker.mode.round_statistics.track_new_participant(H.faction)
-		SSautobalancer.balance_action(H, "add")
+		SSticker.mode.round_statistics.track_new_participant(new_human.faction)
+		SSautobalancer.balance_action(new_human, "add")
 
 	new_human.assigned_equipment_preset = src
 	new_human.regenerate_icons()
-	new_human.vendor_datum = new(H)
+	new_human.vendor_datum = new(new_human)
 	var/datum/squad/auto_squad = get_squad_by_name(auto_squad_name)
 	if(auto_squad)
-		transfer_marine_to_squad(H, auto_squad, H.assigned_squad, H.wear_id)
+		transfer_marine_to_squad(new_human, auto_squad, new_human.assigned_squad, new_human.wear_id)
 
 	new_human.hud_set_squad()
 	new_human.add_to_all_mob_huds()

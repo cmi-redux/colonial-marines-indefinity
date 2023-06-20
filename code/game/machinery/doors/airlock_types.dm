@@ -452,7 +452,7 @@
 	req_access = null
 	req_one_access = list(ACCESS_CIVILIAN_COMMAND, ACCESS_CIVILIAN_ENGINEERING, ACCESS_CIVILIAN_LOGISTICS)
 
-/obj/structure/machinery/door/airlock/almayer/engineering/reinforced/OT
+/obj/structure/machinery/door/airlock/almayer/engineering/reinforced/ot
 	name = "\improper Ordnance Workshop"
 	icon = 'icons/obj/structures/doors/engidoor.dmi'
 	opacity = FALSE

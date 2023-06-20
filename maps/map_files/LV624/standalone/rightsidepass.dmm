@@ -28,17 +28,17 @@
 /turf/open/gm/dirtgrassborder/south,
 /area/lv624/ground/jungle/east_jungle)
 "jd" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
+/obj/structure/flora/grass/tall_grass/jungle/corner{
 	dir = 9
 	},
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/east_jungle)
 "je" = (
-/obj/structure/flora/grass/tallgrass/jungle,
+/obj/structure/flora/grass/tall_grass/jungle,
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/east_jungle)
 "kf" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
+/obj/structure/flora/grass/tall_grass/jungle/corner{
 	dir = 1
 	},
 /turf/open/gm/grass/grass1,
@@ -63,7 +63,7 @@
 /turf/closed/wall/strata_ice/jungle,
 /area/lv624/ground/river/east_river)
 "oq" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
+/obj/structure/flora/grass/tall_grass/jungle/corner{
 	dir = 10
 	},
 /turf/open/gm/grass/grass1,
@@ -86,7 +86,7 @@
 /turf/open/gm/river,
 /area/lv624/ground/river/east_river)
 "sa" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
+/obj/structure/flora/grass/tall_grass/jungle/corner{
 	dir = 10
 	},
 /turf/open/gm/grass/grass2,
@@ -155,7 +155,7 @@
 /turf/open/gm/coast/south,
 /area/lv624/ground/river/east_river)
 "Hb" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
+/obj/structure/flora/grass/tall_grass/jungle/corner{
 	dir = 4
 	},
 /turf/open/gm/grass/grass1,
@@ -171,7 +171,7 @@
 /turf/open/gm/dirt,
 /area/lv624/ground/jungle/east_jungle)
 "KQ" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
+/obj/structure/flora/grass/tall_grass/jungle/corner{
 	dir = 6
 	},
 /turf/open/gm/grass/grass2,
@@ -183,7 +183,7 @@
 /turf/open/gm/dirtgrassborder/north,
 /area/lv624/ground/barrens/south_eastern_jungle_barrens)
 "Pb" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner{
+/obj/structure/flora/grass/tall_grass/jungle/corner{
 	dir = 5
 	},
 /turf/open/gm/grass/grass1,
@@ -242,7 +242,7 @@
 /turf/open/gm/dirtgrassborder/grassdirt_corner/north_east,
 /area/lv624/ground/barrens/south_eastern_jungle_barrens)
 "YK" = (
-/obj/structure/flora/grass/tallgrass/jungle/corner,
+/obj/structure/flora/grass/tall_grass/jungle/corner,
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/east_jungle)
 

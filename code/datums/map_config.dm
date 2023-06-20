@@ -26,7 +26,7 @@
 
 	var/list/map_day_night_modificator = list()
 	var/list/custom_day_night_colors = list()
-	var/custom_time_rate_multiplier = list()
+	var/custom_time_length = list()
 
 	var/camouflage_type = "classic"
 
@@ -373,10 +373,10 @@
 			return
 		custom_day_night_colors = json["custom_day_night_colors"]
 
-	if(json["custom_time_rate_multiplier"])
-		custom_time_rate_multiplier = json["custom_time_rate_multiplier"]
+	if(json["custom_time_length"])
+		custom_time_length = json["custom_time_length"]
 	else
-		custom_time_rate_multiplier = 1
+		custom_time_length = 24 HOURS
 
 	defaulted = FALSE
 	return TRUE

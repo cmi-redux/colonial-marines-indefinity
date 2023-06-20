@@ -321,9 +321,13 @@ They're all essentially identical when it comes to getting the job done.
 	update_icon()
 
 /obj/item/ammo_magazine/proc/generate_bad_ammo(amount_ammo_broken = 1)
+	var/list/proj_pool = current_rounds.Copy()
 	for(var/i=0;i<amount_ammo_broken;i++)
-		var/obj/item/projectile/proj = pick(current_rounds)
-		proj.scrap_ammo_perc += 4*round(0, amount_ammo_broken*20)
+		var/obj/item/projectile/proj = pick(proj_pool)
+		proj_pool -= proj
+		if(!istype(proj))
+			continue
+		proj.scrap_ammo_perc += 4*round(0, max(amount_ammo_broken*20, 100))
 
 //explosion
 /obj/item/ammo_magazine/proc/explosing_check()
@@ -398,7 +402,7 @@ They're all essentially identical when it comes to getting the job done.
 	else if(rand(0,50) < 1)
 		addtimer(CALLBACK(src, PROC_REF(prime), proj.weapon_cause_data), 1)
 	else
-		generate_bad_ammo(rand(1,ammo_position))
+		generate_bad_ammo(rand(1, ammo_position))
 
 /obj/item/ammo_magazine/ex_act(severity, explosion_direction, datum/cause_data/explosion_cause_data)
 	switch(severity)

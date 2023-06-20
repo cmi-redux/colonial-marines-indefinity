@@ -4,7 +4,7 @@
 /datum/time_of_day
 	var/name = ""
 	var/color = ""
-	var/start_at = 216000 // 6:00 am
+	var/start_at = 0.25	// 06:00:00
 	var/position_number = FALSE
 
 /datum/time_of_day/New()
@@ -17,61 +17,61 @@
 /datum/time_of_day/midnight
 	name = "Midnight"
 	color = "#000000"
-	start_at = 24 HOURS //12:00:00 PM
+	start_at = 1		//12:00:00
 	position_number = 1
 
 /datum/time_of_day/night
 	name = "Night"
 	color = "#050D29"
-	start_at = 2 HOURS //2:00:00 AM
+	start_at = 0.083	//02:00:00
 	position_number = 2
 
 /datum/time_of_day/dawn
 	name = "Dawn"
 	color = "#31211b"
-	start_at = 4 HOURS //4:00:00 AM
+	start_at = 0.16		//04:00:00
 	position_number = 3
 
 /datum/time_of_day/sunrise
 	name = "Sunrise"
 	color = "#F598AB"
-	start_at = 6 HOURS //6:00:00 AM
+	start_at = 0.25		//06:00:00
 	position_number = 4
 
 /datum/time_of_day/sunrise_morning
 	name = "Sunrise-Morning"
 	color = "#7e874a"
-	start_at = 7 HOURS //7:00:00 AM
+	start_at = 0.29		//07:00:00
 	position_number = 5
 
 /datum/time_of_day/morning
 	name = "Morning"
 	color = "#808599"
-	start_at = 8 HOURS //8:00:00 AM
+	start_at = 0.33		//08:00:00
 	position_number = 6
 
 /datum/time_of_day/daytime
 	name = "Daytime"
 	color = "#FFFFFF"
-	start_at = 10 HOURS //10:00:00 AM
+	start_at = 0.416	//10:00:00
 	position_number = 7
 
 /datum/time_of_day/evening
 	name = "Evening"
 	color = "#AFAFAF"
-	start_at = 16 HOURS //4:00:00 PM
+	start_at = 0.66		//14:00:00
 	position_number = 8
 
 /datum/time_of_day/sunset
 	name = "Sunset"
 	color = "#ff8a63"
-	start_at = 19 HOURS //7:00:00 PM
+	start_at = 0.7916	//17:00:00
 	position_number = 9
 
 /datum/time_of_day/dusk
 	name = "Dusk"
 	color = "#221f33"
-	start_at = 22 HOURS //10:00:00 PM
+	start_at = 0.916	//22:00:00
 	position_number = 10
 
 GLOBAL_VAR_INIT(GLOBAL_LIGHT_RANGE, 5)
@@ -101,7 +101,7 @@ SUBSYSTEM_DEF(sunlighting)
 	var/current_color = ""
 	var/weather_blend_ammount = 0.3
 
-	var/game_time_rate_multiplier = 1
+	var/game_time_length = 24 HOURS
 	var/custom_time_offset = 0
 
 /datum/controller/subsystem/sunlighting/stat_entry(msg)
@@ -117,8 +117,8 @@ SUBSYSTEM_DEF(sunlighting)
 
 /datum/controller/subsystem/sunlighting/Initialize(timeofday)
 	Initialize_Turfs()
-	game_time_rate_multiplier = SSmapping.configs[GROUND_MAP].custom_time_rate_multiplier
-	custom_time_offset = rand(10 MINUTES, 24 HOURS)
+	game_time_length = SSmapping.configs[GROUND_MAP].custom_time_length
+	custom_time_offset = rand(0, game_time_length)
 	create_steps()
 	set_time_of_day()
 	sun_color = new /atom/movable()
@@ -131,17 +131,14 @@ SUBSYSTEM_DEF(sunlighting)
 	fire(FALSE, TRUE)
 	return SS_INIT_SUCCESS
 
-/datum/controller/subsystem/sunlighting/proc/set_game_time_multiplier(new_value)
-	game_time_rate_multiplier = new_value
+/datum/controller/subsystem/sunlighting/proc/set_game_time_length(new_value)
+	game_time_length = new_value
 
 /datum/controller/subsystem/sunlighting/proc/set_game_time_offset(new_value)
 	custom_time_offset = new_value
 
 /datum/controller/subsystem/sunlighting/proc/game_time_offseted()
-	return (game_time() + custom_time_offset) % 864000
-
-/datum/controller/subsystem/sunlighting/proc/game_time_multiplied()
-	return (game_time() * SSsunlighting.game_time_rate_multiplier + custom_time_offset) % 864000
+	return (game_time() + custom_time_offset) % SSsunlighting.game_time_length
 
 /datum/controller/subsystem/sunlighting/proc/create_steps()
 	for(var/path in typesof(/datum/time_of_day))
@@ -154,7 +151,7 @@ SUBSYSTEM_DEF(sunlighting)
 		set_time_of_day()
 		return TRUE
 
-	if(game_time_multiplied() > next_step_datum.start_at)
+	if(game_time_length * game_time_offseted() > next_step_datum.start_at )
 		if(next_day)
 			return FALSE
 		set_time_of_day()
@@ -164,7 +161,7 @@ SUBSYSTEM_DEF(sunlighting)
 	return FALSE
 
 /datum/controller/subsystem/sunlighting/proc/set_time_of_day()
-	var/time = game_time_multiplied()
+	var/time = game_time_length * game_time_offseted()
 	var/datum/time_of_day/new_step = null
 
 	for(var/i = 1 to length(steps))
@@ -183,7 +180,7 @@ SUBSYSTEM_DEF(sunlighting)
 
 /datum/controller/subsystem/sunlighting/proc/update_color()
 	if(!weather_light_affecting_event)
-		var/time = game_time_multiplied()
+		var/time = game_time_length * game_time_offseted()
 		var/time_to_animate = daytimeDiff(time, next_step_datum.start_at)
 		var/blend_amount = (time - current_step_datum.start_at) / (next_step_datum.start_at - current_step_datum.start_at)
 		current_color = BlendRGB(current_step_datum.color, next_step_datum.color, blend_amount)

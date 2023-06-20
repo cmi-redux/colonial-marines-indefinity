@@ -151,11 +151,9 @@
 /obj/effect/alien/resin/special/pylon/core/Initialize(mapload, datum/faction/faction_to_set)
 	. = ..()
 
-	if(faction_to_set)
-		faction = faction_to_set
-		faction_to_set.set_faction_location(src)
-
+	faction.set_faction_location(src)
 	faction.hive_location = src
+
 	SSmapview.add_marker(src, "hive_core")
 
 /obj/effect/alien/resin/special/pylon/core/process()

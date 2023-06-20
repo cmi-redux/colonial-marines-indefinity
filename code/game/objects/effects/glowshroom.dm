@@ -9,6 +9,11 @@
 	icon_state = "glowshroomf"
 	layer = ABOVE_TURF_LAYER
 
+	light_color = COLOR_PALE_GREEN_GRAY
+	light_power = 0.2
+	light_range = 2
+	light_on = TRUE
+
 	var/endurance = 30
 	var/potency = 30
 	var/delay = 1200
@@ -39,12 +44,8 @@
 	else //if on the floor, glowshroom on-floor sprite
 		icon_state = "glowshroomf"
 
-	set_light(round(potency/15))
+	set_light_power(round(potency/15))
 	lastTick = world.timeofday
-
-/obj/effect/glowshroom/Destroy()
-	set_light(0)
-	. = ..()
 
 /obj/effect/glowshroom/proc/CalcDir(turf/location = loc)
 	set background = TRUE

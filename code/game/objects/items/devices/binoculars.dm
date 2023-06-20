@@ -327,7 +327,7 @@
 		var/obj/effect/overlay/temp/laser_target/laser_target = new(target_turf, las_name, user, tracking_id)
 		laser = laser_target
 
-		msg_admin_niche("Laser target [las_name] has been designated by [key_name(user, 1)] at ([target_turf.x], [target_turf.y], [target_turf.z]). [ADMIN_JMP(get_turf(user))]")
+		msg_admin_niche("Laser target [las_name] has been designated by [key_name(user, 1)] at ([target_turf.x], [target_turf.y], [target_turf.z]). [ADMIN_JMP(target_turf)]")
 		log_game("Laser target [las_name] has been designated by [key_name(user, 1)] at ([target_turf.x], [target_turf.y], [target_turf.z]).")
 
 		playsound(src, 'sound/effects/binoctarget.ogg', 35)
@@ -595,7 +595,7 @@
 		return 0
 
 	to_chat(user, SPAN_BOLDNOTICE(" You start lasing the target area."))
-	message_admins("ALERT: [user] ([user.key]) IS CURRENTLY LASING A TARGET: CURRENT MODE [las_mode], at ([target_turf.x],[target_turf.y],[Ttarget_turf.z]) [ADMIN_JMP(target_turf)].") // Alert all the admins to this asshole. Added the jmp command from the explosion code.
+	message_admins("ALERT: [user] ([user.key]) IS CURRENTLY LASING A TARGET: CURRENT MODE [las_mode], at ([target_turf.x],[target_turf.y],[target_turf.z]) [ADMIN_JMP(target_turf)].") // Alert all the admins to this asshole. Added the jmp command from the explosion code.
 	var/obj/effect/las_target/lasertarget = new(target_turf.loc, faction)
 	if(las_mode == 1 && !las_r) // Heres our IR bomb code.
 		lasing = TRUE

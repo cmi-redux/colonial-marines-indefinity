@@ -22,7 +22,7 @@ DEFINE_BITFIELD(iff_flag_flags, list(
 	if(faction)
 		factions |= faction
 		if(ally_factions_initialize)
-			for(var/datum/faction/faction_ally in faction.allies)
+			for(var/datum/faction/faction_ally in faction.relations_datum.allies)
 				factions |= faction_ally
 
 /obj/item/faction_tag/attack(mob/living/carbon/mob, mob/living/carbon/injector)

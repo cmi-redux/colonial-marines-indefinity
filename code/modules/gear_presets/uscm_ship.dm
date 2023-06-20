@@ -257,7 +257,7 @@
 //*****************************************************************************************************//
 
 /datum/equipment_preset/uscm_ship/ordn
-	name = "USCM Ordnance Technician (OT)"
+	name = "USCM Ordnance Technician (ot)"
 	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 
 	access = list(
@@ -270,8 +270,8 @@
 	assignment = JOB_ORDNANCE_TECH
 	rank = JOB_ORDNANCE_TECH
 	paygrade = "ME2"
-	role_comm_title = "OT"
-	skills = /datum/skills/OT
+	role_comm_title = "ot"
+	skills = /datum/skills/ot
 
 	utility_under = list(/obj/item/clothing/under/marine/officer/engi)
 
@@ -281,7 +281,7 @@
 		back_item = /obj/item/storage/backpack/marine/tech
 
 	new_human.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mt(new_human), WEAR_L_EAR)
-	new_human.equip_to_slot_or_del(new /obj/item/clothing/under/marine/officer/engi/OT(new_human), WEAR_BODY)
+	new_human.equip_to_slot_or_del(new /obj/item/clothing/under/marine/officer/engi/ot(new_human), WEAR_BODY)
 	new_human.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(new_human), WEAR_FEET)
 	new_human.equip_to_slot_or_del(new /obj/item/clothing/gloves/yellow(new_human), WEAR_HANDS)
 	new_human.equip_to_slot_or_del(new /obj/item/storage/belt/utility/full(new_human), WEAR_WAIST)

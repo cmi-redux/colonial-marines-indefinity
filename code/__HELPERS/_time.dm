@@ -37,17 +37,17 @@ var/rollovercheck_last_timeofday = 0
 /proc/daytimeDiff(timeA, timeB)
 
 	//if the time is less than station time, add 24 hours (MIDNIGHT_ROLLOVER)
-	var/time_diff = timeA > timeB ? (timeB + 24 HOURS) - timeA : timeB - timeA
-	return time_diff / SSsunlighting.game_time_rate_multiplier // normalise with the time rate multiplier
+	var/time_diff = timeA > timeB ? (timeB + SSsunlighting.game_time_length) - timeA : timeB - timeA
+	return time_diff
 
 /proc/game_time()
 	return REALTIMEOFDAY % 864000
 
 /proc/game_time_timestamp(format = "hh:mm:ss")
-	return time2text(SSsunlighting.game_time_offseted(), format)
+	return time2text(game_time(), format)
 
 /proc/planet_game_time_timestamp(format = "hh:mm:ss")
-	return time2text(SSsunlighting.game_time_multiplied(), format)
+	return time2text(SSsunlighting.game_time_offseted(), format)
 
 /proc/game_timestamp(format = "hh:mm:ss", time = null)
 	if(!time)
