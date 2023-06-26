@@ -845,8 +845,7 @@
 				to_chat(user, SPAN_WARNING("The grenade launcher beeps a warning noise. You are too close!"))
 				return
 		fire_grenade(target,user)
-		var/atom/movable/screen/ammo/A = user.hud_used.ammo
-		A.update_hud(user)
+		display_ammo(user)
 
 /obj/item/weapon/gun/launcher/grenade/proc/fire_grenade(atom/target, mob/user, atom/operator)
 	set waitfor = FALSE

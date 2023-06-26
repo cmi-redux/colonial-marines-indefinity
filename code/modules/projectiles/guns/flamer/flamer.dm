@@ -70,9 +70,6 @@
 	else
 		. += "There's no tank in [src]!"
 
-	var/atom/movable/screen/ammo/A = user.hud_used.ammo
-	A.update_hud(user)
-
 /obj/item/weapon/gun/flamer/get_ammo_type()
 	if(!current_mag)
 		return list("empty", "empty")

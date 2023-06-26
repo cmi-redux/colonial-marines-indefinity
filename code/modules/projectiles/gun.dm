@@ -530,10 +530,14 @@
 
 /obj/item/weapon/gun/pickup(mob/living/M)
 	RegisterSignal(M, COMSIG_ATOM_OFF_LIGHT, TYPE_PROC_REF(/atom, turn_light), FALSE, override = TRUE)
+	if(flags_gun_features & GUN_AMMO_COUNTER)
+		M.hud_used.add_ammo_hud(src, get_ammo_list(), get_display_ammo_count())
 	..()
 
 /obj/item/weapon/gun/dropped(mob/living/M)
 	UnregisterSignal(M, COMSIG_ATOM_OFF_LIGHT)
+	if(flags_gun_features & GUN_AMMO_COUNTER)
+		M.hud_used.remove_ammo_hud(src)
 	..()
 
 /obj/item/weapon/gun/proc/handle_damage(force = FALSE) //handle chance do break gan or damage
@@ -861,9 +865,7 @@
 			wield_time += 3
 		else
 			wield_time -= 2*user.skills.get_skill_level(SKILL_FIREARMS)
-	var/atom/movable/screen/ammo/A = user.hud_used.ammo
-	A.add_hud(user)
-	A.update_hud(user)
+	display_ammo(user)
 	if(flags_gun_features & GUN_FULL_AUTO_ON)
 		ADD_TRAIT(user, TRAIT_OVERRIDE_CLICKDRAG, TRAIT_SOURCE_WEAPON)
 
@@ -874,9 +876,7 @@
 	REMOVE_TRAIT(user, TRAIT_OVERRIDE_CLICKDRAG, TRAIT_SOURCE_WEAPON)
 	if(.)
 		slowdown = initial(slowdown)
-	var/atom/movable/screen/ammo/A = user.hud_used?.ammo
-	if(A)
-		A.remove_hud(user)
+	display_ammo(user)
 
 //----------------------------------------------------------
 			// \\
@@ -1216,6 +1216,21 @@ and you're good to go.
 	//If it's a regular bullet, we're just going to keep it chambered.
 	extra_delay = 2 + (burst_delay + extra_delay)*2 // Some extra delay before firing again.
 	to_chat(user, SPAN_WARNING("[src] jammed! You'll need a second to get it fixed!"))
+
+///returns ammo string icon_states to display in the ammo counter of the HUD. list(normal_state, empty_state)
+/obj/item/weapon/gun/proc/get_ammo_list()
+	if(!ammo)
+		return list("unknown", "unknown")
+	else if(!in_chamber)
+		return list(ammo.hud_state, ammo.hud_state_empty)
+	else
+		return list(in_chamber.ammo.hud_state, in_chamber.ammo.hud_state_empty)
+
+///returns ammo count to display in the ammo counter of the HUD
+/obj/item/weapon/gun/proc/get_display_ammo_count()
+	if(current_mag)
+		return current_mag.ammo_position + in_chamber ? 1 : 0
+	return 0
 
 //----------------------------------------------------------
 		//    \\
@@ -1784,8 +1799,7 @@ not all weapons use normal magazines etc. load_into_chamber() itself is designed
 	// Do not display ammo if you have an attachment
 	// currently activated
 	if(flags_gun_features & GUN_AMMO_COUNTER)
-		var/atom/movable/screen/ammo/A = user.hud_used.ammo
-		A.update_hud(user)
+		user?.hud_used.update_ammo_hud(src, get_ammo_list(), get_display_ammo_count())
 
 //This proc applies some bonus effects to the shot/makes the message when a bullet is actually fired.
 /obj/item/weapon/gun/proc/apply_bullet_effects(obj/item/projectile/projectile_to_fire, mob/user, bullets_fired = 1, reflex = 0, dual_wield = 0)

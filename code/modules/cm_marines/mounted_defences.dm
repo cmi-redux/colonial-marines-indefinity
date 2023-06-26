@@ -285,9 +285,8 @@
 
 	operator = user
 	user.unfreeze()
-	var/atom/movable/screen/ammo/A = user.hud_used.ammo
-	A.add_hud(user, MD)
-	A.update_hud(user, MD)
+	if(MD.flags_gun_features & GUN_AMMO_COUNTER)
+		user.hud_used.add_ammo_hud(MD, MD.get_ammo_list(), MD.get_display_ammo_count())
 
 /obj/structure/machinery/mounted_defence/on_unset_interaction(mob/living/user)
 	flags_atom &= ~RELAY_CLICK
@@ -307,10 +306,8 @@
 			user.client.change_view(world_view_size, src)
 			animate(user.client, 8, pixel_x = 0, pixel_y = 0)
 	if(operator == user)
+		user.hud_used.remove_ammo_hud(MD)
 		operator = null
-	var/atom/movable/screen/ammo/A = user.hud_used?.ammo
-	if(A)
-		A.remove_hud(user)
 
 /obj/structure/machinery/mounted_defence/check_eye(mob/user)
 	if(user.lying || get_dist(user,src) > 1 || user.is_mob_incapacitated() || !user.client || user.dir != dir)
@@ -376,8 +373,7 @@
 	if(target.loc != src.loc && target.loc != operator.loc)
 		if(dir & angle)
 			MD.afterattack(target,user,0,mods,operator)
-			var/atom/movable/screen/ammo/A = user.hud_used.ammo
-			A.update_hud(user, MD)
+			MD.display_ammo(user)
 			if(!MD.ammo)
 				update_icon()
 			return HANDLE_CLICK_HANDLED

@@ -21,6 +21,11 @@
 
 #define ui_acti_alt  "EAST-1:28,1:5" //alternative intent switcher for when the interface is hidden (F12)
 
+#define gun_ammo_ui_1 "EAST-1:28,CENTER+1:25"
+#define gun_ammo_ui_2 "EAST-1:28,CENTER+2:27"
+#define gun_ammo_ui_3 "EAST-1:28,CENTER+3:29"
+#define gun_ammo_ui_4 "EAST-1:28,CENTER+4:31"
+
 // Ghosts
 #define ui_ghost_slot1 "SOUTH:6,CENTER-2:0"
 #define ui_ghost_slot2 "SOUTH:6,CENTER-1:0"

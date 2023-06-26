@@ -2109,8 +2109,7 @@ Defined in conflicts.dm of the #defines folder.
 	return TRUE
 
 /obj/item/attachable/attached_gun/proc/update_ammo_hud(mob/living/user)
-	var/atom/movable/screen/ammo/hud = user.hud_used.ammo
-	hud.update_hud(user)
+	user?.hud_used.update_ammo_hud(src, get_attachment_ammo_type(), get_attachment_ammo_count())
 
 /obj/item/attachable/attached_gun/proc/get_attachment_ammo_type()
 	return null

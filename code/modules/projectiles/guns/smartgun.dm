@@ -121,12 +121,6 @@
 	else
 		return current_mag.ammo_position
 
-/obj/item/weapon/gun/smartgun/display_ammo(mob/user)
-	if(flags_gun_features & GUN_AMMO_COUNTER)
-		var/atom/movable/screen/ammo/A = user.hud_used.ammo
-		A.update_hud(user)
-	return //no text warn, would clutter chat
-
 /obj/item/weapon/gun/smartgun/get_examine_text(mob/user)
 	. = ..()
 	var/rounds = 0

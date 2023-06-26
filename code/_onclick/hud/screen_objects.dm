@@ -769,73 +769,66 @@
 	plane = -100
 	layer = TURF_LAYER
 
+#define AMMO_HUD_ICON_NORMAL 1
+#define AMMO_HUD_ICON_EMPTY 2
 /atom/movable/screen/ammo
 	name = "ammo"
 	icon = 'icons/mob/hud/ammoHUD.dmi'
 	icon_state = "ammo"
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	screen_loc = gun_ammo_ui_1
+	///If the user has already had their warning played for running out of ammo
 	var/warned = FALSE
-	var/is_warning = FALSE
+	///Holder for playing a out of ammo animation so that it doesnt get cut during updates
+	var/atom/movable/flash_holder
+	///List of possible screen locs
+	var/static/list/ammo_screen_loc_list = list(gun_ammo_ui_1, gun_ammo_ui_2, gun_ammo_ui_3, gun_ammo_ui_4)
 
-/atom/movable/screen/ammo/proc/add_hud(mob/living/user, obj/item/weapon/gun/G)
-	if(!user?.client)
-		return FALSE
+/atom/movable/screen/ammo/Initialize()
+	. = ..()
+	flash_holder = new
+	flash_holder.icon_state = "frame"
+	flash_holder.icon = icon
+	flash_holder.plane = plane
+	flash_holder.layer = layer+0.001
+	flash_holder.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	vis_contents += flash_holder
 
-	if(!G)
-		G = user.get_held_item()
+/atom/movable/screen/ammo/Destroy()
+	QDEL_NULL(flash_holder)
+	return ..()
 
-	if(!(G.flags_gun_features & GUN_AMMO_COUNTER) && !G.active_attachable)
-		return FALSE
+///wrapper to add this to the users screen with a owner
+/atom/movable/screen/ammo/proc/add_hud(mob/living/user, datum/ammo_owner)
+	if(isnull(ammo_owner))
+		CRASH("/atom/movable/screen/ammo/proc/add_hud() has been called from [src] without the required param of ammo_owner")
+	user?.client.screen += src
 
-	if(user.client.prefs && !(user.client.prefs.toggle_prefs & TOGGLE_GUN_AMMO_COUNTER))
-		return FALSE
-
-	user.client.screen += src
-
+///wrapper to removing this ammo hud from the users screen
 /atom/movable/screen/ammo/proc/remove_hud(mob/living/user)
 	user?.client?.screen -= src
 
-/atom/movable/screen/ammo/proc/update_hud(mob/living/user, obj/item/weapon/gun/G)
-	if(!user?.client?.screen.Find(src))
-		return FALSE
-
-	if(user.client.prefs && !(user.client.prefs.toggle_prefs & TOGGLE_GUN_AMMO_COUNTER))
-		return FALSE
-
-	if(!G)
-		G = user.get_held_item()
-
-	if(!istype(G))
-		remove_hud(user)
-		return FALSE
-
-	if(!(G.flags_gun_features & GUN_AMMO_COUNTER) || !G.get_ammo_type() || isnull(G.get_ammo_count()) && !G.active_attachable)
-		remove_hud(user)
-		return FALSE
-
-	if(G.active_attachable)
-		update_attachable_hud(user, G)
-		return FALSE
-
-	var/list/ammo_type = G.get_ammo_type()
-	var/rounds = G.get_ammo_count()
-
-	var/hud_state = ammo_type[1]
-	var/hud_state_empty = ammo_type[2]
-
+///actually handles upadating the hud
+/atom/movable/screen/ammo/proc/update_hud(mob/living/user, list/ammo_type, rounds)
 	overlays.Cut()
 
-	var/empty = image(icon, src, "[hud_state_empty]")
+	if(rounds <= 0)
+		overlays += image(icon, src, "o0")
+		var/image/empty_state = image(icon, src, ammo_type[AMMO_HUD_ICON_EMPTY])
+		overlays += empty_state
+		if(warned)
+			return
+		warned = TRUE
+		flick("[ammo_type[AMMO_HUD_ICON_EMPTY]]_flash", flash_holder)
+		return
 
-	if(rounds == 0)
-		overlays += empty
-	else
-		overlays += image(icon, src, "[hud_state]")
+	warned = FALSE
+	overlays += image(icon, src, "[ammo_type[AMMO_HUD_ICON_NORMAL]]")
 
 	rounds = num2text(rounds)
 
 	//Handle the amount of rounds
-	switch(length(rounds))
+	switch(length_char(rounds))
 		if(1)
 			overlays += image(icon, src, "o[rounds[1]]")
 		if(2)
@@ -850,41 +843,8 @@
 			overlays += image(icon, src, "t9")
 			overlays += image(icon, src, "h9")
 
-/atom/movable/screen/ammo/proc/update_attachable_hud(mob/living/user, obj/item/weapon/gun/G)
-	var/obj/item/attachable/attached_gun/AG = G.active_attachable
-
-	var/list/ammo_type = AG.get_attachment_ammo_type()
-	var/rounds = AG.get_attachment_ammo_count()
-
-	var/hud_state = ammo_type[1]
-	var/hud_state_empty = ammo_type[2]
-
-	overlays.Cut()
-
-	var/empty = image(icon, src, "[hud_state_empty]")
-
-	if(rounds == 0)
-		overlays += empty
-	else
-		overlays += image(icon, src, "[hud_state]")
-
-	rounds = num2text(rounds)
-
-	//Handle the amount of rounds
-	switch(length(rounds))
-		if(1)
-			overlays += image(icon, src, "o[rounds[1]]")
-		if(2)
-			overlays += image(icon, src, "o[rounds[2]]")
-			overlays += image(icon, src, "t[rounds[1]]")
-		if(3)
-			overlays += image(icon, src, "o[rounds[3]]")
-			overlays += image(icon, src, "t[rounds[2]]")
-			overlays += image(icon, src, "h[rounds[1]]")
-		else //"0" is still length 1 so this means it's over 999
-			overlays += image(icon, src, "o9")
-			overlays += image(icon, src, "t9")
-			overlays += image(icon, src, "h9")
+#undef AMMO_HUD_ICON_NORMAL
+#undef AMMO_HUD_ICON_EMPTY
 
 /atom/movable/screen/rotate
 	icon_state = "centred_arrow"
