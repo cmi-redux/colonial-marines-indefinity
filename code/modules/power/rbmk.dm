@@ -102,7 +102,7 @@ DEFINE_BITFIELD(reactor_flags, list(
 	for(var/I=0;I<max_fuel_rods;I++)
 		fuel_rods += new /obj/item/fuel_rod(src)
 	start_up()
-	desired_k = 200
+	desired_k = 10
 
 /obj/structure/machinery/power/rbmk/proc/deplete()
 	for(var/obj/item/fuel_rod/FR in fuel_rods)

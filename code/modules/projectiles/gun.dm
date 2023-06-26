@@ -1229,7 +1229,7 @@ and you're good to go.
 ///returns ammo count to display in the ammo counter of the HUD
 /obj/item/weapon/gun/proc/get_display_ammo_count()
 	if(current_mag)
-		return current_mag.ammo_position + in_chamber ? 1 : 0
+		return current_mag.ammo_position
 	return 0
 
 //----------------------------------------------------------
