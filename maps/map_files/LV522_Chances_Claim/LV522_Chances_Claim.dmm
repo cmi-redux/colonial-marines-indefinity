@@ -10135,7 +10135,7 @@
 	},
 /area/lv522/indoors/a_block/medical/glass)
 "eYA" = (
-/obj/item/weapon/gun/rifle/sniper/M42A{
+/obj/item/weapon/gun/rifle/sniper/m42a{
 	current_mag = null
 	},
 /obj/item/clothing/head/headband/tan{

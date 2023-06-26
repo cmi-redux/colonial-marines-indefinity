@@ -64,7 +64,7 @@
 	new /obj/item/weapon/gun/pistol/vp78(src)
 	new /obj/item/ammo_magazine/pistol/vp78(src)
 	new /obj/item/ammo_magazine/pistol/vp78(src)
-	new /obj/item/weapon/gun/rifle/sniper/M42A(src)
+	new /obj/item/weapon/gun/rifle/sniper/m42a(src)
 	new /obj/item/facepaint/sniper(src)
 	// spotter
 	new /obj/item/storage/box/kit/spotter(src)

@@ -2090,7 +2090,7 @@ Defined in conflicts.dm of the #defines folder.
 		if(user)
 			to_chat(user, SPAN_NOTICE("You are no longer using [src]."))
 			playsound(user, gun_deactivate_sound, 30, 1)
-			update_ammo_hud(user)
+			display_ammo(user)
 
 	else if(!turn_off)
 		gun.active_attachable = src
@@ -2100,16 +2100,13 @@ Defined in conflicts.dm of the #defines folder.
 		if(user)
 			to_chat(user, SPAN_NOTICE("You are now using [src]."))
 			playsound(user, gun_activate_sound, 60, 1)
-			update_ammo_hud(user)
+			display_ammo(user)
 
 	for(var/X in gun.actions)
 		var/datum/action/action = X
 		action.update_button_icon()
 
 	return TRUE
-
-/obj/item/attachable/attached_gun/proc/update_ammo_hud(mob/living/user)
-	user?.hud_used.update_ammo_hud(src, get_attachment_ammo_type(), get_attachment_ammo_count())
 
 /obj/item/attachable/attached_gun/proc/get_attachment_ammo_type()
 	return null
@@ -2222,7 +2219,7 @@ Defined in conflicts.dm of the #defines folder.
 			current_rounds[ammo_position] = gun
 			to_chat(user, SPAN_NOTICE("You load \the [gun] into \the [src]."))
 			user.drop_inv_item_to_loc(gun, src)
-			update_ammo_hud(user)
+			display_ammo(user)
 
 /obj/item/attachable/attached_gun/grenade/fire_attachment(atom/target,obj/item/weapon/gun/gun,mob/living/user)
 	if(!(gun.flags_item & WIELDED))
@@ -2269,7 +2266,7 @@ Defined in conflicts.dm of the #defines folder.
 	grenade.activate(user, FALSE)
 	grenade.forceMove(get_turf(gun))
 	grenade.throw_atom(target, max_range, SPEED_VERY_FAST, user, null, NORMAL_LAUNCH, pass_flags)
-	update_ammo_hud(user)
+	display_ammo(user)
 	cocked = FALSE // we have fired so uncock the gun
 
 //For the Mk1
@@ -2381,7 +2378,7 @@ Defined in conflicts.dm of the #defines folder.
 			for(var/datum/reagent/R in FT.reagents.reagent_list)
 				R.volume -= amount_removed_per_reagent
 			FT.update_icon()
-			update_ammo_hud(user)
+			display_ammo(user)
 	else
 		to_chat(user, SPAN_WARNING("[src] can only be refilled with an incinerator tank."))
 
@@ -2450,7 +2447,7 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/attached_gun/flamer/proc/show_percentage(mob/living/user)
 	to_chat(user, SPAN_WARNING("The gauge reads: <b>[round(100 * ammo_position/max_rounds)]</b>% fuel remains!"))
-	update_ammo_hud(user)
+	display_ammo(user)
 
 /obj/item/attachable/attached_gun/flamer/proc/flame_turf(turf/T, mob/living/user)
 	if(!istype(T)) return
@@ -2531,7 +2528,7 @@ Defined in conflicts.dm of the #defines folder.
 				if(mag.ammo_position <= 0)
 					user.temp_drop_inv_item(mag)
 					qdel(mag)
-				update_ammo_hud(user)
+				display_ammo(user)
 				return TRUE
 	to_chat(user, SPAN_WARNING("[src] only accepts shotgun ammo [caliber[1]]."))
 	return FALSE
@@ -2572,7 +2569,7 @@ Defined in conflicts.dm of the #defines folder.
 		return
 	if(..())
 		. = internal_extinguisher.afterattack(target, user)
-		update_ammo_hud(user)
+		display_ammo(user)
 		return internal_extinguisher.afterattack(target, user)
 
 /obj/item/attachable/attached_gun/extinguisher/proc/initialize_internal_extinguisher()
@@ -2853,7 +2850,7 @@ Defined in conflicts.dm of the #defines folder.
 				scatter_mod = -SCATTER_AMOUNT_TIER_10
 				recoil_mod = -RECOIL_AMOUNT_TIER_4
 				burst_scatter_mod = -SCATTER_AMOUNT_TIER_8
-				if(istype(gun,/obj/item/weapon/gun/rifle/sniper/M42A))
+				if(istype(gun,/obj/item/weapon/gun/rifle/sniper/m42a))
 					delay_mod = -FIRE_DELAY_TIER_7
 				else
 					delay_mod = -FIRE_DELAY_TIER_10

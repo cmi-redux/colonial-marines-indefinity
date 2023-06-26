@@ -274,7 +274,7 @@
 		..()
 
 //Pow! Headshot.
-/obj/item/weapon/gun/rifle/sniper/M42A
+/obj/item/weapon/gun/rifle/sniper/m42a
 	name = "M42A scoped rifle"
 	desc = "A heavy sniper rifle manufactured by Armat Systems. It has a scope system and fires armor penetrating rounds out of a 15-round magazine.\n'Peace Through Superior Firepower'"
 	icon = 'icons/obj/items/weapons/guns/guns_by_faction/uscm.dmi'
@@ -296,14 +296,14 @@
 
 	flags_item = TWOHANDED|NO_CRYO_STORE
 
-/obj/item/weapon/gun/rifle/sniper/M42A/verb/toggle_scope_zoom_level()
+/obj/item/weapon/gun/rifle/sniper/m42a/verb/toggle_scope_zoom_level()
 	set name = "Toggle Scope Zoom Level"
 	set category = "Weapons"
 	set src in usr
 	var/obj/item/attachable/scope/variable_zoom/S = attachments["rail"]
 	S.toggle_zoom_level()
 
-/obj/item/weapon/gun/rifle/sniper/M42A/handle_starting_attachment()
+/obj/item/weapon/gun/rifle/sniper/m42a/handle_starting_attachment()
 	..()
 	var/obj/item/attachable/scope/variable_zoom/S = new(src)
 	S.hidden = TRUE
@@ -311,16 +311,16 @@
 	S.Attach(src)
 	update_attachable(S.slot)
 
-/obj/item/weapon/gun/rifle/sniper/M42A/set_bullet_traits()
+/obj/item/weapon/gun/rifle/sniper/m42a/set_bullet_traits()
 	LAZYADD(traits_to_give, list(
 		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_iff)
 	))
 
-/obj/item/weapon/gun/rifle/sniper/M42A/set_gun_attachment_offsets()
+/obj/item/weapon/gun/rifle/sniper/m42a/set_gun_attachment_offsets()
 	attachable_offset = list("muzzle_x" = 39, "muzzle_y" = 17,"rail_x" = 12, "rail_y" = 20, "under_x" = 19, "under_y" = 14, "stock_x" = 19, "stock_y" = 14)
 
 
-/obj/item/weapon/gun/rifle/sniper/M42A/set_gun_config_values()
+/obj/item/weapon/gun/rifle/sniper/m42a/set_gun_config_values()
 	..()
 	fire_delay = FIRE_DELAY_TIER_6*3
 	burst_amount = BURST_AMOUNT_TIER_1

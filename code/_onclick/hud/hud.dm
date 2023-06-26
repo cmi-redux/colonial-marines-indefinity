@@ -296,7 +296,10 @@
 ///Update the ammo hud related to the gun G
 /datum/hud/proc/update_ammo_hud(datum/ammo_owner, list/ammo_type, ammo_count)
 	var/atom/movable/screen/ammo/ammo_hud = ammo_hud_list[ammo_owner]
-	ammo_hud?.update_hud(mymob, ammo_type, ammo_count)
+	if(!ammo_hud)
+		add_ammo_hud(ammo_owner, ammo_type, ammo_count)
+	else
+		ammo_hud?.update_hud(mymob, ammo_type, ammo_count)
 
 //Triggered when F12 is pressed (Unless someone changed something in the DMF)
 /mob/verb/button_pressed_F12()

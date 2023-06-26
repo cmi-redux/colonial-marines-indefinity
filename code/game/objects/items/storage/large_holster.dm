@@ -280,7 +280,7 @@
 	F.current_mag = active_fuel
 	F.update_icon()
 
-	user?.hud_used.update_ammo_hud(F, F.get_ammo_list(), F.get_display_ammo_count())
+	F.display_ammo(user)
 
 	return TRUE
 

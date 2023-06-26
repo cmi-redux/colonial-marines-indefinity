@@ -600,7 +600,10 @@
 	pull_time = world.time + wield_delay
 	if(user.dazed)
 		pull_time += 3
+
 	guaranteed_delay_time = world.time + WEAPON_GUARANTEED_DELAY
+	if(flags_gun_features & GUN_AMMO_COUNTER)
+		M.hud_used.remove_ammo_hud(src)
 
 	return ..()
 
@@ -865,7 +868,6 @@
 			wield_time += 3
 		else
 			wield_time -= 2*user.skills.get_skill_level(SKILL_FIREARMS)
-	display_ammo(user)
 	if(flags_gun_features & GUN_FULL_AUTO_ON)
 		ADD_TRAIT(user, TRAIT_OVERRIDE_CLICKDRAG, TRAIT_SOURCE_WEAPON)
 
@@ -876,7 +878,6 @@
 	REMOVE_TRAIT(user, TRAIT_OVERRIDE_CLICKDRAG, TRAIT_SOURCE_WEAPON)
 	if(.)
 		slowdown = initial(slowdown)
-	display_ammo(user)
 
 //----------------------------------------------------------
 			// \\

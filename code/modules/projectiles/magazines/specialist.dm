@@ -11,7 +11,7 @@
 	w_class = SIZE_MEDIUM
 	max_rounds = 15
 	ammo_preset = list(/datum/ammo/bullet/sniper)
-	gun_type = /obj/item/weapon/gun/rifle/sniper/M42A
+	gun_type = /obj/item/weapon/gun/rifle/sniper/m42a
 	ammo_band_icon = "+m42c_band"
 	ammo_band_icon_empty = "+m42c_band_e"
 

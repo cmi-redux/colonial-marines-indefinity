@@ -700,7 +700,7 @@
 	new_human.equip_to_slot_or_del(new /obj/item/storage/box/attachments(new_human), WEAR_IN_BACK)
 	new_human.equip_to_slot_or_del(new /obj/item/storage/box/MRE(new_human), WEAR_IN_BACK)
 
-	spawn_weapon(/obj/item/weapon/gun/rifle/sniper/M42A, /obj/item/ammo_magazine/sniper, new_human, 0, 5)
+	spawn_weapon(/obj/item/weapon/gun/rifle/sniper/m42a, /obj/item/ammo_magazine/sniper, new_human, 0, 5)
 
 //*****************************************************************************************************//
 
