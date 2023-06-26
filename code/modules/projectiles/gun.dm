@@ -600,10 +600,10 @@
 	pull_time = world.time + wield_delay
 	if(user.dazed)
 		pull_time += 3
-
 	guaranteed_delay_time = world.time + WEAPON_GUARANTEED_DELAY
+
 	if(flags_gun_features & GUN_AMMO_COUNTER)
-		M.hud_used.remove_ammo_hud(src)
+		user.hud_used.remove_ammo_hud(src)
 
 	return ..()
 

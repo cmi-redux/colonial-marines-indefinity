@@ -2090,7 +2090,7 @@ Defined in conflicts.dm of the #defines folder.
 		if(user)
 			to_chat(user, SPAN_NOTICE("You are no longer using [src]."))
 			playsound(user, gun_deactivate_sound, 30, 1)
-			display_ammo(user)
+			user.hud_used.remove_ammo_hud(src)
 
 	else if(!turn_off)
 		gun.active_attachable = src
@@ -2107,6 +2107,9 @@ Defined in conflicts.dm of the #defines folder.
 		action.update_button_icon()
 
 	return TRUE
+
+/obj/item/attachable/attached_gun/proc/display_ammo(mob/living/user)
+	user?.hud_used.update_ammo_hud(src, get_attachment_ammo_type(), get_attachment_ammo_count())
 
 /obj/item/attachable/attached_gun/proc/get_attachment_ammo_type()
 	return null
@@ -2492,8 +2495,10 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/attached_gun/shotgun/get_examine_text(mob/user)
 	. = ..()
-	if(ammo_position) 	. += "It has [ammo_position] shell\s left."
-	else 					. += "It's empty."
+	if(ammo_position)
+		. += "It has [ammo_position] shell\s left."
+	else
+		. += "It's empty."
 
 /obj/item/attachable/attached_gun/shotgun/get_attachment_ammo_type()
 	if(ammo_position)
