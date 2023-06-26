@@ -267,6 +267,8 @@
 
 ///Add an ammo hud to the user informing of the ammo count of ammo_owner
 /datum/hud/proc/add_ammo_hud(datum/ammo_owner, list/ammo_type, ammo_count)
+	if(!(mymob.client.prefs.toggle_prefs & TOGGLE_GUN_AMMO_COUNTER))
+		return
 	if(length_char(ammo_hud_list) >= 4)
 		return
 	if(ammo_hud_list[ammo_owner])
