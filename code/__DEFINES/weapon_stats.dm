@@ -240,10 +240,10 @@ As such, don't expect any values assigned to common firearms to even consider ho
 
 #define AMMO_SPEED_TIER_1	0.5
 #define AMMO_SPEED_TIER_2	1
-#define AMMO_SPEED_TIER_3	1.5
-#define AMMO_SPEED_TIER_4	2.25
-#define AMMO_SPEED_TIER_5	4.5
-#define AMMO_SPEED_TIER_6	6
+#define AMMO_SPEED_TIER_3	2
+#define AMMO_SPEED_TIER_4	4
+#define AMMO_SPEED_TIER_5	6
+#define AMMO_SPEED_TIER_6	8
 
 /*
 ////ARMOR PENETRATION////

@@ -4,7 +4,7 @@ SUBSYSTEM_DEF(projectiles)
 	init_order = SS_INIT_PROJECTILES
 	flags = SS_TICKER
 	priority = SS_PRIORITY_PROJECTILES
-	var/global_max_tick_moves = 10
+	var/global_max_tick_moves = 20
 
 	/// List of projectiles handled by the subsystem
 	VAR_PRIVATE/list/obj/item/projectile/projectiles = list()

@@ -528,16 +528,24 @@
 	for(var/obj/item/attachable/attachable_attachment in attachable)
 		attachable_attachment.activate_attachment(src, user, TRUE, forced, light_again)
 
-/obj/item/weapon/gun/pickup(mob/living/M)
-	RegisterSignal(M, COMSIG_ATOM_OFF_LIGHT, TYPE_PROC_REF(/atom, turn_light), FALSE, override = TRUE)
+/obj/item/weapon/gun/pickup(mob/user)
+	RegisterSignal(user, COMSIG_ATOM_OFF_LIGHT, TYPE_PROC_REF(/atom, turn_light), FALSE, override = TRUE)
 	if(flags_gun_features & GUN_AMMO_COUNTER)
-		display_ammo(M)
+		display_ammo(user)
 	..()
 
-/obj/item/weapon/gun/dropped(mob/living/M)
-	UnregisterSignal(M, COMSIG_ATOM_OFF_LIGHT)
+/obj/item/weapon/gun/dropped(mob/user)
+	UnregisterSignal(user, COMSIG_ATOM_OFF_LIGHT)
 	if(flags_gun_features & GUN_AMMO_COUNTER)
-		M.hud_used.update_ammo_hud(src)
+		user.hud_used.update_ammo_hud(src)
+	..()
+
+/obj/item/weapon/gun/equipped(mob/user, slot)
+	if(flags_gun_features & GUN_AMMO_COUNTER)
+		if(slot == WEAR_L_HAND || slot == WEAR_R_HAND)
+			display_ammo(user)
+		else
+			user.hud_used.update_ammo_hud(src)
 	..()
 
 /obj/item/weapon/gun/proc/handle_damage(force = FALSE) //handle chance do break gan or damage

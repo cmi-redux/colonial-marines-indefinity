@@ -212,24 +212,26 @@ will handle it, but:
 		var/atom/movable/big_subject = subject
 		. += (big_subject.bound_height  - world.icon_size) / 2
 
-/proc/Get_Angle(atom/start,atom/end, tile_bound = FALSE)//For beams.
-	if(!start || !end) return 0
-	if(!start.z || !end.z) return 0 //Atoms are not on turfs.
-	var/dx
-	var/dy
-	if(tile_bound)
-		dy=end.y-start.y
-		dx=end.x-start.x
-	else
-		dy = get_pixel_position_y(end) - get_pixel_position_y(start)
-		dx = get_pixel_position_x(end) - get_pixel_position_x(start)
+/proc/Get_Angle(atom/start, atom/end)//For beams.
+	if(!start || !end)
+		CRASH("Get_Angle called for inexisting atoms: [isnull(start) ? "null" : start] to [isnull(end) ? "null" : end].")
+	if(!start.z)
+		start = get_turf(start)
+		if(!start)
+			CRASH("Get_Angle called for inexisting atoms (start): [isnull(start.loc) ? "null loc" : start.loc] [start] to [isnull(end.loc) ? "null loc" : end.loc] [end].") //Atoms are not on turfs.
+	if(!end.z)
+		end = get_turf(end)
+		if(!end)
+			CRASH("Get_Angle called for inexisting atoms (end): [isnull(start.loc) ? "null loc" : start.loc] [start] to [isnull(end.loc) ? "null loc" : end.loc] [end].") //Atoms are not on turfs.
+	var/dy = (32 * end.y + end.pixel_y) - (32 * start.y + start.pixel_y)
+	var/dx = (32 * end.x + end.pixel_x) - (32 * start.x + start.pixel_x)
 	if(!dy)
-		return (dx>=0)?90:270
-	.=arctan(dx/dy)
-	if(dy<0)
-		.+=180
-	else if(dx<0)
-		.+=360
+		return (dx >= 0) ? 90 : 270
+	. = arctan(dx / dy)
+	if(dy < 0)
+		. += 180
+	else if(dx < 0)
+		. += 360
 
 /proc/Get_Compass_Dir(atom/start,atom/end)//get_dir() only considers an object to be north/south/east/west if there is zero deviation. This uses rounding instead.
 	if(!start || !end) return 0

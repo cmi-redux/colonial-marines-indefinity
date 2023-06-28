@@ -177,9 +177,6 @@
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	generate_bullet(null, weapon_source_mob, 0, NO_FLAGS)
 
-	pixel_x = 0 //Want to move them just a tad.
-	pixel_y = 0
-
 	if(isliving(loc) && !weapon_source_mob)
 		var/mob/M = loc
 		weapon_source_mob = M
@@ -420,16 +417,12 @@
 
 	var/first_move = min(1, 1)
 	var/first_moves = projectile_speed
-	if(projectile_batch_move(first_move)) //Hit on first movement.
+	if(first_moves && projectile_batch_move(first_move)) //Hit on first movement.
 		qdel(src)
 		return
+
 	first_moves -= first_move
-	if(first_moves && projectile_batch_move(first_moves)) //First movement batch happens on the same tick.
-		qdel(src)
-		return
-
 	set_light_on(TRUE)
-
 	SSprojectiles.queue_projectile(src)
 
 /obj/item/projectile/process()
@@ -487,12 +480,11 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 			x_pixel_dist_travelled += 32 * x_offset
 			y_pixel_dist_travelled += 32 * y_offset
 			continue //Pixel movement only, didn't manage to change turf.
+
 		var/movement_dir = get_dir(last_processed_turf, next_turf)
 		if(dir != movement_dir)
 			setDir(movement_dir)
-		if(scan_a_turf(next_turf, movement_dir))
-			end_of_movement = i
-			break
+
 		if(ISDIAGONALDIR(movement_dir)) //Diagonal case. We need to check the turf to cross to get there.
 			if(!x_offset || !y_offset) //Unless a coder screws up this won't happen. Buf if they do it will cause an infinite processing loop due to division by zero, so better safe than sorry.
 				stack_trace("projectile_batch_move called with diagonal movement_dir and offset-lacking. x_offset: [x_offset], y_offset: [y_offset].")
@@ -545,7 +537,6 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 					continue
 				thing_to_uncross.do_projectile_hit(src)
 				end_of_movement = i
-				break
 			uncross_scheduled.len = 0
 			if(end_of_movement)
 				if(border_escaped_through & (NORTH|SOUTH))
@@ -589,6 +580,8 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 				end_of_movement = i
 				break
 			uncross_scheduled.len = 0
+			if(scan_a_turf(next_turf, movement_dir))
+				end_of_movement = i
 			if(end_of_movement)	//This is a bit overkill to deliver the right animation, but oh well.
 				if(border_escaped_through & (NORTH|SOUTH)) //Inverse logic than before. We now want to run the longer distance now.
 					x_pixel_dist_travelled += pixel_moves_until_crossing_y_border * x_offset
@@ -610,6 +603,9 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 			uncross_scheduled.len = 0
 			if(end_of_movement)
 				break
+		if(scan_a_turf(next_turf, movement_dir))
+			end_of_movement = i
+			break
 		if(ammo.flags_ammo_behavior & AMMO_LEAVE_TURF)
 			ammo.on_leave_turf(last_processed_turf, firer, src)
 		x_pixel_dist_travelled += 32 * x_offset
@@ -1540,8 +1536,8 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 
 	if(proj.ammo.sound_bounce)
 		playsound(src, proj.ammo.sound_bounce, 50, 1)
-	var/image/I = image('icons/obj/items/weapons/projectiles.dmi', src, proj.ammo.ping,10, pixel_x = pixel_x_offset, pixel_y = pixel_y_offset)
-	var/angle = (proj.firer && prob(60)) ? round(Get_Angle(proj.firer, src)) : round(rand(1,359))
+	var/image/I = image('icons/obj/items/weapons/projectiles.dmi', src, proj.ammo.ping, 10, pixel_x = pixel_x_offset, pixel_y = pixel_y_offset)
+	var/angle = (proj.firer && prob(60)) ? round(Get_Angle(proj.firer, src)) : proj.dir_angle
 	I.pixel_x += rand(-6,6)
 	I.pixel_y += rand(-6,6)
 
