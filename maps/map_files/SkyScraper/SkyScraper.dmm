@@ -5891,6 +5891,7 @@
 /obj/effect/landmark/corpsespawner/pmc,
 /obj/effect/decal/cleanable/blood/splatter,
 /obj/effect/alien/resin/acid_pillar/strong,
+/obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/almayer{
 	icon_state = "mono"
 	},
@@ -14709,6 +14710,11 @@
 /turf/open/floor/almayer{
 	icon_state = "mono"
 	},
+/area/skyscraper/building/security_sector/blockpost)
+"SH" = (
+/obj/effect/alien/resin/acid_pillar/strong,
+/obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
+/turf/open/floor/plating/plating_catwalk,
 /area/skyscraper/building/security_sector/blockpost)
 "SL" = (
 /turf/open/floor/roof/ship_hull/lab,
@@ -1000654,7 +1000660,7 @@ jf
 yz
 Zb
 kk
-jf
+SH
 IP
 IP
 nY
@@ -1000855,7 +1000861,7 @@ ac
 Vr
 Vr
 dp
-jf
+RX
 jf
 yz
 WM
