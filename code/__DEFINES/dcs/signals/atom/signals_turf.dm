@@ -19,3 +19,6 @@
 
 ///from /turf/closed/wall/proc/place_poster
 #define COMSIG_POSTER_PLACED "poster_placed"
+
+#define COMSIG_TURF_RESUME_PROJECTILE_MOVE "resume_projetile"
+#define COMSIG_TURF_PROJECTILE_MANIPULATED "projectile_manipulated"

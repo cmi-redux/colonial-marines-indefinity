@@ -2090,7 +2090,7 @@ Defined in conflicts.dm of the #defines folder.
 		if(user)
 			to_chat(user, SPAN_NOTICE("You are no longer using [src]."))
 			playsound(user, gun_deactivate_sound, 30, 1)
-			user.hud_used.remove_ammo_hud(src)
+			user.hud_used.update_ammo_hud(src)
 
 	else if(!turn_off)
 		gun.active_attachable = src
@@ -2663,7 +2663,7 @@ Defined in conflicts.dm of the #defines folder.
 	proj.generate_bullet(ammo_datum)
 	proj.icon_state = "naptha_ball"
 	proj.color = flamer_reagent.color
-	proj.fire_at(target, user, user, max_range, AMMO_SPEED_TIER_2, null)
+	proj.fire_at(target, user, user, max_range, AMMO_SPEED_TIER_2)
 	var/turf/user_turf = get_turf(user)
 	playsound(user_turf, pick(fire_sounds), 50, TRUE)
 

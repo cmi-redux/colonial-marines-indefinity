@@ -390,7 +390,7 @@ They're all essentially identical when it comes to getting the job done.
 			var/angle = rand(0,360)
 			var/atom/target = get_angle_target_turf(epicenter, angle, 20)
 			proj.projectile_flags |= PROJECTILE_SHRAPNEL
-			proj.fire_at(target, source_mob, source, proj.ammo.max_range, proj.ammo.shell_speed, null)
+			proj.fire_at(target, source_mob, source, proj.ammo.max_range, proj.ammo.shell_speed)
 		sleep(time_to_shot)
 
 /obj/item/ammo_magazine/bullet_act(obj/item/projectile/proj)

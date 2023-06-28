@@ -209,6 +209,9 @@
 // GUN TRAITS
 #define TRAIT_GUN_SILENCED "t_gun_silenced"
 
+// TURF TRAITS
+#define TRAIT_TURF_BULLET_MANIPULATION "bullet_manipulation" //This tile is doing something to projectile
+
 // Miscellaneous item traits.
 // Do NOT bloat this category, if needed make a new category (like shoe traits, xeno item traits...)
 
@@ -300,7 +303,10 @@ GLOBAL_LIST_INIT(traits_by_type, list(
 	),
 	/obj/structure/surface/table = list(
 		"TRAIT_STRUCTURE_FLIPPING" = TRAIT_TABLE_FLIPPING,
-	)
+	),
+	/turf = list(
+		"TRAIT_TURF_BULLET_MANIPULATION" = TRAIT_TURF_BULLET_MANIPULATION,
+	),
 ))
 
 /// value -> trait name, generated on use from trait_by_type global

@@ -37,8 +37,8 @@
 	var/datum/ammo/ammo //The ammo data which holds most of the actual info.
 
 	var/def_zone = "chest" //So we're not getting empty strings.
-	var/p_x = 0
-	var/p_y = 0 // the pixel location of the clicked/aimed location in target turf
+	var/p_x = 16
+	var/p_y = 16 // the pixel location of the tile that the player clicked. Default is the center
 
 	var/apx //Pixel location in absolute coordinates. This is (((x - 1) * 32) + 16 + pixel_x)
 	var/apy //These values are floats, not integers. They need to be converted through CEILING or such when translated to relative pixel coordinates.
@@ -55,6 +55,7 @@
 
 	var/damage = 0
 	var/accuracy = 50 //Base projectile accuracy. Can maybe be later taken from the mob if desired.
+	var/max_range = 0
 
 	var/damage_falloff = 0 //how much effectiveness in damage the projectile loses per tiles travelled beyond the effective range
 	var/damage_buildup = 0 //how much effectiveness in damage the projectile loses before the effective range
@@ -130,6 +131,7 @@
 	return
 
 /obj/item/projectile/Destroy()
+	invisibility = 100
 	SSprojectiles.stop_projectile(src)
 	QDEL_NULL(bound_beam)
 	. = ..()
@@ -199,6 +201,7 @@
 	damage = (ammo.damage + bonus_damage) * (rand(PROJ_VARIANCE_LOW-ammo.damage_var_low, PROJ_VARIANCE_HIGH+ammo.damage_var_high) * PROJ_BASE_DAMAGE_MULT)
 	scatter = ammo.scatter
 	accuracy = (accuracy + ammo.accuracy) * (rand(PROJ_VARIANCE_LOW-ammo.accuracy_var_low, PROJ_VARIANCE_HIGH+ammo.accuracy_var_high) * PROJ_BASE_ACCURACY_MULT)
+	max_range = max_range + ammo.max_range
 	damage_falloff = ammo.damage_falloff
 	damage_buildup = ammo.damage_buildup
 	hit_effect_color = ammo.hit_effect_color
@@ -265,31 +268,38 @@
 /obj/item/projectile/proc/fire_at(atom/target, atom/shooter, atom/source, range, speed, atom/original_override, angle)
 	if(!isnull(speed))
 		projectile_speed = speed
+
 	if(!original_target)
 		original_target = istype(original_override) ? original_override : target
-	if(!loc)
-		if(!(projectile_flags & PROJECTILE_SHRAPNEL))
-			forceMove(get_turf(shooter))
-		else
-			forceMove(get_turf(source))
+
+	if(!(projectile_flags & PROJECTILE_SHRAPNEL))
+		forceMove(get_turf(shooter))
+	else
+		forceMove(get_turf(source))
 
 	//Safety checks.
 	if(QDELETED(target) && !isnum(angle)) //We can work with either a target or an angle, or both, but not without any.
 		stack_trace("fire_at called on a QDELETED target ([target]) with no original_target_turf and a null angle.")
 		qdel(src)
 		return
+
 	if(projectile_speed <= 0) //Shouldn't happen without a coder oofing, but if they do, it risks breaking a lot, so better safe than sorry.
 		stack_trace("[src] achieved [projectile_speed] velocity somehow at fire_at. Type: [type]. From: [target]. Shot by: [shooter].")
 		qdel(src)
 		return
 
 	if(!isnull(range))
-		ammo.max_range = range
+		max_range = range
+
+	if(shooter && !firer)
+		firer = shooter
+
 	if(source)
 		shot_from = source
-	permutated |= src
+
 	if(!isturf(loc))
 		forceMove(get_turf(src))
+
 	starting_turf = loc
 
 	if(target)
@@ -298,7 +308,6 @@
 		if(original_target_turf == loc) //Shooting from and towards the same tile. Why not?
 			distance_travelled++
 			scan_a_turf(loc)
-			invisibility = 100
 			qdel(src)
 			return
 
@@ -316,7 +325,74 @@
 	x_offset = round(sin(dir_angle), 0.01)
 	y_offset = round(cos(dir_angle), 0.01)
 
-	setDir(get_dir(loc, original_target_turf))
+	var/proj_dir
+	switch(dir_angle) //The projectile starts at the edge of the firer's tile (still inside it).
+		if(0, 360)
+			proj_dir = NORTH
+			pixel_x = 0
+			pixel_y = 16
+		if(1 to 44)
+			proj_dir = NORTHEAST
+			pixel_x = round(16 * ((dir_angle) / 45))
+			pixel_y = 16
+		if(45)
+			proj_dir = NORTHEAST
+			pixel_x = 16
+			pixel_y = 16
+		if(46 to 89)
+			proj_dir = NORTHEAST
+			pixel_x = 16
+			pixel_y = round(16 * ((90 - dir_angle) / 45))
+		if(90)
+			proj_dir = EAST
+			pixel_x = 16
+			pixel_y = 0
+		if(91 to 134)
+			proj_dir = SOUTHEAST
+			pixel_x = 16
+			pixel_y = round(-15 * ((dir_angle - 90) / 45))
+		if(135)
+			proj_dir = SOUTHEAST
+			pixel_x = 16
+			pixel_y = -15
+		if(136 to 179)
+			proj_dir = SOUTHEAST
+			pixel_x = round(16 * ((180 - dir_angle) / 45))
+			pixel_y = -15
+		if(180)
+			proj_dir = SOUTH
+			pixel_x = 0
+			pixel_y = -15
+		if(181 to 224)
+			proj_dir = SOUTHWEST
+			pixel_x = round(-15 * ((dir_angle - 180) / 45))
+			pixel_y = -15
+		if(225)
+			proj_dir = SOUTHWEST
+			pixel_x = -15
+			pixel_y = -15
+		if(226 to 269)
+			proj_dir = SOUTHWEST
+			pixel_x = -15
+			pixel_y = round(-15 * ((270 - dir_angle) / 45))
+		if(270)
+			proj_dir = WEST
+			pixel_x = -15
+			pixel_y = 0
+		if(271 to 314)
+			proj_dir = NORTHWEST
+			pixel_x = -15
+			pixel_y = round(16 * ((dir_angle - 270) / 45))
+		if(315)
+			proj_dir = NORTHWEST
+			pixel_x = -15
+			pixel_y = 16
+		if(316 to 359)
+			proj_dir = NORTHWEST
+			pixel_x = round(-15 * ((360 - dir_angle) / 45))
+			pixel_y = 16
+
+	setDir(proj_dir)
 
 	apx += pixel_x //Update the absolute pixels with the offset.
 	apy += pixel_y
@@ -345,12 +421,10 @@
 	var/first_move = min(1, 1)
 	var/first_moves = projectile_speed
 	if(projectile_batch_move(first_move)) //Hit on first movement.
-		invisibility = 100
 		qdel(src)
 		return
 	first_moves -= first_move
 	if(first_moves && projectile_batch_move(first_moves)) //First movement batch happens on the same tick.
-		invisibility = 100
 		qdel(src)
 		return
 
@@ -467,8 +541,6 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 				var/atom/movable/thing_to_uncross = j
 				if(QDELETED(thing_to_uncross))
 					continue
-				if(!thing_to_uncross.projectile_hit(src, REVERSE_DIR(border_escaped_through), TRUE))
-					continue
 				thing_to_uncross.do_projectile_hit(src)
 				end_of_movement = i
 				break
@@ -491,9 +563,13 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 					y_pixel_dist_travelled += pixel_moves_until_crossing_y_border * y_offset
 				end_of_movement = i
 				break
+			if(HAS_TRAIT(turf_crossed_by, TRAIT_TURF_BULLET_MANIPULATION))
+				SEND_SIGNAL(turf_crossed_by, COMSIG_TURF_PROJECTILE_MANIPULATED, src)
+				RegisterSignal(turf_crossed_by, COMSIG_TURF_RESUME_PROJECTILE_MOVE, PROC_REF(resume_move))
+				return FALSE
 			if(turf_crossed_by == original_target_turf && ammo.flags_ammo_behavior & AMMO_EXPLOSIVE)
 				last_processed_turf = turf_crossed_by
-				ammo.on_hit_turf(turf_crossed_by, src)
+				ammo.do_at_max_range(turf_crossed_by, src)
 				if(border_escaped_through & (NORTH|SOUTH))
 					x_pixel_dist_travelled += pixel_moves_until_crossing_x_border * x_offset
 					y_pixel_dist_travelled += pixel_moves_until_crossing_x_border * y_offset
@@ -502,12 +578,10 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 					y_pixel_dist_travelled += pixel_moves_until_crossing_y_border * y_offset
 				end_of_movement = i
 				break
-			movement_dir -= border_escaped_through //Next scan should come from the other component cardinals direction.
+			movement_dir -= border_escaped_through //Next scan should come from the other component cardinal direction.
 			for(var/j in uncross_scheduled) //We are leaving turf_crossed_by now.
 				var/atom/movable/thing_to_uncross = j
 				if(QDELETED(thing_to_uncross))
-					continue
-				if(!thing_to_uncross.projectile_hit(src, REVERSE_DIR(movement_dir), TRUE))
 					continue
 				thing_to_uncross.do_projectile_hit(src)
 				end_of_movement = i
@@ -521,31 +595,37 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 					x_pixel_dist_travelled += pixel_moves_until_crossing_x_border * x_offset
 					y_pixel_dist_travelled += pixel_moves_until_crossing_x_border * y_offset
 				break
-		if(length(uncross_scheduled)) //Time to exit the last turf entered, if the diagonal movement didn't handle it already.
+			if(ammo.flags_ammo_behavior & AMMO_LEAVE_TURF)
+				ammo.on_leave_turf(turf_crossed_by, firer, src)
+		if(length_char(uncross_scheduled)) //Time to exit the last turf entered, if the diagonal movement didn't handle it already.
 			for(var/j in uncross_scheduled)
 				var/atom/movable/thing_to_uncross = j
 				if(QDELETED(thing_to_uncross))
 					continue
-				if(!thing_to_uncross.projectile_hit(src, REVERSE_DIR(movement_dir), TRUE))
-					continue //We act as if we were entering the tile through the opposite direction, to check for barricade blockage.
 				thing_to_uncross.do_projectile_hit(src)
 				end_of_movement = i
 				break
 			uncross_scheduled.len = 0
 			if(end_of_movement)
 				break
+		if(ammo.flags_ammo_behavior & AMMO_LEAVE_TURF)
+			ammo.on_leave_turf(last_processed_turf, firer, src)
 		x_pixel_dist_travelled += 32 * x_offset
 		y_pixel_dist_travelled += 32 * y_offset
 		last_processed_turf = next_turf
 		if(scan_a_turf(next_turf, movement_dir))
 			end_of_movement = i
 			break
+		if(HAS_TRAIT(next_turf, TRAIT_TURF_BULLET_MANIPULATION))
+			SEND_SIGNAL(next_turf, COMSIG_TURF_PROJECTILE_MANIPULATED, src)
+			RegisterSignal(next_turf, COMSIG_TURF_RESUME_PROJECTILE_MOVE, PROC_REF(resume_move))
+			return FALSE
 		if(next_turf == original_target_turf && ammo.flags_ammo_behavior & AMMO_EXPLOSIVE)
 			ammo.on_hit_turf(next_turf, src)
 			end_of_movement = i
 			break
-		if(distance_travelled >= ammo.max_range)
-			ammo.do_at_max_range(src)
+		if(distance_travelled >= max_range)
+			ammo.do_at_max_range(next_turf, src)
 			end_of_movement = i
 			break
 
@@ -555,7 +635,6 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 
 	apx += x_pixel_dist_travelled
 	apy += y_pixel_dist_travelled
-
 
 	var/new_pixel_x = ABS_PIXEL_TO_REL(apx) //The final pixel offset after this movement. Float value.
 	var/new_pixel_y = ABS_PIXEL_TO_REL(apy)
@@ -581,11 +660,18 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 #undef PROJ_ABS_PIXEL_TO_TURF
 #undef PROJ_ANIMATION_SPEED
 
-/obj/item/projectile/proc/scan_a_turf(turf/T, proj_dir)
-	if(T && T.density) //Handle wall hit.
+///Tells the projectile to move again
+/obj/item/projectile/proc/resume_move(datum/source)
+	SIGNAL_HANDLER
+	if(source)
+		UnregisterSignal(source, COMSIG_TURF_RESUME_PROJECTILE_MOVE)
+	SSprojectiles.queue_projectile(src)
+
+/obj/item/projectile/proc/scan_a_turf(turf/turf_to_scan, proj_dir)
+	if(turf_to_scan && turf_to_scan.density) //Handle wall hit.
 		var/ammo_flags = ammo.flags_ammo_behavior | projectile_override_flags
 
-		if(SEND_SIGNAL(src, COMSIG_BULLET_PRE_HANDLE_TURF, T) & COMPONENT_BULLET_PASS_THROUGH)
+		if(SEND_SIGNAL(src, COMSIG_BULLET_PRE_HANDLE_TURF, turf_to_scan) & COMPONENT_BULLET_PASS_THROUGH)
 			return FALSE
 
 		// If the ammo should hit the surface of the target and the next turf is dense
@@ -594,17 +680,17 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 			// We "hit" the current turf but strike the actual blockage
 			ammo.on_hit_turf(get_turf(src),src)
 		else
-			ammo.on_hit_turf(T,src)
+			ammo.on_hit_turf(turf_to_scan,src)
 
-		if(SEND_SIGNAL(src, COMSIG_BULLET_POST_HANDLE_TURF, T) & COMPONENT_BULLET_PASS_THROUGH)
+		if(SEND_SIGNAL(src, COMSIG_BULLET_POST_HANDLE_TURF, turf_to_scan) & COMPONENT_BULLET_PASS_THROUGH)
 			return FALSE
 
-		ammo.on_hit_turf(T, src)
-		T.bullet_act(src)
+		ammo.on_hit_turf(turf_to_scan, src)
+		turf_to_scan.bullet_act(src)
 		return TRUE
 
 	if(shot_from)
-		switch(SEND_SIGNAL(shot_from, COMSIG_PROJ_SCANTURF, T))
+		switch(SEND_SIGNAL(shot_from, COMSIG_PROJ_SCANTURF, turf_to_scan))
 			if(COMPONENT_PROJ_SCANTURF_TURFCLEAR)
 				return FALSE
 			if(COMPONENT_PROJ_SCANTURF_TARGETFOUND)
@@ -612,14 +698,14 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 				return TRUE
 
 	// Firer's turf, keep moving
-	if(firer && T == firer.loc && !(projectile_flags & PROJECTILE_SHRAPNEL))
+	if(firer && turf_to_scan == firer.loc && !(projectile_flags & PROJECTILE_SHRAPNEL))
 		return FALSE
 	var/ammo_flags = ammo.flags_ammo_behavior | projectile_override_flags
 
 	var/hit_turf = FALSE
 	// Explosive ammo always explodes on the turf of the clicked target
 	// So does ammo that's flagged to always hit the target
-	if(((ammo_flags & AMMO_EXPLOSIVE) || (ammo_flags & AMMO_HITS_TARGET_TURF)) && T == original_target_turf)
+	if(((ammo_flags & AMMO_EXPLOSIVE) || (ammo_flags & AMMO_HITS_TARGET_TURF)) && turf_to_scan == original_target_turf)
 		hit_turf = TRUE
 
 	if(ammo_flags & AMMO_SCANS_NEARBY && proj_dir)
@@ -634,7 +720,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 		var/kill_proj = 0
 
 		for(var/ddir in cardinal_dir)
-			var/dloc = get_step(T, ddir)
+			var/dloc = get_step(turf_to_scan, ddir)
 			var/turf/dturf = get_turf(dloc)
 			for(var/atom/movable/dA in dturf)
 				if(!isliving(dA))
@@ -656,7 +742,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 					if(F.can_not_harm(X))
 						continue
 				remote_detonation = 1
-				kill_proj = ammo.on_near_target(T, src)
+				kill_proj = ammo.on_near_target(turf_to_scan, src)
 				break
 			if(remote_detonation)
 				break
@@ -665,19 +751,19 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 			return TRUE
 
 	// Empty turf, keep moving
-	if(!T || (!T.contents.len && !hit_turf))
+	if(!turf_to_scan || (!turf_to_scan.contents.len && !hit_turf))
 		return FALSE
 
-	for(var/obj/O in T) //check objects before checking mobs, so that barricades protect
+	for(var/obj/O in turf_to_scan) //check objects before checking mobs, so that barricades protect
 		if(handle_object(O))
 			return TRUE
-	for(var/mob/living/L in T)
+	for(var/mob/living/L in turf_to_scan)
 		if(handle_mob(L))
 			return TRUE
 	if(hit_turf)
-		ammo.on_hit_turf(T, src)
-		if(T && T.loc)
-			T.bullet_act(src)
+		ammo.on_hit_turf(turf_to_scan, src)
+		if(turf_to_scan && turf_to_scan.loc)
+			turf_to_scan.bullet_act(src)
 		return TRUE
 	return FALSE
 
@@ -803,10 +889,6 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 				// \\
 				// \\
 //----------------------------------------------------------
-
-//returns probability for the projectile to hit us.
-/atom/proc/projectile_hit(obj/item/projectile/proj, cardinal_move, uncrossing)
-	return FALSE
 
 /atom/proc/do_projectile_hit(obj/item/projectile/proj)
 	return

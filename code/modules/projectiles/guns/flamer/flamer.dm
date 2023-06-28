@@ -221,7 +221,7 @@
 		P.bullet_ready_to_fire(initial(name), null, user)
 		GIVE_BULLET_TRAIT(P, /datum/element/bullet_trait_iff, faction)
 		playsound(get_turf(user), src.get_fire_sound(), 50, TRUE)
-		P.fire_at(target, src, user, P.ammo.max_range, P.ammo.shell_speed, null)
+		P.fire_at(target, src, user, P.ammo.max_range, P.ammo.shell_speed)
 	else
 		var/datum/reagent/R = flamer_tank.reagents.reagent_list[1]
 

@@ -531,13 +531,13 @@
 /obj/item/weapon/gun/pickup(mob/living/M)
 	RegisterSignal(M, COMSIG_ATOM_OFF_LIGHT, TYPE_PROC_REF(/atom, turn_light), FALSE, override = TRUE)
 	if(flags_gun_features & GUN_AMMO_COUNTER)
-		M.hud_used.add_ammo_hud(src, get_ammo_list(), get_display_ammo_count())
+		display_ammo(M)
 	..()
 
 /obj/item/weapon/gun/dropped(mob/living/M)
 	UnregisterSignal(M, COMSIG_ATOM_OFF_LIGHT)
 	if(flags_gun_features & GUN_AMMO_COUNTER)
-		M.hud_used.remove_ammo_hud(src)
+		M.hud_used.update_ammo_hud(src)
 	..()
 
 /obj/item/weapon/gun/proc/handle_damage(force = FALSE) //handle chance do break gan or damage
@@ -603,7 +603,7 @@
 	guaranteed_delay_time = world.time + WEAPON_GUARANTEED_DELAY
 
 	if(flags_gun_features & GUN_AMMO_COUNTER)
-		user.hud_used.remove_ammo_hud(src)
+		user.hud_used.update_ammo_hud(src)
 
 	return ..()
 
@@ -1381,7 +1381,7 @@ and you're good to go.
 			target = simulate_scatter(projectile_to_fire, target, curloc, targloc, user, bullets_fired)
 
 		var/bullet_velocity = projectile_to_fire?.ammo?.shell_speed + velocity_add
-
+/* NOT WORKS
 		if(params) // Apply relative clicked position from the mouse info to offset projectile
 			if(!params["click_catcher"])
 				if(params["vis-x"])
@@ -1402,7 +1402,7 @@ and you're good to go.
 			else
 				projectile_to_fire.p_x -= world.icon_size / 2
 				projectile_to_fire.p_y -= world.icon_size / 2
-
+*/
 		//Finally, make with the pew pew!
 		if(QDELETED(projectile_to_fire) || !isobj(projectile_to_fire))
 			to_chat(user, "ERROR CODE I1: Gun malfunctioned due to invalid chambered projectile, clearing it. AHELP if this persists.")
@@ -1433,7 +1433,7 @@ and you're good to go.
 			//This is where the projectile leaves the barrel and deals with projectile code only.
 			//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 			in_chamber = null // It's not in the gun anymore
-			INVOKE_ASYNC(projectile_to_fire, TYPE_PROC_REF(/obj/item/projectile, fire_at), target, user, src, projectile_to_fire?.ammo?.max_range, bullet_velocity, original_target)
+			INVOKE_ASYNC(projectile_to_fire, TYPE_PROC_REF(/obj/item/projectile, fire_at), target, user, src, null, bullet_velocity, get_angle_with_scatter(get_turf(src), target, projectile_to_fire.scatter, projectile_to_fire.p_x, projectile_to_fire.p_y))
 			projectile_to_fire = null // Important: firing might have made projectile collide early and ALREADY have deleted it. We clear it too.
 			//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

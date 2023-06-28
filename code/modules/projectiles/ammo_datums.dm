@@ -106,6 +106,10 @@
 	SHOULD_NOT_SLEEP(TRUE)
 	return
 
+///Special effects for leaving a turf. Only called if the projectile has AMMO_LEAVE_TURF enabled
+/datum/ammo/proc/on_leave_turf(turf/T, atom/firer, obj/item/projectile/proj)
+	return
+
 /datum/ammo/proc/on_near_target(turf/T, obj/item/projectile/proj) //Special effects when passing near something. Range of things that triggers it is controlled by other ammo flags.
 	return 0 //return 0 means it flies even after being near something. Return 1 means it stops
 
@@ -200,7 +204,7 @@
 		final_angle += rand(-total_scatter_angle, total_scatter_angle)
 		var/turf/new_target = get_angle_target_turf(curloc, final_angle, 30)
 
-		proj.fire_at(new_target, orig_proj.firer, orig_proj.shot_from, proj.ammo.max_range, proj.ammo.shell_speed, orig_proj.original_target) //Fire!
+		proj.fire_at(new_target, orig_proj.firer, orig_proj.shot_from, proj.ammo.max_range, proj.ammo.shell_speed, final_angle) //Fire!
 
 /datum/ammo/proc/drop_flame(turf/T, datum/cause_data/cause_data)
 	if(!istype(T))

@@ -28,6 +28,7 @@
 #define AMMO_NO_DEFLECT			(1<<20) // Can't be deflected
 #define AMMO_MP					(1<<21) //Can only hit people with criminal status
 #define AMMO_FLAME				(1<<22) // Handles sentry flamers glob
+#define AMMO_LEAVE_TURF			(1<<23) //If the projectile does something with on_leave_turf()
 
 //Special flags for custom ammo
 #define CUSTOM_AMMO_EXPLOSION	(1<<0)
