@@ -323,11 +323,11 @@
 	max_level = 1
 
 /datum/chem_property/negative/intravenous/reset_reagent()
-	holder.flags = initial(holder.flags)
+	holder.flags_reagent = initial(holder.flags_reagent)
 	return ..()
 
 /datum/chem_property/negative/intravenous/update_reagent()
-	holder.flags |= REAGENT_NOT_INGESTIBLE
+	holder.flags_reagent |= REAGENT_NOT_INGESTIBLE
 	return ..()
 
 /datum/chem_property/negative/nephrotoxic
@@ -485,7 +485,7 @@
 /datum/chem_property/negative/hemositic/pre_process(mob/living/M)
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		if(H.species.flags & IS_SYNTHETIC)
+		if(H.species.species_flags & IS_SYNTHETIC)
 			return list(REAGENT_CANCEL = TRUE)
 
 /datum/chem_property/negative/hemositic/process(mob/living/M, potency = 1, delta_time)

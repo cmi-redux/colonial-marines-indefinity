@@ -10,7 +10,7 @@
 	pain_type = /datum/pain/zombie
 	stamina_type = /datum/stamina/none
 	death_message = "seizes up and falls limp..."
-	flags = NO_BREATHE|NO_CLONE_LOSS|NO_POISON|NO_NEURO|NO_SHRAPNEL
+	species_flags = NO_BREATHE|NO_CLONE_LOSS|NO_POISON|NO_NEURO|NO_SHRAPNEL
 	mob_inherent_traits = list(TRAIT_FOREIGN_BIO)
 	brute_mod = 0.25 //EXTREME BULLET RESISTANCE
 	burn_mod = 0.8 //Lowered burn damage since it would 1-shot zombies from 2 to 0.8.

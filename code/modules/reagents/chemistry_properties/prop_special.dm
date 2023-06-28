@@ -22,11 +22,11 @@
 	max_level = 1
 
 /datum/chem_property/special/regulating/reset_reagent()
-	holder.flags = initial(holder.flags)
+	holder.flags_reagent = initial(holder.flags_reagent)
 	..()
 
 /datum/chem_property/special/regulating/update_reagent()
-	holder.flags |= REAGENT_CANNOT_OVERDOSE
+	holder.flags_reagent |= REAGENT_CANNOT_OVERDOSE
 	..()
 
 /datum/chem_property/special/hypergenetic
@@ -181,7 +181,7 @@
 	if(!ishuman(M))
 		return
 	var/mob/living/carbon/human/H = M
-	if((locate(/obj/item/alien_embryo) in H.contents) || (H.species.flags & IS_SYNTHETIC) || !H.huggable) //No effect if already infected
+	if((locate(/obj/item/alien_embryo) in H.contents) || (H.species.species_flags & IS_SYNTHETIC) || !H.huggable) //No effect if already infected
 		return
 	for(var/i=1,i<=max((level % 100)/10,1),i++)//10's determine number of embryos
 		var/obj/item/alien_embryo/embryo = new /obj/item/alien_embryo(H)

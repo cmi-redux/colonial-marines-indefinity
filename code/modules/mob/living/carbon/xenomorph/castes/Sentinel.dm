@@ -84,7 +84,7 @@
 		return original_damage //endurance 5 makes you immune to weak neurotoxin
 	if(ishuman(carbon_target))
 		var/mob/living/carbon/human/human = carbon_target
-		if(human.chem_effect_flags & CHEM_EFFECT_RESIST_NEURO || human.species.flags & NO_NEURO)
+		if(human.chem_effect_flags & CHEM_EFFECT_RESIST_NEURO || human.species.species_flags & NO_NEURO)
 			human.visible_message(SPAN_DANGER("[human] shrugs off the neurotoxin!"))
 			next_slash_buffed = FALSE
 			return //species like zombies or synths are immune to neurotoxin

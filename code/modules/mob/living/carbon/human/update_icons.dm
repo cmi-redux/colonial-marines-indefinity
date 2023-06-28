@@ -149,7 +149,7 @@ There are several things that need to be remembered:
 		vis_contents += part
 		part.update_icon(TRUE)
 
-	if(species.flags & HAS_UNDERWEAR)
+	if(species.species_flags & HAS_UNDERWEAR)
 		//Underwear
 		remove_overlay(UNDERSHIRT_LAYER)
 		remove_overlay(UNDERWEAR_LAYER)

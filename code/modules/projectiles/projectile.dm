@@ -490,7 +490,9 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 		var/movement_dir = get_dir(last_processed_turf, next_turf)
 		if(dir != movement_dir)
 			setDir(movement_dir)
-
+		if(scan_a_turf(next_turf, movement_dir))
+			end_of_movement = i
+			break
 		if(ISDIAGONALDIR(movement_dir)) //Diagonal case. We need to check the turf to cross to get there.
 			if(!x_offset || !y_offset) //Unless a coder screws up this won't happen. Buf if they do it will cause an infinite processing loop due to division by zero, so better safe than sorry.
 				stack_trace("projectile_batch_move called with diagonal movement_dir and offset-lacking. x_offset: [x_offset], y_offset: [y_offset].")
@@ -613,9 +615,6 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 		x_pixel_dist_travelled += 32 * x_offset
 		y_pixel_dist_travelled += 32 * y_offset
 		last_processed_turf = next_turf
-		if(scan_a_turf(next_turf, movement_dir))
-			end_of_movement = i
-			break
 		if(HAS_TRAIT(next_turf, TRAIT_TURF_BULLET_MANIPULATION))
 			SEND_SIGNAL(next_turf, COMSIG_TURF_PROJECTILE_MANIPULATED, src)
 			RegisterSignal(next_turf, COMSIG_TURF_RESUME_PROJECTILE_MOVE, PROC_REF(resume_move))

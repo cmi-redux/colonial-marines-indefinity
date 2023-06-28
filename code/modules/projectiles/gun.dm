@@ -141,7 +141,7 @@
 	var/pull_time				= 0
 
 	///Determines what happens when you fire a gun before its wield or pull time has finished. This one is extra scatter and an acc. malus.
-	var/delay_style = WEAPON_DELAY_SCATTER_AND_ACCURACY
+	var/delay_style				= WEAPON_DELAY_SCATTER_AND_ACCURACY
 
 	//Burst fire.
 	 ///How many shots can the weapon shoot in burst? Anything less than 2 and you cannot toggle burst.
@@ -212,7 +212,7 @@
 	///What attachments this gun starts with THAT CAN BE REMOVED. Important to avoid nuking the attachments on restocking! Added on New()
 	var/list/starting_attachment_types = null
 
-	var/flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	var/flags_gun_features		= GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
 	var/flags_mounted_gun_features = null
 	 ///Only guns of the same category can be fired together while dualwielding.
 	var/gun_category			= null
@@ -967,6 +967,8 @@ User can be passed as null, (a gun reloading itself for instance), so we need to
 	if(reload_sound)
 		playsound(user, reload_sound, 25, 1, 5)
 
+	display_ammo(user)
+
 
 //Drop out the magazine. Keep the ammo type for next time so we don't need to replace it every time.
 //This can be passed with a null user, so we need to check for that as well.
@@ -1433,7 +1435,7 @@ and you're good to go.
 			//This is where the projectile leaves the barrel and deals with projectile code only.
 			//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 			in_chamber = null // It's not in the gun anymore
-			INVOKE_ASYNC(projectile_to_fire, TYPE_PROC_REF(/obj/item/projectile, fire_at), target, user, src, null, bullet_velocity, get_angle_with_scatter(get_turf(src), target, projectile_to_fire.scatter, projectile_to_fire.p_x, projectile_to_fire.p_y))
+			INVOKE_ASYNC(projectile_to_fire, TYPE_PROC_REF(/obj/item/projectile, fire_at), target, user, src, null, bullet_velocity)
 			projectile_to_fire = null // Important: firing might have made projectile collide early and ALREADY have deleted it. We clear it too.
 			//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

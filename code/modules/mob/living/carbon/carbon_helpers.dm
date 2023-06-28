@@ -80,12 +80,12 @@
 	if(converter.faction == faction)
 		return TRUE
 	if(morale)
-		if(morale_flags & MORALE_FLAG_NO_SELF_CAP)
+		if(flags_morale & MORALE_FLAG_NO_SELF_CAP)
 			return FALSE
 		if(alert(src, "[converter] offering you to join their faction ([converter.faction]), maybe that in this is situation good choice", , client.auto_lang(LANGUAGE_YES), client.auto_lang(LANGUAGE_NO)) != client.auto_lang(LANGUAGE_YES))
 			return FALSE
 	else
-		if(morale_flags & MORALE_FLAG_NO_AUTO_CAP)
+		if(flags_morale & MORALE_FLAG_NO_AUTO_CAP)
 			if(alert(src, "[converter] offering you to join their faction ([converter.faction]), maybe that in this is situation good choice", , client.auto_lang(LANGUAGE_YES), client.auto_lang(LANGUAGE_NO)) != client.auto_lang(LANGUAGE_YES))
 				return FALSE
 

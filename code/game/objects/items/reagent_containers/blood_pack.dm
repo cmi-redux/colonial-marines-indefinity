@@ -108,7 +108,7 @@
 
 	if(!istype(connected_to))
 		return
-	if(connected_to.species && connected_to.species.flags & NO_BLOOD)
+	if(connected_to.species && connected_to.species.species_flags & NO_BLOOD)
 		return
 
 	connected_to.take_blood(src, amount)

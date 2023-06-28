@@ -1,5 +1,5 @@
 GLOBAL_LIST_INIT(snow_recipes, list(
-	new /datum/stack_recipe("snow barricade", /obj/structure/barricade/snow, 3, time = 2 SECONDS, one_per_turf = ONE_TYPE_PER_BORDER, on_floor = TRUE, flags = RESULT_REQUIRES_SNOW),
+	new /datum/stack_recipe("snow barricade", /obj/structure/barricade/snow, 3, time = 2 SECONDS, one_per_turf = ONE_TYPE_PER_BORDER, on_floor = TRUE, stack_flags = RESULT_REQUIRES_SNOW),
 	new /datum/stack_recipe("snowball", /obj/item/snowball, 1)
 	))
 

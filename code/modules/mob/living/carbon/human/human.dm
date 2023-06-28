@@ -963,7 +963,7 @@
 
 /mob/living/carbon/human/proc/vomit()
 
-	if(species.flags & IS_SYNTHETIC)
+	if(species.species_flags & IS_SYNTHETIC)
 		return //Machines don't throw up.
 
 	if(stat == 2) //Corpses don't puke
@@ -1003,7 +1003,7 @@
 		h.disfigured = 0
 	name = get_visible_name()
 
-	if(species && !(species.flags & NO_BLOOD))
+	if(species && !(species.species_flags & NO_BLOOD))
 		restore_blood()
 
 	//try to find the brain player in the decapitated head and put them back in control of the human
@@ -1177,7 +1177,7 @@
 	INVOKE_ASYNC(src, PROC_REF(regenerate_icons))
 	INVOKE_ASYNC(src, PROC_REF(restore_blood))
 	INVOKE_ASYNC(src, PROC_REF(update_body), 1, 0)
-	if(!(species.flags & HAS_UNDERWEAR))
+	if(!(species.species_flags & HAS_UNDERWEAR))
 		INVOKE_ASYNC(src, PROC_REF(remove_underwear))
 
 	default_lighting_alpha = species.default_lighting_alpha

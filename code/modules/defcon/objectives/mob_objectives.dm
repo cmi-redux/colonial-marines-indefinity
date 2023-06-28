@@ -3,7 +3,7 @@
 // --------------------------------------------
 /datum/cm_objective/recover_corpses
 	name = "Recover corpses"
-	state = OBJECTIVE_ACTIVE
+	objective_state = OBJECTIVE_ACTIVE
 	/// List of list of active corpses per tech-faction ownership
 	var/list/corpses = list()
 	var/list/scored_corpses = list()

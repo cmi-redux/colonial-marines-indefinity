@@ -31,7 +31,7 @@
 	failure_sound = 'sound/items/Screwdriver2.ogg'
 
 /datum/surgery_step/recalibrate_prosthesis/preop(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
-	var/nerves = (target.species && (target.species.flags & IS_SYNTHETIC)) ? "control wiring" : "nervous system"
+	var/nerves = (target.species && (target.species.species_flags & IS_SYNTHETIC)) ? "control wiring" : "nervous system"
 	user.affected_message(target,
 		SPAN_NOTICE("You start recalibrating [target]'s prosthesis to \his [nerves]."),
 		SPAN_NOTICE("[user] starts recalibrating your prosthesis to your [nerves]."),

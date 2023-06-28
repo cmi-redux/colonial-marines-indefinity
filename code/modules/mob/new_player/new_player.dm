@@ -175,7 +175,7 @@
 					return
 
 				var/datum/species/S = GLOB.all_species[client.prefs.species]
-				if(!(S.flags & IS_WHITELISTED))
+				if(!(S.species_flags & IS_WHITELISTED))
 					to_chat(src, alert("Your current species, [client.prefs.species], is not available for play on the station."))
 					return
 
@@ -198,7 +198,7 @@
 					return 0
 
 				var/datum/species/S = GLOB.all_species[client.prefs.species]
-				if(!(S.flags & IS_WHITELISTED))
+				if(!(S.species_flags & IS_WHITELISTED))
 					to_chat(src, alert("Your current species,[client.prefs.species], is not available for play on the station."))
 					return 0
 
@@ -391,7 +391,7 @@
 
 /mob/new_player/proc/is_species_whitelisted(datum/species/S)
 	if(!S) return 1
-	return is_alien_whitelisted(src, S.name) || !CONFIG_GET(flag/usealienwhitelist) || !(S.flags & IS_WHITELISTED)
+	return is_alien_whitelisted(src, S.name) || !CONFIG_GET(flag/usealienwhitelist) || !(S.species_flags & IS_WHITELISTED)
 
 /mob/new_player/get_species()
 	var/datum/species/chosen_species

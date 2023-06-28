@@ -60,7 +60,7 @@
 		if(mob_datum.atom_ref.z == text2num(zlevel))
 			images_to_gen += mob_datum.image_assoc[faction.faction_name]
 	for(var/datum/tacmap/mob_datum/mob_datum in faction_mobs_to_draw)
-		if(mob_datum.atom_ref.z == text2num(zlevel) && (mob_datum.atom_ref.tacmap_visibly || mob_datum.flags & TCMP_INVISIBLY_OV))
+		if(mob_datum.atom_ref.z == text2num(zlevel) && (mob_datum.atom_ref.tacmap_visibly || mob_datum.flags_tacmap & TCMP_INVISIBLY_OV))
 			images_to_gen += mob_datum.image_assoc[faction.faction_name]
 	return images_to_gen
 

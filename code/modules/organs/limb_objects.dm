@@ -122,7 +122,7 @@
 			overlays.Add(hair) //icon.Blend(hair, ICON_OVERLAY)
 			overlays.Add(eyes) //icon.Blend(hair, ICON_OVERLAY)
 
-	if(H.lip_style && (H.species && H.species.flags & HAS_LIPS))
+	if(H.lip_style && (H.species && H.species.species_flags & HAS_LIPS))
 		var/icon/lipstick = new/icon('icons/mob/humans/onmob/human_face.dmi', "paint_[H.lip_style]")
 		overlays += lipstick
 

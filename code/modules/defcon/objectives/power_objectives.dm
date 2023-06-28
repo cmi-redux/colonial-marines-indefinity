@@ -6,7 +6,7 @@
 	name = "Something power-related"
 	objective_flags = OBJECTIVE_DO_NOT_TREE
 	value = OBJECTIVE_NO_VALUE
-	state = OBJECTIVE_ACTIVE
+	objective_state = OBJECTIVE_ACTIVE
 	var/list/power_objects
 	var/uses_smes = FALSE
 
@@ -62,7 +62,7 @@
 	return FALSE
 
 /datum/cm_objective/power/establish_power/complete()
-	state = OBJECTIVE_COMPLETE
+	objective_state = OBJECTIVE_COMPLETE
 
 /datum/cm_objective/power/establish_power/get_point_value()
 	check_completion()

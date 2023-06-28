@@ -179,7 +179,7 @@
 	user.track_heal_damage(initial(attached_to.name), H, attached_to.damage_heal_threshold * 3)
 	H.updatehealth() //Needed for the check to register properly
 
-	if(!(H.species?.flags & NO_CHEM_METABOLIZATION))
+	if(!(H.species?.species_flags & NO_CHEM_METABOLIZATION))
 		for(var/datum/reagent/R in H.reagents.reagent_list)
 			var/datum/chem_property/P = R.get_property(PROPERTY_ELECTROGENETIC)//Adrenaline helps greatly at restarting the heart
 			if(P)

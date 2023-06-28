@@ -9,4 +9,4 @@
 
 /datum/cm_objective/communications/complete()
 	faction_announcement("SYSTEMS REPORT: Colony communications link online.", MAIN_AI_SYSTEM, null, GLOB.faction_datum[controller])
-	state = OBJECTIVE_COMPLETE
+	objective_state = OBJECTIVE_COMPLETE

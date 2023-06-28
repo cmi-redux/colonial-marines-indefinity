@@ -114,14 +114,14 @@ GLOBAL_LIST_INIT(known_implants, subtypesof(/obj/item/implant))
 	if(target_mob.reagents)
 		data["has_chemicals"] = length(target_mob.reagents.reagent_list)
 		for(var/datum/reagent/reagent in target_mob.reagents.reagent_list)
-			if(!(reagent.flags & REAGENT_SCANNABLE) && detail_level == DETAIL_LEVEL_HEALTHANALYSER)
+			if(!(reagent.flags_reagent & REAGENT_SCANNABLE) && detail_level == DETAIL_LEVEL_HEALTHANALYSER)
 				data["has_unknown_chemicals"] = TRUE
 				continue
 			chemicals_lists["[reagent.id]"] = list(
 				"name" = reagent.name,
 				"amount" = round(reagent.volume, 0.1),
-				"od" = reagent.overdose != 0 && reagent.volume > reagent.overdose && !(reagent.flags & REAGENT_CANNOT_OVERDOSE),
-				"dangerous" = reagent.overdose != 0 && reagent.volume > reagent.overdose && !(reagent.flags & REAGENT_CANNOT_OVERDOSE) || istype(reagent, /datum/reagent/toxin),
+				"od" = reagent.overdose != 0 && reagent.volume > reagent.overdose && !(reagent.flags_reagent & REAGENT_CANNOT_OVERDOSE),
+				"dangerous" = reagent.overdose != 0 && reagent.volume > reagent.overdose && !(reagent.flags_reagent & REAGENT_CANNOT_OVERDOSE) || istype(reagent, /datum/reagent/toxin),
 				"color" = reagent.color
 			)
 
@@ -134,7 +134,7 @@ GLOBAL_LIST_INIT(known_implants, subtypesof(/obj/item/implant))
 
 		// blood and species
 		var/has_blood = TRUE
-		if(human_target_mob.species.flags & NO_BLOOD)
+		if(human_target_mob.species.species_flags & NO_BLOOD)
 			has_blood = FALSE
 		data["has_blood"] = has_blood
 		data["species"] = human_target_mob.species.group
@@ -625,10 +625,10 @@ GLOBAL_LIST_INIT(known_implants, subtypesof(/obj/item/implant))
 			var/unknown = 0
 			var/reagentdata[0]
 			for(var/A in src.reagents.reagent_list)
-				var/datum/reagent/R = A
-				reagents_in_body["[R.id]"] = R.volume
-				if(R.flags & REAGENT_SCANNABLE)
-					reagentdata["[R.id]"] = "[R.overdose != 0 && R.volume > R.overdose && !(R.flags & REAGENT_CANNOT_OVERDOSE) ? SPAN_WARNING("<b>OD: </b>") : ""] <font color='#9773C4'><b>[round(R.volume, 1)]u [R.name]</b></font>"
+				var/datum/reagent/reagent = A
+				reagents_in_body["[reagent.id]"] = reagent.volume
+				if(reagent.flags_reagent & REAGENT_SCANNABLE)
+					reagentdata["[reagent.id]"] = "[reagent.overdose != 0 && reagent.volume > reagent.overdose && !(reagent.flags_reagent & REAGENT_CANNOT_OVERDOSE) ? SPAN_WARNING("<b>OD: </b>") : ""] <font color='#9773C4'><b>[round(reagent.volume, 1)]u [reagent.name]</b></font>"
 				else
 					unknown++
 			if(reagentdata.len)
@@ -645,7 +645,7 @@ GLOBAL_LIST_INIT(known_implants, subtypesof(/obj/item/implant))
 		var/mob/living/carbon/human/H = src
 		// Show blood level
 		var/blood_volume = BLOOD_VOLUME_NORMAL
-		if(!(H.species && H.species.flags & NO_BLOOD))
+		if(!(H.species && H.species.species_flags & NO_BLOOD))
 			blood_volume = round(H.blood_volume)
 
 			var/blood_percent =  blood_volume / 560

@@ -234,7 +234,7 @@
 			return
 		var/self_fixing = FALSE
 
-		if(H.species.flags & IS_SYNTHETIC && M == user)
+		if(H.species.species_flags & IS_SYNTHETIC && M == user)
 			self_fixing = TRUE
 
 		if(S.brute_dam && welding)

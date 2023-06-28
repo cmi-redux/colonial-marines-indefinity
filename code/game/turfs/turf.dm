@@ -364,25 +364,25 @@
 
 ///Called each time the target falls down a z level possibly making their trajectory come to a halt. see __DEFINES/movement.dm.
 /turf/proc/zImpact(atom/movable/falling, levels = 1, turf/prev_turf)
-	var/flags = NONE
+	var/flags_fall = NO_FLAGS
 	var/list/falling_movables = falling.get_z_move_affected()
 	var/list/falling_mov_names
 	for(var/atom/movable/falling_mov as anything in falling_movables)
 		falling_mov_names += falling_mov.name
 	for(var/i in contents)
 		var/atom/thing = i
-		flags |= thing.intercept_zImpact(falling_movables, levels)
-		if(flags & FALL_STOP_INTERCEPTING)
+		flags_fall |= thing.intercept_zImpact(falling_movables, levels)
+		if(flags_fall & FALL_STOP_INTERCEPTING)
 			break
-	if(prev_turf && !(flags & FALL_NO_MESSAGE))
+	if(prev_turf && !(flags_fall & FALL_NO_MESSAGE))
 		for(var/mov_name in falling_mov_names)
 			prev_turf.visible_message(SPAN_DANGER("[mov_name] falls through [prev_turf]!"))
-	if(!(flags & FALL_INTERCEPTED) && zFall(falling, levels + 1))
+	if(!(flags_fall & FALL_INTERCEPTED) && zFall(falling, levels + 1))
 		return FALSE
 	for(var/atom/movable/falling_mov as anything in falling_movables)
-		if(!(flags & FALL_RETAIN_PULL))
+		if(!(flags_fall & FALL_RETAIN_PULL))
 			falling_mov.stop_pulling()
-		if(!(flags & FALL_INTERCEPTED))
+		if(!(flags_fall & FALL_INTERCEPTED))
 			falling_mov.onZImpact(src, levels)
 		if(falling_mov.pulledby && (falling_mov.z != falling_mov.pulledby.z || get_dist(falling_mov, falling_mov.pulledby) > 1))
 			falling_mov.pulledby.stop_pulling()

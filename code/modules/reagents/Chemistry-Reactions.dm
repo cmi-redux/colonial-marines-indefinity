@@ -43,7 +43,7 @@
 // To prevent such a situation, if ALL reagent inside a reaction are medical chemicals, the recipe is considered flawed.
 /datum/chemical_reaction/proc/check_reaction_uses_all_default_medical()
 	for(var/R in required_reagents)
-		var/datum/reagent/M = chemical_reagents_list[R]
-		if(!(initial(M.flags) & REAGENT_TYPE_MEDICAL))
+		var/datum/reagent/reagent = chemical_reagents_list[R]
+		if(!(initial(reagent.flags_reagent) & REAGENT_TYPE_MEDICAL))
 			return FALSE
 	return TRUE

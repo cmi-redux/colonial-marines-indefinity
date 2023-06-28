@@ -61,7 +61,7 @@
 	if(M == user)
 		if(istype(M, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = M
-			if(H.species.flags & IS_SYNTHETIC)
+			if(H.species.species_flags & IS_SYNTHETIC)
 				to_chat(H, SPAN_DANGER("You can't eat pills."))
 				return
 
@@ -82,7 +82,7 @@
 
 	else if(istype(M, /mob/living/carbon/human) )
 		var/mob/living/carbon/human/H = M
-		if(H.species.flags & IS_SYNTHETIC)
+		if(H.species.species_flags & IS_SYNTHETIC)
 			to_chat(H, SPAN_DANGER("They have a monitor for a head, where do you think you're going to put that?"))
 			return
 

@@ -36,7 +36,7 @@
 		return TRUE
 
 /datum/cm_objective/retrieve_item/complete()
-	state = OBJECTIVE_COMPLETE
+	objective_state = OBJECTIVE_COMPLETE
 	SSobjectives.statistics["item_retrieval_total_points_earned"] += value
 
 /datum/cm_objective/retrieve_item/get_tgui_data()
@@ -53,13 +53,13 @@
 
 /datum/cm_objective/retrieve_item/fulton
 	name = "Recover a lost fulton"
-	state = OBJECTIVE_ACTIVE
+	objective_state = OBJECTIVE_ACTIVE
 	objective_flags = OBJECTIVE_DO_NOT_TREE
 	area_flags = AREA_RECOVER_FULTON_ITEMS
 
 /datum/cm_objective/retrieve_item/fulton/proc/clean_up_fulton()
 	SIGNAL_HANDLER
-	state = OBJECTIVE_COMPLETE
+	objective_state = OBJECTIVE_COMPLETE
 	GLOB.failed_fultons -= target_item
 	qdel(src)
 	return

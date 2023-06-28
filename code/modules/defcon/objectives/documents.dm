@@ -7,7 +7,7 @@
 	var/obj/item/document_objective/document
 	var/area/initial_area
 	value = OBJECTIVE_LOW_VALUE
-	state = OBJECTIVE_ACTIVE
+	objective_state = OBJECTIVE_ACTIVE
 
 /datum/cm_objective/document/New(faction_to_get, obj/item/document_objective/D)
 	. = ..()
@@ -37,8 +37,8 @@
 
 	// Enable child objectives
 	for(var/datum/cm_objective/child_objective in enables_objectives)
-		if(child_objective.state & OBJECTIVE_INACTIVE)
-			child_objective.state = OBJECTIVE_ACTIVE
+		if(child_objective.objective_state & OBJECTIVE_INACTIVE)
+			child_objective.objective_state = OBJECTIVE_ACTIVE
 			if(child_objective.objective_flags & OBJECTIVE_START_PROCESSING_ON_DISCOVERY)
 				child_objective.activate()
 
@@ -77,7 +77,7 @@
 	var/color // Text name of the color
 	var/display_color // Color of the sprite
 	number_of_clues_to_generate = 2
-	state = OBJECTIVE_INACTIVE
+	objective_state = OBJECTIVE_INACTIVE
 
 /datum/cm_objective/document/folder/get_tgui_data()
 	var/list/clue = list()
@@ -97,7 +97,7 @@
 /datum/cm_objective/document/technical_manual
 	name = "Technical manual objective"
 	value = OBJECTIVE_HIGH_VALUE
-	state = OBJECTIVE_INACTIVE
+	objective_state = OBJECTIVE_INACTIVE
 	number_of_clues_to_generate = 2
 
 /datum/cm_objective/document/technical_manual/get_tgui_data()
@@ -157,7 +157,7 @@
 	to_chat(user, SPAN_INFO("You finish reading \the [src]."))
 
 	// Our first time reading this successfully, add the clue labels.
-	if(!(objective.state & OBJECTIVE_COMPLETE))
+	if(!(objective.objective_state & OBJECTIVE_COMPLETE))
 		src.name += " ([related_labels])"
 		renamed = TRUE
 
@@ -171,17 +171,17 @@
 		return
 
 	// Prerequisit objective not complete.
-	if(objective.state & OBJECTIVE_INACTIVE)
+	if(objective.objective_state & OBJECTIVE_INACTIVE)
 		to_chat(user, SPAN_NOTICE("You don't notice anything useful. You probably need to find its instructions on a paper scrap."))
 		return
 
 	display_read_message(user)
 
 	// Our first time reading this successfully.
-	if(!(objective.state & OBJECTIVE_COMPLETE))
+	if(!(objective.objective_state & OBJECTIVE_COMPLETE))
 		objective.complete(user)
 		SSobjectives.statistics["documents_completed"]++
-		objective.state = OBJECTIVE_COMPLETE
+		objective.objective_state = OBJECTIVE_COMPLETE
 
 /obj/item/document_objective/paper
 	name = "Paper scrap"

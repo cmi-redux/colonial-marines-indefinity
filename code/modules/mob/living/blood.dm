@@ -7,7 +7,7 @@
 
 // Takes care blood loss and regeneration
 /mob/living/carbon/human/handle_blood()
-	if(NO_BLOOD in species.flags)
+	if(NO_BLOOD in species.species_flags)
 		return
 
 	if(stat != DEAD && bodytemperature >= 170) //Dead or cryosleep people do not pump the blood.
@@ -95,7 +95,7 @@
 /mob/living/carbon/human/drip(amt)
 	if(in_stasis) // stasis now stops bloodloss
 		return
-	if(NO_BLOOD in species.flags)
+	if(NO_BLOOD in species.species_flags)
 		return
 	..()
 
@@ -134,7 +134,7 @@
 /mob/living/carbon/human/inject_blood(obj/item/reagent_container/container, amount)
 	var/datum/reagent/blood/B = locate() in container.reagents.reagent_list
 
-	if(species && species.flags & NO_BLOOD)
+	if(species && species.species_flags & NO_BLOOD)
 		reagents.add_reagent(B.id, amount, B.data_properties)
 		reagents.update_total()
 		container.reagents.remove_reagent(B.id, amount)
@@ -164,7 +164,7 @@
 
 
 /mob/living/carbon/human/take_blood(obj/O, amount)
-	if(species && species.flags & NO_BLOOD)
+	if(species && species.species_flags & NO_BLOOD)
 		return
 
 	. = ..()
@@ -276,13 +276,13 @@
 		return "xenoblood"
 
 /mob/living/carbon/human/get_blood_id()
-	if((NO_BLOOD in species.flags))
+	if((NO_BLOOD in species.species_flags))
 		return
 	if(special_blood)
 		return special_blood
 	if(species.name == "Yautja")
 		return "greenblood"
-	if(species.flags & IS_SYNTHETIC)
+	if(species.species_flags & IS_SYNTHETIC)
 		return "whiteblood"
 	if(species.name == SPECIES_ZOMBIE)
 		return "greyblood"

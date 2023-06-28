@@ -153,7 +153,7 @@
 	to_chat(target, SPAN_NOTICE("You taste [pick(V.reagent_list)]."))
 
 	for(var/datum/reagent/RG in V.reagent_list) // If it can't be ingested, remove it.
-		if(RG.flags & REAGENT_NOT_INGESTIBLE)
+		if(RG.flags_reagent & REAGENT_NOT_INGESTIBLE)
 			V.del_reagent(RG.id)
 
 	addtimer(CALLBACK(V, TYPE_PROC_REF(/datum/reagents/vessel, inject_vessel), target, INGEST, TRUE, 0.5 SECONDS), 9.5 SECONDS)

@@ -534,7 +534,7 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 	return attempt_item_insertion(W, FALSE, user)
 
 /obj/item/storage/equipped(mob/user, slot, silent)
-	if ((storage_flags & STORAGE_ALLOW_EMPTY))
+	if((storage_flags & STORAGE_ALLOW_EMPTY))
 		if(!isxeno(user))
 			verbs |= /obj/item/storage/verb/empty_verb
 			verbs |= /obj/item/storage/verb/toggle_click_empty

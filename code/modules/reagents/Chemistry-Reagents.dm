@@ -56,7 +56,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	var/objective_value // How valuable it is to identify the chemical. (Only works on chemclass SPECIAL or ULTRA)
 	var/list/datum/chem_property/properties = list() //Decides properties
 	var/original_id //For tracing back
-	var/flags = 0 // Flags for misc. stuff
+	var/flags_reagent = NO_FLAGS // Flags for misc. stuff
 
 	var/deleted = FALSE //If the reagent was deleted
 
@@ -180,7 +180,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 		if(potency <= 0)
 			continue
 		P.process(M, potency, delta_time)
-		if(flags & REAGENT_CANNOT_OVERDOSE)
+		if(flags_reagent & REAGENT_CANNOT_OVERDOSE)
 			continue
 		if(overdose && volume > overdose)
 			P.process_overdose(M, potency, delta_time)
@@ -250,7 +250,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	explosive = C.explosive
 	power = C.power
 	falloff_modifier =  C.falloff_modifier
-	flags = C.flags
+	flags_reagent = C.flags_reagent
 
 /datum/chemical_reaction/proc/make_alike(datum/chemical_reaction/C)
 	if(!C)
@@ -264,7 +264,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 
 /datum/reagent/proc/save_chemclass()
 	//Store all classed reagents so we can easily access chem IDs based on class. Doesn't store flagged reagents.
-	if(chemclass && !(flags & REAGENT_NO_GENERATION))
+	if(chemclass && !(flags_reagent & REAGENT_NO_GENERATION))
 		switch(chemclass)
 			if(CHEM_CLASS_BASIC)
 				chemical_gen_classes_list["C1"] += id

@@ -87,7 +87,7 @@
 		AddDisease(virus)
 
 /mob/living/carbon/human/contract_disease(datum/disease/virus, skip_this = 0, force_species_check=1, spread_type = -5)
-	if(species.flags & IS_SYNTHETIC) return //synthetic species are immune
+	if(species.species_flags & IS_SYNTHETIC) return //synthetic species are immune
 	..(virus, skip_this, force_species_check, spread_type)
 
 /mob/proc/AddDisease(datum/disease/D, roll_for_carrier = TRUE)

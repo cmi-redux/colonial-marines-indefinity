@@ -70,7 +70,7 @@
 
 		if(faction && faction.objectives_controller.comms)
 			// This is the first time colony comms have been established.
-			if(faction.objectives_controller.comms.state != OBJECTIVE_COMPLETE && is_ground_level(loc.z) && operable())
+			if(faction.objectives_controller.comms.objective_state != OBJECTIVE_COMPLETE && is_ground_level(loc.z) && operable())
 				faction.objectives_controller.comms.complete()
 
 /obj/structure/machinery/telecomms/relay/preset/tower/tcomms_shutdown()

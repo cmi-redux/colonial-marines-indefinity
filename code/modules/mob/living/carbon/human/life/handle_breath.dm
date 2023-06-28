@@ -8,7 +8,7 @@
 		return
 	if(istype(loc, /obj/structure/machinery/cryo_cell))
 		return
-	if(species && (species.flags & NO_BREATHE || species.flags & IS_SYNTHETIC))
+	if(species && (species.species_flags & NO_BREATHE || species.species_flags & IS_SYNTHETIC))
 		return
 
 	var/list/air_info

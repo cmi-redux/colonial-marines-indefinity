@@ -127,7 +127,7 @@ SUBSYSTEM_DEF(timer)
 		ctime_timer.spent = REALTIMEOFDAY
 		callBack.InvokeAsync()
 
-		if(ctime_timer.flags & TIMER_LOOP) // Re-insert valid looping client timers into the client timer list.
+		if(ctime_timer.timer_flags & TIMER_LOOP) // Re-insert valid looping client timers into the client timer list.
 			if(QDELETED(ctime_timer)) // Don't re-insert timers deleted inside their callbacks.
 				continue
 			ctime_timer.spent = 0
@@ -175,7 +175,7 @@ SUBSYSTEM_DEF(timer)
 				callBack.InvokeAsync()
 				last_invoke_tick = world.time
 
-			if(timer.flags & TIMER_LOOP) // Prepare valid looping timers to re-enter the queue
+			if(timer.timer_flags & TIMER_LOOP) // Prepare valid looping timers to re-enter the queue
 				if(QDELETED(timer)) // If a loop is deleted in its callback, we need to avoid re-inserting it.
 					continue
 				timer.spent = 0
@@ -374,7 +374,7 @@ SUBSYSTEM_DEF(timer)
 	/// The source of the timedevent, whatever called addtimer
 	var/source
 	/// Flags associated with the timer, see _DEFINES/subsystems.dm
-	var/list/flags
+	var/list/timer_flags
 	/// Time at which the timer was invoked or destroyed
 	var/spent = 0
 	/// An informative name generated for the timer as its representation in strings, useful for debugging
@@ -390,25 +390,25 @@ SUBSYSTEM_DEF(timer)
 	/// Initial bucket position
 	var/bucket_pos = -1
 
-/datum/timedevent/New(datum/callback/callBack, wait, flags, datum/controller/subsystem/timer/timer_subsystem, hash, source)
+/datum/timedevent/New(datum/callback/callBack, wait, timer_flags, datum/controller/subsystem/timer/timer_subsystem, hash, source)
 	var/static/nextid = 1
 	id = TIMER_ID_NULL
 	src.callBack = callBack
 	src.wait = wait
-	src.flags = flags
+	src.timer_flags = timer_flags
 	src.hash = hash
 	src.source = source
 	src.timer_subsystem = timer_subsystem || SStimer
 
 	// Determine time at which the timer's callback should be invoked
-	timeToRun = (flags & TIMER_CLIENT_TIME ? REALTIMEOFDAY : world.time) + wait
+	timeToRun = (timer_flags & TIMER_CLIENT_TIME ? REALTIMEOFDAY : world.time) + wait
 
 	// Include the timer in the hash table if the timer is unique
-	if(flags & TIMER_UNIQUE)
+	if(timer_flags & TIMER_UNIQUE)
 		timer_subsystem.hashes[hash] = src
 
 	// Generate ID for the timer if the timer is stoppable, include in the timer id dictionary
-	if(flags & TIMER_STOPPABLE)
+	if(timer_flags & TIMER_STOPPABLE)
 		id = num2text(nextid, 100)
 		if(nextid >= SHORT_REAL_LIMIT)
 			nextid += min(1, 2 ** round(nextid / SHORT_REAL_LIMIT))
@@ -416,7 +416,7 @@ SUBSYSTEM_DEF(timer)
 			nextid++
 		timer_subsystem.timer_id_dict[id] = src
 
-	if((timeToRun < world.time || timeToRun < timer_subsystem.head_offset) && !(flags & TIMER_CLIENT_TIME))
+	if((timeToRun < world.time || timeToRun < timer_subsystem.head_offset) && !(timer_flags & TIMER_CLIENT_TIME))
 		CRASH("Invalid timer state: Timer created that would require a backtrack to run (addtimer would never let this happen): [SStimer.get_timer_debug_string(src)]")
 
 	if(callBack.object != GLOBAL_PROC && !QDESTROYING(callBack.object))
@@ -426,7 +426,7 @@ SUBSYSTEM_DEF(timer)
 
 /datum/timedevent/Destroy()
 	..()
-	if(flags & TIMER_UNIQUE && hash)
+	if(timer_flags & TIMER_UNIQUE && hash)
 		timer_subsystem.hashes -= hash
 
 	if(callBack && callBack.object && callBack.object != GLOBAL_PROC && callBack.object.active_timers)
@@ -435,10 +435,10 @@ SUBSYSTEM_DEF(timer)
 
 	callBack = null
 
-	if(flags & TIMER_STOPPABLE)
+	if(timer_flags & TIMER_STOPPABLE)
 		timer_subsystem.timer_id_dict -= id
 
-	if(flags & TIMER_CLIENT_TIME)
+	if(timer_flags & TIMER_CLIENT_TIME)
 		if(!spent)
 			spent = world.time
 			timer_subsystem.clienttime_timers -= src
@@ -504,8 +504,7 @@ SUBSYSTEM_DEF(timer)
  */
 /datum/timedevent/proc/bucketJoin()
 	// Generate debug-friendly name for timer
-	var/static/list/bitfield_flags = list("TIMER_UNIQUE", "TIMER_OVERRIDE", "TIMER_CLIENT_TIME", "TIMER_STOPPABLE", "TIMER_NO_HASH_WAIT", "TIMER_LOOP")
-	name = "Timer: [id] ([text_ref(src)]), TTR: [timeToRun], wait:[wait] Flags: [jointext(bitfield_to_list(flags, bitfield_flags), ", ")], \
+	name = "Timer: [id] ([text_ref(src)]), TTR: [timeToRun], wait:[wait] Flags: [jointext(bitfield_to_list(timer_flags, timer_flags), ", ")], \
 		callBack: [text_ref(callBack)], callBack.object: [callBack.object][text_ref(callBack.object)]([getcallingtype()]), \
 		callBack.delegate:[callBack.delegate]([callBack.arguments ? callBack.arguments.Join(", ") : ""]), source: [source]"
 
@@ -514,7 +513,7 @@ SUBSYSTEM_DEF(timer)
 
 	// Check if this timed event should be diverted to the client time bucket, or the secondary queue
 	var/list/L
-	if(flags & TIMER_CLIENT_TIME)
+	if(timer_flags & TIMER_CLIENT_TIME)
 		L = timer_subsystem.clienttime_timers
 	else if(timeToRun >= TIMER_MAX(timer_subsystem))
 		L = timer_subsystem.second_queue
@@ -571,7 +570,7 @@ SUBSYSTEM_DEF(timer)
  * * flags flags for this timer, see: code\__DEFINES\subsystems.dm
  * * timer_subsystem the subsystem to insert this timer into
  */
-/proc/_addtimer(datum/callback/callback, wait = 0, flags = 0, datum/controller/subsystem/timer/timer_subsystem, file, line)
+/proc/_addtimer(datum/callback/callback, wait = 0, timer_flags = NO_FLAGS, datum/controller/subsystem/timer/timer_subsystem, file, line)
 	if(!callback)
 		CRASH("addtimer called without a callback")
 
@@ -582,7 +581,7 @@ SUBSYSTEM_DEF(timer)
 		stack_trace("addtimer called with a callback assigned to a qdeleted object. In the future such timers will not \
 			be supported and may refuse to run or run with a 0 wait")
 
-	if(flags & TIMER_CLIENT_TIME) // REALTIMEOFDAY has a resolution of 1 decisecond
+	if(timer_flags & TIMER_CLIENT_TIME) // REALTIMEOFDAY has a resolution of 1 decisecond
 		wait = max(CEILING(wait, 1), 1) // so if we use tick_lag timers may be inserted in the "past"
 	else
 		wait = max(CEILING(wait, world.tick_lag), world.tick_lag)
@@ -594,9 +593,9 @@ SUBSYSTEM_DEF(timer)
 
 	// Generate hash if relevant for timed events with the TIMER_UNIQUE flag
 	var/hash
-	if(flags & TIMER_UNIQUE)
-		var/list/hashlist = list(callback.object, "([REF(callback.object)])", callback.delegate, flags & TIMER_CLIENT_TIME)
-		if(!(flags & TIMER_NO_HASH_WAIT))
+	if(timer_flags & TIMER_UNIQUE)
+		var/list/hashlist = list(callback.object, "([REF(callback.object)])", callback.delegate, timer_flags & TIMER_CLIENT_TIME)
+		if(!(timer_flags & TIMER_NO_HASH_WAIT))
 			hashlist += wait
 		hashlist += callback.arguments
 		hash = hashlist.Join("|||||||")
@@ -606,17 +605,17 @@ SUBSYSTEM_DEF(timer)
 			if(hash_timer.spent) // it's pending deletion, pretend it doesn't exist.
 				hash_timer.hash = null // but keep it from accidentally deleting us
 			else
-				if(flags & TIMER_OVERRIDE)
+				if(timer_flags & TIMER_OVERRIDE)
 					hash_timer.hash = null // no need having it delete it's hash if we are going to replace it
 					qdel(hash_timer)
 				else
-					if(hash_timer.flags & TIMER_STOPPABLE)
+					if(hash_timer.timer_flags & TIMER_STOPPABLE)
 						. = hash_timer.id
 					return
-	else if(flags & TIMER_OVERRIDE)
+	else if(timer_flags & TIMER_OVERRIDE)
 		stack_trace("TIMER_OVERRIDE used without TIMER_UNIQUE") //this is also caught by grep.
 
-	var/datum/timedevent/timer = new(callback, wait, flags, timer_subsystem, hash, file && "[file]:[line]")
+	var/datum/timedevent/timer = new(callback, wait, timer_flags, timer_subsystem, hash, file && "[file]:[line]")
 	return timer.id
 
 /**
@@ -636,7 +635,7 @@ SUBSYSTEM_DEF(timer)
 	timer_subsystem = timer_subsystem || SStimer
 	//id is string
 	var/datum/timedevent/timer = timer_subsystem.timer_id_dict[id]
-	if(timer && (!timer.spent || timer.flags & TIMER_DELETE_ME))
+	if(timer && (!timer.spent || timer.timer_flags & TIMER_DELETE_ME))
 		qdel(timer)
 		return TRUE
 	return FALSE
@@ -660,7 +659,7 @@ SUBSYSTEM_DEF(timer)
 	var/datum/timedevent/timer = timer_subsystem.timer_id_dict[id]
 	if(!timer || timer.spent)
 		return null
-	return timer.timeToRun - (timer.flags & TIMER_CLIENT_TIME ? REALTIMEOFDAY : world.time)
+	return timer.timeToRun - (timer.timer_flags & TIMER_CLIENT_TIME ? REALTIMEOFDAY : world.time)
 
 /**
  * Update the delay on an existing LOOPING timer
@@ -684,7 +683,7 @@ SUBSYSTEM_DEF(timer)
 	var/datum/timedevent/timer = timer_subsystem.timer_id_dict[id]
 	if(!timer || timer.spent)
 		return
-	if(!(timer.flags & TIMER_LOOP))
+	if(!(timer.timer_flags & TIMER_LOOP))
 		CRASH("Tried to update the wait of a non looping timer. This is not supported")
 	timer.wait = new_wait
 

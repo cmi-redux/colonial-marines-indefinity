@@ -1,7 +1,7 @@
 // All reagents related to medicine
 
 /datum/reagent/medical
-	flags = REAGENT_TYPE_MEDICAL | REAGENT_SCANNABLE
+	flags_reagent = REAGENT_TYPE_MEDICAL | REAGENT_SCANNABLE
 
 /datum/reagent/medical/inaprovaline
 	name = "Inaprovaline"
@@ -153,7 +153,7 @@
 	reagent_state = LIQUID
 	color = "#C8A5DC" // rgb: 200, 165, 220
 	properties = list(PROPERTY_OMNIPOTENT = 2)
-	flags = REAGENT_TYPE_MEDICAL
+	flags_reagent = REAGENT_TYPE_MEDICAL
 
 /datum/reagent/medical/thwei //OP yautja chem
 	name = "Thwei"
@@ -175,7 +175,7 @@
 		PROPERTY_FOCUSING = 6,
 		PROPERTY_CURING = 4,
 	)
-	flags = REAGENT_TYPE_MEDICAL
+	flags_reagent = REAGENT_TYPE_MEDICAL
 
 /datum/reagent/medical/neuraline //injected by neurostimulator implant
 	name = "Neuraline"
@@ -188,7 +188,7 @@
 	overdose_critical = 3
 	chemclass = CHEM_CLASS_RARE
 	properties = list(PROPERTY_NERVESTIMULATING = 5)
-	flags = REAGENT_TYPE_MEDICAL
+	flags_reagent = REAGENT_TYPE_MEDICAL
 
 /datum/reagent/medical/arithrazine
 	name = "Arithrazine"
@@ -281,7 +281,7 @@
 	custom_metabolism = AMOUNT_PER_TIME(1, 5 SECONDS)
 	chemclass = CHEM_CLASS_COMMON
 	properties = list(PROPERTY_PAINKILLING = 1.5, PROPERTY_ELECTROGENETIC = 4, PROPERTY_INTRAVENOUS = 1)
-	flags = REAGENT_TYPE_MEDICAL | REAGENT_SCANNABLE
+	flags_reagent = REAGENT_TYPE_MEDICAL | REAGENT_SCANNABLE
 
 /datum/reagent/medical/ultrazine
 	name = "Ultrazine"
@@ -294,7 +294,7 @@
 	overdose_critical = LOWM_REAGENTS_OVERDOSE_CRITICAL
 	chemclass = CHEM_CLASS_RARE
 	properties = list(PROPERTY_MUSCLESTIMULATING = 40, PROPERTY_ADDICTIVE = 8)
-	flags = REAGENT_TYPE_MEDICAL | REAGENT_NO_GENERATION
+	flags_reagent = REAGENT_TYPE_MEDICAL | REAGENT_NO_GENERATION
 
 /datum/reagent/medical/stimulant
 	name = "Stimulant"
@@ -307,7 +307,7 @@
 	overdose_critical = LOWH_REAGENTS_OVERDOSE_CRITICAL
 	chemclass = CHEM_CLASS_RARE
 	properties = list(PROPERTY_UNKNOWN = 1)
-	flags = REAGENT_TYPE_MEDICAL | REAGENT_NO_GENERATION
+	flags_reagent = REAGENT_TYPE_MEDICAL | REAGENT_NO_GENERATION
 
 /datum/reagent/medical/cryoxadone
 	name = "Cryoxadone"

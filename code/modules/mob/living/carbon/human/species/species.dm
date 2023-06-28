@@ -23,10 +23,10 @@
 	var/slowdown = 0
 	var/gluttonous // Can eat some mobs. 1 for monkeys, 2 for people.
 	var/rarity_value = 1  // Relative rarity/collector value for this species. Only used by ninja and cultists atm.
-	var/unarmed_type =    /datum/unarmed_attack
+	var/unarmed_type = /datum/unarmed_attack
 	var/secondary_unarmed_type = /datum/unarmed_attack/bite
-	var/pain_type   = /datum/pain/human
-	var/stamina_type    = /datum/stamina
+	var/pain_type = /datum/pain/human
+	var/stamina_type = /datum/stamina
 
 	var/timed_hug = TRUE
 
@@ -50,30 +50,30 @@
 
 	var/total_health = 100  //new maxHealth
 
-	var/cold_level_1 = 260  // Cold damage level 1 below this point.
-	var/cold_level_2 = 240  // Cold damage level 2 below this point.
-	var/cold_level_3 = 120  // Cold damage level 3 below this point.
+	var/cold_level_1 = 260 // Cold damage level 1 below this point.
+	var/cold_level_2 = 240 // Cold damage level 2 below this point.
+	var/cold_level_3 = 120 // Cold damage level 3 below this point.
 
-	var/heat_level_1 = 360  // Heat damage level 1 above this point.
-	var/heat_level_2 = 400  // Heat damage level 2 above this point.
+	var/heat_level_1 = 360 // Heat damage level 1 above this point.
+	var/heat_level_2 = 400 // Heat damage level 2 above this point.
 	var/heat_level_3 = 1000 // Heat damage level 2 above this point.
 
 	var/body_temperature = 310.15 //non-IS_SYNTHETIC species will try to stabilize at this temperature. (also affects temperature processing)
-	var/reagent_tag  //Used for metabolizing reagents.
+	var/reagent_tag //Used for metabolizing reagents.
 
 	var/darksight = 2
 	var/default_lighting_alpha = LIGHTING_PLANE_ALPHA_VISIBLE
 
 	var/brute_mod = null // Physical damage reduction/malus.
-	var/burn_mod = null  // Burn damage reduction/malus.
+	var/burn_mod = null // Burn damage reduction/malus.
 
-	var/flags = 0    // Various specific features.
+	var/species_flags = NO_FLAGS // Various specific features.
 
 	var/list/abilities = list() // For species-derived or admin-given powers
 
 	var/blood_color = BLOOD_COLOR_HUMAN //Red.
 	var/flesh_color = "#FFC896" //Pink.
-	var/base_color   //Used when setting species.
+	var/base_color   //Used when setting flags
 	var/hair_color   //If the species only has one hair color
 
 	//Used in icon caching.
@@ -156,7 +156,7 @@
 		var/organ_type = has_organ[organ]
 		H.internal_organs_by_name[organ] = new organ_type(H)
 
-	if(flags & IS_SYNTHETIC)
+	if(species_flags & IS_SYNTHETIC)
 		C.robotize(synth_skin = TRUE) //Also gets all other limbs, as those are attached.
 		for(var/datum/internal_organ/I in H.internal_organs)
 			I.mechanize()

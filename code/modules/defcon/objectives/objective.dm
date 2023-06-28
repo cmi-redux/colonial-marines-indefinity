@@ -3,7 +3,7 @@
 // --------------------------------------------
 /datum/cm_objective
 	var/name = "An objective to complete"
-	var/state = OBJECTIVE_INACTIVE // Whether the objective is inactive, active or complete.
+	var/objective_state = OBJECTIVE_INACTIVE // Whether the objective is inactive, active or complete.
 	var/value = OBJECTIVE_NO_VALUE // The point value of this objective.
 	var/list/required_objectives //List of objectives that are required to complete this objectives.
 	var/list/enables_objectives //List of objectives that require this objective to complete.
@@ -60,7 +60,7 @@
 	SSobjectives.stop_processing_objective(src)
 
 /datum/cm_objective/proc/get_completion_status()
-	if(state & OBJECTIVE_COMPLETE)
+	if(objective_state & OBJECTIVE_COMPLETE)
 		return "<span class='objectivesuccess'>Succeeded!</span>"
 	return "<span class='objectivebig'>In Progress!</span>"
 
@@ -69,7 +69,7 @@
 	return dat + get_completion_status() + "<br>"
 
 /datum/cm_objective/proc/get_point_value()
-	if(state & OBJECTIVE_COMPLETE)
+	if(objective_state & OBJECTIVE_COMPLETE)
 		return value
 	return FALSE
 

@@ -5,7 +5,7 @@
 	var/rotating = FALSE
 	var/datum/faction/atom_ref_faction
 	var/color
-	var/flags
+	var/flags_tacmap = NO_FLAGS
 	var/generated_tag_ally
 	var/generated_tag
 	var/list/image/image_assoc = list()
@@ -17,7 +17,7 @@
 	tcmp_effect.forceMove(atom_source)
 	tcmp_effect.range_bounds.width = atom_source.sensor_radius * 2
 	tcmp_effect.range_bounds.height = atom_source.sensor_radius * 2
-	flags = new_flags
+	flags_tacmap = new_flags
 	atom_ref = atom_source
 	atom_ref_faction = atom_source.faction
 	icon_state = iconstate
@@ -25,7 +25,7 @@
 	rotating = rotating_new
 	if(custom_color)
 		color = custom_color
-		flags |= TCMP_CUSTOM_COLOR
+		flags_tacmap |= TCMP_CUSTOM_COLOR
 
 	for(var/faction_to_get in FACTION_LIST_ALL)
 		image_assoc[faction_to_get] = generate_icon(faction_to_get)
@@ -48,7 +48,7 @@
 	return image
 
 /datum/tacmap/mob_datum/proc/get_color(datum/faction/faction)
-	if(flags & TCMP_CUSTOM_COLOR)
+	if(flags_tacmap & TCMP_CUSTOM_COLOR)
 		return color
 	else if(atom_ref_faction.faction_is_ally(faction) && atom_ref_faction != faction)
 		return faction.color

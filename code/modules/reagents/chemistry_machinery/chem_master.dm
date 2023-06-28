@@ -222,9 +222,9 @@
 			if(reagents.total_volume/count < 1) //Sanity checking.
 				return
 
-			for(var/datum/reagent/R in reagents.reagent_list)
-				if(R.flags & REAGENT_NOT_INGESTIBLE)
-					to_chat(user, SPAN_WARNING("[R.name] must be administered intravenously and cannot be made into a pill."))
+			for(var/datum/reagent/reagent in reagents.reagent_list)
+				if(reagent.flags_reagent & REAGENT_NOT_INGESTIBLE)
+					to_chat(user, SPAN_WARNING("[reagent.name] must be administered intravenously and cannot be made into a pill."))
 					return
 
 			var/amount_per_pill = reagents.total_volume/count

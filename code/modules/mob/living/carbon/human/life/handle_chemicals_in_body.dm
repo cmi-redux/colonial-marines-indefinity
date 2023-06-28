@@ -14,7 +14,7 @@
 				universal_understand = FALSE
 			chem_effect_flags = 0
 
-	if(reagents && !(species.flags & NO_CHEM_METABOLIZATION))
+	if(reagents && !(species.species_flags & NO_CHEM_METABOLIZATION))
 		var/alien = 0
 		if(species && species.reagent_tag)
 			alien = species.reagent_tag
@@ -23,7 +23,7 @@
 	if(status_flags & GODMODE)
 		return 0 //Godmode
 
-	if(!(species.flags & IS_SYNTHETIC))
+	if(!(species.species_flags & IS_SYNTHETIC))
 		//Nutrition decrease
 		if(nutrition > 0 && stat != 2)
 			nutrition = max (0, nutrition - HUNGER_FACTOR)

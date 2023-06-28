@@ -277,7 +277,7 @@
 	else if(isyautja(H))
 		playsound(loc, 'sound/voice/pred_facehugged.ogg', 65, FALSE)
 	if(!sterile)
-		if(!H.species || !(H.species.flags & IS_SYNTHETIC)) //synthetics aren't paralyzed
+		if(!H.species || !(H.species.species_flags & IS_SYNTHETIC)) //synthetics aren't paralyzed
 			H.apply_effect(MIN_IMPREGNATION_TIME * 0.5 * knockout_mod, PARALYZE) //THIS MIGHT NEED TWEAKS
 
 	addtimer(CALLBACK(src, PROC_REF(impregnate), H), rand(MIN_IMPREGNATION_TIME, MAX_IMPREGNATION_TIME))

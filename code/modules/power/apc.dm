@@ -800,7 +800,7 @@ GLOBAL_LIST_INIT(apc_wire_descriptions, list(
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 
-		if(H.species.flags & IS_SYNTHETIC && H.a_intent == INTENT_GRAB)
+		if(H.species.species_flags & IS_SYNTHETIC && H.a_intent == INTENT_GRAB)
 			if(H.action_busy)
 				return
 

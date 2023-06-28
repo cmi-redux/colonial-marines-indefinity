@@ -288,7 +288,7 @@
 	if(isxeno(puller) && source.stat == UNCONSCIOUS)
 		if(source.get_species())
 			var/mob/living/carbon/human/H = source
-			if(H.species.flags & HAS_HARDCRIT)
+			if(H.species.species_flags & HAS_HARDCRIT)
 				source.apply_damage(20, OXY)
 
 /datum/pain/proc/handle_devour(mob/living/source)

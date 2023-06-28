@@ -41,13 +41,13 @@
 	return clue
 
 /datum/cm_objective/crack_safe/complete()
-	state = OBJECTIVE_COMPLETE
+	objective_state = OBJECTIVE_COMPLETE
 	SSobjectives.statistics["miscellaneous_completed"]++
 	SSobjectives.statistics["miscellaneous_total_points_earned"] += value
 
 /datum/cm_objective/crack_safe/proc/on_safe_open(obj/structure/safe)
 	SIGNAL_HANDLER
 
-	if(state != OBJECTIVE_COMPLETE)
+	if(objective_state != OBJECTIVE_COMPLETE)
 		UnregisterSignal(safe, COMSIG_SAFE_OPENED)
 		complete()

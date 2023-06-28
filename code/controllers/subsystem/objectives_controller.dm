@@ -68,7 +68,7 @@ SUBSYSTEM_DEF(objectives)
 		current_active_run.len--
 		objective.process()
 		objective.check_completion()
-		if(objective.state & OBJECTIVE_COMPLETE|OBJECTIVE_FAILED)
+		if(objective.objective_state & OBJECTIVE_COMPLETE|OBJECTIVE_FAILED)
 			stop_processing_objective(objective)
 
 		if(MC_TICK_CHECK)

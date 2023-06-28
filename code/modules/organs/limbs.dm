@@ -692,7 +692,7 @@ This function completely restores a damaged organ to perfect condition.
 
 	var/race_icon = owner.species.icobase
 
-	if((status & LIMB_ROBOT) && !(owner.species && owner.species.flags & IS_SYNTHETIC))
+	if((status & LIMB_ROBOT) && !(owner.species && owner.species.species_flags & IS_SYNTHETIC))
 		overlays.Cut()
 		icon = 'icons/mob/robotic.dmi'
 		icon_state = "[icon_name]"
@@ -856,7 +856,7 @@ This function completely restores a damaged organ to perfect condition.
 		var/obj/organ //Dropped limb object
 		switch(body_part)
 			if(BODY_FLAG_HEAD)
-				if(owner.species.flags & IS_SYNTHETIC) //special head for synth to allow brainmob to talk without an MMI
+				if(owner.species.species_flags & IS_SYNTHETIC) //special head for synth to allow brainmob to talk without an MMI
 					organ= new /obj/item/limb/head/synth(owner.loc, owner)
 				else
 					organ= new /obj/item/limb/head(owner.loc, owner)
@@ -1074,7 +1074,7 @@ treat_grafted var tells it to apply to grafted but unsalved wounds, for burn kit
 		bonebreak_probability = 0
 
 	//If you have this special flag you are exempt from the endurance bone break check
-	if(owner.species.flags & SPECIAL_BONEBREAK)
+	if(owner.species.species_flags & SPECIAL_BONEBREAK)
 		bonebreak_probability = 100
 
 	if(!owner.skills)
@@ -1399,7 +1399,7 @@ treat_grafted var tells it to apply to grafted but unsalved wounds, for burn kit
 	eyes.color = list(null, null, null, null, rgb(owner.r_eyes, owner.g_eyes, owner.b_eyes))
 	overlays += eyes
 
-	if(owner.lip_style && (owner.species && owner.species.flags & HAS_LIPS))
+	if(owner.lip_style && (owner.species && owner.species.species_flags & HAS_LIPS))
 		var/icon/lips = new /icon('icons/mob/humans/onmob/human_face.dmi', "paint_[owner.lip_style]")
 		overlays += lips
 

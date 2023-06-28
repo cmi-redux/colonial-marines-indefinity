@@ -171,7 +171,7 @@
 		L.icon_name = get_limb_icon_name(species, b_icon, gender, L.display_name, e_icon)
 
 /mob/living/carbon/human/can_inject(mob/user, error_msg, target_zone)
-	if(species?.flags & IS_SYNTHETIC)
+	if(species?.species_flags & IS_SYNTHETIC)
 		if(user && error_msg)
 			to_chat(user, SPAN_WARNING("[src] has no flesh to inject."))
 		return FALSE

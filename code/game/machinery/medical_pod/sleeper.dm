@@ -149,7 +149,7 @@
 		// Runtime is aptly named, isn't she?
 		if(ishuman(occupant))
 			var/mob/living/carbon/human/human_occupant = occupant
-			if(!(NO_BLOOD in human_occupant.species.flags))
+			if(!(NO_BLOOD in human_occupant.species.species_flags))
 				occupantData["pulse"] = human_occupant.get_pulse(GETPULSE_TOOL)
 				occupantData["hasBlood"] = 1
 				occupantData["bloodLevel"] = round(occupant.blood_volume)

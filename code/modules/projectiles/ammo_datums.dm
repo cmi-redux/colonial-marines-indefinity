@@ -2831,7 +2831,7 @@ CUSTOM_AMMO_PENETRATION
 		return //endurance 5 makes you immune to weak neurotoxin
 	if(ishuman(hit))
 		var/mob/living/carbon/human/H = hit
-		if(H.chem_effect_flags & CHEM_EFFECT_RESIST_NEURO || H.species.flags & NO_NEURO)
+		if(H.chem_effect_flags & CHEM_EFFECT_RESIST_NEURO || H.species.species_flags & NO_NEURO)
 			H.visible_message(SPAN_DANGER("[hit] shrugs off the neurotoxin!"))
 			return //species like zombies or synths are immune to neurotoxin
 
@@ -2863,7 +2863,7 @@ CUSTOM_AMMO_PENETRATION
 		if(skillcheck(hit, SKILL_ENDURANCE, SKILL_ENDURANCE_MAX))
 			hit.visible_message(SPAN_DANGER("[hit] withstands the neurotoxin!"))
 			return //endurance 5 makes you immune to weak neuro
-		if(H.chem_effect_flags & CHEM_EFFECT_RESIST_NEURO || H.species.flags & NO_NEURO)
+		if(H.chem_effect_flags & CHEM_EFFECT_RESIST_NEURO || H.species.species_flags & NO_NEURO)
 			H.visible_message(SPAN_DANGER("[hit] shrugs off the neurotoxin!"))
 			return
 

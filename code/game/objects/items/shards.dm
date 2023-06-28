@@ -185,7 +185,7 @@
 	if(!ishuman(embedded_mob))
 		return
 	var/mob/living/carbon/human/H = embedded_mob
-	if(H.species.flags & NO_SHRAPNEL)
+	if(H.species.species_flags & NO_SHRAPNEL)
 		return
 	if(istype(target_organ))
 		target_organ.embed(src)
@@ -194,7 +194,7 @@
 	if(!ishuman(embedded_mob))
 		return
 	var/mob/living/carbon/human/H = embedded_mob
-	if(H.species.flags & NO_SHRAPNEL)
+	if(H.species.species_flags & NO_SHRAPNEL)
 		return
 	var/obj/limb/organ = embedded_organ
 	if(istype(organ))
@@ -217,7 +217,7 @@
 	if(!ishuman(embedded_mob))
 		return
 	var/mob/living/carbon/human/H = embedded_mob
-	if(H.species.flags & NO_SHRAPNEL)
+	if(H.species.species_flags & NO_SHRAPNEL)
 		return
 	if(istype(target_organ))
 		target_organ.embed(src)
@@ -226,7 +226,7 @@
 	if(!ishuman(embedded_mob))
 		return
 	var/mob/living/carbon/human/H = embedded_mob
-	if(H.species.flags & NO_SHRAPNEL)
+	if(H.species.species_flags & NO_SHRAPNEL)
 		return
 	var/obj/limb/organ = embedded_organ
 	if(istype(organ))

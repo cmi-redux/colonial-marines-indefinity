@@ -361,7 +361,7 @@
 	color = "#FFFFFF" // rgb: 255, 255, 255
 	chemclass = CHEM_CLASS_BASIC
 	properties = list(PROPERTY_NUTRITIOUS = 1)
-	flags = REAGENT_TYPE_MEDICAL
+	flags_reagent = REAGENT_TYPE_MEDICAL
 
 /datum/reagent/glycerol
 	name = "Glycerol"
@@ -423,7 +423,7 @@
 	overdose_critical = REAGENTS_OVERDOSE_CRITICAL
 	chemclass = CHEM_CLASS_BASIC
 	properties = list(PROPERTY_HEMOGENIC = 3)
-	flags = REAGENT_TYPE_MEDICAL | REAGENT_SCANNABLE
+	flags_reagent = REAGENT_TYPE_MEDICAL | REAGENT_SCANNABLE
 
 /datum/reagent/gold
 	name = "Gold"
@@ -583,7 +583,7 @@
 	burncolormod = 2
 	chemclass = CHEM_CLASS_RARE
 	custom_metabolism = AMOUNT_PER_TIME(1, 200 SECONDS)
-	flags = REAGENT_NO_GENERATION
+	flags_reagent = REAGENT_NO_GENERATION
 
 /datum/reagent/nanites
 	name = "Nanomachines"
@@ -632,7 +632,7 @@
 	reagent_state = LIQUID
 	color = "#181818" // rgb: 24, 24, 24
 	chemclass = CHEM_CLASS_RARE
-	flags = REAGENT_SCANNABLE
+	flags_reagent = REAGENT_SCANNABLE
 
 /datum/reagent/ammonia
 	name = "Ammonia"
@@ -968,7 +968,7 @@
 		return
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		if((locate(/obj/item/alien_embryo) in H.contents) || (H.species.flags & IS_SYNTHETIC) || !H.huggable)
+		if((locate(/obj/item/alien_embryo) in H.contents) || (H.species.species_flags & IS_SYNTHETIC) || !H.huggable)
 			volume = 0
 			return
 		if(volume < overdose_critical)
@@ -1038,4 +1038,4 @@
 	overdose_critical = MED_REAGENTS_OVERDOSE_CRITICAL
 	chemclass = CHEM_CLASS_SPECIAL
 	properties = list(PROPERTY_TRANSFORMATIVE = 4, PROPERTY_NUTRITIOUS = 3, PROPERTY_HEMOGENIC = 1)
-	flags = REAGENT_SCANNABLE
+	flags_reagent = REAGENT_SCANNABLE

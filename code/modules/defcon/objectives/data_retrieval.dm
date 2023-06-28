@@ -61,7 +61,7 @@
 		SSobjectives.stop_processing_objective(src)
 		uploading = FALSE
 		return
-	if(!GLOB.objective_controller[controller].comms.state == OBJECTIVE_COMPLETE)
+	if(!GLOB.objective_controller[controller].comms.objective_state == OBJECTIVE_COMPLETE)
 		terminal.visible_message(SPAN_WARNING("\The [terminal] stops mid-operation due to a network connection error."))
 		playsound(terminal, 'sound/machines/terminal_shutdown.ogg', 25, 1)
 		SSobjectives.stop_processing_objective(src)
@@ -71,7 +71,7 @@
 	..()
 
 /datum/cm_objective/retrieve_data/terminal/complete()
-	state = OBJECTIVE_COMPLETE
+	objective_state = OBJECTIVE_COMPLETE
 	uploading = FALSE
 	terminal.visible_message(SPAN_NOTICE("[terminal] pings softly as it finishes the upload."))
 	playsound(terminal, 'sound/machines/screen_output1.ogg', 25, 1)
@@ -125,7 +125,7 @@
 	..()
 
 /datum/cm_objective/retrieve_data/disk/complete()
-	state = OBJECTIVE_COMPLETE
+	objective_state = OBJECTIVE_COMPLETE
 	var/obj/structure/machinery/computer/disk_reader/reader = disk.loc
 	controller = reader.faction.faction_name
 	reader.visible_message("\The [reader] pings softly as the upload finishes and ejects the disk.")
@@ -135,7 +135,7 @@
 	reader.disk = null
 
 	// Now enable the objective to store this disk in the lab.
-	disk.retrieve_objective.state = OBJECTIVE_ACTIVE
+	disk.retrieve_objective.objective_state = OBJECTIVE_ACTIVE
 	disk.retrieve_objective.activate()
 
 	..()
@@ -268,10 +268,10 @@
 	if(!powered())
 		to_chat(user, SPAN_WARNING("This terminal has no power!"))
 		return
-	if(!user.faction || !user.faction.objectives_controller.comms.state == OBJECTIVE_COMPLETE)
+	if(!user.faction || !user.faction.objectives_controller.comms.objective_state == OBJECTIVE_COMPLETE)
 		to_chat(user, SPAN_WARNING("The terminal flashes a network connection error."))
 		return
-	if(objective.state == OBJECTIVE_COMPLETE)
+	if(objective.objective_state == OBJECTIVE_COMPLETE)
 		to_chat(user, SPAN_WARNING("There's a message on the screen that the data upload finished successfully."))
 		return
 	if(uploading)
@@ -305,7 +305,7 @@
 			to_chat(user, SPAN_WARNING("There is a disk in the drive being uploaded already!"))
 			return FALSE
 		var/obj/item/disk/objective/newdisk = W
-		if(newdisk.objective.state == OBJECTIVE_COMPLETE)
+		if(newdisk.objective.objective_state == OBJECTIVE_COMPLETE)
 			to_chat(user, SPAN_WARNING("The reader displays a message stating this disk has already been read and refuses to accept it."))
 			return FALSE
 		if(input(user,"Enter the encryption key","Decrypting [newdisk]","") != newdisk.objective.decryption_password)

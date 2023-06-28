@@ -5,7 +5,7 @@
 	overdose = LOWH_REAGENTS_OVERDOSE
 	overdose_critical = LOWH_REAGENTS_OVERDOSE_CRITICAL
 	chemclass = CHEM_CLASS_NONE
-	flags = REAGENT_SCANNABLE | REAGENT_TYPE_STIMULANT
+	flags_reagent = REAGENT_SCANNABLE | REAGENT_TYPE_STIMULANT
 	var/jitter_speed = 0.3 SECONDS
 	var/jitter_per_amount = 2
 	var/jitter = 2
@@ -15,17 +15,17 @@
 	// Stimulants drain faster for each stimulant in the drug.
 	// Having 2 stimulants means the duration will be 2x shorter, having 3 will be 3x shorter, etc
 	if(holder)
-		for(var/datum/reagent/R in holder.reagent_list)
-			if(R == src)
+		for(var/datum/reagent/reagent in holder.reagent_list)
+			if(reagent == src)
 				continue
 
-			if(R.flags & REAGENT_TYPE_STIMULANT)
-				holder.remove_reagent(R, custom_metabolism)
+			if(reagent.flags_reagent & REAGENT_TYPE_STIMULANT)
+				holder.remove_reagent(reagent, custom_metabolism)
 
 	// We multiply delta_time by 1.5 so that it looks like it is consistent.
 	var/time_per_animate = (jitter_speed/(jitter_per_amount + 2))
 
-	animate(M, pixel_x = rand(-jitter, jitter), pixel_y = rand(-jitter, jitter), time = time_per_animate, flags=ANIMATION_END_NOW)
+	animate(M, pixel_x = rand(-jitter, jitter), pixel_y = rand(-jitter, jitter), time = time_per_animate, flags = ANIMATION_END_NOW)
 	for(var/i in 1 to jitter_per_amount)
 		animate(pixel_x = rand(-jitter, jitter), pixel_y = rand(-jitter, jitter), time = time_per_animate)
 	animate(pixel_x = 0, pixel_y = 0, time = time_per_animate)

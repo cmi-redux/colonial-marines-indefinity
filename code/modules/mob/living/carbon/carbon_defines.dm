@@ -30,7 +30,7 @@
 	var/obj/item/faction_tag/organ/organ_faction_tag = null
 	var/obj/item/faction_tag/faction_tag = null
 
-	var/morale_flags = NO_FLAGS
+	var/flags_morale = NO_FLAGS
 	var/morale = 100
 
 	sensor_radius = 7

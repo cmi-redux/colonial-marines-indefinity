@@ -17,7 +17,7 @@
 /datum/objective_memory_storage/proc/store_single_objective(datum/cm_objective/O)
 	if(!istype(O))
 		return
-	if(O.state == OBJECTIVE_COMPLETE)
+	if(O.objective_state == OBJECTIVE_COMPLETE)
 		return
 	if(istype(O, /datum/cm_objective/document/folder))
 		addToListNoDupe(folders, O)
@@ -54,25 +54,25 @@
 
 /datum/objective_memory_storage/proc/clean_objectives()
 	for(var/datum/cm_objective/O in folders)
-		if(O.state == OBJECTIVE_COMPLETE)
+		if(O.objective_state == OBJECTIVE_COMPLETE)
 			folders -= O
 	for(var/datum/cm_objective/O in progress_reports)
-		if(O.state == OBJECTIVE_COMPLETE)
+		if(O.objective_state == OBJECTIVE_COMPLETE)
 			progress_reports -= O
 	for(var/datum/cm_objective/O in technical_manuals)
-		if(O.state == OBJECTIVE_COMPLETE)
+		if(O.objective_state == OBJECTIVE_COMPLETE)
 			technical_manuals -= O
 	for(var/datum/cm_objective/O in terminals)
-		if(O.state == OBJECTIVE_COMPLETE)
+		if(O.objective_state == OBJECTIVE_COMPLETE)
 			terminals -= O
 	for(var/datum/cm_objective/O in disks)
-		if(O.state == OBJECTIVE_COMPLETE)
+		if(O.objective_state == OBJECTIVE_COMPLETE)
 			disks -= O
 	for(var/datum/cm_objective/O in retrieve_items)
-		if(O.state == OBJECTIVE_COMPLETE)
+		if(O.objective_state == OBJECTIVE_COMPLETE)
 			retrieve_items -= O
 	for(var/datum/cm_objective/O in other)
-		if(O.state == OBJECTIVE_COMPLETE)
+		if(O.objective_state == OBJECTIVE_COMPLETE)
 			other -= O
 
 // --------------------------------------------
@@ -148,7 +148,7 @@
 	clue_category["icon"] = "scroll"
 	clue_category["clues"] = list()
 	for (var/datum/cm_objective/document/progress_report/report in memories.progress_reports)
-		if(report.state == OBJECTIVE_ACTIVE)
+		if(report.objective_state == OBJECTIVE_ACTIVE)
 			clue_category["clues"] += list(report.get_tgui_data())
 	clue_categories += list(clue_category)
 
@@ -159,7 +159,7 @@
 	clue_category["icon"] = "folder"
 	clue_category["clues"] = list()
 	for (var/datum/cm_objective/document/folder/folder in memories.folders)
-		if(folder.state == OBJECTIVE_ACTIVE)
+		if(folder.objective_state == OBJECTIVE_ACTIVE)
 			clue_category["clues"] += list(folder.get_tgui_data())
 	clue_categories += list(clue_category)
 
@@ -170,7 +170,7 @@
 	clue_category["icon"] = "book"
 	clue_category["clues"] = list()
 	for (var/datum/cm_objective/document/technical_manual/manual in memories.technical_manuals)
-		if(manual.state == OBJECTIVE_ACTIVE)
+		if(manual.objective_state == OBJECTIVE_ACTIVE)
 			clue_category["clues"] += list(manual.get_tgui_data())
 	clue_categories += list(clue_category)
 
@@ -181,10 +181,10 @@
 	clue_category["icon"] = "save"
 	clue_category["clues"] = list()
 	for(var/datum/cm_objective/retrieve_data/disk/disk in memories.disks)
-		if(disk.state == OBJECTIVE_ACTIVE)
+		if(disk.objective_state == OBJECTIVE_ACTIVE)
 			clue_category["clues"] += list(disk.get_tgui_data())
 	for(var/datum/cm_objective/retrieve_data/terminal/terminal in memories.terminals)
-		if(terminal.state == OBJECTIVE_ACTIVE)
+		if(terminal.objective_state == OBJECTIVE_ACTIVE)
 			clue_category["clues"] += list(terminal.get_tgui_data())
 	clue_categories += list(clue_category)
 
@@ -196,7 +196,7 @@
 	clue_category["compact"] = TRUE
 	clue_category["clues"] = list()
 	for(var/datum/cm_objective/retrieve_item/objective in memories.retrieve_items)
-		if(objective.state == OBJECTIVE_ACTIVE)
+		if(objective.objective_state == OBJECTIVE_ACTIVE)
 			clue_category["clues"] += list(objective.get_tgui_data())
 	clue_categories += list(clue_category)
 
@@ -211,7 +211,7 @@
 		// Safes
 		if(istype(objective, /datum/cm_objective/crack_safe))
 			var/datum/cm_objective/crack_safe/safe = objective
-			if(safe.state == OBJECTIVE_ACTIVE)
+			if(safe.objective_state == OBJECTIVE_ACTIVE)
 				clue_category["clues"] += list(safe.get_tgui_data())
 			continue
 
@@ -300,9 +300,9 @@
 		"Colony communications",
 		FALSE,
 		FALSE,
-		(controller.comms.state == OBJECTIVE_COMPLETE ? controller.comms.value : FALSE),
-		(controller.comms.state == OBJECTIVE_COMPLETE ? "green" : "red"),
-		(controller.comms.state == OBJECTIVE_COMPLETE ? "Online" : "Offline"),
+		(controller.comms.objective_state == OBJECTIVE_COMPLETE ? controller.comms.value : FALSE),
+		(controller.comms.objective_state == OBJECTIVE_COMPLETE ? "green" : "red"),
+		(controller.comms.objective_state == OBJECTIVE_COMPLETE ? "Online" : "Offline"),
 	))
 
 	// Power (smes)
@@ -311,7 +311,7 @@
 	if(!controller.first_drop_complete)
 		message = "Unable to remotely interface with powernet"
 		color = "white"
-	else if(controller.power.state == OBJECTIVE_COMPLETE)
+	else if(controller.power.objective_state == OBJECTIVE_COMPLETE)
 		message = "Online"
 		color = "green"
 	else if(controller.power.last_power_output)
@@ -325,7 +325,7 @@
 		"Colony power",
 		FALSE,
 		FALSE,
-		(controller.power.state == OBJECTIVE_COMPLETE ? controller.power.value : FALSE),
+		(controller.power.objective_state == OBJECTIVE_COMPLETE ? controller.power.value : FALSE),
 		color,
 		message,
 	))

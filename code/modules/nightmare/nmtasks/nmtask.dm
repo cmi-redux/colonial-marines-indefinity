@@ -3,7 +3,7 @@
 	/// Task name
 	var/name = "abstract task"
 	/// Task behavior flags
-	var/flags = NIGHTMARE_TASKFLAG_ONESHOT
+	var/nightmare_flags = NIGHTMARE_TASKFLAG_ONESHOT
 
 /datum/nmtask/New(name)
 	. = ..()
@@ -22,10 +22,10 @@
 /// Invoke task execution synchronously
 /datum/nmtask/proc/invoke_sync()
 	SHOULD_NOT_OVERRIDE(TRUE)
-	if(flags & NIGHTMARE_TASKFLAG_DISABLED)
+	if(nightmare_flags & NIGHTMARE_TASKFLAG_DISABLED)
 		return NIGHTMARE_TASK_ERROR
-	if(flags & NIGHTMARE_TASKFLAG_ONESHOT)
-		flags |= NIGHTMARE_TASKFLAG_DISABLED
+	if(nightmare_flags & NIGHTMARE_TASKFLAG_ONESHOT)
+		nightmare_flags |= NIGHTMARE_TASKFLAG_DISABLED
 	. = NIGHTMARE_TASK_ASYNC // Feedback & Safety
 	. = execute()
 
