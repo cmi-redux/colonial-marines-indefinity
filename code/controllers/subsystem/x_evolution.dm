@@ -35,7 +35,7 @@ SUBSYSTEM_DEF(xevolution)
 		if((world.time - SSticker.round_start_time) < XENO_ROUNDSTART_PROGRESS_TIME_2)
 			boost_power_new = max(boost_power_new, XENO_ROUNDSTART_PROGRESS_AMOUNT)
 		else
-			boost_power_new = Floor(10 * (world.time - XENO_ROUNDSTART_PROGRESS_TIME_2 - SSticker.round_start_time) / EVOLUTION_INCREMENT_TIME) / 10
+			boost_power_new = round(10 * (world.time - XENO_ROUNDSTART_PROGRESS_TIME_2 - SSticker.round_start_time) / EVOLUTION_INCREMENT_TIME) / 10
 
 			//Add on any bonuses from evopods after applying upgrade progress
 			boost_power_new += (0.5 * faction.has_special_structure(XENO_STRUCTURE_EVOPOD))

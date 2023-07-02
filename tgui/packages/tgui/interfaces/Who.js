@@ -1,6 +1,5 @@
-import { Fragment } from 'inferno';
 import { useBackend } from '../backend';
-import { Button, Divider, Collapsible, Box } from '../components';
+import { Button, Collapsible, Box, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 export const Who = (props, context) => {
@@ -17,185 +16,125 @@ export const Who = (props, context) => {
   return (
     <Window resizable width={600} height={600}>
       <Window.Content scrollable>
-        {total_players !== undefined && (
-          <Fragment>
-            <WhoCollapsible title="Players">
-              <Box direction="column">
-                {total_players.map((x, index) => (
-                  <Box key={x.index} direction="row">
-                    <a color={x.ckey_color}>{x.ckey}</a>
-                    {admin && (
-                      <a>
-                        <GetPlayerInfo
-                          mob_state={x.mob_state}
-                          mob_type={x.mob_type}
-                          mob_name={x.mob_name}
-                          observer_state={x.observer_state}
-                          mob_state_color={x.mob_state_color}
-                          color_mob_state={x.color_mob_state}
-                          mob_type_name={x.mob_type_name}
+        <Stack fill vertical>
+          <Stack.Item mt={0.2}>
+            <Section fill>
+              {total_players !== undefined && (
+                <WhoCollapsible title={'Players - ' + all_clients} color="good">
+                  {total_players.map((x, index) => (
+                    <GetPlayerInfo
+                      key={x.index}
+                      admin={admin}
+                      ckey={x.ckey}
+                      ckey_color={x.ckey_color}
+                      color={x.color}
+                      text={x.text}
+                    />
+                  ))}
+                </WhoCollapsible>
+              )}
+            </Section>
+          </Stack.Item>
+          <Stack.Item height="6px" />
+          <Stack.Item mt={0.2} grow>
+            <Section fill>
+              {admin && (
+                <WhoCollapsible title="Information" color="olive">
+                  <Box direction="column">
+                    {additional_info !== undefined &&
+                      additional_info.map((x, index) => (
+                        <GetAddInfo
+                          key={x.index}
+                          content={x.content}
+                          color={x.color}
+                          text={x.text}
                         />
-                        <Button
-                          color="red"
-                          content="?"
-                          onClick={() =>
-                            act('get_player_panel', { ckey: x.ckey })
-                          }
+                      ))}
+                    {factions !== undefined &&
+                      factions.map((x, index) => (
+                        <GetAddInfo
+                          key={x.index}
+                          content={x.content}
+                          color={x.color}
+                          text={x.text}
                         />
-                      </a>
-                    )}
-                  </Box>
-                ))}
-              </Box>
-            </WhoCollapsible>
-            <Divider />
-          </Fragment>
-        )}
-        {all_clients !== undefined && (
-          <Fragment>
-            <Box>Total Players: {all_clients}</Box>
-            <Divider />
-          </Fragment>
-        )}
-        {admin && (
-          <Fragment>
-            {additional_info !== undefined && (
-              <WhoCollapsible title="Information">
-                <Box direction="column">
-                  {additional_info.lobby !== undefined && (
-                    <Box color="#777">in Lobby: {additional_info.lobby}</Box>
-                  )}
-                  <Box direction="row">
-                    {additional_info.observers !== undefined && (
-                      <a color="#777">
-                        Spectators: {additional_info.observers} Players
-                      </a>
-                    )}
-                    {additional_info.admin_observers !== undefined && (
-                      <a color="#777">
-                        {' '}
-                        and {additional_info.admin_observers} Administrators
-                      </a>
-                    )}
-                  </Box>
-                  <Box direction="row">
-                    {additional_info.humans !== undefined && (
-                      <a color="#2C7EFF">Humans: {additional_info.humans}</a>
-                    )}
-                    {additional_info.infected_humans !== undefined && (
-                      <a color="#F00">
-                        {' '}
-                        (Infected: {additional_info.infected_humans})
-                      </a>
-                    )}
-                  </Box>
-                  <Box direction="row">
-                    {additional_info.uscm !== undefined && (
-                      <a color="#7ABA19">
-                        USS `Almayer` Personnel: {additional_info.uscm}
-                      </a>
-                    )}
-                    {additional_info.uscm_marines !== undefined && (
-                      <a color="#7ABA19">
-                        {' '}
-                        (Marines: {additional_info.uscm_marines})
-                      </a>
-                    )}
-                  </Box>
-                  <Box direction="row">
-                    {additional_info.yautja !== undefined && (
-                      <a color="#7ABA19">Yautjes: {additional_info.yautja}</a>
-                    )}
-                    {additional_info.infected_preds !== undefined && (
-                      <a color="#7ABA19">
-                        {' '}
-                        (Infected: {additional_info.infected_preds})
-                      </a>
-                    )}
-                  </Box>
-                  {factions !== undefined && (
-                    <Box>
-                      {factions.map((x, index) => (
-                        <Box key={x.index}>
-                          <Box color={x.color}>
-                            {x.name}: {x.value}
-                          </Box>
-                        </Box>
                       ))}
-                    </Box>
-                  )}
-                  {xenomorphs !== undefined && (
-                    <Box>
-                      {xenomorphs.map((x, index) => (
-                        <Box key={x.index}>
-                          <Box color={x.color}>
-                            {x.name}: {x.value}
-                            <a color={x.queen_color}>({x.queen})</a>
-                          </Box>
-                        </Box>
+                    {xenomorphs !== undefined &&
+                      xenomorphs.map((x, index) => (
+                        <GetAddInfo
+                          key={x.index}
+                          content={x.content}
+                          color={x.color}
+                          text={x.text}
+                        />
                       ))}
-                    </Box>
-                  )}
-                </Box>
-              </WhoCollapsible>
-            )}
-            <Divider />
-          </Fragment>
-        )}
+                  </Box>
+                </WhoCollapsible>
+              )}
+            </Section>
+          </Stack.Item>
+        </Stack>
       </Window.Content>
     </Window>
   );
 };
 
 const WhoCollapsible = (props, context) => {
-  const { title, children } = props;
+  const { title, color, children } = props;
   return (
-    <Collapsible title={title} open>
+    <Collapsible title={title} color={color} open>
       {children}
     </Collapsible>
   );
 };
 
-const GetPlayerInfo = (props, context) => {
-  const {
-    mob_state,
-    mob_type,
-    mob_name,
-    observer_state,
-    mob_state_color,
-    color_mob_state,
-    mob_type_name,
-  } = props;
+const GetAddInfo = (props, context) => {
+  const { act } = useBackend(context);
+  const { content, color, text } = props;
 
-  switch (mob_type) {
-    case 'new_player':
-      return <a> - in Lobby</a>;
-    case 'observer':
-      return (
-        <a>
-          {' '}
-          - Playing as {mob_name} -
-          <a color={mob_state_color}> {observer_state}</a>
-        </a>
-      );
-    case 'mob':
-      return (
-        <a>
-          {' '}
-          - Playing as {mob_name}
-          {mob_state !== 'Alive' && (
-            <a>
-              {' '}
-              - <a color={color_mob_state}>{mob_state}</a>
-            </a>
-          )}
-          {mob_type_name !== undefined && (
-            <a>
-              {' '}
-              - <a color={mob_state_color}>{mob_type_name}</a>
-            </a>
-          )}
-        </a>
-      );
-  }
+  return (
+    <Button
+      color={'transparent'}
+      style={{
+        'border-color': color,
+        'border-style': 'solid',
+        'border-width': '1px',
+        'color': color,
+      }}
+      tooltip={text}
+      tooltipPosition="bottom-start">
+      {content}
+    </Button>
+  );
+};
+
+const GetPlayerInfo = (props, context) => {
+  const { act } = useBackend(context);
+  const { admin, ckey, ckey_color, color, text } = props;
+  return admin ? (
+    <Button
+      color={'transparent'}
+      style={{
+        'border-color': color,
+        'border-style': 'solid',
+        'border-width': '1px',
+        'color': color,
+      }}
+      onClick={() => act('get_player_panel', { ckey: ckey })}
+      tooltip={text}
+      tooltipPosition="bottom-start">
+      <b style={{ 'color': ckey_color }}>{ckey}</b>
+    </Button>
+  ) : (
+    <Button
+      color={'transparent'}
+      style={{
+        'border-color': color,
+        'border-style': 'solid',
+        'border-width': '1px',
+        'color': ckey_color,
+      }}>
+      {ckey}
+    </Button>
+  );
 };

@@ -3,7 +3,7 @@
 	set name = "YOOC"
 	set desc = "OOC channel for Yautja players."
 
-	if(!src.admin_holder || !(admin_holder.rights & R_MOD))
+	if(!admin_holder || !(admin_holder.rights & R_MOD))
 		to_chat(src, "Only staff members may talk on this channel.")
 		return
 
@@ -14,7 +14,7 @@
 
 	msg = emoji_parse(src, msg)
 
-	var/yooc_message = "YOOC: [src.key]([src.admin_holder.rank]): [msg]"
+	var/yooc_message = "YOOC: [key]([admin_holder.rank]): [msg]"
 	log_admin(yooc_message)
 
 	msg = process_chat_markup(msg, list("*"))

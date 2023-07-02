@@ -528,7 +528,7 @@
 	if(!core || core == faction_location)
 		return
 	var/area/A = get_area(core)
-	xeno_message(SPAN_XENOANNOUNCE("The Queen has set the hive location as \the [A]."), 3, faction_name)
+	xeno_message(SPAN_XENOANNOUNCE("The Queen has set the hive location as \the [A]."), 3, src)
 	faction_location = core
 	faction_ui.update_faction_location()
 

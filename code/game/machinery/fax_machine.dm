@@ -209,7 +209,7 @@ var/list/alldepartments = list()
 				"АДМИНИСТРАЦИЯ" = length(GLOB.admins),
 			)
 			embed.color = COLOR_WEBHOOK_DEFAULT
-			send2adminchat_webhook(embed)
+			send2adminchathelp_webhook(embed)
 			outgoing_fax_message(ui.user)
 
 			COOLDOWN_START(src, send_cooldown, fax_cooldown)

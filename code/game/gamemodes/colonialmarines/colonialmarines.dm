@@ -448,7 +448,7 @@
 	if(world.port != 1400)
 		return FALSE
 
-	var/webhook = CONFIG_GET(string/new_round_webhook_url)
+	var/webhook = CONFIG_GET(string/round_statistic_webhook_url)
 	if(!webhook)
 		return
 

@@ -157,7 +157,7 @@
 
 	// Crashed with something that stopped us
 	if(!can_move)
-		move_momentum = Floor(move_momentum/2)
+		move_momentum = round(move_momentum/2)
 		update_next_move()
 		interior_crash_effect()
 

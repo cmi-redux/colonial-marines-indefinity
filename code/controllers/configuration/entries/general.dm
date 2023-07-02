@@ -517,6 +517,8 @@ This maintains a list of ip addresses that are able to bypass topic filtering.
 /datum/config_entry/string/ahelp_message
 	default = ""
 
+/datum/config_entry/string/adminlogs_webhook_url
+
 /datum/config_entry/string/adminhelp_webhook_url
 
 /datum/config_entry/string/adminhelp_webhook_pfp
@@ -526,6 +528,8 @@ This maintains a list of ip addresses that are able to bypass topic filtering.
 /datum/config_entry/string/adminhelp_ahelp_link
 
 /datum/config_entry/string/verefy_webhook_url
+
+/datum/config_entry/string/round_statistic_webhook_url
 
 /datum/config_entry/string/new_round_webhook_url
 

@@ -186,7 +186,7 @@
 				P.trigger(H)
 				H.reagents.remove_reagent(R.id, 1)
 				break
-	if(H.health > HEALTH_THRESHOLD_DEAD && !attached_to.try_to_revive(H, user))
+	if(H.health > HEALTH_THRESHOLD_DEAD && attached_to.try_to_revive(H, user))
 		user.visible_message(SPAN_NOTICE("[icon2html(src, viewers(src))] \The [src] beeps: Defibrillation successful."))
 		playsound(get_turf(src), 'sound/items/defib_success.ogg', 25, 0)
 		user.track_life_saved()

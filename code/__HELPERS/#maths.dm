@@ -28,11 +28,10 @@ var/list/sqrtTable = list(1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 
 #define Csc(x) (1 / sin(x))
 
 #define Default(a, b) (a ? a : b)
-#define Floor(x) (round(x))
 
 //Finds nearest integer to x, above or below
 //something.5 or higher, round up, else round down
-#define roundNearest(x) (((Ceiling(x) - x) <= (x - Floor(x))) ? Ceiling(x) : Floor(x))
+#define roundNearest(x) (((Ceiling(x) - x) <= (x - round(x))) ? Ceiling(x) : round(x))
 
 #define ATAN2(x, y) ( !(x) && !(y) ? 0 : (y) >= 0 ? arccos((x) / sqrt((x)*(x) + (y)*(y))) : -arccos((x) / sqrt((x)*(x) + (y)*(y))) )
 
@@ -45,7 +44,7 @@ var/list/sqrtTable = list(1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 
 // Returns true if val is from min to max, inclusive.
 #define IsInRange(val, min, max) (min <= val && val <= max)
 
-#define IsInteger(x) (Floor(x) == x)
+#define IsInteger(x) (round(x) == x)
 #define IsOdd(x) (!IsEven(x))
 #define IsMultiple(x, y) (x % y == 0)
 

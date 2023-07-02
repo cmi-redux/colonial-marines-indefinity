@@ -296,10 +296,8 @@
 
 /obj/item/device/defibrillator/proc/try_to_revive(mob/living/carbon/human/target, mob/living/carbon/human/user)
 	var/time_pass = world.time - target.timeofdeath
-	if(time_pass > target.revive_grace_period)
-		return TRUE
-	else
-		return prob(CEILING((time_pass * 100) / (target.revive_grace_period), 1) + charge_cost / 4)
+	var/time_remaining = (time_pass - target.revive_grace_period) * (-1)
+	return prob(time_remaining / initial(target.revive_grace_period) * 100 + charge_cost / 4)
 
 /obj/item/device/defibrillator/proc/check_revive(mob/living/carbon/human/target, mob/living/carbon/human/user)
 	if(!ishuman(target) || isyautja(target))

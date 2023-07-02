@@ -233,7 +233,7 @@
 			continue
 
 		var/obj/effect/alien/weeds/new_weed = new(turf, node)
-		weeds += new_weed
+		all_weeds += new_weed
 
 		if(old_fruit)
 			old_fruit.register_weed_expiration_signal(new_weed)

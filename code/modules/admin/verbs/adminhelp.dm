@@ -303,9 +303,9 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		if(admin_number_present <= 0)
 			to_chat(initiator, SPAN_NOTICE("No active admins are online, your adminhelp was sent to admins who are available through IRC or Discord."), confidential = TRUE)
 			embed.footer = "This player sent an ahelp when no admins are available and also requested an admin"
-		send2adminchat_webhook(embed)
+		send2adminchathelp_webhook(embed)
 
-/proc/send2adminchat_webhook(message_or_embed)
+/proc/send2adminchathelp_webhook(message_or_embed)
 	var/webhook = CONFIG_GET(string/adminhelp_webhook_url)
 	if(!webhook)
 		return
@@ -424,7 +424,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		html = SPAN_ADMINNOTICE("PM to-<b>Admins</b>: <span class='linkify'>[msg]</span>"),
 		confidential = TRUE)
 	log_ahelp(id, "Тикет открыт", msg, null, initiator.ckey)
-	send2adminchat_webhook(embed)
+	send2adminchathelp_webhook(embed)
 
 //Reopen a closed ticket
 /datum/admin_help/proc/Reopen()
@@ -685,7 +685,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 			Reopen()
 		if("defer")
 			defer_to_mentors()
-	send2adminchat_webhook(embed)
+	send2adminchathelp_webhook(embed)
 
 /datum/admin_help/proc/player_ticket_panel()
 	var/list/dat = list("<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>Тикет Игрока</title></head>")

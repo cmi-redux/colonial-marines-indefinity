@@ -1,156 +1,73 @@
-import { Fragment } from 'inferno';
 import { useBackend } from '../backend';
-import { Divider, Box } from '../components';
+import { Button, Stack, Collapsible } from '../components';
 import { Window } from '../layouts';
 
 export const StaffWho = (props, context) => {
   const { data } = useBackend(context);
-  const { admin, manager, maintainer, administrator, moderator, mentor } = data;
+  const { admin, administrators } = data;
 
   return (
     <Window resizable width={600} height={600}>
       <Window.Content scrollable>
-        Administation
-        <Divider />
-        {manager !== undefined && (
-          <Fragment>
-            <Box color="purple" direction="column">
-              Management: {manager.total}
-              {manager.admins.map((x, index) => (
-                <Box key={x.index} direction="row">
-                  <a>
-                    {x.ckey} is {x.rank}
-                  </a>
-                  {admin && (
-                    <a>
-                      <GetAdminInfo
-                        hidden={x.hidden}
-                        state={x.state}
-                        state_color={x.state_color}
-                        afk={x.afk}
-                        afk_color={x.afk_color}
-                      />
-                    </a>
-                  )}
-                </Box>
-              ))}
-            </Box>
-            <Divider />
-          </Fragment>
-        )}
-        {maintainer !== undefined && (
-          <Fragment>
-            <Box color="blue" direction="column">
-              Maintainers: {maintainer.total}
-              {maintainer.admins.map((x, index) => (
-                <Box key={x.index} direction="row">
-                  <a>
-                    {x.ckey} is {x.rank}
-                  </a>
-                  {admin && (
-                    <a>
-                      <GetAdminInfo
-                        hidden={x.hidden}
-                        state={x.state}
-                        state_color={x.state_color}
-                        afk={x.afk}
-                        afk_color={x.afk_color}
-                      />
-                    </a>
-                  )}
-                </Box>
-              ))}
-            </Box>
-            <Divider />
-          </Fragment>
-        )}
-        <Box color="red" direction="column">
-          Administrators: {administrator.total}
-          {administrator.admins.map((x, index) => (
-            <Box key={x.index} direction="row">
-              <a>
-                {x.ckey} is {x.rank}
-              </a>
-              {admin && (
-                <a>
+        <Stack fill vertical>
+          <Stack.Item mt={0.2} grow>
+            {administrators.map((x, index) => (
+              <StaffWhoCollapsible
+                key={x.index}
+                title={x.category + ' - ' + x.category_administrators}
+                color={x.category_color}>
+                {x.admins.map((x, index) => (
                   <GetAdminInfo
-                    hidden={x.hidden}
-                    state={x.state}
-                    state_color={x.state_color}
-                    afk={x.afk}
-                    afk_color={x.afk_color}
+                    key={x.index}
+                    admin={admin}
+                    content={x.content}
+                    color={x.color}
+                    text={x.text}
                   />
-                </a>
-              )}
-            </Box>
-          ))}
-        </Box>
-        <Divider />
-        {moderator !== undefined && (
-          <Fragment>
-            <Box color="orange" direction="column">
-              Moderators: {moderator.total}
-              {moderator.admins.map((x, index) => (
-                <Box key={x.index} direction="row">
-                  <a>
-                    {x.ckey} is {x.rank}
-                  </a>
-                  {admin && (
-                    <a>
-                      <GetAdminInfo
-                        hidden={x.hidden}
-                        state={x.state}
-                        state_color={x.state_color}
-                        afk={x.afk}
-                        afk_color={x.afk_color}
-                      />
-                    </a>
-                  )}
-                </Box>
-              ))}
-            </Box>
-            <Divider />
-          </Fragment>
-        )}
-        {mentor !== undefined && (
-          <Fragment>
-            <Box color="green" direction="column">
-              Mentors: {mentor.total}
-              {mentor.admins.map((x, index) => (
-                <Box key={x.index} direction="row">
-                  <a>
-                    {x.ckey} is {x.rank}
-                  </a>
-                  {admin && (
-                    <a>
-                      <GetAdminInfo
-                        hidden={x.hidden}
-                        state={x.state}
-                        state_color={x.state_color}
-                        afk={x.afk}
-                        afk_color={x.afk_color}
-                      />
-                    </a>
-                  )}
-                </Box>
-              ))}
-            </Box>
-            <Divider />
-          </Fragment>
-        )}
+                ))}
+              </StaffWhoCollapsible>
+            ))}
+          </Stack.Item>
+        </Stack>
       </Window.Content>
     </Window>
   );
 };
 
-const GetAdminInfo = (props, context) => {
-  const { hidden, state, state_color, afk, afk_color } = props;
-
+const StaffWhoCollapsible = (props, context) => {
+  const { title, color, children } = props;
   return (
-    <a>
-      {hidden && <a> ({hidden})</a>}
-      {state && <a color={state_color}> - {state}</a>}
-      {afk && <a color={afk_color}> ({afk})</a>}
-    </a>
+    <Collapsible title={title} color={color} open>
+      {children}
+    </Collapsible>
+  );
+};
+
+const GetAdminInfo = (props, context) => {
+  const { admin, content, color, text } = props;
+  return admin ? (
+    <Button
+      color={'transparent'}
+      style={{
+        'border-color': color,
+        'border-style': 'solid',
+        'border-width': '1px',
+        'color': color,
+      }}
+      tooltip={text}
+      tooltipPosition="bottom-start">
+      <b style={{ 'color': color }}>{content}</b>
+    </Button>
+  ) : (
+    <Button
+      color={'transparent'}
+      style={{
+        'border-color': '#2185d0',
+        'border-style': 'solid',
+        'border-width': '1px',
+        'color': 'white',
+      }}>
+      {content}
+    </Button>
   );
 };

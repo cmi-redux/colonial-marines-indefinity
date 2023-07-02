@@ -61,6 +61,31 @@
 	send2adminchat_webhook(embed)
 
 
+/proc/send2adminchat_webhook(message_or_embed)
+	var/webhook = CONFIG_GET(string/adminlogs_webhook_url)
+	if(!webhook)
+		return
+	var/list/webhook_info = list()
+	if(istext(message_or_embed))
+		var/message_content = replacetext(replacetext(message_or_embed, "\proper", ""), "\improper", "")
+		message_content = GLOB.has_discord_embeddable_links.Replace(replacetext(message_content, "`", ""), " ```$1``` ")
+		webhook_info["content"] = message_content
+	else
+		var/datum/discord_embed/embed = message_or_embed
+		webhook_info["embeds"] = list(embed.convert_to_list())
+		if(embed.content)
+			webhook_info["content"] = embed.content
+	if(CONFIG_GET(string/adminhelp_webhook_name))
+		webhook_info["username"] = CONFIG_GET(string/adminhelp_webhook_name)
+	if(CONFIG_GET(string/adminhelp_webhook_pfp))
+		webhook_info["avatar_url"] = CONFIG_GET(string/adminhelp_webhook_pfp)
+	var/list/headers = list()
+	headers["Content-Type"] = "application/json"
+	var/datum/http_request/request = new()
+	request.prepare(RUSTG_HTTP_METHOD_POST, webhook, json_encode(webhook_info), headers, "tmp/response.json")
+	request.begin_async()
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////Panels
 
 /datum/player_info/var/author // admin who authored the information

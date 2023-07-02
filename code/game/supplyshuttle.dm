@@ -456,7 +456,7 @@ var/datum/controller/supply/supply_controller = new()
 /datum/controller/supply/proc/calculate_crate_amount()
 
 	// Sqrt(NUM_XENOS/4)
-	var/crate_amount = Floor(max(0, sqrt(SSticker.mode.count_xenos(SSmapping.levels_by_trait(ZTRAIT_GROUND))/3)))
+	var/crate_amount = round(max(0, sqrt(SSticker.mode.count_xenos(SSmapping.levels_by_trait(ZTRAIT_GROUND))/3)))
 
 	if(crate_iteration <= 5)
 		crate_amount = 4

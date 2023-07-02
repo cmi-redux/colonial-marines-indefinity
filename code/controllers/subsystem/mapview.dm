@@ -43,17 +43,21 @@ SUBSYSTEM_DEF(mapview)
 
 /datum/controller/subsystem/mapview/proc/update_minimaps(coldown)
 	set waitfor = FALSE
+
 	if(coldown)
 		COOLDOWN_START(src, generate_minimaps, generating_coldown)
 	else
 		force_update_minimaps = FALSE
 
-	message_admins("started updating minimaps")
-	for(var/trait in TCMP_MAPS_TRAITS)
-		var/datum/tacmap/minimap/minimap = minimaps_by_trait["[trait]"]
-		for(var/level in minimap.map_zlevels)
-			minimap.generate_minimap(level)
-	message_admins("finished updating minimaps")
+	spawn()
+		message_admins("started updating minimaps")
+		for(var/trait in TCMP_MAPS_TRAITS)
+			var/datum/tacmap/minimap/minimap = minimaps_by_trait["[trait]"]
+			for(var/level in minimap.map_zlevels)
+				minimap.generate_minimap(level)
+				sleep(1)
+
+		message_admins("finished updating minimaps")
 
 /datum/controller/subsystem/mapview/proc/get_minimap_ui(datum/faction/faction, zlevel, map_name)
 	set waitfor = FALSE

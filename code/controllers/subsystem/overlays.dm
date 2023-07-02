@@ -78,7 +78,7 @@ SUBSYSTEM_DEF(overlays)
 				var/atom/A = overlay
 				if(A.flags_atom & OVERLAY_QUEUED)
 					COMPILE_OVERLAYS(A)
-			if(appearance_bro)
+			if(istype(appearance_bro))
 				appearance_bro.appearance = overlay //this works for images and atoms too!
 				if(!ispath(overlay))
 					var/image/I = overlay

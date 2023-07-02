@@ -20,101 +20,162 @@ SUBSYSTEM_DEF(who)
 
 /datum/player_list/proc/update_data()
 	var/list/new_list_data = list()
-	mobs_ckey = list()
+	var/list/new_mobs_ckey = list()
+	var/list/additiona_data = list(
+		"lobby" = 0,
+		"admin_observers" = 0,
+		"observers" = 0,
+		"yautja" = 0,
+		"infected_preds" = 0,
+		"humans" = 0,
+		"infected_humans" = 0,
+		"uscm" = 0,
+		"uscm_marines" = 0,
+	)
 	new_list_data["additional_info"] = list()
-	new_list_data["additional_info"]["observers"] = 0
 
 	for(var/client/client in GLOB.clients)
 		new_list_data["all_clients"]++
 		var/list/client_payload = list()
 		client_payload["ckey"] = "[client.key]"
+		client_payload["text"] = "[client.key]"
 		client_payload["ckey_color"] = client.player_data?.donator_info.patreon_function_available("ooc_color") ? "#D4AF37" : "white"
 		var/mob/client_mob = client.mob
-		mobs_ckey[client.key] = client_mob
+		new_mobs_ckey[client.key] = client_mob
 		if(client_mob)
 			if(istype(client_mob, /mob/new_player))
-				client_payload["mob_type"] = "new_player"
-				new_list_data["additional_info"]["lobby"]++
+				client_payload["text"] += " - in Lobby"
+				additiona_data["lobby"]++
 				new_list_data["total_players"] += list(client_payload)
 				continue
-			else
-				client_payload["mob_name"] = "[client_mob.real_name]"
 
 			if(isobserver(client_mob))
-				client_payload["mob_type"] = "observer"
+				client_payload["text"] += " - Playing as [client_mob.real_name]"
 				if(CLIENT_IS_STAFF(client))
-					new_list_data["additional_info"]["admin_observers"]++
+					additiona_data["admin_observers"]++
 				else
-					new_list_data["additional_info"]["observers"]++
+					additiona_data["observers"]++
 
 				var/mob/dead/observer/observer = client_mob
 				if(observer.started_as_observer)
-					client_payload["observer_state"] = "Spectating"
-					client_payload["mob_state_color"] = "#808080"
+					client_payload["color"] += "#808080"
+					client_payload["text"] += " - Spectating"
 				else
-					client_payload["observer_state"] = "DEAD"
-					client_payload["mob_state_color"] = "#A000D0"
+					client_payload["color"] += "#A000D0"
+					client_payload["text"] += " - DEAD"
 
 			else
-				client_payload["mob_type"] = "mob"
-				client_payload["mob_state"] = "Alive"
+				client_payload["text"] += " - Playing as [client_mob.real_name]"
+
 				switch(client_mob.stat)
 					if(UNCONSCIOUS)
-						client_payload["mob_state"] = "Unconscious"
-						client_payload["color_mob_state"] = "#B0B0B0"
+						client_payload["color"] += "#B0B0B0"
+						client_payload["text"] += " - Unconscious"
 					if(DEAD)
-						client_payload["mob_state"] = "DEAD"
-						client_payload["color_mob_state"] = "#A000D0"
+						client_payload["color"] += "#A000D0"
+						client_payload["text"] += " - DEAD"
 
 				if(client_mob.stat != DEAD)
 					if(isxeno(client_mob))
-						client_payload["mob_type_name"] = "Xenomorph"
-						client_payload["mob_state_color"] = "#f00"
+						client_payload["color"] += "#f00"
+						client_payload["text"] += " - Xenomorph"
 
 					else if(ishuman(client_mob))
 						if(client_mob.faction.faction_name == FACTION_ZOMBIE)
-							client_payload["mob_type_name"] = "Zombie"
-							client_payload["mob_state_color"] = "#2DACB1"
+							client_payload["color"] += "#2DACB1"
+							client_payload["text"] += " - Zombie"
 						else if(client_mob.faction.faction_name == FACTION_YAUTJA)
-							client_payload["mob_type_name"] = "Yautja"
-							client_payload["mob_state_color"] = "#7ABA19"
-							new_list_data["additional_info"]["yautja"]++
+							client_payload["color"] += "#7ABA19"
+							client_payload["text"] += " - Yautja"
+							additiona_data["yautja"]++
 							if(client_mob.status_flags & XENO_HOST)
-								new_list_data["additional_info"]["infected_preds"]++
+								additiona_data["infected_preds"]++
 						else
-							new_list_data["additional_info"]["humans"]++
+							additiona_data["humans"]++
 							if(client_mob.status_flags & XENO_HOST)
-								new_list_data["additional_info"]["infected_humans"]++
+								additiona_data["infected_humans"]++
 							if(client_mob.faction.faction_name == FACTION_MARINE)
-								new_list_data["additional_info"]["uscm"]++
+								additiona_data["uscm"]++
 								if(client_mob.job in (ROLES_MARINES))
-									new_list_data["additional_info"]["uscm_marines"]++
+									additiona_data["uscm_marines"]++
 
 		new_list_data["total_players"] += list(client_payload)
+
+	new_list_data["additional_info"] += list(list(
+		"content" = "in Lobby: [additiona_data["lobby"]]",
+		"color" = "#777",
+		"text" = "Player in lobby",
+	))
+
+	new_list_data["additional_info"] += list(list(
+		"content" = "Spectators: [additiona_data["observers"]] Players",
+		"color" = "#777",
+		"text" = "Spectating players",
+	))
+
+	new_list_data["additional_info"] += list(list(
+		"content" = "Spectators: [additiona_data["admin_observers"]] Administrators",
+		"color" = "#777",
+		"text" = "Spectating administrators",
+	))
+
+	new_list_data["additional_info"] += list(list(
+		"content" = "Humans: [additiona_data["humans"]]",
+		"color" = "#2C7EFF",
+		"text" = "Players playing as Human",
+	))
+
+	new_list_data["additional_info"] += list(list(
+		"content" = "Infected Humans: [additiona_data["infected_humans"]]",
+		"color" = "#F00",
+		"text" = "Players playing as Infected Human",
+	))
+
+	new_list_data["additional_info"] += list(list(
+		"content" = "USS `Almayer` Personnel: [additiona_data["uscm"]]",
+		"color" = "#2d199b",
+		"text" = "Players playing as USS `Almayer` Personnel",
+	))
+
+	new_list_data["additional_info"] += list(list(
+		"content" = "Marines: [additiona_data["uscm_marines"]]",
+		"color" = "#2d199b",
+		"text" = "Players playing as Marines",
+	))
+
+	new_list_data["additional_info"] += list(list(
+		"content" = "Yautjes: [additiona_data["yautja"]]",
+		"color" = "#7ABA19",
+		"text" = "Players playing as Yautja",
+	))
+
+	new_list_data["additional_info"] += list(list(
+		"content" = "Infected Yautjes: [additiona_data["infected_preds"]])",
+		"color" = "#7ABA19",
+		"text" = "Players playing as Infected Yautja",
+	))
 
 	for(var/faction_to_get in FACTION_LIST_HUMANOID - FACTION_YAUTJA - FACTION_MARINE)
 		var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
 		if(!length(faction.totalMobs))
 			continue
 		new_list_data["factions"] += list(list(
-			"color" = faction.color ? faction.color : "#2C7EFF",
-			"name" = faction.name,
-			"value" = length(faction.totalMobs)
+			"content" = "[faction.name]: [length(faction.totalMobs)]",
+			"color" = faction.color,
+			"text" = "[faction.desc]",
 		))
-
 	for(var/faction_to_get in FACTION_LIST_XENOMORPH)
 		var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
 		if(!length(faction.totalMobs))
 			continue
 		new_list_data["xenomorphs"] += list(list(
-			"color" = faction.color ? faction.color : "#8200FF",
-			"queen" = "Queen: [faction.living_xeno_queen ? "Alive" : "Dead"]",
-			"queen_color" = "#4D0096",
-			"name" = faction.name,
-			"value" = length(faction.totalMobs)
+			"content" = "[faction.name]: [length(faction.totalMobs)]",
+			"color" = faction.color,
+			"text" = "Queen: [faction.living_xeno_queen ? "Alive" : "Dead"] [faction.desc]",
 		))
 
 	list_data = new_list_data
+	mobs_ckey = new_mobs_ckey
 
 /datum/player_list/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -148,6 +209,14 @@ SUBSYSTEM_DEF(who)
 	tgui_name = "StaffWho"
 	tgui_interface_name = "Staff Who"
 
+	var/list/category_colors = list(
+		"Management" = "purple",
+		"Maintainers" = "blue",
+		"Administrators" = "red",
+		"Moderators" = "orange",
+		"Mentors" = "green"
+	)
+
 /datum/player_list/staff/update_data()
 	var/list/new_list_data = list()
 	mobs_ckey = list()
@@ -155,14 +224,14 @@ SUBSYSTEM_DEF(who)
 	var/list/listings
 	var/list/mappings
 	if(CONFIG_GET(flag/show_manager))
-		LAZYSET(mappings, "manager", R_HOST)
+		LAZYSET(mappings, "Management", R_HOST)
 	if(CONFIG_GET(flag/show_devs))
-		LAZYSET(mappings, "maintainer", R_PROFILER)
-	LAZYSET(mappings, "administrator", R_ADMIN)
+		LAZYSET(mappings, "Maintainers", R_PROFILER)
+	LAZYSET(mappings, "Administrators", R_ADMIN)
 	if(CONFIG_GET(flag/show_mods))
-		LAZYSET(mappings, "moderator", R_MOD && R_BAN)
+		LAZYSET(mappings, "Moderators", R_MOD && R_BAN)
 	if(CONFIG_GET(flag/show_mentors))
-		LAZYSET(mappings, "mentor", R_MENTOR)
+		LAZYSET(mappings, "Mentors", R_MENTOR)
 
 	for(var/category in mappings)
 		LAZYSET(listings, category, list())
@@ -177,9 +246,7 @@ SUBSYSTEM_DEF(who)
 				break
 
 	for(var/category in listings)
-		new_list_data[category] = list() //Currently
-		new_list_data[category]["total"] = length(listings[category])
-		new_list_data[category]["admins"] = list()
+		var/list/admins = list()
 		for(var/client/entry in listings[category])
 			var/list/admin = list()
 			var/rank = entry.admin_holder.rank
@@ -187,28 +254,35 @@ SUBSYSTEM_DEF(who)
 				for(var/srank in entry.admin_holder.extra_titles)
 					rank += " & [srank]"
 
-			admin["ckey"] = entry.key
-			admin["rank"] = rank
+			admin["content"] = "[entry.key] ([rank])"
+			admin["text"] = ""
 
-			if(CLIENT_IS_STAFF(entry))
-				if(entry.admin_holder?.fakekey)
-					admin["hidden"] = "HIDDEN"
+			if(entry.admin_holder?.fakekey)
+				admin["text"] += " (HIDDEN)"
 
-				if(istype(entry.mob, /mob/dead/observer))
-					admin["state"] = "Spectating"
-					admin["state_color"] = "#808080"
-				else if(istype(entry.mob, /mob/new_player))
-					admin["state"] = "in Lobby"
-					admin["state_color"] = "#688944"
-				else
-					admin["state"] = "Playing"
-					admin["state_color"] = "#688944"
+			if(istype(entry.mob, /mob/dead/observer))
+				admin["color"] = "#808080"
+				admin["text"] += " Spectating"
 
-				if(entry.is_afk())
-					admin["afk"] = "AFK"
-					admin["afk_color"] = "#A040D0"
+			else if(istype(entry.mob, /mob/new_player))
+				admin["color"] = "#688944"
+				admin["text"] += " in Lobby"
+			else
+				admin["color"] = "#688944"
+				admin["text"] += " Playing"
 
-			new_list_data[category]["admins"] += list(admin)
+			if(entry.is_afk())
+				admin["color"] = "#A040D0"
+				admin["text"] += " (AFK)"
+
+			admins += list(admin)
+
+		new_list_data["administrators"] += list(list(
+			"category" = category,
+			"category_color" = category_colors[category],
+			"category_administrators" = length(listings[category]),
+			"admins" = admins,
+		))
 
 	list_data = new_list_data
 
