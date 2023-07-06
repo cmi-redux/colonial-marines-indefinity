@@ -17,9 +17,9 @@ export const Who = (props, context) => {
     <Window resizable width={600} height={600}>
       <Window.Content scrollable>
         <Stack fill vertical>
-          <Stack.Item mt={0.2}>
-            <Section fill>
-              {total_players !== undefined && (
+          {total_players !== undefined ? (
+            <Stack.Item mt={0.2} grow>
+              <Section fill>
                 <WhoCollapsible title={'Players - ' + all_clients} color="good">
                   {total_players.map((x, index) => (
                     <GetPlayerInfo
@@ -32,47 +32,50 @@ export const Who = (props, context) => {
                     />
                   ))}
                 </WhoCollapsible>
-              )}
-            </Section>
-          </Stack.Item>
+              </Section>
+            </Stack.Item>
+          ) : null}
           <Stack.Item height="6px" />
-          <Stack.Item mt={0.2} grow>
-            <Section fill>
-              {admin && (
+          {admin && (
+            <Stack.Item mt={0.2} grow>
+              <Section fill>
                 <WhoCollapsible title="Information" color="olive">
                   <Box direction="column">
-                    {additional_info !== undefined &&
-                      additional_info.map((x, index) => (
+                    {additional_info !== undefined
+                      ? additional_info.map((x, index) => (
                         <GetAddInfo
                           key={x.index}
                           content={x.content}
                           color={x.color}
                           text={x.text}
                         />
-                      ))}
-                    {factions !== undefined &&
-                      factions.map((x, index) => (
+                      ))
+                      : null}
+                    {factions !== undefined
+                      ? factions.map((x, index) => (
                         <GetAddInfo
                           key={x.index}
                           content={x.content}
                           color={x.color}
                           text={x.text}
                         />
-                      ))}
-                    {xenomorphs !== undefined &&
-                      xenomorphs.map((x, index) => (
+                      ))
+                      : null}
+                    {xenomorphs !== undefined
+                      ? xenomorphs.map((x, index) => (
                         <GetAddInfo
                           key={x.index}
                           content={x.content}
                           color={x.color}
                           text={x.text}
                         />
-                      ))}
+                      ))
+                      : null}
                   </Box>
                 </WhoCollapsible>
-              )}
-            </Section>
-          </Stack.Item>
+              </Section>
+            </Stack.Item>
+          )}
         </Stack>
       </Window.Content>
     </Window>
