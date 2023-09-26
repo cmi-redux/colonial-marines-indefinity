@@ -34,7 +34,9 @@ SUBSYSTEM_DEF(playtime)
 		var/datum/view_record/playtime/PT = info_list[2]
 		if(!PT)
 			continue
-		var/datum/view_record/players/player = DB_VIEW(/datum/view_record/players, DB_COMP("id", DB_EQUALS, PT.player_id))
+		var/datum/view_record/players/player = SAFEPICK(DB_VIEW(/datum/view_record/players, DB_COMP("id", DB_EQUALS, PT.player_id)))
+		if(!player)
+			continue
 		best_playtimes += list(list("ckey" = player.ckey) + PT.get_nanoui_data())
 
 /datum/controller/subsystem/playtime/fire(resumed = FALSE)

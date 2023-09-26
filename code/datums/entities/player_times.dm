@@ -44,26 +44,25 @@ BSQL_PROTECT_DATUM(/datum/entity/player_time)
 	)
 	order_by = list("total_minutes" = DB_ORDER_BY_DESC)
 
-/datum/view_record/playtime/proc/get_nanoui_data(no_icons = FALSE)
-
-	var/icon_display
+/datum/view_record/playtime/proc/get_icon_display()
 	switch(total_minutes MINUTES_TO_DECISECOND)
 		if(JOB_PLAYTIME_TIER_1 to JOB_PLAYTIME_TIER_2)
-			icon_display = "tier1_big"
+			return "tier1_big"
 		if(JOB_PLAYTIME_TIER_2 to JOB_PLAYTIME_TIER_3)
-			icon_display = "tier2_big"
+			return "tier2_big"
 		if(JOB_PLAYTIME_TIER_3 to JOB_PLAYTIME_TIER_4)
-			icon_display = "tier3_big"
+			return "tier3_big"
 		if(JOB_PLAYTIME_TIER_4 to INFINITY)
-			icon_display = "tier4_big"
+			return "tier4_big"
 
+/datum/view_record/playtime/proc/get_nanoui_data(no_icons = FALSE)
 	var/playtime_percentage = min((total_minutes MINUTES_TO_DECISECOND) / JOB_PLAYTIME_TIER_4, 1)
 	return list(
 		"job" = role_id,
 		"playtime" = round(total_minutes MINUTES_TO_HOURS, 0.1),
 		"bgcolor" = "rgb(0, [round(128 * playtime_percentage)], [round(255 * playtime_percentage)])",
 		"textcolor" = "#FFFFFF",
-		"icondisplay" = icon_display
+		"icondisplay" = no_icons ? null : get_icon_display()
 	)
 
 /datum/entity/player/tgui_interact(mob/user, datum/tgui/ui)
