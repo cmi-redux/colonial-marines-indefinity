@@ -31,7 +31,7 @@ SUBSYSTEM_DEF(autobalancer)
 
 		var/potential_power = autobalance_row.esteminate_faction_info()
 		total_potential_power += potential_power
-		faction_win_info += list(faction, potential_power)
+		faction_win_info += list(list(faction, potential_power))
 
 	if(!total_potential_power)
 		return

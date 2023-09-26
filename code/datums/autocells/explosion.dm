@@ -240,62 +240,63 @@ as having entered the turf.
 // I'll admit most of the code from here on out is basically just copypasta from DOREC
 
 // Spawns a cellular automaton of an explosion
-/proc/cell_explosion(turf/epicenter, power, falloff, falloff_shape = EXPLOSION_FALLOFF_SHAPE_LINEAR, direction, datum/cause_data/explosion_cause_data, shrapnel = TRUE)
+/proc/cell_explosion(turf/epicenter, power, falloff, falloff_shape = EXPLOSION_FALLOFF_SHAPE_LINEAR, direction, datum/cause_data/explosion_cause_data, shrapnel = TRUE, z_transfer = UP|DOWN, original = TRUE)
 	if(!istype(epicenter))
 		epicenter = get_turf(epicenter)
 
 	if(!epicenter)
 		return
 
-	if(!istype(explosion_cause_data))
-		if(explosion_cause_data)
-			stack_trace("cell_explosion called with string cause ([explosion_cause_data]) instead of datum")
-			explosion_cause_data = create_cause_data(explosion_cause_data)
-		else
-			stack_trace("cell_explosion called without cause_data.")
-			explosion_cause_data = create_cause_data("Explosion")
-
 	falloff = max(falloff, power/100)
+	if(original)
+		if(!istype(explosion_cause_data))
+			if(explosion_cause_data)
+				stack_trace("cell_explosion called with string cause ([explosion_cause_data]) instead of datum")
+				explosion_cause_data = create_cause_data(explosion_cause_data)
+			else
+				stack_trace("cell_explosion called without cause_data.")
+				explosion_cause_data = create_cause_data("Explosion")
 
-	msg_admin_attack("Explosion with Power: [power], Falloff: [falloff], Shape: [falloff_shape] in [epicenter.loc.name] ([epicenter.x],[epicenter.y],[epicenter.z]).", epicenter.x, epicenter.y, epicenter.z)
+		msg_admin_attack("Explosion with Power: [power], Falloff: [falloff], Shape: [falloff_shape] in [epicenter.loc.name] ([epicenter.x],[epicenter.y],[epicenter.z]).", epicenter.x, epicenter.y, epicenter.z)
 
-	playsound(epicenter, 'sound/effects/explosionfar.ogg', 100, 1, round(power^2,1))
+		playsound(epicenter, 'sound/effects/explosionfar.ogg', 100, 1, round(power^2,1))
 
-	if(power >= 300) //Make BIG BOOMS
-		playsound(epicenter, "bigboom", 80, 1, max(round(power,1),7))
-	else
-		playsound(epicenter, "explosion", 90, 1, max(round(power,1),7))
-
-	var/explosion_range
-	var/datum/automata_cell/explosion/E
-	var/turf/above_epicenter = SSmapping.get_turf_above(epicenter)
-	var/turf/below_epicenter = SSmapping.get_turf_below(epicenter)
-	for(var/turf/turf in list(above_epicenter, below_epicenter, epicenter))
-		E = new /datum/automata_cell/explosion(turf)
-
-		// something went wrong :(
-		if(QDELETED(E))
-			continue
-
-		new /obj/effect/temp_visual/shockwave(turf, power/50)
-
-		if(turf != epicenter)
-			E.power = power/4
+		if(power >= 300) //Make BIG BOOMS
+			playsound(epicenter, "bigboom", 80, 1, max(round(power,1),7))
 		else
-			E.power = power
-		E.power_falloff = falloff
-		E.falloff_shape = falloff_shape
-		E.direction = direction
-		E.explosion_cause_data = explosion_cause_data
+			playsound(epicenter, "explosion", 90, 1, max(round(power,1),7))
 
-		explosion_range = round(power / falloff)
+	var/datum/automata_cell/explosion/E = new /datum/automata_cell/explosion(epicenter)
+	// something went wrong :(
+	if(QDELETED(E))
+		return
 
-		// Make explosion effect
-		new /obj/effect/temp_visual/explosion(epicenter, explosion_range, LIGHT_COLOR_HOLY_MAGIC, power)
+	E.power = power
+	E.power_falloff = falloff
+	E.falloff_shape = falloff_shape
+	E.direction = direction
+	E.explosion_cause_data = explosion_cause_data
 
-		if(shrapnel) // powerful explosions send out some special effects
-			create_shrapnel(turf, rand(explosion_range, explosion_range*2), , ,/datum/ammo/bullet/shrapnel/light/effect/ver1, explosion_cause_data)
-			create_shrapnel(turf, rand(explosion_range, explosion_range*2), , ,/datum/ammo/bullet/shrapnel/light/effect/ver2, explosion_cause_data)
+	var/explosion_range = round(power / falloff)
+
+	// Make explosion effect
+	new /obj/effect/temp_visual/shockwave(epicenter, explosion_range)
+	new /obj/effect/temp_visual/explosion(epicenter, explosion_range, LIGHT_COLOR_HOLY_MAGIC, power)
+
+	if(shrapnel) // powerful explosions send out some special effects
+		create_shrapnel(epicenter, rand(explosion_range, explosion_range*2), , ,/datum/ammo/bullet/shrapnel/light/effect/ver1, explosion_cause_data)
+		create_shrapnel(epicenter, rand(explosion_range, explosion_range*2), , ,/datum/ammo/bullet/shrapnel/light/effect/ver2, explosion_cause_data)
+
+	var/z_level_scaled = power * 0.35
+	if(z_level_scaled > falloff)
+		if(z_transfer & UP)
+			var/turf/above_epicenter = SSmapping.get_turf_above(epicenter)
+			if(above_epicenter)
+				explosion(above_epicenter, z_level_scaled, falloff, falloff_shape, direction, explosion_cause_data, shrapnel, UP, FALSE)
+		if(z_transfer & DOWN)
+			var/turf/below_epicenter = SSmapping.get_turf_below(epicenter)
+			if(below_epicenter)
+				explosion(below_epicenter, z_level_scaled, falloff, falloff_shape, direction, explosion_cause_data, shrapnel, DOWN, FALSE)
 
 /proc/log_explosion(atom/A, datum/automata_cell/explosion/E)
 	if(isliving(A))
