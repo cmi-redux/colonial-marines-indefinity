@@ -264,3 +264,10 @@
 //Defines for controlling how zsound sounds.
 #define ZSOUND_DRYLOSS_PER_Z -2000
 #define ZSOUND_DISTANCE_PER_Z 2
+
+#define DEBRIS_SPARKS "spark"
+#define DEBRIS_WOOD "wood"
+#define DEBRIS_ROCK "rock"
+#define DEBRIS_GLASS "glass"
+#define DEBRIS_LEAF "leaf"
+#define DEBRIS_SNOW "snow"

@@ -60,7 +60,9 @@
 	},
 /area/shuttle/sky_scraper_elevator)
 "t" = (
-/obj/structure/machinery/light/double/blue,
+/obj/structure/machinery/light/double/blue{
+	req_light_switch = 0
+	},
 /turf/open/shuttle/elevator/grating{
 	icon_state = "floor_grating_w"
 	},
