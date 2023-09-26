@@ -4,6 +4,8 @@
 #define COMSIG_POST_BULLET_ACT_HUMAN "bullet_act_human"
 /// Called when a bullet hits a xenomorph
 #define COMSIG_BULLET_ACT_XENO "bullet_act_xeno"
+/// Called when a bullet hits a atom
+#define COMSIG_ATOM_BULLET_ACT "bullet_act_atom"
 /// Apply any effects to the bullet (primarily through bullet traits)
 /// based on the user
 #define COMSIG_BULLET_USER_EFFECTS "bullet_user_effects"
