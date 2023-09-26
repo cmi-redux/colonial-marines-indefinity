@@ -138,7 +138,7 @@ SUBSYSTEM_DEF(sunlighting)
 	custom_time_offset = new_value
 
 /datum/controller/subsystem/sunlighting/proc/game_time_offseted()
-	return (game_time() + custom_time_offset) % SSsunlighting.game_time_length
+	return (REALTIMEOFDAY + custom_time_offset) % game_time_length
 
 /datum/controller/subsystem/sunlighting/proc/create_steps()
 	for(var/path in typesof(/datum/time_of_day))
@@ -151,7 +151,7 @@ SUBSYSTEM_DEF(sunlighting)
 		set_time_of_day()
 		return TRUE
 
-	if(game_time_length * game_time_offseted() > next_step_datum.start_at )
+	if(game_time_length * game_time_offseted() > next_step_datum.start_at)
 		if(next_day)
 			return FALSE
 		set_time_of_day()
@@ -180,12 +180,12 @@ SUBSYSTEM_DEF(sunlighting)
 
 /datum/controller/subsystem/sunlighting/proc/update_color()
 	if(!weather_light_affecting_event)
-		var/time = game_time_length * game_time_offseted()
-		var/time_to_animate = daytimeDiff(time, next_step_datum.start_at)
+		var/time = game_time_offseted() / game_time_length
+		var/time_to_animate = daytimeDiff(time, next_step_datum.start_at) * game_time_length
 		var/blend_amount = (time - current_step_datum.start_at) / (next_step_datum.start_at - current_step_datum.start_at)
 		current_color = BlendRGB(current_step_datum.color, next_step_datum.color, blend_amount)
 		if(weather_datum && weather_datum.weather_color_offset)
-			var/weather_blend_amount = time - weather_datum.weather_start_time / weather_datum.weather_start_time + (weather_datum.weather_duration / 12) - weather_datum.weather_start_time
+			var/weather_blend_amount = (time - weather_datum.weather_start_time) / (weather_datum.weather_start_time + (weather_datum.weather_duration / 12) - weather_datum.weather_start_time)
 			current_color = BlendRGB(current_color, weather_datum.weather_color_offset, min(weather_blend_amount, weather_blend_ammount))
 		animate(sun_color, color = current_color, time = time_to_animate)
 

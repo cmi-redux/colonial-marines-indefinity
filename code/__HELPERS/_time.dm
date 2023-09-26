@@ -37,7 +37,7 @@ var/rollovercheck_last_timeofday = 0
 /proc/daytimeDiff(timeA, timeB)
 
 	//if the time is less than station time, add 24 hours (MIDNIGHT_ROLLOVER)
-	var/time_diff = timeA > timeB ? (timeB + SSsunlighting.game_time_length) - timeA : timeB - timeA
+	var/time_diff = timeA > timeB ? (timeB + 1) - timeA : timeB - timeA
 	return time_diff
 
 /proc/game_time()
