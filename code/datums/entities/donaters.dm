@@ -76,8 +76,8 @@ BSQL_PROTECT_DATUM(/datum/entity/skin)
 /datum/donator_info/proc/load_info()
 	DB_FILTER(/datum/entity/skin, DB_COMP("player_id", DB_EQUALS, player_datum.id), CALLBACK(src, TYPE_PROC_REF(/datum/donator_info, load_skins)))
 
-/datum/donator_info/proc/load_skins(list/datum/entity/skin/skins)
-	for(var/datum/entity/skin/skin in skins)
+/datum/donator_info/proc/load_skins(list/datum/entity/skin/entity_skins)
+	for(var/datum/entity/skin/skin in entity_skins)
 		skins[skin.skin_name] = skin
 
 /datum/donator_info/proc/patreon_function_available(required)
