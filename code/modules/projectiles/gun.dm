@@ -530,18 +530,18 @@
 
 /obj/item/weapon/gun/pickup(mob/user)
 	RegisterSignal(user, COMSIG_ATOM_OFF_LIGHT, TYPE_PROC_REF(/atom, turn_light), FALSE, override = TRUE)
-	if(flags_gun_features & GUN_AMMO_COUNTER)
+	if(flags_gun_features & GUN_AMMO_COUNTER && user.client)
 		display_ammo(user)
 	..()
 
 /obj/item/weapon/gun/dropped(mob/user)
 	UnregisterSignal(user, COMSIG_ATOM_OFF_LIGHT)
-	if(flags_gun_features & GUN_AMMO_COUNTER)
+	if(flags_gun_features & GUN_AMMO_COUNTER && user.client)
 		user.hud_used.update_ammo_hud(src)
 	..()
 
 /obj/item/weapon/gun/equipped(mob/user, slot)
-	if(flags_gun_features & GUN_AMMO_COUNTER)
+	if(flags_gun_features & GUN_AMMO_COUNTER && user.client)
 		if(slot == WEAR_L_HAND || slot == WEAR_R_HAND)
 			display_ammo(user)
 		else
@@ -610,7 +610,7 @@
 		pull_time += 3
 	guaranteed_delay_time = world.time + WEAPON_GUARANTEED_DELAY
 
-	if(flags_gun_features & GUN_AMMO_COUNTER)
+	if(flags_gun_features & GUN_AMMO_COUNTER && user.client)
 		user.hud_used.update_ammo_hud(src)
 
 	return ..()
@@ -1809,7 +1809,7 @@ not all weapons use normal magazines etc. load_into_chamber() itself is designed
 /obj/item/weapon/gun/proc/display_ammo(mob/user)
 	// Do not display ammo if you have an attachment
 	// currently activated
-	if(flags_gun_features & GUN_AMMO_COUNTER)
+	if(flags_gun_features & GUN_AMMO_COUNTER && user.client)
 		user?.hud_used.update_ammo_hud(src, get_ammo_list(), get_display_ammo_count())
 
 //This proc applies some bonus effects to the shot/makes the message when a bullet is actually fired.

@@ -48,8 +48,7 @@
 		var/list/stats = list()
 		for(var/group_subtype in group.statistic_info)
 			var/datum/player_statistic/player_statistic = group.statistic_info[group_subtype]
-			for(var/subtype in player_statistic.total)
-				stats += list(list("name" = subtype, "value" = player_statistic.total[subtype]))
+			stats += player_statistic.total
 
 		return formula_calculate(calculationg_mob, entity, stats)
 

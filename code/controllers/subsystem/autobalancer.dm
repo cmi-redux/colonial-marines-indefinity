@@ -38,10 +38,11 @@ SUBSYSTEM_DEF(autobalancer)
 
 	total_potential_power /= 100
 
-	var/highest
+	var/highest = 0
 	var/datum/faction/last_faction
-	for(var/datum/faction/potential_winner in faction_win_info)
-		var/esteminated_chance = faction_win_info[potential_winner] / total_potential_power
+	for(var/list/potential_winner_list in faction_win_info)
+		var/datum/faction/potential_winner = potential_winner_list[1]
+		var/esteminated_chance = potential_winner_list[2] / total_potential_power
 		if(esteminated_chance < highest)
 			continue
 

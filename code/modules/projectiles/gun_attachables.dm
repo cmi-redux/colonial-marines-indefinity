@@ -2087,7 +2087,7 @@ Defined in conflicts.dm of the #defines folder.
 		//yeah you can cheat by placing BC after switching to underbarrell, but that is one time and we can skip it for sake of optimization
 		gun.damage_mult = gun_original_damage_mult + diff
 		icon_state = initial(icon_state)
-		if(user)
+		if(user && user.client)
 			to_chat(user, SPAN_NOTICE("You are no longer using [src]."))
 			playsound(user, gun_deactivate_sound, 30, 1)
 			user.hud_used.update_ammo_hud(src)
@@ -2097,7 +2097,7 @@ Defined in conflicts.dm of the #defines folder.
 		gun_original_damage_mult = gun.damage_mult
 		gun.damage_mult = 1
 		icon_state += "-on"
-		if(user)
+		if(user && user.client)
 			to_chat(user, SPAN_NOTICE("You are now using [src]."))
 			playsound(user, gun_activate_sound, 60, 1)
 			display_ammo(user)

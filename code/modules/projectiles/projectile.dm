@@ -1448,7 +1448,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 	return TRUE
 
 /turf/bullet_act(obj/item/projectile/proj)
-	if(SEND_SIGNAL(src, COMSIG_TURF_BULLET_ACT, proj) & COMPONENT_BULLET_ACT_OVERRIDE)
+	if(SEND_SIGNAL(proj, COMSIG_TURF_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
 		return
 
 	if(!proj || !density)
@@ -1505,13 +1505,13 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 //Hitting an object. These are too numerous so they're staying in their files.
 //Why are there special cases listed here? Oh well, whatever. ~N
 /obj/bullet_act(obj/item/projectile/proj)
-	if(SEND_SIGNAL(src, COMSIG_ATOM_BULLET_ACT, proj) & COMPONENT_BULLET_ACT_OVERRIDE)
+	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
 		return FALSE
 	bullet_ping(proj)
 	return TRUE
 
 /obj/item/bullet_act(obj/item/projectile/proj)
-	if(SEND_SIGNAL(src, COMSIG_ATOM_BULLET_ACT, proj) & COMPONENT_BULLET_ACT_OVERRIDE)
+	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
 		return FALSE
 	bullet_ping(proj)
 	if(proj.ammo.damage_type == BRUTE)
@@ -1519,7 +1519,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 	return TRUE
 
 /obj/structure/surface/table/bullet_act(obj/item/projectile/proj)
-	if(SEND_SIGNAL(src, COMSIG_ATOM_BULLET_ACT, proj) & COMPONENT_BULLET_ACT_OVERRIDE)
+	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
 		return FALSE
 	bullet_ping(proj)
 	health -= round(proj.damage/2)
