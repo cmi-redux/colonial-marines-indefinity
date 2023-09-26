@@ -77,25 +77,31 @@
 			// Otherwise the preview dummy will runtime
 			// because atoms aren't initialized yet
 			if(SSticker.current_state < GAME_STATE_PREGAME)
-				to_chat(src, client.auto_lang(LANGUAGE_LOBBY_WAIT))
+				to_chat(src, SPAN_WARNING(client.auto_lang(LANGUAGE_LOBBY_WAIT)))
 				return
 			if(!SSentity_manager.initialized)
-				to_chat(src, client.auto_lang(LANGUAGE_LOBBY_WAIT_DB))
+				to_chat(src, SPAN_WARNING(client.auto_lang(LANGUAGE_LOBBY_WAIT_DB)))
 				return
 			client.prefs.ShowChoices(src)
 			return 1
 
 		if("show_playtimes")
+			if(SSticker.current_state < GAME_STATE_PREGAME)
+				to_chat(src, SPAN_WARNING(client.auto_lang(LANGUAGE_LOBBY_WAIT)))
+				return
 			if(!SSentity_manager.initialized)
-				to_chat(src, client.auto_lang(LANGUAGE_LOBBY_WAIT_DB))
+				to_chat(src, SPAN_WARNING(client.auto_lang(LANGUAGE_LOBBY_WAIT_DB)))
 				return
 			if(client.player_data)
 				client.player_data.tgui_interact(src)
 			return 1
 
 		if("show_statistics")
+			if(SSticker.current_state < GAME_STATE_PREGAME)
+				to_chat(src, SPAN_WARNING(client.auto_lang(LANGUAGE_LOBBY_WAIT)))
+				return
 			if(!SSentity_manager.initialized)
-				to_chat(src, client.auto_lang(LANGUAGE_LOBBY_WAIT_DB))
+				to_chat(src, SPAN_WARNING(client.auto_lang(LANGUAGE_LOBBY_WAIT_DB)))
 				return
 			if(client?.player_data?.player_entity)
 				client.player_data.player_entity.tgui_interact(src)

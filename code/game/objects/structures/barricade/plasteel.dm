@@ -27,6 +27,9 @@
 	var/hasconnectionoverlay = TRUE
 	var/linkable = TRUE
 
+/obj/structure/barricade/plasteel/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_SPARKS, -15, 8, 1)
+
 /obj/structure/barricade/plasteel/update_icon()
 	..()
 	if(linked)
@@ -286,3 +289,6 @@
 	repair_materials = list("metal" = 0.3, "plasteel" = 0.45)
 
 	linkable = FALSE
+
+/obj/structure/barricade/plasteel/metal/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_SPARKS, -15, 8, 1)

@@ -2,8 +2,11 @@
 	set name = "Discord Certify"
 	set category = "OOC"
 
+	if(SSticker.current_state < GAME_STATE_PREGAME)
+		to_chat(src, SPAN_WARNING(auto_lang(LANGUAGE_LOBBY_WAIT)))
+		return
 	if(!SSentity_manager.initialized)
-		to_chat(src, auto_lang(LANGUAGE_LOBBY_WAIT_DB))
+		to_chat(src, SPAN_WARNING(auto_lang(LANGUAGE_LOBBY_WAIT_DB)))
 		return
 
 	var/total_playtime = get_total_xeno_playtime(skip_cache = TRUE) + get_total_human_playtime(skip_cache = TRUE)

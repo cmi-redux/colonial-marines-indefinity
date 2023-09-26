@@ -17,6 +17,9 @@
 	metallic = FALSE
 	tcmp_color = COLOR_BARRICADE_SN_TCMP
 
+/obj/structure/barricade/snow/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_SNOW, -10, 5)
+
 /obj/structure/barricade/snow/New(loc, mob/user, direction)
 	if(direction)
 		setDir(direction)
@@ -80,6 +83,9 @@
 	repair_materials = list("wood" = 1)
 	metallic = FALSE
 	tcmp_color = COLOR_BARRICADE_WO_TCMP
+
+/obj/structure/barricade/wooden/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_WOOD, -10, 5)
 
 /obj/structure/barricade/wooden/attackby(obj/item/W as obj, mob/user as mob)
 	for(var/obj/effect/xenomorph/acid/A in src.loc)

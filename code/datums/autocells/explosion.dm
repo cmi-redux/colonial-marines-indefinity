@@ -240,7 +240,7 @@ as having entered the turf.
 // I'll admit most of the code from here on out is basically just copypasta from DOREC
 
 // Spawns a cellular automaton of an explosion
-/proc/cell_explosion(turf/epicenter, power, falloff, falloff_shape = EXPLOSION_FALLOFF_SHAPE_LINEAR, direction, datum/cause_data/explosion_cause_data)
+/proc/cell_explosion(turf/epicenter, power, falloff, falloff_shape = EXPLOSION_FALLOFF_SHAPE_LINEAR, direction, datum/cause_data/explosion_cause_data, shrapnel = TRUE)
 	if(!istype(epicenter))
 		epicenter = get_turf(epicenter)
 
@@ -266,6 +266,7 @@ as having entered the turf.
 	else
 		playsound(epicenter, "explosion", 90, 1, max(round(power,1),7))
 
+	var/explosion_range
 	var/datum/automata_cell/explosion/E
 	var/turf/above_epicenter = SSmapping.get_turf_above(epicenter)
 	var/turf/below_epicenter = SSmapping.get_turf_below(epicenter)
@@ -287,9 +288,14 @@ as having entered the turf.
 		E.direction = direction
 		E.explosion_cause_data = explosion_cause_data
 
-		if(power >= 100) // powerful explosions send out some special effects
-			create_shrapnel(turf, rand(5,9), , ,/datum/ammo/bullet/shrapnel/light/effect/ver1, explosion_cause_data)
-			create_shrapnel(turf, rand(5,9), , ,/datum/ammo/bullet/shrapnel/light/effect/ver2, explosion_cause_data)
+		explosion_range = round(power / falloff)
+
+		// Make explosion effect
+		new /obj/effect/temp_visual/explosion(epicenter, explosion_range, LIGHT_COLOR_HOLY_MAGIC, power)
+
+		if(shrapnel) // powerful explosions send out some special effects
+			create_shrapnel(turf, rand(explosion_range, explosion_range*2), , ,/datum/ammo/bullet/shrapnel/light/effect/ver1, explosion_cause_data)
+			create_shrapnel(turf, rand(explosion_range, explosion_range*2), , ,/datum/ammo/bullet/shrapnel/light/effect/ver2, explosion_cause_data)
 
 /proc/log_explosion(atom/A, datum/automata_cell/explosion/E)
 	if(isliving(A))

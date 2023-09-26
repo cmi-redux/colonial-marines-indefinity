@@ -454,6 +454,9 @@
 	walltype = WALL_WOOD
 	baseturfs = /turf/open/floor/wood
 
+/turf/closed/wall/wood/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_WOOD, -10, 5)
+
 /turf/closed/wall/wood/update_icon()
 	..()
 	if(special_icon)
@@ -473,6 +476,9 @@
 	walltype = WALL_CAVE
 	hull = TRUE
 	color = "#535963"
+
+/turf/closed/wall/rock/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_ROCK, -10, 5, 1)
 
 /turf/closed/wall/rock/brown
 	color = "#826161"
@@ -703,6 +709,9 @@
 	var/datum/faction/faction
 	var/should_track_build = FALSE
 	var/datum/cause_data/construction_data
+
+/turf/closed/wall/resin/add_debris_element()
+	AddElement(/datum/element/debris, null, -15, 8, 0.7)
 
 /turf/closed/wall/resin/Initialize(mapload)
 	. = ..()

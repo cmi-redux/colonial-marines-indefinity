@@ -17,6 +17,9 @@
 	metallic = FALSE
 	tcmp_color = COLOR_BARRICADE_SA_TCMP
 
+/obj/structure/barricade/sandbags/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_SNOW, -10, 5)
+
 /obj/structure/barricade/sandbags/New(loc, mob/user, direction, amount = 1)
 	if(direction)
 		setDir(direction)

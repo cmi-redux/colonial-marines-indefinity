@@ -35,6 +35,9 @@
 	var/upright_projectile_coverage = PROJECTILE_COVERAGE_LOW
 	surgery_duration_multiplier = SURGERY_SURFACE_MULT_UNSUITED
 
+/obj/structure/surface/table/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_SPARKS, -10, 5)
+
 /obj/structure/surface/table/Initialize()
 	. = ..()
 
@@ -495,6 +498,9 @@
 	parts = /obj/item/frame/table/wood
 	table_prefix = "wood"
 	health = 50
+
+/obj/structure/surface/table/woodentable/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_WOOD, -10, 5)
 
 /obj/structure/surface/table/woodentable/poor
 	name = "poor wooden table"

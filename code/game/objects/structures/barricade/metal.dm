@@ -19,6 +19,9 @@
 	var/build_state = BARRICADE_BSTATE_SECURED //Look at __game.dm for barricade defines
 	var/upgrade = null
 
+/obj/structure/barricade/metal/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_SPARKS, -15, 8, 1)
+
 /obj/structure/barricade/metal/update_icon()
 	. = ..()
 	if(dir > 2)

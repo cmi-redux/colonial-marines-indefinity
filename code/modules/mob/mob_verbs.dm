@@ -34,8 +34,11 @@
 	set name = "View Playtimes"
 	set desc = "View your playtimes."
 
+	if(SSticker.current_state < GAME_STATE_PREGAME)
+		to_chat(src, SPAN_WARNING(client.auto_lang(LANGUAGE_LOBBY_WAIT)))
+		return
 	if(!SSentity_manager.initialized)
-		to_chat(src, client.auto_lang(LANGUAGE_LOBBY_WAIT_DB))
+		to_chat(src, SPAN_WARNING(client.auto_lang(LANGUAGE_LOBBY_WAIT_DB)))
 		return
 
 	if(client && client.player_data)

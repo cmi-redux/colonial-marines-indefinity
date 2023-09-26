@@ -31,6 +31,9 @@
 
 	var/objective_spawn = TRUE
 
+/obj/structure/closet/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_SPARKS, -10, 5)
+
 /obj/structure/closet/Initialize()
 	. = ..()
 	//make sure to load landmarks for defcons
