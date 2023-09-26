@@ -707,6 +707,11 @@
 			for(var/i =1 , i <= size, i++)
 				new /obj/item/stack/sheet/metal(pick(turfs))
 				new /obj/item/ore(pick(turfs))
+
+	var/obj/effect/abstract/particle_holder/falling_debris = new(src, /particles/falling_debris)
+	addtimer(VARSET_CALLBACK(falling_debris.particles, count, 0), 5)
+	QDEL_IN(falling_debris, 3 SECONDS)
+
 	turf_flags |= TURF_DEBRISED
 
 /turf/proc/ceiling_desc(mob/user)
