@@ -13,43 +13,47 @@ Format:
 endmap
 
 map lv624
-	default
+	disabled
 endmap
 
 map bigredv2
+	disabled
 endmap
 
 map prison_station_fop
+	disabled
 endmap
 
 map fiorina_sciannex
-	minplayers 140
+	disabled
 endmap
 
 map corsat
-	minplayers 100
+	disabled
 endmap
 
 map desert_dam
-	minplayers 80
+	disabled
 endmap
 
 map ice_colony_v2
-	minplayers 40
+	disabled
 endmap
 
 map shivas_snowball
+	disabled
 endmap
 
 map kutjevo
+	disabled
 endmap
 
 map sorokyne_strata
-	minplayers 60
+	disabled
 endmap
 
 map lv522_chances_claim
-	minplayers 80
+	disabled
 endmap
 
 map new_varadero
@@ -57,6 +61,7 @@ map new_varadero
 endmap
 
 map skyscraper
+	default
 endmap
 
 map ravenue_5
