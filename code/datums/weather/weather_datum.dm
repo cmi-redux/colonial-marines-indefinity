@@ -81,7 +81,7 @@
 /datum/weather_event/wind
 	name = "Wind"
 	duration = 10 SECONDS
-	affecting_value = list("min_value" = 20, "max_value" = 80)
+	affecting_value = list("min_value" = 10, "max_value" = 60)
 	max_stages = 2
 	stage = GLE_STAGE_FIRST
 
@@ -408,7 +408,7 @@
 		return
 	weather_duration = rand(weather_duration_lower, weather_duration_upper)
 	COOLDOWN_START(src, time_left, weather_duration)
-	weather_start_time = world.time
+	weather_start_time = SSsunlighting.game_time_offseted() / SSsunlighting.game_time_length
 	running = TRUE
 	addtimer(CALLBACK(src, PROC_REF(wind_down)), weather_duration)
 	weather_warnings()
