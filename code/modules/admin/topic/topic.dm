@@ -565,7 +565,7 @@
 		switch(alert("Are you sure you want to EORG ban [M.ckey]?", , "Yes", "No"))
 			if("Yes")
 				mins = 180
-				reason = "EORG"
+				reason = "EORG - Generating combat logs with, or otherwise griefing, friendly/allied players."
 			if("No")
 				return
 		var/datum/entity/player/P = get_player_from_key(M.ckey) // you may not be logged in, but I will find you and I will ban you
@@ -982,7 +982,8 @@
 		message_admins("[key_name_admin(usr)] has sent [key_name_admin(M)] to the thunderdome. (Observer.)", 1)
 
 	else if(href_list["revive"])
-		if(!check_rights(R_REJUVINATE)) return
+		if(!check_rights(R_MOD))
+			return
 
 		var/mob/living/L = locate(href_list["revive"])
 		if(!istype(L))
@@ -1501,7 +1502,7 @@
 
 						// Stamps
 						var/image/stampoverlay = image('icons/obj/items/paper.dmi')
-						stampoverlay.icon_state = "paper_stamp-cent"
+						stampoverlay.icon_state = "paper_stamp-weyyu"
 						if(!P.stamped)
 							P.stamped = new
 						P.stamped += /obj/item/tool/stamp
@@ -1583,7 +1584,7 @@
 
 						// Stamps
 						var/image/stampoverlay = image('icons/obj/items/paper.dmi')
-						stampoverlay.icon_state = "paper_stamp-cent"
+						stampoverlay.icon_state = "paper_stamp-cmb"
 						if(!P.stamped)
 							P.stamped = new
 						P.stamped += /obj/item/tool/stamp
@@ -1882,7 +1883,7 @@
 
 	if(href_list["ccdeny"]) // CentComm-deny. The distress call is denied, without any further conditions
 		var/mob/ref_person = locate(href_list["ccdeny"])
-		marine_announcement("The distress signal has not received a response, the launch tubes are now recalibrating.", "Distress Beacon")
+		marine_announcement("The distress signal has not received a response, the launch tubes are now recalibrating.", "Distress Beacon", logging = ARES_LOG_SECURITY)
 		log_game("[key_name_admin(usr)] has denied a distress beacon, requested by [key_name_admin(ref_person)]")
 		message_admins("[key_name_admin(usr)] has denied a distress beacon, requested by [key_name_admin(ref_person)]", 1)
 
@@ -1925,9 +1926,45 @@
 			log_game("[key_name_admin(usr)] has granted self-destruct, requested by [key_name_admin(ref_person)]")
 			message_admins("[key_name_admin(usr)] has granted self-destruct, requested by [key_name_admin(ref_person)]", 1)
 
+	if(href_list["nukeapprove"])
+		var/mob/ref_person = locate(href_list["nukeapprove"])
+		if(!istype(ref_person))
+			return FALSE
+		var/nuketype = "Encrypted Operational Nuke"
+		var/prompt = tgui_alert(usr, "Do you want the nuke to be Encrypted?", "Nuke Type", list("Encrypted", "Decrypted"), 20 SECONDS)
+		if(prompt == "Decrypted")
+			nuketype = "Decrypted Operational Nuke"
+		prompt = tgui_alert(usr, "Are you sure you want to authorize a [nuketype] to the marines? This will greatly affect the round!", "DEFCON 1", list("No", "Yes"))
+		if(prompt != "Yes")
+			return
+
+		//make ASRS order for nuke
+		var/datum/supply_order/new_order = new()
+		new_order.ordernum = supply_controller.ordernum
+		supply_controller.ordernum++
+		new_order.object = supply_controller.supply_packs[nuketype]
+		new_order.orderedby = ref_person
+		new_order.approvedby = "USCM High Command"
+		supply_controller.shoppinglist += new_order
+
+		//Can no longer request a nuke
+		GLOB.ares_link.interface.nuke_available = FALSE
+
+		marine_announcement("A nuclear device has been authorized by High Command and will be delivered to requisitions via ASRS.", "NUCLEAR ORDNANCE AUTHORIZED", 'sound/misc/notice2.ogg', logging = ARES_LOG_MAIN)
+		log_game("[key_name_admin(usr)] has authorized a [nuketype], requested by [key_name_admin(ref_person)]")
+		message_admins("[key_name_admin(usr)] has authorized a [nuketype], requested by [key_name_admin(ref_person)]")
+
+	if(href_list["nukedeny"])
+		var/mob/ref_person = locate(href_list["nukedeny"])
+		if(!istype(ref_person))
+			return FALSE
+		marine_announcement("Your request for nuclear ordnance deployment has been reviewed and denied by USCM High Command for operational security and colonial preservation reasons. Have a good day.", "NUCLEAR ORDNANCE DENIED", 'sound/misc/notice2.ogg', logging = ARES_LOG_MAIN)
+		log_game("[key_name_admin(usr)] has denied nuclear ordnance, requested by [key_name_admin(ref_person)]")
+		message_admins("[key_name_admin(usr)] has dnied nuclear ordnance, requested by [key_name_admin(ref_person)]")
+
 	if(href_list["sddeny"]) // CentComm-deny. The self-destruct is denied, without any further conditions
 		var/mob/ref_person = locate(href_list["sddeny"])
-		marine_announcement("The self-destruct request has not received a response, ARES is now recalculating statistics.", "Self-Destruct System")
+		marine_announcement("The self-destruct request has not received a response, ARES is now recalculating statistics.", "Self-Destruct System", logging = ARES_LOG_SECURITY)
 		log_game("[key_name_admin(usr)] has denied self-destruct, requested by [key_name_admin(ref_person)]")
 		message_admins("[key_name_admin(usr)] has denied self-destruct, requested by [key_name_admin(ref_person)]", 1)
 
@@ -2006,6 +2043,45 @@
 
 		player_notes_all(checking.key)
 
+	if(href_list["AresReply"])
+		var/mob/living/carbon/human/speaker = locate(href_list["AresReply"])
+
+		if(!istype(speaker))
+			to_chat(usr, "This can only be used on instances of type /mob/living/carbon/human")
+			return FALSE
+
+		if((!GLOB.ares_link.interface) || (GLOB.ares_link.interface.inoperable()))
+			to_chat(usr, "ARES Interface offline.")
+			return FALSE
+
+		var/input = input(src.owner, "Please enter a message from ARES to reply to [key_name(speaker)].","Outgoing message from ARES", "")
+		if(!input)
+			return FALSE
+
+		to_chat(src.owner, "You sent [input] to [speaker] via ARES Interface.")
+		log_admin("[src.owner] replied to [key_name(speaker)]'s ARES message with the message [input].")
+		for(var/client/staff in GLOB.admins)
+			if((R_ADMIN|R_MOD) & staff.admin_holder.rights)
+				to_chat(staff, SPAN_STAFF_IC("<b>ADMINS/MODS: [SPAN_RED("[src.owner] replied to [key_name(speaker)]'s ARES message")] with: [SPAN_BLUE(input)] </b>"))
+		GLOB.ares_link.interface.response_from_ares(input, href_list["AresRef"])
+
+	if(href_list["AresMark"])
+		var/mob/living/carbon/human/speaker = locate(href_list["AresMark"])
+
+		if(!istype(speaker))
+			to_chat(usr, "This can only be used on instances of type /mob/living/carbon/human")
+			return FALSE
+
+		if((!GLOB.ares_link.interface) || (GLOB.ares_link.interface.inoperable()))
+			to_chat(usr, "ARES Interface offline.")
+			return FALSE
+
+		to_chat(src.owner, "You marked [speaker]'s ARES message for response.")
+		log_admin("[src.owner] marked [key_name(speaker)]'s ARES message. [src.owner] will be responding.")
+		for(var/client/staff in GLOB.admins)
+			if((R_ADMIN|R_MOD) & staff.admin_holder.rights)
+				to_chat(staff, SPAN_STAFF_IC("<b>ADMINS/MODS: [SPAN_RED("[src.owner] marked [key_name(speaker)]'s ARES message for response.")]</b>"))
+
 	return
 
 /datum/admins/proc/accept_ert(mob/approver, mob/ref_person)
@@ -2020,7 +2096,7 @@
 	if(distress_cancel)
 		return
 	distress_cancel = TRUE
-	SSticker.mode.get_specific_call("Weyland-Yutani PMC (Chemical Investigation Squad)", FALSE, FALSE)
+	SSticker.mode.get_specific_call("Weyland-Yutani PMC (Chemical Investigation Squad)", TRUE, FALSE, FALSE)
 	log_game("[key_name_admin(approver)] has sent a PMC distress beacon, requested by [key_name_admin(ref_person)]")
 	message_admins("[key_name_admin(approver)] has sent a PMC distress beacon, requested by [key_name_admin(ref_person)]")
 

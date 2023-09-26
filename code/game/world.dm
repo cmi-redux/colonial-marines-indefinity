@@ -39,7 +39,6 @@ var/list/reboot_sfx = file2list("config/reboot_sfx.txt")
 	GLOB.changelog_hash = fexists(latest_changelog) ? md5(latest_changelog) : 0 //for telling if the changelog has changed recently
 
 	initialize_tgs()
-	initialize_marine_armor()
 
 	#ifdef UNIT_TESTS
 	GLOB.test_log = "data/logs/tests.log"
@@ -62,7 +61,7 @@ var/list/reboot_sfx = file2list("config/reboot_sfx.txt")
 
 	var/testing_locally = (world.params && world.params["local_test"])
 	var/running_tests = (world.params && world.params["run_tests"])
-	#ifdef UNIT_TESTS
+	#if defined(AUTOWIKI) || defined(UNIT_TESTS)
 	running_tests = TRUE
 	#endif
 	// Only do offline sleeping when the server isn't running unit tests or hosting a local dev test
@@ -85,6 +84,10 @@ var/list/reboot_sfx = file2list("config/reboot_sfx.txt")
 	HandleTestRun()
 	#endif
 
+	#ifdef AUTOWIKI
+	setup_autowiki()
+	#endif
+
 	update_status()
 
 	//Scramble the coords obsfucator
@@ -98,7 +101,7 @@ var/list/reboot_sfx = file2list("config/reboot_sfx.txt")
 	// If the server's configured for local testing, get everything set up ASAP.
 	// Shamelessly stolen from the test manager's host_tests() proc
 	if(testing_locally)
-		master_mode = "extended"
+		master_mode = "Extended"
 
 		// Wait for the game ticker to initialize
 		while(!SSticker.initialized)
@@ -182,8 +185,8 @@ var/world_topic_spam_protect_time = world.timeofday
 		if(logging)
 			log_topic("(NON-JSON) \"[topic_decoded]\", from:[addr], master:[master], key:[key]")
 		// Fallback check for spacestation13.com requests
-		if(topic_decoded == "ping")
-			return length(GLOB.clients)
+		if(topic_decoded == "status")
+			return list2params(list("players" = length(GLOB.clients)))
 		response["statuscode"] = 400
 		response["response"] = "Bad Request - Invalid JSON format"
 		return json_encode(response)

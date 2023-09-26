@@ -12,7 +12,7 @@
 
 /datum/equipment_preset/pmc/New()
 	. = ..()
-	access = get_all_accesses() + get_all_centcom_access() + get_antagonist_access()
+	access = get_access(ACCESS_LIST_WY_PMC)
 
 
 /datum/equipment_preset/pmc/load_name(mob/living/carbon/human/new_human, randomise)
@@ -59,8 +59,8 @@
 	name = "Weyland-Yutani PMC (Standard)"
 	flags = EQUIPMENT_PRESET_EXTRA
 
-	assignment = "Weyland-Yutani PMC (Standard)"
-	rank = JOB_PMC
+	assignment = JOB_PMC_STANDARD
+	rank = JOB_PMC_STANDARD
 	paygrade = "PMC-OP"
 	skills = /datum/skills/pmc
 
@@ -201,8 +201,8 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	name = "Weyland-Yutani PMC (Detainer)"
 	flags = EQUIPMENT_PRESET_EXTRA
 
-	assignment = "Weyland-Yutani PMC (Detainer)"
-	rank = JOB_PMC
+	assignment = JOB_PMC_DETAINER
+	rank = JOB_PMC_DETAINER
 	paygrade = "PMC-EN"
 	skills = /datum/skills/pmc
 
@@ -412,7 +412,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 		list("Large Pistol Magazine Pouch", 0, /obj/item/storage/pouch/magazine/pistol/large, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 		list("Large Magazine Pouch", 0, /obj/item/storage/pouch/magazine/large, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 		list("Medical Pouch", 0, /obj/item/storage/pouch/medical, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
-		list("Medkit Pouch", 0, /obj/item/storage/pouch/medkit, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
+		list("Medical Kit Pouch", 0, /obj/item/storage/pouch/medkit, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
 		list("Pressurized Reagent Canister Pouch (Bicaridine)", 0, /obj/item/storage/pouch/pressurized_reagent_canister/bicaridine, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
 		list("Pressurized Reagent Canister Pouch (Kelotane)", 0, /obj/item/storage/pouch/pressurized_reagent_canister/kelotane, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
 		list("Pressurized Reagent Canister Pouch (Revival Mix)", 0, /obj/item/storage/pouch/pressurized_reagent_canister/revival, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
@@ -590,7 +590,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 		list("Large Pistol Magazine Pouch", 0, /obj/item/storage/pouch/magazine/pistol/large, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 		list("Large Magazine Pouch", 0, /obj/item/storage/pouch/magazine/large, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 		list("Medical Pouch", 0, /obj/item/storage/pouch/medical, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
-		list("Medkit Pouch", 0, /obj/item/storage/pouch/medkit, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
+		list("Medical Kit Pouch", 0, /obj/item/storage/pouch/medkit, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
 		list("Pressurized Reagent Canister Pouch (Bicaridine)", 0, /obj/item/storage/pouch/pressurized_reagent_canister/bicaridine, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
 		list("Pressurized Reagent Canister Pouch (Kelotane)", 0, /obj/item/storage/pouch/pressurized_reagent_canister/kelotane, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
 		list("Pressurized Reagent Canister Pouch (Revival Mix)", 0, /obj/item/storage/pouch/pressurized_reagent_canister/revival, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
@@ -690,6 +690,10 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	role_comm_title = "SL"
 	skills = /datum/skills/pmc/SL
 	headset_type = /obj/item/device/radio/headset/distress/pmc/command
+
+/datum/equipment_preset/pmc/pmc_leader/New()
+	. = ..()
+	access = get_access(ACCESS_LIST_WY_PMC) + list(ACCESS_WY_LEADERSHIP, ACCESS_WY_PMC_TL)
 
 /datum/equipment_preset/pmc/pmc_leader/load_gear(mob/living/carbon/human/new_human)
 	//TODO: add backpacks and satchels
@@ -843,6 +847,10 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	skills = /datum/skills/pmc/SL/chem
 	headset_type = /obj/item/device/radio/headset/distress/pmc/command
 
+/datum/equipment_preset/pmc/pmc_lead_investigator/New()
+	. = ..()
+	access = get_access(ACCESS_LIST_WY_PMC) + list(ACCESS_WY_LEADERSHIP, ACCESS_WY_PMC_TL)
+
 /datum/equipment_preset/pmc/pmc_lead_investigator/load_gear(mob/living/carbon/human/new_human)
 	//TODO: add backpacks and satchels
 	new_human.equip_to_slot_or_del(new headset_type, WEAR_L_EAR)
@@ -995,8 +1003,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	new_human.equip_to_slot_or_del(new /obj/item/stack/medical/bruise_pack, WEAR_IN_ACCESSORY)
 	new_human.equip_to_slot_or_del(new /obj/item/stack/medical/splint, WEAR_IN_ACCESSORY)
 	new_human.equip_to_slot_or_del(new /obj/item/tool/extinguisher/mini, WEAR_IN_ACCESSORY)
-	new_human.equip_to_slot_or_del(new /obj/item/cell/hyper, WEAR_IN_ACCESSORY)
-	new_human.equip_to_slot_or_del(new /obj/item/smartgun_powerpack/pmc, WEAR_BACK)
+	new_human.equip_to_slot_or_del(new /obj/item/smartgun_battery, WEAR_IN_ACCESSORY)
 	new_human.equip_to_slot_or_del(new /obj/item/weapon/gun/smartgun/dirty, WEAR_J_STORE)
 	new_human.equip_to_slot_or_del(new /obj/item/storage/pouch/magazine/pistol/large/vp78, WEAR_R_STORE)
 	new_human.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/full, WEAR_L_STORE)
@@ -1203,7 +1210,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	name = "Weyland-Yutani PMC (Crewman)"
 	flags = EQUIPMENT_PRESET_EXTRA
 
-	assignment = "Weyland-Yutani PMC (Crewman)"
+	assignment = JOB_PMC_CREWMAN
 	rank = JOB_PMC_CREWMAN
 	paygrade = "PMC-VS"
 	skills = /datum/skills/pmc/tank_crew
@@ -1557,7 +1564,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 		list("Large Pistol Magazine Pouch", 0, /obj/item/storage/pouch/magazine/pistol/large, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 		list("Large Magazine Pouch", 0, /obj/item/storage/pouch/magazine/large, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 		list("Medical Pouch", 0, /obj/item/storage/pouch/medical, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
-		list("Medkit Pouch", 0, /obj/item/storage/pouch/medkit, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
+		list("Medical Kit Pouch", 0, /obj/item/storage/pouch/medkit, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
 		list("Pressurized Reagent Canister Pouch (Bicaridine)", 0, /obj/item/storage/pouch/pressurized_reagent_canister/bicaridine, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
 		list("Pressurized Reagent Canister Pouch (Kelotane)", 0, /obj/item/storage/pouch/pressurized_reagent_canister/kelotane, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
 		list("Pressurized Reagent Canister Pouch (Revival Mix)", 0, /obj/item/storage/pouch/pressurized_reagent_canister/revival, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
@@ -1838,10 +1845,10 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 		languages = ALL_SYNTH_LANGUAGES
 
 		skills = /datum/skills/synthetic
-		idtype = /obj/item/card/id/data
+		idtype = /obj/item/card/id/pmc
 		assignment = JOB_PMC_SYNTH
 		rank = JOB_PMC_SYNTH
-		role_comm_title = "Syn"
+		role_comm_title = "WY Syn"
 		headset_type = /obj/item/device/radio/headset/distress/pmc/command
 
 
@@ -1880,7 +1887,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 		new_human.equip_to_slot_or_del(new /obj/item/clothing/accessory/storage/surg_vest/equipped, WEAR_ACCESSORY)
 		new_human.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/veteran/pmc/light/synth, WEAR_JACKET)
 		new_human.equip_to_slot_or_del(new /obj/item/weapon/telebaton, WEAR_IN_JACKET)
-		new_human.equip_to_slot_or_del(new /obj/item/tool/surgery/synthgraft, WEAR_IN_JACKET)
+		new_human.equip_to_slot_or_del(new /obj/item/ammo_magazine/smg/nailgun, WEAR_IN_JACKET)
 		new_human.equip_to_slot_or_del(new /obj/item/ammo_magazine/smg/nailgun, WEAR_IN_JACKET)
 
 		new_human.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/veteran/pmc, WEAR_HEAD)
@@ -1896,8 +1903,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 		new_human.equip_to_slot_or_del(new /obj/item/roller/surgical, WEAR_IN_BACK)
 		new_human.equip_to_slot_or_del(new /obj/item/tool/extinguisher/mini, WEAR_IN_BACK)
 		new_human.equip_to_slot_or_del(new /obj/item/device/defibrillator/upgraded, WEAR_IN_BACK)
-		new_human.equip_to_slot_or_del(new /obj/item/ammo_magazine/smg/nailgun, WEAR_IN_BACK)
-		new /obj/item/clothing/suit/auto_cpr(new_human.back)
+		new_human.equip_to_slot_or_del(new /obj/item/tool/crew_monitor, WEAR_IN_BACK)
 
 		new_human.equip_to_slot_or_del(new /obj/item/storage/belt/medical/lifesaver/full/dutch, WEAR_WAIST)
 		new_human.equip_to_slot_or_del(new /obj/item/weapon/gun/smg/nailgun/compact, WEAR_J_STORE)
@@ -1962,7 +1968,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 		list("Large General Pouch", 0, /obj/item/storage/pouch/general/large, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 		list("Sling Pouch", 0, /obj/item/storage/pouch/sling, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 		list("Medical Pouch", 0, /obj/item/storage/pouch/medical, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
-		list("Medkit Pouch", 0, /obj/item/storage/pouch/medkit, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
+		list("Medical Kit Pouch", 0, /obj/item/storage/pouch/medkit, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 		list("Pressurized Reagent Canister Pouch (Bicaridine)", 0, /obj/item/storage/pouch/pressurized_reagent_canister/bicaridine, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 		list("Pressurized Reagent Canister Pouch (Kelotane)", 0, /obj/item/storage/pouch/pressurized_reagent_canister/kelotane, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 		list("Pressurized Reagent Canister Pouch (Revival Mix)", 0, /obj/item/storage/pouch/pressurized_reagent_canister/revival, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),

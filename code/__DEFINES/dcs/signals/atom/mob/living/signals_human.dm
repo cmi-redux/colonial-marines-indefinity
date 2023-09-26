@@ -12,7 +12,7 @@
 #define COMSIG_HUMAN_REVIVED "human_revived"
 /// From /mob/living/carbon/human/bullet_act
 #define COMSIG_HUMAN_PRE_BULLET_ACT "human_pre_bullet_act"
-/// From /mob/living/carbon/human/bullet_act(): (damage_result, ammo_flags, obj/item/projectile/P)
+/// From /mob/living/carbon/human/bullet_act(): (damage_result, ammo_flags, obj/projectile/P)
 #define COMSIG_HUMAN_BULLET_ACT "human_bullet_act"
 	#define COMPONENT_CANCEL_BULLET_ACT (1<<0)
 
@@ -51,6 +51,10 @@
 
 //from /mob/living/carbon/human/equip_to_slot()
 #define COMSIG_HUMAN_EQUIPPED_ITEM "human_equipped_item"
+
+/// From /mob/proc/equip_to_slot_if_possible()
+#define COMSIG_HUMAN_ATTEMPTING_EQUIP "human_attempting_equip"
+	#define COMPONENT_HUMAN_CANCEL_ATTEMPT_EQUIP (1<<0)
 
 //from /mob/living/carbon/human/Life()
 #define COMSIG_HUMAN_SET_UNDEFIBBABLE "human_set_undefibbable"

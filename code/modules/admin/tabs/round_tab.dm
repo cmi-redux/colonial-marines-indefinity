@@ -148,7 +148,10 @@
 
 	if(!check_rights(R_SERVER))
 		return
-	if (SSticker.current_state != GAME_STATE_PREGAME)
+	if(SSticker.current_state != GAME_STATE_PREGAME)
+		if(SSticker.delay_end)
+			if(tgui_alert(usr, "Round end delay is already enabled, are you sure you want to disable it?", "Confirmation", list("Yes", "No"), 30 SECONDS) != "Yes")
+				return
 		SSticker.delay_end = !SSticker.delay_end
 		message_admins("[SPAN_NOTICE("[key_name(usr)] [SSticker.delay_end ? "delayed the round end" : "has made the round end normally"].")]")
 		for(var/client/C in GLOB.admins)
@@ -181,3 +184,34 @@
 	else
 		to_chat(usr, "<font color='red'>Error: Start Now: Game has already started.</font>")
 		return FALSE
+
+/client/proc/toggle_cdn()
+	set name = "Toggle CDN"
+	set category = "Server"
+	var/static/admin_disabled_cdn_transport = null
+	if(alert(usr, "Are you sure you want to toggle CDN asset transport?", "Confirm", "Yes", "No") != "Yes")
+		return
+
+	var/current_transport = CONFIG_GET(string/asset_transport)
+	if(!current_transport || current_transport == "simple")
+		if(admin_disabled_cdn_transport)
+			CONFIG_SET(string/asset_transport, admin_disabled_cdn_transport)
+			admin_disabled_cdn_transport = null
+			SSassets.OnConfigLoad()
+			message_admins("[key_name_admin(usr)] re-enabled the CDN asset transport")
+			log_admin("[key_name(usr)] re-enabled the CDN asset transport")
+			return
+
+		to_chat(usr, SPAN_ADMINNOTICE("The CDN is not enabled!"))
+		if(alert(usr, "CDN asset transport is not enabled! If you're having issues with assets, you can also try disabling filename mutations.", "CDN asset transport is not enabled!", "Try disabling filename mutations", "Nevermind") == "Try disabling filename mutations")
+			SSassets.transport.dont_mutate_filenames = !SSassets.transport.dont_mutate_filenames
+			message_admins("[key_name_admin(usr)] [(SSassets.transport.dont_mutate_filenames ? "disabled" : "re-enabled")] asset filename transforms.")
+			log_admin("[key_name(usr)] [(SSassets.transport.dont_mutate_filenames ? "disabled" : "re-enabled")] asset filename transforms.")
+		return
+
+	admin_disabled_cdn_transport = current_transport
+	CONFIG_SET(string/asset_transport, "simple")
+	SSassets.OnConfigLoad()
+	SSassets.transport.dont_mutate_filenames = TRUE
+	message_admins("[key_name_admin(usr)] disabled CDN asset transport")
+	log_admin("[key_name(usr)] disabled CDN asset transport")
