@@ -127,11 +127,11 @@
 		qdel(src)
 		return
 
-/obj/structure/machinery/door/window/bullet_act(obj/item/projectile/Proj)
-	bullet_ping(Proj)
-	if(Proj.ammo.damage)
-		take_damage(round(Proj.ammo.damage / 2))
-		if(Proj.ammo.damage_type == BRUTE)
+/obj/structure/machinery/door/window/bullet_act(obj/item/projectile/proj)
+	bullet_ping(proj)
+	if(proj.ammo.damage)
+		take_damage(round(proj.ammo.damage / 2))
+		if(proj.ammo.damage_type == BRUTE)
 			playsound(src.loc, 'sound/effects/Glasshit.ogg', 25, 1)
 	return 1
 

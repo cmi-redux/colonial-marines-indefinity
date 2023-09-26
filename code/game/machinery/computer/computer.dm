@@ -56,12 +56,12 @@
 		else
 	return
 
-/obj/structure/machinery/computer/bullet_act(obj/item/projectile/Proj)
+/obj/structure/machinery/computer/bullet_act(obj/item/projectile/proj)
 	if(exproof)
-		visible_message("[Proj] ricochets off [src]!")
+		visible_message("[proj] ricochets off [src]!")
 		return 0
 	else
-		if(prob(round(Proj.ammo.damage /2)))
+		if(prob(round(proj.ammo.damage /2)))
 			set_broken()
 		..()
 		return 1

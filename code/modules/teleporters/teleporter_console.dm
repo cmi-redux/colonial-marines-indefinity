@@ -166,8 +166,8 @@
 		..()
 
 
-/obj/structure/machinery/computer/teleporter_console/bullet_act(obj/item/projectile/P)
-	visible_message("[P] doesn't even scratch [src]!")
+/obj/structure/machinery/computer/teleporter_console/bullet_act(obj/item/projectile/proj)
+	visible_message("[proj] doesn't even scratch [src]!")
 	return FALSE
 
 // Please only add things with teleporter_id set or it will not work and you'll spam the shit out of admin logs

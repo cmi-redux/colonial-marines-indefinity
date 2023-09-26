@@ -119,16 +119,16 @@
 		if(make_hit_sound)
 			playsound(loc, 'sound/effects/Glasshit.ogg', 25, 1)
 
-/obj/structure/window/bullet_act(obj/item/projectile/Proj)
+/obj/structure/window/bullet_act(obj/item/projectile/proj)
 	//Tasers and the like should not damage windows.
-	var/ammo_flags = Proj.ammo.flags_ammo_behavior | Proj.projectile_override_flags
-	if(Proj.ammo.damage_type == HALLOSS || Proj.damage <= 0 || ammo_flags == AMMO_ENERGY)
+	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
+	if(proj.ammo.damage_type == HALLOSS || proj.damage <= 0 || ammo_flags == AMMO_ENERGY)
 		return 0
 
 	if(!not_damageable) //Impossible to destroy
-		health -= Proj.damage
+		health -= proj.damage
 	..()
-	healthcheck(user = Proj.firer)
+	healthcheck(user = proj.firer)
 	return 1
 
 /obj/structure/window/ex_act(severity, explosion_direction, datum/cause_data/cause_data)

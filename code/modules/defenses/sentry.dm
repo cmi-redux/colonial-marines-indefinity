@@ -292,17 +292,17 @@
 		addtimer(CALLBACK(src, PROC_REF(get_target)), fire_delay)
 
 /obj/structure/machinery/defenses/sentry/proc/actual_fire(atom/A)
-	var/obj/item/projectile/P = ammo.transfer_bullet_out()
-	P.forceMove(src)
-	apply_traits(P)
-	P.bullet_ready_to_fire(initial(name), null, owner_mob)
+	var/obj/item/projectile/proj = ammo.transfer_bullet_out()
+	proj.forceMove(src)
+	apply_traits(proj)
+	proj.bullet_ready_to_fire(initial(name), null, owner_mob)
 	var/datum/cause_data/cause_data = create_cause_data(initial(name), owner_mob, src)
-	P.weapon_cause_data = cause_data
-	P.firer = cause_data?.resolve_mob()
-	P.damage *= damage_mult
-	P.accuracy *= accuracy_mult
-	GIVE_BULLET_TRAIT(P, /datum/element/bullet_trait_iff, faction)
-	P.fire_at(A, src, owner_mob, P.ammo.max_range, P.ammo.shell_speed, null)
+	proj.weapon_cause_data = cause_data
+	proj.firer = cause_data?.resolve_mob()
+	proj.damage *= damage_mult
+	proj.accuracy *= accuracy_mult
+	GIVE_BULLET_TRAIT(proj, /datum/element/bullet_trait_iff, faction)
+	proj.fire_at(A, src, owner_mob, proj.ammo.max_range, proj.ammo.shell_speed, null)
 	muzzle_flash(Get_Angle(get_turf(src), A))
 	track_shot()
 	if(!ammo.ammo_position)
@@ -310,7 +310,7 @@
 		return TRUE
 	return FALSE
 
-/obj/structure/machinery/defenses/sentry/proc/apply_traits(obj/item/projectile/P)
+/obj/structure/machinery/defenses/sentry/proc/apply_traits(obj/item/projectile/proj)
 	// Apply bullet traits from gun
 	for(var/entry in traits_to_give)
 		var/list/L
@@ -320,7 +320,7 @@
 		else
 			// Prepend the bullet trait to the list
 			L = list(entry) + traits_to_give[entry]
-		P.apply_bullet_trait(L)
+		proj.apply_bullet_trait(L)
 
 /obj/structure/machinery/defenses/sentry/proc/handle_empty()
 	visible_message("[icon2html(src, viewers(src))] [SPAN_WARNING("The [name] beeps steadily and its ammo light blinks red.")]")

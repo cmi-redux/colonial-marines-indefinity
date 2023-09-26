@@ -203,7 +203,7 @@
 	. = ..()
 	caliber = new_caliber
 	garbage = garbage_new
-	pixel_x = rand(-10.0, 10) //Want to move them just a tad.
+	pixel_x = rand(-10.0, 10)
 	pixel_y = rand(-10.0, 10)
 	update_material_cost()
 
@@ -216,13 +216,13 @@
 		caliber_value = caliber_def
 		modificator_cost = caliber[caliber_value]
 	if(metal_base_cost)
-		metal_cost = metal_base_cost*modificator_cost // For the metal.
+		metal_cost = metal_base_cost*modificator_cost
 		matter["metal"] = metal_cost
 	if(glass_base_cost)
-		glass_cost = glass_base_cost*modificator_cost // For the metal.
+		glass_cost = glass_base_cost*modificator_cost
 		matter["glass"] = glass_cost
 	if(plastic_base_cost)
-		plastic_cost = plastic_base_cost*modificator_cost // For the metal.
+		plastic_cost = plastic_base_cost*modificator_cost
 		matter["plastic"] = plastic_cost
 
 /obj/item/ammo_parts/casing
@@ -239,7 +239,6 @@
 	var/datum/ammo/bullet/custom/generated_ammo
 	var/locked = FALSE
 
-//This does most of the heavy lifting. It updates the icon and name if needed, then changes .dir to simulate new casings.
 /obj/item/ammo_parts/casing/update_icon()
 	update_material_cost()
 	overlays.Cut()
@@ -346,10 +345,10 @@
 			projectile_flags |= part.part_flags
 		generated_ammo.calculate_new_ammo_stats(bullet_stats, projectile_flags, caliber)
 		GLOB.custom_ammo += generated_ammo
-	var/obj/item/projectile/P = new ammo_projectile(loc, generated_ammo, caliber)
+	var/obj/item/projectile/proj = new ammo_projectile(loc, generated_ammo, caliber)
 	var/obj/item/ammo_parts/part/shell/part = parts["shell"]
-	P.container = part.inernal_container
-	return P
+	proj.container = part.inernal_container
+	return proj
 
 //Making child objects so that locate() and istype() doesn't screw up.
 

@@ -188,12 +188,12 @@
 /obj/structure/foamed_metal/ex_act(severity)
 	take_damage(severity * FOAMED_METAL_EXPLOSION_DMG)
 
-/obj/structure/foamed_metal/bullet_act(obj/item/projectile/P)
-	if(P.ammo.damage_type == HALLOSS || P.ammo.damage_type == TOX || P.ammo.damage_type == CLONE || P.damage == 0)
+/obj/structure/foamed_metal/bullet_act(obj/item/projectile/proj)
+	if(proj.ammo.damage_type == HALLOSS || proj.ammo.damage_type == TOX || proj.ammo.damage_type == CLONE || proj.damage == 0)
 		return
 
-	bullet_ping(P)
-	take_damage(P.ammo.damage * FOAMED_METAL_BULLET_DMG)
+	bullet_ping(proj)
+	take_damage(proj.ammo.damage * FOAMED_METAL_BULLET_DMG)
 
 
 /obj/structure/foamed_metal/fire_act()

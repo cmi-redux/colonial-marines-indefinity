@@ -90,8 +90,8 @@
 		else
 			..()
 
-/obj/structure/machinery/bot/bullet_act(obj/item/projectile/Proj)
-	health -= Proj.ammo.damage
+/obj/structure/machinery/bot/bullet_act(obj/item/projectile/proj)
+	health -= proj.ammo.damage
 	..()
 	healthcheck()
 	return 1

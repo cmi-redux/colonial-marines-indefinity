@@ -297,13 +297,13 @@
 	X.visible_message(SPAN_XENOWARNING("The [X] fires a blast of acid at [A]!"), SPAN_XENOWARNING("You fire a blast of acid at [A]!"))
 
 	var/turf/target = locate(A.x, A.y, A.z)
-	var/obj/item/projectile/P = new /obj/item/projectile(X.loc, create_cause_data(initial(X.caste_type), X))
+	var/obj/item/projectile/proj = new /obj/item/projectile(X.loc, create_cause_data(initial(X.caste_type), X))
 
 	var/datum/ammo/ammoDatum = new ammo_type()
 
-	P.generate_bullet(ammoDatum)
+	proj.generate_bullet(ammoDatum)
 
-	P.fire_at(target, X, X, ammoDatum.max_range, ammoDatum.shell_speed)
+	proj.fire_at(target, X, X, ammoDatum.max_range, ammoDatum.shell_speed)
 
 	apply_cooldown()
 	return ..()

@@ -215,13 +215,13 @@
 		return
 
 	if(flamer_tank.glob_flame)
-		var/obj/item/projectile/P = flamer_tank.transfer_bullet_out()
-		P.forceMove(src)
-		apply_traits(P)
-		P.bullet_ready_to_fire(initial(name), null, user)
-		GIVE_BULLET_TRAIT(P, /datum/element/bullet_trait_iff, faction)
+		var/obj/item/projectile/proj = flamer_tank.transfer_bullet_out()
+		proj.forceMove(src)
+		apply_traits(proj)
+		proj.bullet_ready_to_fire(initial(name), null, user)
+		GIVE_BULLET_TRAIT(proj, /datum/element/bullet_trait_iff, faction)
 		playsound(get_turf(user), src.get_fire_sound(), 50, TRUE)
-		P.fire_at(target, src, user, P.ammo.max_range, P.ammo.shell_speed)
+		proj.fire_at(target, src, user, proj.ammo.max_range, proj.ammo.shell_speed)
 	else
 		var/datum/reagent/R = flamer_tank.reagents.reagent_list[1]
 

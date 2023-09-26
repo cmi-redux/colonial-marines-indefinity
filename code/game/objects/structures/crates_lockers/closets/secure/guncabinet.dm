@@ -57,7 +57,7 @@
 			overlays += icon(src.icon,"open")
 
 //immune to bullets
-/obj/structure/closet/secure_closet/guncabinet/bullet_act(obj/item/projectile/Proj)
+/obj/structure/closet/secure_closet/guncabinet/bullet_act(obj/item/projectile/proj)
 	return 1
 
 /obj/structure/closet/secure_closet/guncabinet/ex_act(severity)

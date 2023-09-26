@@ -38,9 +38,9 @@
 	health -= damage
 	healthcheck()
 
-/obj/effect/spider/bullet_act(obj/item/projectile/Proj)
+/obj/effect/spider/bullet_act(obj/item/projectile/proj)
 	..()
-	health -= Proj.ammo.damage
+	health -= proj.ammo.damage
 	healthcheck()
 	return 1
 

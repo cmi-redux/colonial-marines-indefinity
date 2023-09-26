@@ -48,14 +48,14 @@
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
 			addtimer(CALLBACK(src, PROC_REF(prime), explosion_cause_data), 1)
 
-/obj/item/mortar_shell/bullet_act(obj/item/projectile/P)
+/obj/item/mortar_shell/bullet_act(obj/item/projectile/proj)
 	..()
 
-	var/ammo_flags =  P.ammo.traits_to_give | P.projectile_override_flags
-	if(ammo_flags && ammo_flags & (/datum/element/bullet_trait_incendiary) || P.ammo.flags_ammo_behavior & AMMO_XENO)
-		addtimer(CALLBACK(src, PROC_REF(prime), P.weapon_cause_data), 1)
+	var/ammo_flags =  proj.ammo.traits_to_give | proj.projectile_override_flags
+	if(ammo_flags && ammo_flags & (/datum/element/bullet_trait_incendiary) || proj.ammo.flags_ammo_behavior & AMMO_XENO)
+		addtimer(CALLBACK(src, PROC_REF(prime), proj.weapon_cause_data), 1)
 	else if(rand(0,300) < 20)
-		addtimer(CALLBACK(src, PROC_REF(prime), P.weapon_cause_data), 1)
+		addtimer(CALLBACK(src, PROC_REF(prime), proj.weapon_cause_data), 1)
 
 /obj/item/mortar_shell/flamer_fire_act(damage, datum/cause_data/flame_cause_data)
 	addtimer(CALLBACK(src, PROC_REF(prime), flame_cause_data), 1)

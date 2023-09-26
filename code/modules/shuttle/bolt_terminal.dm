@@ -108,8 +108,8 @@ DEFINE_BITFIELD(bt_shoot_flags, list(
 
 
 //Proc is used to see if the gun actually fired something
-/obj/structure/machinery/bolt_control/target/bullet_act(obj/item/projectile/P)
-	if((aim_status & BOLT_TERMINAL_FIRING) && operator == P.firer && P.ammo.damage && (P.ammo.damage_type == BRUTE || P.ammo.damage_type == BURN))
+/obj/structure/machinery/bolt_control/target/bullet_act(obj/item/projectile/proj)
+	if((aim_status & BOLT_TERMINAL_FIRING) && operator == proj.firer && proj.ammo.damage && (proj.ammo.damage_type == BRUTE || proj.ammo.damage_type == BURN))
 		detonate()
 
 //Proc to aim a gun at the fuse

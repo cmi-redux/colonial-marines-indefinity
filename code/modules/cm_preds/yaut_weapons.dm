@@ -897,8 +897,8 @@
 	else
 		ammo = GLOB.ammo_list[/datum/ammo/energy/yautja/rifle/bolt]
 		charge_time -= 10
-	var/obj/item/projectile/P = create_bullet(ammo, initial(name))
-	in_chamber = P
+	var/obj/item/projectile/proj = create_bullet(ammo, initial(name))
+	in_chamber = proj
 	return in_chamber
 
 /obj/item/weapon/gun/energy/yautja/plasmarifle/has_ammunition()
@@ -981,8 +981,8 @@
 /obj/item/weapon/gun/energy/yautja/plasmapistol/load_into_chamber()
 	if(charge_time < 1)
 		return
-	var/obj/item/projectile/P = create_bullet(ammo, initial(name))
-	in_chamber = P
+	var/obj/item/projectile/proj = create_bullet(ammo, initial(name))
+	in_chamber = proj
 	charge_time--
 	return in_chamber
 

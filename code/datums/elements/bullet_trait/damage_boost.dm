@@ -66,7 +66,7 @@ GLOBAL_LIST_INIT(damage_boost_vehicles, typecacheof(/obj/vehicle/multitile))
 	//add more cases for other interactions (switch doesn't seem to work with istype)
 	else return 0
 
-/datum/element/bullet_trait_damage_boost/proc/handle_bullet(obj/item/projectile/P, atom/A)
+/datum/element/bullet_trait_damage_boost/proc/handle_bullet(obj/item/projectile/proj, atom/A)
 	SIGNAL_HANDLER
 
 	atom_type = check_type(A)
@@ -86,11 +86,11 @@ GLOBAL_LIST_INIT(damage_boost_vehicles, typecacheof(/obj/vehicle/multitile))
 			active_damage_mult = damage_mult
 
 	if(boosted_hits > 0)
-		if(bonus_projectile_check == P.damage)
-			P.damage = P.damage / last_damage_mult
+		if(bonus_projectile_check == proj.damage)
+			proj.damage = proj.damage / last_damage_mult
 		boosted_hits--
 	if(damage_boosted_atoms[A.type])
-		P.damage = round(P.damage * active_damage_mult)
+		proj.damage = round(proj.damage * active_damage_mult)
 		last_damage_mult = active_damage_mult
 		boosted_hits++
-		bonus_projectile_check = P.damage
+		bonus_projectile_check = proj.damage

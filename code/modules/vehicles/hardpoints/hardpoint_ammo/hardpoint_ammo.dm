@@ -31,10 +31,10 @@
 	var/S = min(max_rounds - ammo_position, source.ammo_position)
 
 	for(var/i=0;i<S;i++)
-		var/obj/item/projectile/P = source.transfer_bullet_out()
-		P.forceMove(src)
+		var/obj/item/projectile/proj = source.transfer_bullet_out()
+		proj.forceMove(src)
 		ammo_position++
-		current_rounds[ammo_position] = P
+		current_rounds[ammo_position] = proj
 	source.update_icon()
 	update_icon()
 	user.visible_message(SPAN_WARNING("[user] finishes refilling [src]."), SPAN_WARNING("You finish refilling [src]. Ammo count: [ammo_position]."))

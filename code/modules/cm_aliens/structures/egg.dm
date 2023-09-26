@@ -148,14 +148,14 @@
 	else
 		child.go_idle()
 
-/obj/effect/alien/egg/bullet_act(obj/item/projectile/P)
+/obj/effect/alien/egg/bullet_act(obj/item/projectile/proj)
 	..()
-	var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
+	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
 	if(ammo_flags & (AMMO_XENO))
 		return
-	health -= P.damage
+	health -= proj.damage
 	healthcheck()
-	P.ammo.on_hit_obj(src,P)
+	proj.ammo.on_hit_obj(src,proj)
 	return TRUE
 
 /obj/effect/alien/egg/update_icon()

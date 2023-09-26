@@ -423,14 +423,14 @@
 		return
 	update_health(severity)
 
-/obj/structure/machinery/defenses/bullet_act(obj/item/projectile/P)
-	bullet_ping(P)
-	visible_message(SPAN_WARNING("[src] is hit by the [P]!"))
-	var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
+/obj/structure/machinery/defenses/bullet_act(obj/item/projectile/proj)
+	bullet_ping(proj)
+	visible_message(SPAN_WARNING("[src] is hit by the [proj]!"))
+	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
 	if(ammo_flags & AMMO_ACIDIC) //Fix for xenomorph spit doing baby damage.
-		update_health(round(P.damage/3))
+		update_health(round(proj.damage/3))
 	else
-		update_health(round(P.damage/10))
+		update_health(round(proj.damage/10))
 	return TRUE
 // DAMAGE HANDLING OVER
 

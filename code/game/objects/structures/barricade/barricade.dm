@@ -251,21 +251,21 @@
 			playsound(src, barricade_hitsound, 35, 1)
 		hit_barricade(W)
 
-/obj/structure/barricade/bullet_act(obj/item/projectile/P)
-	bullet_ping(P)
+/obj/structure/barricade/bullet_act(obj/item/projectile/proj)
+	bullet_ping(proj)
 
-	if(P.ammo.damage_type == BURN)
-		P.damage = P.damage * burn_multiplier
+	if(proj.ammo.damage_type == BURN)
+		proj.damage = proj.damage * burn_multiplier
 	else
-		P.damage = P.damage * brute_multiplier
+		proj.damage = proj.damage * brute_multiplier
 
-	if(istype(P.ammo, /datum/ammo/xeno/boiler_gas))
+	if(istype(proj.ammo, /datum/ammo/xeno/boiler_gas))
 		take_damage(round(50 * burn_multiplier))
 
-	else if(P.ammo.flags_ammo_behavior & AMMO_ANTISTRUCT)
-		take_damage(P.damage * ANTISTRUCT_DMG_MULT_BARRICADES)
+	else if(proj.ammo.flags_ammo_behavior & AMMO_ANTISTRUCT)
+		take_damage(proj.damage * ANTISTRUCT_DMG_MULT_BARRICADES)
 
-	take_damage(P.damage)
+	take_damage(proj.damage)
 
 	return TRUE
 
@@ -468,8 +468,8 @@
 	update_damage_state()
 	material.use(1)
 	for(var/i=0;i<3;i++)
-		var/obj/item/projectile/P = NG.current_mag.transfer_bullet_out()
-		qdel(P)
+		var/obj/item/projectile/proj = NG.current_mag.transfer_bullet_out()
+		qdel(proj)
 	NG.in_chamber = null
 	NG.load_into_chamber()
 	return TRUE

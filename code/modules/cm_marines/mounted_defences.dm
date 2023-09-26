@@ -72,8 +72,8 @@
 		PF.flags_can_pass_all = PASS_HIGH_OVER_ONLY|PASS_AROUND|PASS_OVER_THROW_ITEM
 
 //Making so rockets don't hit
-/obj/structure/machinery/mounted_defence/calculate_cover_hit_boolean(obj/item/projectile/P, distance = 0, cade_direction_correct = FALSE)
-	var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
+/obj/structure/machinery/mounted_defence/calculate_cover_hit_boolean(obj/item/projectile/proj, distance = 0, cade_direction_correct = FALSE)
+	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
 	if(ammo_flags & AMMO_ROCKET)
 		return 0
 	..()
@@ -199,10 +199,10 @@
 
 	return ..()
 
-/obj/structure/machinery/mounted_defence/bullet_act(obj/item/projectile/P) //Nope.
-	bullet_ping(P)
-	visible_message(SPAN_WARNING("В [src] попал [P.name]!"))
-	update_health(round(P.damage / 10)) //Universal low damage to what amounts to a post with a gun.
+/obj/structure/machinery/mounted_defence/bullet_act(obj/item/projectile/proj) //Nope.
+	bullet_ping(proj)
+	visible_message(SPAN_WARNING("В [src] попал [proj.name]!"))
+	update_health(round(proj.damage / 10)) //Universal low damage to what amounts to a post with a gun.
 	return 1
 
 /obj/structure/machinery/mounted_defence/update_health(damage)
@@ -437,10 +437,10 @@
 	if(istype(W, /obj/item/tool/weldingtool))
 		var/obj/item/tool/weldingtool/WT = W
 		if(WT.remove_fuel(1, user))
-			var/obj/item/device/mounted_defence/tripod/P = new(user.loc)
-			to_chat(user, SPAN_NOTICE("Вы сварили [src] в [P]."))
+			var/obj/item/device/mounted_defence/tripod/tripod = new(user.loc)
+			to_chat(user, SPAN_NOTICE("Вы сварили [src] в [tripod]."))
 			qdel(src)
-			user.put_in_hands(P)
+			user.put_in_hands(tripod)
 		return
 	return ..()
 

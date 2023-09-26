@@ -979,12 +979,12 @@
 	else
 		return attack_hand(user)
 
-/obj/structure/alien/movable_wall/get_projectile_hit_boolean(obj/item/projectile/P)
+/obj/structure/alien/movable_wall/get_projectile_hit_boolean(obj/item/projectile/proj)
 	return TRUE
 
-/obj/structure/alien/movable_wall/bullet_act(obj/item/projectile/P)
+/obj/structure/alien/movable_wall/bullet_act(obj/item/projectile/proj)
 	. = ..()
-	take_damage(P.damage)
+	take_damage(proj.damage)
 
 /obj/structure/alien/movable_wall/proc/recalculate_structure()
 	var/list/found_structures = list()
@@ -1096,35 +1096,35 @@
 	var/explosive_multiplier = 0.3
 	var/reflection_multiplier = 0.5
 
-/turf/closed/wall/resin/reflective/bullet_act(obj/item/projectile/P)
-	if(src in P.permutated)
+/turf/closed/wall/resin/reflective/bullet_act(obj/item/projectile/proj)
+	if(src in proj.permutated)
 		return
 
 	if(!prob(chance_to_reflect))
-		if(P.ammo.damage_type == BRUTE)
-			P.damage *= brute_multiplier
+		if(proj.ammo.damage_type == BRUTE)
+			proj.damage *= brute_multiplier
 		return ..()
-	if(P.runtime_iff_group || P.ammo.flags_ammo_behavior & AMMO_NO_DEFLECT)
+	if(proj.runtime_iff_group || proj.ammo.flags_ammo_behavior & AMMO_NO_DEFLECT)
 		// Bullet gets absorbed if it has IFF or can't be reflected.
 		return
 
 	var/obj/item/projectile/new_proj = new(src, construction_data ? construction_data : create_cause_data(initial(name)))
-	new_proj.generate_bullet(P.ammo, src, 0, P.projectile_override_flags|AMMO_HOMING)
-	new_proj.damage = P.damage * reflection_multiplier // don't make it too punishing
+	new_proj.generate_bullet(proj.ammo, src, 0, proj.projectile_override_flags|AMMO_HOMING)
+	new_proj.damage = proj.damage * reflection_multiplier // don't make it too punishing
 	new_proj.accuracy = HIT_ACCURACY_TIER_7 // 35% chance to hit something
 
 	// Move back to who fired you.
 	RegisterSignal(new_proj, COMSIG_BULLET_PRE_HANDLE_TURF, PROC_REF(bullet_ignore_turf))
 	new_proj.permutated |= src
 
-	var/angle = Get_Angle(src, P.firer) + rand(30, -30)
-	var/atom/target = get_angle_target_turf(src, angle, get_dist(src, P.firer))
+	var/angle = Get_Angle(src, proj.firer) + rand(30, -30)
+	var/atom/target = get_angle_target_turf(src, angle, get_dist(src, proj.firer))
 	new_proj.projectile_flags |= PROJECTILE_SHRAPNEL
-	new_proj.fire_at(target, P.firer, src, reflect_range, speed = P.ammo.shell_speed)
+	new_proj.fire_at(target, proj.firer, src, reflect_range, speed = proj.ammo.shell_speed)
 
 	return TRUE
 
-/turf/closed/wall/resin/reflective/proc/bullet_ignore_turf(obj/item/projectile/P, turf/T)
+/turf/closed/wall/resin/reflective/proc/bullet_ignore_turf(obj/item/projectile/proj, turf/T)
 	SIGNAL_HANDLER
 	if(T == src)
 		return COMPONENT_BULLET_PASS_THROUGH

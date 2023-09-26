@@ -30,8 +30,8 @@
 		occupied = 0
 	return ..()
 
-/obj/structure/displaycase/bullet_act(obj/item/projectile/Proj)
-	health -= Proj.ammo.damage
+/obj/structure/displaycase/bullet_act(obj/item/projectile/proj)
+	health -= proj.ammo.damage
 	..()
 	healthcheck()
 	return 1

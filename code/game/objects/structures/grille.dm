@@ -106,13 +106,13 @@
 
 	return ..()
 
-/obj/structure/grille/bullet_act(obj/item/projectile/Proj)
+/obj/structure/grille/bullet_act(obj/item/projectile/proj)
 
 	//Tasers and the like should not damage grilles.
-	if(Proj.ammo.damage_type == HALLOSS)
+	if(proj.ammo.damage_type == HALLOSS)
 		return 0
 
-	src.health -= round(Proj.damage*0.3)
+	src.health -= round(proj.damage*0.3)
 	healthcheck()
 	return 1
 

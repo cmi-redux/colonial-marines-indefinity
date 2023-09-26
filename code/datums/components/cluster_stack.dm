@@ -75,7 +75,7 @@
 	SIGNAL_HANDLER
 	L += "Cluster Stack: [cluster_stacks]/[MAX_CLUSTER_STACKS]"
 
-/datum/component/cluster_stack/proc/apply_cluster_stacks(mob/living/L, damage_result, ammo_flags, obj/item/projectile/P)
+/datum/component/cluster_stack/proc/apply_cluster_stacks(mob/living/L, damage_result, ammo_flags, obj/item/projectile/proj)
 	SIGNAL_HANDLER
 	if(cluster_stacks >= MAX_CLUSTER_STACKS)
 		var/old_dmg_cont = damage_counter
@@ -85,8 +85,8 @@
 		to_chat(L, SPAN_DANGER("You feel a cluster of explosions inside your body!"))
 		L.visible_message(SPAN_DANGER("You hear an explosion from the insides of [L]!"))
 		L.apply_armoured_damage(old_dmg_cont * 0.3, ARMOR_BOMB, BRUTE)
-		var/datum/cause_data/cause_data = create_cause_data("кластерного взрыва", P.firer)
-		INVOKE_ASYNC(GLOBAL_PROC, TYPE_PROC_REF(/atom, cell_explosion), get_turf(L), 50, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, P.dir, cause_data)
+		var/datum/cause_data/cause_data = create_cause_data("кластерного взрыва", proj.firer)
+		INVOKE_ASYNC(GLOBAL_PROC, TYPE_PROC_REF(/atom, cell_explosion), get_turf(L), 50, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, proj.dir, cause_data)
 
 
 #undef COLOR_CLUSTER

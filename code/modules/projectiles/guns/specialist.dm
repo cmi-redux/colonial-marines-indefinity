@@ -183,9 +183,9 @@
 		to_chat(H, SPAN_WARNING("\The [M] is too close to get a proper shot!"))
 		return FALSE
 
-	var/obj/item/projectile/P = sniper_rifle.in_chamber
+	var/obj/item/projectile/proj = sniper_rifle.in_chamber
 	// TODO: Make the below logic only occur in certain circumstances. Check goggles, maybe? -Kaga
-	if(check_shot_is_blocked(H, M, P))
+	if(check_shot_is_blocked(H, M, proj))
 		to_chat(H, SPAN_WARNING("Something is in the way, or you're out of range!"))
 		if(cover_lose_focus)
 			to_chat(H, SPAN_WARNING("You lose focus."))
@@ -195,9 +195,9 @@
 	COOLDOWN_START(sniper_rifle, aimed_shot_cooldown, sniper_rifle.aimed_shot_cooldown_delay)
 	return TRUE
 
-/datum/action/item_action/specialist/aimed_shot/proc/check_shot_is_blocked(mob/firer, mob/target, obj/item/projectile/P)
+/datum/action/item_action/specialist/aimed_shot/proc/check_shot_is_blocked(mob/firer, mob/target, obj/item/projectile/proj)
 	var/list/turf/path = getline2(firer, target, include_from_atom = FALSE)
-	if(!path.len || get_dist(firer, target) > P.ammo.max_range)
+	if(!path.len || get_dist(firer, target) > proj.ammo.max_range)
 		return TRUE
 
 	var/blocked = FALSE
@@ -207,7 +207,7 @@
 			break
 
 		for(var/obj/O in T)
-			if(O.get_projectile_hit_boolean(P))
+			if(O.get_projectile_hit_boolean(proj))
 				blocked = TRUE
 				break
 

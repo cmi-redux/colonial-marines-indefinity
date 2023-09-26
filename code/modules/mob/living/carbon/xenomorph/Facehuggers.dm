@@ -163,14 +163,14 @@
 		return
 	die()
 
-/obj/item/clothing/mask/facehugger/bullet_act(obj/item/projectile/P)
+/obj/item/clothing/mask/facehugger/bullet_act(obj/item/projectile/proj)
 	..()
-	var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
+	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
 	if(ammo_flags & (AMMO_XENO))
 		return //Xeno spits ignore huggers.
-	if(P.damage)
+	if(proj.damage)
 		die()
-	P.ammo.on_hit_obj(src, P)
+	proj.ammo.on_hit_obj(src, proj)
 	return TRUE
 
 /obj/item/clothing/mask/facehugger/fire_act(exposed_temperature, exposed_volume)

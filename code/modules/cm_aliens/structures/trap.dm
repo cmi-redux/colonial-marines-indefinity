@@ -75,8 +75,8 @@
 			trigger_trap(TRUE)
 	..()
 
-/obj/effect/alien/resin/trap/bullet_act(obj/item/projectile/P)
-	var/mob/living/carbon/xenomorph/xeno = P.firer
+/obj/effect/alien/resin/trap/bullet_act(obj/item/projectile/proj)
+	var/mob/living/carbon/xenomorph/xeno = proj.firer
 	if(istype(xeno) && (xeno.faction == faction || xeno.faction.faction_is_ally(faction)))
 		return
 

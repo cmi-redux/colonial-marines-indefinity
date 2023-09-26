@@ -575,8 +575,8 @@
 	material.use(amount_needed)
 	var/ammo_used = (4*amount_needed-1)
 	for(var/i=0;i<ammo_used;i++)
-		var/obj/item/projectile/P = NG.current_mag.transfer_bullet_out()
-		qdel(P)
+		var/obj/item/projectile/proj = NG.current_mag.transfer_bullet_out()
+		qdel(proj)
 	NG.in_chamber = null
 	NG.load_into_chamber()
 	update_icon()

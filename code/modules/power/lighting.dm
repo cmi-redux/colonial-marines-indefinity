@@ -616,10 +616,10 @@
 	if(prob(max(0, exposed_temperature - 673)))   //0% at <400C, 100% at >500C
 		broken()
 
-/obj/structure/machinery/light/bullet_act(obj/item/projectile/P)
-	src.bullet_ping(P)
-	if(P.ammo.damage_type == BRUTE)
-		if(P.damage > 10)
+/obj/structure/machinery/light/bullet_act(obj/item/projectile/proj)
+	src.bullet_ping(proj)
+	if(proj.ammo.damage_type == BRUTE)
+		if(proj.damage > 10)
 			broken()
 		else
 			playsound(src.loc, 'sound/effects/Glasshit.ogg', 25, 1)

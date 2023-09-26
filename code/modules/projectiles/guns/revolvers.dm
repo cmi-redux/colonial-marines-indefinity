@@ -165,11 +165,11 @@
 	if(current_mag)
 		if(current_mag.ammo_position > 0)
 			if(current_mag.current_rounds[pin_locked_on] != "empty")
-				var/obj/item/projectile/P = current_mag.current_rounds[pin_locked_on]
+				var/obj/item/projectile/proj = current_mag.current_rounds[pin_locked_on]
 				current_mag.current_rounds[pin_locked_on] = "empty"
 				current_mag.ammo_position--
-				P.forceMove(src)
-				in_chamber = P
+				proj.forceMove(src)
+				in_chamber = proj
 				apply_traits(in_chamber)
 				return in_chamber
 		else if(current_mag.chamber_closed)

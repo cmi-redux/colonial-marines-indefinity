@@ -103,11 +103,11 @@
 				buckled_mob.pixel_y = 7
 
 
-/obj/structure/bed/chair/janicart/bullet_act(obj/item/projectile/Proj)
+/obj/structure/bed/chair/janicart/bullet_act(obj/item/projectile/proj)
 	if(buckled_mob)
 		if(prob(85))
-			return buckled_mob.bullet_act(Proj)
-	visible_message(SPAN_WARNING("[Proj] ricochets off the [callme]!"))
+			return buckled_mob.bullet_act(proj)
+	visible_message(SPAN_WARNING("[proj] ricochets off the [callme]!"))
 	return 1
 
 /obj/item/key

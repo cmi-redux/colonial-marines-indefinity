@@ -452,16 +452,16 @@ their unique feature is that a direct hit will buff your damage and firerate
 	if(!able_to_fire(user) || !target) //checks here since we don't want to fuck up applying the increase
 		return
 	if(floating_penetration && in_chamber) //has to go before actual firing
-		var/obj/item/projectile/P = in_chamber
+		var/obj/item/projectile/proj = in_chamber
 		switch(floating_penetration)
 			if(FLOATING_PENETRATION_TIER_1)
-				P.ammo = GLOB.ammo_list[/datum/ammo/bullet/lever_action/xm88/pen20]
+				proj.ammo = GLOB.ammo_list[/datum/ammo/bullet/lever_action/xm88/pen20]
 			if(FLOATING_PENETRATION_TIER_2)
-				P.ammo = GLOB.ammo_list[/datum/ammo/bullet/lever_action/xm88/pen30]
+				proj.ammo = GLOB.ammo_list[/datum/ammo/bullet/lever_action/xm88/pen30]
 			if(FLOATING_PENETRATION_TIER_3)
-				P.ammo = GLOB.ammo_list[/datum/ammo/bullet/lever_action/xm88/pen40]
+				proj.ammo = GLOB.ammo_list[/datum/ammo/bullet/lever_action/xm88/pen40]
 			if(FLOATING_PENETRATION_TIER_4)
-				P.ammo = GLOB.ammo_list[/datum/ammo/bullet/lever_action/xm88/pen50]
+				proj.ammo = GLOB.ammo_list[/datum/ammo/bullet/lever_action/xm88/pen50]
 	return ..()
 
 /obj/item/weapon/gun/lever_action/xm88/unload(mob/user)
@@ -480,8 +480,8 @@ their unique feature is that a direct hit will buff your damage and firerate
 	wield_delay = initial(wield_delay)
 	cur_onehand_chance = initial(cur_onehand_chance)
 	if(in_chamber)
-		var/obj/item/projectile/P = in_chamber
-		P.ammo = GLOB.ammo_list[/datum/ammo/bullet/lever_action/xm88]
+		var/obj/item/projectile/proj = in_chamber
+		proj.ammo = GLOB.ammo_list[/datum/ammo/bullet/lever_action/xm88]
 	floating_penetration = FLOATING_PENETRATION_TIER_0
 	//these are init configs and so cannot be initial()
 	fire_delay = FIRE_DELAY_TIER_1 + FIRE_DELAY_TIER_10

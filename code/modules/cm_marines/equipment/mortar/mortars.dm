@@ -50,8 +50,8 @@
 	if(PF)
 		PF.flags_can_pass_all = PASS_OVER
 
-/obj/structure/mortar/get_projectile_hit_boolean(obj/item/projectile/P)
-	if(P.original_target == src)
+/obj/structure/mortar/get_projectile_hit_boolean(obj/item/projectile/proj)
+	if(proj.original_target == src)
 		return TRUE
 	else
 		return FALSE

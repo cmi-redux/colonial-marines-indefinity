@@ -161,13 +161,13 @@
 		return TRUE
 	return FALSE
 
-/obj/item/explosive/grenade/bullet_act(obj/item/projectile/P)
+/obj/item/explosive/grenade/bullet_act(obj/item/projectile/proj)
 	..()
 
 	if(!explosing_check())
 		return
-	var/ammo_flags = P.ammo.traits_to_give | P.projectile_override_flags
-	if(ammo_flags && ammo_flags & (/datum/element/bullet_trait_incendiary) || P.ammo.flags_ammo_behavior & AMMO_XENO)
+	var/ammo_flags = proj.ammo.traits_to_give | proj.projectile_override_flags
+	if(ammo_flags && ammo_flags & (/datum/element/bullet_trait_incendiary) || proj.ammo.flags_ammo_behavior & AMMO_XENO)
 		explosing = TRUE
 		playsound(src, 'sound/effects/explosion_psss.ogg', 5, 1)
 		force = TRUE

@@ -100,7 +100,7 @@
 		COMSIG_HUMAN_BULLET_ACT
 	))
 
-/obj/item/clothing/accessory/health/proc/take_bullet_damage(mob/living/carbon/human/user, damage, ammo_flags, obj/item/projectile/P)
+/obj/item/clothing/accessory/health/proc/take_bullet_damage(mob/living/carbon/human/user, damage, ammo_flags, obj/item/projectile/proj)
 	SIGNAL_HANDLER
 	if(damage <= 0 || (ammo_flags & AMMO_IGNORE_ARMOR))
 		return
@@ -108,7 +108,7 @@
 	var/damage_to_nullify = armor_health
 	var/final_proj_mult = FF_projectile_durability_mult
 
-	var/mob/living/carbon/human/pfirer = P.firer
+	var/mob/living/carbon/human/pfirer = proj.firer
 	if(user.faction != pfirer.faction)
 		final_proj_mult = hostile_projectile_durability_mult
 
@@ -121,7 +121,7 @@
 
 	if(damage_to_nullify)
 		playsound(user, armor_hitsound, 25, TRUE)
-		P.play_hit_effect(user)
+		proj.play_hit_effect(user)
 		return COMPONENT_CANCEL_BULLET_ACT
 
 /obj/item/clothing/accessory/health/proc/take_slash_damage(mob/living/user, list/slashdata)

@@ -283,16 +283,16 @@
 
 //Differentiates between damage types from different bullets
 //Applies a linear transformation to bullet damage that will generally decrease damage done
-/obj/vehicle/multitile/bullet_act(obj/item/projectile/P)
+/obj/vehicle/multitile/bullet_act(obj/item/projectile/proj)
 	var/dam_type = "bullet"
-	var/damage = P.damage
-	var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
-	var/penetration = P.ammo.penetration
-	var/firer = P.firer
+	var/damage = proj.damage
+	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
+	var/penetration = proj.ammo.penetration
+	var/firer = proj.firer
 
 	//IFF bullets magically stop themselves short of hitting friendly vehicles,
 	//because both sentries and smartgun users keep trying to shoot through them
-	if(P.runtime_iff_group && ally(P.runtime_iff_group))
+	if(proj.runtime_iff_group && ally(proj.runtime_iff_group))
 		return
 
 	if(ammo_flags & AMMO_ANTISTRUCT)
@@ -302,13 +302,13 @@
 		dam_type = "acid"
 
 	// trust me bro
-	var/pixel_x_offset = 64 + ((P.x - x) * 32)
+	var/pixel_x_offset = 64 + ((proj.x - x) * 32)
 	if(pixel_x_offset > 0 && (dir == NORTH || dir == SOUTH))
 		pixel_x_offset -= 32
-	var/pixel_y_offset = 64 + ((P.y - y) * 32)
+	var/pixel_y_offset = 64 + ((proj.y - y) * 32)
 	if(pixel_y_offset > 0 && (dir == EAST || dir == WEST))
 		pixel_y_offset -= 32
-	bullet_ping(P, pixel_x_offset, pixel_y_offset)
+	bullet_ping(proj, pixel_x_offset, pixel_y_offset)
 
 	take_damage_type(damage * (0.33 + penetration/100), dam_type, firer)
 

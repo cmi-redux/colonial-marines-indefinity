@@ -19,12 +19,12 @@
 			fire_delay = 0.5
 
 /obj/structure/machinery/defenses/sentry/flamer/actual_fire(atom/A)
-	var/obj/item/projectile/P = ammo.transfer_bullet_out()
-	P.forceMove(src)
-	apply_traits(P)
-	P.bullet_ready_to_fire(initial(name), null, owner_mob)
-	GIVE_BULLET_TRAIT(P, /datum/element/bullet_trait_iff, faction)
-	P.fire_at(A, src, owner_mob, P.ammo.max_range, P.ammo.shell_speed, null)
+	var/obj/item/projectile/proj = ammo.transfer_bullet_out()
+	proj.forceMove(src)
+	apply_traits(proj)
+	proj.bullet_ready_to_fire(initial(name), null, owner_mob)
+	GIVE_BULLET_TRAIT(proj, /datum/element/bullet_trait_iff, faction)
+	proj.fire_at(A, src, owner_mob, proj.ammo.max_range, proj.ammo.shell_speed, null)
 	track_shot()
 	if(ammo.ammo_position == 0)
 		visible_message("[icon2html(src, viewers(src))] [SPAN_WARNING("The [name] beeps steadily and its ammo light blinks red.")]")

@@ -317,19 +317,19 @@
 
 	return FALSE
 
-/obj/structure/girder/bullet_act(obj/item/projectile/P)
+/obj/structure/girder/bullet_act(obj/item/projectile/proj)
 	//Tasers and the like should not damage girders.
-	if(P.ammo.damage_type == HALLOSS || P.ammo.damage_type == TOX || P.ammo.damage_type == CLONE || P.damage == 0)
+	if(proj.ammo.damage_type == HALLOSS || proj.ammo.damage_type == TOX || proj.ammo.damage_type == CLONE || proj.damage == 0)
 		return FALSE
 	var/dmg = 0
-	if(P.ammo.damage_type == BURN)
-		dmg = P.damage
+	if(proj.ammo.damage_type == BURN)
+		dmg = proj.damage
 	else
-		dmg = round(P.damage * 0.5)
+		dmg = round(proj.damage * 0.5)
 	if(dmg)
 		health -= dmg
 		take_damage(dmg)
-		bullet_ping(P)
+		bullet_ping(proj)
 	if(health <= 0)
 		update_state()
 	return TRUE

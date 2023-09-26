@@ -15,13 +15,13 @@
 	xeno.visible_message(SPAN_XENOWARNING("[xeno] fires a burst of bone chips at [A]!"), SPAN_XENOWARNING("You fire a burst of bone chips at [A]!"))
 
 	var/turf/target = locate(A.x, A.y, A.z)
-	var/obj/item/projectile/P = new /obj/item/projectile(xeno.loc, create_cause_data(initial(xeno.caste_type), xeno))
+	var/obj/item/projectile/proj = new /obj/item/projectile(xeno.loc, create_cause_data(initial(xeno.caste_type), xeno))
 
 	var/datum/ammo/ammo_datum = GLOB.ammo_list[ammo_type]
 
-	P.generate_bullet(ammo_datum)
+	proj.generate_bullet(ammo_datum)
 
-	P.fire_at(target, xeno, xeno, ammo_datum.max_range, ammo_datum.shell_speed)
+	proj.fire_at(target, xeno, xeno, ammo_datum.max_range, ammo_datum.shell_speed)
 
 	apply_cooldown()
 	return ..()

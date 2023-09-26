@@ -68,11 +68,11 @@
 	if(health <= 0)
 		deconstruct(FALSE)
 
-/obj/structure/reagent_dispensers/bullet_act(obj/item/projectile/Proj)
-	health -= Proj.damage
-	if(Proj.firer)
-		msg_admin_niche("[key_name_admin(Proj.firer)] fired a projectile at [name] in [loc.loc.name] ([loc.x],[loc.y],[loc.z]) [ADMIN_JMP(loc)].")
-		log_game("[key_name(Proj.firer)] fired a projectile at [name] in [loc.loc.name] ([loc.x],[loc.y],[loc.z]).")
+/obj/structure/reagent_dispensers/bullet_act(obj/item/projectile/proj)
+	health -= proj.damage
+	if(proj.firer)
+		msg_admin_niche("[key_name_admin(proj.firer)] fired a projectile at [name] in [loc.loc.name] ([loc.x],[loc.y],[loc.z]) [ADMIN_JMP(loc)].")
+		log_game("[key_name(proj.firer)] fired a projectile at [name] in [loc.loc.name] ([loc.x],[loc.y],[loc.z]).")
 	playsound(src, 'sound/effects/metalhit.ogg', 25, 1)
 	healthcheck()
 	return TRUE
@@ -296,15 +296,15 @@
 	return ..()
 
 
-/obj/structure/reagent_dispensers/fueltank/bullet_act(obj/item/projectile/Proj)
+/obj/structure/reagent_dispensers/fueltank/bullet_act(obj/item/projectile/proj)
 	if(exploding) return 0
-	if(ismob(Proj.firer))
-		source_mob = WEAKREF(Proj.firer)
+	if(ismob(proj.firer))
+		source_mob = WEAKREF(proj.firer)
 
-	if(Proj.damage > 10 && prob(60) && !reinforced)
-		if(Proj.firer)
-			message_admins("[key_name_admin(Proj.firer)] fired a projectile at [name] in [loc.loc.name] ([loc.x],[loc.y],[loc.z]) [ADMIN_JMP(loc)].")
-			log_game("[key_name(Proj.firer)] fired a projectile at [name] in [loc.loc.name] ([loc.x],[loc.y],[loc.z]).")
+	if(proj.damage > 10 && prob(60) && !reinforced)
+		if(proj.firer)
+			message_admins("[key_name_admin(proj.firer)] fired a projectile at [name] in [loc.loc.name] ([loc.x],[loc.y],[loc.z]) [ADMIN_JMP(loc)].")
+			log_game("[key_name(proj.firer)] fired a projectile at [name] in [loc.loc.name] ([loc.x],[loc.y],[loc.z]).")
 		exploding = TRUE
 		explode()
 

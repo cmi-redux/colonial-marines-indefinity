@@ -334,13 +334,13 @@
 
 	return ..()
 
-/obj/bullet_act(obj/item/projectile/P)
+/obj/bullet_act(obj/item/projectile/proj)
 	//Tasers and the like should not damage objects.
-	if(P.ammo.damage_type == HALLOSS || P.ammo.damage_type == TOX || P.ammo.damage_type == CLONE || P.damage == 0)
+	if(proj.ammo.damage_type == HALLOSS || proj.ammo.damage_type == TOX || proj.ammo.damage_type == CLONE || proj.damage == 0)
 		return 0
-	bullet_ping(P)
-	if(P.ammo.damage)
-		update_health(round(P.ammo.damage / 2))
+	bullet_ping(proj)
+	if(proj.ammo.damage)
+		update_health(round(proj.ammo.damage / 2))
 	return 1
 
 /obj/item/proc/get_mob_overlay(mob/user_mob, slot)

@@ -47,8 +47,8 @@
 			break
 		if(prev_T && LinkBlocked(prev_T, T))
 			break
-		var/obj/item/projectile/P = ammo.transfer_bullet_out()
-		qdel(P)
+		var/obj/item/projectile/proj = ammo.transfer_bullet_out()
+		qdel(proj)
 		flame_turf(T, user)
 		distance++
 		prev_T = T

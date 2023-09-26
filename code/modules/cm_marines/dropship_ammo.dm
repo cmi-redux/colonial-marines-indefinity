@@ -118,14 +118,14 @@
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
 			addtimer(CALLBACK(src, PROC_REF(prime), explosion_cause_data), 1)
 
-/obj/structure/ship_ammo/bullet_act(obj/item/projectile/P)
+/obj/structure/ship_ammo/bullet_act(obj/item/projectile/proj)
 	..()
 
-	var/ammo_flags = P.ammo.traits_to_give | P.projectile_override_flags
-	if(ammo_flags && ammo_flags & (/datum/element/bullet_trait_incendiary) || P.ammo.flags_ammo_behavior & AMMO_XENO)
-		addtimer(CALLBACK(src, PROC_REF(prime), P.weapon_cause_data, TRUE), 1)
+	var/ammo_flags = proj.ammo.traits_to_give | proj.projectile_override_flags
+	if(ammo_flags && ammo_flags & (/datum/element/bullet_trait_incendiary) || proj.ammo.flags_ammo_behavior & AMMO_XENO)
+		addtimer(CALLBACK(src, PROC_REF(prime), proj.weapon_cause_data, TRUE), 1)
 	else if(rand(0,300) < 20)
-		addtimer(CALLBACK(src, PROC_REF(prime), P.weapon_cause_data), 1)
+		addtimer(CALLBACK(src, PROC_REF(prime), proj.weapon_cause_data), 1)
 
 /obj/structure/ship_ammo/flamer_fire_act(damage, datum/cause_data/flame_cause_data)
 	addtimer(CALLBACK(src, PROC_REF(prime), flame_cause_data, TRUE), 1)
@@ -426,13 +426,13 @@
 		impact = impact.air_hit(rand(1, 5), impact.get_real_roof())
 	spawn(5)
 		cell_explosion(impact, 200, 44, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data)
-		var/datum/effect_system/expl_particles/P = new/datum/effect_system/expl_particles()
-		P.set_up(4, 0, impact)
-		P.start()
+		var/datum/effect_system/expl_particles/expl = new/datum/effect_system/expl_particles()
+		expl.set_up(4, 0, impact)
+		expl.start()
 		spawn(5)
-			var/datum/effect_system/smoke_spread/S = new/datum/effect_system/smoke_spread()
-			S.set_up(1, 0, impact, null)
-			S.start()
+			var/datum/effect_system/smoke_spread/smoke = new/datum/effect_system/smoke_spread()
+			smoke.set_up(1, 0, impact, null)
+			smoke.start()
 		if(!ammo_count && loc)
 			qdel(src) //deleted after last minirocket is fired and impact the ground.
 

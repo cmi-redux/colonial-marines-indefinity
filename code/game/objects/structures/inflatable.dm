@@ -44,8 +44,8 @@
 	health = 50
 	var/deflated = FALSE
 
-/obj/structure/inflatable/bullet_act(obj/item/projectile/Proj)
-	health -= Proj.damage
+/obj/structure/inflatable/bullet_act(obj/item/projectile/proj)
+	health -= proj.damage
 	..()
 	if(health <= 0 && !deflated)
 		deflate(1)

@@ -985,9 +985,9 @@
 						var/transferred_handfuls = min(ammo_dumping.ammo_position, amount_to_dump)
 						new_handful.generate_handful(ammo_dumping.current_rounds[ammo_dumping.ammo_position].ammo, ammo_dumping.caliber, amount_to_dump, ammo_dumping.gun_type)
 						for(var/f=0;f<transferred_handfuls;f++)
-							var/obj/item/projectile/P = ammo_dumping.transfer_bullet_out()
-							P.forceMove(new_handful)
-							new_handful.transfer_bullet_in(P)
+							var/obj/item/projectile/proj = ammo_dumping.transfer_bullet_out()
+							proj.forceMove(new_handful)
+							new_handful.transfer_bullet_in(proj)
 						handle_item_insertion(new_handful, TRUE,user)
 						update_icon(-transferred_handfuls)
 					else

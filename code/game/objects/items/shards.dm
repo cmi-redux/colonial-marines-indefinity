@@ -76,7 +76,7 @@
 
 
 // Shrapnel.
-// on_embed is called from projectile.dm, bullet_act(obj/item/projectile/P).
+// on_embed is called from projectile.dm, bullet_act(obj/item/projectile/proj).
 // on_embedded_movement is called from human.dm, handle_embedded_objects().
 
 /obj/item/large_shrapnel/proc/on_embedded_movement(mob/living/embedded_mob)

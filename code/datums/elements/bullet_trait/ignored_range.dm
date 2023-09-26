@@ -22,8 +22,8 @@
 
 	return ..()
 
-/datum/element/bullet_trait_ignored_range/proc/check_distance(obj/item/projectile/P, mob/living/carbon/human/projectile_target)
+/datum/element/bullet_trait_ignored_range/proc/check_distance(obj/item/projectile/proj, mob/living/carbon/human/projectile_target)
 	SIGNAL_HANDLER
 
-	if(P.distance_travelled <= ignored_range)
+	if(proj.distance_travelled <= ignored_range)
 		return COMPONENT_CANCEL_BULLET_ACT
