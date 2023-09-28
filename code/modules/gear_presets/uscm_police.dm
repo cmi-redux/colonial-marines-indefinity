@@ -197,7 +197,7 @@
 
 /datum/equipment_preset/uscm_ship/uscm_police/riot_mp/New()
 	. = ..()
-	access = get_all_accesses() + get_all_centcom_access()
+	access = get_access(ACCESS_LIST_MARINE_MAIN)
 
 /datum/equipment_preset/uscm_ship/uscm_police/riot_mp/load_gear(mob/living/carbon/human/new_human)
 	//TODO: add backpacks and satchels

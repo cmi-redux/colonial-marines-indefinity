@@ -93,10 +93,10 @@
 	containername = "replacement telecommunications crate"
 	group = "Operations"
 
-/datum/supply_packs/nuclearbomb
-	name = "Operational Nuke"
+/datum/supply_packs/technuclearbomb
+	name = "Encrypted Operational Nuke"
 	cost = 0
-	containertype = /obj/structure/machinery/nuclearbomb
+	containertype = /obj/structure/machinery/nuclearbomb/tech
 	buyable = 0
 	group = "Operations"
 	iteration_needed = null

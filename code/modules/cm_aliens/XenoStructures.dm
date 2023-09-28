@@ -18,6 +18,16 @@
 
 	set_hive_data(src, faction)
 
+	if(faction == GLOB.faction_datum[FACTION_XENOMORPH_NORMAL])
+		RegisterSignal(SSdcs, COMSIG_GLOB_GROUNDSIDE_FORSAKEN_HANDLING, PROC_REF(forsaken_handling))
+
+/obj/effect/alien/proc/forsaken_handling()
+	SIGNAL_HANDLER
+	if(is_ground_level(z))
+		faction = GLOB.faction_datum[FACTION_XENOMORPH_FORSAKEN]
+		set_hive_data(src, faction)
+	UnregisterSignal(SSdcs, COMSIG_GLOB_GROUNDSIDE_FORSAKEN_HANDLING)
+
 /*
  * Resin
  */
@@ -59,7 +69,7 @@
 	health -= 50
 	healthcheck()
 
-/obj/effect/alien/resin/bullet_act(obj/item/projectile/proj)
+/obj/effect/alien/resin/bullet_act(obj/projectile/proj)
 	health -= proj.damage
 	..()
 	healthcheck()
@@ -345,7 +355,7 @@
 	health -= dam
 	healthcheck()
 
-/obj/structure/mineral_door/resin/bullet_act(obj/item/projectile/proj)
+/obj/structure/mineral_door/resin/bullet_act(obj/projectile/proj)
 	health -= proj.damage
 	..()
 	healthcheck()
@@ -364,11 +374,13 @@
 		return attack_hand(user)
 
 /obj/structure/mineral_door/resin/TryToSwitchState(atom/user)
-	if(islarva(user))
-		var/mob/living/carbon/xenomorph/larva/xeno = user
-		if(xeno.faction == faction)
-			xeno.scuttle(src)
-		return
+	if(isxeno(user))
+		var/mob/living/carbon/xenomorph/xeno_user = user
+		if(xeno_user.ally(faction))
+			return
+		if(xeno_user.scuttle(src))
+			return
+		return ..()
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
 		if(C.ally(faction))
@@ -501,27 +513,33 @@
 	START_PROCESSING(SSprocessing, src)
 
 
-/obj/effect/alien/resin/acid_pillar/proc/can_target(mob/living/carbon/C, position_to_get = 0)
-	if(get_dist(src, C) > range)
+/obj/effect/alien/resin/acid_pillar/proc/can_target(mob/living/carbon/current_mob, position_to_get = 0)
+	/// Is it a friendly xenomorph that is on fire
+	var/burning_friendly = FALSE
+
+	if(get_dist(src, current_mob) > range)
 		return FALSE
 
-	var/check_dead = FALSE
 	if(C.ally(faction))
-		if(!C.on_fire || !isxeno(C))
+		if(!isxeno(current_mob))
 			return FALSE
-	else if(!(C.canmove && C.can_action) || C.is_mob_incapacitated(TRUE))
+		if(!current_mob.on_fire)
+			return FALSE
+		burning_friendly = TRUE
+
+	else if(current_mob.lying || current_mob.is_mob_incapacitated(TRUE))
 		return FALSE
 
-	if(!check_dead && C.health < 0)
+	if(!burning_friendly && current_mob.health < 0)
 		return FALSE
-	if(check_dead && C.stat == DEAD)
+	if(current_mob.stat == DEAD)
 		return FALSE
 
 	var/turf/current_turf
 	var/turf/last_turf = loc
 	var/atom/temp_atom = new acid_type()
 	var/current_pos = 1
-	for(var/i in getline(src, C))
+	for(var/i in getline(src, current_mob))
 		current_turf = i
 		if(LinkBlocked(temp_atom, last_turf, current_turf))
 			qdel(temp_atom)
@@ -579,7 +597,7 @@
 	STOP_PROCESSING(SSprocessing, src)
 	return ..()
 
-/obj/effect/alien/resin/acid_pillar/get_projectile_hit_boolean(obj/item/projectile/proj)
+/obj/effect/alien/resin/acid_pillar/get_projectile_hit_boolean(obj/projectile/proj)
 	return TRUE
 
 /obj/effect/alien/resin/acid_pillar/strong
@@ -695,7 +713,7 @@
 	SIGNAL_HANDLER
 	hitby(AM)
 
-/obj/effect/alien/resin/resin_pillar/proc/handle_bullet(turf/T, obj/item/projectile/proj)
+/obj/effect/alien/resin/resin_pillar/proc/handle_bullet(turf/T, obj/projectile/proj)
 	SIGNAL_HANDLER
 	bullet_act(proj)
 	return COMPONENT_BULLET_ACT_OVERRIDE
@@ -832,7 +850,7 @@
 
 	var/range = 3
 
-/obj/item/explosive/grenade/alien/acid/get_projectile_hit_boolean(obj/item/projectile/proj)
+/obj/item/explosive/grenade/alien/acid/get_projectile_hit_boolean(obj/projectile/proj)
 	return FALSE
 
 /obj/item/explosive/grenade/alien/acid/prime(force)

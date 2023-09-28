@@ -58,18 +58,18 @@
 	caliber = ".44 sabot"
 
 /obj/item/ammo_magazine/revolver/upp
-	name = "N-Y speed loader (7.62x38mmR)"
-	ammo_preset = list(/datum/ammo/bullet/revolver/nagant)
+	name = "ZHNK-72 speed loader (7.62x38mmR)"
+	ammo_preset = list(/datum/ammo/bullet/revolver/upp)
 	caliber = CALIBER_7_62X38MM
 	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/upp.dmi'
-	icon_state = "ny762"
-	gun_type = /obj/item/weapon/gun/revolver/nagant
+	icon_state = "zhnk72loader"
+	gun_type = /obj/item/weapon/gun/revolver/upp
 
 /obj/item/ammo_magazine/revolver/upp/shrapnel
-	name = "N-Y shrapnel-shot speed loader (7.62x38mmR)"
+	name = "ZHNK-72 shrapnel-shot speed loader (7.62x38mmR)"
 	desc = "This speedloader contains seven 'shrapnel-shot' bullets, cheap recycled casings picked up off the ground and refilled with gunpowder and random scrap metal. Acts similarly to flechette."
 	ammo_preset = list(/datum/ammo/bullet/revolver/nagant/shrapnel)
-	icon_state = "ny762_shrapnel"
+	icon_state = "zhnk72loader_shrapnel"
 
 /obj/item/ammo_magazine/revolver/small
 	name = "S&W speed loader (.357)"
@@ -172,13 +172,13 @@
 //RUSSIAN REVOLVER //Based on the 7.62mm Russian revolvers.
 
 /obj/item/ammo_magazine/internal/revolver/upp
-	ammo_preset = list(/datum/ammo/bullet/revolver/nagant)
+	ammo_preset = list(/datum/ammo/bullet/revolver/upp)
 	caliber = CALIBER_7_62X38MM
 	max_rounds = 7
-	gun_type = /obj/item/weapon/gun/revolver/nagant
+	gun_type = /obj/item/weapon/gun/revolver/upp
 
 /obj/item/ammo_magazine/internal/revolver/upp/shrapnel
-	ammo_preset = list(/datum/ammo/bullet/revolver/nagant/shrapnel)
+	ammo_preset = list(/datum/ammo/bullet/revolver/upp/shrapnel)
 
 
 //-------------------------------------------------------

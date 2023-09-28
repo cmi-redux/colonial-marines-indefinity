@@ -474,7 +474,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 								to_chat(user, SPAN_WARNING("Only specialists can take specialist sets."))
 								vend_fail()
 								return FALSE
-							else if(!user.skills || user.skills.get_skill_level(SKILL_SPEC_WEAPONS) != SKILL_SPEC_ALL)
+							else if(!user.skills || user.skills.get_skill_level(SKILL_SPEC_WEAPONS) != SKILL_SPEC_TRAINED)
 								to_chat(user, SPAN_WARNING("You already have a specialization."))
 								vend_fail()
 								return FALSE
@@ -1250,8 +1250,9 @@ GLOBAL_LIST_INIT(cm_vending_gear_corresponding_types_list, list(
 		to_chat(user, SPAN_WARNING("ERROR: itemspec is missing. Please report this to admins."))
 		sleep(15)
 
-	vending_machine.stat &= ~IN_USE
-	vending_machine.update_icon()
+	vendor.stat &= ~IN_USE
+	vendor.icon_state = initial(vendor.icon_state)
+	vendor.update_icon()
 
 /proc/vendor_successful_vend_one(obj/structure/machinery/cm_vending/vending_machine, prod_type, mob/living/carbon/human/user, turf/target_turf, insignas_override)
 	var/obj/item/new_item

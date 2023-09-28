@@ -76,7 +76,10 @@
 	icon_state = "airoom"
 	soundscape_playlist = SCAPE_PL_ARES
 	soundscape_interval = 120
-	flags_area = AREA_RECOVER_FULTON_ITEMS|AREA_NOTUNNEL
+	flags_area = AREA_RECOVER_FULTON_ITEMS|AREA_NOTUNNEL|AREA_UNWEEDABLE
+	can_build_special = FALSE
+	is_resin_allowed = FALSE
+	resin_construction_allowed = FALSE
 
 /area/almayer/command/securestorage
 	name = "\improper Secure Storage"
@@ -165,6 +168,11 @@
 /area/almayer/shipboard/navigation
 	name = "\improper Astronavigational Deck"
 	icon_state = "astronavigation"
+
+/area/almayer/shipboard/panic
+	name = "\improper Hangar Panic Room"
+	icon_state = "brig"
+	fake_zlevel = 2 // lowerdeck
 
 /area/almayer/shipboard/starboard_missiles
 	name = "\improper Missile Tubes Starboard"
@@ -281,6 +289,11 @@
 /area/almayer/living/tankerbunks
 	name = "\improper Vehicle Crew Bunks"
 	icon_state = "livingspace"
+
+/area/almayer/living/auxiliary_officer_office
+	name = "\improper Auxiliary Support Officer office"
+	icon_state = "livingspace"
+	fake_zlevel = 2
 
 /area/almayer/squads/tankdeliveries
 	name = "\improper Vehicle ASRS"

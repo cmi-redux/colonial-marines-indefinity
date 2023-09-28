@@ -31,6 +31,17 @@
 	var/storage_flags = STORAGE_FLAGS_DEFAULT
 	var/has_gamemode_skin = FALSE ///Whether to use map-variant skins.
 
+	///Special can_holds that require a skill to insert, it is an associated list of typepath = list(skilltype, skilllevel)
+	var/list/can_hold_skill = list()
+
+	///Dictates whether or not we only check for items in can_hold_skill rather than can_hold or free usage
+	var/can_hold_skill_only = FALSE
+
+	/// The required skill for opening this storage if it is inside another storage type
+	var/required_skill_for_nest_opening = null
+
+	/// The required level of a skill for opening this storage if it is inside another storage type
+	var/required_skill_level_for_nest_opening = null
 
 /obj/item/storage/MouseDrop(obj/over_object as obj)
 	if(CAN_PICKUP(usr, src))
@@ -148,6 +159,12 @@
 /obj/item/storage/proc/open(mob/user)
 	if(user.s_active == src) //Spam prevention.
 		return
+
+	if(istype(loc, /obj/item/storage) && required_skill_for_nest_opening)
+		if(!user || user.skills?.get_skill_level(required_skill_for_nest_opening) < required_skill_level_for_nest_opening)
+			to_chat(user, SPAN_NOTICE("You can't seem to open [src] while it is in [loc]."))
+			return
+
 	if(!opened)
 		orient2hud()
 		opened = 1
@@ -378,32 +395,48 @@ var/list/global/item_storage_box_cache = list()
 	return
 
 ///Returns TRUE if there is room for the given item. W_class_override allows checking for just a generic W_class, meant for checking shotgun handfuls without having to spawn and delete one just to check.
-/obj/item/storage/proc/has_room(obj/item/W as obj, W_class_override = null)
+/obj/item/storage/proc/has_room(obj/item/new_item, W_class_override = null)
 	if(storage_slots != null && contents.len < storage_slots)
 		return TRUE //At least one open slot.
 	//calculate storage space only for containers that don't have slots
 	if(storage_slots == null)
-		var/sum_storage_cost = W_class_override ? W_class_override : W.get_storage_cost() //Takes the override if there is one, the given item otherwise.
+		var/sum_storage_cost = W_class_override ? W_class_override : new_item.get_storage_cost() //Takes the override if there is one, the given item otherwise.
 		for(var/obj/item/I in contents)
 			sum_storage_cost += I.get_storage_cost() //Adds up the combined storage costs which will be in the storage item if the item is added to it.
 
 		if(sum_storage_cost <= max_storage_space) //Adding this item won't exceed the maximum.
 			return TRUE
 
-/obj/item/storage/proc/can_hold_type(type_to_hold)
+#define SKILL_TYPE_INDEX 1
+#define SKILL_LEVEL_INDEX 2
+
+/obj/item/storage/proc/can_hold_type(type_to_hold, mob/user)
+	if(length(can_hold_skill))
+		for(var/can_hold_skill_typepath in can_hold_skill)
+			if(ispath(type_to_hold, can_hold_skill_typepath) && user.skills?.get_skill_level(can_hold_skill[can_hold_skill_typepath][SKILL_TYPE_INDEX]) >= can_hold_skill[can_hold_skill_typepath][SKILL_LEVEL_INDEX])
+				return TRUE
+		if(can_hold_skill_only)
+			return FALSE
+
 	for(var/A in cant_hold)
 		if(ispath(type_to_hold, A))
 			return FALSE
+
 	if(length(can_hold))
 		for(var/A in can_hold)
 			if(ispath(type_to_hold, A))
 				return TRUE
+
 		return FALSE
+
 	return TRUE
+
+#undef SKILL_TYPE_INDEX
+#undef SKILL_LEVEL_INDEX
 
 //This proc return 1 if the item can be picked up and 0 if it can't.
 //Set the stop_messages to stop it from printing messages
-/obj/item/storage/proc/can_be_inserted(obj/item/W as obj, stop_messages = 0)
+/obj/item/storage/proc/can_be_inserted(obj/item/W, mob/user, stop_messages = FALSE)
 	if(!istype(W) || (W.flags_item & NODROP)) return //Not an item
 
 	if(src.loc == W)
@@ -419,7 +452,7 @@ var/list/global/item_storage_box_cache = list()
 		to_chat(usr, SPAN_ALERT("[W] is ignited, you can't store it!"))
 		return
 
-	if(!can_hold_type(W.type))
+	if(!can_hold_type(W.type, user))
 		if(!stop_messages)
 			to_chat(usr, SPAN_NOTICE("[src] cannot hold [W]."))
 		return
@@ -455,23 +488,23 @@ That's done by can_be_inserted(). Its checks are whether the item exists, is an 
 The stop_warning parameter will stop the insertion message from being displayed. It is intended for cases where you are inserting multiple
 items at once, such as when picking up all the items on a tile with one click.
 user can be null, it refers to the potential mob doing the insertion.**/
-/obj/item/storage/proc/handle_item_insertion(obj/item/W, prevent_warning = 0, mob/user)
-	if(!istype(W))
+/obj/item/storage/proc/handle_item_insertion(obj/item/new_item, prevent_warning = FALSE, mob/user)
+	if(!istype(new_item))
 		return FALSE
-	if(user && W.loc == user)
-		if(!user.drop_inv_item_to_loc(W, src))
+	if(user && new_item.loc == user)
+		if(!user.drop_inv_item_to_loc(new_item, src))
 			return FALSE
 	else
-		W.forceMove(src)
+		new_item.forceMove(src)
 
-	_item_insertion(W, prevent_warning, user)
+	_item_insertion(new_item, prevent_warning, user)
 	return TRUE
 
 /**Inserts the item. Separate proc because handle_item_insertion isn't guaranteed to insert
 and it therefore isn't safe to override it before calling parent. Updates icon when done.
 Can be called directly but only if the item was spawned inside src - handle_item_insertion is safer.
 W is always an item. stop_warning prevents messaging. user may be null.**/
-/obj/item/storage/proc/_item_insertion(obj/item/W, prevent_warning = 0, mob/user)
+/obj/item/storage/proc/_item_insertion(obj/item/W, prevent_warning = FALSE, mob/user)
 	W.on_enter_storage(src)
 	if(user)
 		if(user.client && user.s_active != src)
@@ -544,7 +577,7 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 	..()
 
 /obj/item/storage/proc/attempt_item_insertion(obj/item/W as obj, prevent_warning = FALSE, mob/user as mob)
-	if(!can_be_inserted(W))
+	if(!can_be_inserted(W, user))
 		return
 
 	W.add_fingerprint(user)
@@ -715,25 +748,26 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 			to_chat(user, SPAN_WARNING("[ammo_dumping] is empty."))
 	return TRUE
 
-/obj/item/storage/proc/dump_into(obj/item/storage/M, mob/user)
+/obj/item/storage/proc/dump_into(obj/item/storage/origin_storage, mob/user)
+
 	if(user.action_busy)
 		return
 
-	if(!M.contents.len)
-		to_chat(user, SPAN_WARNING("[M] is empty."))
+	if(!origin_storage.contents.len)
+		to_chat(user, SPAN_WARNING("[origin_storage] is empty."))
 		return
-	if(!has_room(M.contents[1])) //Does it have room for the first item to be inserted?
+	if(!has_room(origin_storage.contents[1])) //Does it have room for the first item to be inserted?
 		to_chat(user, SPAN_WARNING("[src] is full."))
 		return
 
-	to_chat(user, SPAN_NOTICE("You start refilling [src] with [M]."))
+	to_chat(user, SPAN_NOTICE("You start refilling [src] with [origin_storage]."))
 	if(!do_after(user, 1.5 SECONDS, INTERRUPT_ALL, BUSY_ICON_GENERIC))
 		return
-	for(var/obj/item/I in M)
-		if(!has_room(I))
+	for(var/obj/item/new_item in origin_storage)
+		if(!has_room(new_item))
 			break
-		M.remove_from_storage(I)
-		handle_item_insertion(I, TRUE, user) //quiet insertion
+		origin_storage.remove_from_storage(new_item)
+		handle_item_insertion(new_item, TRUE, user) //quiet insertion
 
 	playsound(user.loc, "rustle", 15, TRUE, 6)
 	return TRUE
@@ -793,9 +827,9 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 	storage_close(watcher)
 
 /obj/item/storage/proc/dump_objectives()
-	for(var/obj/item/I in src)
-		if(I.is_objective)
-			I.forceMove(loc)
+	for(var/obj/item/cur_item in src)
+		if(cur_item.is_objective)
+			remove_from_storage(cur_item, loc)
 
 
 /obj/item/storage/Destroy()

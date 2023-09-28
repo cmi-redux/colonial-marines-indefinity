@@ -37,8 +37,11 @@
 	if(istype(target, /obj/effect/alien/resin/special/eggmorph))
 		return //We tried storing the hugger from the egg, no need to try to plant it (we know the turf is occupied!)
 	if(isxeno(user))
+		var/mob/living/carbon/xenomorph/xeno = user
 		var/turf/T = get_turf(target)
-		plant_egg(user, T, proximity)
+		if(get_dist(xeno, T) <= xeno.egg_planting_range)
+			proximity = TRUE
+		plant_egg(xeno, T, proximity)
 	if(proximity && ishuman(user))
 		var/turf/T = get_turf(target)
 		plant_egg_human(user, T)
@@ -81,11 +84,18 @@
 	if(!user.check_plasma(30))
 		return
 
-	var/obj/effect/alien/weeds/hive_weeds = null
-	for(var/obj/effect/alien/weeds/weeds in target_turf)
-		if(weeds.weed_strength >= WEED_LEVEL_HIVE && weeds.faction == faction)
-			hive_weeds = weeds
+	var/obj/effect/alien/weeds/hive_weeds
+	var/obj/effect/alien/weeds/any_weeds
+	for(var/obj/effect/alien/weeds/weed in T)
+		if(weed.weed_strength >= WEED_LEVEL_HIVE && weed.faction == faction)
+			hive_weeds = weed
 			break
+		if(weed.weed_strength >= WEED_LEVEL_WEAK && weed.faction == faction) //check for ANY weeds
+			any_weeds = weed
+
+	if(!any_weeds && !hive_weeds) //you need at least some weeds to plant on.
+		to_chat(user, SPAN_XENOWARNING("[src] must be planted on [lowertext(faction.prefix)]weeds."))
+		return
 
 	if(!hive_weeds)
 		to_chat(user, SPAN_XENOWARNING("[src] can only be planted on [lowertext(faction.prefix)]hive weeds."))
@@ -105,8 +115,8 @@
 	if(!user.check_plasma(30))
 		return
 
-	for(var/obj/effect/alien/weeds/weeds in target_turf)
-		if(weeds.weed_strength >= WEED_LEVEL_HIVE)
+	for(var/obj/effect/alien/weeds/weed in target_turf)
+		if(weed.weed_strength >= WEED_LEVEL_HIVE)
 			user.use_plasma(30)
 			var/obj/effect/alien/egg/newegg = new /obj/effect/alien/egg(target_turf, faction)
 

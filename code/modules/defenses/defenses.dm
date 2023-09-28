@@ -282,6 +282,10 @@
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
 			return
 		else
+			var/turf/open/floor = get_turf(src)
+			if(!floor.allow_construction)
+				to_chat(user, SPAN_WARNING("You cannot secure \the [src] here, find a more secure surface!"))
+				return FALSE
 			user.visible_message(SPAN_NOTICE("[user] begins securing [src] to the ground."),
 			SPAN_NOTICE("You begin securing [src] to the ground."))
 
@@ -423,7 +427,7 @@
 		return
 	update_health(severity)
 
-/obj/structure/machinery/defenses/bullet_act(obj/item/projectile/proj)
+/obj/structure/machinery/defenses/bullet_act(obj/projectile/proj)
 	bullet_ping(proj)
 	visible_message(SPAN_WARNING("[src] is hit by the [proj]!"))
 	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags

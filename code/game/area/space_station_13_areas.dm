@@ -82,6 +82,8 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	luminosity = 1
 	base_lighting_alpha = 255
 
+	base_lighting_alpha = 255
+
 /area/centcom/control
 	name = "\improper abandoned  Centcom Control"
 
@@ -98,6 +100,8 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	static_lighting = FALSE
 	area_has_base_lighting = TRUE
 	luminosity = 1
+	base_lighting_alpha = 255
+
 	base_lighting_alpha = 255
 
 /area/tdome/tdome1

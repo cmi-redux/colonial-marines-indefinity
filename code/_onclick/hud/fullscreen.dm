@@ -73,9 +73,11 @@
 	var/severity = 0
 	var/fs_view = 7
 	var/show_when_dead = FALSE
+	/// If this should try and resize if the user's view is bigger than the default
+	var/should_resize = TRUE
 
 /atom/movable/screen/fullscreen/proc/update_for_view(client_view)
-	if(screen_loc == "CENTER-7,CENTER-7" && fs_view != client_view)
+	if(screen_loc == "CENTER-7,CENTER-7" && fs_view != client_view && should_resize)
 		var/list/actualview = getviewsize(client_view)
 		fs_view = client_view
 		transform = matrix(actualview[1]/FULLSCREEN_OVERLAY_RESOLUTION_X, 0, 0, 0, actualview[2]/FULLSCREEN_OVERLAY_RESOLUTION_Y, 0)
@@ -166,6 +168,14 @@
 /atom/movable/screen/fullscreen/laser_blind
 	icon_state = "impairedoverlay1"
 
+/atom/movable/screen/fullscreen/vulture
+	icon_state = "vulture_scope_overlay_sniper"
+	layer = FULLSCREEN_VULTURE_SCOPE_LAYER
+
+/atom/movable/screen/fullscreen/vulture/spotter
+	icon_state = "vulture_scope_overlay_spotter"
+	should_resize = FALSE
+
 //Weather overlays//
 
 /atom/movable/screen/fullscreen/weather
@@ -192,17 +202,25 @@
 	blend_mode = BLEND_OVERLAY
 	show_when_dead = TRUE
 
-//Provides darkness to the back of the lighting plane
-/atom/movable/screen/fullscreen/lighting_backdrop/lit
-	invisibility = INVISIBILITY_LIGHTING
-	layer = BACKGROUND_LAYER+21
-	color = "#000"
+/atom/movable/screen/fullscreen/lighting_backdrop/update_for_view(client_view)
+	return
 
-//Provides whiteness in case you don't see lights so everything is still visible
-/atom/movable/screen/fullscreen/lighting_backdrop/unlit
-	layer = BACKGROUND_LAYER+20
+//Provides darkness to the back of the lighting plane
+/atom/movable/screen/fullscreen/lighting_backdrop/lit_secondary
+	invisibility = INVISIBILITY_LIGHTING
+	layer = BACKGROUND_LAYER + LIGHTING_PRIMARY_DIMMER_LAYER
+	color = "#000"
+	alpha = 60
+
+/atom/movable/screen/fullscreen/lighting_backdrop/backplane
+	invisibility = INVISIBILITY_LIGHTING
+	layer = LIGHTING_BACKPLANE_LAYER
+	color = "#000"
+	blend_mode = BLEND_ADD
 
 /atom/movable/screen/fullscreen/see_through_darkness
 	icon_state = "nightvision"
 	plane = LIGHTING_PLANE
+	layer = LIGHTING_PRIMARY_LAYER
 	blend_mode = BLEND_ADD
+	show_when_dead = TRUE

@@ -128,7 +128,11 @@ GLOBAL_LIST_EMPTY(thunderdome_two)
 GLOBAL_LIST_EMPTY(thunderdome_admin)
 GLOBAL_LIST_EMPTY(thunderdome_observer)
 
-var/global/list/defcon_drop_point = list()
+GLOBAL_LIST_EMPTY(defcon_drop_point)
+
+GLOBAL_LIST_EMPTY(latejoin)
+GLOBAL_LIST_EMPTY(latejoin_by_squad)
+GLOBAL_LIST_EMPTY(latejoin_by_job)
 
 GLOBAL_LIST_EMPTY(zombie_landmarks)
 

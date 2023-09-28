@@ -37,6 +37,7 @@
 	name = "Hyperspace"
 	desc = "Weeeeee"
 	ambience_exterior = 'sound/ambience/shuttle_fly_loop.ogg'
+	base_lighting_alpha = 255
 
 /area/shuttle/uss_heart_of_gold
 	name = "USS Heart Of Gold"
@@ -77,7 +78,6 @@
 	icon_state = "lifeboat"
 
 /area/shuttle/trijent_shuttle/elevator
-	requires_power = FALSE
 	powernet_name = "ground"
 
 /area/shuttle/trijent_shuttle/lz1
@@ -91,6 +91,7 @@
 
 /area/shuttle/trijent_shuttle/omega
 	name = "Trijent Omega"
+
 /area/shuttle/escape_pod
 	icon = 'icons/turf/area_almayer.dmi'
 	icon_state = "lifeboat"

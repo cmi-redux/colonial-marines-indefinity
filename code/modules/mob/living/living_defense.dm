@@ -150,16 +150,12 @@
 		INVOKE_ASYNC(src, TYPE_PROC_REF(/mob, emote), "scream")
 
 /mob/living/proc/ExtinguishMob()
-	if(!on_fire)
-		return FALSE
-	on_fire = FALSE
-	fire_stacks = 0
-	set_light_range(light_range - fire_luminosity)
-	set_light_power(light_power - min(fire_luminosity/5,1))
-	fire_luminosity = 0
-	set_light_on(FALSE)
-	update_fire()
-	return TRUE
+	if(on_fire)
+		on_fire = FALSE
+		fire_stacks = 0
+		update_fire()
+		return TRUE
+	return FALSE
 
 /mob/living/carbon/human/ExtinguishMob()
 	. = ..()

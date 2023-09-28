@@ -31,74 +31,14 @@
 
 /obj/item/map/current_map/Initialize(mapload, ...)
 	. = ..()
-	link_minimap()
-	switch(SSmapping.configs[GROUND_MAP].map_name)
-		if(MAP_LV_624)
-			name = "\improper Lazarus Landing Map"
-			desc = "A satellite printout of the Lazarus Landing colony on LV-624."
-		if(MAP_ICE_COLONY)
-			name = "\improper Ice Colony map"
-			desc = "A satellite printout of the Ice Colony."
-			color = "cyan"
-		if(MAP_ICE_COLONY_V3)
-			name = "\improper Shivas Snowball map"
-			desc = "A labelled print out of the anterior scan of the UA colony Shivas Snowball."
-			color = "cyan"
-		if(MAP_BIG_RED)
-			name = "\improper Solaris Ridge Map"
-			desc = "A censored blueprint of the Solaris Ridge facility"
-			color = "#e88a10"
-		if(MAP_SKY_SCRAPER)
-			name = "\improper Sky Scraper Map"
-			desc = "A censored blueprint of the Sky Scraper in the Skyes"
-			color = "white"
-		if(MAP_PRISON_STATION)
-			name = "\improper Fiorina Orbital Penitentiary Map"
-			desc = "A labelled interior scan of Fiorina Orbital Penitentiary"
-			color = "#e88a10"
-		if(MAP_PRISON_STATION_V3)
-			name = "\improper Fiorina Orbital Penitentiary Map"
-			desc = "A scan produced by the the Almayer's sensor array of the Fiorina Orbital Penitentiary Civilian Annex. It appears to have broken off from the rest of the station and is now in free geo-sync orbit around the planet."
-			color = "#e88a10"
-		if(MAP_DESERT_DAM)
-			name = "\improper Trijent Dam map"
-			desc = "A map of Trijent Dam"
-			color = "#cec13f"
-			//did only the basics todo change later
-		if(MAP_SOROKYNE_STRATA)
-			name = "\improper Sorokyne Strata map"
-			desc = "A map of the Weyland-Yutani colony Sorokyne Outpost, commonly known as Sorokyne Strata."
-			color = "cyan"
-		if(MAP_CORSAT)
-			name = "\improper CORSAT map"
-			desc = "A blueprint of CORSAT station"
-			color = "red"
-		if(MAP_KUTJEVO)
-			name = "\improper Kutjevo Refinery map"
-			desc = "An orbital scan of Kutjevo Refinery"
-			color = "red"
-		if(MAP_LV522_CHANCES_CLAIM)
-			name = "\improper LV-522 Map"
-			desc = "An overview of LV-522 schematics."
-			html_link = "images/b/bb/C_claim.png"
-			color = "cyan"
-		if(MAP_NEW_VARADERO)
-			name = "\improper New Varadero map"
-			desc = "The blueprint and readout of the UA outpost New Varadero"
-			html_link = "images/0/0d/Kutjevo_a1.jpg"//replace later
-			color = "red"
-		if(MAP_WHISKEY_OUTPOST)
-			name = "\improper Whiskey Outpost map"
-			desc = "A tactical printout of the Whiskey Outpost defensive positions and locations."
-			color = "grey"
-		if(MAP_RAVENUE_5)
-			name = "\improper Ravenue 5 map"
-			desc = "A tactical printout of the Ravenue 5 defensive positions and locations."
-			color = "grey"
-		else
-			return INITIALIZE_HINT_QDEL
-
-
+	var/map_name = SSmapping.configs[GROUND_MAP].map_name
+	var/obj/item/map/map = GLOB.map_type_list[map_name]
+	if (!map && (map_name == MAP_RUNTIME || map_name == MAP_CHINOOK || map_name == MAIN_SHIP_DEFAULT_NAME))
+		return // "Maps" we don't have maps for so we don't need to throw a runtime for (namely in unit_testing)
+	name = map.name
+	desc = map.desc
+	html_link = map.html_link
+	color = map.color
 
 // Landmark - Used for mapping. Will spawn the appropriate map for each gamemode (LV map items will spawn when LV is the gamemode, etc)
 /obj/effect/landmark/map_item

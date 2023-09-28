@@ -1,5 +1,5 @@
 /datum/job/logistics
-	supervisors = "the acting commanding officer"
+	supervisors = "the auxiliary support officer"
 	total_positions = 1
 	spawn_positions = 1
 	balance_formulas = list("misc", BALANCE_FORMULA_ENGINEER, BALANCE_FORMULA_SUPPORT)

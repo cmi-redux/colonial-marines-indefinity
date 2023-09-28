@@ -5,7 +5,7 @@
 	allow_additional = TRUE
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = /datum/equipment_preset/uscm/medic
-	entry_message_body = "<a href='"+URL_WIKI_MEDIC_GUIDE+"'>You tend the wounds of your squad mates</a> and make sure they are healthy and active. You may not be a fully-fledged doctor, but you stand between life and death when it matters."
+	entry_message_body = "<a href='%WIKIPAGE%'>You tend the wounds of your squad mates</a> and make sure they are healthy and active. You may not be a fully-fledged doctor, but you stand between life and death when it matters."
 	balance_formulas = list("misc", BALANCE_FORMULA_MEDIC, BALANCE_FORMULA_FIELD)
 
 /datum/job/marine/medic/set_spawn_positions(count)

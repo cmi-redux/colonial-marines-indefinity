@@ -210,7 +210,7 @@
 /obj/item/tool/shovel/etool/attack_self(mob/user as mob)
 	folded = !folded
 	if(folded)
-		w_class = SIZE_MEDIUM
+		w_class = SIZE_SMALL
 		force = 2
 	else
 		w_class = SIZE_LARGE
@@ -219,5 +219,5 @@
 
 /obj/item/tool/shovel/etool/folded
 	folded = TRUE
-	w_class = SIZE_MEDIUM
+	w_class = SIZE_SMALL
 	force = 2

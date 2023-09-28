@@ -36,14 +36,10 @@
 	acid_damage = 1
 	icon_state = "greenglow"
 
-	light_color = COLOR_GREEN_GRAY
+	light_color = COLOUR_GREEN
 	light_power = 0.4
 	light_range = 2
 	light_on = TRUE
-
-/obj/effect/decal/cleanable/dirt/greenglow/Destroy()
-	set_light_on(FALSE)
-	return ..()
 
 /obj/effect/decal/cleanable/flour
 	name = "flour"
@@ -62,6 +58,10 @@
 	density = FALSE
 	anchored = TRUE
 	layer = TURF_LAYER
+	light_color = COLOUR_GREEN
+	light_power = 0.4
+	light_range = 2
+	light_on = TRUE
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "greenglow"
 
@@ -76,10 +76,6 @@
 		return INITIALIZE_HINT_QDEL
 	. = ..()
 	QDEL_IN(WEAKREF(src), 2 MINUTES)
-
-/obj/effect/decal/cleanable/greenglow/Destroy()
-	set_light_on(FALSE)
-	return ..()
 
 /obj/effect/decal/cleanable/cobweb
 	name = "cobweb"
@@ -178,7 +174,7 @@
 /obj/effect/decal/cleanable/blackgoo/Crossed(mob/living/carbon/human/H)
 	if(!istype(H)) return
 	if(H.species.name == "Human")
-		if(!H.shoes || prob(25))
+		if(!H.shoes && prob(50))
 			H.contract_disease(new /datum/disease/black_goo)
 
 

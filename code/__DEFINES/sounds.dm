@@ -20,7 +20,8 @@
 #define ITEM_EQUIP_VOLUME 50
 
 //Reserved channels
-#define FREE_CHAN_END				1013
+#define FREE_CHAN_END				1012
+#define SOUND_CHANNEL_NOTIFY		1013
 #define SOUND_CHANNEL_WEATHER		1014
 #define SOUND_CHANNEL_REACTOR_ON	1015
 #define SOUND_CHANNEL_REACTOR_SIREN	1016
@@ -74,6 +75,7 @@
 #define AMBIENCE_ALMAYER 'sound/ambience/almayerambience.ogg'
 #define AMBIENCE_LV624 'sound/ambience/ambienceLV624.ogg'
 #define AMBIENCE_BIGRED 'sound/ambience/desert.ogg'
+#define AMBIENCE_NV 'sound/ambience/ambienceNV.ogg'
 #define AMBIENCE_PRISON 'sound/ambience/shipambience.ogg'
 #define AMBIENCE_TRIJENT 'sound/ambience/desert.ogg'
 

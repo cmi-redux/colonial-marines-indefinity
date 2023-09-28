@@ -3,6 +3,7 @@
 /obj/structure/machinery/bot
 	icon = 'icons/obj/structures/machinery/aibots.dmi'
 	layer = MOB_LAYER
+	light_system = MOVABLE_LIGHT
 	light_range = 3
 	use_power = USE_POWER_NONE
 	var/obj/item/card/id/botcard			// the ID card that the bot "holds"
@@ -14,6 +15,12 @@
 	var/brute_dam_coeff = 1
 	var/open = 0 //Maint panel
 	var/locked = 1
+
+/obj/structure/machinery/bot/Initialize(mapload, ...)
+	. = ..()
+
+	if(light_range)
+		set_light_on(TRUE)
 
 /obj/structure/machinery/bot/Destroy()
 	QDEL_NULL(botcard)
@@ -37,10 +44,6 @@
 /obj/structure/machinery/bot/proc/healthcheck()
 	if(health <= 0)
 		explode()
-
-/obj/structure/machinery/bot/Destroy()
-	set_light(0)
-	. = ..()
 
 /obj/structure/machinery/bot/get_examine_text(mob/user)
 	. = ..()
@@ -90,7 +93,7 @@
 		else
 			..()
 
-/obj/structure/machinery/bot/bullet_act(obj/item/projectile/proj)
+/obj/structure/machinery/bot/bullet_act(obj/projectile/proj)
 	health -= proj.ammo.damage
 	..()
 	healthcheck()

@@ -79,7 +79,7 @@
 		deconstruct(FALSE)
 	return
 
-/obj/effect/decal/mecha_wreckage/bullet_act(obj/item/projectile/proj)
+/obj/effect/decal/mecha_wreckage/bullet_act(obj/projectile/proj)
 	return 1
 
 /obj/effect/decal/mecha_wreckage/attack_alien(mob/living/carbon/xenomorph/M)

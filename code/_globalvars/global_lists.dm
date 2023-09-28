@@ -17,6 +17,7 @@ GLOBAL_LIST_EMPTY(resin_silo_spawn_locs)
 GLOBAL_LIST_EMPTY(xeno_resin_silos)
 GLOBAL_LIST_EMPTY(siren_objects)
 GLOBAL_LIST_EMPTY(fusion_cores)
+GLOBAL_LIST_EMPTY(larva_burst_by_hive)
 
 GLOBAL_LIST_INIT_TYPED(custom_huds_list, /datum/custom_hud, setup_all_huds())
 GLOBAL_LIST_INIT_TYPED(custom_human_huds, /datum/custom_hud, setup_human_huds())
@@ -65,6 +66,12 @@ GLOBAL_LIST_INIT(resin_build_order_default, list(
 	/datum/resin_construction/resin_turf/wall,
 	/datum/resin_construction/resin_turf/membrane,
 	/datum/resin_construction/resin_obj/door
+))
+
+GLOBAL_LIST_INIT(resin_build_order_lesser_drone, list(
+	/datum/resin_construction/resin_turf/wall,
+	/datum/resin_construction/resin_turf/membrane,
+	/datum/resin_construction/resin_obj/door,
 ))
 
 GLOBAL_LIST_INIT(resin_build_order_drone, list(

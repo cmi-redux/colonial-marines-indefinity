@@ -625,11 +625,6 @@
 	icon_state = "warnplate"
 	},
 /area/corsat/gamma/hangar)
-"abW" = (
-/turf/open/floor/plating{
-	icon_state = "warnplate"
-	},
-/area/corsat/gamma/hangar)
 "abX" = (
 /turf/open/floor/plating/icefloor{
 	icon_state = "warnplate";
@@ -1989,11 +1984,6 @@
 "afN" = (
 /turf/open/floor/plating{
 	dir = 10;
-	icon_state = "warnplate"
-	},
-/area/corsat/sigma/hangar)
-"afO" = (
-/turf/open/floor/plating{
 	icon_state = "warnplate"
 	},
 /area/corsat/sigma/hangar)
@@ -13644,7 +13634,7 @@
 "aLr" = (
 /obj/structure/surface/rack,
 /obj/item/tool/weldpack,
-/obj/item/tool/weldingtool/largetank,
+/obj/item/tool/weldingtool,
 /obj/item/clothing/head/welding,
 /turf/open/floor/corsat{
 	dir = 5;
@@ -22678,7 +22668,7 @@
 /area/corsat/gamma/biodome/toxins)
 "biR" = (
 /obj/structure/surface/table/woodentable,
-/obj/structure/machinery/chem_dispenser/beer{
+/obj/structure/machinery/chem_dispenser/soda/beer{
 	dir = 8;
 	pixel_x = 15
 	},
@@ -25769,7 +25759,7 @@
 /area/corsat/sigma/south/offices)
 "bsN" = (
 /obj/structure/surface/table/woodentable,
-/obj/structure/machinery/chem_dispenser/beer{
+/obj/structure/machinery/chem_dispenser/soda/beer{
 	dir = 8
 	},
 /turf/open/floor/corsat{
@@ -31870,7 +31860,7 @@
 "bLH" = (
 /obj/structure/surface/rack,
 /obj/item/tool/weldpack,
-/obj/item/tool/weldingtool/largetank,
+/obj/item/tool/weldingtool,
 /obj/item/clothing/head/welding,
 /turf/open/floor/corsat{
 	dir = 5;
@@ -32577,7 +32567,7 @@
 "bNV" = (
 /obj/structure/surface/rack,
 /obj/item/tool/weldpack,
-/obj/item/tool/weldingtool/largetank,
+/obj/item/tool/weldingtool,
 /obj/item/clothing/head/welding,
 /obj/effect/spawner/random/toolbox,
 /turf/open/floor/corsat{
@@ -38137,6 +38127,13 @@
 	icon_state = "purplewhite"
 	},
 /area/corsat/gamma/biodome/virology)
+"drp" = (
+/obj/docking_port/stationary/marine_dropship/lz1{
+	dwidth = 1;
+	name = "Gamma Landing Zone"
+	},
+/turf/open/floor/plating,
+/area/corsat/gamma/hangar)
 "drv" = (
 /obj/effect/landmark/hunter_secondary,
 /turf/open/gm/river/desert/shallow{
@@ -38917,6 +38914,13 @@
 	icon_state = "purplewhite"
 	},
 /area/corsat/omega/complex)
+"dUj" = (
+/obj/docking_port/stationary/marine_dropship/lz2{
+	dwidth = 1;
+	name = "Sigma Landing Zone"
+	},
+/turf/open/floor/plating,
+/area/corsat/sigma/hangar)
 "dUn" = (
 /obj/structure/machinery/camera/autoname{
 	network = list("gamma")
@@ -94450,7 +94454,7 @@ aaG
 aaG
 aaX
 aaG
-abW
+bBX
 aco
 aaG
 acG
@@ -95420,7 +95424,7 @@ aaG
 aaG
 aaG
 aaG
-aaG
+drp
 aaG
 aaG
 aaG
@@ -121963,7 +121967,7 @@ afi
 afi
 aeN
 afi
-afO
+eDz
 ajU
 aeB
 vkW
@@ -122933,7 +122937,7 @@ afi
 afi
 afi
 afi
-afi
+dUj
 afi
 afi
 afi

@@ -48,6 +48,10 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/tool/candle/Destroy()
 	if(heat_source)
 		STOP_PROCESSING(SSobj, src)
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 	. = ..()
 
 /obj/item/tool/candle/attackby(obj/item/W as obj, mob/user as mob)
@@ -82,8 +86,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		return
 	update_icon()
 
-
-
 /obj/item/tool/candle/attack_self(mob/user)
 	..()
 
@@ -106,6 +108,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	var/smoketime = 10 SECONDS
 	var/burnt_name = "burnt match"
 	w_class = SIZE_TINY
+	light_range = 2
+	light_power = 1
 
 	attack_verb = list("burnt", "singed")
 
@@ -134,6 +138,13 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(heat_source)
 		burn_out(user)
 	return ..()
+
+/obj/item/tool/match/turn_light(mob/user, toggle_on)
+	. = ..()
+	if(. == NO_LIGHT_STATE_CHANGE)
+		return
+
+	set_light_on(toggle_on)
 
 /obj/item/tool/match/proc/light_match()
 	if(heat_source || burnt)
@@ -179,6 +190,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	flags_atom = CAN_BE_SYRINGED
 	attack_verb = list("burnt", "singed")
 	blood_overlay_type = ""
+	light_color = LIGHT_COLOUR_ORANGE
 	/// Note - these are in masks.dmi not in cigarette.dmi
 	var/icon_on = "cigon"
 	var/icon_off = "cigoff"
@@ -307,6 +319,9 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		reagents.handle_reactions()
 		icon_state = icon_on
 		item_state = icon_on
+		set_light_range(1)
+		set_light_power(0.5)
+		set_light_on(TRUE)
 		if(iscarbon(loc))
 			var/mob/living/carbon/C = loc
 			if(C.r_hand == src)
@@ -340,7 +355,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 					return
 			var/mob/living/carbon/C = loc
 
-			if(prob(15)) // so it's not an instarape in case of acid
+			if(prob(15))
 				reagents.reaction(C, INGEST)
 			reagents.trans_to(C, REAGENTS_METABOLISM)
 		else // else just remove some of the reagents
@@ -361,7 +376,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			if(user == M)
 				user.visible_message(SPAN_NOTICE(type_butt ? "[user] calmly drops and treads on the lit [src], putting it out instantly." : "[user] puts out \the [src]."))
 			else
-				to_chat(M, SPAN_NOTICE("Your [src] goes out."))
+				to_chat(M, SPAN_NOTICE("Your [src.name] goes out."))
 	STOP_PROCESSING(SSobj, src)
 	if(type_butt)
 		var/turf/T = get_turf(src)
@@ -372,6 +387,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		qdel(src)
 		. = butt
 	else
+		set_light_on(FALSE)
 		heat_source = 0
 		icon_state = icon_off
 		item_state = icon_off
@@ -647,6 +663,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	icon = 'icons/obj/items/items.dmi'
 	icon_state = "lighter_g"
 	item_state = "lighter_g"
+	light_color = LIGHT_COLOUR_LAVA
 	var/icon_on = "lighter_g_on"
 	var/icon_off = "lighter_g"
 	var/clr = "g"
@@ -769,5 +786,3 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 				cig.light(SPAN_NOTICE("[user] holds the [name] out for [M], and lights the [cig.name]."))
 	else
 		..()
-
-/obj/item/tool/lighter/process()

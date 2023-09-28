@@ -129,8 +129,6 @@
 	if(SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_BASIC_RT])
 		flags_round_type |= MODE_BASIC_RT
 
-	round_time_lobby = world.time
-
 	addtimer(CALLBACK(src, PROC_REF(ares_online)), 5 SECONDS)
 	addtimer(CALLBACK(src, PROC_REF(map_announcement)), 20 SECONDS)
 
@@ -153,11 +151,6 @@
 		var/turf/T = get_turf(pick_n_take(GLOB.monkey_spawns))
 		var/monkey_to_spawn = pick(monkey_types)
 		new monkey_to_spawn(T)
-
-/datum/game_mode/colonialmarines/proc/ares_online()
-	var/name = "[MAIN_AI_SYSTEM]"
-	var/input = "Включен. Доброе утро, экипаж."
-	shipwide_ai_announcement(input, name, 'sound/AI/ares_online.ogg')
 
 /datum/game_mode/colonialmarines/proc/map_announcement()
 	if(SSmapping.configs[GROUND_MAP].announce_text)
@@ -284,7 +277,7 @@
 			continue
 
 	if(groundside_humans > (groundside_xenos * GROUNDSIDE_XENO_MULTIPLIER))
-		SSticker.mode.get_specific_call("Xenomorphs Groundside (Forsaken)", FALSE, FALSE)
+		SSticker.mode.get_specific_call("Xenomorphs Groundside (Forsaken)", TRUE, FALSE, FALSE, announce_dispatch_message = FALSE)
 
 	TIMER_COOLDOWN_START(src, COOLDOWN_HIJACK_GROUND_CHECK, 1 MINUTES)
 
@@ -382,6 +375,8 @@
 //////////////////////////////////////////////////////////////////////
 //Announces the end of the game with all relevant information stated//
 //////////////////////////////////////////////////////////////////////
+#define MAJORITY 0.5 // What percent do we consider a 'majority?'
+
 /datum/game_mode/colonialmarines/declare_completion()
 	. = ..()
 
@@ -494,3 +489,4 @@
 
 #undef HIJACK_EXPLOSION_COUNT
 #undef MARINE_MAJOR_ROUND_END_DELAY
+#undef MAJORITY

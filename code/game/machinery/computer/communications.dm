@@ -80,6 +80,7 @@
 		return FALSE
 
 	usr.set_interaction(src)
+	var/datum/ares_link/link = GLOB.ares_link
 	switch(href_list["operation"])
 		if("mapview_ground")
 			current_mapviewer = usr
@@ -173,6 +174,7 @@
 
 				log_game("[key_name(usr)] начал аварийную эвакуацию.")
 				message_admins("[key_name_admin(usr)] начал аварийную эвакуацию.")
+				link.log_ares_security("Initiate Evacuation", "[usr] has called for an emergency evacuation.")
 				return TRUE
 
 			state = STATE_EVACUATION
@@ -192,6 +194,7 @@
 
 				log_game("[key_name(usr)] отменил аварийную эвакуацию.")
 				message_admins("[key_name_admin(usr)] отменил аварийную эвакуацию.")
+				link.log_ares_security("Cancel Evacuation", "[usr] has cancelled the emergency evacuation.")
 				return TRUE
 
 			state = STATE_EVACUATION_CANCEL
@@ -222,8 +225,8 @@
 					if((R_ADMIN|R_MOD) & C.admin_holder.rights)
 						C << 'sound/effects/sos-morse-code.ogg'
 
+				SSticker.mode.request_ert(usr)
 				to_chat(usr, SPAN_NOTICE("Запрос на запуск аварийного маяка отправлен USCM Центральное Командование."))
-				message_admins("[key_name(usr)] запрашивает запуск аварийного маяка! [CC_MARK(usr)] (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];distress=\ref[usr]'>SEND</A>) (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];ccdeny=\ref[usr]'>DENY</A>) [ADMIN_JMP_USER(usr)] [CC_REPLY(usr)]")
 
 				cooldown_request = world.time
 				return TRUE

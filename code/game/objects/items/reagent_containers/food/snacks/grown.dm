@@ -190,7 +190,7 @@
 	name = "bunch of glow-berries"
 	desc = "Nutritious!"
 	light_on = TRUE
-	var/brightness_on = 2
+	light_range = 2
 	filling_color = "#D3FF9E"
 	icon_state = "glowberrypile"
 	plantname = "glowberries"
@@ -553,7 +553,10 @@
 
 	to_chat(user, SPAN_NOTICE("You plant the glowshroom."))
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 // *************************************
 // Complex Grown Object Defines -
 // Putting these at the bottom so they don't clutter the list up. -Cheridan

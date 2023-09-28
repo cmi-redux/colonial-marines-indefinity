@@ -29,7 +29,7 @@
 /obj/structure/machinery/hydro_floodlight_switch/process()
 	var/lightpower = 0
 	for(var/obj/structure/machinery/hydro_floodlight/H in floodlist)
-		if(!H.is_lit)
+		if(!H.light_on)
 			continue
 		lightpower += H.power_tick
 	use_power(lightpower)
@@ -58,13 +58,8 @@
 		if(!istype(F) || QDELETED(F) || F.damaged) continue //Missing or damaged, skip it
 
 		spawn(rand(0,50))
-			if(F.light_on) //Shut it down
-				F.set_light_on(FALSE)
-				F.update_light()
-			else
-				F.set_light_on(TRUE)
-				F.update_light()
-			F.light_on = !(F.light_on)
+			F.set_light_on(!F.light_on)
+			F.update_light()
 			F.update_icon()
 	return 0
 
@@ -89,7 +84,6 @@
 	anchored = TRUE
 	layer = WINDOW_LAYER
 	var/damaged = 0 //Can be smashed by xenos
-	var/is_lit = 0
 	unslashable = TRUE
 	unacidable = TRUE
 	var/power_tick = 800 // power each floodlight takes up per process
@@ -105,14 +99,12 @@
 	if(fswitch?.floodlist)
 		fswitch.floodlist -= src
 	fswitch = null
-	set_light_on(FALSE)
-	update_light()
 	return ..()
 
 /obj/structure/machinery/hydro_floodlight/update_icon()
 	if(damaged)
 		icon_state = "flood_s_dmg"
-	else if(is_lit)
+	else if(light_on)
 		icon_state = "flood_s_on"
 	else
 		icon_state = "flood_s_off"
@@ -134,7 +126,7 @@
 				damaged = 0
 				user.visible_message(SPAN_NOTICE("[user] finishes welding [src]'s damage."), \
 					SPAN_NOTICE("You finish welding [src]'s damage."))
-				if(is_lit)
+				if(!light_on)
 					set_light_on(TRUE)
 					update_light()
 				update_icon()
@@ -149,7 +141,7 @@
 	if(ishuman(user))
 		to_chat(user, SPAN_WARNING("Nothing happens. Looks like it's powered elsewhere."))
 		return 0
-	else if(!is_lit)
+	else if(!light_on)
 		to_chat(user, SPAN_WARNING("Why bother? It's just some weird metal thing."))
 		return 0
 	else

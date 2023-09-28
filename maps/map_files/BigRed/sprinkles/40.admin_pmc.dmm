@@ -326,7 +326,7 @@
 /area/bigredv2/outside/building/admin_building)
 "aW" = (
 /obj/effect/decal/cleanable/blood,
-/obj/item/tool/weldingtool/largetank,
+/obj/item/tool/weldingtool,
 /turf/open/floor{
 	tag = "icon-carpet11-12 (WEST)";
 	icon_state = "carpet11-12";

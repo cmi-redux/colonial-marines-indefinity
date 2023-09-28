@@ -28,6 +28,9 @@
 		faction = xeno.faction
 		set_hive_data(src, faction)
 
+	if(faction == XENO_HIVE_NORMAL)
+		RegisterSignal(SSdcs, COMSIG_GLOB_GROUNDSIDE_FORSAKEN_HANDLING, PROC_REF(forsaken_handling))
+
 	cause_data = create_cause_data("резиновая ловушка", xeno)
 
 /obj/effect/alien/resin/trap/Initialize()
@@ -52,6 +55,14 @@
 			. += "It's filled with pressurised gas."
 		if(RESIN_TRAP_ACID1, RESIN_TRAP_ACID2, RESIN_TRAP_ACID3)
 			. += "It's filled with pressurised acid."
+
+/obj/effect/alien/resin/trap/proc/forsaken_handling()
+	SIGNAL_HANDLER
+	if(is_ground_level(z))
+		hivenumber = XENO_HIVE_FORSAKEN
+		set_hive_data(src, XENO_HIVE_FORSAKEN)
+
+	UnregisterSignal(SSdcs, COMSIG_GLOB_GROUNDSIDE_FORSAKEN_HANDLING)
 
 /obj/effect/alien/resin/trap/proc/facehugger_die()
 	var/obj/item/clothing/mask/facehugger/hugger = new(loc)

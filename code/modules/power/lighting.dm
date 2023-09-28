@@ -144,6 +144,7 @@
 	idle_power_usage = 2
 	active_power_usage = 20
 	power_channel = POWER_CHANNEL_LIGHT //Lights are calc'd via area so they dont need to be in the machine list
+	light_system = STATIC_LIGHT
 	var/brightness = 6			// power usage and light range when on
 	var/bulb_power = 0.5			// basically the light_power of the emitted light source
 	var/bulb_colour = COLOR_WHITE
@@ -465,7 +466,7 @@
 // returns whether this light has power
 // true if area has power and lightswitch is on
 /obj/structure/machinery/light/proc/has_power()
-	var/area/A = src.loc.loc
+	var/area/A = loc.loc
 	if(!needs_power)
 		return A.master.lightswitch || !req_light_switch
 	return A.master.lightswitch && A.master.power_light
@@ -603,9 +604,8 @@
 /obj/structure/machinery/light/power_change()
 	spawn(10)
 		if(loc)
-			var/area/A = src.loc.loc
-			A = A.master
-			if(!src.needs_power)
+			var/area/A = get_area(src)
+			if(!needs_power || A.unlimited_power)
 				seton(A.lightswitch)
 				return
 			seton(A.lightswitch && A.power_light)
@@ -616,8 +616,8 @@
 	if(prob(max(0, exposed_temperature - 673)))   //0% at <400C, 100% at >500C
 		broken()
 
-/obj/structure/machinery/light/bullet_act(obj/item/projectile/proj)
-	src.bullet_ping(proj)
+/obj/structure/machinery/light/bullet_act(obj/projectile/proj)
+	bullet_ping(proj)
 	if(proj.ammo.damage_type == BRUTE)
 		if(proj.damage > 10)
 			broken()

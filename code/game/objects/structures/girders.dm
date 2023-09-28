@@ -320,7 +320,7 @@
 
 	return FALSE
 
-/obj/structure/girder/bullet_act(obj/item/projectile/proj)
+/obj/structure/girder/bullet_act(obj/projectile/proj)
 	//Tasers and the like should not damage girders.
 	if(proj.ammo.damage_type == HALLOSS || proj.ammo.damage_type == TOX || proj.ammo.damage_type == CLONE || proj.damage == 0)
 		return FALSE

@@ -102,6 +102,10 @@
 #define JOB_DROPSHIP_CREW_CHIEF "Dropship Crew Chief"
 #define JOB_CREWMAN "Vehicle Crewman"
 #define JOB_INTEL "Intelligence Officer"
+#define JOB_DROPSHIP_ROLES   /datum/timelock/dropship
+#define JOB_DROPSHIP_ROLES_LIST   list(JOB_DROPSHIP_CREW_CHIEF, JOB_PILOT)
+#define JOB_AUXILIARY_ROLES    /datum/timelock/auxiliary
+#define JOB_AUXILIARY_ROLES_LIST   list(JOB_PILOT, JOB_DROPSHIP_CREW_CHIEF, JOB_CREWMAN, JOB_INTEL)
 
 //------------Police roles---------------//
 #define JOB_POLICE "Military Police"
@@ -161,7 +165,7 @@
 #define JOB_WO_CHIEF_ENGINEER "Bunker Crew Master"
 #define JOB_WO_ORDNANCE_TECH "Bunker Crew"
 
-#define JOB_WO_CHIEF_REQUISITION "Quartermaster"
+#define JOB_WO_CHIEF_REQUISITION "Bunker Quartermaster"
 #define JOB_WO_REQUISITION "Bunker Crew Logistics"
 
 #define JOB_WO_CMO "Head Surgeon"
@@ -180,24 +184,25 @@
 //---------------------------------------//
 
 //-------- PMC --------//
-#define JOB_PMC "PMC Standard"
+#define JOB_PMC_STANDARD "Weyland-Yutani PMC (Standard)"
 #define JOB_PMC_ENGINEER "PMC Corporate Technician"
 #define JOB_PMC_MEDIC "PMC Corporate Medic"
 #define JOB_PMC_DOCTOR "PMC Trauma Surgeon"
 #define JOB_PMC_INVESTIGATOR "PMC Medical Investigator"
+#define JOB_PMC_DETAINER "Weyland-Yutani PMC (Detainer)"
 #define JOB_PMC_ELITE "PMC Elite"
 #define JOB_PMC_GUNNER "PMC Support Weapons Specialist" //Renamed from Specialist to Support Specialist as it only has SG skills.
 #define JOB_PMC_SNIPER "PMC Weapons Specialist" //Renamed from Sharpshooter to specialist as it uses specialist skills.
-#define JOB_PMC_CREWMAN "PMC Crewman"
+#define JOB_PMC_CREWMAN "Weyland-Yutani PMC (Crewman)"
 #define JOB_PMC_NINJA "PMC Ninja"
 #define JOB_PMC_XENO_HANDLER "PMC Xeno Handler"
 #define JOB_PMC_COMMANDO "PMC Commando"
 #define JOB_PMC_LEADER "PMC Leader"
 #define JOB_PMC_LEAD_INVEST "PMC Lead Investigator"
 #define JOB_PMC_DIRECTOR "PMC Site Director"
-#define JOB_PMC_SYNTH    "PMC Support Synthetic"
+#define JOB_PMC_SYNTH "PMC Support Synthetic"
 
-#define JOB_PMC_GRUNT_LIST list(JOB_PMC, JOB_PMC_ENGINEER, JOB_PMC_MEDIC, JOB_PMC_INVESTIGATOR, JOB_PMC_ELITE, JOB_PMC_GUNNER, JOB_PMC_SNIPER, JOB_PMC_CREWMAN, JOB_PMC_NINJA, JOB_PMC_XENO_HANDLER, JOB_PMC_COMMANDO, JOB_PMC_LEADER, JOB_PMC_LEAD_INVEST)
+#define JOB_PMC_GRUNT_LIST list(JOB_PMC_STANDARD, JOB_PMC_ENGINEER, JOB_PMC_MEDIC, JOB_PMC_INVESTIGATOR, JOB_PMC_DETAINER, JOB_PMC_ELITE, JOB_PMC_GUNNER, JOB_PMC_SNIPER, JOB_PMC_CREWMAN, JOB_PMC_NINJA, JOB_PMC_XENO_HANDLER, JOB_PMC_COMMANDO, JOB_PMC_LEADER, JOB_PMC_LEAD_INVEST)
 
 //-------- WY --------//
 
@@ -246,6 +251,17 @@
 
 #define CMB_GRUNT_LIST list(JOB_CMB, JOB_CMB_TL)
 
+//-------- FORECON --------//
+
+#define JOB_FORECON_CO "Reconnaissance Commander"
+#define JOB_FORECON_SL "Reconnaissance Squad Leader"
+#define JOB_FORECON_SYN "Reconnaissance Synthetic"
+#define JOB_FORECON_SNIPER "Reconnaissance Sniper"
+#define JOB_FORECON_MARKSMAN "Reconnaissance Marksman"
+#define JOB_FORECON_SUPPORT "Reconnaissance Support Technician"
+#define JOB_FORECON_RIFLEMAN "Reconnaissance Rifleman"
+#define JOB_FORECON_SMARTGUNNER "Reconnaissance Smartgunner"
+
 //-------- UPP --------//
 #define JOB_UPP "UPP Private"
 #define JOB_UPP_CONSCRIPT "UPP Conscript"
@@ -289,12 +305,16 @@
 //-------- TWE --------//
 #define JOB_TWE_REPRESENTATIVE "TWE Representative"
 
-#define JOB_TWE_YONTO "RMC Yonto"
-#define JOB_TWE_SANTO "RMC Santo"
-#define JOB_TWE_NITO "RMC Nito"
-#define JOB_TWE_ITTO "RMC Itto"
+//RMC
+#define JOB_TWE_RMC_RIFLEMAN "RMC Rifleman"
+#define JOB_TWE_RMC_MARKSMAN "RMC Marksman"
+#define JOB_TWE_RMC_SMARTGUNNER "RMC Smartgunner"
+#define JOB_TWE_RMC_BREACHER "RMC Breacher"
+#define JOB_TWE_RMC_TEAMLEADER "RMC Team Leader"
+#define JOB_TWE_RMC_LIEUTENANT "RMC Lieutenant"
+#define JOB_TWE_RMC_COMMANDER "RMC Commander"
 
-#define TWE_COMMANDO_JOB_LIST list(JOB_TWE_YONTO, JOB_TWE_SANTO, JOB_TWE_NITO, JOB_TWE_ITTO)
+#define TWE_COMMANDO_JOB_LIST list(JOB_TWE_RMC_RIFLEMAN, JOB_TWE_RMC_BREACHER, JOB_TWE_RMC_SMARTGUNNER,JOB_TWE_RMC_MARKSMAN ,JOB_TWE_RMC_TEAMLEADER, JOB_TWE_RMC_LIEUTENANT, JOB_TWE_RMC_COMMANDER)
 
 #define JOB_TWE_SEAMAN "TWE Seaman"
 #define JOB_TWE_LSEAMAN "TWE Leading Seaman"
@@ -327,7 +347,6 @@
 #define JOB_TIS_SA "UAAC-TIS Special Agent"
 
 #define TIS_JOB_LIST list(JOB_TIS_SA, JOB_TIS_IO)
-
 //-------- DUTCH'S DOZEN --------//
 #define JOB_DUTCH_ARNOLD "Dutch's Dozen - Dutch"
 #define JOB_DUTCH_RIFLEMAN "Dutch's Dozen - Rifleman"
@@ -348,11 +367,12 @@
 #define JOB_PLAYTIME_TIER_4		(300 HOURS)
 
 #define XENO_NO_AGE  -1
-#define XENO_NORMAL 0
-#define XENO_MATURE 1
-#define XENO_ELDER 2
-#define XENO_ANCIENT 3
-#define XENO_PRIME 4
+#define XENO_YOUNG 0
+#define XENO_NORMAL 1
+#define XENO_MATURE 2
+#define XENO_ELDER 3
+#define XENO_ANCIENT 4
+#define XENO_PRIME 5
 
 //For displaying groups of jobs. Used by new player's latejoin menu and by crew manifest.
 #define FLAG_SHOW_CIC 1

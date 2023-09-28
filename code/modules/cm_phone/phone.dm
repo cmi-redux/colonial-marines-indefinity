@@ -311,6 +311,7 @@ GLOBAL_LIST_EMPTY_TYPED(transmitters, /obj/structure/transmitter)
 
 	P.handle_hear(message, L, speaking)
 	attached_to.handle_hear(message, L, speaking)
+	log_say("TELEPHONE: [key_name(speaking)] on Phone '[phone_id]' to '[T.phone_id]' said '[message]'")
 
 /obj/structure/transmitter/attackby(obj/item/W, mob/user)
 	if(W == attached_to)
@@ -558,3 +559,27 @@ GLOBAL_LIST_EMPTY_TYPED(transmitters, /obj/structure/transmitter)
 	name = "touch-tone telephone"
 	icon_state = "rotary_phone"//placeholder
 	desc = "Ancient aliens, it's all true. I'm an expert just like you!"
+
+/obj/structure/transmitter/upp_net
+	faction_to_get = FACTION_UPP
+
+/obj/structure/transmitter/upp_net/rotary
+	name = "rotary telephone"
+	icon_state = "rotary_phone"
+	desc = "The finger plate is a little stiff."
+
+/obj/structure/transmitter/clf_net
+	faction_to_get = FACTION_CLF
+
+/obj/structure/transmitter/clf_net/rotary
+	name = "rotary telephone"
+	icon_state = "rotary_phone"
+	desc = "The finger plate is a little stiff."
+
+/obj/structure/transmitter/wy_net
+	faction_to_get = FACTION_WY
+
+/obj/structure/transmitter/wy_net/rotary
+	name = "rotary telephone"
+	icon_state = "rotary_phone"
+	desc = "The finger plate is a little stiff."

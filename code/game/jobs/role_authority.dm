@@ -22,6 +22,8 @@ use roles_by_path as it is an accurate account of every specific role path (with
 #define MED_PRIORITY 2
 #define LOW_PRIORITY 3
 
+#define SHIPSIDE_ROLE_WEIGHT 0.25
+
 var/global/players_preassigned = 0
 
 
@@ -517,7 +519,16 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 		assigned_squad = human.assigned_squad.name
 
 	if(isturf(late_join))
-		human.forceMove(late_join)
+		H.forceMove(late_join)
+	else if(late_join)
+		var/turf/late_join_turf
+		if(GLOB.latejoin_by_squad[assigned_squad])
+			late_join_turf = get_turf(pick(GLOB.latejoin_by_squad[assigned_squad]))
+		else if(GLOB.latejoin_by_job[J.title])
+			late_join_turf = get_turf(pick(GLOB.latejoin_by_job[J.title]))
+		else
+			late_join_turf = get_turf(pick(GLOB.latejoin))
+		H.forceMove(late_join_turf)
 	else
 		var/turf/join_turf
 		if(!late_join)
@@ -611,6 +622,15 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 		var/datum/squad/S = pick_n_take(squads_copy)
 		if(S.roundstart && S.usable && S.faction == human.faction.faction_name && S.name != "Root")
 			mixed_squads += S
+
+	//Deal with IOs first
+	if(H.job == JOB_INTEL)
+		var/datum/squad/intel_squad = get_squad_by_name(SQUAD_MARINE_INTEL)
+		if(!intel_squad || !istype(intel_squad)) //Something went horribly wrong!
+			to_chat(H, "Something went wrong with randomize_squad()! Tell a coder!")
+			return
+		intel_squad.put_marine_in_squad(H) //Found one, finish up
+		return
 
 	//Deal with non-standards first.
 	//Non-standards are distributed regardless of squad population.
@@ -731,6 +751,8 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 			M = /mob/living/carbon/xenomorph/larva/predalien
 		if(XENO_CASTE_FACEHUGGER)
 			M = /mob/living/carbon/xenomorph/facehugger
+		if(XENO_CASTE_LESSER_DRONE)
+			M = /mob/living/carbon/xenomorph/lesser_drone
 		if(XENO_CASTE_RUNNER)
 			M = /mob/living/carbon/xenomorph/runner
 		if(XENO_CASTE_DRONE)

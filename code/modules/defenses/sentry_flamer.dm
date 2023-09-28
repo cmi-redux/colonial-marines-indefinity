@@ -19,7 +19,7 @@
 			fire_delay = 0.5
 
 /obj/structure/machinery/defenses/sentry/flamer/actual_fire(atom/A)
-	var/obj/item/projectile/proj = ammo.transfer_bullet_out()
+	var/obj/projectile/proj = ammo.transfer_bullet_out()
 	proj.forceMove(src)
 	apply_traits(proj)
 	proj.bullet_ready_to_fire(initial(name), null, owner_mob)

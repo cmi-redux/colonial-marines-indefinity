@@ -45,26 +45,28 @@
 						return FALSE
 
 					var/deathtime = world.time - timeofdeath
-					if(deathtime < 2.5 MINUTES)
+					if(deathtime < XENO_JOIN_DEAD_LARVA_TIME)
 						var/message = "You have been dead for [DisplayTimeText(deathtime, language = CLIENT_LANGUAGE_RUSSIAN)]."
 						message = SPAN_WARNING("[message]")
 						to_chat(src, message)
-						to_chat(src, SPAN_WARNING("You must wait 2.5 minutes before rejoining the game!"))
+						to_chat(src, SPAN_WARNING("You must wait atleast 2.5 minutes before rejoining the game!"))
 						ManualFollow(target)
 						return FALSE
-					if((!islarva(xeno) && xeno.away_timer < XENO_LEAVE_TIMER) || (islarva(xeno) && xeno.away_timer < XENO_LEAVE_TIMER_LARVA))
-						var/to_wait = XENO_LEAVE_TIMER - xeno.away_timer
-						if(islarva(xeno))
-							to_wait = XENO_LEAVE_TIMER_LARVA - xeno.away_timer
-						to_chat(src, SPAN_WARNING("That player hasn't been away long enough. Please wait [to_wait] second\s longer."))
-						return FALSE
+
+				if(xeno.faction)
+					for(var/mob_name in xeno.faction.banished_ckeys)
+						if(xeno.faction.banished_ckeys[mob_name] == ckey)
+							to_chat(src, SPAN_WARNING("You are banished from the [xeno.faction], you may not rejoin unless the Queen re-admits you or dies."))
+							ManualFollow(target)
+							return FALSE
+
 				if(alert(src, "Are you sure you want to transfer yourself into [xeno]?", "Confirm Transfer", client.auto_lang(LANGUAGE_YES), client.auto_lang(LANGUAGE_NO)) == client.auto_lang(LANGUAGE_YES))
-					if(((!islarva(xeno) && xeno.away_timer < XENO_LEAVE_TIMER) || (islarva(xeno) && xeno.away_timer < XENO_LEAVE_TIMER_LARVA)) || xeno.stat == DEAD) // Do it again, just in case
-						to_chat(src, SPAN_WARNING("That xenomorph can no longer be controlled. Please try another."))
-						return FALSE
-					SSticker.mode.transfer_xenomorph(src, xeno)
-					return TRUE
-				return FALSE
+					return FALSE
+				if(((!islarva(xeno) && xeno.away_timer < XENO_LEAVE_TIMER) || (islarva(xeno) && xeno.away_timer < XENO_LEAVE_TIMER_LARVA)) || xeno.stat == DEAD) // Do it again, just in case
+					to_chat(src, SPAN_WARNING("That xenomorph can no longer be controlled. Please try another."))
+					return FALSE
+				SSticker.mode.transfer_xeno(src, xeno)
+				return TRUE
 			ManualFollow(target)
 			return TRUE
 

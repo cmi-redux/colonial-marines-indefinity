@@ -378,7 +378,7 @@
 /turf/open/floor/kutjevo/grey/plate,
 /area/kutjevo/interior/complex/med/cells)
 "azb" = (
-/obj/structure/machinery/chem_dispenser/beer{
+/obj/structure/machinery/chem_dispenser/soda/beer{
 	icon_state = "dispenser"
 	},
 /turf/open/floor/kutjevo/tan/multi_tiles,
@@ -2938,7 +2938,7 @@
 /area/kutjevo/interior/power/comms)
 "dST" = (
 /obj/effect/decal/cleanable/blood,
-/obj/item/weapon/gun/shotgun/double/with_stock,
+/obj/item/weapon/gun/shotgun/pump/dual_tube/cmb,
 /turf/open/floor/kutjevo/tan,
 /area/kutjevo/interior/complex/Northwest_Flight_Control)
 "dTn" = (
@@ -4723,6 +4723,12 @@
 	},
 /turf/open/auto_turf/sand/layer0,
 /area/kutjevo/interior/oob)
+"gnj" = (
+/obj/docking_port/stationary/marine_dropship/lz1{
+	name = "Dunes Landing Zone"
+	},
+/turf/open/floor/plating/kutjevo,
+/area/shuttle/drop1/kutjevo)
 "gnP" = (
 /turf/open/floor/kutjevo/colors/cyan/tile,
 /area/kutjevo/interior/complex/med/cells)
@@ -8136,6 +8142,12 @@
 /obj/effect/landmark/corpsespawner/colonist/kutjevo,
 /turf/open/gm/river/desert/deep/covered,
 /area/kutjevo/interior/power/comms)
+"lkY" = (
+/obj/docking_port/stationary/marine_dropship/lz2{
+	name = "NW Colony Landing Zone"
+	},
+/turf/open/floor/plating/kutjevo,
+/area/shuttle/drop2/kutjevo)
 "llg" = (
 /obj/effect/decal/cleanable/blood/drip,
 /turf/open/auto_turf/sand/layer0,
@@ -14977,7 +14989,7 @@
 /turf/open/floor/kutjevo/colors/orange,
 /area/kutjevo/interior/power)
 "uBG" = (
-/obj/item/tool/weldingtool/largetank,
+/obj/item/tool/weldingtool,
 /turf/open/floor/kutjevo/grey/plate,
 /area/kutjevo/interior/complex/botany/east_tech)
 "uCR" = (
@@ -16679,13 +16691,6 @@
 "wSw" = (
 /obj/structure/blocker/invisible_wall,
 /turf/open/floor/kutjevo/colors/red/tile,
-/area/kutjevo/interior/oob/dev_room)
-"wSN" = (
-/obj/structure/blocker/invisible_wall,
-/obj/effect/landmark/corpsespawner/clown,
-/turf/open/desert/desert_shore/desert_shore1{
-	dir = 1
-	},
 /area/kutjevo/interior/oob/dev_room)
 "wSU" = (
 /obj/structure/machinery/light{
@@ -19905,20 +19910,6 @@ nbV
 nbV
 nbV
 nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
 lAI
 nbV
 usd
@@ -20054,7 +20045,7 @@ rkt
 jBJ
 fOU
 ibm
-wSN
+rYs
 fAF
 fQB
 uam
@@ -20568,24 +20559,24 @@ wGH
 cWV
 asT
 nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
-nbV
+lAI
+lAI
+lAI
+lAI
+lAI
+lAI
+lAI
+lAI
+lAI
+gnj
+lAI
+lAI
+lAI
+lAI
+lAI
+lAI
+lAI
+lAI
 nbV
 nbV
 nbV
@@ -20971,20 +20962,6 @@ hrz
 sVF
 xBm
 sUt
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
 hzN
 hzN
 hzN
@@ -21644,24 +21621,24 @@ oJE
 xBm
 sUt
 hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
-hzN
+ppX
+ppX
+ppX
+ppX
+ppX
+ppX
+ppX
+ppX
+ppX
+lkY
+ppX
+ppX
+ppX
+ppX
+ppX
+ppX
+ppX
+ppX
 hzN
 hzN
 hzN

@@ -27,22 +27,22 @@
 
 /obj/structure/machinery/floodlight/Destroy()
 	QDEL_NULL(cell)
-	set_light_on(FALSE)
 	return ..()
+
+/obj/structure/machinery/floodlight/turn_light(mob/user, toggle_on)
+	. = ..()
+	if(. == NO_LIGHT_STATE_CHANGE)
+		return
+
+	if(toggle_on)
+		set_light(on_light_range)
+	else
+		set_light(0)
+
 
 /obj/structure/machinery/floodlight/proc/updateicon()
 	icon_state = "flood[open ? "o" : ""][open && cell ? "b" : ""]0[light_on]"
-/*
-/obj/structure/machinery/floodlight/process()
-	if(light_on && cell)
-		if(cell.charge >= use)
-			cell.use(use)
-		else
-			set_light_on(FALSE)
-			updateicon()
-			src.visible_message(SPAN_WARNING("[src] shuts down due to lack of power!"))
-			return
-*/
+
 /obj/structure/machinery/floodlight/attack_hand(mob/user as mob)
 	if(open && cell)
 		if(ishuman(user))
@@ -61,7 +61,7 @@
 		return
 
 	if(light_on)
-		to_chat(user, SPAN_NOTICE(" You turn off the light."))
+		to_chat(user, SPAN_NOTICE("You turn off the light."))
 		set_light_on(FALSE)
 		unslashable = TRUE
 		unacidable = TRUE
@@ -70,7 +70,7 @@
 			return
 		if(cell.charge <= 0)
 			return
-		to_chat(user, SPAN_NOTICE(" You turn on the light."))
+		to_chat(user, SPAN_NOTICE("You turn on the light."))
 		set_light_on(TRUE)
 		unacidable = FALSE
 

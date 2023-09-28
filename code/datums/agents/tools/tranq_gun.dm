@@ -1,16 +1,15 @@
 /obj/item/weapon/gun/pistol/tranquilizer
 	name = "Tranquilizer gun"
 	desc = "Contains horse tranquilizer darts. Useful at knocking people out."
-	icon = 'icons/obj/items/weapons/guns/guns_by_faction/upp.dmi'
+	icon = 'icons/obj/items/weapons/guns/guns_by_faction/event.dmi'
 	icon_state = "pk9r"
 	item_state = "pk9r"
 	current_mag = /obj/item/ammo_magazine/pistol/tranq
 
-	burst_amount = 1
 
 /obj/item/weapon/gun/pistol/tranquilizer/set_gun_config_values()
 	..()
-	fire_delay = FIRE_DELAY_TIER_6
+	set_fire_delay(FIRE_DELAY_TIER_6)
 	accuracy_mult = BASE_ACCURACY_MULT + HIT_ACCURACY_MULT_TIER_7
 	accuracy_mult_unwielded = BASE_ACCURACY_MULT + HIT_ACCURACY_MULT_TIER_10
 	scatter = SCATTER_AMOUNT_TIER_10
@@ -27,6 +26,7 @@
 
 /obj/item/ammo_magazine/pistol/tranq
     name = "\improper Tranquilizer magazine (Horse Tranquilizer)"
+	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/event.dmi'
     ammo_preset = list(/datum/ammo/bullet/pistol/tranq)
     caliber = CALIBER_22
     icon_state = "pk-9_tranq"

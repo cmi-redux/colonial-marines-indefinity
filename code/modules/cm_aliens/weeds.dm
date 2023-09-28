@@ -50,7 +50,7 @@
 	else if(xenomorph && xenomorph.faction)
 		faction = xenomorph.faction
 
-	if(spread_on_semiweedable)
+	if(spread_on_semiweedable && weed_strength < WEED_LEVEL_HIVE)
 		if(color)
 			var/list/RGB = ReadRGB(color)
 			RGB[1] = Clamp(RGB[1] + 35, 0, 255)
@@ -72,11 +72,14 @@
 	if(turf)
 		turf.weeds = src
 		weeded_turf = turf
+		SEND_SIGNAL(turf, COMSIG_WEEDNODE_GROWTH) // Currently for weed_food wakeup
 
 	RegisterSignal(src, list(
 		COMSIG_ATOM_TURF_CHANGE,
 		COMSIG_MOVABLE_TURF_ENTERED
 	), PROC_REF(set_turf_weeded))
+	if(hivenumber == XENO_HIVE_NORMAL)
+		RegisterSignal(SSdcs, COMSIG_GLOB_GROUNDSIDE_FORSAKEN_HANDLING, PROC_REF(forsaken_handling))
 
 /obj/effect/alien/weeds/proc/set_turf_weeded(datum/source, turf/target_turf)
 	SIGNAL_HANDLER
@@ -84,6 +87,15 @@
 		weeded_turf.weeds = null
 
 	target_turf.weeds = src
+
+/obj/effect/alien/weeds/proc/forsaken_handling()
+	SIGNAL_HANDLER
+	if(is_ground_level(z))
+		hivenumber = XENO_HIVE_FORSAKEN
+		set_hive_data(src, XENO_HIVE_FORSAKEN)
+		linked_hive = GLOB.hive_datum[XENO_HIVE_FORSAKEN]
+
+	UnregisterSignal(SSdcs, COMSIG_GLOB_GROUNDSIDE_FORSAKEN_HANDLING)
 
 /obj/effect/alien/weeds/initialize_pass_flags(datum/pass_flags_container/PF)
 	. = ..()
@@ -176,13 +188,16 @@
 // If you're still confused, scroll aaaall the way down to the bottom of the file.
 // that's /obj/effect/alien/weeds/node/Destroy().
 /obj/effect/alien/weeds/proc/avoid_orphanage()
-	for(var/obj/effect/alien/weeds/node/N in orange(node_range, get_turf(src)))
-		// WE FOUND A NEW MOMMY
-		N.add_child(src)
-		break
+	var/parent_type = /obj/effect/alien/weeds/node
+	if(weed_strength >= WEED_LEVEL_HIVE)
+		parent_type = /obj/effect/alien/weeds/node/pylon
+
+	var/obj/effect/alien/weeds/node/found = locate(parent_type) in orange(node_range, get_turf(src))
+	if(found)
+		found.add_child(src)
 
 	// NO MORE FOOD ON THE TABLE. WE DIE
-	if(!parent || weed_strength > WEED_LEVEL_STANDARD)
+	if(!parent)
 		qdel(src)
 
 /obj/effect/alien/weeds/proc/weed_expand()
@@ -410,7 +425,11 @@
 
 /obj/effect/alien/weeds/weedwall/MouseDrop_T(mob/current_mob, mob/user)
 	. = ..()
-	if(isxeno(user))
+
+	if(!ismob(current_mob))
+		return
+
+	if(isxeno(user) && istype(user.get_active_hand(), /obj/item/grab))
 		var/mob/living/carbon/xenomorph/user_as_xenomorph = user
 		user_as_xenomorph.do_nesting_host(current_mob, src)
 
@@ -564,9 +583,13 @@
 	weed_strength = WEED_LEVEL_HIVE
 	node_range = WEED_RANGE_PYLON
 	overlay_node = FALSE
+	spread_on_semiweedable = TRUE
 	var/obj/effect/alien/resin/special/resin_parent
 
 /obj/effect/alien/weeds/node/pylon/proc/set_parent_damaged()
+	if(!resin_parent)
+		return
+
 	var/obj/effect/alien/resin/special/pylon/parent_pylon = resin_parent
 	parent_pylon.damaged = TRUE
 
@@ -592,7 +615,13 @@
 /obj/effect/alien/weeds/node/pylon/acid_spray_act()
 	return
 
+/obj/effect/alien/weeds/node/pylon/cluster
+	spread_on_semiweedable = FALSE
+
 /obj/effect/alien/weeds/node/pylon/cluster/set_parent_damaged()
+	if(!resin_parent)
+		return
+
 	var/obj/effect/alien/resin/special/pylon/cluster/parent_cluster = resin_parent
 	parent_cluster.damaged = TRUE
 

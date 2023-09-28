@@ -215,6 +215,7 @@
 			new_player_panel()
 
 /mob/new_player/proc/AttemptLateSpawn(rank)
+	var/datum/job/player_rank = SSticker.role_authority.roles_for_mode[rank]
 	if(src != usr)
 		return
 	if(SSticker.current_state != GAME_STATE_PLAYING)
@@ -223,23 +224,24 @@
 	if(!enter_allowed)
 		to_chat(usr, SPAN_WARNING(client.auto_lang(LANGUAGE_LOBBY_JOIN_LOCK)))
 		return
-	if(!SSticker.role_authority.assign_role(src, GET_MAPPED_ROLE(rank), TRUE))
+	if(!SSticker.role_authority.assign_role(src, GET_MAPPED_ROLE(player_rank), 1))
 		to_chat(src, alert("[rank] [client.auto_lang(LANGUAGE_LOBBY_RANK_LOCKED)]"))
 		return
 
 	spawning = TRUE
 	close_spawn_windows()
 
-	var/mob/living/carbon/human/character = create_character() //creates the human and transfers vars and mind
-	SSticker.role_authority.equip_role(character, GET_MAPPED_ROLE(rank), late_join = TRUE)
+	var/mob/living/carbon/human/character = create_character(TRUE) //creates the human and transfers vars and mind
+	SSticker.role_authority.equip_role(character, GET_MAPPED_ROLE(player_rank), late_join = TRUE)
 	EquipCustomItems(character)
 
-	if(security_level > SEC_LEVEL_BLUE || SSevacuation.evac_status)
+	if((security_level > SEC_LEVEL_BLUE || SSevacuation.evac_status) && player_rank.gets_emergency_kit)
 		to_chat(character, SPAN_HIGHDANGER("[character.client.auto_lang(LANGUAGE_LOBBY_RED_ALERT)]: '[SSevacuation.evac_status ? character.client.auto_lang(LANGUAGE_LOBBY_RED_ALERT_MSG_E) : character.client.auto_lang(LANGUAGE_LOBBY_RED_ALERT_MSG_D)]'."))
 		character.put_in_hands(new /obj/item/storage/box/kit/cryo_self_defense(character.loc))
 
 	GLOB.data_core.manifest_inject(character)
 	SSticker.minds += character.mind
+	SSticker.mode.latejoin_tally += SSticker.role_authority.calculate_role_weight(player_rank)
 
 	for(var/datum/squad/sq in SSticker.role_authority.squads)
 		if(sq)
@@ -283,7 +285,7 @@
 	GLOB.faction_datum[SSticker.mode.factions_pool[choice]].get_join_status(src)
 
 
-/mob/new_player/proc/create_character()
+/mob/new_player/proc/create_character(is_late_join = FALSE)
 	spawning = TRUE
 	close_spawn_windows()
 
@@ -302,7 +304,7 @@
 
 	new_character.lastarea = get_area(loc)
 
-	client.prefs.copy_all_to(new_character)
+	client.prefs.copy_all_to(new_character, job, is_late_join)
 
 	if(client.prefs.be_random_body)
 		var/datum/preferences/TP = new()

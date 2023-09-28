@@ -34,6 +34,7 @@
 	var/shuttles = list()
 
 	var/announce_text = ""
+	var/infection_announce_text = ""
 
 	var/squads_max_num = 4
 
@@ -64,6 +65,9 @@
 	var/vote_cycle = 1
 
 	var/nightmare_path
+
+	/// If truthy this is config for a round overriden map: search for override maps in data/, instead of using a path in maps/
+	var/override_map
 
 /datum/map_config/New()
 	survivor_types = list(
@@ -149,23 +153,34 @@
 
 	config_filename = filename
 
+	override_map = json["override_map"]
+
 	CHECK_EXISTS("map_name")
 	map_name = json["map_name"]
-	CHECK_EXISTS("map_path")
-	map_path = json["map_path"]
 
 	short_name = json["short_name"]
 
 	map_file = json["map_file"]
+
+	var/dirpath = "maps/"
+	if(override_map)
+		dirpath = "data/"
+		map_path = "/"
+		map_file = OVERRIDE_MAPS_TO_FILENAME[maptype]
+	else
+		CHECK_EXISTS("map_path")
+		map_path = json["map_path"]
+		dirpath = "[dirpath]/[map_path]"
+
 	// "map_file": "BoxStation.dmm"
 	if(istext(map_file))
-		if(!fexists("maps/[map_path]/[map_file]"))
+		if(!fexists("[dirpath]/[map_file]"))
 			log_world("Map file ([map_file]) does not exist!")
 			return
 	// "map_file": ["Lower.dmm", "Upper.dmm"]
 	else if(islist(map_file))
 		for (var/file in map_file)
-			if(!fexists("maps/[map_path]/[file]"))
+			if(!fexists("[dirpath]/[file]"))
 				log_world("Map file ([file]) does not exist!")
 				return
 	else
@@ -207,7 +222,7 @@
 
 	if(islist(json["synth_survivor_types"]))
 		synth_survivor_types = json["synth_survivor_types"]
-	else if ("synth_survivor_types" in json)
+	else if("synth_survivor_types" in json)
 		log_world("map_config synth_survivor_types is not a list!")
 		return
 
@@ -231,7 +246,7 @@
 
 	if(islist(json["CO_survivor_types"]))
 		CO_survivor_types = json["CO_survivor_types"]
-	else if ("CO_survivor_types" in json)
+	else if("CO_survivor_types" in json)
 		log_world("map_config CO_survivor_types is not a list!")
 		return
 
@@ -324,6 +339,9 @@
 	if(json["announce_text"])
 		announce_text = json["announce_text"]
 
+	if(json["infection_announce_text"])
+		infection_announce_text = json["infection_announce_text"]
+
 	if(islist(json["weather"]))
 		weather = json["weather"]
 	else if(!isnull(json["weather"]))
@@ -383,11 +401,14 @@
 #undef CHECK_EXISTS
 
 /datum/map_config/proc/GetFullMapPaths()
+	var/dirpath = "maps/[map_path]"
+	if(override_map)
+		dirpath = "data/[map_path]"
 	if(istext(map_file))
-		return list("maps/[map_path]/[map_file]")
+		return list("[dirpath]/[map_file]")
 	. = list()
 	for (var/file in map_file)
-		. += "maps/[map_path]/[file]"
+		. += "[dirpath]/[file]"
 
 
 /datum/map_config/proc/MakeNextMap(maptype = GROUND_MAP)

@@ -4,8 +4,8 @@
 	var/list/traits
 	var/z_value = 1 //actual z placement
 	var/linkage = SELFLOOPING
-	var/xi
-	var/yi   //imaginary placements on the grid
+	var/x_bounds
+	var/y_bounds
 
 /datum/space_level/New(new_z, new_name, list/new_traits = list())
 	z_value = new_z
@@ -18,5 +18,6 @@
 	else // in case a single trait is passed in
 		SSmapping.z_trait_levels[new_traits] += list(new_z)
 
-
-//	set_linkage(new_traits[ZTRAIT_LINKAGE])
+	//set_linkage(new_traits[ZTRAIT_LINKAGE])
+	x_bounds = world.maxx
+	y_bounds = world.maxy

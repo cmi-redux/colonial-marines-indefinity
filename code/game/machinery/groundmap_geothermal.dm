@@ -198,6 +198,9 @@
 	else
 		return ..() //Deal with everything else, like hitting with stuff
 
+/obj/structure/machinery/power/geothermal/ex_act(severity, direction)
+	return FALSE //gameplay-wise these should really never go away
+
 //Putting these here since it's power-related
 /obj/structure/machinery/colony_floodlight_switch
 	name = "Colony Floodlight Switch"
@@ -260,9 +263,10 @@
 
 /obj/structure/machinery/colony_floodlight_switch/proc/toggle_lights(change_stat)
 	for(var/obj/structure/machinery/colony_floodlight/F in floodlist)
-		spawn(rand(0,100))
-			F.set_light_on(change_stat)
-			if(F.damaged)
+		spawn(rand(0, 50))
+			if(!F.damaged)
+				F.set_light_on(change_stat)
+			else
 				F.set_light_on(FALSE)
 			F.update_icon()
 
@@ -309,7 +313,6 @@
 	health = 150
 
 /obj/structure/machinery/colony_floodlight/Destroy()
-	set_light_on(FALSE)
 	if(fswitch)
 		fswitch.floodlist -= src
 		fswitch = null

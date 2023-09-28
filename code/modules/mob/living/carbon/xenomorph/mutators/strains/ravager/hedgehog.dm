@@ -30,7 +30,7 @@
 	ravager.health_modifier += XENO_HEALTH_MOD_MED
 	ravager.armor_modifier += XENO_ARMOR_MOD_VERY_SMALL
 	ravager.explosivearmor_modifier += XENO_EXPOSIVEARMOR_MOD_SMALL
-	ravager.speed_modifier += XENO_SPEED_SLOWMOD_TIER_8
+	ravager.damage_modifier -= XENO_DAMAGE_MOD_SMALL
 
 	apply_behavior_holder(ravager)
 
@@ -44,11 +44,12 @@
 
 	// Shard config
 	var/max_shards = 300
-	var/shard_gain_onlife = 10
-	var/shards_per_projectile = 20
+	var/shard_gain_onlife = 5
+	var/shards_per_projectile = 10
+	var/shards_per_slash = 15
 	var/armor_buff_per_fifty_shards = 2.50
-	var/shard_lock_duration = 300
-	var/shard_lock_speed_mod = 0.85
+	var/shard_lock_duration = 150
+	var/shard_lock_speed_mod = 0.45
 
 	// Shard state
 	var/shards = 0
@@ -126,4 +127,9 @@
 /datum/behavior_delegate/ravager_hedgehog/on_hitby_projectile()
 	if(!shards_locked)
 		shards = min(max_shards, shards + shards_per_projectile)
+	return
+
+/datum/behavior_delegate/ravager_hedgehog/melee_attack_additional_effects_self()
+	if (!shards_locked)
+		shards = min(max_shards, shards + shards_per_slash)
 	return

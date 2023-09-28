@@ -45,15 +45,15 @@
 	new_fruit.color = n_color
 	user.put_in_hands(new_fruit)
 
-/obj/effect/alien/resin/fruit/Initialize(mapload, obj/effect/alien/weeds/weeds, mob/living/carbon/xenomorph/xeno)
-	if(!istype(xeno))
+/obj/effect/alien/resin/fruit/Initialize(mapload, obj/effect/alien/weeds/weeds, mob/living/carbon/xenomorph/affected_xeno)
+	if(!istype(affected_xeno))
 		return INITIALIZE_HINT_QDEL
 
-	bound_xeno = xeno
-	faction = xeno.faction
+	bound_xeno = affected_xeno
+	faction = affected_xeno.faction
 	bound_weed = weeds
 	RegisterSignal(weeds, COMSIG_PARENT_QDELETING, PROC_REF(on_weed_expire))
-	RegisterSignal(xeno, COMSIG_PARENT_QDELETING, PROC_REF(handle_xeno_qdel))
+	RegisterSignal(affected_xeno, COMSIG_PARENT_QDELETING, PROC_REF(handle_xeno_qdel))
 	timer_id = addtimer(CALLBACK(src, PROC_REF(mature)), time_to_mature * weeds.fruit_growth_multiplier, TIMER_UNIQUE | TIMER_STOPPABLE)
 
 	. = ..()
@@ -86,7 +86,7 @@
 	qdel(src)
 	..()
 
-/obj/effect/alien/resin/fruit/bullet_act(obj/item/projectile/proj)
+/obj/effect/alien/resin/fruit/bullet_act(obj/projectile/proj)
 	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
 	if(ammo_flags & (AMMO_XENO))
 		return
@@ -150,34 +150,41 @@
 	update_icon()
 	QDEL_IN(src, 3 SECONDS)
 
-/obj/effect/alien/resin/fruit/attack_alien(mob/living/carbon/xenomorph/xeno)
+/obj/effect/alien/resin/fruit/attack_alien(mob/living/carbon/xenomorph/affected_xeno)
 	if(picked)
-		to_chat(xeno, SPAN_XENODANGER("This fruit is already being picked!"))
+		to_chat(affected_xeno, SPAN_XENODANGER("This fruit is already being picked!"))
 		return
-	if(xeno.a_intent != INTENT_HARM && (xeno.can_not_harm(bound_xeno) || xeno.faction == faction))
-		var/cant_consume = prevent_consume(xeno)
+	if(affected_xeno.a_intent != INTENT_HARM && (affected_xeno.can_not_harm(bound_xeno) || affected_xeno.faction == faction))
+		var/cant_consume = prevent_consume(affected_xeno)
 		if(cant_consume)
 			return cant_consume
+
 		if(mature)
-			to_chat(xeno, SPAN_XENOWARNING("You prepare to consume [name]."))
-			xeno_noncombat_delay(xeno)
-			if(!do_after(xeno, consume_delay, INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
+			to_chat(affected_xeno, SPAN_XENOWARNING("You prepare to consume [name]."))
+			xeno_noncombat_delay(affected_xeno)
+			if(!do_after(affected_xeno, consume_delay, INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
 				return XENO_NO_DELAY_ACTION
-			consume_effect(xeno)
+
+			cant_consume = prevent_consume(affected_xeno) // Check again after the delay incase they have eaten another fruit
+			if(cant_consume)
+				to_chat(affected_xeno, SPAN_XENOWARNING("You can no longer consume [name]."))
+				return cant_consume
+			consume_effect(affected_xeno)
 		else
-			to_chat(xeno, SPAN_XENOWARNING("[name] isn't ripe yet. You need to wait a little longer."))
-	if(xeno.a_intent == INTENT_HARM && isxeno_builder(xeno) || (!xeno.can_not_harm(bound_xeno) && xeno.faction != faction))
-		xeno.animation_attack_on(src)
-		xeno.visible_message(SPAN_XENODANGER("[xeno] removes [name]!"),
+			to_chat(affected_xeno, SPAN_XENOWARNING("[name] isn't ripe yet. You need to wait a little longer."))
+
+	if(affected_xeno.a_intent == INTENT_HARM && isxeno_builder(affected_xeno) || (!affected_xeno.can_not_harm(bound_xeno) && affected_xeno.hivenumber != hivenumber))
+		affected_xeno.animation_attack_on(src)
+		affected_xeno.visible_message(SPAN_XENODANGER("[affected_xeno] removes [name]!"),
 		SPAN_XENODANGER("You remove [name]!"))
 		playsound(loc, "alien_resin_break", 25)
 		qdel(src)
 		return XENO_ATTACK_ACTION
 	return XENO_NO_DELAY_ACTION
 
-/obj/effect/alien/resin/fruit/proc/prevent_consume(mob/living/carbon/xenomorph/xeno)
-	if(!(flags & CAN_CONSUME_AT_FULL_HEALTH) && xeno.health >= xeno.maxHealth)
-		to_chat(xeno, SPAN_XENODANGER("You are at full health! This would be a waste..."))
+/obj/effect/alien/resin/fruit/proc/prevent_consume(mob/living/carbon/xenomorph/affected_xeno)
+	if(!(flags & CAN_CONSUME_AT_FULL_HEALTH) && affected_xeno.health >= affected_xeno.maxHealth)
+		to_chat(affected_xeno, SPAN_XENODANGER("You are at full health! This would be a waste..."))
 		return XENO_NO_DELAY_ACTION
 	return FALSE
 
@@ -296,9 +303,9 @@
 	var/speed_buff_amount = 0.4
 	var/speed_duration = 15 SECONDS
 
-/obj/effect/alien/resin/fruit/speed/prevent_consume(mob/living/carbon/xenomorph/xeno)
-	if(LAZYISIN(xeno.modifier_sources, XENO_FRUIT_SPEED))
-		to_chat(xeno, SPAN_XENOWARNING("You're already under the effects of this fruit, go out and kill!"))
+/obj/effect/alien/resin/fruit/speed/prevent_consume(mob/living/carbon/xenomorph/affected_xeno)
+	if(LAZYISIN(affected_xeno.modifier_sources, XENO_FRUIT_SPEED))
+		to_chat(affected_xeno, SPAN_XENOWARNING("You're already under the effects of this fruit, go out and kill!"))
 		return XENO_NO_DELAY_ACTION
 	return ..()
 
@@ -351,11 +358,11 @@
 	pixel_x = 0
 	pixel_y = 0
 
-/obj/item/reagent_container/food/snacks/resin_fruit/proc/link_xeno(mob/living/carbon/xenomorph/xeno)
-	to_chat(xeno, SPAN_XENOWARNING("One of your resin fruits has been picked."))
-	xeno.current_fruits.Add(src)
-	bound_xeno = xeno
-	RegisterSignal(xeno, COMSIG_PARENT_QDELETING, PROC_REF(handle_xeno_qdel))
+/obj/item/reagent_container/food/snacks/resin_fruit/proc/link_xeno(mob/living/carbon/xenomorph/affected_xeno)
+	to_chat(affected_xeno, SPAN_XENOWARNING("One of your resin fruits has been picked."))
+	affected_xeno.current_fruits.Add(src)
+	bound_xeno = affected_xeno
+	RegisterSignal(affected_xeno, COMSIG_PARENT_QDELETING, PROC_REF(handle_xeno_qdel))
 
 /obj/item/reagent_container/food/snacks/resin_fruit/proc/handle_xeno_qdel()
 	SIGNAL_HANDLER
@@ -376,38 +383,57 @@
 		bound_xeno = null
 
 // Xenos eating fruit
-/obj/item/reagent_container/food/snacks/resin_fruit/attack(mob/living/carbon/xenomorph/xeno, mob/user)
+/obj/item/reagent_container/food/snacks/resin_fruit/attack(mob/living/carbon/xenomorph/affected_xeno, mob/user)
 	if(istype(user, /mob/living/carbon/xenomorph)) // Prevents xenos from feeding capped/dead marines fruit
-		var/mob/living/carbon/xenomorph/user_xeno = user
-		if(!user_xeno.can_not_harm(xeno))
-			to_chat(user_xeno, SPAN_WARNING("[xeno] refuses to eat [src]."))
+		var/mob/living/carbon/xenomorph/feeding_xeno = user
+		if(!feeding_xeno.can_not_harm(affected_xeno))
+			to_chat(feeding_xeno, SPAN_WARNING("[affected_xeno] refuses to eat [src]."))
 			return
-	if(!istype(xeno))
+
+	if(!istype(affected_xeno))
 		return ..()
-	if(xeno.stat == DEAD)
+
+	if(affected_xeno.stat == DEAD)
 		to_chat(user, SPAN_WARNING("That sister is already dead, they won't benefit from the fruit now..."))
 		return
-	user.affected_message(xeno,
-		SPAN_HELPFUL("You <b>start [user == xeno ? "eating" : "feeding [xeno]"] [src]</b>."),
-		SPAN_HELPFUL("[user] <b>starts feeding</b> you <b>[src]</b>."),
-		SPAN_NOTICE("[user] starts [user == xeno ? "eating" : "feeding [xeno]"] <b>[src]</b>."))
-	if(!do_after(user, consume_delay, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, xeno, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
+
+	var/obj/effect/alien/resin/fruit/current_fruit = new fruit_type(affected_xeno)
+	var/cant_consume = current_fruit.prevent_consume(affected_xeno)
+	if(cant_consume)
+		user.affected_message(affected_xeno,
+			SPAN_HELPFUL("You <b>fail to [user == affected_xeno ? "eat" : "feed [affected_xeno]"] [current_fruit]</b>."),
+			SPAN_HELPFUL("[user] <b>fails to feed</b> you <b>[current_fruit]</b>."))
+		return
+	user.affected_message(affected_xeno,
+		SPAN_HELPFUL("You <b>start [user == affected_xeno ? "eating" : "feeding [affected_xeno]"] [current_fruit]</b>."),
+		SPAN_HELPFUL("[user] <b>starts feeding</b> you <b>[current_fruit]</b>."),
+		SPAN_NOTICE("[user] starts [user == affected_xeno ? "eating" : "feeding [affected_xeno]"] <b>[current_fruit]</b>."))
+
+	if(!do_after(user, consume_delay, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, affected_xeno, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
 		return FALSE
-	user.affected_message(xeno,
-		SPAN_HELPFUL("You [user == xeno ? "<b>eat</b>" : "<b>fed</b> [xeno]"] <b>[src]</b>."),
-		SPAN_HELPFUL("[user] <b>fed</b> you <b>[src]</b>."),
-		SPAN_NOTICE("[user] [user == xeno ? "ate" : "fed [xeno]"] <b>[src]</b>."))
-	var/obj/effect/alien/resin/fruit/fruit = new fruit_type(xeno)
-	fruit.mature = TRUE
-	fruit.consume_effect(xeno)
+
+	cant_consume = current_fruit.prevent_consume(affected_xeno)
+	if(cant_consume) //Check again after the timer incase they ate another fruit
+		user.affected_message(affected_xeno,
+			SPAN_HELPFUL("You <b>fail to [user == affected_xeno ? "eat" : "feed [affected_xeno]"] [current_fruit]</b>."),
+			SPAN_HELPFUL("[user] <b>fails to feed</b> you <b>[current_fruit]</b>."))
+		return
+
+	user.affected_message(affected_xeno,
+		SPAN_HELPFUL("You [user == affected_xeno ? "<b>eat</b>" : "<b>fed</b> [affected_xeno]"] <b>[current_fruit]</b>."),
+		SPAN_HELPFUL("[user] <b>fed</b> you <b>[current_fruit]</b>."),
+		SPAN_NOTICE("[user] [user == affected_xeno ? "ate" : "fed [affected_xeno]"] <b>[current_fruit]</b>."))
+	current_fruit.mature = TRUE
+	current_fruit.consume_effect(affected_xeno)
+
 	//Notify the fruit's bound xeno if they exist
 	if(!QDELETED(bound_xeno))
 		to_chat(bound_xeno, SPAN_XENOWARNING("One of your picked resin fruits has been consumed."))
 	qdel(src)
 	return TRUE
 
-/obj/item/reagent_container/food/snacks/resin_fruit/attack_alien(mob/living/carbon/xenomorph/xeno)
-	attack_hand(xeno)
+/obj/item/reagent_container/food/snacks/resin_fruit/attack_alien(mob/living/carbon/xenomorph/affected_xeno)
+	attack_hand(affected_xeno)
 	return XENO_NONCOMBAT_ACTION
 
 /obj/item/reagent_container/food/snacks/resin_fruit/proc/add_juice()

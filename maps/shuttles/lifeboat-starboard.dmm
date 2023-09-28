@@ -190,8 +190,17 @@
 	},
 /turf/template_noop,
 /area/shuttle/lifeboat)
+"uX" = (
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat{
+	id = "Boat2-D2";
+	throw_dir = 1
+	},
+/turf/open/shuttle/lifeboat{
+	icon_state = "test_floor4"
+	},
+/area/shuttle/lifeboat)
 "vG" = (
-/obj/docking_port/mobile/lifeboat/starboard,
+/obj/docking_port/mobile/crashable/lifeboat/starboard,
 /obj/structure/prop/invuln/dropship_parts/lifeboat{
 	icon_state = "0,0"
 	},
@@ -204,6 +213,15 @@
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat/transparent{
 	icon_state = "25,3"
+	},
+/area/shuttle/lifeboat)
+"ya" = (
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat{
+	id = "Boat2-D1";
+	throw_dir = 1
+	},
+/turf/open/shuttle/lifeboat{
+	icon_state = "test_floor4"
 	},
 /area/shuttle/lifeboat)
 "zv" = (
@@ -421,6 +439,11 @@
 	icon_state = "12,0"
 	},
 /area/shuttle/lifeboat)
+"Qj" = (
+/turf/open/shuttle/lifeboat{
+	icon_state = "test_floor4"
+	},
+/area/shuttle/lifeboat)
 "Rk" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
@@ -437,6 +460,12 @@
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "23,6"
+	},
+/area/shuttle/lifeboat)
+"SA" = (
+/turf/open/shuttle/lifeboat{
+	dir = 1;
+	icon_state = "plating_striped"
 	},
 /area/shuttle/lifeboat)
 "Td" = (
@@ -598,8 +627,8 @@ GD
 ho
 "}
 (9,1,1) = {"
-Bf
-kE
+ya
+SA
 OO
 VZ
 OO
@@ -607,8 +636,8 @@ AF
 lS
 "}
 (10,1,1) = {"
-Bf
-kE
+Qj
+SA
 OO
 VZ
 OO
@@ -616,8 +645,8 @@ AF
 OO
 "}
 (11,1,1) = {"
-Bf
-kE
+Qj
+SA
 OO
 VZ
 OO
@@ -643,8 +672,8 @@ GD
 Qa
 "}
 (14,1,1) = {"
-Bf
-kE
+uX
+SA
 OO
 VZ
 OO
@@ -652,8 +681,8 @@ AF
 lS
 "}
 (15,1,1) = {"
-Bf
-kE
+Qj
+SA
 OO
 VZ
 OO
@@ -661,8 +690,8 @@ AF
 OO
 "}
 (16,1,1) = {"
-Bf
-kE
+Qj
+SA
 OO
 VZ
 OO

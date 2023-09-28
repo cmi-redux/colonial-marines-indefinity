@@ -738,6 +738,7 @@
 /turf/open/desert/dirt,
 /area/desert_dam/exterior/valley/valley_labs)
 "acq" = (
+/obj/structure/tunnel,
 /turf/open/desert/dirt{
 	icon_state = "rock1"
 	},
@@ -10107,7 +10108,7 @@
 /area/desert_dam/interior/dam_interior/east_tunnel_entrance)
 "aDq" = (
 /obj/structure/surface/table/woodentable,
-/obj/item/weapon/gun/shotgun/double/with_stock,
+/obj/item/weapon/gun/shotgun/pump/dual_tube/cmb,
 /turf/open/floor/interior/wood/alt,
 /area/desert_dam/interior/dam_interior/east_tunnel_entrance)
 "aDr" = (
@@ -41662,7 +41663,7 @@
 /turf/open/floor/interior/tatami,
 /area/desert_dam/building/bar/bar)
 "cxg" = (
-/obj/item/weapon/gun/shotgun/double/with_stock,
+/obj/item/weapon/gun/shotgun/pump/dual_tube/cmb,
 /turf/open/floor/interior/tatami,
 /area/desert_dam/building/bar/bar)
 "cxh" = (
@@ -62969,6 +62970,14 @@
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/plating,
 /area/desert_dam/exterior/valley/valley_crashsite)
+"fcu" = (
+/obj/effect/landmark/nightmare{
+	insert_tag = "uppcrash-supply"
+	},
+/turf/open/asphalt{
+	icon_state = "tile"
+	},
+/area/desert_dam/exterior/valley/valley_civilian)
 "fcE" = (
 /obj/structure/flora/bush/desert{
 	icon_state = "tree_3"
@@ -63380,6 +63389,12 @@
 	icon_state = "tile"
 	},
 /area/desert_dam/exterior/valley/south_valley_dam)
+"goY" = (
+/obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
+/turf/open/mars_cave{
+	icon_state = "mars_dirt_5"
+	},
+/area/desert_dam/interior/lab_northeast/east_lab_containment)
 "gpi" = (
 /obj/structure/prop/dam/large_boulder/boulder1,
 /turf/open/desert/dirt,
@@ -63745,6 +63760,10 @@
 	icon_state = "cement_sunbleached13"
 	},
 /area/desert_dam/exterior/valley/valley_hydro)
+"hyH" = (
+/obj/structure/tunnel,
+/turf/open/desert/dirt,
+/area/desert_dam/exterior/valley/valley_telecoms)
 "hzg" = (
 /obj/effect/decal/sand_overlay/sand2,
 /obj/effect/landmark/structure_spawner/xvx_hive/xeno_wall,
@@ -64333,6 +64352,12 @@
 	icon_state = "delivery"
 	},
 /area/desert_dam/exterior/telecomm/lz1_south)
+"jxN" = (
+/obj/structure/tunnel,
+/turf/open/desert/dirt{
+	icon_state = "desert_transition_edge1"
+	},
+/area/desert_dam/exterior/valley/valley_crashsite)
 "jAr" = (
 /obj/structure/closet/crate/hydroponics/prespawned,
 /obj/effect/landmark/objective_landmark/close,
@@ -64638,6 +64663,12 @@
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/desert/dirt,
 /area/desert_dam/interior/caves/central_caves)
+"kQd" = (
+/obj/structure/tunnel,
+/turf/open/desert/rock/deep{
+	icon_state = "rock3"
+	},
+/area/desert_dam/interior/caves/east_caves)
 "kRX" = (
 /obj/structure/surface/table,
 /obj/item/storage/fancy/vials/random,
@@ -64926,6 +64957,13 @@
 "lNu" = (
 /turf/open/desert/dirt,
 /area/desert_dam/exterior/valley/bar_valley_dam)
+"lNN" = (
+/obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
+/turf/open/jungle{
+	bushes_spawn = 0;
+	icon_state = "grass_impenetrable"
+	},
+/area/desert_dam/interior/lab_northeast/east_lab_containment)
 "lOM" = (
 /obj/effect/decal/sand_overlay/sand2/corner2,
 /turf/open/asphalt/cement,
@@ -66482,6 +66520,12 @@
 	icon_state = "cement_sunbleached18"
 	},
 /area/desert_dam/exterior/valley/south_valley_dam)
+"ruJ" = (
+/obj/structure/tunnel,
+/turf/open/desert/dirt{
+	icon_state = "rock1"
+	},
+/area/desert_dam/exterior/valley/valley_medical)
 "ruS" = (
 /turf/open/desert/dirt,
 /area/desert_dam/exterior/telecomm/lz1_valley)
@@ -66542,6 +66586,10 @@
 	icon_state = "wood"
 	},
 /area/desert_dam/interior/lab_northeast/east_lab_west_hallway)
+"rEa" = (
+/obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
+/turf/open/floor/plating,
+/area/desert_dam/interior/lab_northeast/east_lab_biology)
 "rEH" = (
 /obj/structure/surface/table,
 /obj/effect/landmark/objective_landmark/close,
@@ -66576,6 +66624,12 @@
 "rHw" = (
 /turf/open/floor/plating,
 /area/desert_dam/exterior/telecomm/lz2_containers)
+"rIY" = (
+/obj/structure/tunnel,
+/turf/open/desert/dirt{
+	icon_state = "rock1"
+	},
+/area/desert_dam/exterior/valley/valley_hydro)
 "rJA" = (
 /obj/structure/lz_sign/dam_sign,
 /turf/open/desert/dirt{
@@ -66953,6 +67007,15 @@
 	icon_state = "desert_transition_corner1"
 	},
 /area/desert_dam/interior/caves/temple)
+"sRl" = (
+/obj/effect/landmark/nightmare{
+	insert_tag = "uppcrash"
+	},
+/turf/open/desert/dirt{
+	dir = 6;
+	icon_state = "desert_transition_edge1"
+	},
+/area/desert_dam/exterior/valley/valley_hydro)
 "sUe" = (
 /obj/effect/decal/sand_overlay/sand1{
 	dir = 1
@@ -67630,6 +67693,13 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/asphalt,
 /area/desert_dam/exterior/valley/valley_hydro)
+"vph" = (
+/obj/structure/tunnel,
+/turf/open/desert/dirt{
+	dir = 4;
+	icon_state = "desert_transition_edge1"
+	},
+/area/desert_dam/exterior/valley/south_valley_dam)
 "vpn" = (
 /obj/structure/machinery/landinglight/ds2/delayone{
 	dir = 8
@@ -67776,6 +67846,12 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/asphalt,
 /area/desert_dam/exterior/valley/valley_hydro)
+"vHx" = (
+/obj/structure/tunnel,
+/turf/open/desert/dirt{
+	icon_state = "rock1"
+	},
+/area/desert_dam/exterior/valley/valley_civilian)
 "vHQ" = (
 /turf/open/gm/empty,
 /area/shuttle/trijent_shuttle/omega)
@@ -68182,6 +68258,17 @@
 /area/desert_dam/exterior/valley/valley_telecoms)
 "xdj" = (
 /obj/structure/flora/grass/desert/lightgrass_5,
+/turf/open/desert/dirt,
+/area/desert_dam/exterior/valley/valley_hydro)
+"xec" = (
+/obj/structure/flora/grass/desert/lightgrass_1,
+/obj/structure/tunnel,
+/turf/open/desert/dirt,
+/area/desert_dam/exterior/valley/valley_civilian)
+"xgA" = (
+/obj/structure/flora/grass/tallgrass/desert/corner{
+	dir = 5
+	},
 /turf/open/desert/dirt,
 /area/desert_dam/exterior/valley/valley_hydro)
 "xhv" = (
@@ -72033,7 +72120,7 @@ ceA
 aSI
 chG
 ceA
-ceA
+hyH
 acs
 aWc
 aWF
@@ -72830,7 +72917,7 @@ cDY
 cDY
 cDY
 cDY
-cFa
+cDY
 cML
 cBS
 cUl
@@ -73756,7 +73843,7 @@ cDY
 cDY
 cDY
 cDY
-cDY
+cFa
 cDY
 cDY
 cDY
@@ -75692,7 +75779,7 @@ aWh
 aWh
 aWh
 aWh
-dGU
+aWh
 bDO
 aVi
 aVh
@@ -76618,7 +76705,7 @@ aWh
 aWh
 aWh
 aWh
-aWh
+dGU
 aWh
 aWh
 aWh
@@ -84936,7 +85023,7 @@ dTs
 dTs
 dTs
 dTs
-cMo
+sRl
 dNS
 dNS
 dNS
@@ -91190,7 +91277,7 @@ bLr
 dTs
 dTs
 nmr
-iwh
+vph
 pvs
 dTs
 dTs
@@ -96644,7 +96731,7 @@ dTs
 dTs
 dTs
 dTs
-dNp
+rIY
 cMl
 dNS
 dNS
@@ -102576,7 +102663,7 @@ amq
 afI
 ana
 amZ
-ana
+goY
 agL
 afG
 arH
@@ -106034,7 +106121,7 @@ cCH
 clZ
 clZ
 crW
-cko
+fcu
 cmc
 cpY
 cpY
@@ -107221,7 +107308,7 @@ dTs
 dTs
 dTs
 dTs
-cuw
+vHx
 cwo
 cux
 cmH
@@ -107483,12 +107570,12 @@ acu
 afG
 afI
 akW
-akW
+lNN
 agL
 amn
 afI
 akW
-akW
+lNN
 agL
 afG
 aqG
@@ -110586,7 +110673,7 @@ dTs
 dTs
 dTs
 dTs
-agD
+jxN
 adA
 aEZ
 aFi
@@ -111941,7 +112028,7 @@ alI
 alI
 aoI
 aoN
-apg
+rEa
 apk
 apg
 apy
@@ -113113,7 +113200,7 @@ aoI
 aoN
 apg
 apk
-apg
+rEa
 apy
 afP
 amx
@@ -113227,7 +113314,7 @@ civ
 cdA
 cdw
 aOG
-cgc
+ruJ
 dTs
 dTs
 dTs
@@ -121953,7 +122040,7 @@ clZ
 crW
 cWV
 xOb
-cpa
+xec
 aVd
 bby
 bvw
@@ -122718,7 +122805,7 @@ dTs
 dTs
 dTs
 acY
-acY
+kQd
 dTs
 dTs
 dTs

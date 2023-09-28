@@ -24,12 +24,6 @@
 
 	var/datum/component/orbiter/orbiting
 
-	/**
-	 * an associative lazylist of relevant nested contents by "channel", the list is of the form: list(channel = list(important nested contents of that type))
-	 * each channel has a specific purpose and is meant to replace potentially expensive nested contents iteration.
-	 * do NOT add channels to this for little reason as it can add considerable memory usage.
-	 */
-	var/list/important_recursive_contents
 	///contains every client mob corresponding to every client eye in this container. lazily updated by SSparallax and is sparse:
 	///only the last container of a client eye has this list assuming no movement since SSparallax's last fire
 	var/list/client_mobs_in_contents
@@ -46,7 +40,7 @@
 	var/atom/movable/emissive_blocker/em_block
 
 	///Lazylist to keep track on the sources of illumination.
-	var/list/affected_dynamic_lights
+	var/list/affected_movable_lights
 	///Highest-intensity light affecting us, which determines our visibility.
 	var/affecting_dynamic_lumi = 0
 
@@ -56,35 +50,7 @@
 	var/sensor_radius = 0
 
 //===========================================================================
-/atom/movable/Initialize(mapload, ...)
-	if(!faction && faction_to_get)
-		faction = GLOB.faction_datum[faction_to_get]
-	. = ..()
-	switch(blocks_emissive)
-		if(EMISSIVE_BLOCK_GENERIC)
-			var/mutable_appearance/gen_emissive_blocker = mutable_appearance(icon, icon_state, plane = EMISSIVE_PLANE, alpha = src.alpha)
-			gen_emissive_blocker.color = GLOB.em_block_color
-			gen_emissive_blocker.dir = dir
-			gen_emissive_blocker.appearance_flags |= appearance_flags
-			add_overlay(list(gen_emissive_blocker))
-		if(EMISSIVE_BLOCK_UNIQUE)
-			render_target = ref(src)
-			em_block = new(src, render_target)
-			add_overlay(list(em_block))
-	if(opacity)
-		AddElement(/datum/element/light_blocking)
-	switch(light_system)
-		if(MOVABLE_LIGHT)
-			AddComponent(/datum/component/overlay_lighting)
-		if(MOVABLE_LIGHT_DIRECTIONAL)
-			AddComponent(/datum/component/overlay_lighting, is_directional = TRUE)
-
-	if(frill_icon)
-		AddElement(/datum/element/frill, frill_icon)
-
-//===========================================================================
-/atom/movable/Destroy()
-	QDEL_NULL(em_block)
+/atom/movable/Destroy(force)
 	for(var/atom/movable/I in contents)
 		qdel(I)
 	if(opacity)
@@ -92,6 +58,7 @@
 	if(pulledby)
 		pulledby.stop_pulling()
 	QDEL_NULL(launch_metadata)
+	QDEL_NULL(em_block)
 
 	if(loc)
 		loc.on_stored_atom_del(src) //things that container need to do when a movable atom inside it is deleted
@@ -104,6 +71,9 @@
 
 	. = ..()
 	moveToNullspace() //so we move into null space. Must be after ..() b/c atom's Dispose handles deleting our lighting stuff
+
+	QDEL_NULL(light)
+	QDEL_NULL(static_light)
 
 //===========================================================================
 
@@ -140,6 +110,52 @@
 		return src.master.attack_hand(a, b, c)
 	return
 
+/atom/movable/Initialize(mapload, ...)
+	if(!faction && faction_to_get)
+		faction = GLOB.faction_datum[faction_to_get]
+	. = ..()
+	switch(blocks_emissive)
+		if(EMISSIVE_BLOCK_GENERIC)
+			var/mutable_appearance/gen_emissive_blocker = mutable_appearance(icon, icon_state, plane = EMISSIVE_PLANE, alpha = src.alpha)
+			gen_emissive_blocker.color = GLOB.em_block_color
+			gen_emissive_blocker.dir = dir
+			gen_emissive_blocker.appearance_flags |= appearance_flags
+			overlays += gen_emissive_blocker
+		if(EMISSIVE_BLOCK_UNIQUE)
+			render_target = ref(src)
+			em_block = new(src, render_target)
+			overlays += list(em_block)
+	if(opacity)
+		AddElement(/datum/element/light_blocking)
+	if(light_system == MOVABLE_LIGHT)
+		AddComponent(/datum/component/overlay_lighting)
+	if(light_system == DIRECTIONAL_LIGHT)
+		AddComponent(/datum/component/overlay_lighting, is_directional = TRUE)
+	if(frill_icon)
+		AddElement(/datum/element/frill, frill_icon)
+
+/*
+
+///Updates this movables emissive overlay
+/atom/movable/proc/update_emissive_block()
+	if(!blocks_emissive)
+		return
+	else if (blocks_emissive == EMISSIVE_BLOCK_GENERIC)
+		var/mutable_appearance/gen_emissive_blocker = emissive_blocker(icon, icon_state, alpha = src.alpha, appearance_flags = src.appearance_flags)
+		gen_emissive_blocker.dir = dir
+	if(blocks_emissive == EMISSIVE_BLOCK_UNIQUE)
+		if(!em_block)
+			render_target = ref(src)
+			em_block = new(src, render_target)
+		return em_block
+
+/atom/movable/update_overlays()
+	. = ..()
+
+	. += update_emissive_block()
+
+*/
+
 /atom/movable/vv_get_dropdown()
 	. = ..()
 	VV_DROPDOWN_OPTION(VV_HK_EDIT_PARTICLES, "Edit Particles")
@@ -153,6 +169,23 @@
 	if(href_list[VV_HK_EDIT_PARTICLES] && check_rights(R_VAREDIT))
 		var/client/C = usr.client
 		C?.open_particle_editor(src)
+
+/atom/movable/vv_edit_var(var_name, var_value)
+	var/static/list/banned_edits = list(NAMEOF_STATIC(src, step_x) = TRUE, NAMEOF_STATIC(src, step_y) = TRUE, NAMEOF_STATIC(src, step_size) = TRUE, NAMEOF_STATIC(src, bounds) = TRUE)
+	var/static/list/careful_edits = list(NAMEOF_STATIC(src, bound_x) = TRUE, NAMEOF_STATIC(src, bound_y) = TRUE, NAMEOF_STATIC(src, bound_width) = TRUE, NAMEOF_STATIC(src, bound_height) = TRUE)
+	var/static/list/not_falsey_edits = list(NAMEOF_STATIC(src, bound_width) = TRUE, NAMEOF_STATIC(src, bound_height) = TRUE)
+	if(banned_edits[var_name])
+		return FALSE //PLEASE no.
+	if(careful_edits[var_name] && (var_value % world.icon_size) != 0)
+		return FALSE
+	if(not_falsey_edits[var_name] && !var_value)
+		return FALSE
+
+	if(!isnull(.))
+		datum_flags |= DF_VAR_EDITED
+		return
+
+	return ..()
 
 //when a mob interact with something that gives them a special view,
 //check_eye() is called to verify that they're still eligible.
@@ -432,3 +465,24 @@
 				highest = hurt_atom
 	INVOKE_ASYNC(src, PROC_REF(SpinAnimation), 5, 2)
 	return TRUE
+
+
+///Keeps track of the sources of dynamic luminosity and updates our visibility with the highest.
+/atom/movable/proc/update_dynamic_luminosity()
+	var/highest = 0
+	for(var/i in affected_movable_lights)
+		if(affected_movable_lights[i] <= highest)
+			continue
+		highest = affected_movable_lights[i]
+	if(highest == affecting_dynamic_lumi)
+		return
+	luminosity -= affecting_dynamic_lumi
+	affecting_dynamic_lumi = highest
+	luminosity += affecting_dynamic_lumi
+
+
+///Helper to change several lighting overlay settings.
+/atom/movable/proc/set_light_range_power_color(range, power, color)
+	set_light_range(range)
+	set_light_power(power)
+	set_light_color(color)

@@ -21,17 +21,13 @@
 
 /area/vv_edit_var(var_name, var_value)
 	switch(var_name)
-		if(NAMEOF(src, base_lighting_color))
+		if("base_lighting_color")
 			set_base_lighting(new_base_lighting_color = var_value)
 			return TRUE
-		if(NAMEOF(src, base_lighting_alpha))
+		if("base_lighting_alpha")
 			set_base_lighting(new_alpha = var_value)
 			return TRUE
-		if(NAMEOF(src, static_lighting))
-			if(!static_lighting)
-				create_area_lighting_objects()
-			else
-				remove_area_lighting_objects()
+	return ..()
 
 /area/proc/update_base_lighting()
 	if(!area_has_base_lighting && (!base_lighting_alpha || !base_lighting_color))

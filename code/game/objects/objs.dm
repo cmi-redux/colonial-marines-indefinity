@@ -26,6 +26,8 @@
 	var/list/req_one_access = null
 	var/req_access_txt = null
 	var/req_one_access_txt = null
+	///Whether or not this instance is using accesses different from initial code. Used for easy locating in map files.
+	var/access_modified = FALSE
 
 	vis_flags = VIS_INHERIT_PLANE //when this be added to vis_contents of something it inherit something.plane, important for visualisation of obj in openspace.
 
@@ -39,7 +41,7 @@
 		add_to_garbage(src)
 	add_debris_element()
 
-/obj/Destroy()
+/obj/Destroy(force)
 	if(buckled_mob)
 		unbuckle()
 	. = ..()
@@ -285,11 +287,9 @@
 		src.add_fingerprint(user)
 		afterbuckle(target)
 		if(buckle_lying) // Make sure buckling to beds/nests etc only turns, and doesn't give a random offset
-			var/matrix/M = matrix()
-			var/matrix/L = matrix() //Counterrotation for langchat text.
-			M.Turn(90)
-			L.Turn(270)
-			target.apply_transform(M)
+			var/matrix/new_matrix = matrix()
+			new_matrix.Turn(90)
+			target.apply_transform(new_matrix)
 		return TRUE
 
 /obj/proc/send_buckling_message(mob/M, mob/user)
@@ -335,7 +335,7 @@
 
 	return ..()
 
-/obj/bullet_act(obj/item/projectile/proj)
+/obj/bullet_act(obj/projectile/proj)
 	//Tasers and the like should not damage objects.
 	if(proj.ammo.damage_type == HALLOSS || proj.ammo.damage_type == TOX || proj.ammo.damage_type == CLONE || proj.damage == 0)
 		return 0

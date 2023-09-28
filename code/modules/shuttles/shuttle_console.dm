@@ -294,8 +294,10 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 					if(SSticker.mode.round_statistics)
 						SSticker.mode.round_statistics.track_hijack()
 
-					faction_announcement("Unscheduled dropship departure detected from operational area. Hijack likely. Shutting down autopilot.", "Dropship Alert", 'sound/AI/hijack.ogg')
+					faction_announcement("Unscheduled dropship departure detected from operational area. Hijack likely. Shutting down autopilot.", "Dropship Alert", 'sound/AI/hijack.ogg',  logging = ARES_LOG_SECURITY)
 					shuttle.alerts_allowed--
+					var/datum/ares_link/link = GLOB.ares_link
+					link.log_ares_flight("Unknown", "Unscheduled dropship departure detected from operational area. Hijack likely. Shutting down autopilot.")
 
 					to_chat(XQ, SPAN_DANGER("A loud alarm erupts from [src]! The fleshy hosts must know that you can access it!"))
 					xeno_message(SPAN_XENOANNOUNCE("The Queen has commanded the metal bird to depart for the metal hive in the sky! Rejoice!"), 3, XQ.faction)
@@ -339,7 +341,7 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 	ui_interact(usr)
 
 
-/obj/structure/machinery/computer/shuttle_control/bullet_act(obj/item/projectile/proj)
+/obj/structure/machinery/computer/shuttle_control/bullet_act(obj/projectile/proj)
 	visible_message("[proj] ricochets off [src]!")
 	return 0
 

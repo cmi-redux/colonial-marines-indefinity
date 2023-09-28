@@ -25,7 +25,10 @@
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /obj/structure/blocker/invisible_wall/Collided(atom/movable/AM)
-	to_chat(AM, SPAN_WARNING("You cannot go this way."))
+	var/msg = desc
+	if(!msg)
+		msg = "You cannot go this way."
+	to_chat(AM, SPAN_WARNING(msg))
 
 /obj/structure/blocker/invisible_wall/New()
 	..()
@@ -34,10 +37,6 @@
 /obj/structure/blocker/invisible_wall/water
 	desc = "You cannot wade out any further"
 	icon_state = "map_blocker"
-
-/obj/structure/blocker/invisible_wall/water/Collided(atom/movable/AM)
-	to_chat(AM, SPAN_WARNING("You cannot wade out any further."))
-
 
 /obj/structure/blocker/fog
 	name = "dense fog"
@@ -74,14 +73,14 @@
 	types = list(
 	/mob/living/carbon/human,
 	/obj/vehicle/,
-	/obj/item/projectile/
+	/obj/projectile/
 )
 
 /obj/structure/blocker/fog/xeno/New()
 	..()
 	dir  = pick(CARDINAL_DIRS)
 
-/obj/structure/blocker/fog/xeno/get_projectile_hit_boolean(obj/item/projectile/proj)
+/obj/structure/blocker/fog/xeno/get_projectile_hit_boolean(obj/projectile/proj)
 	if(!is_whitelist)
 		return FALSE
 	. = ..()
@@ -115,7 +114,7 @@
 	var/list/types = list()
 	var/visible = FALSE
 
-/obj/structure/blocker/forcefield/get_projectile_hit_boolean(obj/item/projectile/proj)
+/obj/structure/blocker/forcefield/get_projectile_hit_boolean(obj/projectile/proj)
 	if(!is_whitelist)
 		return FALSE
 	. = ..()

@@ -23,6 +23,7 @@
 
 	for(var/mob/living/carbon/mob in faction.totalMobs)
 		if(!mob.stat && mob.client) //Only living and connected xenos
+			playsound_client(mob.client, 'sound/voice/alien_distantroar_3.ogg', mob.loc, 25, FALSE)
 			mob.play_screen_text("<span class='langchat' style=font-size:16pt;text-align:center valign='top'><u>[title_text]</u></span><br>" + text, /atom/movable/screen/text/screen_text/command_order, "#b491c8")
 
 /proc/xeno_message_all(message = null, size = 3)
@@ -726,6 +727,10 @@
 
 	if(!ishuman(current_mob))
 		to_chat(src, SPAN_XENONOTICE("This is not a host."))
+		return
+
+	if(current_mob.stat == DEAD)
+		to_chat(src, SPAN_XENONOTICE("This host is dead."))
 		return
 
 	var/mob/living/carbon/human/host_to_nest = current_mob

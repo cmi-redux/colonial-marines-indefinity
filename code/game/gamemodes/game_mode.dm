@@ -117,17 +117,18 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 
 	for(var/mob/new_player/np in GLOB.new_player_list)
 		np.new_player_panel_proc()
+	round_time_lobby = world.time
 	log_game("Round started at [time2text(world.realtime)]")
 	if(SSticker.mode)
 		log_game("Game mode set to [SSticker.mode]")
 	log_game("Server IP: [world.internet_address]:[world.port]")
-	return 1
+	return TRUE
 
 
 ///process()
 ///Called by the gameticker
 /datum/game_mode/process()
-	return 0
+	return FALSE
 
 
 /datum/game_mode/proc/check_finished() //to be called by ticker
@@ -141,7 +142,7 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 	log_game("Результат раунда: [round_finished]")
 	to_chat_spaced(world, margin_top = 2, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDHEADER("|Раунд Закончен|"))
 	var/rendered_announce_text = replacetext(end_game_announce, "###SHIPNAME###", MAIN_SHIP_NAME)
-	to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDBODY("[rendered_announce_text] [SSmapping.configs[GROUND_MAP].map_name].\nИгровой режим был: [GLOB.master_mode]!\nEnd of Round Grief (EORG) это мгновенный 3-х часовой бан без предупреждений."))
+	to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDBODY("[rendered_announce_text] [SSmapping.configs[GROUND_MAP].map_name].\nИгровой режим был: [GLOB.master_mode]!\n[CONFIG_GET(string/endofroundblurb)]"))
 
 	var/current_real_hour = text2num(time2text(world.timeofday, "hh"))
 	if(current_real_hour < 12 && world.port == 1400)

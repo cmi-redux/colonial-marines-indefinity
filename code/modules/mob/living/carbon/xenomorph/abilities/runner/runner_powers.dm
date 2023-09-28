@@ -15,7 +15,7 @@
 	xeno.visible_message(SPAN_XENOWARNING("[xeno] fires a burst of bone chips at [A]!"), SPAN_XENOWARNING("You fire a burst of bone chips at [A]!"))
 
 	var/turf/target = locate(A.x, A.y, A.z)
-	var/obj/item/projectile/proj = new /obj/item/projectile(xeno.loc, create_cause_data(initial(xeno.caste_type), xeno))
+	var/obj/projectile/proj = new /obj/projectile(xeno.loc, create_cause_data(initial(xeno.caste_type), xeno))
 
 	var/datum/ammo/ammo_datum = GLOB.ammo_list[ammo_type]
 
@@ -181,9 +181,12 @@
 		to_chat(xeno, SPAN_XENOWARNING("Not enough acid built up for an explosion."))
 		return
 
+	notify_ghosts(header = "For the Hive!", message = "[xeno] is going to explode for the Hive!", source = xeno, action = NOTIFY_ORBIT)
+
 	to_chat(xeno, SPAN_XENOWARNING("Your stomach starts turning and twisting, getting ready to compress the built up acid."))
 	xeno.color = "#22FF22"
-	xeno.set_light(3)
+	xeno.set_light_color("#22FF22")
+	xeno.set_light_range(3)
 
 	BD.caboom_trigger = TRUE
 	BD.caboom_left = BD.caboom_timer
@@ -204,7 +207,7 @@
 
 	behavior.caboom_trigger = FALSE
 	xeno.color = null
-	xeno.set_light_on(FALSE)
+	xeno.set_light_range(0)
 	behavior.modify_acid(-behavior.max_acid / 4)
 
 	// Done this way rather than setting to 0 in case something else slowed us

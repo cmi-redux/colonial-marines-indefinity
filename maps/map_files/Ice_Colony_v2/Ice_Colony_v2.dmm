@@ -14938,7 +14938,7 @@
 /turf/open/floor/wood,
 /area/ice_colony/surface/bar/bar)
 "aOC" = (
-/obj/item/weapon/gun/shotgun/double/with_stock,
+/obj/item/weapon/gun/shotgun/pump/dual_tube/cmb,
 /obj/effect/decal/cleanable/blood{
 	icon_state = "gib6";
 	tag = "icon-gib6"
@@ -15375,7 +15375,7 @@
 /area/ice_colony/surface/bar/bar)
 "aPy" = (
 /obj/structure/surface/table/woodentable,
-/obj/structure/machinery/chem_dispenser/beer,
+/obj/structure/machinery/chem_dispenser/soda/beer,
 /obj/structure/machinery/alarm{
 	dir = 1;
 	pixel_y = -24
@@ -18204,16 +18204,6 @@
 /area/ice_colony/exterior/surface/landing_pad)
 "aWp" = (
 /turf/open/floor/plating,
-/area/ice_colony/exterior/surface/landing_pad)
-"aWq" = (
-/obj/structure/machinery/landinglight/ds1/delayone{
-	tag = "icon-landingstripe"
-	},
-/obj/docking_port/stationary/marine_dropship/lz1,
-/turf/open/floor/plating/icefloor{
-	icon_state = "warnplate";
-	tag = "icon-warnplate"
-	},
 /area/ice_colony/exterior/surface/landing_pad)
 "aWr" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
@@ -21864,13 +21854,6 @@
 	tag = "icon-dark2"
 	},
 /area/ice_colony/underground/requesition/lobby)
-"bhs" = (
-/obj/docking_port/stationary/marine_dropship/lz2,
-/turf/open/floor/plating/icefloor{
-	icon_state = "warnplate";
-	tag = "icon-warnplate"
-	},
-/area/ice_colony/underground/hangar)
 "bht" = (
 /turf/open/floor/plating/icefloor{
 	icon_state = "warnplate";
@@ -38018,6 +38001,10 @@
 	tag = "icon-dark2"
 	},
 /area/ice_colony/surface/research)
+"cEG" = (
+/obj/docking_port/stationary/marine_dropship/lz2,
+/turf/open/floor/plating/icefloor,
+/area/ice_colony/underground/hangar)
 "cVM" = (
 /obj/structure/machinery/light/small{
 	dir = 8;
@@ -38537,6 +38524,12 @@
 	tag = "icon-darkbrown2 (WEST)"
 	},
 /area/ice_colony/surface/hangar/alpha)
+"sto" = (
+/obj/docking_port/stationary/marine_dropship/lz1{
+	name = "Hangar Landing Zone"
+	},
+/turf/open/floor/plating,
+/area/ice_colony/exterior/surface/landing_pad)
 "sKH" = (
 /obj/structure/surface/table,
 /obj/item/device/analyzer,
@@ -49020,7 +49013,7 @@ aZW
 bcy
 bbc
 aZW
-bhs
+bht
 bhG
 bht
 aZW
@@ -49678,7 +49671,7 @@ aZW
 aZW
 aZW
 aZW
-aZW
+cEG
 aZW
 aZW
 aZW
@@ -107739,7 +107732,7 @@ aWp
 aWp
 aWQ
 aWp
-aWq
+bbl
 aUP
 aUP
 aZN
@@ -108396,7 +108389,7 @@ aWp
 aWp
 aWp
 aWp
-aWp
+sto
 aWp
 aWp
 aWp

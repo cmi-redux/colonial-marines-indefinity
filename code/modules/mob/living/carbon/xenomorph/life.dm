@@ -49,8 +49,15 @@
 			if(!got_evolution_message)
 				evolve_message()
 				got_evolution_message = TRUE
+
 			if(ROUND_TIME < XENO_ROUNDSTART_PROGRESS_TIME_2)
 				evolution_stored += progress_amount
+				return
+
+			if(evolution_stored > evolution_threshold + progress_amount)
+				evolution_stored -= progress_amount
+				return
+
 		else
 			evolution_stored += progress_amount
 
@@ -213,7 +220,8 @@
 			blinded = TRUE
 			set_stat(UNCONSCIOUS)
 		else
-			blinded = FALSE
+			if(!interference)//If their connection to hivemind is affected, their vision should be too.
+				blinded = FALSE
 			set_stat(CONSCIOUS)
 			if(regular_update && halloss > 0)
 				if(resting)
@@ -346,11 +354,6 @@ Make sure their actual health updates immediately.*/
 	if(!turf || !istype(turf))
 		return
 
-	var/is_runner_hiding
-
-	if(isrunner(src) && layer != initial(layer))
-		is_runner_hiding = 1
-
 	if(caste)
 		if(caste.innate_healing || check_weeds_for_healing())
 			if(!faction)
@@ -391,9 +394,8 @@ Make sure their actual health updates immediately.*/
 			if(armor_integrity > armor_integrity_max)
 				armor_integrity = armor_integrity_max
 
-		else //Xenos restore plasma VERY slowly off weeds, regardless of health, as long as they are not using special abilities
-			if(prob(50) && !is_runner_hiding && !current_aura)
-				plasma_stored += 0.1 * plasma_max / 100
+		else if(prob(50) && !current_aura) //Xenos restore plasma VERY slowly off weeds, regardless of health, as long as they are not using special abilities
+			plasma_stored += 0.1 * plasma_max / 100
 
 
 		for(var/datum/action/xeno_action/action in src.actions)
@@ -559,13 +561,14 @@ Make sure their actual health updates immediately.*/
 /mob/living/carbon/xenomorph/proc/handle_luminosity()
 	var/new_light_intensity = 0
 	if(caste)
-		new_light_intensity += caste.caste_luminosity
-	if(new_light_intensity && !light_on)
+		new_luminosity += caste.caste_luminosity
+	if(on_fire)
+		new_luminosity += min(fire_stacks, 5)
+	set_light_range(new_luminosity) // light up xenos
+	if(new_luminosity)
 		set_light_on(TRUE)
-	else if(light_on)
+	else
 		set_light_on(FALSE)
-	set_light_range_power_color(new_light_intensity, 0.5, LIGHT_COLOR_GREEN)
-
 
 /mob/living/carbon/xenomorph/handle_stunned()
 	if(stunned)

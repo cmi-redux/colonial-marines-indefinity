@@ -5,7 +5,7 @@
 	allow_additional = TRUE
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = /datum/equipment_preset/uscm/engineer
-	entry_message_body = "You have the <a href='"+URL_WIKI_COMTECH_GUIDE+"'>equipment and skill</a> to build fortifications, reroute power lines, and bunker down. Your squaddies will look to you when it comes to construction in the field of battle."
+	entry_message_body = "You have the <a href='%WIKIURL%'>equipment and skill</a> to build fortifications, reroute power lines, and bunker down. Your squaddies will look to you when it comes to construction in the field of battle."
 	balance_formulas = list("misc", BALANCE_FORMULA_ENGINEER, BALANCE_FORMULA_FIELD)
 
 /datum/job/marine/engineer/set_spawn_positions(count)

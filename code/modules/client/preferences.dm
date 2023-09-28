@@ -42,7 +42,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/warns = 0
 	var/muted = 0
 	var/last_ip
-	var/fps = 100
+	var/fps = 60
 	var/last_id
 	var/save_cooldown = 0 //5s cooldown between saving slots
 	var/reload_cooldown = 0 //5s cooldown between loading slots
@@ -88,6 +88,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/predator_age = 100
 	var/predator_h_style = "Standard"
 	var/predator_skin_color = "tan"
+	var/predator_use_legacy = "None"
 	var/predator_translator_type = "Modern"
 	var/predator_mask_type = 1
 	var/predator_armor_type = 1
@@ -105,7 +106,9 @@ var/const/MAX_SAVE_SLOTS = 10
 	//SEA specific preferences
 
 	///holds our preferred job options for jobs
-	var/pref_special_job_options = list()
+	var/list/pref_special_job_options = list()
+	///Holds assignment of character slots to jobs.
+	var/list/pref_job_slots = list()
 
 	//WL Council preferences.
 	var/yautja_status = WHITELIST_NORMAL
@@ -234,6 +237,9 @@ var/const/MAX_SAVE_SLOTS = 10
 
 	/// if this client has custom cursors enabled
 	var/custom_cursors = TRUE
+
+	/// if this client has tooltips enabled
+	var/tooltips = TRUE
 
 /datum/preferences/New(client/C)
 	key_bindings = deepCopyList(GLOB.hotkey_keybinding_list_by_key) // give them default keybinds and update their movement keys
@@ -510,6 +516,7 @@ var/const/MAX_SAVE_SLOTS = 10
 
 				dat += "<div id='column2'>"
 				dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_YAUT_EQPMENT)]:</u></b></h2>"
+				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_LEGACY)]:</b> <a href='?_src_=prefs;preference=pred_use_legacy;task=input'><b>[predator_use_legacy]</b></a><br>"
 				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_TRANSLATOR)]:</b> <a href='?_src_=prefs;preference=pred_trans_type;task=input'><b>[predator_translator_type]</b></a><br>"
 				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_MASK_S)]:</b> <a href='?_src_=prefs;preference=pred_mask_type;task=input'><b>([predator_mask_type])</b></a><br>"
 				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_ARMOR_S)]:</b> <a href='?_src_=prefs;preference=pred_armor_type;task=input'><b>([predator_armor_type])</b></a><br>"
@@ -576,6 +583,7 @@ var/const/MAX_SAVE_SLOTS = 10
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_AO)]:</b> <a href='?_src_=prefs;preference=ambientocclusion'><b>[toggle_prefs & TOGGLE_AMBIENT_OCCLUSION ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_FIT_VIEW)]:</b> <a href='?_src_=prefs;preference=auto_fit_viewport'>[auto_fit_viewport ? user.client.auto_lang(LANGUAGE_PREF_AUTO) : user.client.auto_lang(LANGUAGE_PREF_MANUAL)]</a><br>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ZOOM)]:</b> <a href='?_src_=prefs;preference=adaptive_zoom'>[adaptive_zoom ? "[adaptive_zoom * 2]x" : user.client.auto_lang(LANGUAGE_DISABLED)]</a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_TLTPS)]:</b> <a href='?_src_=prefs;preference=tooltips'><b>[tooltips ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_WINDOW_MODE)]:</b> <a href='?_src_=prefs;preference=tgui_fancy'><b>[(tgui_fancy) ? user.client.auto_lang(LANGUAGE_PREF_FANCY) : user.client.auto_lang(LANGUAGE_PREF_COMPATIBLE)]</b></a><br>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_WINDOW_PLACE)]:</b> <a href='?_src_=prefs;preference=tgui_lock'><b>[(tgui_lock) ? user.client.auto_lang(LANGUAGE_PREF_PRIMARYM) : user.client.auto_lang(LANGUAGE_PREF_FREE_PLACE)]</b></a><br>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_MIDIS)]:</b> <a href='?_src_=prefs;preference=hear_midis'><b>[(toggles_sound & SOUND_MIDI) ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
@@ -600,6 +608,8 @@ var/const/MAX_SAVE_SLOTS = 10
 					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_HELP_INTENT_SAFETY]'><b>[toggle_prefs & TOGGLE_HELP_INTENT_SAFETY ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_MIDDLE)]: \
 					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_MIDDLE_MOUSE_CLICK]'><b>[toggle_prefs & TOGGLE_MIDDLE_MOUSE_CLICK ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
+			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ABLDEA)]: \
+					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_ABILITY_DEACTIVATION]'><b>[toggle_prefs & TOGGLE_ABILITY_DEACTIVATION ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_DIRECT_ASSIST)]: \
 					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_DIRECTIONAL_ATTACK]'><b>[toggle_prefs & TOGGLE_DIRECTIONAL_ATTACK ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_AUTO_E)]: \
@@ -758,6 +768,83 @@ var/const/MAX_SAVE_SLOTS = 10
 	onclose(user, "mob_occupation", user.client, list("_src_" = "prefs", "preference" = "job", "task" = "close"))
 	return
 
+//limit - The amount of jobs allowed per column. Defaults to 13 to make it look nice.
+//splitJobs - Allows you split the table by job. You can make different tables for each department by including their heads. Defaults to CE to make it look nice.
+//width - Screen' width. Defaults to 550 to make it look nice.
+//height - Screen's height. Defaults to 500 to make it look nice.
+/datum/preferences/proc/set_job_slots(mob/user, limit = 19, list/splitJobs = list(JOB_CHIEF_REQUISITION), width = 950, height = 700)
+	if(!RoleAuthority)
+		return
+
+	var/HTML = "<body>"
+	HTML += "<tt><center>"
+	HTML += "<b>Assign character slots to jobs.</b><br>Unavailable occupations are crossed out.<br><br>"
+	HTML += "<center><a href='?_src_=prefs;preference=job_slot;task=close'>Done</a></center><br>" // Easier to press up here.
+	HTML += "<table width='100%' cellpadding='1' cellspacing='0' style='color: black;'><tr><td valign='top' width='20%'>" // Table within a table for alignment, also allows you to easily add more colomns.
+	HTML += "<table width='100%' cellpadding='1' cellspacing='0'>"
+	var/index = -1
+
+	//The job before the current job. I only use this to get the previous jobs color when I'm filling in blank rows.
+
+	var/list/active_role_names = GLOB.gamemode_roles[GLOB.master_mode]
+	if(!active_role_names)
+		active_role_names = ROLES_DISTRESS_SIGNAL
+
+	for(var/role_name as anything in active_role_names)
+		var/datum/job/job = RoleAuthority.roles_by_name[role_name]
+		if(!job)
+			debug_log("Missing job for prefs: [role_name]")
+			continue
+		index++
+		if((index >= limit) || (job.title in splitJobs))
+			HTML += "</table></td><td valign='top' width='20%'><table width='100%' cellpadding='1' cellspacing='0'>"
+			index = 0
+
+		HTML += "<tr class='[job.selection_class]'><td width='40%' align='right'>"
+		if(jobban_isbanned(user, job.title))
+			HTML += "<b><del>[job.disp_title]</del></b></td><td width='60%'><b>BANNED</b></td></tr>"
+			continue
+		else if(job.flags_startup_parameters & ROLE_WHITELISTED && !(RoleAuthority.roles_whitelist[user.ckey] & job.flags_whitelist))
+			HTML += "<b><del>[job.disp_title]</del></b></td><td width='60%'>WHITELISTED</td></tr>"
+			continue
+		else if(!job.can_play_role(user.client))
+			HTML += "<b><del>[job.disp_title]</del></b></td><td width='60%'>TIMELOCKED</td></tr>"
+			continue
+
+		HTML += "<b>[job.disp_title]</b></td>"
+
+		var/slot_name = get_job_slot_name(job.title)
+		HTML += "<td width='60%'><a href='?_src_=prefs;preference=job_slot;task=assign;target_job=[job.title];'>[slot_name]</a>"
+		HTML += "</td></tr>"
+
+	HTML += "</td></tr></table>"
+	HTML += "</center></table><br>"
+
+	var/b_color
+	var/msg
+	if(toggle_prefs & TOGGLE_START_JOIN_CURRENT_SLOT)
+		b_color = "red"
+		msg = "This preference is ignored when joining at the start of the round."
+	else
+		b_color = "green"
+		msg = "This preference is used when joining at the start of the round."
+	HTML += "<center><a class='[b_color]' href='?_src_=prefs;preference=job_slot;task=start_join'>[msg]</a></center>"
+	if(toggle_prefs & TOGGLE_LATE_JOIN_CURRENT_SLOT)
+		b_color = "red"
+		msg = "This preference is ignored when joining a round in progress."
+	else
+		b_color = "green"
+		msg = "This preference is used when joining a round in progress."
+	HTML += "<center><a class='[b_color]' href='?_src_=prefs;preference=job_slot;task=late_join'>[msg]</a></center>"
+
+	HTML += "<center><a href='?_src_=prefs;preference=job_slot;task=reset'>Reset</a></center>"
+	HTML += "</tt></body>"
+
+	close_browser(user, "preferences")
+	show_browser(user, HTML, "Job Assignment", "job_slots_assignment", "size=[width]x[height]")
+	onclose(user, "job_slots_assignment", user.client, list("_src_" = "prefs", "preference" = "job_slot", "task" = "close"))
+	return
+
 /datum/preferences/proc/SetRecords(mob/user)
 	var/HTML = "<body onselectstart='return false;'>"
 	HTML += "<tt><center>"
@@ -848,6 +935,40 @@ var/const/MAX_SAVE_SLOTS = 10
 	job_preference_list[job.title] = priority
 	return TRUE
 
+/datum/preferences/proc/assign_job_slot(mob/user, target_job)
+	var/list/slot_options = list(JOB_SLOT_RANDOMISED_TEXT = JOB_SLOT_RANDOMISED_SLOT, JOB_SLOT_CURRENT_TEXT = JOB_SLOT_CURRENT_SLOT)
+	var/savefile/S = new /savefile(path)
+	var/slot_name
+	for(var/slot in 1 to MAX_SAVE_SLOTS)
+		S.cd = "/character[slot]"
+		S["real_name"] >> slot_name
+		if(slot_name)
+			slot_options["[slot_name] (slot #[slot])"] = slot
+	var/chosen_slot = tgui_input_list(user, "Assign character for [target_job] job", "Slot assignment", slot_options)
+	if(chosen_slot)
+		pref_job_slots[target_job] = slot_options[chosen_slot]
+	set_job_slots(user)
+
+/datum/preferences/proc/get_job_slot_name(job_title)
+	. = JOB_SLOT_CURRENT_TEXT
+	if(!(job_title in pref_job_slots))
+		return
+	var/slot_number = pref_job_slots[job_title]
+	switch(slot_number)
+		if(JOB_SLOT_RANDOMISED_SLOT)
+			return JOB_SLOT_RANDOMISED_TEXT
+		if(1 to MAX_SAVE_SLOTS)
+			var/savefile/S = new /savefile(path)
+			S.cd = "/character[slot_number]"
+			return "[S["real_name"]] (slot #[slot_number])"
+
+/datum/preferences/proc/reset_job_slots()
+	pref_job_slots = list()
+	var/datum/job/J
+	for(var/role in RoleAuthority.roles_by_path)
+		J = RoleAuthority.roles_by_path[role]
+		pref_job_slots[J.title] = JOB_SLOT_CURRENT_SLOT
+
 /datum/preferences/proc/process_link(mob/user, href_list)
 	var/whitelist_flags = SSticker.role_authority.roles_whitelist[user.ckey]
 
@@ -880,7 +1001,26 @@ var/const/MAX_SAVE_SLOTS = 10
 					SetChoices(user)
 				else
 					SetChoices(user)
-			return 1
+			return TRUE
+		if("job_slot")
+			switch(href_list["task"])
+				if("close")
+					close_browser(user, "job_slots_assignment")
+					ShowChoices(user)
+				if("assign")
+					assign_job_slot(user, href_list["target_job"])
+				if("start_join")
+					toggle_prefs ^= TOGGLE_START_JOIN_CURRENT_SLOT
+					set_job_slots(user)
+				if("late_join")
+					toggle_prefs ^= TOGGLE_LATE_JOIN_CURRENT_SLOT
+					set_job_slots(user)
+				if("reset")
+					reset_job_slots()
+					set_job_slots(user)
+				else
+					set_job_slots(user)
+			return TRUE
 		if("loadout")
 			switch(href_list["task"])
 				if("input")
@@ -1117,8 +1257,14 @@ var/const/MAX_SAVE_SLOTS = 10
 				if("pred_gender")
 					predator_gender = predator_gender == MALE ? FEMALE : MALE
 				if("pred_age")
-					var/new_predator_age = tgui_input_number(user, "Choose your Predator's age(20 to 10000):", "Character Preference", 1234, 10000, 20)
-					if(new_predator_age) predator_age = max(min( round(text2num(new_predator_age)), 10000),20)
+					var/new_predator_age = tgui_input_number(user, "Choose your Predator's age(175 to 3000):", "Character Preference", 1234, 3000, 175)
+					if(new_predator_age)
+						predator_age = max(min( round(text2num(new_predator_age)), 3000),175)
+				if("pred_use_legacy")
+					var/legacy_choice = tgui_input_list(user, "What legacy set do you wish to use?", "Legacy Set", PRED_LEGACIES)
+					if(!legacy_choice)
+						return
+					predator_use_legacy = legacy_choice
 				if("pred_trans_type")
 					var/new_translator_type = tgui_input_list(user, "Choose your translator type.", "Translator Type", PRED_TRANSLATORS)
 					if(!new_translator_type)
@@ -1205,12 +1351,12 @@ var/const/MAX_SAVE_SLOTS = 10
 					commander_status = options[new_commander_status]
 
 				if("co_sidearm")
-					var/list/options = list("Mateba","Desert Eagle")
+					var/list/options = CO_GUNS
 
 					if(whitelist_flags & (WHITELIST_COMMANDER_COUNCIL|WHITELIST_COMMANDER_COUNCIL_LEGACY))
-						options += list("Colonel's Mateba","Golden Desert Eagle")
+						options += COUNCIL_CO_GUNS
 					else
-						options -= list("Colonel's Mateba","Golden Desert Eagle") //This is weird and should not be necessary but it wouldn't remove these from the list otherwise
+						options -= COUNCIL_CO_GUNS
 
 					var/new_co_sidearm = tgui_input_list(user, "Choose your preferred sidearm.", "Commanding Officer's Sidearm", options)
 					if(!new_co_sidearm)
@@ -1757,6 +1903,17 @@ var/const/MAX_SAVE_SLOTS = 10
 						adaptive_zoom = 0
 					owner?.adaptive_zoom()
 
+				if("tooltips")
+					tooltips = !tooltips
+					save_preferences()
+
+					if(!tooltips)
+						closeToolTip()
+						return
+
+					if(!owner.tooltips)
+						owner.tooltips = new(owner)
+
 				if("inputstyle")
 					var/result = tgui_alert(user, "Which input style do you want?", "Input Style", list("Modern", "Legacy"))
 					if(!result)
@@ -1836,10 +1993,31 @@ var/const/MAX_SAVE_SLOTS = 10
 	ShowChoices(user)
 	return 1
 
-// Transfers both physical characteristics and character information to character
-/datum/preferences/proc/copy_all_to(mob/living/carbon/human/character, safety = 0)
+
+/// Loads appropriate character slot for the given job as assigned in preferences.
+/datum/preferences/proc/find_assigned_slot(job_title, is_late_join = FALSE)
+	if(toggle_prefs & (is_late_join ? TOGGLE_LATE_JOIN_CURRENT_SLOT : TOGGLE_START_JOIN_CURRENT_SLOT))
+		return
+	var/slot_for_job = pref_job_slots[job_title]
+	switch(slot_for_job)
+		if(JOB_SLOT_RANDOMISED_SLOT)
+			be_random_body = TRUE
+			be_random_name = TRUE
+		if(1 to MAX_SAVE_SLOTS)
+			load_character(slot_for_job)
+
+/// Transfers both physical characteristics and character information to character
+/datum/preferences/proc/copy_all_to(mob/living/carbon/human/character, job_title, is_late_join = FALSE, check_datacore = FALSE)
 	if(!istype(character))
 		return
+
+	find_assigned_slot(job_title, is_late_join)
+	if(check_datacore && !(be_random_body && be_random_name))
+		for(var/datum/data/record/record as anything in GLOB.data_core.locked)
+			if(record.fields["name"] == real_name)
+				be_random_body = TRUE
+				be_random_name = TRUE
+				break
 
 	if(be_random_name)
 		real_name = random_name(gender)
@@ -1856,20 +2034,22 @@ var/const/MAX_SAVE_SLOTS = 10
 	character.voice = real_name
 	character.name = character.real_name
 
-	character.flavor_texts["general"] = flavor_texts["general"]
-	character.flavor_texts["head"] = flavor_texts["head"]
-	character.flavor_texts["face"] = flavor_texts["face"]
-	character.flavor_texts["eyes"] = flavor_texts["eyes"]
-	character.flavor_texts["torso"] = flavor_texts["torso"]
-	character.flavor_texts["arms"] = flavor_texts["arms"]
-	character.flavor_texts["hands"] = flavor_texts["hands"]
-	character.flavor_texts["legs"] = flavor_texts["legs"]
-	character.flavor_texts["feet"] = flavor_texts["feet"]
+	if(!be_random_body)
+		character.flavor_texts["general"] = flavor_texts["general"]
+		character.flavor_texts["head"] = flavor_texts["head"]
+		character.flavor_texts["face"] = flavor_texts["face"]
+		character.flavor_texts["eyes"] = flavor_texts["eyes"]
+		character.flavor_texts["torso"] = flavor_texts["torso"]
+		character.flavor_texts["arms"] = flavor_texts["arms"]
+		character.flavor_texts["hands"] = flavor_texts["hands"]
+		character.flavor_texts["legs"] = flavor_texts["legs"]
+		character.flavor_texts["feet"] = flavor_texts["feet"]
 
-	character.med_record = strip_html(med_record)
-	character.sec_record = strip_html(sec_record)
-	character.gen_record = strip_html(gen_record)
-	character.exploit_record = strip_html(exploit_record)
+	if(!be_random_name)
+		character.med_record = strip_html(med_record)
+		character.sec_record = strip_html(sec_record)
+		character.gen_record = strip_html(gen_record)
+		character.exploit_record = strip_html(exploit_record)
 
 	character.age = age
 	character.gender = gender
@@ -2017,47 +2197,6 @@ var/const/MAX_SAVE_SLOTS = 10
 		if(isliving(src)) //Ghosts get neuter by default
 			message_admins("[character] ([character.ckey]) has spawned with their gender as plural or neuter. Please notify coders.")
 			character.gender = MALE
-
-
-// Transfers the character's information (name, flavor text, records, roundstart clothes, etc.) to the mob
-/datum/preferences/proc/copy_information_to(mob/living/carbon/human/character, safety = 0)
-	if(!istype(character))
-		return
-
-	if(be_random_name)
-		real_name = random_name(gender)
-
-	if(CONFIG_GET(flag/humans_need_surnames))
-		var/firstspace = findtext(real_name, " ")
-		var/name_length = length(real_name)
-		if(!firstspace) //we need a surname
-			real_name += " [pick(last_names)]"
-		else if(firstspace == name_length)
-			real_name += "[pick(last_names)]"
-
-	character.real_name = real_name
-	character.voice = real_name
-	character.name = character.real_name
-
-	character.flavor_texts["general"] = flavor_texts["general"]
-	character.flavor_texts["head"] = flavor_texts["head"]
-	character.flavor_texts["face"] = flavor_texts["face"]
-	character.flavor_texts["eyes"] = flavor_texts["eyes"]
-	character.flavor_texts["torso"] = flavor_texts["torso"]
-	character.flavor_texts["arms"] = flavor_texts["arms"]
-	character.flavor_texts["hands"] = flavor_texts["hands"]
-	character.flavor_texts["legs"] = flavor_texts["legs"]
-	character.flavor_texts["feet"] = flavor_texts["feet"]
-
-	character.med_record = med_record
-	character.sec_record = sec_record
-	character.gen_record = gen_record
-	character.exploit_record = exploit_record
-
-	character.origin = origin
-	character.personal_faction = faction
-	character.religion = religion
-
 
 /datum/preferences/proc/open_load_dialog(mob/user)
 	var/dat = "<body onselectstart='return false;'>"

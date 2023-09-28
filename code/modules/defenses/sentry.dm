@@ -1,6 +1,5 @@
 #define SENTRY_FIREANGLE 135
 #define SENTRY_RANGE 5
-#define SENTRY_MUZZLELUM 3
 #define SENTRY_ENGAGED_TIMEOUT 60 SECONDS
 #define SENTRY_LOW_AMMO_TIMEOUT 20 SECONDS
 #define SENTRY_LOW_AMMO_ALERT_PERCENTAGE 0.25
@@ -22,7 +21,7 @@
 	var/sentry_type = "sentry" //Used for the icon
 	display_additional_stats = TRUE
 	/// Light strength when turned on
-	var/luminosity_strength = 7
+	var/luminosity_strength = 5
 	/// Check if they have been upgraded or not, used for sentry post
 	var/upgraded = FALSE
 	var/omni_directional = FALSE
@@ -105,7 +104,9 @@
 			range_bounds = RECT(x, y - 4, 7, 7)
 
 /obj/structure/machinery/defenses/sentry/proc/unset_range()
-	qdel(range_bounds)
+	SIGNAL_HANDLER
+	if(range_bounds)
+		QDEL_NULL(range_bounds)
 
 /obj/structure/machinery/defenses/sentry/update_icon()
 	..()
@@ -291,8 +292,22 @@
 	if(targets.len)
 		addtimer(CALLBACK(src, PROC_REF(get_target)), fire_delay)
 
+	if(!engaged_timer)
+		SEND_SIGNAL(src, COMSIG_SENTRY_ENGAGED_ALERT, src)
+		engaged_timer = addtimer(CALLBACK(src, PROC_REF(reset_engaged_timer)), SENTRY_ENGAGED_TIMEOUT)
+
+	if(!low_ammo_timer && ammo?.current_rounds && (ammo?.current_rounds < (ammo?.max_rounds * SENTRY_LOW_AMMO_ALERT_PERCENTAGE)))
+		SEND_SIGNAL(src, COMSIG_SENTRY_LOW_AMMO_ALERT, src)
+		low_ammo_timer = addtimer(CALLBACK(src, PROC_REF(reset_low_ammo_timer)), SENTRY_LOW_AMMO_TIMEOUT)
+
+/obj/structure/machinery/defenses/sentry/proc/reset_engaged_timer()
+	engaged_timer = null
+
+/obj/structure/machinery/defenses/sentry/proc/reset_low_ammo_timer()
+	low_ammo_timer = null
+
 /obj/structure/machinery/defenses/sentry/proc/actual_fire(atom/A)
-	var/obj/item/projectile/proj = ammo.transfer_bullet_out()
+	var/obj/projectile/proj = ammo.transfer_bullet_out()
 	proj.forceMove(src)
 	apply_traits(proj)
 	proj.bullet_ready_to_fire(initial(name), null, owner_mob)
@@ -310,7 +325,7 @@
 		return TRUE
 	return FALSE
 
-/obj/structure/machinery/defenses/sentry/proc/apply_traits(obj/item/projectile/proj)
+/obj/structure/machinery/defenses/sentry/proc/apply_traits(obj/projectile/proj)
 	// Apply bullet traits from gun
 	for(var/entry in traits_to_give)
 		var/list/L
@@ -372,7 +387,7 @@
 				targets.Remove(A)
 				continue
 
-			if(M.ally(faction) || M.invisibility)
+			if(M.ally(faction) || M.invisibility || HAS_TRAIT(M, TRAIT_ABILITY_BURROWED))
 				if(M == target)
 					target = null
 				targets.Remove(M)
@@ -536,11 +551,13 @@
 	choice_categories = list()
 	selected_categories = list()
 	var/obj/structure/dropship_equipment/sentry_holder/deployment_system
+	var/obj/structure/machinery/camera/cas/linked_cam
 
 /obj/structure/machinery/defenses/sentry/premade/dropship/Destroy()
 	if(deployment_system)
 		deployment_system.deployed_turret = null
 		deployment_system = null
+	QDEL_NULL(linked_cam)
 	. = ..()
 
 #define SENTRY_SNIPER_RANGE 10
@@ -712,4 +729,3 @@
 
 #undef SENTRY_FIREANGLE
 #undef SENTRY_RANGE
-#undef SENTRY_MUZZLELUM

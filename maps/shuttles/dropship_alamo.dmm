@@ -16,19 +16,16 @@
 	},
 /area/shuttle/drop1/sulaco)
 "ax" = (
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "101"
-	},
+/obj/structure/shuttle/part/dropship1/transparent/nose_center,
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "be" = (
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "74"
-	},
+/obj/structure/shuttle/part/dropship1/transparent/upper_right_wing,
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "bj" = (
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "102"
-	},
+/obj/structure/shuttle/part/dropship1/transparent/nose_top_right,
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "cr" = (
 /obj/structure/machinery/camera/autoname/almayer/dropship_one{
@@ -49,16 +46,9 @@
 	},
 /area/shuttle/drop1/sulaco)
 "cC" = (
+/obj/structure/shuttle/part/dropship1/nose_front_right,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/closed/shuttle/dropship1{
-	icon_state = "99"
-	},
-/area/shuttle/drop1/sulaco)
-"cK" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "17"
-	},
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "cR" = (
 /obj/item/device/radio/intercom/alamo{
@@ -90,9 +80,8 @@
 	},
 /area/shuttle/drop1/sulaco)
 "eD" = (
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "41"
-	},
+/obj/structure/shuttle/part/dropship1/transparent/engine_right_cap,
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "hG" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -101,10 +90,9 @@
 	},
 /area/shuttle/drop1/sulaco)
 "if" = (
+/obj/structure/shuttle/part/dropship1/left_outer_wing_connector,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/closed/shuttle/dropship1{
-	icon_state = "3"
-	},
+/turf/open/space/basic,
 /area/shuttle/drop1/sulaco)
 "ig" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -149,9 +137,8 @@
 	},
 /area/shuttle/drop1/sulaco)
 "jz" = (
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "70"
-	},
+/obj/structure/shuttle/part/dropship1/transparent/middle_right_wing,
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "jQ" = (
 /obj/structure/bed/chair/vehicle{
@@ -234,9 +221,8 @@
 	},
 /area/shuttle/drop1/sulaco)
 "oW" = (
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "66"
-	},
+/obj/structure/shuttle/part/dropship1/transparent/middle_left_wing,
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "pd" = (
 /obj/structure/bed/chair/vehicle{
@@ -270,9 +256,8 @@
 /area/shuttle/drop1/sulaco)
 "qu" = (
 /obj/effect/attach_point/weapon/dropship1/left_wing,
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "61"
-	},
+/obj/structure/shuttle/part/dropship1/transparent/lower_left_wing,
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "qy" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -298,10 +283,9 @@
 	},
 /area/shuttle/drop1/sulaco)
 "rl" = (
+/obj/structure/shuttle/part/dropship1/lower_right_wall,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/closed/shuttle/dropship1{
-	icon_state = "49"
-	},
+/turf/open/space/basic,
 /area/shuttle/drop1/sulaco)
 "rr" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -319,16 +303,14 @@
 	},
 /area/shuttle/drop1/sulaco)
 "rV" = (
+/obj/structure/shuttle/part/dropship1/transparent/left_outer_bottom_wing,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "2"
-	},
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "sA" = (
+/obj/structure/shuttle/part/dropship1/lower_left_wall,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/closed/shuttle/dropship1{
-	icon_state = "46"
-	},
+/turf/open/space/basic,
 /area/shuttle/drop1/sulaco)
 "tR" = (
 /obj/item/device/radio/intercom/alamo{
@@ -341,17 +323,10 @@
 	icon_state = "rasputin15"
 	},
 /area/shuttle/drop1/sulaco)
-"wh" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "20"
-	},
-/area/shuttle/drop1/sulaco)
 "wk" = (
 /obj/effect/attach_point/weapon/dropship1/right_wing,
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "65"
-	},
+/obj/structure/shuttle/part/dropship1/transparent/lower_right_wing,
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "wr" = (
 /obj/effect/attach_point/crew_weapon/dropship1,
@@ -383,16 +358,10 @@
 	icon_state = "rasputin15"
 	},
 /area/shuttle/drop1/sulaco)
-"xu" = (
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "44"
-	},
-/area/shuttle/drop1/sulaco)
 "xM" = (
+/obj/structure/shuttle/part/dropship1/bottom_right_wall,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/closed/shuttle/dropship1{
-	icon_state = "15"
-	},
+/turf/open/space/basic,
 /area/shuttle/drop1/sulaco)
 "yQ" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -401,15 +370,13 @@
 	},
 /area/shuttle/drop1/sulaco)
 "yU" = (
+/obj/structure/shuttle/part/dropship1/bottom_left_wall,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/closed/shuttle/dropship1{
-	icon_state = "9"
-	},
+/turf/open/space/basic,
 /area/shuttle/drop1/sulaco)
 "zw" = (
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "71"
-	},
+/obj/structure/shuttle/part/dropship1/transparent/upper_left_wing,
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "zN" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -476,17 +443,15 @@
 /obj/effect/attach_point/electronics/dropship1{
 	dir = 1
 	},
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "85"
-	},
+/obj/structure/shuttle/part/dropship1/transparent/inner_left_weapons,
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "De" = (
 /obj/effect/attach_point/electronics/dropship1{
 	dir = 1
 	},
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "90"
-	},
+/obj/structure/shuttle/part/dropship1/transparent/inner_right_weapons,
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "Et" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -501,20 +466,13 @@
 	},
 /area/shuttle/drop1/sulaco)
 "EN" = (
+/obj/structure/shuttle/part/dropship1/transparent/engine_left_exhaust,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "16"
-	},
+/turf/open/space/basic,
 /area/shuttle/drop1/sulaco)
 "FA" = (
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "40"
-	},
-/area/shuttle/drop1/sulaco)
-"Gl" = (
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "45"
-	},
+/obj/structure/shuttle/part/dropship1/transparent/engine_left_cap,
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "Gw" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -543,9 +501,8 @@
 /area/shuttle/drop1/sulaco)
 "HP" = (
 /obj/effect/attach_point/weapon/dropship1/right_fore,
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "91"
-	},
+/obj/structure/shuttle/part/dropship1/transparent/outer_right_weapons,
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "HS" = (
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/ds1{
@@ -587,10 +544,9 @@
 	},
 /area/shuttle/drop1/sulaco)
 "Jm" = (
+/obj/structure/shuttle/part/dropship1/transparent/engine_right_exhaust,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "21"
-	},
+/turf/open/space/basic,
 /area/shuttle/drop1/sulaco)
 "JP" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -599,11 +555,7 @@
 	},
 /area/shuttle/drop1/sulaco)
 "KC" = (
-/obj/structure/machinery/door/airlock/hatch/cockpit{
-	req_access = null;
-	req_access_txt = "22";
-	req_one_access = null
-	},
+/obj/structure/machinery/door/airlock/hatch/cockpit,
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/dropship{
@@ -623,10 +575,9 @@
 	},
 /area/shuttle/drop1/sulaco)
 "Me" = (
+/obj/structure/shuttle/part/dropship1/left_inner_wing_connector,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/closed/shuttle/dropship1{
-	icon_state = "7"
-	},
+/turf/open/space/basic,
 /area/shuttle/drop1/sulaco)
 "MP" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -635,9 +586,9 @@
 	},
 /area/shuttle/drop1/sulaco)
 "NQ" = (
-/obj/docking_port/mobile/marine_dropship/alamo,
+/obj/structure/shuttle/part/dropship1/transparent/left_inner_bottom_wing,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/closed/shuttle/dropship1/transparent,
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "Oq" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -646,6 +597,7 @@
 	},
 /area/shuttle/drop1/sulaco)
 "OK" = (
+/obj/docking_port/mobile/marine_dropship/alamo,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/dropship1{
 	icon_state = "53"
@@ -697,16 +649,14 @@
 	},
 /area/shuttle/drop1/sulaco)
 "QT" = (
+/obj/structure/shuttle/part/dropship1/nose_front_left,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/closed/shuttle/dropship1{
-	icon_state = "95"
-	},
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "QW" = (
+/obj/structure/shuttle/part/dropship1/transparent/right_outer_bottom_wing,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "6"
-	},
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "RI" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -721,16 +671,14 @@
 	},
 /area/shuttle/drop1/sulaco)
 "Ta" = (
+/obj/structure/shuttle/part/dropship1/right_inner_wing_connector,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/closed/shuttle/dropship1{
-	icon_state = "8"
-	},
+/turf/open/space/basic,
 /area/shuttle/drop1/sulaco)
 "Te" = (
+/obj/structure/shuttle/part/dropship1/transparent/right_inner_bottom_wing,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "5"
-	},
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "Tt" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -775,9 +723,8 @@
 /area/shuttle/drop1/sulaco)
 "TM" = (
 /obj/effect/attach_point/weapon/dropship1/left_fore,
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "84"
-	},
+/obj/structure/shuttle/part/dropship1/transparent/outer_left_weapons,
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "Ua" = (
 /obj/effect/attach_point/fuel/dropship1,
@@ -809,15 +756,13 @@
 	},
 /area/shuttle/drop1/sulaco)
 "VM" = (
-/turf/closed/shuttle/dropship1/transparent{
-	icon_state = "100"
-	},
+/obj/structure/shuttle/part/dropship1/transparent/nose_top_left,
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "Wg" = (
+/obj/structure/shuttle/part/dropship1/right_outer_wing_connector,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/closed/shuttle/dropship1{
-	icon_state = "4"
-	},
+/turf/open/space/basic,
 /area/shuttle/drop1/sulaco)
 "WQ" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -906,7 +851,7 @@ eD
 Il
 iC
 rr
-cK
+Jm
 mb
 mb
 NQ
@@ -1086,11 +1031,11 @@ Pf
 nC
 nE
 rl
-xu
+FA
 Bn
 Qh
 TE
-wh
+EN
 mb
 mb
 QW
@@ -1109,7 +1054,7 @@ mb
 mb
 mb
 mb
-Gl
+eD
 Gw
 os
 qy

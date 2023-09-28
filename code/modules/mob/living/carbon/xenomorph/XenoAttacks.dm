@@ -91,7 +91,10 @@
 	if(xeno.fortify || xeno.burrow)
 		return XENO_NO_DELAY_ACTION
 
-	if(islarva(xeno))
+	if(HAS_TRAIT(src, TRAIT_ABILITY_BURROWED))
+		return XENO_NO_DELAY_ACTION
+
+	if(islarva(xeno)) //Larvas can't eat people
 		xeno.visible_message(SPAN_DANGER("[xeno] nudges its head against \the [src]."), \
 		SPAN_DANGER("You nudge your head against \the [src]."), null, null, CHAT_TYPE_XENO_FLUFF)
 		return
@@ -177,9 +180,9 @@
 			xeno.animation_attack_on(src)
 			xeno.flick_attack_overlay(src, "disarm")
 			var/is_shover_queen = isqueen(xeno)
-			var/can_resist_shove = xeno.faction != src.faction || ((isqueen(src) || IS_XENO_LEADER(src)) && !is_shover_queen)
+			var/can_resist_shove = xeno.faction != faction || ((isqueen(src) || IS_XENO_LEADER(src)) && !is_shover_queen)
 			var/can_mega_shove = is_shover_queen || IS_XENO_LEADER(xeno)
-			if(can_mega_shove && !can_resist_shove)
+			if(can_mega_shove && !can_resist_shove || (mob_size < MOB_SIZE_XENO_SMALL && xeno.mob_size >= MOB_SIZE_XENO_SMALL))
 				playsound(loc, 'sound/weapons/alien_knockdown.ogg', 25, 1)
 				xeno.visible_message(SPAN_WARNING("\The [xeno] shoves \the [src] out of her way!"), \
 				SPAN_WARNING("You shove \the [src] out of your way!"), null, 5, CHAT_TYPE_XENO_COMBAT)

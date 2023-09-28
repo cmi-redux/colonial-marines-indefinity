@@ -2,7 +2,8 @@
 //BASED TACMAP VALUES//
 ///////////////////////
 /// Converts the overworld x and y to minimap x and y values
-#define MINIMAP_PIXEL_FROM_WORLD(val) (val*2-3)
+#define MINIMAP_SCALE 2
+#define MINIMAP_PIXEL_FROM_WORLD(val) (val*MINIMAP_SCALE-3)
 /// actual size of a users screen in pixels
 #define SCREEN_PIXEL_SIZE 480
 /// tacmaps traits
@@ -46,6 +47,7 @@
 #define MINIMAP_SQUAD_ECHO "#00b043"
 #define MINIMAP_SQUAD_FOXTROT "#fe7b2e"
 #define MINIMAP_SQUAD_SOF "#400000"
+#define MINIMAP_SQUAD_INTEL "#053818"
 
 #define MINIMAP_ICON_BACKGROUND_CIVILIAN "#7D4820"
 #define MINIMAP_ICON_BACKGROUND_CIC "#3f3f3f"
@@ -54,6 +56,7 @@
 
 #define MINIMAP_ICON_COLOR_COMMANDER "#c6fcfc"
 #define MINIMAP_ICON_COLOR_HEAD "#F0C542"
+#define MINIMAP_ICON_COLOR_SILVER "#c0c0c0"
 #define MINIMAP_ICON_COLOR_BRONZE "#eb9545"
 
 #define MINIMAP_ICON_COLOR_DOCTOR "#b83737"

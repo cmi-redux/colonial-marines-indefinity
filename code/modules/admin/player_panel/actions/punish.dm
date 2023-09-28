@@ -33,7 +33,7 @@
 	var/reason = ""
 	if(alert("Are you sure you want to EORG ban [target.ckey]?", user.auto_lang(LANGUAGE_CONFIRM), user.auto_lang(LANGUAGE_YES), user.auto_lang(LANGUAGE_NO)) == user.auto_lang(LANGUAGE_YES))
 		mins = 180
-		reason = "EORG"
+		reason = "EORG - Generating combat logs with, or otherwise griefing, friendly/allied players."
 	else
 		return
 

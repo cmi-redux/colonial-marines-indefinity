@@ -53,6 +53,8 @@ DEFINE_BITFIELD(lighting_flags, list(
 		"288" = 'icons/effects/light_overlays/light_288.dmi',
 		"320" = 'icons/effects/light_overlays/light_320.dmi',
 		"352" = 'icons/effects/light_overlays/light_352.dmi',
+		"384" = 'icons/effects/light_overlays/light_384.dmi',
+		"416" = 'icons/effects/light_overlays/light_416.dmi',
 		)
 
 	///Overlay effect to cut into the darkness and provide light.
@@ -81,8 +83,8 @@ DEFINE_BITFIELD(lighting_flags, list(
 		return COMPONENT_INCOMPATIBLE
 
 	var/atom/movable/movable_parent = parent
-	if(movable_parent.light_system != MOVABLE_LIGHT && movable_parent.light_system != MOVABLE_LIGHT_DIRECTIONAL)
-		stack_trace("[type] added to [parent], with [movable_parent.light_system] value for the light_system var. Use [MOVABLE_LIGHT] or [MOVABLE_LIGHT_DIRECTIONAL] instead.")
+	if(movable_parent.light_system != MOVABLE_LIGHT && movable_parent.light_system != DIRECTIONAL_LIGHT)
+		stack_trace("[type] added to [parent], with [movable_parent.light_system] value for the light_system var. Use [MOVABLE_LIGHT]/[DIRECTIONAL_LIGHT] instead.")
 		return COMPONENT_INCOMPATIBLE
 
 	. = ..()
@@ -91,8 +93,6 @@ DEFINE_BITFIELD(lighting_flags, list(
 	visible_mask.plane = O_LIGHTING_VISUAL_PLANE
 	visible_mask.appearance_flags = RESET_COLOR | RESET_ALPHA | RESET_TRANSFORM
 	visible_mask.alpha = 0
-	visible_mask.pixel_x = movable_parent.pixel_x
-	visible_mask.pixel_y = movable_parent.pixel_y
 	if(is_directional)
 		directional = TRUE
 		cone = image('icons/effects/light_overlays/light_cone.dmi', icon_state = "light")
@@ -113,17 +113,17 @@ DEFINE_BITFIELD(lighting_flags, list(
 	if(!isnull(starts_on))
 		movable_parent.set_light_on(starts_on)
 
-
 /datum/component/overlay_lighting/RegisterWithParent()
 	. = ..()
 	if(directional)
 		RegisterSignal(parent, COMSIG_ATOM_DIR_CHANGE, PROC_REF(on_parent_dir_change))
-	RegisterSignal(parent, COMSIG_ATOM_UPDATE_LIGHT_RANGE, PROC_REF(set_range))
-	RegisterSignal(parent, COMSIG_ATOM_UPDATE_LIGHT_POWER, PROC_REF(set_power))
-	RegisterSignal(parent, COMSIG_ATOM_UPDATE_LIGHT_COLOR, PROC_REF(set_color))
-	RegisterSignal(parent, COMSIG_ATOM_UPDATE_LIGHT_ON, PROC_REF(on_toggle))
-	RegisterSignal(parent, COMSIG_ATOM_UPDATE_LIGHT_FLAGS, PROC_REF(on_light_flags_change))
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(on_parent_moved))
+	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(check_holder))
+	RegisterSignal(parent, COMSIG_ATOM_SET_LIGHT_RANGE, PROC_REF(set_range))
+	RegisterSignal(parent, COMSIG_ATOM_SET_LIGHT_POWER, PROC_REF(set_power))
+	RegisterSignal(parent, COMSIG_ATOM_SET_LIGHT_COLOR, PROC_REF(set_color))
+	RegisterSignal(parent, COMSIG_ATOM_SET_LIGHT_ON, PROC_REF(on_toggle))
+	RegisterSignal(parent, COMSIG_ATOM_SET_LIGHT_FLAGS, PROC_REF(on_light_flags_change))
 	var/atom/movable/movable_parent = parent
 	if(movable_parent.light_flags & LIGHT_ATTACHED)
 		overlay_lighting_flags |= LIGHTING_ATTACHED
@@ -140,11 +140,11 @@ DEFINE_BITFIELD(lighting_flags, list(
 	clean_old_turfs()
 	UnregisterSignal(parent, list(
 		COMSIG_MOVABLE_MOVED,
-		COMSIG_ATOM_UPDATE_LIGHT_RANGE,
-		COMSIG_ATOM_UPDATE_LIGHT_POWER,
-		COMSIG_ATOM_UPDATE_LIGHT_COLOR,
-		COMSIG_ATOM_UPDATE_LIGHT_ON,
-		COMSIG_ATOM_UPDATE_LIGHT_FLAGS,
+		COMSIG_ATOM_SET_LIGHT_RANGE,
+		COMSIG_ATOM_SET_LIGHT_POWER,
+		COMSIG_ATOM_SET_LIGHT_COLOR,
+		COMSIG_ATOM_SET_LIGHT_ON,
+		COMSIG_ATOM_SET_LIGHT_FLAGS,
 		))
 	if(directional)
 		UnregisterSignal(parent, COMSIG_ATOM_DIR_CHANGE)
@@ -174,12 +174,16 @@ DEFINE_BITFIELD(lighting_flags, list(
 /datum/component/overlay_lighting/proc/get_new_turfs()
 	if(!current_holder)
 		return
-	. = list()
-	for(var/turf/lit_turf in view(lumcount_range, get_turf(current_holder)))
-		lit_turf.dynamic_lumcount += lum_power
-		. += lit_turf
-	if(length(.))
-		affected_turfs = .
+	LAZYINITLIST(affected_turfs)
+	if(range <= 2)
+		//Range here is 1 because actual range of lighting mask is 1 tile even if it says that range is 2
+		for(var/turf/lit_turf in RANGE_TURFS(1, current_holder.loc))
+			lit_turf.dynamic_lumcount += lum_power
+			affected_turfs += lit_turf
+	else
+		for(var/turf/lit_turf in view(lumcount_range, get_turf(current_holder)))
+			lit_turf.dynamic_lumcount += lum_power
+			affected_turfs += lit_turf
 
 
 ///Clears the old affected turfs and populates the new ones.
@@ -194,7 +198,7 @@ DEFINE_BITFIELD(lighting_flags, list(
 
 ///Adds the luminosity and source for the afected movable atoms to keep track of their visibility.
 /datum/component/overlay_lighting/proc/add_dynamic_lumi()
-	LAZYSET(current_holder.affected_dynamic_lights, src, lumcount_range + 1)
+	LAZYSET(current_holder.affected_movable_lights, src, lumcount_range + 1)
 	current_holder.underlays += visible_mask
 	current_holder.update_dynamic_luminosity()
 	if(directional)
@@ -202,7 +206,7 @@ DEFINE_BITFIELD(lighting_flags, list(
 
 ///Removes the luminosity and source for the afected movable atoms to keep track of their visibility.
 /datum/component/overlay_lighting/proc/remove_dynamic_lumi()
-	LAZYREMOVE(current_holder.affected_dynamic_lights, src)
+	LAZYREMOVE(current_holder.affected_movable_lights, src)
 	current_holder.underlays -= visible_mask
 	current_holder.update_dynamic_luminosity()
 	if(directional)
@@ -275,7 +279,6 @@ DEFINE_BITFIELD(lighting_flags, list(
 
 ///Called when the current_holder is qdeleted, to remove the light effect.
 /datum/component/overlay_lighting/proc/on_holder_qdel(atom/movable/source, force)
-	SIGNAL_HANDLER
 	UnregisterSignal(current_holder, list(COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_MOVED))
 	if(directional)
 		UnregisterSignal(current_holder, COMSIG_ATOM_DIR_CHANGE)
@@ -284,11 +287,27 @@ DEFINE_BITFIELD(lighting_flags, list(
 
 ///Called when current_holder changes loc.
 /datum/component/overlay_lighting/proc/on_holder_moved(atom/movable/source, OldLoc, Dir, Forced)
-	SIGNAL_HANDLER
 	if(!(overlay_lighting_flags & LIGHTING_ON))
 		return
 	make_luminosity_update()
 
+///Called when the current_holder is qdeleted, to remove the light effect.
+/datum/component/overlay_lighting/proc/on_parent_attached_to_qdel(atom/movable/source, force)
+	SIGNAL_HANDLER
+	UnregisterSignal(parent_attached_to, list(COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_MOVED))
+	if(directional)
+		UnregisterSignal(parent_attached_to, COMSIG_ATOM_DIR_CHANGE)
+	if(parent_attached_to == current_holder)
+		set_holder(null)
+	set_parent_attached_to(null)
+
+///Called when parent_attached_to changes loc.
+/datum/component/overlay_lighting/proc/on_parent_attached_to_moved(atom/movable/source, OldLoc, Dir, Forced)
+	SIGNAL_HANDLER
+	check_holder()
+	if(!(overlay_lighting_flags & LIGHTING_ON) || !current_holder)
+		return
+	make_luminosity_update()
 
 ///Called when parent changes loc.
 /datum/component/overlay_lighting/proc/on_parent_moved(atom/movable/source, OldLoc, Dir, Forced)
@@ -302,35 +321,14 @@ DEFINE_BITFIELD(lighting_flags, list(
 	make_luminosity_update()
 
 
-///Called when the current_holder is qdeleted, to remove the light effect.
-/datum/component/overlay_lighting/proc/on_parent_attached_to_qdel(atom/movable/source, force)
+///Changes the range which the light reaches. 0 means no light, 7 is the maximum value.
+/datum/component/overlay_lighting/proc/set_range(atom/source, new_range)
 	SIGNAL_HANDLER
-	UnregisterSignal(parent_attached_to, list(COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_MOVED))
-	if(directional)
-		UnregisterSignal(parent_attached_to, COMSIG_ATOM_DIR_CHANGE)
-	if(parent_attached_to == current_holder)
-		set_holder(null)
-	set_parent_attached_to(null)
-
-
-///Called when parent_attached_to changes loc.
-/datum/component/overlay_lighting/proc/on_parent_attached_to_moved(atom/movable/source, OldLoc, Dir, Forced)
-	SIGNAL_HANDLER
-	check_holder()
-	if(!(overlay_lighting_flags & LIGHTING_ON) || !current_holder)
-		return
-	make_luminosity_update()
-
-
-///Changes the range which the light reaches. 0 means no light, 6 is the maximum value.
-/datum/component/overlay_lighting/proc/set_range(atom/source, old_range)
-	SIGNAL_HANDLER
-	var/new_range = source.light_range
 	if(range == new_range)
 		return
 	if(range == 0)
 		turn_off()
-	range = clamp(CEILING(new_range, 0.5), 1, 6)
+	range = clamp(CEILING(new_range, 0.5), 1, 7)
 	var/pixel_bounds = ((range - 1) * 64) + 32
 	lumcount_range = CEILING(range, 1)
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
@@ -343,6 +341,8 @@ DEFINE_BITFIELD(lighting_flags, list(
 	var/matrix/transform = new
 	transform.Translate(-offset, -offset)
 	visible_mask.transform = transform
+	directional_offset_x = 0
+	directional_offset_y = 0
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
 		current_holder.underlays += visible_mask
 	if(directional)
@@ -352,9 +352,8 @@ DEFINE_BITFIELD(lighting_flags, list(
 
 
 ///Changes the intensity/brightness of the light by altering the visual object's alpha.
-/datum/component/overlay_lighting/proc/set_power(atom/source, old_power)
+/datum/component/overlay_lighting/proc/set_power(atom/source, new_power)
 	SIGNAL_HANDLER
-	var/new_power = source.light_power
 	set_lum_power(new_power >= 0 ? 0.5 : -0.5)
 	set_alpha = min(230, (abs(new_power) * 120) + 30)
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
@@ -362,8 +361,10 @@ DEFINE_BITFIELD(lighting_flags, list(
 	visible_mask.alpha = set_alpha
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
 		current_holder.underlays += visible_mask
+
 	if(!directional)
 		return
+
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
 		current_holder.underlays -= cone
 	cone.alpha = min(200, (abs(new_power) * 90)+20)
@@ -372,16 +373,17 @@ DEFINE_BITFIELD(lighting_flags, list(
 
 
 ///Changes the light's color, pretty straightforward.
-/datum/component/overlay_lighting/proc/set_color(atom/source, old_color)
+/datum/component/overlay_lighting/proc/set_color(atom/source, new_color)
 	SIGNAL_HANDLER
-	var/new_color = source.light_color
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
 		current_holder.underlays -= visible_mask
 	visible_mask.color = new_color
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
 		current_holder.underlays += visible_mask
+
 	if(!directional)
 		return
+
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
 		current_holder.underlays -= cone
 	cone.color = new_color
@@ -390,22 +392,17 @@ DEFINE_BITFIELD(lighting_flags, list(
 
 
 ///Toggles the light on and off.
-/datum/component/overlay_lighting/proc/on_toggle(atom/source, old_value)
+/datum/component/overlay_lighting/proc/on_toggle(atom/source, new_value)
 	SIGNAL_HANDLER
-	var/new_value = source.light_on
 	if(new_value) //Truthy value input, turn on.
 		turn_on()
 		return
 	turn_off() //Falsey value, turn off.
 
-
 ///Triggered right after the parent light flags change.
-/datum/component/overlay_lighting/proc/on_light_flags_change(atom/source, old_flags)
+/datum/component/overlay_lighting/proc/on_light_flags_change(atom/source, new_flags)
 	SIGNAL_HANDLER
-	var/new_flags = source.light_flags
 	var/atom/movable/movable_parent = parent
-	if(!((new_flags ^ old_flags) & LIGHT_ATTACHED))
-		return
 
 	if(new_flags & LIGHT_ATTACHED) // Gained the [LIGHT_ATTACHED] property
 		overlay_lighting_flags |= LIGHTING_ATTACHED
@@ -415,16 +412,15 @@ DEFINE_BITFIELD(lighting_flags, list(
 		overlay_lighting_flags &= ~LIGHTING_ATTACHED
 		set_parent_attached_to(null)
 
-
 ///Toggles the light on.
 /datum/component/overlay_lighting/proc/turn_on()
 	if(overlay_lighting_flags & LIGHTING_ON)
 		return
+	overlay_lighting_flags |= LIGHTING_ON
 	if(current_holder)
+		add_dynamic_lumi(current_holder)
 		if(directional)
 			cast_directional_light()
-		add_dynamic_lumi()
-	overlay_lighting_flags |= LIGHTING_ON
 	if(current_holder && current_holder != parent && current_holder != parent_attached_to)
 		RegisterSignal(current_holder, COMSIG_MOVABLE_MOVED, PROC_REF(on_holder_moved))
 	get_new_turfs()
@@ -449,7 +445,8 @@ DEFINE_BITFIELD(lighting_flags, list(
 	. = lum_power
 	lum_power = new_lum_power
 	var/difference = . - lum_power
-	for(var/turf/lit_turf as anything in affected_turfs)
+	for(var/t in affected_turfs)
+		var/turf/lit_turf = t
 		lit_turf.dynamic_lumcount -= difference
 
 ///Here we append the behavior associated to changing lum_power.
@@ -496,6 +493,10 @@ DEFINE_BITFIELD(lighting_flags, list(
 ///Called when parent changes loc.
 /datum/component/overlay_lighting/proc/on_parent_dir_change(atom/movable/source, olddir, newdir)
 	SIGNAL_HANDLER
+
+	if(current_holder?.dir != newdir)
+		return
+
 	set_direction(newdir)
 
 ///Sets a new direction for the directional cast, then updates luminosity

@@ -14,7 +14,7 @@
 	actions_types = list(/datum/action/item_action)
 
 	light_system = MOVABLE_LIGHT
-	light_range = 4
+	light_range = 5
 	light_power = 0.5
 	light_color = COLOR_WHITE
 	light_on = FALSE
@@ -39,8 +39,7 @@
 		user = loc
 	set_light_on(toggle_on)
 	update_icon()
-	for(var/X in actions)
-		var/datum/action/action = X
+	for(var/datum/action/action in actions)
 		action.update_button_icon()
 
 /obj/item/device/flashlight/pickup(mob/living/M)
@@ -169,6 +168,7 @@
 	light_on = TRUE
 	w_class = SIZE_LARGE
 	raillight_compatible = 0
+	breaking_sound = 'sound/effects/Glasshit.ogg'
 
 //Menorah!
 /obj/item/device/flashlight/lamp/menorah
@@ -227,13 +227,13 @@
 	name = "flare"
 	desc = "A red USCM issued flare. There are instructions on the side, it reads 'pull cord, make light'."
 	w_class = SIZE_SMALL
-	light_power = 1 //As bright as a flashlight, but more disposable. Doesn't burn forever though
+	light_power = 2
+	light_range = 7
 	light_color = COLOR_RED_LIGHT
 	icon_state = "flare"
 	item_state = "flare"
 	actions = list() //just pull it manually, neckbeard.
 	raillight_compatible = 0
-	light_range = 7
 	can_be_broken = FALSE
 	var/burnt_out = FALSE
 	var/fuel = 0
@@ -254,7 +254,7 @@
 
 /obj/item/device/flashlight/flare/Initialize()
 	. = ..()
-	fuel = rand(1600 SECONDS, 2000 SECONDS)
+	fuel = rand(9.5 MINUTES, 12.5 MINUTES)
 	ammo_datum = GLOB.ammo_list[ammo_datum]
 	if(light_on)
 		turn_light(null, TRUE)
@@ -377,14 +377,13 @@
 	name = "illumination flare"
 	desc = "It's really bright, and unreachable."
 	icon_state = "" //No sprite
-	invisibility = 101 //Can't be seen or found, it's "up in the sky"
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	light_power = 1 //Way brighter than most lights
 	show_flame = FALSE
 
 /obj/item/device/flashlight/flare/on/illumination/Initialize()
 	. = ..()
-	fuel = rand(800 SECONDS, 1000 SECONDS) // Half the duration of a flare, but justified since it's invincible
+	fuel = rand(4.5 MINUTES, 5.5 MINUTES) // Half the duration of a flare, but justified since it's invincible
 
 /obj/item/device/flashlight/flare/on/illumination/update_icon()
 	return
@@ -398,7 +397,7 @@
 
 /obj/item/device/flashlight/flare/on/starshell_ash
 	name = "burning star shell ash"
-	desc = "Bright burning ash from a Star Shell 40mm. Don't touch, oh it'll burn ya'."
+	desc = "Bright burning ash from a Star Shell 40mm. Don't touch, or it'll burn ya'."
 	icon_state = "starshell_ash"
 	light_power = 0.7
 	anchored = TRUE
@@ -409,17 +408,18 @@
 	if(mapload)
 		return INITIALIZE_HINT_QDEL
 	. = ..()
-	fuel = rand(5 SECONDS, 60 SECONDS)
+	fuel = rand(30 SECONDS,	60 SECONDS)
 
 /obj/item/device/flashlight/flare/on/illumination/chemical
 	name = "chemical light"
 	light_power = 0
+	light_range = 0
 	light_color = COLOR_VERY_SOFT_YELLOW
-	light_range = 12 //Way brighter than most lights
 
 /obj/item/device/flashlight/flare/on/illumination/chemical/Initialize(mapload, amount)
 	. = ..()
 	light_power = round(amount * 0.01)
+	light_range = round(amount * 0.04)
 	if(!light_power)
 		return INITIALIZE_HINT_QDEL
 	fuel = amount * 5 SECONDS
@@ -434,6 +434,7 @@
 	item_state = "slime"
 	w_class = SIZE_TINY
 	light_power = 0.2
+	light_range = 6
 	// Bio-luminesence has one setting, on.
 	light_on = TRUE
 	raillight_compatible = FALSE

@@ -40,6 +40,8 @@
 	movement_sound = 'sound/vehicles/tank_driving.ogg'
 	honk_sound = 'sound/vehicles/honk_2_truck.ogg'
 
+	vehicle_light_range = 8
+
 	move_max_momentum = 3
 
 	hardpoints_allowed = list(
@@ -219,7 +221,7 @@
 /obj/vehicle/multitile/van/proc/reset_overdrive()
 	misc_multipliers["move"] += overdrive_speed_mult
 
-/obj/vehicle/multitile/van/get_projectile_hit_boolean(obj/item/projectile/proj)
+/obj/vehicle/multitile/van/get_projectile_hit_boolean(obj/projectile/proj)
 	if(src == proj.original_target) //clicking on the van itself will hit it.
 		var/hitchance = proj.get_effective_accuracy()
 		if(prob(hitchance))

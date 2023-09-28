@@ -124,7 +124,7 @@
 /area/vehicle/apc)
 "t" = (
 /obj/structure/surface/table/woodentable/fancy,
-/obj/structure/machinery/chem_dispenser/beer,
+/obj/structure/machinery/chem_dispenser/soda/beer,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood,
 /area/vehicle/apc)

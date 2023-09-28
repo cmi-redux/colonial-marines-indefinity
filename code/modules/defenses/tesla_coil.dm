@@ -137,7 +137,6 @@
 	if(targets)
 		targets = null
 
-	set_light_on(FALSE)
 	. = ..()
 
 #define TESLA_COIL_STUN_FIRE_DELAY 3 SECONDS

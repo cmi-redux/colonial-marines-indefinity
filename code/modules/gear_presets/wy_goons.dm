@@ -7,7 +7,7 @@
 
 /datum/equipment_preset/goon/New()
 	. = ..()
-	access = get_all_accesses() + get_all_centcom_access()
+	access = get_access(ACCESS_LIST_WY_GOON)
 
 /datum/equipment_preset/goon/load_name(mob/living/carbon/human/new_human, randomise)
 	new_human.gender = pick(MALE, FEMALE)
@@ -94,6 +94,10 @@
 	rank = JOB_WY_GOON_LEAD
 	paygrade = "WEY-GOON-L"
 	skills = /datum/skills/mp
+
+/datum/equipment_preset/goon/lead/New()
+	. = ..()
+	access = get_access(ACCESS_LIST_WY_GOON) + list(ACCESS_WY_LEADERSHIP)
 
 /datum/equipment_preset/goon/lead/load_gear(mob/living/carbon/human/new_human)
 	new_human.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/wy, WEAR_L_EAR)

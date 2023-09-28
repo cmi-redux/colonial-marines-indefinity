@@ -358,7 +358,11 @@
 	icon = 'icons/mob/hud/screen1_robot.dmi'
 
 /atom/movable/screen/clicked(mob/user)
-	if(!user) return TRUE
+	if(!user)
+		return TRUE
+
+	if(isobserver(user))
+		return TRUE
 
 	switch(name)
 		if("equip")
@@ -863,3 +867,7 @@
 /atom/movable/screen/rotate/alt
 	dir = WEST
 	rotate_amount = -90
+
+/atom/movable/screen/vulture_scope // The part of the vulture's scope that drifts over time
+	icon_state = "vulture_unsteady"
+	screen_loc = "CENTER,CENTER"

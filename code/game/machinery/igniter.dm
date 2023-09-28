@@ -60,10 +60,10 @@
 	if(!(stat & NOPOWER) && !disable)
 
 		icon_state = "[base_state]"
-//		sd_set_light(2)
+// src.sd_set_light(2)
 	else
 		icon_state = "[base_state]-p"
-//		sd_set_light(0)
+// src.sd_set_light(0)
 
 /obj/structure/machinery/sparker/attackby(obj/item/W as obj, mob/user as mob)
 	if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))

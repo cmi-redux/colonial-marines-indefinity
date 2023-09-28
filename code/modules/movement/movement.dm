@@ -129,7 +129,12 @@
 
 /atom/movable/proc/Moved(atom/old_loc, direction, Forced = FALSE,  list/old_locs)
 	SEND_SIGNAL(src, COMSIG_MOVABLE_MOVED, old_loc, direction, Forced)
-	//Cycle through the light sources on this atom and tell them to update.
+	for(var/datum/dynamic_light_source/light as anything in hybrid_light_sources)
+		light.source_atom.update_light()
+		if(!isturf(loc))
+			light.find_containing_atom()
+	for(var/datum/static_light_source/L as anything in static_light_sources) // Cycle through the light sources on this atom and tell them to update.
+		L.source_atom.static_update_light()
 	if(client_mobs_in_contents)
 		update_parallax_contents()
 	return TRUE

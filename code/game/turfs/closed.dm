@@ -289,6 +289,14 @@
 /turf/closed/shuttle/dropship2/transparent
 	opacity = FALSE
 
+/turf/closed/shuttle/twe_dropship
+	name = "\improper UD4-UK"
+	icon = 'icons/turf/twedropship.dmi'
+	icon_state = "0,0"
+
+/turf/closed/shuttle/twe_dropship/transparent
+	opacity = FALSE
+
 /turf/closed/shuttle/dropship2/tornado
 	name = "\improper Tornado"
 	icon = 'icons/turf/dropship3.dmi'

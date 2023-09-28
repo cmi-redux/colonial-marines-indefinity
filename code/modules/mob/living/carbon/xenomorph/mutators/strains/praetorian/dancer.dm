@@ -1,8 +1,14 @@
 /datum/xeno_mutation/strain/praetorian_dancer
 	// My name is Cuban Pete, I'm the King of the Rumba Beat
+<<<<<<< HEAD
 	name = LANGUAGE_STRAIN_DANCER
 	description = LANGUAGE_STRAIN_DESC_DANCER
 	flavor_description = LANGUAGE_STRAIN_FLAV_DESC_DANCER
+=======
+	name = "STRAIN: Praetorian - Dancer"
+	description = "You lose all of your acid-based abilities and a small amount of your armor in exchange for increased movement speed, evasion, and unparalleled agility that gives you an ability to move even more quickly, dodge bullets, and phase through tallhosts. By slashing tallhosts, you temporarily increase your movement speed and you also you apply a tag that changes how your two new tail abilities function. By tagging hosts, you will make Impale hit twice instead of once and make Tail Trip knock hosts down instead of stunning them."
+	flavor_description = "Demonstrate to the talls what 'there is beauty in death' truly symbolizes, then dance upon their graves!"
+>>>>>>> master
 	cost = MUTATOR_COST_EXPENSIVE
 	caste_whitelist = list(XENO_CASTE_PRAETORIAN) // Only bae
 	mutation_actions_to_remove = list(

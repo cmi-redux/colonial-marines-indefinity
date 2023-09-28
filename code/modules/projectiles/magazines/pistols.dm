@@ -8,7 +8,7 @@
 	caliber = CALIBER_9MM
 	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/uscm.dmi'
 	icon_state = "m4a3"
-	max_rounds = 9
+	max_rounds = 12
 	w_class = SIZE_SMALL
 	ammo_preset = list(/datum/ammo/bullet/pistol)
 	gun_type = /obj/item/weapon/gun/pistol/m4a3
@@ -62,7 +62,7 @@
 	ammo_preset = list(/datum/ammo/bullet/pistol/heavy)
 	caliber = CALIBER_45
 	icon_state = "m4a345"//rename later
-	max_rounds = 14
+	max_rounds = 7
 	gun_type = /obj/item/weapon/gun/pistol/m1911
 
 
@@ -117,6 +117,19 @@
 	ammo_preset = list(/datum/ammo/bullet/pistol/rubber)
 	ammo_band_color = AMMO_BAND_COLOR_RUBBER
 
+
+//-------------------------------------------------------
+//ES-4
+
+/obj/item/ammo_magazine/pistol/es4
+	name = "ES-4 stun magazine (9mm)"
+	default_ammo = /datum/ammo/bullet/pistol/rubber/stun
+	caliber = "9mm"
+	desc = "Holds 19 rounds of specialized Conductive 9mm. Electrostatic propulsion in the ES-4 functions by propelling an cV9mm round, at a proportionally slower velocity to maintain a higher kinetic energy transfer rate. All this turns a penetrative round into a less-than-lethal round."
+	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/wy.dmi'
+	icon_state = "es4"
+	max_rounds = 19
+	gun_type = /obj/item/weapon/gun/pistol/es4
 
 //-------------------------------------------------------
 //VP78
@@ -198,21 +211,53 @@
 	ammo_band_color = AMMO_BAND_COLOR_AP
 
 //-------------------------------------------------------
-//MAUSER MERC PISTOL //Inspired by the Makarov.
+//Type 31 pistol. //A makarov
 
-/obj/item/ammo_magazine/pistol/c99
-	name = "PK-9 magazine (.380)"
-	ammo_preset = list(/datum/ammo/bullet/pistol)
-	caliber = CALIBER_380
+/obj/item/ammo_magazine/pistol/np92
+	name = "NP92 magazine (9x18mm Makarov)"
+	default_ammo = list(/datum/ammo/bullet/pistol)
+	caliber = CALIBER_9MM
 	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/upp.dmi'
-	icon_state = "pk-9"
-	max_rounds = 8
-	gun_type = /obj/item/weapon/gun/pistol/c99
+	icon_state = "np92mag"
+	max_rounds = 12
+	gun_type = /obj/item/weapon/gun/pistol/np92
 
-/obj/item/ammo_magazine/pistol/c99/tranq
-	name = "PK-9 tranquilizer magazine (.380)"
-	ammo_preset = list(/datum/ammo/bullet/pistol/tranq)
-	icon_state = "pk-9_tranq"
+/obj/item/ammo_magazine/pistol/np92/suppressed
+	name = "NPZ92 magazine (9x18mm Makarov)"
+	default_ammo = list(/datum/ammo/bullet/pistol)
+	caliber = CALIBER_9MM
+	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/upp.dmi'
+	icon_state = "npz92mag"
+	max_rounds = 12
+
+/obj/item/ammo_magazine/pistol/np92/tranq
+	name = "NPZ92 tranq magazine (9x18mm Makarov)"
+	default_ammo = list(/datum/ammo/bullet/pistol/tranq)
+	caliber = CALIBER_9MM
+	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/upp.dmi'
+	icon_state = "npz92tranqmag"
+	max_rounds = 12
+
+//-------------------------------------------------------
+//Type 73 pistol. //A TT
+
+/obj/item/ammo_magazine/pistol/t73
+	name = "Type 73 magazine (7.62x25mm Tokarev)"
+	default_ammo = list(/datum/ammo/bullet/pistol/heavy)
+	caliber = "7.62x25mm Tokarev"
+	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/upp.dmi'
+	icon_state = "ttmag"
+	max_rounds = 9
+	gun_type = /obj/item/weapon/gun/pistol/t73
+
+/obj/item/ammo_magazine/pistol/t73_impact
+	name = "High Impact Type 74 magazine (7.62x25mm Tokarev)"
+	default_ammo = list(/datum/ammo/bullet/pistol/heavy/super/highimpact/upp)
+	caliber = "7.62x25mm Tokarev"
+	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/upp.dmi'
+	icon_state = "ttmag_impact"
+	max_rounds = 9
+	gun_type = /obj/item/weapon/gun/pistol/t73/leader
 
 //-------------------------------------------------------
 //KT-42 //Inspired by the .44 Auto Mag pistol
@@ -322,7 +367,7 @@ It is a modified Beretta 93R, and can fire three-round burst or single fire. Whe
 	name = "CZ-81 20-round magazine (.32ACP)"
 	desc = "A .32ACP caliber magazine for the CZ-81."
 	caliber = CALIBER_32ACP
-	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/upp.dmi'
+	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/colony.dmi'
 	icon_state = "skorpion" //PLACEHOLDER
 	gun_type = /obj/item/weapon/gun/pistol/skorpion
 	max_rounds = 20

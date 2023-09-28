@@ -3,6 +3,7 @@
 
 /area/adminlevel
 	ceiling = CEILING_METAL
+	base_lighting_alpha = 255
 
 /area/adminlevel/bunker01
 	icon_state = "thunder"
@@ -107,25 +108,42 @@
 // ERT Station
 /area/adminlevel/ert_station
 	name = "ERT Station"
-	icon_state = "erts"
-	requires_power = 0
+	icon_state = "green"
+	requires_power = FALSE
 	flags_area = AREA_NOTUNNEL
 
-/area/adminlevel/ert_station/pmc
+/area/adminlevel/ert_station/weyland_station
 	name = "PMC Command"
-	icon_state = "pmc"
+	icon_state = "red"
 
-/area/adminlevel/ert_station/uscm
+/area/adminlevel/ert_station/uscm_station
 	name = "USCM Command"
-	icon_state = "uscm"
+	icon_state = "green"
 
-/area/adminlevel/ert_station/upp
+/area/adminlevel/ert_station/clf_station
+	name = "CLF Station"
+	icon_state = "white"
+
+/area/adminlevel/ert_station/upp_station
 	name = "UPP Command"
-	icon_state = "upp"
+	icon_state = "green"
 
-/area/adminlevel/ert_station/xeno
+/area/adminlevel/ert_station/freelancer_station
+	name = "Freelancer Station"
+	icon_state = "yellow"
+
+/area/adminlevel/ert_station/royal_marines_station
+	name = "HMS Patna Hangerbay"
+	icon_state = "yellow"
+
+/area/adminlevel/ert_station/xenomorph_station
 	name = "RSC-M Research Facility"
-	icon_state = "rsc-m"
+	icon_state = "red"
+
+/area/adminlevel/ert_station/shuttle_dispatch
+	name = "Shuttle Dispatch Station"
+	soundscape_playlist = SCAPE_PL_ELEVATOR_MUSIC
+	icon_state = "yellow"
 
 //Simulation area
 /area/adminlevel/simulation

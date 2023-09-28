@@ -186,6 +186,8 @@
 	fire_mission_delay = 2
 	var/bullet_spread_range = 4 //how far from the real impact turf can bullets land
 	var/shrapnel_type = /datum/ammo/bullet/shrapnel/gau //For siming 30mm bullet impacts.
+	var/directhit_damage = 105 //how much damage is to be inficted to a mob, this is here so that we can hit resting mobs.
+	var/penetration = 10 //AP value pretty much
 
 /obj/structure/ship_ammo/heavygun/get_examine_text(mob/user)
 	. = ..()
@@ -205,24 +207,26 @@
 		turf_list += in_range
 	var/soundplaycooldown = 0
 	for(var/i = 1 to ammo_used_per_firing)
-		var/turf/turf = pick(turf_list)
+		var/turf/impact_tile = pick(turf_list)
 		if(!ammo_detonation)
-			turf = turf.air_hit(rand(1, 5), turf.get_real_roof())
+			impact_tile = impact_tile.air_hit(rand(1, 5), impact_tile.get_real_roof())
 		sleep(1)
-		turf.ex_act(EXPLOSION_THRESHOLD_VLOW, pick(GLOB.alldirs), weapon_cause_data)
-		create_shrapnel(turf, 1, 0, 0, shrapnel_type, weapon_cause_data, FALSE, 100) //simulates a bullet
-		for(var/atom/movable/AM in turf)
-			if(iscarbon(AM))
-				AM.ex_act(EXPLOSION_THRESHOLD_VLOW, null, weapon_cause_data)
+		impact_tile.ex_act(EXPLOSION_THRESHOLD_VLOW, pick(GLOB.alldirs), weapon_cause_data)
+		create_shrapnel(impact_tile, 1, 0, 0, shrapnel_type, weapon_cause_data, FALSE, 100) //simulates a bullet
+		for(var/atom/movable/explosion_effect in impact_tile)
+			if(iscarbon(explosion_effect))
+				var/mob/living/carbon/bullet_effect = explosion_effect
+				explosion_effect.ex_act(EXPLOSION_THRESHOLD_VLOW, null, weapon_cause_data)
+				bullet_effect.apply_armoured_damage(directhit_damage, ARMOR_BULLET, BRUTE, null, penetration)
 			else
-				AM.ex_act(EXPLOSION_THRESHOLD_VLOW)
+				explosion_effect.ex_act(EXPLOSION_THRESHOLD_VLOW)
 		if(!soundplaycooldown) //so we don't play the same sound 20 times very fast.
-			playsound(turf, 'sound/effects/gauimpact.ogg',40,1,20)
+			playsound(impact_tile, 'sound/effects/gauimpact.ogg', 40, 1, 20)
 			soundplaycooldown = 3
 		soundplaycooldown--
-		new /obj/effect/particle_effect/expl_particles(turf)
+		new /obj/effect/particle_effect/expl_particles(impact_tile)
 	sleep(11) //speed of sound simulation
-	playsound(impact, 'sound/effects/gau.ogg',100,1,60)
+	playsound(impact, 'sound/effects/gau.ogg', 100, 1, 60)
 
 
 /obj/structure/ship_ammo/heavygun/antitank
@@ -237,6 +241,8 @@
 	point_cost = 325
 	fire_mission_delay = 2
 	shrapnel_type = /datum/ammo/bullet/shrapnel/gau/at
+	directhit_damage = 80 //how much damage is to be inficted to a mob, this is here so that we can hit resting mobs.
+	penetration = 40 //AP value pretty much
 
 //laser battery
 
@@ -329,9 +335,8 @@
 	. = ..()
 	if(!ammo_detonation)
 		impact = impact.air_hit(rand(1, 5), impact.get_real_roof())
-	spawn(5)
-		cell_explosion(impact, 300, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data) //Your standard HE splash damage rocket. Good damage, good range, good speed, it's an all rounder
-		qdel(src)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), impact, 300, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data, source_mob), 0.5 SECONDS) //Your standard HE splash damage rocket. Good damage, good range, good speed, it's an all rounder
+	QDEL_IN(src, 0.5 SECONDS)
 
 /obj/structure/ship_ammo/rocket/banshee
 	name = "\improper AGM-227 'Banshee'"
@@ -345,10 +350,9 @@
 	. = ..()
 	if(!ammo_detonation)
 		impact = impact.air_hit(rand(1, 5), impact.get_real_roof())
-	spawn(5)
-		cell_explosion(impact, 175, 20, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data) //Small explosive power with a small fall off for a big explosion range
-		fire_spread(impact, weapon_cause_data, 4, 15, 50, "#00b8ff") //Very intense but the fire doesn't last very long
-		qdel(src)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), impact, 175, 20, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data, source_mob), 0.5 SECONDS) //Small explosive power with a small fall off for a big explosion range
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(fire_spread), impact, create_cause_data(initial(name), source_mob), 4, 15, 50, "#00b8ff"), 0.5 SECONDS) //Very intense but the fire doesn't last very long
+	QDEL_IN(src, 0.5 SECONDS)
 
 /obj/structure/ship_ammo/rocket/keeper
 	name = "\improper GBU-67 'Keeper II'"
@@ -363,9 +367,8 @@
 	. = ..()
 	if(!ammo_detonation)
 		impact = impact.air_hit(rand(1, 5), impact.get_real_roof())
-	spawn(5)
-		cell_explosion(impact, 450, 100, EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL, null, weapon_cause_data) //Insane fall off combined with insane damage makes the Keeper useful for single targets, but very bad against multiple.
-		qdel(src)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), impact, 450, 100, EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL, null, weapon_cause_data, source_mob), 0.5 SECONDS) //Insane fall off combined with insane damage makes the Keeper useful for single targets, but very bad against multiple.
+	QDEL_IN(src, 0.5 SECONDS)
 
 /obj/structure/ship_ammo/rocket/harpoon
 	name = "\improper AGM-84 'Harpoon'"
@@ -381,9 +384,8 @@
 	. = ..()
 	if(!ammo_detonation)
 		impact = impact.air_hit(rand(1, 5), impact.get_real_roof())
-	spawn(5)
-		cell_explosion(impact, 150, 16, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data)
-		qdel(src)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), impact, 150, 16, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data, source_mob), 0.5 SECONDS)
+	QDEL_IN(src, 0.5 SECONDS)
 
 /obj/structure/ship_ammo/rocket/napalm
 	name = "\improper XN-99 'Napalm'"
@@ -397,11 +399,25 @@
 	. = ..()
 	if(!ammo_detonation)
 		impact = impact.air_hit(rand(1, 5), impact.get_real_roof())
-	spawn(5)
-		cell_explosion(impact, 200, 25, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data)
-		fire_spread(impact, weapon_cause_data, 6, 60, 30, "#EE6515") //Color changed into napalm's color to better convey how intense the fire actually is.
-		qdel(src)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), impact, 200, 25, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data, source_mob), 0.5 SECONDS)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(fire_spread), impact, create_cause_data(initial(name), source_mob), 6, 60, 30, "#EE6515"), 0.5 SECONDS) //Color changed into napalm's color to better convey how intense the fire actually is.
+	QDEL_IN(src, 0.5 SECONDS)
 
+/obj/structure/ship_ammo/rocket/thermobaric
+	name = "\improper BLU-200 'Dragons Breath'"
+	desc = "The BLU-200 Dragons Breath a thermobaric fuel-air bomb. The aerosolized fuel mixture creates a vacuum when ignited causing serious damage to those in its way."
+	icon_state = "fatty"
+	ammo_id = "f"
+	travelling_time = 50
+	point_cost = 300
+	fire_mission_delay = 4
+
+/obj/structure/ship_ammo/rocket/thermobaric/detonate_on(turf/impact)
+	impact.ceiling_debris_check(3)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(fire_spread), impact, create_cause_data(initial(name), source_mob), 4, 25, 50, "#c96500"), 0.5 SECONDS) //Very intense but the fire doesn't last very long
+	for(var/mob/living/carbon/victim in orange(5, impact))
+		victim.throw_atom(impact, 3, 15, src, TRUE) // Implosion throws affected towards center of vacuum
+	QDEL_IN(src, 0.5 SECONDS)
 
 
 //minirockets

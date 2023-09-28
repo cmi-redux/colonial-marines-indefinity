@@ -151,7 +151,7 @@
 
 	. = ..()
 
-/obj/structure/window_frame/bullet_act(obj/item/projectile/proj)
+/obj/structure/window_frame/bullet_act(obj/projectile/proj)
 	bullet_ping(proj)
 	take_damage(proj.damage)
 	return TRUE
@@ -238,6 +238,12 @@
 	icon_state = "strata_window0_frame"
 	basestate = "strata_window"
 	reinforced = TRUE
+
+/obj/structure/window_frame/strata/hull
+	icon_state = "strata_window0_frame"
+	basestate = "strata_window"
+	unslashable = TRUE
+	unacidable = TRUE
 
 //Kutjevo frames
 

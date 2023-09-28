@@ -59,9 +59,9 @@
 
 	var/datum/mob_hud/H = huds[MOB_HUD_XENO_STATUS]
 	if(xeno_mobhud)
-		H.remove_hud_from(usr)
+		H.remove_hud_from(usr, usr)
 	else
-		H.add_hud_to(usr)
+		H.add_hud_to(usr, usr)
 
 	xeno_mobhud = !xeno_mobhud
 
@@ -72,9 +72,9 @@
 
 	var/datum/mob_hud/H = huds[MOB_HUD_XENO_HOSTILE]
 	if(xeno_hostile_hud)
-		H.remove_hud_from(usr)
+		H.remove_hud_from(usr, usr)
 	else
-		H.add_hud_to(usr)
+		H.add_hud_to(usr, usr)
 
 	xeno_hostile_hud = !xeno_hostile_hud
 
@@ -93,6 +93,21 @@
 		to_chat(src, SPAN_NOTICE("The selected xeno ability will now be activated with middle mouse clicking."))
 	else
 		to_chat(src, SPAN_NOTICE("The selected xeno ability will now be activated with shift clicking."))
+
+/mob/living/carbon/xenomorph/verb/ability_deactivation_toggle()
+	set name = "Toggle Ability Deactivation"
+	set desc = "Toggles whether you can deactivate your currently active ability when re-selecting it."
+	set category = "Alien"
+
+	if (!client || !client.prefs)
+		return
+
+	client.prefs.toggle_prefs ^= TOGGLE_ABILITY_DEACTIVATION
+	client.prefs.save_preferences()
+	if(client.prefs.toggle_prefs & TOGGLE_ABILITY_DEACTIVATION)
+		to_chat(src, SPAN_NOTICE("Your current ability can be toggled off when re-selected."))
+	else
+		to_chat(src, SPAN_NOTICE("Your current ability can no longer be toggled off when re-selected."))
 
 /mob/living/carbon/xenomorph/verb/directional_attack_toggle()
 	set name = "Toggle Directional Attacks"

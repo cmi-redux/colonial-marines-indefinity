@@ -45,18 +45,9 @@ structure:
 	//events are not part of regular gameplay, therefore, no statistics
 	statistic_exempt = TRUE
 
-	//no dynamic lighting
-	exterior_light = 0
-
 	//always powered
 	requires_power = FALSE
 	unlimited_power = TRUE
-
-/area/event/Initialize()
-	. = ..()
-	if(exterior_light)
-		for(var/turf/T in contents)
-			T.set_light(exterior_light)
 
 //no dynamic lighting, unpowered.
 /area/event/unpowered
@@ -79,13 +70,14 @@ structure:
 	icon_state = "event_dyn_nopower"
 
 	unlimited_power = FALSE
+	base_lighting_alpha = 255
 
 //dynamic lighting, lit, powered.
 /area/event/dynamic/lit
 	name = "Open grounds (event PDL)"
 	icon_state = "event_dyn_lit"
 
-	exterior_light = 3
+	base_lighting_alpha = 255
 
 //dynamic lighting, lit, unpowered.
 /area/event/dynamic/lit/unpowered
@@ -93,6 +85,7 @@ structure:
 	icon_state = "event_dyn_lit_nopower"
 
 	unlimited_power = FALSE
+	base_lighting_alpha = 255
 
 //-----------------------CEILING_METAL--------------------------
 
@@ -132,7 +125,7 @@ structure:
 	name = "Building interior (event PDL)"
 	icon_state = "metal_dyn_lit"
 
-	exterior_light = 3
+	base_lighting_alpha = 255
 
 //dynamic lighting, lit, unpowered.
 /area/event/metal/dynamic/lit/unpowered
@@ -185,7 +178,7 @@ structure:
 	name = "Small caves (event PDL)"
 	icon_state = "under_dyn_lit"
 
-	exterior_light = 3
+	base_lighting_alpha = 255
 
 //dynamic lighting, lit, unpowered.
 /area/event/underground/dynamic/lit/unpowered
@@ -239,7 +232,7 @@ structure:
 	name = "Caves (event PDL)"
 	icon_state = "undercas_dyn_lit"
 
-	exterior_light = 3
+	base_lighting_alpha = 255
 
 //dynamic lighting, lit, unpowered.
 /area/event/underground_no_CAS/dynamic/lit/unpowered
@@ -293,7 +286,7 @@ structure:
 	name = "Deep underground (event PDL)"
 	icon_state = "deep_dyn_lit"
 
-	exterior_light = 3
+	base_lighting_alpha = 255
 
 //dynamic lighting, lit, unpowered.
 /area/event/deep_underground/dynamic/lit/unpowered

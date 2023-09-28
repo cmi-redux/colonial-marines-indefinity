@@ -71,7 +71,7 @@
 		/datum/action/xeno_action/activable/spray_acid/boiler, //3rd macro
 		/datum/action/xeno_action/onclick/toggle_long_range/boiler, //4rd macro
 		/datum/action/xeno_action/onclick/acid_shroud, //4th macro
-
+		/datum/action/xeno_action/onclick/tacmap,
 	)
 
 	balance_formulas = list(BALANCE_FORMULA_XENO_ABILITER)

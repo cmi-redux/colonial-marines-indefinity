@@ -51,3 +51,6 @@
 
 /proc/vc_slot_formula(playercount)
 	return job_slot_formula(playercount,60,0,1,2)
+
+/proc/working_joe_slot_formula(playercount)
+	return job_slot_formula(playercount,30,1,3,6)

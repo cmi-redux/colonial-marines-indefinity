@@ -205,6 +205,8 @@ SUBSYSTEM_DEF(ticker)
 	if(CONFIG_GET(flag/autooocmute))
 		ooc_allowed = FALSE
 
+	round_start_time = world.time
+
 	CHECK_TICK
 	for(var/I in round_start_events)
 		var/datum/callback/cb = I
@@ -421,7 +423,7 @@ SUBSYSTEM_DEF(ticker)
 
 	for(var/mob/living/carbon/human/player in GLOB.human_mob_list)
 		if(player.mind)
-			if(player.job == "Commanding Officers")
+			if(player.job == JOB_CO)
 				captainless = FALSE
 			if(player.job)
 				SSticker.role_authority.equip_role(player, GET_MAPPED_ROLE(player.job), late_join = FALSE)

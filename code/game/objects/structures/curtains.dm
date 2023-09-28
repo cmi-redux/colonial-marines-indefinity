@@ -10,7 +10,7 @@
 	..()
 	toggle()
 
-/obj/structure/curtain/bullet_act(obj/item/projectile/proj, def_zone)
+/obj/structure/curtain/bullet_act(obj/projectile/proj, def_zone)
 	if(proj.damage)
 		visible_message(SPAN_WARNING("[proj] tears [src] down!"))
 		qdel(src)

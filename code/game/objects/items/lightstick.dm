@@ -18,6 +18,12 @@
 	var/trample_chance = 30
 	var/can_trample = TRUE
 
+/obj/item/lightstick/Initialize(mapload, ...)
+	. = ..()
+
+	if(!light_on)
+		set_light_range(0)
+
 /obj/item/lightstick/Crossed(mob/living/O)
 	if(anchored && prob(trample_chance) && can_trample)
 		if(!istype(O,/mob/living/carbon/xenomorph/larva))
@@ -56,11 +62,6 @@
 	pixel_x = 0
 	pixel_y = 0
 	playsound(user, 'sound/weapons/Genhit.ogg', 25, 1)
-
-	//Remove lightsource
-/obj/item/lightstick/Destroy()
-	set_light_on(FALSE)
-	return ..()
 
 //Red
 /obj/item/lightstick/planted

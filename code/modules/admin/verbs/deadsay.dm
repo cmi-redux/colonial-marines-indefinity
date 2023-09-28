@@ -24,7 +24,7 @@
 
 	msg = strip_html(msg)
 	msg = emoji_parse(src, msg)
-	log_admin("[key_name(src)] : [msg]")
+	log_admin("DEAD: [key_name(src)] : [msg]")
 
 	if(!msg)
 		return

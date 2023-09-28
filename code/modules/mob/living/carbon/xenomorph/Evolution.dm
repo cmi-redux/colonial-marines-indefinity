@@ -134,12 +134,15 @@
 			qdel(new_xeno)
 		return
 
-	switch(new_xeno.tier) //They have evolved, add them to the slot count
-		if(2)
-			faction.tier_2_xenos |= new_xeno
-		if(3)
-			faction.tier_3_xenos |= new_xeno
+	var/area/xeno_area = get_area(new_xeno)
+	if(!is_admin_level(new_xeno.z) || (xeno_area.flags_atom & AREA_ALLOW_XENO_JOIN))
+		switch(new_xeno.tier) //They have evolved, add them to the slot count IF they are in regular game space
+			if(2)
+				hive.tier_2_xenos |= new_xeno
+			if(3)
+				hive.tier_3_xenos |= new_xeno
 
+	log_game("EVOLVE: [key_name(src)] evolved into [new_xeno].")
 	if(mind)
 		mind.transfer_to(new_xeno)
 	else
@@ -317,6 +320,7 @@
 			qdel(new_xeno)
 		return
 
+	log_game("EVOLVE: [key_name(src)] de-evolved into [new_xeno].")
 	if(mind)
 		mind.transfer_to(new_xeno)
 	else
@@ -343,26 +347,27 @@
 
 /mob/living/carbon/xenomorph/proc/can_evolve(castepick, potential_queens)
 	var/selected_caste = GLOB.xeno_datum_list[castepick]?.type
-	var/free_slots = LAZYACCESS(faction.free_slots, selected_caste)
-	if(free_slots)
+	var/free_slot = LAZYACCESS(faction.free_slots, selected_caste)
+	var/used_slot = LAZYACCESS(faction.used_slots, selected_caste)
+	if(free_slot > used_slot)
 		return TRUE
-
-	var/burrowed_factor = min(faction.stored_larva, sqrt(4*faction.stored_larva))
-	burrowed_factor = round(burrowed_factor)
 
 	var/used_tier_2_slots = length(faction.tier_2_xenos)
 	var/used_tier_3_slots = length(faction.tier_3_xenos)
-	for(var/caste_path in faction.used_free_slots)
-		if(!faction.used_free_slots[caste_path])
+	for(var/caste_path in faction.free_slots)
+		var/slots_free = faction.free_slots[caste_path]
+		var/slots_used = faction.used_slots[caste_path]
+		if(!slots_used)
 			continue
-		var/datum/caste_datum/C = caste_path
-		switch(initial(C.tier))
+		var/datum/caste_datum/current_caste = caste_path
+		switch(initial(current_caste.tier))
 			if(2)
-				used_tier_2_slots--
+				used_tier_2_slots -= min(slots_used, slots_free)
 			if(3)
-				used_tier_3_slots--
+				used_tier_3_slots -= min(slots_used, slots_free)
 
-	var/totalXenos = burrowed_factor
+	var/burrowed_factor = min(faction.stored_larva, sqrt(4*faction.stored_larva))
+	var/totalXenos = round(burrowed_factor)
 	for(var/mob/living/carbon/xenomorph/xeno as anything in faction.totalMobs)
 		if(xeno.counts_for_slots)
 			totalXenos++

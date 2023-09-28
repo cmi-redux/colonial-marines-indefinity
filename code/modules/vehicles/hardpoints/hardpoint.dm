@@ -134,7 +134,7 @@
 	return
 
 /obj/item/hardpoint/proc/generate_bullet(mob/user, turf/origin_turf)
-	var/obj/item/projectile/projectile = ammo.transfer_bullet_out()
+	var/obj/projectile/projectile = ammo.transfer_bullet_out()
 	projectile.cause_data = create_cause_data(initial(name), user)
 	projectile.bullet_ready_to_fire(initial(name), null, user)
 	projectile.forceMove(origin_turf)
@@ -552,7 +552,7 @@
 	var/turf/origin_turf = get_turf(src)
 	origin_turf = locate(origin_turf.x + origins[1], origin_turf.y + origins[2], origin_turf.z)
 
-	var/obj/item/projectile/projectile = generate_bullet(user, origin_turf)
+	var/obj/projectile/projectile = generate_bullet(user, origin_turf)
 	SEND_SIGNAL(projectile, COMSIG_BULLET_USER_EFFECTS, user)
 	projectile.fire_at(A, user, src, projectile.ammo.max_range, projectile.ammo.shell_speed)
 

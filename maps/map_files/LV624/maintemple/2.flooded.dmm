@@ -39,6 +39,7 @@
 	dir = 8;
 	health = 80
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple)
 "aN" = (
@@ -333,6 +334,13 @@
 /obj/structure/flora/jungle/vines/light_3,
 /turf/open/gm/dirtgrassborder/grassdirt_corner2/north_east,
 /area/lv624/ground/caves/sand_temple)
+"jc" = (
+/obj/structure/platform_decoration/mineral/sandstone/runed{
+	dir = 1
+	},
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/gm/dirt,
+/area/lv624/ground/caves/sand_temple)
 "jZ" = (
 /obj/structure/flora/jungle/vines/light_3,
 /turf/open/gm/dirtgrassborder/grassdirt_corner2/north_west,
@@ -348,6 +356,7 @@
 /obj/structure/surface/table/reinforced/prison{
 	color = "#6b675e"
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple)
 "lI" = (
@@ -785,6 +794,7 @@
 	dir = 4;
 	health = 80
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/gm/dirt,
 /area/lv624/ground/caves/sand_temple)
 "wt" = (
@@ -1138,6 +1148,13 @@
 "EJ" = (
 /turf/open/gm/coast/beachcorner2/south_west,
 /area/lv624/ground/caves/sand_temple)
+"EL" = (
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor/strata{
+	color = "#5e5d5d";
+	icon_state = "multi_tiles"
+	},
+/area/lv624/ground/caves/sand_temple)
 "EM" = (
 /obj/structure/showcase{
 	color = "#95948B";
@@ -1303,6 +1320,13 @@
 	pixel_y = 3
 	},
 /turf/open/gm/dirtgrassborder/grassdirt_corner2/north_east,
+/area/lv624/ground/caves/sand_temple)
+"Ip" = (
+/obj/structure/surface/table/reinforced/prison{
+	color = "#6b675e"
+	},
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/gm/dirt,
 /area/lv624/ground/caves/sand_temple)
 "Ix" = (
 /obj/structure/barricade/handrail/strata,
@@ -1802,6 +1826,20 @@
 	},
 /turf/open/gm/dirtgrassborder/grassdirt_corner/north_east,
 /area/lv624/ground/barrens/south_eastern_barrens)
+"Xr" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/corsat{
+	dir = 1;
+	icon_state = "squareswood"
+	},
+/area/lv624/ground/caves/sand_temple)
+"XQ" = (
+/obj/structure/surface/table/reinforced/prison{
+	color = "#6b675e"
+	},
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/gm/dirt,
+/area/lv624/ground/caves/sand_temple)
 "XV" = (
 /obj/structure/bed/chair/comfy/black{
 	dir = 1;
@@ -2011,7 +2049,7 @@ GT
 Jm
 rL
 Dg
-Ge
+Xr
 we
 rL
 xO
@@ -2265,7 +2303,7 @@ gL
 Jc
 Jc
 Jc
-gL
+EL
 wS
 if
 qf
@@ -2853,7 +2891,7 @@ ma
 wU
 po
 MB
-Yu
+jc
 py
 yc
 dA
@@ -3646,7 +3684,7 @@ GT
 SW
 Ai
 Br
-UX
+XQ
 Mq
 Zi
 mv
@@ -3733,7 +3771,7 @@ GT
 GT
 GT
 OC
-UX
+Ip
 OC
 xO
 FS

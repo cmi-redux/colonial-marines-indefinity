@@ -31,6 +31,9 @@ GLOBAL_VAR_INIT(resin_lz_allowed, FALSE)
 
 	var/area/AR = get_area(build_turf)
 	if(isnull(AR) || !(AR.is_resin_allowed))
+		if(AR.flags_area & AREA_UNWEEDABLE)
+			to_chat(xeno, SPAN_XENOWARNING("This area is unsuited to host the hive!"))
+			return
 		to_chat(xeno, SPAN_XENOWARNING("It's too early to spread the hive this far."))
 		return FALSE
 

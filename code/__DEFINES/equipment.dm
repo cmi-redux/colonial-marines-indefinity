@@ -24,6 +24,7 @@
 #define ATOM_DECORATED            (1<<16) // Has run Decorate() as part of subsystem init
 #define USES_HEARING              (1<<17) // Whether or not the object uses hearing
 #define OVERLAY_QUEUED            (1<<18)
+#define HTML_USE_INITAL_ICON      (1<<19) // Should we use the initial icon for display? Mostly used by overlay only objects
 //==========================================================================================
 
 #define HANDLE_BARRIER_CHANCE 1
@@ -63,7 +64,6 @@
 #define NOTABLEMERGE (1<<13)
 /// Has heat source but isn't 'on fire' and thus can be stored
 #define IGNITING_ITEM (1<<14)
-
 //==========================================================================================
 
 
@@ -215,6 +215,8 @@
 #define SLOT_LEGS (1<<13)
 #define SLOT_ACCESSORY (1<<14)
 #define SLOT_SUIT_STORE (1<<15) //this allows items to be stored in the suit slot regardless of suit
+/// Anything with this flag cannot be worn in suit storage, period.
+#define SLOT_BLOCK_SUIT_STORE (1<<16)
 //=================================================
 
 //slots

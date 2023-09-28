@@ -76,7 +76,7 @@ PLANT_CUT_MACHETE = 3 = Needs at least a machete to be cut down
 	addtimer(CALLBACK(src, PROC_REF(burn_up)), spread_time + 5 SECONDS)
 
 /obj/structure/flora/proc/spread_fire()
-	for(var/D in  GLOB.cardinals) //Spread fire
+	for(var/D in GLOB.cardinals) //Spread fire
 		var/turf/T = get_step(src.loc, D)
 		if(T)
 			for(var/obj/structure/flora/F in T)
@@ -117,6 +117,7 @@ PLANT_CUT_MACHETE = 3 = Needs at least a machete to be cut down
 //dead
 /obj/structure/flora/tree/dead
 	icon = 'icons/obj/structures/props/deadtrees.dmi'
+	icon_state = "tree_1"
 
 /obj/structure/flora/tree/dead/tree_1
 	icon_state = "tree_1"
@@ -187,6 +188,7 @@ ICE GRASS
 
 //brown
 /obj/structure/flora/grass/ice/brown
+	icon_state = "snowgrassbb_1"
 	icon_tag = "snowgrassbb"
 
 /obj/structure/flora/grass/ice/brown/snowgrassbb_1
@@ -200,8 +202,8 @@ ICE GRASS
 
 //green
 /obj/structure/flora/grass/ice/green
-	icon_tag = "snowgrassgb"
 	icon_state = "snowgrassgb_1"
+	icon_tag = "snowgrassgb"
 
 //both
 /obj/structure/flora/grass/ice/both
@@ -240,6 +242,7 @@ ICEY GRASS. IT LOOKS LIKE IT'S MADE OF ICE.
 
 /obj/structure/flora/grass/desert
 	icon = 'icons/obj/structures/props/dam.dmi'
+	icon_state = "lightgrass_1"
 
 // to replace with
 /obj/structure/flora/grass/desert/lightgrass_1
@@ -279,6 +282,8 @@ ICEY GRASS. IT LOOKS LIKE IT'S MADE OF ICE.
 	icon_state = "lightgrass_12"
 
 //heavy desert grass
+/obj/structure/flora/grass/desert/heavy
+	icon_state = "heavygrass_1"
 
 /obj/structure/flora/grass/desert/heavygrass_1
 	icon_state = "heavygrass_1"
@@ -710,6 +715,7 @@ ICEY GRASS. IT LOOKS LIKE IT'S MADE OF ICE.
 	name = "vines"
 	desc = "A mass of twisted vines."
 	icon = 'icons/effects/spacevines.dmi'
+	icon_state = "light_1"
 	icon_tag = "light"
 	variations = 3
 	cut_level = PLANT_CUT_MACHETE
@@ -717,15 +723,15 @@ ICEY GRASS. IT LOOKS LIKE IT'S MADE OF ICE.
 
 /obj/structure/flora/jungle/vines/light_1
 	icon_state = "light_1"
-	icon_tag = "light_1"
+	icon_tag = "light"
 
 /obj/structure/flora/jungle/vines/light_2
 	icon_state = "light_2"
-	icon_tag = "light_2"
+	icon_tag = "light"
 
 /obj/structure/flora/jungle/vines/light_3
 	icon_state = "light_3"
-	icon_tag = "light_3"
+	icon_tag = "light"
 
 //heavy hide you
 /obj/structure/flora/jungle/vines/heavy

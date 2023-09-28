@@ -4,7 +4,7 @@
 #define DEBUG_XENO_DEFENSE 0
 
 //The actual bullet objects.
-/obj/item/projectile
+/obj/projectile
 	name = "bullet"
 	desc = "This is bullet."
 	var/fire_ready = FALSE
@@ -79,6 +79,8 @@
 
 	/// The flicker that plays when a bullet hits a target. Usually red. Can be nulled so it doesn't show up at all.
 	var/hit_effect_color = "#FF0000"
+	/// How much to make the bullet fall off by accuracy-wise when closer than the ideal range
+	var/accuracy_range_falloff = 10
 
 	//Fired processing vars
 	var/last_projectile_move = 0
@@ -90,7 +92,7 @@
 //custom bullets, used only in custom projectiles, but can in normal if you wanna make hard custom proj
 	var/obj/item/ammo_parts/part/container/container = null
 
-/obj/item/projectile/Initialize(mapload, datum/cause_data/cause_data, datum/ammo/ammo_datum, ammo_caliber)
+/obj/projectile/Initialize(mapload, datum/cause_data/cause_data, datum/ammo/ammo_datum, ammo_caliber)
 	. = ..(mapload)
 	permutated = list()
 	if(can_be_scraped && prob(scrapping_probability))
@@ -109,7 +111,7 @@
 	pixel_x = rand(-8.0, 8) //Want to move them just a tad.
 	pixel_y = rand(-8.0, 8)
 
-/obj/item/projectile/update_icon() //Handles the icon itself as well as some bonus things.
+/obj/projectile/update_icon() //Handles the icon itself as well as some bonus things.
 	if(!ammo)
 		return
 	if(!fire_ready)
@@ -119,18 +121,18 @@
 		icon = 'icons/obj/items/weapons/projectiles.dmi'
 		icon_state = ammo.icon_state
 
-/obj/item/projectile/pickup(mob/user)
+/obj/projectile/pickup(mob/user)
 	var/olddir = dir
 	. = ..()
 	dir = olddir
 
-/obj/item/projectile/equipped(mob/user, slot)
+/obj/projectile/equipped(mob/user, slot)
 	var/thisDir = src.dir
 	..(user,slot)
 	setDir(thisDir)
 	return
 
-/obj/item/projectile/Destroy()
+/obj/projectile/Destroy()
 	invisibility = 100
 	SSprojectiles.stop_projectile(src)
 	QDEL_NULL(bound_beam)
@@ -145,7 +147,7 @@
 	weapon_cause_data = null
 	firer = null
 
-/obj/item/projectile/Crossed(atom/movable/AM) //A mob moving on a tile with a projectile is hit by it.
+/obj/projectile/Crossed(atom/movable/AM) //A mob moving on a tile with a projectile is hit by it.
 	. = ..()
 	if(AM && !QDELETED(src) && !(AM in permutated) && fire_ready)
 		permutated |= AM
@@ -153,23 +155,23 @@
 			SSprojectiles.stop_projectile(src)
 			qdel(src)
 
-/obj/item/projectile/Collided(atom/movable/AM)
+/obj/projectile/Collided(atom/movable/AM)
 	if(AM && !QDELETED(src) && !(AM in permutated) && fire_ready)
 		permutated |= AM
 		if(scan_a_turf(get_turf(AM)))
 			SSprojectiles.stop_projectile(src)
 			qdel(src)
 
-/obj/item/projectile/proc/apply_bullet_trait(list/entry)
+/obj/projectile/proc/apply_bullet_trait(list/entry)
 	bullet_traits += list(entry.Copy())
 	// Need to use the proc instead of the wrapper because each entry is a list
 	_AddElement(entry)
 
-/obj/item/projectile/proc/give_bullet_traits(obj/item/projectile/proj)
+/obj/projectile/proc/give_bullet_traits(obj/projectile/proj)
 	for(var/list/entry in bullet_traits)
 		proj.apply_bullet_trait(entry.Copy())
 
-/obj/item/projectile/proc/bullet_ready_to_fire(bullet_source = null, happened = null, weapon_source_mob = null)
+/obj/projectile/proc/bullet_ready_to_fire(bullet_source = null, happened = null, weapon_source_mob = null)
 	unacidable = TRUE
 	anchored = TRUE
 	flags_atom = NOINTERACT
@@ -184,12 +186,12 @@
 	weapon_cause_data = cause_data
 	firer = cause_data?.resolve_mob()
 
-/obj/item/projectile/ex_act()
+/obj/projectile/ex_act()
 	if(fire_ready)
 		return FALSE //We do not want anything to delete these, simply to make sure that all the bullet references are not runtiming. Otherwise, constantly need to check if the bullet exists.
 	. = ..()
 
-/obj/item/projectile/proc/generate_bullet(ammo_datum = null, bullet_generator, bonus_damage = 0, special_flags = NO_FLAGS)
+/obj/projectile/proc/generate_bullet(ammo_datum = null, bullet_generator, bonus_damage = 0, special_flags = NO_FLAGS)
 	if(ammo_datum)
 		ammo = ammo_datum
 	name = ammo.name
@@ -220,13 +222,13 @@
 		apply_bullet_trait(L)
 	update_icon()
 
-/obj/item/projectile/attackby(obj/item/I, mob/user)
+/obj/projectile/attackby(obj/item/I, mob/user)
 	if(fire_ready)
 		return
-	if(istype(I, /obj/item/projectile)) // We have a handful. They don't need to hold it.
+	if(istype(I, /obj/projectile)) // We have a handful. They don't need to hold it.
 		bullet_make_handful(user, I)
 
-/obj/item/projectile/proc/bullet_make_handful(mob/user, obj/item/projectile/proj)
+/obj/projectile/proc/bullet_make_handful(mob/user, obj/projectile/proj)
 	if(proj)
 		var/obj/item/ammo_magazine/handful/new_handful = new ammo.handful_type(src, TRUE, TRUE)
 		new_handful.generate_handful(ammo, caliber, 5)
@@ -254,7 +256,7 @@
 		new_handful.update_icon()
 		return new_handful
 
-/obj/item/projectile/proc/calculate_damage()
+/obj/projectile/proc/calculate_damage()
 	if(effective_range_min && distance_travelled < effective_range_min)
 		return max(0, damage - round((effective_range_min - distance_travelled) * damage_buildup))
 	else if(distance_travelled > effective_range_max)
@@ -262,7 +264,7 @@
 	return damage
 
 // Target, firer, shot from (i.e. the gun), projectile range, projectile speed, original target (who was aimed at, not where projectile is going towards)
-/obj/item/projectile/proc/fire_at(atom/target, atom/shooter, atom/source, range, speed, atom/original_override, angle)
+/obj/projectile/proc/fire_at(atom/target, atom/shooter, atom/source, range, speed, atom/original_override, angle)
 	if(!isnull(speed))
 		projectile_speed = speed
 
@@ -425,7 +427,7 @@
 	set_light_on(TRUE)
 	SSprojectiles.queue_projectile(src)
 
-/obj/item/projectile/process()
+/obj/projectile/process()
 	if(QDELETED(src))
 		return PROCESS_KILL
 
@@ -438,7 +440,7 @@
 		return PROCESS_KILL
 
 
-/obj/item/projectile/proc/required_moves_calc()
+/obj/projectile/proc/required_moves_calc()
 	var/elapsed_time_deciseconds = world.time - last_projectile_move
 	if(!elapsed_time_deciseconds)
 		return 0 //No moves needed if not a tick has passed.
@@ -464,7 +466,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 #define PROJ_ABS_PIXEL_TO_TURF(abspx, abspy, zlevel) (locate(CEILING((abspx / 32), 1), CEILING((abspy / 32), 1), zlevel))
 #define PROJ_ANIMATION_SPEED ((end_of_movement/projectile_speed) || (required_moves/projectile_speed)) //Movements made times deciseconds per movement.
 
-/obj/item/projectile/proc/projectile_batch_move(required_moves)
+/obj/projectile/proc/projectile_batch_move(required_moves)
 	var/end_of_movement = 0 //In batch moves this loop, only if the projectile stopped.
 	var/turf/last_processed_turf = loc
 	var/x_pixel_dist_travelled = 0
@@ -656,13 +658,13 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 #undef PROJ_ANIMATION_SPEED
 
 ///Tells the projectile to move again
-/obj/item/projectile/proc/resume_move(datum/source)
+/obj/projectile/proc/resume_move(datum/source)
 	SIGNAL_HANDLER
 	if(source)
 		UnregisterSignal(source, COMSIG_TURF_RESUME_PROJECTILE_MOVE)
 	SSprojectiles.queue_projectile(src)
 
-/obj/item/projectile/proc/scan_a_turf(turf/turf_to_scan, proj_dir)
+/obj/projectile/proc/scan_a_turf(turf/turf_to_scan, proj_dir)
 	if(turf_to_scan && turf_to_scan.density) //Handle wall hit.
 		var/ammo_flags = ammo.flags_ammo_behavior | projectile_override_flags
 
@@ -762,7 +764,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 		return TRUE
 	return FALSE
 
-/obj/item/projectile/proc/handle_object(obj/O)
+/obj/projectile/proc/handle_object(obj/O)
 	// If we've already handled this atom, don't do it again
 	if(O in permutated)
 		return FALSE
@@ -798,7 +800,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 	if(SEND_SIGNAL(src, COMSIG_BULLET_POST_HANDLE_OBJ, O, .) & COMPONENT_BULLET_PASS_THROUGH)
 		return FALSE
 
-/obj/item/projectile/proc/handle_mob(mob/living/L)
+/obj/projectile/proc/handle_mob(mob/living/L)
 	// If we've already handled this atom, don't do it again
 
 	if(SEND_SIGNAL(src, COMSIG_BULLET_PRE_HANDLE_MOB, L, .) & COMPONENT_BULLET_PASS_THROUGH)
@@ -864,7 +866,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 				playsound_client(L.client, ammo.sound_miss, get_turf(L), 75, TRUE)
 			L.visible_message(SPAN_AVOIDHARM("[src] misses [L]!"),
 				SPAN_AVOIDHARM("[src] narrowly misses you!"), null, 4, CHAT_TYPE_TAKING_HIT)
-			log_attack("[src] narrowly missed [key_name(L)]")
+			var/log_message = "[src] narrowly missed [key_name(L)]"
 
 			var/mob/living/carbon/shotby = firer
 			if(istype(shotby))
@@ -885,10 +887,10 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 				// \\
 //----------------------------------------------------------
 
-/atom/proc/do_projectile_hit(obj/item/projectile/proj)
+/atom/proc/do_projectile_hit(obj/projectile/proj)
 	return
 
-/obj/item/projectile/proc/get_effective_accuracy()
+/obj/projectile/proc/get_effective_accuracy()
 	#if DEBUG_HIT_CHANCE
 	to_world(SPAN_DEBUG("Base accuracy is <b>[accuracy]</b>; scatter: <b>[scatter]</b>; distance: <b>[distance_travelled]</b>"))
 	#endif
@@ -897,7 +899,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 	var/ammo_flags = ammo.flags_ammo_behavior | projectile_override_flags
 	if(distance_travelled <= ammo.accurate_range)
 		if(distance_travelled <= ammo.accurate_range_min) // If bullet stays within max accurate range + random variance
-			effective_accuracy -= (ammo.accurate_range_min - distance_travelled) * 10 // Snipers have accuracy falloff at closer range before point blank
+			effective_accuracy -= (ammo.accurate_range_min - distance_travelled) * accuracy_range_falloff // Snipers have accuracy falloff at closer range before point blank
 	else
 		effective_accuracy -= (distance_travelled - ammo.accurate_range) * ((ammo_flags & AMMO_SNIPER) ? 1.5 : 10) // Snipers have a smaller falloff constant due to longer max range
 
@@ -916,7 +918,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 	return effective_accuracy
 
 //objects use get_projectile_hit_boolean unlike mobs, which use get_projectile_hit_chance
-/obj/proc/get_projectile_hit_boolean(obj/item/projectile/projectile)
+/obj/proc/get_projectile_hit_boolean(obj/projectile/projectile)
 	if(!density)
 		return FALSE
 
@@ -926,7 +928,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 	return TRUE
 
 //Used by machines and structures to calculate shooting past cover
-/obj/proc/calculate_cover_hit_boolean(obj/item/projectile/proj, distance = 0, cade_direction_correct = FALSE)
+/obj/proc/calculate_cover_hit_boolean(obj/projectile/proj, distance = 0, cade_direction_correct = FALSE)
 	if(istype(proj.shot_from, /obj/item/hardpoint)) //anything shot from a tank gets a bonus to bypassing cover
 		distance -= 3
 
@@ -946,7 +948,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 
 	return prob(hitchance)
 
-/obj/structure/machinery/get_projectile_hit_boolean(obj/item/projectile/proj)
+/obj/structure/machinery/get_projectile_hit_boolean(obj/projectile/proj)
 	if(src == proj.original_target && layer > ATMOS_DEVICE_LAYER) //clicking on the object itself hits the object
 		var/hitchance = proj.get_effective_accuracy()
 
@@ -984,7 +986,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 	return calculate_cover_hit_boolean(proj, distance)
 
 
-/obj/structure/get_projectile_hit_boolean(obj/item/projectile/proj)
+/obj/structure/get_projectile_hit_boolean(obj/projectile/proj)
 	if(src == proj.original_target && layer > ATMOS_DEVICE_LAYER) //clicking on the object itself hits the object
 		var/hitchance = proj.get_effective_accuracy()
 
@@ -1029,23 +1031,23 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 					return FALSE
 	return calculate_cover_hit_boolean(proj, distance, cade_direction_correct)
 
-/obj/item/do_projectile_hit(obj/item/projectile/proj)
+/obj/item/do_projectile_hit(obj/projectile/proj)
 	proj.ammo.on_hit_obj(src, proj)
 	if(QDELETED(src)) //on_hit_obj could delete the object
 		return
 	bullet_act(proj)
 
-/obj/item/get_projectile_hit_boolean(obj/item/projectile/proj)
+/obj/item/get_projectile_hit_boolean(obj/projectile/proj)
 	if(proj && src == proj.original_target) //clicking on the object itself. Code copied from mob get_projectile_hit_chance
 		var/hitchance = proj.get_effective_accuracy()
 		switch(w_class) //smaller items are harder to hit
-			if(1)
+			if(SIZE_TINY)
 				hitchance -= 50
-			if(2)
+			if(SIZE_SMALL)
 				hitchance -= 30
-			if(3)
+			if(SIZE_MEDIUM)
 				hitchance -= 20
-			if(4)
+			if(SIZE_LARGE)
 				hitchance -= 10
 
 		#if DEBUG_HIT_CHANCE
@@ -1064,7 +1066,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 	return TRUE
 
 
-/obj/vehicle/get_projectile_hit_boolean(obj/item/projectile/proj)
+/obj/vehicle/get_projectile_hit_boolean(obj/projectile/proj)
 	if(src == proj.original_target) //clicking on the object itself hits the object
 		var/hitchance = proj.get_effective_accuracy()
 
@@ -1084,23 +1086,23 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 	return TRUE
 
 
-/obj/structure/window/get_projectile_hit_boolean(obj/item/projectile/proj)
+/obj/structure/window/get_projectile_hit_boolean(obj/projectile/proj)
 	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
 	if(ammo_flags & AMMO_ENERGY)
 		return FALSE
 	else if(!(flags_atom & ON_BORDER) || (proj.dir & dir) || (proj.dir & reverse_direction(dir)))
 		return TRUE
 
-/obj/structure/machinery/door/poddoor/railing/get_projectile_hit_boolean(obj/item/projectile/proj)
+/obj/structure/machinery/door/poddoor/railing/get_projectile_hit_boolean(obj/projectile/proj)
 	return src == proj.original_target
 
-/obj/effect/alien/egg/get_projectile_hit_boolean(obj/item/projectile/proj)
+/obj/effect/alien/egg/get_projectile_hit_boolean(obj/projectile/proj)
 	return src == proj.original_target
 
-/obj/effect/alien/resin/trap/get_projectile_hit_boolean(obj/item/projectile/proj)
+/obj/effect/alien/resin/trap/get_projectile_hit_boolean(obj/projectile/proj)
 	return src == proj.original_target
 
-/obj/item/clothing/mask/facehugger/get_projectile_hit_boolean(obj/item/projectile/proj)
+/obj/item/clothing/mask/facehugger/get_projectile_hit_boolean(obj/projectile/proj)
 	return src == proj.original_target
 
 
@@ -1108,15 +1110,15 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 //mobs use get_projectile_hit_chance instead of get_projectile_hit_boolean
 
 
-/mob/living/do_projectile_hit(obj/item/projectile/proj)
+/mob/living/do_projectile_hit(obj/projectile/proj)
 	proj.ammo.on_hit_mob(src, proj)
 	bullet_act(proj)
 
-/mob/living/carbon/do_projectile_hit(obj/item/projectile/proj)
+/mob/living/carbon/do_projectile_hit(obj/projectile/proj)
 	. = ..()
 
 
-/mob/living/proc/get_projectile_hit_chance(obj/item/projectile/proj)
+/mob/living/proc/get_projectile_hit_chance(obj/projectile/proj)
 	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
 	if(ammo_flags & AMMO_XENO)
 		if((status_flags & XENO_HOST) && HAS_TRAIT(src, TRAIT_NESTED))
@@ -1153,7 +1155,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 		if(!can_see(shooter_living, src))
 			. -= 25 //Can't see the target (Opaque thing between shooter and target)
 
-/mob/living/carbon/human/get_projectile_hit_chance(obj/item/projectile/proj)
+/mob/living/carbon/human/get_projectile_hit_chance(obj/projectile/proj)
 	. = ..()
 	if(.)
 		var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
@@ -1174,7 +1176,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 				else
 					return FALSE
 
-/mob/living/carbon/xenomorph/get_projectile_hit_chance(obj/item/projectile/proj)
+/mob/living/carbon/xenomorph/get_projectile_hit_chance(obj/projectile/proj)
 	. = ..()
 	if(.)
 		var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
@@ -1194,17 +1196,17 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 		if(evasion > 0)
 			. -= evasion
 
-/mob/living/silicon/robot/drone/get_projectile_hit_chance(obj/item/projectile/proj)
+/mob/living/silicon/robot/drone/get_projectile_hit_chance(obj/projectile/proj)
 	return FALSE // just stop them getting hit by projectiles completely
 
 
-/obj/item/projectile/proc/play_hit_effect(mob/hit_mob)
+/obj/projectile/proc/play_hit_effect(mob/hit_mob)
 	if(ammo.sound_hit)
 		playsound(hit_mob, ammo.sound_hit, 50, 1)
 	if(hit_mob.stat != DEAD && !isnull(hit_effect_color))
 		animation_flash_color(hit_mob, hit_effect_color)
 
-/obj/item/projectile/proc/play_shielded_hit_effect(mob/hit_mob)
+/obj/projectile/proc/play_shielded_hit_effect(mob/hit_mob)
 	if(ammo.sound_shield_hit)
 		playsound(hit_mob, ammo.sound_shield_hit, 50, 1)
 	if(hit_mob.stat != DEAD && !isnull(hit_effect_color))
@@ -1217,15 +1219,15 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 				// \\
 //----------------------------------------------------------
 
-/atom/proc/bullet_act(obj/item/projectile/proj)
+/atom/proc/bullet_act(obj/projectile/proj)
 	if(SEND_SIGNAL(src, COMSIG_ATOM_BULLET_ACT, proj) & COMPONENT_BULLET_ACT_OVERRIDE)
 		return FALSE
 	return FALSE
 
-/mob/dead/bullet_act(/obj/item/projectile/proj)
+/mob/dead/bullet_act(/obj/projectile/proj)
 	return FALSE
 
-/mob/living/bullet_act(obj/item/projectile/proj)
+/mob/living/bullet_act(obj/projectile/proj)
 	if(!proj)
 		return
 
@@ -1243,7 +1245,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 	SEND_SIGNAL(proj, COMSIG_BULLET_ACT_LIVING, src, damage, damage)
 
 
-/mob/living/carbon/human/bullet_act(obj/item/projectile/proj)
+/mob/living/carbon/human/bullet_act(obj/projectile/proj)
 	if(!proj)
 		return
 
@@ -1362,7 +1364,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 	SEND_SIGNAL(proj, COMSIG_POST_BULLET_ACT_HUMAN, src, damage, damage_result)
 
 //Deal with xeno bullets.
-/mob/living/carbon/xenomorph/bullet_act(obj/item/projectile/proj)
+/mob/living/carbon/xenomorph/bullet_act(obj/projectile/proj)
 	if(!proj || !istype(proj))
 		return
 
@@ -1447,7 +1449,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 
 	return TRUE
 
-/turf/bullet_act(obj/item/projectile/proj)
+/turf/bullet_act(obj/projectile/proj)
 	if(SEND_SIGNAL(proj, COMSIG_TURF_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
 		return
 
@@ -1472,7 +1474,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 	return
 
 // walls can get shot and damaged, but bullets (vs energy guns) do much less.
-/turf/closed/wall/bullet_act(obj/item/projectile/proj)
+/turf/closed/wall/bullet_act(obj/projectile/proj)
 	. = ..()
 	var/damage = proj.damage
 	if(damage < 1)
@@ -1492,7 +1494,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 		current_bulletholes++
 	take_damage(damage, proj.firer)
 
-/turf/closed/wall/almayer/research/containment/bullet_act(obj/item/projectile/proj)
+/turf/closed/wall/almayer/research/containment/bullet_act(obj/projectile/proj)
 	if(proj)
 		var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
 		if(ammo_flags & AMMO_ACIDIC)
@@ -1504,13 +1506,13 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 
 //Hitting an object. These are too numerous so they're staying in their files.
 //Why are there special cases listed here? Oh well, whatever. ~N
-/obj/bullet_act(obj/item/projectile/proj)
+/obj/bullet_act(obj/projectile/proj)
 	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
 		return FALSE
 	bullet_ping(proj)
 	return TRUE
 
-/obj/item/bullet_act(obj/item/projectile/proj)
+/obj/item/bullet_act(obj/projectile/proj)
 	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
 		return FALSE
 	bullet_ping(proj)
@@ -1518,7 +1520,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 		explosion_throw(proj.damage/2, proj.dir, 4)
 	return TRUE
 
-/obj/structure/surface/table/bullet_act(obj/item/projectile/proj)
+/obj/structure/surface/table/bullet_act(obj/projectile/proj)
 	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
 		return FALSE
 	bullet_ping(proj)
@@ -1538,7 +1540,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 
 
 //This is where the bullet bounces off.
-/atom/proc/bullet_ping(obj/item/projectile/proj, pixel_x_offset = 0, pixel_y_offset = 0)
+/atom/proc/bullet_ping(obj/projectile/proj, pixel_x_offset = 0, pixel_y_offset = 0)
 	if(!proj || !proj.ammo.ping)
 		return
 
@@ -1555,7 +1557,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 	// Need to do this in order to prevent the ping from being deleted
 	addtimer(CALLBACK(I, TYPE_PROC_REF(/image, flick_overlay), src, 3), 1)
 
-/mob/proc/bullet_message(obj/item/projectile/proj)
+/mob/proc/bullet_message(obj/projectile/proj)
 	if(!proj)
 		return
 	visible_message(SPAN_DANGER("[src] is hit by the [proj.name] in the [parse_zone(proj.def_zone)]!"), \
@@ -1598,6 +1600,31 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 	if(dy == 0) //above or below you
 		if(dx == -1 || dx == 1)
 			return TRUE
+
+/obj/projectile/vulture
+	accuracy_range_falloff = 10
+	/// The odds of hitting a xeno in less than your gun's range. Doesn't apply to humans.
+	var/xeno_shortrange_chance = 10
+
+/obj/projectile/vulture/Initialize(mapload, datum/cause_data/cause_data)
+	. = ..()
+	RegisterSignal(src, COMSIG_GUN_VULTURE_FIRED_ONEHAND, PROC_REF(on_onehand))
+
+/obj/projectile/vulture/handle_mob(mob/living/hit_mob)
+	if((ammo.accurate_range_min > distance_travelled) && isxeno(hit_mob))
+		if(prob(xeno_shortrange_chance))
+			return ..()
+
+		permutated |= hit_mob
+		return
+
+	return ..()
+
+/// Handler for when the user one-hands the firing gun
+/obj/projectile/vulture/proc/on_onehand(datum/source)
+	SIGNAL_HANDLER
+
+	accuracy = HIT_ACCURACY_TIER_2 // flat 10% chance if you're desperate and try to fire this thing without a bipod
 
 #undef DEBUG_HIT_CHANCE
 #undef DEBUG_HUMAN_DEFENSE

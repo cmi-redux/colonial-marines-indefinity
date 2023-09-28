@@ -53,7 +53,7 @@
 
 /obj/item/weapon/gun/flamer/set_gun_config_values()
 	..()
-	fire_delay = FIRE_DELAY_TIER_4 * 5
+	set_fire_delay(FIRE_DELAY_TIER_5 * 5)
 
 /obj/item/weapon/gun/flamer/unique_action(mob/user)
 	toggle_gun_safety()
@@ -107,7 +107,7 @@
 	. = ..()
 	if(.)
 		if(!current_mag || !current_mag.ammo_position)
-			return
+			return NONE
 
 /obj/item/weapon/gun/flamer/proc/get_fire_sound()
 	var/list/fire_sounds = list(
@@ -120,17 +120,17 @@
 	set waitfor = FALSE
 
 	if(!able_to_fire(user))
-		return
+		return NONE
 
 	var/turf/curloc = get_turf(user) //In case the target or we are expired.
 	var/turf/targloc = get_turf(target)
 	if(!targloc || !curloc)
-		return //Something has gone wrong...
+		return NONE //Something has gone wrong...
 
 	if(active_attachable && active_attachable.flags_attach_features & ATTACH_WEAPON) //Attachment activated and is a weapon.
 		if(active_attachable.flags_attach_features & ATTACH_PROJECTILE)
 			return
-		if(active_attachable.ammo_position <= 0)
+		if(active_attachable.ammo_position <= 0 && !(active_attachable.flags_attach_features & ATTACH_IGNORE_EMPTY))
 			click_empty(user) //If it's empty, let them know.
 			to_chat(user, SPAN_WARNING("[active_attachable] is empty!"))
 			to_chat(user, SPAN_NOTICE("You disable [active_attachable]."))
@@ -138,20 +138,22 @@
 		else
 			active_attachable.fire_attachment(target, src, user) //Fire it.
 			active_attachable.last_fired = world.time
-		return
+		return NONE
 
 	if(flags_gun_features & GUN_TRIGGER_SAFETY)
 		to_chat(user, SPAN_WARNING("\The [src] isn't lit!"))
-		return
+		return NONE
 
 	if(!current_mag)
-		return
+		return NONE
 	if(current_mag.ammo_position <= 0)
 		click_empty(user)
 	else
 		user.track_shot(initial(name))
 		unleash_flame(target, user)
-	get_ammo_count()
+		get_ammo_count()
+		return AUTOFIRE_CONTINUE
+	return NONE
 
 /obj/item/weapon/gun/flamer/reload(mob/user, obj/item/ammo_magazine/magazine)
 	if(!magazine || !istype(magazine))
@@ -215,7 +217,7 @@
 		return
 
 	if(flamer_tank.glob_flame)
-		var/obj/item/projectile/proj = flamer_tank.transfer_bullet_out()
+		var/obj/projectile/proj = flamer_tank.transfer_bullet_out()
 		proj.forceMove(src)
 		apply_traits(proj)
 		proj.bullet_ready_to_fire(initial(name), null, user)
@@ -346,7 +348,7 @@
 				unload(user, drop_override = TRUE)
 			current_mag = fuelpack.active_fuel
 			update_icon()
-	..()
+	return ..()
 
 
 /obj/item/weapon/gun/flamer/M240T/reload(mob/user, obj/item/ammo_magazine/magazine)
@@ -385,6 +387,16 @@
 		return TRUE
 	return FALSE
 
+/obj/item/weapon/gun/flamer/M240T/auto // With NEW advances in science, we've learned how to drain a pyro's tank in 6 seconds, or your money back!
+	name = "\improper M240-T2 incinerator unit"
+	desc = "A prototyped model of the M240-T incinerator unit, it was discontinued after its automatic mode was deemed too expensive to deploy in the field."
+	start_semiauto = FALSE
+	start_automatic = TRUE
+
+/obj/item/weapon/gun/flamer/M240T/auto/set_gun_config_values()
+	. = ..()
+	set_fire_delay(FIRE_DELAY_TIER_7)
+
 GLOBAL_LIST_EMPTY(flamer_particles)
 /particles/flamer_fire
 	icon = 'icons/effects/particles/bonfire.dmi'
@@ -417,10 +429,10 @@ GLOBAL_LIST_EMPTY(flamer_particles)
 	icon_state = "dynamic_2"
 	layer = BELOW_OBJ_LAYER
 
-	light_system = MOVABLE_LIGHT
+	light_system = STATIC_LIGHT
 	light_range = 3
 	light_power = 0.4
-	light_color = LIGHT_COLOR_LAVA
+	light_color = "#f88818"
 	light_on = TRUE
 
 	var/firelevel = 12 //Tracks how much "fire" there is. Basically the timer of how long the fire burns
@@ -461,6 +473,8 @@ GLOBAL_LIST_EMPTY(flamer_particles)
 		color = R.burncolor
 	else
 		flame_icon = R.burn_sprite
+
+	set_light(l_color = R.burncolor)
 
 	if(!GLOB.flamer_particles[R.burncolor])
 		GLOB.flamer_particles[R.burncolor] = new /particles/flamer_fire(R.burncolor)
@@ -702,6 +716,7 @@ GLOBAL_LIST_EMPTY(flamer_particles)
 		flame_level++ //the initial flame burst is 1 level higher for a small time
 
 	icon_state = "[flame_icon]_[flame_level]"
+	set_light(flame_level * 2)
 
 /obj/flamer_fire/proc/un_burst_flame()
 	initial_burst = FALSE
@@ -716,11 +731,11 @@ GLOBAL_LIST_EMPTY(flamer_particles)
 	var/damage = burnlevel*delta_time
 	T.flamer_fire_act(damage)
 
-	update_flame()
-
 	if(!firelevel)
 		qdel(src)
 		return
+
+	update_flame()
 
 	for(var/atom/thing in loc)
 		thing.handle_flamer_fire(src, damage, delta_time)

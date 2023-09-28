@@ -1,6 +1,10 @@
 /obj/docking_port/mobile/marine_dropship
 	width = 11
 	height = 21
+
+	dwidth = 5
+	dheight = 10
+
 	preferred_direction = SOUTH
 	callTime = DROPSHIP_TRANSIT_DURATION
 	rechargeTime = SHUTTLE_RECHARGE
@@ -158,8 +162,9 @@
 	dir = NORTH
 	width = 11
 	height = 21
-	dwidth = 1
-	faction_to_get = FACTION_MARINE
+	dwidth = 5
+	dheight = 10
+
 	var/list/landing_lights = list()
 	var/auto_open = FALSE
 	var/landing_lights_on = FALSE
@@ -260,7 +265,6 @@
 
 /obj/docking_port/stationary/marine_dropship/crash_site
 	auto_open = TRUE
-	dwidth = 1
 
 /obj/docking_port/stationary/marine_dropship/crash_site/on_prearrival(obj/docking_port/mobile/arriving_shuttle)
 	. = ..()
@@ -281,6 +285,8 @@
 			to_chat(affected_mob, SPAN_WARNING("The floor jolts under your feet!"))
 			// shake_camera(affected_mob, 10, 1)
 			affected_mob.apply_effect(3, WEAKEN)
+
+	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_GROUNDSIDE_FORSAKEN_HANDLING)
 
 /datum/map_template/shuttle/alamo
 	name = "Alamo"

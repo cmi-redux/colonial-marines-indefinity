@@ -35,6 +35,9 @@
 	anchored = TRUE
 	block_range = 1
 
+	/// Tells the structure if they are being deleted because of hijack
+	var/hijack_delete = FALSE
+
 /obj/effect/alien/resin/special/Initialize(mapload, datum/faction/faction_to_set)
 	. = ..()
 	maxhealth = health

@@ -53,7 +53,7 @@
 
 /obj/structure/machinery/door/airlock/multi_tile/command/colony
 	req_access = null
-	req_one_access = list(ACCESS_CIVILIAN_BRIG, ACCESS_CIVILIAN_COMMAND, ACCESS_WY_CORPORATE)
+	req_one_access = list(ACCESS_CIVILIAN_BRIG, ACCESS_CIVILIAN_COMMAND, ACCESS_WY_COLONIAL)
 
 /obj/structure/machinery/door/airlock/multi_tile/medical
 	name = "Medical Airlock"
@@ -80,10 +80,11 @@
 	icon = 'icons/obj/structures/doors/Door2x1research.dmi'
 	opacity = FALSE
 	glass = 1
+	req_one_access = list(ACCESS_MARINE_RESEARCH, ACCESS_WY_RESEARCH, ACCESS_WY_EXEC)
 
 /obj/structure/machinery/door/airlock/multi_tile/research/colony
 	req_access = null
-	req_one_access = list(ACCESS_CIVILIAN_RESEARCH, ACCESS_CIVILIAN_COMMAND, ACCESS_WY_CORPORATE)
+	req_one_access = list(ACCESS_CIVILIAN_RESEARCH, ACCESS_CIVILIAN_COMMAND, ACCESS_WY_COLONIAL)
 
 /obj/structure/machinery/door/airlock/multi_tile/research/reinforced
 	name = "Reinforced Research Airlock"
@@ -91,7 +92,7 @@
 
 /obj/structure/machinery/door/airlock/multi_tile/research/reinforced/colony
 	req_access = null
-	req_one_access = list(ACCESS_CIVILIAN_RESEARCH, ACCESS_CIVILIAN_COMMAND, ACCESS_WY_CORPORATE)
+	req_one_access = list(ACCESS_CIVILIAN_RESEARCH, ACCESS_CIVILIAN_COMMAND, ACCESS_WY_COLONIAL)
 
 /obj/structure/machinery/door/airlock/multi_tile/secure
 	name = "Secure Airlock"
@@ -192,12 +193,12 @@
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/medidoor/research
 	name = "\improper Research Airlock"
-	req_one_access = list(ACCESS_MARINE_RESEARCH)
+	req_one_access = list(ACCESS_MARINE_RESEARCH, ACCESS_WY_RESEARCH, ACCESS_WY_EXEC)
 	masterkey_resist = TRUE
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/medidoor/research/colony
 	req_access = null
-	req_one_access = list(ACCESS_CIVILIAN_RESEARCH, ACCESS_CIVILIAN_COMMAND, ACCESS_WY_CORPORATE)
+	req_one_access = list(ACCESS_CIVILIAN_RESEARCH, ACCESS_CIVILIAN_COMMAND, ACCESS_WY_COLONIAL)
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/comdoor
 	name = "\improper Command Airlock"
@@ -208,7 +209,7 @@
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/comdoor/colony
 	req_access = null
-	req_one_access = list(ACCESS_CIVILIAN_BRIG, ACCESS_CIVILIAN_COMMAND, ACCESS_WY_CORPORATE)
+	req_one_access = list(ACCESS_CIVILIAN_BRIG, ACCESS_CIVILIAN_COMMAND, ACCESS_WY_COLONIAL)
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/comdoor/reinforced
 	name = "\improper Reinforced Command Airlock"
@@ -216,7 +217,7 @@
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/comdoor/reinforced/colony
 	req_access = null
-	req_one_access = list(ACCESS_CIVILIAN_BRIG, ACCESS_CIVILIAN_COMMAND, ACCESS_WY_CORPORATE)
+	req_one_access = list(ACCESS_CIVILIAN_BRIG, ACCESS_CIVILIAN_COMMAND, ACCESS_WY_COLONIAL)
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/comdoor/solid
 	icon = 'icons/obj/structures/doors/2x1comdoor_solid.dmi'
@@ -225,7 +226,7 @@
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/comdoor/solid/colony
 	req_access = null
-	req_one_access = list(ACCESS_CIVILIAN_BRIG, ACCESS_CIVILIAN_COMMAND, ACCESS_WY_CORPORATE)
+	req_one_access = list(ACCESS_CIVILIAN_BRIG, ACCESS_CIVILIAN_COMMAND, ACCESS_WY_COLONIAL)
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/comdoor/solid/reinforced
 	name = "\improper Reinforced Command Airlock"
@@ -233,7 +234,7 @@
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/comdoor/solid/reinforced/colony
 	req_access = null
-	req_one_access = list(ACCESS_CIVILIAN_BRIG, ACCESS_CIVILIAN_COMMAND, ACCESS_WY_CORPORATE)
+	req_one_access = list(ACCESS_CIVILIAN_BRIG, ACCESS_CIVILIAN_COMMAND, ACCESS_WY_COLONIAL)
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/handle_multidoor()
 	if(!(width > 1)) return //Bubblewrap
@@ -285,6 +286,7 @@
 	unacidable = TRUE
 	no_panel = 1
 	not_weldable = 1
+	var/queen_pryable = TRUE
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/ex_act(severity)
 	return
@@ -297,6 +299,9 @@
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/attack_alien(mob/living/carbon/xenomorph/xeno)
 	if(xeno.hive_pos != XENO_QUEEN)
+		return ..()
+
+	if(!queen_pryable)
 		return ..()
 
 	if(!locked)
@@ -400,6 +405,7 @@
 	locked = TRUE
 	opacity = FALSE
 	glass = TRUE
+	queen_pryable = FALSE
 	var/throw_dir = EAST
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/try_to_activate_door(mob/user)
@@ -437,9 +443,9 @@
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock, idnum, override)
 	. = ..()
-	if(istype(port, /obj/docking_port/mobile/lifeboat))
-		var/obj/docking_port/mobile/lifeboat/L = port
-		L.doors += src
+	if(istype(port, /obj/docking_port/mobile/crashable/lifeboat))
+		var/obj/docking_port/mobile/crashable/lifeboat/lifeboat = port
+		lifeboat.doors += src
 
 /// External airlock that is part of the lifeboat dock
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/blastdoor
@@ -461,7 +467,8 @@
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/blastdoor/proc/vacate_premises()
 	for(var/turf/self_turf as anything in locs)
 		var/turf/near_turf = get_step(self_turf, throw_dir)
-		var/turf/projected = get_ranged_target_turf(near_turf, throw_dir, 50)
+		var/turf/space_turf = get_step(near_turf, throw_dir)
+		var/turf/projected = get_ranged_target_turf(space_turf, EAST, 50)
 		for(var/atom/movable/atom_movable in near_turf)
 			if(ismob(atom_movable) && !isobserver(atom_movable))
 				var/mob/mob = atom_movable
@@ -473,7 +480,9 @@
 					continue
 			else
 				continue
-			INVOKE_ASYNC(atom_movable, TYPE_PROC_REF(/atom/movable, throw_atom), projected, 50, SPEED_FAST, null, TRUE)
+			atom_movable.forceMove(space_turf)
+			INVOKE_ASYNC(atom_movable, TYPE_PROC_REF(/atom/movable, throw_atom), projected, 50, SPEED_FAST, null, TRUE, HIGH_LAUNCH)
+			addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(qdel), atom_movable), 3 SECONDS)
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/blastdoor/proc/bolt_explosion()
 	var/turf/T = get_step(src, throw_dir|dir)

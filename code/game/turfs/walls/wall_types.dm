@@ -239,6 +239,8 @@
 	icon_state = "fakewindows"
 	opacity = FALSE
 
+INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
+
 /turf/closed/wall/indestructible/splashscreen
 	name = "Lobby Art"
 	desc = "Assorted artworks."
@@ -719,6 +721,17 @@
 	for(var/obj/effect/alien/weeds/node/weed_node in contents)
 		qdel(weed_node)
 
+	if(hivenumber == XENO_HIVE_NORMAL)
+		RegisterSignal(SSdcs, COMSIG_GLOB_GROUNDSIDE_FORSAKEN_HANDLING, PROC_REF(forsaken_handling))
+
+/turf/closed/wall/resin/proc/forsaken_handling()
+	SIGNAL_HANDLER
+	if(is_ground_level(z))
+		hivenumber = XENO_HIVE_FORSAKEN
+		set_hive_data(src, XENO_HIVE_FORSAKEN)
+
+	UnregisterSignal(SSdcs, COMSIG_GLOB_GROUNDSIDE_FORSAKEN_HANDLING)
+
 /turf/closed/wall/resin/pillar
 	name = "resin pillar segment"
 	hull = TRUE
@@ -988,10 +1001,10 @@
 	else
 		return attack_hand(user)
 
-/obj/structure/alien/movable_wall/get_projectile_hit_boolean(obj/item/projectile/proj)
+/obj/structure/alien/movable_wall/get_projectile_hit_boolean(obj/projectile/proj)
 	return TRUE
 
-/obj/structure/alien/movable_wall/bullet_act(obj/item/projectile/proj)
+/obj/structure/alien/movable_wall/bullet_act(obj/projectile/proj)
 	. = ..()
 	take_damage(proj.damage)
 
@@ -1105,7 +1118,7 @@
 	var/explosive_multiplier = 0.3
 	var/reflection_multiplier = 0.5
 
-/turf/closed/wall/resin/reflective/bullet_act(obj/item/projectile/proj)
+/turf/closed/wall/resin/reflective/bullet_act(obj/projectile/proj)
 	if(src in proj.permutated)
 		return
 
@@ -1117,7 +1130,7 @@
 		// Bullet gets absorbed if it has IFF or can't be reflected.
 		return
 
-	var/obj/item/projectile/new_proj = new(src, construction_data ? construction_data : create_cause_data(initial(name)))
+	var/obj/projectile/new_proj = new(src, construction_data ? construction_data : create_cause_data(initial(name)))
 	new_proj.generate_bullet(proj.ammo, src, 0, proj.projectile_override_flags|AMMO_HOMING)
 	new_proj.damage = proj.damage * reflection_multiplier // don't make it too punishing
 	new_proj.accuracy = HIT_ACCURACY_TIER_7 // 35% chance to hit something
@@ -1133,7 +1146,7 @@
 
 	return TRUE
 
-/turf/closed/wall/resin/reflective/proc/bullet_ignore_turf(obj/item/projectile/proj, turf/T)
+/turf/closed/wall/resin/reflective/proc/bullet_ignore_turf(obj/projectile/proj, turf/T)
 	SIGNAL_HANDLER
 	if(T == src)
 		return COMPONENT_BULLET_PASS_THROUGH

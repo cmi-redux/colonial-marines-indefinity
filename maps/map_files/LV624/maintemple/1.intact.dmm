@@ -131,6 +131,7 @@
 	desc = "An old hide from a fearsome creature.";
 	name = "hunter hide"
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple)
 "dE" = (
@@ -312,6 +313,13 @@
 	icon_state = "multi_tiles"
 	},
 /area/lv624/ground/caves/sand_temple)
+"fQ" = (
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor/strata{
+	color = "#5e5d5d";
+	icon_state = "multi_tiles"
+	},
+/area/lv624/ground/caves/sand_temple)
 "fV" = (
 /obj/structure/prop/brazier/torch,
 /turf/closed/wall/rock/brown,
@@ -405,6 +413,7 @@
 	name = "sacred ceremonial dagger";
 	pixel_x = 9
 	},
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple)
 "hA" = (
@@ -508,6 +517,7 @@
 	color = "#6b675e"
 	},
 /obj/item/restraints,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/strata{
 	color = "#5e5d5d";
 	icon_state = "multi_tiles"
@@ -1149,6 +1159,25 @@
 	icon_state = "multi_tiles"
 	},
 /area/lv624/ground/caves/sand_temple)
+"BY" = (
+/obj/structure/surface/table/reinforced/prison{
+	color = "#6b675e"
+	},
+/obj/structure/window/reinforced{
+	dir = 8;
+	health = 80
+	},
+/obj/structure/window/reinforced{
+	dir = 4;
+	health = 80
+	},
+/obj/item/hunting_trap{
+	desc = "A bizarre alien device used for trapping and killing prey.";
+	name = "Alien Mine"
+	},
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/sandstone/runed,
+/area/lv624/ground/caves/sand_temple)
 "Cr" = (
 /obj/effect/decal/cleanable/blood{
 	basecolor = "#20d450";
@@ -1446,6 +1475,7 @@
 /obj/item/XenoItem/AntiAcid{
 	pixel_x = 4
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple)
 "LF" = (
@@ -1713,6 +1743,7 @@
 	color = "#6b675e"
 	},
 /obj/item/stack/yautja_rope,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple/powered)
 "SF" = (
@@ -1749,6 +1780,7 @@
 	amount = 50;
 	pixel_y = 7
 	},
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -2387,7 +2419,7 @@ gL
 Jc
 Jc
 Jc
-gL
+fQ
 wS
 oi
 qf
@@ -3345,7 +3377,7 @@ ZX
 ZX
 GT
 OC
-KB
+BY
 mv
 mv
 mv

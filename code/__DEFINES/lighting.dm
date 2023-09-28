@@ -4,77 +4,31 @@
 #define STATIC_LIGHT 1
 ///Light made by masking the lighting darkness plane.
 #define MOVABLE_LIGHT 2
-///Light made by masking the lighting darkness plane, and is directional.
-#define MOVABLE_LIGHT_DIRECTIONAL 3
+///A mix of the above, cheaper on moving items than dynamic, but heavier on rendering than movable
+#define HYBRID_LIGHT 3
+///Pointy light
+#define DIRECTIONAL_LIGHT 4
 
-///Is a movable light source attached to another movable (its loc), meaning that the lighting component should go one level deeper.
 #define LIGHT_ATTACHED (1<<0)
-
-DEFINE_BITFIELD(light_flags, list(
-	"ATTACHED" = LIGHT_ATTACHED,
-))
-
-//Bay lighting engine shit, not in /code/modules/lighting because BYOND is being shit about it
-/// frequency, in 1/10ths of a second, of the lighting process
-#define LIGHTING_INTERVAL       5
 
 #define MINIMUM_USEFUL_LIGHT_RANGE 1.4
 
-/// type of falloff to use for lighting; 1 for circular, 2 for square
-#define LIGHTING_FALLOFF        1
-/// use lambertian shading for light sources
-#define LIGHTING_LAMBERTIAN     0
-/// height off the ground of light sources on the pseudo-z-axis, you should probably leave this alone
-#define LIGHTING_HEIGHT         1
-/// Value used to round lumcounts, values smaller than 1/129 don't matter (if they do, thanks sinking points), greater values will make lighting less precise, but in turn increase performance, VERY SLIGHTLY.
-#define LIGHTING_ROUND_VALUE    (1 / 64)
-
-/// icon used for lighting shading effects
-#define LIGHTING_ICON 'icons/effects/lighting_object.dmi'
+#define LIGHTING_ICON 'icons/effects/lighting_object.dmi' // icon used for lighting shading effects
+#define LIGHTING_ICON_BIG 'icons/effects/lighting_object_big.dmi' //! icon used for lighting shading effects
 #define LIGHTING_STATIC_ICON 'icons/effects/alphacolors.dmi'
 
-/// If the max of the lighting lumcounts of each spectrum drops below this, disable luminosity on the lighting objects.
-/// Set to zero to disable soft lighting. Luminosity changes then work if it's lit at all.
-#define LIGHTING_SOFT_THRESHOLD 0
+#define ALPHA_TO_INTENSITY(alpha) (-(((clamp(alpha, 0, 22) - 22) / 6) ** 4) + 255)
 
-/// If I were you I'd leave this alone.
-#define LIGHTING_BASE_MATRIX \
-	list                     \
-	(                        \
-		1, 1, 1, 0, \
-		1, 1, 1, 0, \
-		1, 1, 1, 0, \
-		1, 1, 1, 0, \
-		0, 0, 0, 1           \
-	)                        \
 
-#define LIGHTING_DARK_MATRIX \
-	list                     \
-	(                        \
-		0, 0, 0, 0, \
-		0, 0, 0, 0, \
-		0, 0, 0, 0, \
-		0, 0, 0, 0, \
-		0, 0, 0, 1           \
-	)                        \
-///How many tiles standard fires glow.
-#define LIGHT_RANGE_FIRE 3
+#define LIGHT_RANGE_FIRE 3 //How many tiles standard fires glow.
 
 #define LIGHTING_PLANE_ALPHA_VISIBLE 255
-#define LIGHTING_PLANE_ALPHA_NV_TRAIT 245
+///The dim natural vision of Yautja
+#define LIGHTING_PLANE_ALPHA_YAUTJA 235
 #define LIGHTING_PLANE_ALPHA_MOSTLY_VISIBLE 192
-/// For lighting alpha, small amounts lead to big changes. even at 128 its hard to figure out what is dark and what is light, at 64 you almost can't even tell.
-#define LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE 128
+#define LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE 127
 #define LIGHTING_PLANE_ALPHA_INVISIBLE 0
 
-/// The amount of lumcount on a tile for it to be considered dark (used to determine reading and nyctophobia)
-#define LIGHTING_TILE_IS_DARK 0.2
-
-//code assumes higher numbers override lower numbers.
-#define LIGHTING_NO_UPDATE 0
-#define LIGHTING_VIS_UPDATE 1
-#define LIGHTING_CHECK_UPDATE 2
-#define LIGHTING_FORCE_UPDATE 3
 
 #define FLASH_LIGHT_DURATION 2
 #define FLASH_LIGHT_POWER 3
@@ -85,11 +39,6 @@ DEFINE_BITFIELD(light_flags, list(
 #define EMISSIVE_BLOCK_GENERIC 1
 /// Uses a dedicated render_target object to copy the entire appearance in real time to the blocking layer. For things that can change in appearance a lot from the base state, like humans.
 #define EMISSIVE_BLOCK_UNIQUE 2
-
-#define SUNLIGHT_INDOOR   0
-#define SUNLIGHT_OUTDOOR  1
-#define SUNLIGHT_BORDER   2
-
 /// The color matrix applied to all emissive overlays. Should be solely dependent on alpha and not have RGB overlap with [EM_BLOCK_COLOR].
 #define EMISSIVE_COLOR list(0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,1, 1,1,1,0)
 /// A globaly cached version of [EMISSIVE_COLOR] for quick access.
@@ -129,7 +78,52 @@ do { \
 	}; \
 } while (FALSE)
 
+
+//Bay lighting engine shit, not in /code/modules/lighting because BYOND is being shit about it	//thats how defines work, hello?
+#define LIGHTING_INTERVAL 5 // frequency, in 1/10ths of a second, of the lighting process
+
+#define MOVABLE_MAX_RANGE 7
+
+#define LIGHTING_FALLOFF 1 // type of falloff to use for lighting; 1 for circular, 2 for square
+#define LIGHTING_LAMBERTIAN 0 // use lambertian shading for light sources
+#define LIGHTING_HEIGHT 1 // height off the ground of light sources on the pseudo-z-axis, you should probably leave this alone
+#define LIGHTING_ROUND_VALUE (1 / 64) //Value used to round lumcounts, values smaller than 1/129 don't matter (if they do, thanks sinking points), greater values will make lighting less precise, but in turn increase performance, VERY SLIGHTLY.
+
+/// If the max of the lighting lumcounts of each spectrum drops below this, disable luminosity on the lighting objects. Set to zero to disable soft lighting. Luminosity changes then work if it's lit at all.
+#define LIGHTING_SOFT_THRESHOLD 0
+
+// If I were you I'd leave this alone.
+#define LIGHTING_BASE_MATRIX \
+	list                     \
+	(                        \
+		1, 1, 1, 0, \
+		1, 1, 1, 0, \
+		1, 1, 1, 0, \
+		1, 1, 1, 0, \
+		0, 0, 0, 1           \
+	)                        \
+
+#define LIGHTING_DARK_MATRIX \
+	list                     \
+	(                        \
+		0, 0, 0, 0, \
+		0, 0, 0, 0, \
+		0, 0, 0, 0, \
+		0, 0, 0, 0, \
+		0, 0, 0, 1           \
+	)                        \
+
+#define LIGHTING_NO_UPDATE 0
+#define LIGHTING_VIS_UPDATE 1
+#define LIGHTING_CHECK_UPDATE 2
+#define LIGHTING_FORCE_UPDATE 3
+
 //Sunlight states
 #define SKY_BLOCKED   0
 #define SKY_VISIBLE  1
 #define SKY_VISIBLE_BORDER   2
+
+#define SUNLIGHT_INDOOR   0
+#define SUNLIGHT_OUTDOOR  1
+#define SUNLIGHT_BORDER   2
+

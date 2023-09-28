@@ -79,6 +79,7 @@
 	//ambience = list('sound/ambience/jungle_amb1.ogg')
 	requires_power = 1
 	always_unpowered = 1
+	power_light = FALSE
 	power_equip = FALSE
 	power_environ = FALSE
 	minimap_color = MINIMAP_AREA_COLONY

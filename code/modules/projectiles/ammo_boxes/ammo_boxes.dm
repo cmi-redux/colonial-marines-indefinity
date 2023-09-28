@@ -20,10 +20,6 @@
 
 //---------------------GENERAL PROCS
 
-/obj/item/ammo_box/Destroy()
-	set_light_on(FALSE)
-	. = ..()
-
 /obj/item/ammo_box/attack_self(mob/living/user)
 	..()
 	if(burning)
@@ -59,7 +55,7 @@
 		burning = TRUE
 		process_burning()
 
-/obj/item/ammo_box/bullet_act(obj/item/projectile/proj)
+/obj/item/ammo_box/bullet_act(obj/projectile/proj)
 	..()
 	if(!burning_check())
 		return
@@ -281,8 +277,8 @@
 	var/overlay_gun_type = "_rounds" //used for ammo type color overlay
 	var/overlay_content = "_reg"
 	var/default_ammo = /datum/ammo/bullet/rifle
-	var/default_projectile = /obj/item/projectile
-	var/obj/item/projectile/current_rounds[]
+	var/default_projectile = /obj/projectile
+	var/obj/projectile/current_rounds[]
 	var/ammo_position = 0
 	var/max_rounds = 600
 	var/caliber = CALIBER_10X24MM
@@ -386,7 +382,7 @@
 					if(dumping)
 						transfering = -transfering
 					for(var/i=0;i<transfering;i++)
-						var/obj/item/projectile/proj = current_rounds[ammo_position]
+						var/obj/projectile/proj = current_rounds[ammo_position]
 						current_rounds[ammo_position] = "empty"
 						ammo_position--
 						proj.forceMove(AM)
@@ -417,7 +413,7 @@
 			playsound(loc, pick('sound/weapons/handling/mag_refill_1.ogg', 'sound/weapons/handling/mag_refill_2.ogg', 'sound/weapons/handling/mag_refill_3.ogg'), 25, 1)
 			var/transfering = min(AM.ammo_position, max_rounds - ammo_position)
 			for(var/i=0;i<transfering;i++)
-				var/obj/item/projectile/proj = AM.transfer_bullet_out()
+				var/obj/projectile/proj = AM.transfer_bullet_out()
 				proj.forceMove(src)
 				ammo_position++
 				current_rounds[ammo_position] = proj

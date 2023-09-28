@@ -11,7 +11,7 @@
 #define IMMOBILE_FORM_COLOR "#2B719E"
 
 /obj/item/storage/backpack/marine/smartpack
-	name = "\improper S-V42 prototype smartpack"
+	name = "S-V42 prototype smartpack"
 	desc = "A joint project between the USCM and Wey-Yu. It is said to be top-class engineering and state of the art technology. Given to USCM deployed synthetic units and the intended usage involve assisting in battlefield support. Can be recharged by grabbing onto an APC and completing the circuit with one's fingers (procedure not advised for non-synthetic personnel). WARNING - User is advised to take precautions."
 	item_state = "smartpack"
 	icon_state = "smartpack"
@@ -157,7 +157,7 @@
 /obj/item/storage/backpack/marine/smartpack/attack_self(mob/user)
 	..()
 
-	if(!isturf(user.loc) || flashlight_cooldown > world.time || !ishuman(user))
+	if(!isturf(user.loc) || !ishuman(user))
 		return
 
 	var/mob/living/carbon/human/H = user
@@ -168,7 +168,6 @@
 
 /obj/item/storage/backpack/marine/smartpack/proc/toggle_light(mob/user, toggle_on)
 	SIGNAL_HANDLER
-	flashlight_cooldown = world.time + 20 //2 seconds cooldown every time the light is toggled
 	if(!toggle_on)
 		turn_light(user, toggle_on)
 		playsound(src, 'sound/handling/click_2.ogg', 50, TRUE)

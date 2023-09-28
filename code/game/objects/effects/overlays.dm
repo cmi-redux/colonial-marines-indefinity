@@ -145,6 +145,7 @@
 	name = "laser"
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_ICON
+	light_range = 2
 	icon = 'icons/obj/items/weapons/projectiles.dmi'
 	icon_state = "laser_target_coordinate"
 	effect_duration = 600
@@ -161,13 +162,13 @@
 		source_binoc.laser_cooldown = world.time + source_binoc.cooldown_duration
 		source_binoc.coord = null
 		source_binoc = null
-	set_light_on(FALSE)
 	. = ..()
 
 /obj/effect/overlay/temp/laser_target
 	name = "laser"
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_ICON
+	light_range = 2
 	icon = 'icons/obj/items/weapons/projectiles.dmi'
 	icon_state = "laser_target2"
 	effect_duration = 600
@@ -208,7 +209,6 @@
 		source_binoc.laser = null
 		source_binoc = null
 
-	set_light_on(FALSE)
 	. = ..()
 
 /obj/effect/overlay/temp/laser_target/ex_act(severity) //immune to explosions
@@ -234,10 +234,6 @@
 	light_power = 0.2
 	light_color = COLOR_SOFT_RED
 	light_on = TRUE
-
-/obj/effect/overlay/temp/blinking_laser/Destroy()
-	set_light_on(FALSE)
-	. = ..()
 
 /obj/effect/overlay/temp/emp_sparks
 	icon = 'icons/effects/effects.dmi'

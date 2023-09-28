@@ -168,10 +168,7 @@
 
 	// Update bioluminescence.
 	if(seed.biolum)
-		if(seed.biolum_colour)
-			set_light(1 + round(seed.potency / 10), l_color = seed.biolum_colour)
-		else
-			set_light(1 + round(seed.potency / 10))
+		set_light(1+round(seed.potency/10))
 		return
 	else
 		set_light(0)
@@ -254,7 +251,7 @@
 		return
 
 	var/area/area = turf.loc
-	if(area?.static_lighting)
+	if(area)
 		var/light_available = max(0, min(10, turf.dynamic_lumcount) - 5)
 		if(abs(light_available - seed.ideal_light) > seed.light_tolerance)
 			die()

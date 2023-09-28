@@ -364,7 +364,7 @@
 		L.forceMove(src)
 		L.pixel_x += rand(-5,5)
 		L.pixel_y += rand(-5,5)
-		L.set_light(2)
+		L.set_light_on(TRUE)
 		playsound(user, 'sound/weapons/Genhit.ogg', 25, 1)
 	return
 
@@ -390,6 +390,7 @@
 
 /turf/open/gm/grass
 	name = "grass"
+	icon_state = "grass1"
 	baseturfs = /turf/open/gm/grass
 	scorchable = "grass1"
 	shoefootstep = FOOTSTEP_GRASS
@@ -606,8 +607,8 @@
 				if(istype(human.gloves,/obj/item/clothing/gloves/yautja/hunter))
 					var/obj/item/clothing/gloves/yautja/hunter/Y = human.gloves
 					if(Y && istype(Y) && Y.cloaked)
-						to_chat(human, SPAN_WARNING(" Your bracers hiss and spark as they short out!"))
-						Y.decloak(human, TRUE)
+						to_chat(human, SPAN_WARNING("Your bracers hiss and spark as they short out!"))
+						Y.decloak(human, TRUE, DECLOAK_SUBMERGED)
 
 		else if(isxeno(carbon))
 			river_slowdown -= 0.7
@@ -922,7 +923,7 @@
 		L.forceMove(src)
 		L.pixel_x += rand(-5,5)
 		L.pixel_y += rand(-5,5)
-		L.set_light(2)
+		L.set_light_on(TRUE)
 		playsound(user, 'sound/weapons/Genhit.ogg', 25, 1)
 	return
 
