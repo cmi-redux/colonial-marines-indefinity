@@ -10,6 +10,12 @@
         {
             "Marine Main Ship": true,
             "Down": -1,
+            "Up": 1,
+            "Baseturf": "/turf/open/openspace"
+        },
+        {
+            "Marine Main Ship": true,
+            "Down": -1,
             "Baseturf": "/turf/open/openspace"
         }
    ],
