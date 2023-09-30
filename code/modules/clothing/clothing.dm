@@ -26,6 +26,9 @@
 /obj/item/clothing/Initialize(mapload)
 	. = ..()
 	light_holder = new(src)
+	light_holder.set_light_flags(LIGHT_ATTACHED)
+	light_holder.light_range = light_range
+	light_holder.light_power = light_power
 
 /obj/item/clothing/Destroy()
 	QDEL_NULL(light_holder)
@@ -128,19 +131,14 @@
 		playsound(src, 'sound/handling/suitlight_on.ogg', 50, TRUE)
 
 	turn_light(user, toggle_on)
-	update_icon(user)
 
 /obj/item/clothing/turn_light(mob/user, toggle_on, sparks = FALSE, forced = FALSE)
 	. = ..()
 	if(. != CHECKS_PASSED)
 		return
 	flags_armor_features ^= ARMOR_LAMP_ON
-
-	light_holder.set_light_flags(LIGHT_ATTACHED)
-	light_holder.set_light_range(initial(light_range))
-	light_holder.set_light_power(initial(light_power))
 	light_holder.set_light_on(toggle_on)
-
+	update_icon(user)
 	for(var/datum/action/current_action as anything in actions)
 		current_action.update_button_icon()
 

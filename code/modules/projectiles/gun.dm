@@ -564,14 +564,6 @@
 		user.hud_used.update_ammo_hud(src)
 	..()
 
-/obj/item/weapon/gun/equipped(mob/user, slot)
-	if(flags_gun_features & GUN_AMMO_COUNTER && user.client)
-		if(slot == WEAR_L_HAND || slot == WEAR_R_HAND)
-			display_ammo(user)
-		else
-			user.hud_used.update_ammo_hud(src)
-	..()
-
 /obj/item/weapon/gun/proc/handle_damage(force = FALSE) //handle chance do break gan or damage
 	if(broken)
 		return
@@ -652,7 +644,10 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 		ADD_TRAIT(src, TRAIT_GUN_LIGHT_DEACTIVATED, user)
 
 	if(flags_gun_features & GUN_AMMO_COUNTER && user.client)
-		user.hud_used.update_ammo_hud(src)
+		if(slot == WEAR_L_HAND || slot == WEAR_R_HAND)
+			display_ammo(user)
+		else
+			user.hud_used.update_ammo_hud(src)
 
 	return ..()
 

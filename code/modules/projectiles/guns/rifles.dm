@@ -517,6 +517,9 @@
 	auto_retrieval_slot = WEAR_J_STORE
 	map_specific_decoration = TRUE
 
+	start_semiauto = FALSE
+	start_automatic = TRUE
+
 	var/mob/living/carbon/human/linked_human
 	var/is_locked = TRUE
 	var/iff_enabled = TRUE
