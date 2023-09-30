@@ -1282,9 +1282,6 @@
 /area/lv624/ground/barrens/central_barrens)
 "afJ" = (
 /obj/structure/surface/table/woodentable/fancy,
-/obj/structure/machinery/chem_dispenser/beer{
-	pixel_y = 26
-	},
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
 /turf/open/floor{
 	icon_state = "grimy"
@@ -28474,7 +28471,7 @@ aRg
 aRg
 aCi
 aKO
-aBo
+aRg
 aEw
 aRg
 wLz
@@ -29360,7 +29357,7 @@ aRg
 aKO
 aRg
 aRg
-aRg
+aBo
 aRg
 aRg
 aRg
@@ -54689,7 +54686,7 @@ ank
 ank
 ank
 ank
-aFc
+ank
 aSa
 aMq
 aky
@@ -55575,7 +55572,7 @@ ank
 ank
 ank
 ank
-ank
+aFc
 ank
 ank
 ank
