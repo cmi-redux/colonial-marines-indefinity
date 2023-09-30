@@ -261,7 +261,7 @@
  * * hive - The hive we're filling a slot for to check if the player is banished
  * * sorted - Whether to sort by larva_queue_time (default TRUE) or leave unsorted
  */
-/proc/get_alien_candidates(datum/hive_status/hive = null, sorted = TRUE)
+/proc/get_alien_candidates(datum/faction/faction = null, sorted = TRUE)
 	var/list/candidates = list()
 
 	for(var/mob/dead/observer/cur_obs as anything in GLOB.observer_list)
@@ -292,10 +292,10 @@
 		if((cur_obs.client.admin_holder && (cur_obs.client.admin_holder.rights & R_MOD)) && !cur_obs.adminlarva)
 			continue
 
-		if(hive)
+		if(faction)
 			var/banished = FALSE
-			for(var/mob_name in hive.banished_ckeys)
-				if(hive.banished_ckeys[mob_name] == cur_obs.ckey)
+			for(var/mob_name in faction.banished_ckeys)
+				if(faction.banished_ckeys[mob_name] == cur_obs.ckey)
 					banished = TRUE
 					break
 			if(banished)

@@ -115,6 +115,9 @@ DEFINE_BITFIELD(iff_flag_flags, list(
 /obj/item/faction_tag/organ/xenomorph/yautja
 	faction_to_get = FACTION_XENOMORPH_YAUTJA
 
+/obj/item/faction_tag/organ/xenomorph/renegade
+	faction_to_get = FACTION_XENOMORPH_RENEGADE
+
 /obj/item/faction_tag/colonist
 	faction_to_get = FACTION_COLONIST
 

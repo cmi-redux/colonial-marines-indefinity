@@ -787,7 +787,7 @@
 
 /obj/item/device/radio/headset/distress/pmc/hvh
 	desc = "A special headset used by corporate personnel. Channels are as follows: :o - colony."
-	initial_keys = list(/obj/item/device/encryptionkey/colony, /obj/item/device/encryptionkey/WY)
+	initial_keys = list(/obj/item/device/encryptionkey/colony, /obj/item/device/encryptionkey/wy)
 	misc_tracking = FALSE
 
 /obj/item/device/radio/headset/distress/pmc/cct
@@ -976,7 +976,7 @@
 	volume = RADIO_VOLUME_RAISED
 	multibroadcast_cooldown = HIGH_MULTIBROADCAST_COOLDOWN
 
-/obj/item/device/radio/headset/distress/UPP/recon
+/obj/item/device/radio/headset/distress/upp/recon
 	name = "\improper UPP headset"
 	desc = "A special headset used by recon elements of the UPP military."
 	frequency = UPP_FREQ

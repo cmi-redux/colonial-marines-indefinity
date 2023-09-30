@@ -53,7 +53,7 @@
 /obj/structure/machinery/computer/overwatch/attackby(obj/I as obj, mob/user as mob)  //Can't break or disassemble.
 	return
 
-/obj/structure/machinery/computer/overwatch/bullet_act(obj/projectile/proj) //Can't shoot it
+/obj/structure/machinery/computer/overwatch/bullet_act(obj/item/projectile/proj) //Can't shoot it
 	return FALSE
 
 /obj/structure/machinery/computer/overwatch/attack_remote(mob/user as mob)
@@ -92,20 +92,20 @@
 
 /obj/structure/machinery/computer/overwatch/ui_static_data(mob/user)
 	var/list/data = list()
-	data["mapRef"] = tacmap.map_holder.map_ref
+//	data["mapRef"] = tacmap.map_holder.map_ref
 	return data
 
 /obj/structure/machinery/computer/overwatch/tgui_interact(mob/user, datum/tgui/ui)
-
+/*
 	if(!tacmap.map_holder)
 		var/level = SSmapping.levels_by_trait(tacmap.targeted_ztrait)
 		if(!level[1])
 			return
 		tacmap.map_holder = SSminimaps.fetch_tacmap_datum(level[1], tacmap.allowed_flags)
-
+*/
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		user.client.register_map_obj(tacmap.map_holder.map)
+//		user.client.register_map_obj(tacmap.map_holder.map)
 		ui = new(user, src, "OverwatchConsole", "Overwatch Console")
 		ui.open()
 
@@ -116,7 +116,7 @@
 
 	if(!current_squad)
 		data["squad_list"] = list()
-		for(var/datum/squad/current_squad in RoleAuthority.squads)
+		for(var/datum/squad/current_squad in SSticker.role_authority.squads)
 			if(current_squad.active && !current_squad.overwatch_officer && current_squad.faction == faction && current_squad.name != "Root")
 				data["squad_list"] += current_squad.name
 		return data
@@ -196,7 +196,7 @@
 
 			if(current_squad.squad_leader)
 				if(marine_human == current_squad.squad_leader)
-					distance = "N/A"
+					distance = "N/target_area"
 					if(current_squad.name == SQUAD_MARINE_SOF)
 						if(marine_human.job == JOB_MARINE_RAIDER_CMD)
 							acting_sl = " (direct command)"
@@ -339,19 +339,19 @@
 	if((user.contents.Find(src) || (in_range(src, user) && istype(loc, /turf))) || (ishighersilicon(user)))
 		user.set_interaction(src)
 
-	switch(action)
+	switch(action)/*
 		if("mapview_ground")
 			current_mapviewer = usr
 			mapview("[GROUND_MAP_Z]")
 			return
 		if("mapview_ship")
 			current_mapviewer = usr
-			mapview("[SHIP_MAP_Z]")
+			mapview("[SHIP_MAP_Z]")*/
 		if("pick_squad")
 			if(current_squad)
 				return
 			var/datum/squad/selected_squad
-			for(var/datum/squad/searching_squad in RoleAuthority.squads)
+			for(var/datum/squad/searching_squad in SSticker.role_authority.squads)
 				if(searching_squad.active && !searching_squad.overwatch_officer && searching_squad.faction == faction && searching_squad.name != "Root" && searching_squad.name == params["squad"])
 					selected_squad = searching_squad
 					break
@@ -457,8 +457,8 @@
 				else
 					z_hidden = HIDE_NONE
 					to_chat(user, "[icon2html(src, usr)] [SPAN_NOTICE("No location is ignored anymore.")]")
-		if("tacmap_unpin")
-			tacmap.tgui_interact(user)
+//		if("tacmap_unpin")
+//			tacmap.tgui_interact(user)
 		if("dropbomb")
 			if(!params["x"] || !params["y"])
 				return
@@ -562,13 +562,13 @@
 		to_chat(user, "[icon2html(src, usr)] [SPAN_WARNING("[selected_sl] is unfit to lead!")]")
 		return
 	if(current_squad.squad_leader)
-		current_squad.send_message("Attention: [current_squad.squad_leader] is [current_squad.squad_leader.stat == DEAD ? "stepping down" : "demoted"]. A new Squad Leader has been set: [selected_sl.real_name].")
+		current_squad.send_message("Attention: [current_squad.squad_leader] is [current_squad.squad_leader.stat == DEAD ? "stepping down" : "demoted"]. target_area new Squad Leader has been set: [selected_sl.real_name].")
 		visible_message("[icon2html(src, viewers(src))] [SPAN_BOLDNOTICE("Squad Leader [current_squad.squad_leader] of squad '[current_squad]' has been [current_squad.squad_leader.stat == DEAD ? "replaced" : "demoted and replaced"] by [selected_sl.real_name]! Logging to enlistment files.")]")
 		var/old_lead = current_squad.squad_leader
 		current_squad.demote_squad_leader(current_squad.squad_leader.stat != DEAD)
 		SStracking.start_tracking(current_squad.tracking_id, old_lead)
 	else
-		current_squad.send_message("Attention: A new Squad Leader has been set: [selected_sl.real_name].")
+		current_squad.send_message("Attention: target_area new Squad Leader has been set: [selected_sl.real_name].")
 		visible_message("[icon2html(src, viewers(src))] [SPAN_BOLDNOTICE("[selected_sl.real_name] is the new Squad Leader of squad '[current_squad]'! Logging to enlistment file.")]")
 
 	to_chat(selected_sl, "[icon2html(src, selected_sl)] <font size='3' color='blue'><B>Overwatch: You've been promoted to \'[selected_sl.job == JOB_SQUAD_LEADER ? "SQUAD LEADER" : "ACTING SQUAD LEADER"]\' for [current_squad.name]. Your headset has access to the command channel (:v).</B></font>")
@@ -799,12 +799,12 @@
 
 	var/ob_name = lowertext(almayer_orbital_cannon.tray.warhead.name)
 	var/mutable_appearance/warhead_appearance = mutable_appearance(almayer_orbital_cannon.tray.warhead.icon, almayer_orbital_cannon.tray.warhead.icon_state)
-	notify_ghosts(header = "Bombardment Inbound", message = "\A [ob_name] targeting [A.name] has been fired!", source = T, alert_overlay = warhead_appearance, extra_large = TRUE)
-	message_admins(FONT_SIZE_HUGE("ALERT: [key_name(user)] fired an orbital bombardment in [A.name] for squad '[current_squad]' [ADMIN_JMP(T)]"))
-	log_attack("[key_name(user)] fired an orbital bombardment in [A.name] for squad '[current_squad]'")
+	notify_ghosts(header = "Bombardment Inbound", message = "\target_area [ob_name] targeting [target_area.name] has been fired!", source = target_turf, alert_overlay = warhead_appearance, extra_large = TRUE)
+	message_admins(FONT_SIZE_HUGE("ALERT: [key_name(user)] fired an orbital bombardment in [target_area.name] for squad '[current_squad]' [ADMIN_JMP(target_turf)]"))
+	log_attack("[key_name(user)] fired an orbital bombardment in [target_area.name] for squad '[current_squad]'")
 
 	/// Project ARES interface log.
-	GLOB.ares_link.log_ares_bombardment(user.name, ob_name, "X[x_bomb], Y[y_bomb] in [A.name]")
+	GLOB.ares_link.log_ares_bombardment(user.name, ob_name, "X[x_bomb], Y[y_bomb] in [target_area.name]")
 
 	busy = FALSE
 	var/turf/target = locate(target_turf.x + rand(-3, 3), target_turf.y + rand(-3, 3), target_turf.z)
@@ -875,19 +875,19 @@
 	name = "Broken Overwatch Console"
 
 /obj/structure/machinery/computer/overwatch/clf
-	faction = FACTION_CLF
+	faction_to_get = FACTION_CLF
 
 /obj/structure/machinery/computer/overwatch/upp
-	faction = FACTION_UPP
+	faction_to_get = FACTION_UPP
 
 /obj/structure/machinery/computer/overwatch/pmc
-	faction = FACTION_PMC
+	faction_to_get = FACTION_PMC
 
 /obj/structure/machinery/computer/overwatch/twe
-	faction = FACTION_TWE
+	faction_to_get = FACTION_TWE
 
 /obj/structure/machinery/computer/overwatch/freelance
-	faction = FACTION_FREELANCER
+	faction_to_get = FACTION_FREELANCER
 
 /obj/structure/supply_drop
 	name = "Supply Drop Pad"

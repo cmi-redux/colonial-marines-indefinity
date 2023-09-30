@@ -39,7 +39,7 @@
 	. = ..()
 
 	node = place_node()
-	for(var/turf/turf in range(round(cover_range*PYLON_COVERAGE_MULT), loc))
+	for(var/turf/turf in range(round(cover_range * COVERAGE_MULT), loc))
 		LAZYADD(turf.linked_pylons, src)
 		linked_turfs += turf
 
@@ -70,10 +70,10 @@
 	. = ..()
 
 	var/lesser_count = 0
-	for(var/mob/living/carbon/xenomorph/lesser_drone/lesser in faction.totalXenos)
+	for(var/mob/living/carbon/xenomorph/lesser_drone/lesser in faction.totalMobs)
 		lesser_count++
 
-	. += "Currently holding [SPAN_NOTICE("[Floor(lesser_drone_spawns)]")]/[SPAN_NOTICE("[lesser_drone_spawn_limit]")] lesser drones."
+	. += "Currently holding [SPAN_NOTICE("[round(lesser_drone_spawns)]")]/[SPAN_NOTICE("[lesser_drone_spawn_limit]")] lesser drones."
 	. += "There are currently [SPAN_NOTICE("[lesser_count]")] lesser drones in the hive. The hive can support [SPAN_NOTICE("[faction.lesser_drone_limit]")] lesser drones."
 
 /obj/effect/alien/resin/special/pylon/attack_ghost(mob/dead/observer/user)
@@ -155,33 +155,33 @@
 		if(hijack_delete)
 			return ..()
 
-		marine_announcement("ALERT.\n\nEnergy build up around communication relay at [get_area(src)] halted.", "[MAIN_AI_SYSTEM] Biological Scanner")
+		faction_announcement("ALERT.\n\nEnergy build up around communication relay at [get_area(src)] halted.", "[MAIN_AI_SYSTEM] Biological Scanner")
 
-		for(var/hivenumber in GLOB.hive_datum)
-			var/datum/hive_status/checked_hive = GLOB.hive_datum[hivenumber]
-			if(!length(checked_hive.totalXenos))
+		for(var/faction_to_get in FACTION_LIST_XENOMORPH)
+			var/datum/faction/selected_faction = GLOB.faction_datum[faction_to_get]
+			if(!length(selected_faction.totalMobs))
 				continue
 
-			if(checked_hive == faction)
-				xeno_announcement(SPAN_XENOANNOUNCE("We have lost our control of the tall's communication relay at [get_area(src)]."), hivenumber, XENO_GENERAL_ANNOUNCE)
+			if(selected_faction == faction)
+				xeno_announcement(SPAN_XENOANNOUNCE("We have lost our control of the tall's communication relay at [get_area(src)]."), selected_faction, XENO_GENERAL_ANNOUNCE)
 			else
-				xeno_announcement(SPAN_XENOANNOUNCE("Another hive has lost control of the tall's communication relay at [get_area(src)]."), hivenumber, XENO_GENERAL_ANNOUNCE)
+				xeno_announcement(SPAN_XENOANNOUNCE("Another hive has lost control of the tall's communication relay at [get_area(src)]."), selected_faction, XENO_GENERAL_ANNOUNCE)
 
 	return ..()
 
 /// Checks if all comms towers are connected and then starts end game content on all pylons if they are
 /obj/effect/alien/resin/special/pylon/endgame/proc/comms_relay_connection()
-	marine_announcement("ALERT.\n\nIrregular build up of energy around communication relays at [get_area(src)].", "[MAIN_AI_SYSTEM] Biological Scanner")
+	faction_announcement("ALERT.\n\nIrregular build up of energy around communication relays at [get_area(src)].", "[MAIN_AI_SYSTEM] Biological Scanner")
 
-	for(var/hivenumber in GLOB.hive_datum)
-		var/datum/hive_status/checked_hive = GLOB.hive_datum[hivenumber]
-		if(!length(checked_hive.totalXenos))
+	for(var/faction_to_get in FACTION_LIST_XENOMORPH)
+		var/datum/faction/selected_faction = GLOB.faction_datum[faction_to_get]
+		if(!length(selected_faction.totalMobs))
 			continue
 
-		if(checked_hive == faction)
-			xeno_announcement(SPAN_XENOANNOUNCE("We have harnessed the tall's communication relay at [get_area(src)]. Hold it!"), hivenumber, XENO_GENERAL_ANNOUNCE)
+		if(selected_faction == faction)
+			xeno_announcement(SPAN_XENOANNOUNCE("We have harnessed the tall's communication relay at [get_area(src)]. Hold it!"), selected_faction, XENO_GENERAL_ANNOUNCE)
 		else
-			xeno_announcement(SPAN_XENOANNOUNCE("Another hive has harnessed the tall's communication relay at [get_area(src)].[faction.faction_is_ally(checked_hive.name) ? "" : " Stop them!"]"), hivenumber, XENO_GENERAL_ANNOUNCE)
+			xeno_announcement(SPAN_XENOANNOUNCE("Another hive has harnessed the tall's communication relay at [get_area(src)].[faction.faction_is_ally(selected_faction.name) ? "" : " Stop them!"]"), selected_faction, XENO_GENERAL_ANNOUNCE)
 
 	activated = TRUE
 	addtimer(CALLBACK(src, PROC_REF(give_larva)), XENO_PYLON_ACTIVATION_COOLDOWN, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_LOOP|TIMER_DELETE_ME)
@@ -194,10 +194,10 @@
 	if(!activated)
 		return
 
-	if(!faction.hive_location || !faction.living_xeno_queen)
+	if(!faction.faction_location || !faction.living_xeno_queen)
 		return
 
-	var/list/hive_xenos = faction.totalXenos
+	var/list/hive_xenos = faction.totalMobs
 
 	for(var/mob/living/carbon/xenomorph/xeno in hive_xenos)
 		if(!xeno.counts_for_slots)
@@ -271,13 +271,12 @@
 	. = ..()
 
 	faction.set_faction_location(src)
-	faction.hive_location = src
+	faction.faction_location = src
 
 	SSmapview.add_marker(src, "hive_core")
 
 /obj/effect/alien/resin/special/pylon/core/process()
 	. = ..()
-	update_minimap_icon()
 
 	// Handle spawning larva if core is connected to a hive
 	if(faction)

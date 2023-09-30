@@ -101,7 +101,6 @@
 	LAZYADD(active_areas, src)
 	LAZYADD(all_areas, src)
 	reg_in_areas_in_z()
-	initialize_power_and_lighting()
 
 	if(base_lighting_alpha)
 		return INITIALIZE_HINT_ROUNDSTART
@@ -372,8 +371,8 @@
 	if(ismob(arrived))
 		if(!old_loc)
 			return
-		var/mob/M = A
-		var/area/old_area = get_area(OldLoc)
+		var/mob/mob = arrived
+		var/area/old_area = get_area(old_loc)
 		if(old_area == src)
 			return
 		mob?.client?.soundOutput?.update_ambience(src, null, TRUE)

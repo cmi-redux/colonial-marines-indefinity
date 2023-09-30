@@ -616,7 +616,7 @@
 	if(prob(max(0, exposed_temperature - 673)))   //0% at <400C, 100% at >500C
 		broken()
 
-/obj/structure/machinery/light/bullet_act(obj/projectile/proj)
+/obj/structure/machinery/light/bullet_act(obj/item/projectile/proj)
 	bullet_ping(proj)
 	if(proj.ammo.damage_type == BRUTE)
 		if(proj.damage > 10)

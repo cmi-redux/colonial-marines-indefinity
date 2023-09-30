@@ -121,8 +121,8 @@
 				serialized["job"] = id_card?.assignment ? id_card.assignment : human.job
 				serialized["nickname"] = human.real_name
 
-				if(human.assigned_squad && human.assigned_squad.color)
-					serialized["background_color"] = squad_colors[human.assigned_squad.color]
+				if(human.assigned_squad)
+					serialized["background_color"] = human.assigned_squad.equipment_color
 
 				if(SSticker.mode.is_in_endgame == TRUE && !is_mainship_level(M.z))
 					escaped += list(serialized)

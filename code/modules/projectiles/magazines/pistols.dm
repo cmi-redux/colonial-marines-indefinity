@@ -123,7 +123,7 @@
 
 /obj/item/ammo_magazine/pistol/es4
 	name = "ES-4 stun magazine (9mm)"
-	default_ammo = /datum/ammo/bullet/pistol/rubber/stun
+	ammo_preset = list(/datum/ammo/bullet/pistol/rubber/stun)
 	caliber = "9mm"
 	desc = "Holds 19 rounds of specialized Conductive 9mm. Electrostatic propulsion in the ES-4 functions by propelling an cV9mm round, at a proportionally slower velocity to maintain a higher kinetic energy transfer rate. All this turns a penetrative round into a less-than-lethal round."
 	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/wy.dmi'
@@ -215,7 +215,7 @@
 
 /obj/item/ammo_magazine/pistol/np92
 	name = "NP92 magazine (9x18mm Makarov)"
-	default_ammo = list(/datum/ammo/bullet/pistol)
+	ammo_preset = list(/datum/ammo/bullet/pistol)
 	caliber = CALIBER_9MM
 	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/upp.dmi'
 	icon_state = "np92mag"
@@ -224,7 +224,7 @@
 
 /obj/item/ammo_magazine/pistol/np92/suppressed
 	name = "NPZ92 magazine (9x18mm Makarov)"
-	default_ammo = list(/datum/ammo/bullet/pistol)
+	ammo_preset = list(/datum/ammo/bullet/pistol)
 	caliber = CALIBER_9MM
 	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/upp.dmi'
 	icon_state = "npz92mag"
@@ -232,7 +232,7 @@
 
 /obj/item/ammo_magazine/pistol/np92/tranq
 	name = "NPZ92 tranq magazine (9x18mm Makarov)"
-	default_ammo = list(/datum/ammo/bullet/pistol/tranq)
+	ammo_preset = list(/datum/ammo/bullet/pistol/tranq)
 	caliber = CALIBER_9MM
 	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/upp.dmi'
 	icon_state = "npz92tranqmag"
@@ -243,7 +243,7 @@
 
 /obj/item/ammo_magazine/pistol/t73
 	name = "Type 73 magazine (7.62x25mm Tokarev)"
-	default_ammo = list(/datum/ammo/bullet/pistol/heavy)
+	ammo_preset = list(/datum/ammo/bullet/pistol/heavy)
 	caliber = "7.62x25mm Tokarev"
 	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/upp.dmi'
 	icon_state = "ttmag"
@@ -252,7 +252,7 @@
 
 /obj/item/ammo_magazine/pistol/t73_impact
 	name = "High Impact Type 74 magazine (7.62x25mm Tokarev)"
-	default_ammo = list(/datum/ammo/bullet/pistol/heavy/super/highimpact/upp)
+	ammo_preset = list(/datum/ammo/bullet/pistol/heavy/super/highimpact/upp)
 	caliber = "7.62x25mm Tokarev"
 	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/upp.dmi'
 	icon_state = "ttmag_impact"

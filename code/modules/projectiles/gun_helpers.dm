@@ -8,21 +8,6 @@ ERROR CODE I1: projectile malfunctioned while firing. <------------ Right before
 ERROR CODE I2: null ammo while load_into_chamber() <------------- Somehow the ammo datum is missing or something. We need to figure out how that happened.
 ERROR CODE R1: negative current_rounds on examine. <------------ Applies to ammunition only. Ammunition should never have negative rounds after spawn.
 
-DEFINES in setup.dm, referenced here.
-#define GUN_CAN_POINTBLANK 1
-#define GUN_TRIGGER_SAFETY 2
-#define GUN_UNUSUAL_DESIGN 4
-#define GUN_SILENCED 8
-#define GUN_AUTOMATIC 16
-#define GUN_INTERNAL_MAG 32
-#define GUN_AUTO_EJECTOR 64
-#define GUN_AMMO_COUNTER 128
-#define GUN_BURST_ON 256
-#define GUN_BURST_FIRING 512
-#define GUN_FLASHLIGHT_ON 1024
-#define GUN_WY_RESTRICTED 2048
-#define GUN_SPECIALIST 4096
-
 	NOTES
 
 	if(burst_toggled && burst_firing)
@@ -110,7 +95,7 @@ DEFINES in setup.dm, referenced here.
 //----------------------------------------------------------
 
 /obj/item/weapon/gun/clicked(mob/user, list/mods)
-	if (mods["alt"])
+	if(mods["alt"])
 		if(!CAN_PICKUP(user, src))
 			return ..()
 		toggle_gun_safety()
@@ -291,8 +276,8 @@ DEFINES in setup.dm, referenced here.
 					reload(user, attachment_magazine)
 				else
 					active_attachable.reload_attachment(attachment_magazine, user)
-			else if(istype(attack_item, /obj/projectile))
-				var/obj/projectile/projectile = attack_item
+			else if(istype(attack_item, /obj/item/projectile))
+				var/obj/item/projectile/projectile = attack_item
 				var/obj/item/ammo_magazine/handful/new_handful = projectile.bullet_make_handful(user)
 				if(istype(src, new_handful.gun_type))
 					to_chat(user, SPAN_NOTICE("You disable [active_attachable]."))
@@ -308,9 +293,9 @@ DEFINES in setup.dm, referenced here.
 		if(check_inactive_hand(user))
 			reload(user, attack_item)
 
-	else if(istype(attack_item, /obj/projectile) && flags_gun_features & GUN_INTERNAL_MAG)
+	else if(istype(attack_item, /obj/item/projectile) && flags_gun_features & GUN_INTERNAL_MAG)
 		if(check_inactive_hand(user))
-			var/obj/projectile/projectile = attack_item
+			var/obj/item/projectile/projectile = attack_item
 			var/obj/item/ammo_magazine/handful/new_handful = projectile.bullet_make_handful(user)
 			if(!reload(user, new_handful))
 				user.put_in_hands(attack_item)

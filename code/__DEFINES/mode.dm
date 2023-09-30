@@ -7,7 +7,7 @@
 #define MONORAIL_LOCK_COOLDOWN			3 MINUTES
 #define SHUTTLE_LOCK_TIME_LOCK 			1 MINUTES
 #define EVACUATION_AUTOMATIC_DEPARTURE 	10 MINUTES //All pods automatically depart in 10 minutes, unless they are full or unable to launch for some reason.
-#define EVACUATION_ESTIMATE_DEPARTURE 	(evac_time + EVACUATION_AUTOMATIC_DEPARTURE - world.time)
+#define EVACUATION_ESTIMATE_DEPARTURE 	(SSevacuation.evac_time + EVACUATION_AUTOMATIC_DEPARTURE - world.time)
 
 #define EVACUATION_STATUS_STANDING_BY 0
 #define EVACUATION_STATUS_INITIATING 1
@@ -114,9 +114,6 @@
 #define ROUNDSTATUS_PODDOORS_OPEN 2
 
 #define LATEJOIN_MARINES_PER_LATEJOIN_LARVA 3
-
-#define BE_ALIEN_AFTER_DEATH 1
-#define BE_AGENT 2
 
 //=================================================
 #define SHOW_ITEM_ANIMATIONS_NONE 0 //Do not show any item pickup animations

@@ -125,6 +125,7 @@
 /obj/item/explosive/grenade/flashbang,
 /obj/item/explosive/grenade/flashbang,
 /obj/item/ammo_magazine/shotgun/beanbag,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	icon_state = "cult"
 	},

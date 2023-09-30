@@ -149,8 +149,8 @@
 					if(flare.type != flare_type)
 						to_chat(user, SPAN_WARNING("Some flares in \the [acting_magazine] are not of the correct type."))
 						return
-			else if(istype(acting_magazine, /obj/item/storage/box/MRE))
-				var/obj/item/storage/box/MRE/mre_pack = acting_magazine
+			else if(istype(acting_magazine, /obj/item/storage/box/mre))
+				var/obj/item/storage/box/mre/mre_pack = acting_magazine
 				if(mre_pack.isopened)
 					to_chat(user, SPAN_WARNING("\The [acting_magazine] was already opened and isn't suitable for storing in \the [src]."))
 					return

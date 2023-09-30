@@ -185,7 +185,7 @@
 	bonus_overlay = "insasu_stickmag_overlay"
 	max_rounds = 35
 	gun_type = /obj/item/weapon/gun/smg/pps43
-	default_ammo = /datum/ammo/bullet/smg/pps43
+	ammo_preset = list(/datum/ammo/bullet/smg/pps43)
 	var/bonus_mag_aim_slowdown = 0
 	var/bonus_mag_wield_delay = 0
 

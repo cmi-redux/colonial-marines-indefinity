@@ -75,7 +75,7 @@ GLOBAL_LIST_INIT(cm_vending_clothing_smartgun, list(
 		list("Gloves", 0, /obj/item/clothing/gloves/marine, VENDOR_CAN_BUY_GLOVES, VENDOR_ITEM_MANDATORY),
 		list("Headset", 0, /obj/item/device/radio/headset/almayer/marine, VENDOR_CAN_BUY_EAR, VENDOR_ITEM_MANDATORY),
 		list("Helmet", 0, /obj/item/clothing/head/helmet/marine, VENDOR_CAN_BUY_HELMET, VENDOR_ITEM_MANDATORY),
-		list("MRE", 0, /obj/item/storage/box/MRE, VENDOR_CAN_BUY_MRE, VENDOR_ITEM_MANDATORY),
+		list("MRE", 0, /obj/item/storage/box/mre, VENDOR_CAN_BUY_MRE, VENDOR_ITEM_MANDATORY),
 
 		list("BELT", 0, null, null, null),
 		list("M802 Smartgunner Sidearm Belt", 0, /obj/item/storage/belt/gun/smartgunner/full, VENDOR_CAN_BUY_BELT, VENDOR_ITEM_MANDATORY),

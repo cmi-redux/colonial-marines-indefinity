@@ -1480,15 +1480,6 @@
 	icon_state = "rasputin15"
 	},
 /area/bigredv2/outside/office_complex)
-"hN" = (
-/obj/structure/bed/chair/dropship/passenger{
-	dir = 4
-	},
-/obj/effect/landmark/survivor_spawner/bigred_crashed_pmc_medic,
-/turf/open/shuttle/dropship{
-	icon_state = "rasputin15"
-	},
-/area/bigredv2/outside/office_complex)
 "id" = (
 /obj/structure/bed/chair/dropship/passenger{
 	dir = 4
@@ -1506,6 +1497,15 @@
 /obj/item/limb/leg/l_leg,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin3"
+	},
+/area/bigredv2/outside/office_complex)
+"od" = (
+/obj/structure/bed/chair/dropship/passenger{
+	dir = 4
+	},
+/obj/item/clothing/gloves/marine/veteran/pmc,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15"
 	},
 /area/bigredv2/outside/office_complex)
 "oF" = (
@@ -1650,21 +1650,12 @@
 	tag = "icon-rasputin15";
 	icon_state = "rasputin15"
 	},
-/area/bigredv2/outside/office_complex)
+/area/bigredv2/outside/building/office_complex)
 "Vg" = (
 /obj/effect/landmark/objective_landmark/medium,
 /turf/open/shuttle/dropship{
 	icon_state = "floor8";
 	tag = "icon-rasputin7"
-	},
-/area/bigredv2/outside/office_complex)
-"XH" = (
-/obj/structure/bed/chair/dropship/passenger{
-	dir = 4
-	},
-/obj/effect/landmark/survivor_spawner/bigred_crashed_pmc_engineer,
-/turf/open/shuttle/dropship{
-	icon_state = "rasputin15"
 	},
 /area/bigredv2/outside/office_complex)
 
@@ -1946,7 +1937,7 @@ cX
 cX
 by
 aN
-XH
+bk
 AB
 bk
 aV
@@ -1954,9 +1945,9 @@ bv
 dN
 dP
 aV
-id
-yS
-yS
+bk
+bk
+bk
 cE
 cM
 cM
@@ -2109,15 +2100,15 @@ aN
 bv
 dL
 bm
-yS
-yS
-yS
+bk
+bk
+bk
 cu
-hN
-yS
-yS
-yS
-oF
+bk
+bk
+bk
+bk
+bk
 cv
 dz
 dJ

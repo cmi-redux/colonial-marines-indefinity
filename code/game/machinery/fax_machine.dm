@@ -8,7 +8,7 @@ var/list/alldepartments = list()
 #define DEPARTMENT_PRESS "Various Press Organizations"
 
 /obj/structure/machinery/faxmachine // why not fax_machine?
-	name = "\improper General Purpose Fax Machine"
+	name = "General Purpose Fax Machine"
 	icon = 'icons/obj/structures/machinery/library.dmi'
 	icon_state = "fax"
 	anchored = TRUE
@@ -430,13 +430,13 @@ var/list/alldepartments = list()
 		qdel(faxcontents)
 
 /obj/structure/machinery/faxmachine/cmb
-	name = "\improper CMB Incident Command Center Fax Machine"
+	name = "CMB Incident Command Center Fax Machine"
 	department = "Colonial Marshal Bureau, Anchorpoint Station"
 	network = "NC4 UA Federal Secure Network - CMB Relay"
 	department = DEPARTMENT_CMB
 
 /obj/structure/machinery/faxmachine/corporate
-	name = "\improper W-Y Corporate Fax Machine"
+	name = "W-Y Corporate Fax Machine"
 	department = "W-Y Local Office"
 	network = "Weyland-Yutani Secure Network"
 
@@ -449,7 +449,7 @@ var/list/alldepartments = list()
 	network = "Weyland-Yutani Quantum Relay"
 
 /obj/structure/machinery/faxmachine/uscm
-	name = "\improper USCM Military Fax Machine"
+	name = "USCM Military Fax Machine"
 	department = "USCM Local Operations"
 	network = "USCM Encrypted Network"
 	target_department = DEPARTMENT_HC
@@ -466,7 +466,7 @@ var/list/alldepartments = list()
 	network = "USCM High Command Quantum Relay"
 
 /obj/structure/machinery/faxmachine/uscm/brig
-	name = "\improper USCM Provost Fax Machine"
+	name = "USCM Provost Fax Machine"
 	department = "Brig"
 	target_department = DEPARTMENT_PROVOST
 

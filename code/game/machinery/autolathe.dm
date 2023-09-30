@@ -3,7 +3,7 @@
 #define AUTOLATHE_WIRES_UNCUT (AUTOLATHE_WIRE_HACK|AUTOLATHE_WIRE_SHOCK) // when none of the wires are cut
 
 /obj/structure/machinery/autolathe
-	name = "\improper autolathe"
+	name = "autolathe"
 	desc = "It produces items using metal and glass."
 	icon_state = "autolathe"
 	var/base_state = "autolathe"
@@ -561,7 +561,7 @@
 	stored_material =  list("metal" = 40000, "glass" = 20000)
 
 /obj/structure/machinery/autolathe/armylathe
-	name = "\improper Armylathe"
+	name = "Armylathe"
 	desc = "A specialized autolathe made for printing USCM weaponry and parts."
 	icon_state = "armylathe"
 	base_state = "armylathe"
@@ -590,7 +590,7 @@
 	. = ..()
 
 /obj/structure/machinery/autolathe/medilathe
-	name = "\improper Medilathe"
+	name = "Medilathe"
 	desc = "A specialized autolathe made for printing medical items."
 	icon = 'icons/obj/structures/machinery/science_machines_64x32.dmi'
 	icon_state = "medilathe"

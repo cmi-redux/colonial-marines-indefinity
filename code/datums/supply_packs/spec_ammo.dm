@@ -11,7 +11,7 @@
 	)
 	cost = 30
 	containertype = /obj/structure/closet/crate/explosives
-	containername = "\improper M5 RPG Rocket Crate"
+	containername = "M5 RPG Rocket Crate"
 	group = "Weapons Specialist Ammo"
 
 /datum/supply_packs/ammo_rpg_he
@@ -196,7 +196,7 @@
 	)
 	cost = 60
 	containertype = /obj/structure/closet/crate/ammo/alt/flame
-	containername = "\improper M240-T Mixed Fuel Tank Crate"
+	containername = "M240-T Mixed Fuel Tank Crate"
 	group = "Weapons Specialist Ammo"
 
 /datum/supply_packs/ammo_pyro_extended

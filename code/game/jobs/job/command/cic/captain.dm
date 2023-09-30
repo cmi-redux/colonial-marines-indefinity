@@ -7,7 +7,7 @@
 	flags_whitelist = WHITELIST_COMMANDER
 	gear_preset = /datum/equipment_preset/uscm_ship/commander
 	balance_formulas = list(BALANCE_FORMULA_COMMANDING, BALANCE_FORMULA_MISC, BALANCE_FORMULA_ENGINEER, BALANCE_FORMULA_SUPPORT, BALANCE_FORMULA_OPERATIONS, BALANCE_FORMULA_MEDIC, BALANCE_FORMULA_FIELD)
-=======
+
 /datum/job/command/commander/New()
 	. = ..()
 	gear_preset_whitelist = list(

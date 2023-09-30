@@ -36,7 +36,7 @@
 	acid_damage = 1
 	icon_state = "greenglow"
 
-	light_color = COLOUR_GREEN
+	light_color = COLOR_GREEN
 	light_power = 0.4
 	light_range = 2
 	light_on = TRUE
@@ -58,7 +58,7 @@
 	density = FALSE
 	anchored = TRUE
 	layer = TURF_LAYER
-	light_color = COLOUR_GREEN
+	light_color = COLOR_GREEN
 	light_power = 0.4
 	light_range = 2
 	light_on = TRUE

@@ -38,9 +38,9 @@
 
 			if(faction.stored_larva)
 				faction.stored_larva = round(faction.stored_larva * 0.5) //Lose half on dead queen
-				var/list/players_with_xeno_pref = get_alien_candidates(GLOB.hive_datum[hivenumber])
-				if(players_with_xeno_pref && istype(faction.hive_location, /obj/effect/alien/resin/special/pylon/core))
-					var/turf/larva_spawn = get_turf(faction.hive_location)
+				var/list/players_with_xeno_pref = get_alien_candidates(faction)
+				if(players_with_xeno_pref && istype(faction.faction_location, /obj/effect/alien/resin/special/pylon/core))
+					var/turf/larva_spawn = get_turf(faction.faction_location)
 					var/count = 0
 					while(faction.stored_larva > 0 && count < length(players_with_xeno_pref)) // still some left
 						var/mob/xeno_candidate = players_with_xeno_pref[++count]
@@ -70,7 +70,7 @@
 					if(!QDELETED(queen) && queen != src && queen.faction == faction)
 						faction.set_living_xeno_queen(queen)
 						break
-				faction.on_queen_death()
+				faction.on_leader_death()
 				faction.handle_xeno_leader_pheromones()
 				if(SSticker.mode)
 					INVOKE_ASYNC(SSticker.mode, TYPE_PROC_REF(/datum/game_mode, check_queen_status), faction)
@@ -92,7 +92,6 @@
 			to_chat(faction.living_xeno_queen, SPAN_XENONOTICE("A leader has fallen!")) //alert queens so they can choose another leader
 
 	hud_update() //updates the overwatch hud to remove the upgrade chevrons, gold star, etc
-	SSmapview.remove_marker(src)
 
 	if(behavior_delegate)
 		behavior_delegate.handle_death(src)
@@ -123,7 +122,7 @@
 			// Tell the xeno she is the last one.
 			if(xeno.client)
 				to_chat(xeno, SPAN_XENOANNOUNCE("Your carapace rattles with dread. You are all that remains of the hive!"))
-			notify_ghosts(header = "Last Xenomorph", message = "There is only one Xenomorph left: [X.name].", source = X, action = NOTIFY_ORBIT)
+			notify_ghosts(header = "Last Xenomorph", message = "There is only one Xenomorph left: [xeno.name].", source = xeno, action = NOTIFY_ORBIT)
 
 	if(MODE_HAS_FLAG(MODE_HARDCORE))
 		QDEL_IN(src, 3 SECONDS)

@@ -163,11 +163,6 @@
 
 	var/move_on_turn = FALSE
 
-	light_system = MOVABLE_LIGHT_DIRECTIONAL
-	light_range = 16
-	light_power = 1
-	light_on = FALSE
-
 /obj/vehicle/multitile/Initialize()
 	. = ..()
 

@@ -54,6 +54,7 @@
 #define AMMUNITION_HANDFUL_BOX				(1<<2) //for dump_ammo_to(), boxes of handfuls like shotgun shell boxes
 #define AMMUNITION_HIDE_AMMO				(1<<3)
 #define AMMUNITION_CANNOT_REMOVE_BULLETS	(1<<4)
+#define AMMUNITION_SLAP_TRANSFER			(1<<5)
 
 /// 1 % per 1 tile per 1 normalcy
 #define FALLOFF_PER_TILE 0.01

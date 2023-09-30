@@ -429,6 +429,7 @@
 /obj/effect/landmark/late_join/working_joe
 	name = "working joe late join"
 	squad = JOB_WORKING_JOE
+	faction_to_get = FACTION_MARINE
 
 /obj/effect/landmark/late_join/Initialize()
 	. = ..()

@@ -20,9 +20,9 @@ They're all essentially identical when it comes to getting the job done.
 	throw_range = 6
 	var/list/ammo_preset = list(/datum/ammo/bullet)
 	var/list/default_ammo = list()
-	var/default_projectile = /obj/projectile
+	var/default_projectile = /obj/item/projectile
 	var/caliber = null // This is used for matching handfuls to each other or whatever the mag is. Examples are" "12g" ".44" ".357" etc.
-	var/obj/projectile/current_rounds[]
+	var/obj/item/projectile/current_rounds[]
 	var/max_rounds = 7 //How many rounds can it hold?
 	var/ammo_position = 0
 	var/gun_type = null //Path of the gun that it fits. Mags will fit any of the parent guns as well, so make sure you want this.
@@ -135,7 +135,7 @@ They're all essentially identical when it comes to getting the job done.
 
 	var/broken_ammoes = 0
 	for(var/b = 1 to ammo_position)
-		var/obj/projectile/proj = current_rounds[b]
+		var/obj/item/projectile/proj = current_rounds[b]
 		if(do_after(user, transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE, BUSY_ICON_GENERIC))
 			playsound(loc, pick('sound/weapons/handling/mag_refill_1.ogg', 'sound/weapons/handling/mag_refill_2.ogg', 'sound/weapons/handling/mag_refill_3.ogg'), 25, 1)
 
@@ -153,7 +153,7 @@ They're all essentially identical when it comes to getting the job done.
 			for(var/c = 1 to ammo_position)
 				current_rounds_updated[c-broken_ammoes] = current_rounds[c-broken_ammoes]
 			break
-	for(var/obj/projectile/proj in current_rounds_updated)
+	for(var/obj/item/projectile/proj in current_rounds_updated)
 		current_rounds[current_rounds_updated[proj]] = proj
 	ammo_position -= broken_ammoes
 
@@ -175,14 +175,14 @@ They're all essentially identical when it comes to getting the job done.
 				transfer_ammo(transfer_from, transfer_from.ammo_position, user) // This takes care of the rest.
 			else
 				to_chat(user, "Try holding [src] before you attempt to restock it.")
-	else if(istype(I, /obj/projectile) && (flags_magazine & AMMUNITION_REFILLABLE))
+	else if(istype(I, /obj/item/projectile) && (flags_magazine & AMMUNITION_REFILLABLE))
 		if(src == user.get_inactive_hand() || bypass_hold_check) //It has to be held.
-			var/obj/projectile/transfer_from = I
+			var/obj/item/projectile/transfer_from = I
 			transfer_bullet(transfer_from, user)
 	else if(istype(I, /obj/item/tool/weldingtool))
 		prime(create_cause_data(initial(I), user))
 
-/obj/item/ammo_magazine/proc/ammo_transfer_action_check(obj/projectile/source, mob/user)
+/obj/item/ammo_magazine/proc/ammo_transfer_action_check(obj/item/projectile/source, mob/user)
 	if(explosing)
 		to_chat(user, "Вы в своем уме? Оно сейчас рванет!")
 		return FALSE
@@ -207,14 +207,14 @@ They're all essentially identical when it comes to getting the job done.
 		if(!do_after(user, transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE, BUSY_ICON_FRIENDLY))
 			return FALSE
 		playsound(loc, pick('sound/weapons/handling/mag_refill_1.ogg', 'sound/weapons/handling/mag_refill_2.ogg', 'sound/weapons/handling/mag_refill_3.ogg'), 25, 1)
-	var/obj/projectile/proj = current_rounds[ammo_position]
+	var/obj/item/projectile/proj = current_rounds[ammo_position]
 	current_rounds[ammo_position] = "empty"
 	ammo_position--
 	update_icon()
 	proj.update_icon()
 	return proj
 
-/obj/item/ammo_magazine/proc/transfer_bullet_in(obj/projectile/transfering, mob/user)
+/obj/item/ammo_magazine/proc/transfer_bullet_in(obj/item/projectile/transfering, mob/user)
 	if(user)
 		if(!do_after(user, transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE, BUSY_ICON_FRIENDLY))
 			return FALSE
@@ -232,7 +232,7 @@ They're all essentially identical when it comes to getting the job done.
 	acting_with = TRUE
 	var/to_transfer = transfer_amount ? min(transfer_amount, ammo_position) : ammo_position
 	var/transfered = 1
-	var/obj/projectile/taken_projectile
+	var/obj/item/projectile/taken_projectile
 	var/obj/item/ammo_magazine/handful/new_handful
 	if(to_transfer == 1)
 		taken_projectile = transfer_bullet_out(user)
@@ -246,13 +246,13 @@ They're all essentially identical when it comes to getting the job done.
 			else
 				taken_projectile.forceMove(get_turf(src))
 	else
-		var/obj/projectile/projectile_sample = current_rounds[ammo_position]
+		var/obj/item/projectile/projectile_sample = current_rounds[ammo_position]
 		new_handful = new projectile_sample.ammo.handful_type(src, TRUE, TRUE)
 		new_handful.generate_handful(current_rounds[ammo_position].ammo, caliber, transfer_handful_amount, gun_type)
 		new_handful.generate_ammo(TRUE)
 		to_transfer = min(new_handful.max_rounds, ammo_position)
 
-		var/obj/projectile/projectile_transfering = transfer_bullet_out(user)
+		var/obj/item/projectile/projectile_transfering = transfer_bullet_out(user)
 		if(!projectile_transfering)
 			acting_with = FALSE
 			return FALSE
@@ -263,7 +263,7 @@ They're all essentially identical when it comes to getting the job done.
 			new_handful.forceMove(get_turf(src))
 
 		for(transfered;transfered<to_transfer;transfered++)
-			var/obj/projectile/proj = transfer_bullet_out(user)
+			var/obj/item/projectile/proj = transfer_bullet_out(user)
 			if(!proj)
 				break
 			proj.forceMove(new_handful)
@@ -282,7 +282,7 @@ They're all essentially identical when it comes to getting the job done.
 	else
 		return list(transfered, to_transfer == 1 ? taken_projectile : new_handful)
 
-/obj/item/ammo_magazine/proc/transfer_bullet(obj/projectile/source, mob/user)
+/obj/item/ammo_magazine/proc/transfer_bullet(obj/item/projectile/source, mob/user)
 	if(!ammo_transfer_action_check(source, user))
 		return FALSE
 	acting_with = TRUE
@@ -297,7 +297,7 @@ They're all essentially identical when it comes to getting the job done.
 	var/to_transfer = min(transfer_amount, max_rounds - ammo_position)
 	var/transfered = 0
 	for(transfered;transfered<to_transfer;transfered++)
-		var/obj/projectile/proj = source.transfer_bullet_out(user)
+		var/obj/item/projectile/proj = source.transfer_bullet_out(user)
 		if(!proj)
 			break
 		proj.forceMove(src)
@@ -323,7 +323,7 @@ They're all essentially identical when it comes to getting the job done.
 /obj/item/ammo_magazine/proc/generate_bad_ammo(amount_ammo_broken = 1)
 	var/list/proj_pool = current_rounds.Copy()
 	for(var/i=0;i<amount_ammo_broken;i++)
-		var/obj/projectile/proj = pick(proj_pool)
+		var/obj/item/projectile/proj = pick(proj_pool)
 		proj_pool -= proj
 		if(!istype(proj))
 			continue
@@ -372,7 +372,7 @@ They're all essentially identical when it comes to getting the job done.
 
 
 	for(var/i=0;i<shrapnel_number;i++)
-		var/obj/projectile/proj = transfer_bullet_out()
+		var/obj/item/projectile/proj = transfer_bullet_out()
 		proj.bullet_ready_to_fire(initial(name), cause_data)
 		if(cause_data_new)
 			proj.weapon_cause_data = cause_data_new
@@ -393,7 +393,7 @@ They're all essentially identical when it comes to getting the job done.
 			proj.fire_at(target, source_mob, source, proj.ammo.max_range, proj.ammo.shell_speed)
 		sleep(time_to_shot)
 
-/obj/item/ammo_magazine/bullet_act(obj/projectile/proj)
+/obj/item/ammo_magazine/bullet_act(obj/item/projectile/proj)
 	..()
 
 	var/ammo_flags = proj.ammo.traits_to_give | proj.projectile_override_flags
@@ -475,8 +475,8 @@ bullets/shells. ~N
 			return TRUE
 		return FALSE
 
-	else if(istype(transfer_from, /obj/projectile))
-		var/obj/projectile/transfering = transfer_from
+	else if(istype(transfer_from, /obj/item/projectile))
+		var/obj/item/projectile/transfering = transfer_from
 		if(transfer_bullet(transfering, user))
 			return TRUE
 		return FALSE

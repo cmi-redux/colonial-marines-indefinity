@@ -2813,7 +2813,7 @@
 /obj/structure/prop/wooden_cross{
 	pixel_y = 13
 	},
-/obj/item/clothing/head/helmet/marine/veteran/UPP,
+/obj/item/clothing/head/helmet/marine/veteran/upp,
 /turf/open/mars{
 	icon_state = "mars_dirt_5"
 	},

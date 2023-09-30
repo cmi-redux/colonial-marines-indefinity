@@ -235,7 +235,7 @@
 /turf/open/shuttle/lifeboat,
 /area/shuttle/lifeboat)
 "Cz" = (
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat{
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat{
 	id = "Boat1-D1";
 	throw_dir = 1
 	},
@@ -321,7 +321,7 @@
 /turf/template_noop,
 /area/shuttle/lifeboat)
 "MN" = (
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat{
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat{
 	id = "Boat1-D2";
 	throw_dir = 1
 	},

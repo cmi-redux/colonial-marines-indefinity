@@ -181,7 +181,7 @@
 	locked = TRUE
 
 /datum/squad/marine/intel
-	name = SQUAD_MARINE_INTEL
+	name = SQUAD_MARINE_7
 	use_stripe_overlay = FALSE
 	equipment_color = "#053818"
 	minimap_color = MINIMAP_SQUAD_INTEL

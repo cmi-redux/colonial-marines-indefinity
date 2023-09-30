@@ -23,8 +23,6 @@
 
 	update_light()
 
-#undef NONSENSICAL_VALUE
-
 /atom/proc/fade_light(new_colour, time)
 	light_color = new_colour
 	if(light?.our_mask)

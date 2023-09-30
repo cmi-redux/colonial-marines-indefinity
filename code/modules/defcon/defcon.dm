@@ -169,7 +169,7 @@
 			for(var/typepath in content_types)
 				new typepath(container)
 
-			pod.launch(get_turf(pick(defcon_drop_point[associated_faction])))
+			pod.launch(get_turf(pick(GLOB.defcon_drop_point[associated_faction])))
 
 		else if(accessing_type & DEFCON_ASSET_DELIVERY_CARGO)
 			var/datum/supply_order/O = new /datum/supply_order()
@@ -293,7 +293,7 @@
 	if(accessing_type & DEFCON_ASSET_DELIVERY && (MODE_HAS_FLAG(MODE_NO_SHIP_MAP) || associated_faction != FACTION_MARINE))
 		var/obj/structure/droppod/supply/tank_pod = new()
 		new /obj/vehicle/multitile/tank/fixed_ltb(tank_pod, associated_faction)
-		tank_pod.launch(get_turf(pick(defcon_drop_point[associated_faction])))
+		tank_pod.launch(get_turf(pick(GLOB.defcon_drop_point[associated_faction])))
 		for(var/order in to_order)
 			var/obj/structure/droppod/supply/pod = new()
 			var/atom/container = pod
@@ -312,7 +312,7 @@
 			for(var/typepath in content_types)
 				new typepath(container)
 
-			pod.launch(get_turf(pick(defcon_drop_point[associated_faction])))
+			pod.launch(get_turf(pick(GLOB.defcon_drop_point[associated_faction])))
 
 	else if(accessing_type & DEFCON_ASSET_DELIVERY_CARGO)
 		var/obj/structure/machinery/computer/supplycomp/vehicle/comp = VehicleElevatorConsole
@@ -561,7 +561,7 @@
 	if(accessing_type & DEFCON_ASSET_DELIVERY && (MODE_HAS_FLAG(MODE_NO_SHIP_MAP) || associated_faction != FACTION_MARINE))
 		var/obj/structure/droppod/supply/tank_pod = new()
 		new /obj/vehicle/multitile/tank/fixed_ltb(tank_pod, associated_faction)
-		tank_pod.launch(get_turf(pick(defcon_drop_point[associated_faction])))
+		tank_pod.launch(get_turf(pick(GLOB.defcon_drop_point[associated_faction])))
 		for(var/order in to_order)
 			var/obj/structure/droppod/supply/pod = new()
 			var/atom/container = pod
@@ -580,7 +580,7 @@
 			for(var/typepath in content_types)
 				new typepath(container)
 
-			pod.launch(get_turf(pick(defcon_drop_point[associated_faction])))
+			pod.launch(get_turf(pick(GLOB.defcon_drop_point[associated_faction])))
 
 	else if(accessing_type & DEFCON_ASSET_DELIVERY_CARGO)
 		var/obj/structure/machinery/computer/supplycomp/vehicle/comp = VehicleElevatorConsole

@@ -608,9 +608,9 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	dat += "[FOURSPACES][TicketHref("Обновить", ref_src)][FOURSPACES][TicketHref("Переименовать", ref_src, "retitle")]"
 	if(state != AHELP_ACTIVE)
 		dat += "[FOURSPACES][TicketHref("Переоткрыть", ref_src, "reopen")]"
-	dat += "<br><br>Открыт в: [game_timestamp(time = opened_at)] (Примерно [DisplayTimeText(world.time - opened_at, language = CLIENT_LANGUAGE_RUSSIAN)] назад)"
+	dat += "<br><br>Открыт в: [game_timestamp(time = opened_at)] (Примерно [DisplayTimeText(world.time - opened_at, language = usr.client.language)] назад)"
 	if(closed_at)
-		dat += "<br>Закрыт в: [game_timestamp(time = closed_at)] (Примерно [DisplayTimeText(world.time - closed_at, language = CLIENT_LANGUAGE_RUSSIAN)] назад)"
+		dat += "<br>Закрыт в: [game_timestamp(time = closed_at)] (Примерно [DisplayTimeText(world.time - closed_at, language = usr.client.language)] назад)"
 	dat += "<br><br>"
 	if(initiator)
 		dat += "<b>Действие:</b> [FullMonty(ref_src)]<br>"
@@ -701,9 +701,9 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		else
 			dat += "НЕИЗВЕСТНО</b>"
 	dat += "\n[FOURSPACES]<A href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];player_ticket_panel=1'>Обновить</A>"
-	dat += "<br><br>Открыт в: [game_timestamp("hh:mm:ss", opened_at)] (Примерно [DisplayTimeText(world.time - opened_at, language = CLIENT_LANGUAGE_RUSSIAN)] назад)"
+	dat += "<br><br>Открыт в: [game_timestamp("hh:mm:ss", opened_at)] (Примерно [DisplayTimeText(world.time - opened_at, language = usr.client.language)] назад)"
 	if(closed_at)
-		dat += "<br>Закрыт в: [game_timestamp("hh:mm:ss", closed_at)] (Примерно [DisplayTimeText(world.time - closed_at, language = CLIENT_LANGUAGE_RUSSIAN)] назад)"
+		dat += "<br>Закрыт в: [game_timestamp("hh:mm:ss", closed_at)] (Примерно [DisplayTimeText(world.time - closed_at, language = usr.client.language)] назад)"
 	dat += "<br><br>"
 	dat += "<br><b>Log:</b><br><br>"
 	for (var/interaction in player_interactions)

@@ -2154,7 +2154,10 @@
 "afP" = (
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	dir = 1;
-	name = "\improper Marshal Office Prison"
+	icon_state = "door_locked";
+	locked = 1;
+	name = "\improper Marshal Office Prison";
+	req_access = null
 	},
 /turf/open/floor{
 	icon_state = "delivery"
@@ -2164,7 +2167,10 @@
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	dir = 1;
-	name = "\improper Marshal Office Prison"
+	icon_state = "door_locked";
+	locked = 1;
+	name = "\improper Marshal Office Prison";
+	req_access = null
 	},
 /turf/open/floor{
 	icon_state = "delivery"
@@ -3038,7 +3044,10 @@
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	dir = 1;
-	name = "\improper Marshal Office Armory"
+	icon_state = "door_locked";
+	locked = 1;
+	name = "\improper Marshal Office Armory";
+	req_access = null
 	},
 /turf/open/floor{
 	icon_state = "delivery"
@@ -3658,8 +3667,11 @@
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
-/obj/structure/machinery/door/airlock/almayer/security/glass/colony{
-	name = "\improper Marshal Office Armory"
+/obj/structure/machinery/door/airlock/almayer/security/glass{
+	icon_state = "door_locked";
+	locked = 1;
+	name = "\improper Marshal Office Armory";
+	req_access = null
 	},
 /turf/open/floor{
 	icon_state = "delivery"
@@ -5035,7 +5047,10 @@
 "anx" = (
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	dir = 1;
-	name = "\improper Marshal Office Holding Cell"
+	icon_state = "door_locked";
+	locked = 1;
+	name = "\improper Marshal Office Holding Cell";
+	req_access = null
 	},
 /turf/open/floor{
 	icon_state = "delivery"
@@ -7441,7 +7456,9 @@
 	dir = 1;
 	icon_state = "door_locked";
 	id = "safe_room";
-	name = "\improper Lambda Lab Secure Storage"
+	locked = 1;
+	name = "\improper Lambda Lab Secure Storage";
+	req_access = null
 	},
 /turf/open/floor{
 	icon_state = "delivery"
@@ -14142,7 +14159,7 @@
 /area/bigredv2/outside/c)
 "aKv" = (
 /obj/structure/bed/chair/wood/normal,
-/obj/item/weapon/gun/shotgun/pump/dual_tube/cmb,
+/obj/item/weapon/gun/shotgun/double/with_stock,
 /turf/open/floor{
 	icon_state = "wood"
 	},
@@ -29173,6 +29190,12 @@
 	icon_state = "delivery"
 	},
 /area/bigredv2/outside/office_complex)
+"bFh" = (
+/obj/structure/surface/table,
+/turf/open/floor{
+	icon_state = "wood"
+	},
+/area/bigredv2/caves/eta/living)
 "bFw" = (
 /turf/closed/wall/solaris/reinforced,
 /area/bigredv2/outside/building/telecomm/warehouse)
@@ -33438,28 +33461,6 @@
 	tag = "icon-floor5"
 	},
 /area/bigredv2/oob)
-"jRi" = (
-/obj/item/ammo_magazine/smg/bizon{
-	pixel_x = 5;
-	pixel_y = -5
-	},
-/obj/item/weapon/gun/smg/bizon{
-	pixel_x = 1;
-	pixel_y = 11
-	},
-/obj/item/ammo_magazine/smg/bizon{
-	pixel_x = 11;
-	pixel_y = -3
-	},
-/obj/item/ammo_magazine/smg/bizon,
-/obj/structure/machinery/light/small{
-	dir = 8
-	},
-/turf/open/floor/plating{
-	dir = 8;
-	icon_state = "platingdmg3"
-	},
-/area/bigredv2/caves/mining)
 "jUc" = (
 /obj/structure/surface/table,
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
@@ -34750,6 +34751,30 @@
 	},
 /obj/item/reagent_container/food/snacks/tofu{
 	pixel_y = 11
+	},
+/turf/open/floor/plating{
+	dir = 8;
+	icon_state = "platingdmg3";
+	tag = "icon-platingdmg3 (WEST)"
+	},
+/area/bigredv2/caves/mining)
+"mmz" = (
+/obj/item/ammo_magazine/pistol/skorpion{
+	pixel_x = 5;
+	pixel_y = -5
+	},
+/obj/item/weapon/gun/pistol/skorpion{
+	pixel_x = 1;
+	pixel_y = 11
+	},
+/obj/item/ammo_magazine/pistol/skorpion{
+	pixel_x = 11;
+	pixel_y = -3
+	},
+/obj/item/ammo_magazine/pistol/skorpion,
+/obj/structure/machinery/light/small{
+	dir = 8;
+	tag = "icon-bulb1 (WEST)"
 	},
 /turf/open/floor/plating{
 	dir = 8;
@@ -36710,7 +36735,7 @@
 	},
 /area/bigredv2/caves_sw)
 "pYE" = (
-/obj/item/weapon/gun/shotgun/pump/dual_tube/cmb,
+/obj/item/weapon/gun/shotgun/double/sawn,
 /turf/open/shuttle/escapepod{
 	icon_state = "floor5";
 	tag = "icon-floor5"
@@ -41134,7 +41159,7 @@
 	pixel_y = 7
 	},
 /obj/item/ammo_magazine/shotgun/buckshot,
-/obj/item/weapon/gun/shotgun/pump/dual_tube/cmb,
+/obj/item/weapon/gun/shotgun/double/sawn,
 /obj/item/reagent_container/food/snacks/packaged_burger,
 /turf/open/floor/plating{
 	dir = 8;
@@ -45042,7 +45067,7 @@ aao
 aao
 uHQ
 rMg
-jRi
+mmz
 uHQ
 rYD
 rtS
@@ -45936,7 +45961,7 @@ aah
 aah
 aaF
 aah
-aah
+aau
 aei
 aaf
 aaf
@@ -46766,7 +46791,7 @@ aah
 aah
 aah
 aah
-aau
+aah
 aah
 aah
 aah
@@ -47296,7 +47321,7 @@ bjo
 bie
 bje
 bie
-bie
+biI
 bsc
 eWd
 eWd
@@ -48126,7 +48151,7 @@ bie
 bie
 bie
 bie
-biI
+bie
 bie
 bie
 bie
@@ -64365,14 +64390,14 @@ aDX
 kqS
 bDu
 bDA
-aRf
+bFh
 aDX
 bDU
 elM
 aDX
 bDo
 aQy
-aRf
+bFh
 aRf
 aDX
 bEK

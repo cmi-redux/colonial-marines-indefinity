@@ -48,7 +48,7 @@
 /obj/item/ammo_box/magazine/misc/mre
 	name = "box of MREs"
 	desc = "A box of MREs. Nutritious, but not delicious."
-	magazine_type = /obj/item/storage/box/MRE
+	magazine_type = /obj/item/storage/box/mre
 	num_of_magazines = 12
 	overlay_content = "_mre"
 

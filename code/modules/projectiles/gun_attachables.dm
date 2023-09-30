@@ -74,11 +74,11 @@ Defined in conflicts.dm of the #defines folder.
 
 	var/flags_attach_features = ATTACH_REMOVABLE
 
-	var/obj/projectile/current_rounds[] //How much it has.
+	var/obj/item/projectile/current_rounds[] //How much it has.
 	var/max_rounds = 0 //How much ammo it can store
 	var/ammo_position = 0
 	var/spawn_empty = TRUE
-	var/default_projectile = /obj/projectile
+	var/default_projectile = /obj/item/projectile
 	var/datum/ammo/ammo = null //If it has a default bullet-like ammo.
 	var/force_ammo = FALSE
 	var/caliber = null
@@ -237,8 +237,8 @@ Defined in conflicts.dm of the #defines folder.
 	gun.attachments[slot] = src
 	gun.recalculate_attachment_bonuses()
 
-	G.setup_firemodes()
-	G.update_force_list() //This updates the gun to use proper force verbs.
+	gun.setup_firemodes()
+	gun.update_force_list() //This updates the gun to use proper force verbs.
 
 	var/mob/living/living
 	if(isliving(gun.loc))
@@ -1077,11 +1077,11 @@ Defined in conflicts.dm of the #defines folder.
 		source.damage_falloff_mult += damage_falloff_scoped_buff
 
 
-/obj/item/attachable/scope/proc/apply_scoped_buff(obj/item/weapon/gun/G, mob/living/carbon/user)
-	if(G.zoom)
-		G.accuracy_mult += accuracy_scoped_buff
-		G.modify_fire_delay(delay_scoped_nerf)
-		G.damage_falloff_mult += damage_falloff_scoped_buff
+/obj/item/attachable/scope/proc/apply_scoped_buff(obj/item/weapon/gun/gun, mob/living/carbon/user)
+	if(gun.zoom)
+		gun.accuracy_mult += accuracy_scoped_buff
+		gun.modify_fire_delay(delay_scoped_nerf)
+		gun.damage_falloff_mult += damage_falloff_scoped_buff
 		using_scope = TRUE
 		RegisterSignal(user, COMSIG_LIVING_ZOOM_OUT, PROC_REF(remove_scoped_buff))
 
@@ -1089,9 +1089,9 @@ Defined in conflicts.dm of the #defines folder.
 	SIGNAL_HANDLER
 	UnregisterSignal(user, COMSIG_LIVING_ZOOM_OUT)
 	using_scope = FALSE
-	G.accuracy_mult -= accuracy_scoped_buff
-	G.modify_fire_delay(-delay_scoped_nerf)
-	G.damage_falloff_mult -= damage_falloff_scoped_buff
+	gun.accuracy_mult -= accuracy_scoped_buff
+	gun.modify_fire_delay(-delay_scoped_nerf)
+	gun.damage_falloff_mult -= damage_falloff_scoped_buff
 
 /obj/item/attachable/scope/activate_attachment(obj/item/weapon/gun/gun, mob/living/carbon/user, turn_off)
 	if(turn_off || gun.zoom)
@@ -1417,7 +1417,7 @@ Defined in conflicts.dm of the #defines folder.
 	switch(action)
 		if("adjust_dir")
 			var/direction = params["offset_dir"]
-			if(!(direction in alldirs) || !scoping || !scope_user)
+			if(!(direction in GLOB.alldirs) || !scoping || !scope_user)
 				return
 
 			var/mob/scoper = scope_user.resolve()
@@ -1434,7 +1434,7 @@ Defined in conflicts.dm of the #defines folder.
 
 		if("adjust_position")
 			var/direction = params["position_dir"]
-			if(!(direction in alldirs) || !scoping || !scope_user)
+			if(!(direction in GLOB.alldirs) || !scoping || !scope_user)
 				return
 
 			var/mob/scoper = scope_user.resolve()
@@ -1501,7 +1501,7 @@ Defined in conflicts.dm of the #defines folder.
 	return TRUE
 
 /obj/item/attachable/vulture_scope/proc/get_offset_dirs()
-	var/list/possible_dirs = alldirs.Copy()
+	var/list/possible_dirs = GLOB.alldirs.Copy()
 	if(scope_offset_x >= scope_drift_max)
 		possible_dirs -= list(NORTHEAST, EAST, SOUTHEAST)
 	else if(scope_offset_x <= -scope_drift_max)
@@ -1518,7 +1518,7 @@ Defined in conflicts.dm of the #defines folder.
 /obj/item/attachable/vulture_scope/proc/get_adjust_dirs()
 	if(!scoping)
 		return list()
-	var/list/possible_dirs = alldirs.Copy()
+	var/list/possible_dirs = GLOB.alldirs.Copy()
 	var/turf/current_turf = get_turf(src)
 	var/turf/scope_tile = locate(scope_x, scope_y, current_turf.z)
 	var/mob/scoper = scope_user.resolve()
@@ -2727,8 +2727,8 @@ Defined in conflicts.dm of the #defines folder.
 	SIGNAL_HANDLER
 	target = get_turf(target)
 
-/obj/item/attachable/attached_gun/activate_attachment(obj/item/weapon/gun/G, mob/living/user, turn_off)
-	if(G.active_attachable == src)
+/obj/item/attachable/attached_gun/activate_attachment(obj/item/weapon/gun/gun, mob/living/user, turn_off)
+	if(gun.active_attachable == src)
 		if(user)
 			to_chat(user, SPAN_NOTICE("You are no longer using [src]."))
 			playsound(user, gun_deactivate_sound, 30, 1)
@@ -2744,12 +2744,10 @@ Defined in conflicts.dm of the #defines folder.
 			playsound(user, gun_activate_sound, 60, 1)
 			display_ammo(user)
 
-	SEND_SIGNAL(G, COMSIG_GUN_INTERRUPT_FIRE)
+	SEND_SIGNAL(gun, COMSIG_GUN_INTERRUPT_FIRE)
 
-	for(var/datum/action/action in G.actions)
+	for(var/datum/action/action in gun.actions)
 		action.update_button_icon()
-	return 1
-
 	return TRUE
 
 /obj/item/attachable/attached_gun/proc/display_ammo(mob/living/user)
@@ -3015,7 +3013,7 @@ Defined in conflicts.dm of the #defines folder.
 			var/transfered_rounds = min(max_rounds - ammo_position, FT.ammo_position)
 
 			for(var/i=0;i<transfered_rounds;i++)
-				var/obj/projectile/projectile = FT.transfer_bullet_out()
+				var/obj/item/projectile/projectile = FT.transfer_bullet_out()
 				projectile.forceMove(src)
 				ammo_position++
 				current_rounds[ammo_position] = projectile
@@ -3066,7 +3064,7 @@ Defined in conflicts.dm of the #defines folder.
 			break
 
 		for(var/i = ammo_position to ammo_position - round_usage_per_tile)
-			var/obj/projectile/projectile = current_rounds[i]
+			var/obj/item/projectile/projectile = current_rounds[i]
 			current_rounds[ammo_position] = "empty"
 			ammo_position--
 			qdel(projectile)//we don't use here bullets or etc.
@@ -3170,7 +3168,7 @@ Defined in conflicts.dm of the #defines folder.
 				to_chat(user, SPAN_WARNING("[src] уже заряжен."))
 				return FALSE
 			else
-				var/obj/projectile/projectile = mag.transfer_bullet_out()
+				var/obj/item/projectile/projectile = mag.transfer_bullet_out()
 				projectile.forceMove(src)
 				ammo_position++
 				current_rounds[ammo_position] = projectile
@@ -3307,7 +3305,7 @@ Defined in conflicts.dm of the #defines folder.
 	gun.last_fired = world.time
 	gun.current_mag.reagents.remove_reagent(flamer_reagent.id, FLAME_REAGENT_USE_AMOUNT * fuel_per_projectile)
 
-	var/obj/projectile/proj = new(src, create_cause_data(initial(name), user, src))
+	var/obj/item/projectile/proj = new(src, create_cause_data(initial(name), user, src))
 	var/datum/ammo/flamethrower/ammo_datum = new projectile_type
 	ammo_datum.flamer_reagent_type = flamer_reagent.type
 	proj.generate_bullet(ammo_datum)
@@ -3455,23 +3453,23 @@ Defined in conflicts.dm of the #defines folder.
 		user.apply_effect(2, SLOW)
 
 /obj/item/attachable/bipod/proc/undeploy_bipod(obj/item/weapon/gun/gun)
-	REMOVE_TRAIT(G, TRAIT_GUN_BIPODDED, "attached_bipod")
+	REMOVE_TRAIT(gun, TRAIT_GUN_BIPODDED, "attached_bipod")
 	bipod_deployed = FALSE
 	accuracy_mod = -HIT_ACCURACY_MULT_TIER_5
 	scatter_mod = SCATTER_AMOUNT_TIER_9
 	recoil_mod = RECOIL_AMOUNT_TIER_5
 	burst_scatter_mod = 0
 	delay_mod = FIRE_DELAY_TIER_12
-	G.recalculate_attachment_bonuses()
-	G.stop_fire()
+	gun.recalculate_attachment_bonuses()
+	gun.stop_fire()
 	var/mob/living/user
 	if(isliving(gun.loc))
 		user = gun.loc
 		SEND_SIGNAL(user, COMSIG_MOB_UNDEPLOYED_BIPOD)
 		UnregisterSignal(user, COMSIG_MOB_MOVE_OR_LOOK)
 
-	if(G.flags_gun_features & GUN_SUPPORT_PLATFORM)
-		G.remove_firemode(GUN_FIREMODE_AUTOMATIC)
+	if(gun.flags_gun_features & GUN_SUPPORT_PLATFORM)
+		gun.remove_firemode(GUN_FIREMODE_AUTOMATIC)
 
 	if(!QDELETED(gun))
 		playsound(user,'sound/items/m56dauto_rotate.ogg', 55, 1)
@@ -3491,7 +3489,7 @@ Defined in conflicts.dm of the #defines folder.
 		bipod_deployed = !bipod_deployed
 		if(user)
 			if(bipod_deployed)
-				ADD_TRAIT(G, TRAIT_GUN_BIPODDED, "attached_bipod")
+				ADD_TRAIT(gun, TRAIT_GUN_BIPODDED, "attached_bipod")
 				to_chat(user, SPAN_NOTICE("You deploy [src] [support ? "on [support]" : "on the ground"]."))
 				SEND_SIGNAL(user, COMSIG_MOB_DEPLOYED_BIPOD)
 				playsound(user,'sound/items/m56dauto_rotate.ogg', 55, 1)

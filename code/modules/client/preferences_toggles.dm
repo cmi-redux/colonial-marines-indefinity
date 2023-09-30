@@ -366,20 +366,12 @@
 		to_chat(src, SPAN_BOLDNOTICE("Your messages will no longer be automatically punctuated if they are not punctuated already."))
 	prefs.save_preferences()
 
-/client/proc/toggle_middle_mouse_click() // Toggle whether abilities should use middle or shift clicking
-	prefs.toggle_prefs ^= TOGGLE_MIDDLE_MOUSE_CLICK
-	if(prefs.toggle_prefs & TOGGLE_MIDDLE_MOUSE_CLICK)
-		to_chat(src, SPAN_NOTICE("Your selected ability will now be activated with middle clicking."))
-	else
-		to_chat(src, SPAN_NOTICE("Your selected ability will now be activated with shift clicking."))
-	prefs.save_preferences()
-
 /client/proc/toggle_ability_deactivation() // Toggle whether the current ability can be deactivated when re-selected
-	prefs.toggle_prefs ^= TOGGLE_ABILITY_DEACTIVATION_OFF
-	if(prefs.toggle_prefs & TOGGLE_ABILITY_DEACTIVATION_OFF)
-		to_chat(src, SPAN_NOTICE("Your current ability can no longer be toggled off when re-selected."))
-	else
+	prefs.toggle_prefs ^= TOGGLE_ABILITY_DEACTIVATION
+	if(prefs.toggle_prefs & TOGGLE_ABILITY_DEACTIVATION)
 		to_chat(src, SPAN_NOTICE("Your current ability can be toggled off when re-selected."))
+	else
+		to_chat(src, SPAN_NOTICE("Your current ability can no longer be toggled off when re-selected."))
 	prefs.save_preferences()
 
 /client/proc/toggle_clickdrag_override() //Toggle whether mousedown clicks immediately when on disarm or harm intent to prevent click-dragging from 'eating' attacks.

@@ -25,7 +25,7 @@ GLOBAL_LIST_EMPTY(codebook_data)
 	author = "United States Colonial Marines"
 	unique = 1
 	dat = ""
-	var/faction = FACTION_MARINE
+	faction_to_get = FACTION_MARINE
 
 /obj/item/book/codebook/Initialize()
 	. = ..()
@@ -34,22 +34,22 @@ GLOBAL_LIST_EMPTY(codebook_data)
 
 /obj/item/book/codebook/clf
 	name = "Liberation Front Authenticators"
-	faction = FACTION_CLF
+	faction_to_get = FACTION_CLF
 	author = "\[Obscured Ink\]"
 
 /obj/item/book/codebook/twe
 	name = "Imperial Authentication Codes"
-	faction = FACTION_TWE
+	faction_to_get = FACTION_TWE
 	author = "Royal Marines"
 
 /obj/item/book/codebook/upp
 	name = "Union Authentication Codes"
-	faction = FACTION_UPP
+	faction_to_get = FACTION_UPP
 	author = "People's Army"
 
 /obj/item/book/codebook/wey_yu
 	name = "Corporate Authentication Codes"
-	faction = FACTION_WY
+	faction_to_get = FACTION_WY
 	author = "Weyland-Yutani Communications Division"
 
 /obj/item/book/codebook/attackby(obj/item/W, mob/living/user)

@@ -163,7 +163,7 @@
 		return
 	die()
 
-/obj/item/clothing/mask/facehugger/bullet_act(obj/projectile/proj)
+/obj/item/clothing/mask/facehugger/bullet_act(obj/item/projectile/proj)
 	..()
 	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
 	if(ammo_flags & (AMMO_XENO))
@@ -282,7 +282,7 @@
 	else if(isyautja(human))
 		playsound(loc, 'sound/voice/pred_facehugged.ogg', 65, FALSE)
 	if(!sterile)
-		if(!human.species || !(human.species.flags & IS_SYNTHETIC)) //synthetics aren't paralyzed
+		if(!human.species || !(human.species.species_flags & IS_SYNTHETIC)) //synthetics aren't paralyzed
 			human.apply_effect(MIN_IMPREGNATION_TIME * 0.5 * knockout_mod, PARALYZE) //THIS MIGHT NEED TWEAKS
 
 	var/area/hug_area = get_area(src)
@@ -294,9 +294,9 @@
 		notify_ghosts(header = "Hugged", message = "[human] has been hugged by [name]!", source = human, action = NOTIFY_ORBIT)
 		to_chat(src, SPAN_DEADSAY("<b>[human]</b> has been facehugged by <b>[name]</b>"))
 	if(hug_area)
-		xeno_message(SPAN_XENOMINORWARNING("You sense that [name] has facehugged a host at \the [hug_area]!"), 1, hivenumber)
+		xeno_message(SPAN_XENOMINORWARNING("You sense that [name] has facehugged a host at \the [hug_area]!"), 1, faction)
 	else
-		xeno_message(SPAN_XENOMINORWARNING("You sense that [name] has facehugged a host!"), 1, hivenumber)
+		xeno_message(SPAN_XENOMINORWARNING("You sense that [name] has facehugged a host!"), 1, faction)
 
 	addtimer(CALLBACK(src, PROC_REF(impregnate), human, hugger?.client?.ckey), rand(MIN_IMPREGNATION_TIME, MAX_IMPREGNATION_TIME))
 

@@ -131,6 +131,7 @@
 #define LANGUAGE_PREF_HUMAN_CHAR_TRAITS		"Character Traits"
 #define LANGUAGE_PREF_OCUP					"Occupation Choices"
 #define LANGUAGE_PREF_OCUP_CHOSE			"Set Role Preferences"
+#define LANGUAGE_PREF_OCUP_CHOSE_CHAR		"Assign Character Slots to Roles"
 #define LANGUAGE_PREF_HUMAN_HAIR_EYES		"Hair and Eyes"
 #define LANGUAGE_PREF_HUMAN_HAIR			"Hair"
 #define LANGUAGE_PREF_HUMAN_FACIAL_HAIR		"Facial Hair"
@@ -182,6 +183,7 @@
 #define LANGUAGE_PREF_YAUT_FLAVOR			"Yautja Flavor Text"
 #define LANGUAGE_PREF_YAUT_WL				"Yautja Whitelist Status"
 #define LANGUAGE_PREF_YAUT_EQPMENT			"Equipment Setup"
+#define LANGUAGE_PREF_YAUT_LEGACY			"Legacy Gear"
 #define LANGUAGE_PREF_YAUT_TRANSLATOR		"Translator Type"
 #define LANGUAGE_PREF_YAUT_MASK_S			"Mask Style"
 #define LANGUAGE_PREF_YAUT_ARMOR_S			"Armor Style"
@@ -221,6 +223,7 @@
 #define LANGUAGE_PREF_GAME_SET				"Game Settings"
 #define LANGUAGE_PREF_FIT_VIEW				"Fit Viewport"
 #define LANGUAGE_PREF_ZOOM					"Adaptive Zoom"
+#define LANGUAGE_PREF_TLTPS					"Tooltips"
 #define LANGUAGE_PREF_AUTO					"Auto"
 #define LANGUAGE_PREF_MANUAL				"Manual"
 #define LANGUAGE_PREF_AO					"Ambient Occlusion"
@@ -240,6 +243,7 @@
 #define LANGUAGE_PREF_HURT_SELF				"Toggle Being Able to Hurt Yourself"
 #define LANGUAGE_PREF_HELP_SAFE				"Toggle Help Intent Safety"
 #define LANGUAGE_PREF_MIDDLE				"Toggle Middle Mouse Ability Activation"
+#define LANGUAGE_PREF_ABLDEA				"Toggle Ability Deactivation"
 #define LANGUAGE_PREF_DIRECT_ASSIST			"Toggle Directional Assist"
 #define LANGUAGE_PREF_AUTO_E				"Toggle Magazine Auto-Ejection"
 #define LANGUAGE_PREF_AUTO_EOH				"Toggle Magazine Auto-Ejection to Offhand"
@@ -265,6 +269,7 @@
 #define LANGUAGE_PREF_ERT_MISC				"Spawn as Miscellaneous"
 #define LANGUAGE_PREF_PREFERENCES			"Preferences"
 #define LANGUAGE_PREF_ROLES					"Choose occupation chances</b><br>Unavailable occupations are crossed out."
+#define LANGUAGE_PREF_CHAR_ROLES			"Assign character slots to jobs.</b><br>Unavailable occupations are crossed out."
 #define LANGUAGE_PREF_ROLES_FACTION			"Selected faction"
 #define LANGUAGE_PREF_RANDOM_ROLE			"Get random job if preferences unavailable"
 #define LANGUAGE_PREF_MARINE_ROLE			"Be marine if preference unavailable"
@@ -604,6 +609,7 @@ GLOBAL_LIST_INIT(client_language_ru, list(
 	LANGUAGE_PREF_HUMAN_CHAR_TRAITS = "Черты Характера",
 	LANGUAGE_PREF_OCUP = "Выбор Профессии",
 	LANGUAGE_PREF_OCUP_CHOSE = "Выбор Предпочитаемых Ролей",
+	LANGUAGE_PREF_OCUP_CHOSE_CHAR = "Выбор Предпочитаемых Ролей Для Слотов",
 	LANGUAGE_PREF_HUMAN_HAIR_EYES = "Волосы и Глаза",
 	LANGUAGE_PREF_HUMAN_HAIR = "Волосы",
 	LANGUAGE_PREF_HUMAN_FACIAL_HAIR = "Волосы на Лице",
@@ -655,6 +661,7 @@ GLOBAL_LIST_INIT(client_language_ru, list(
 	LANGUAGE_PREF_YAUT_FLAVOR = "Украшающий Текст Охотника",
 	LANGUAGE_PREF_YAUT_WL = "СБС Охотника",
 	LANGUAGE_PREF_YAUT_EQPMENT = "Настройка Вещей",
+	LANGUAGE_PREF_YAUT_LEGACY = "Легаси Вещи",
 	LANGUAGE_PREF_YAUT_TRANSLATOR = "Тип Переводчика",
 	LANGUAGE_PREF_YAUT_MASK_S = "Стиль Маски",
 	LANGUAGE_PREF_YAUT_ARMOR_S = "Стиль Брони",
@@ -694,6 +701,7 @@ GLOBAL_LIST_INIT(client_language_ru, list(
 	LANGUAGE_PREF_GAME_SET = "Настройки Игры",
 	LANGUAGE_PREF_FIT_VIEW = "Фит Виевпорт",
 	LANGUAGE_PREF_ZOOM = "Адаптивный Зум",
+	LANGUAGE_PREF_TLTPS = "Тултип",
 	LANGUAGE_PREF_AUTO = "Авто",
 	LANGUAGE_PREF_MANUAL = "Ручной",
 	LANGUAGE_PREF_AO = "Окружающая Окклюзия",
@@ -713,6 +721,7 @@ GLOBAL_LIST_INIT(client_language_ru, list(
 	LANGUAGE_PREF_HURT_SELF = "Включить Возможность Наносить Вред Себе",
 	LANGUAGE_PREF_HELP_SAFE = "Включить Предохранитель на Интенте Помощи",
 	LANGUAGE_PREF_MIDDLE = "Включить Активацию Абилок на Колесико Мыши",
+	LANGUAGE_PREF_ABLDEA = "Включить Деактивацию Способностей",
 	LANGUAGE_PREF_DIRECT_ASSIST = "Включить Помощь Дирекциональной Атаки",
 	LANGUAGE_PREF_AUTO_E = "Включить Автоматическое Изъятия Магазина",
 	LANGUAGE_PREF_AUTO_EOH = "Включить Автоматическое Изъятия Магазина в Свободную Руку",
@@ -738,6 +747,7 @@ GLOBAL_LIST_INIT(client_language_ru, list(
 	LANGUAGE_PREF_ERT_MISC = "Спавниться за Остальное",
 	LANGUAGE_PREF_PREFERENCES = "Предпочитания",
 	LANGUAGE_PREF_ROLES = "Выберите приоритеты ролей</b><br>Недоступные роли будут вычеркнуты.",
+	LANGUAGE_PREF_CHAR_ROLES = "Выберите приоритеты ролей для персонажа</b><br>Недоступные роли будут вычеркнуты.",
 	LANGUAGE_PREF_ROLES_FACTION = "Выбранная фракция",
 	LANGUAGE_PREF_RANDOM_ROLE = "Взять рандомную роль, если желаемые роли недоступны",
 	LANGUAGE_PREF_MARINE_ROLE = "Стать Марином, если желаемые роли недоступны",

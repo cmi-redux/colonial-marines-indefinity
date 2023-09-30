@@ -51,7 +51,7 @@
 				marine_rk = "soctl"
 			if(JOB_MARINE_RAIDER_CMD)
 				marine_rk = "soccmd"
-		if(squad.squad_leader == H)
+		if(squad.squad_leader == current_human)
 			switch(squad.squad_type)
 				if("Squad")
 					marine_rk = "leader_a"

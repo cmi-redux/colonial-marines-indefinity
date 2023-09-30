@@ -947,7 +947,7 @@
 		return TRUE
 
 	// Switch icon back and then let normal icon behavior happen
-	Queen.icon = Queen.queen_standing_icon
+	queen.icon = queen.queen_standing_icon
 
 /mob/living/carbon/xenomorph/queen/alter_ghost(mob/dead/observer/ghost)
 	ghost.icon = queen_standing_icon

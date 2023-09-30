@@ -80,7 +80,7 @@
 	)
 	cost = 10
 	containertype = /obj/structure/closet/crate/supply
-	containername = "\improper Janitorial supplies crate"
+	containername = "Janitorial supplies crate"
 	group = "Supplies"
 
 /datum/supply_packs/poster
@@ -94,7 +94,7 @@
 	)
 	cost = 10
 	containertype = /obj/structure/closet/crate/supply
-	containername = "\improper posters crate"
+	containername = "posters crate"
 	group = "Supplies"
 
 /datum/supply_packs/crayons
@@ -108,7 +108,7 @@
 	)
 	cost = 20
 	containertype = /obj/structure/closet/crate/supply
-	containername = "\improper crayons crate"
+	containername = "crayons crate"
 	group = "Supplies"
 
 /datum/supply_packs/presents
@@ -122,7 +122,7 @@
 	)
 	cost = 20
 	containertype = /obj/structure/closet/crate/supply
-	containername = "\improper crate of presents"
+	containername = "crate of presents"
 	group = "Supplies"
 
 /datum/supply_packs/wrapping_supplies
@@ -137,5 +137,5 @@
 	)
 	cost = 20
 	containertype = /obj/structure/closet/crate/supply
-	containername = "\improper wrapping supplies crate"
+	containername = "wrapping supplies crate"
 	group = "Supplies"

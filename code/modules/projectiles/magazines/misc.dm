@@ -39,9 +39,9 @@
 	icon_state = "qjy72"
 
 	matter = list("metal" = 10000)
-	default_ammo = /datum/ammo/bullet/pkp
+	ammo_preset = list(/datum/ammo/bullet/pkp)
 	max_rounds = 250
-	reload_delay = 12
+	transfer_delay = 1 SECONDS
 	gun_type = /obj/item/weapon/gun/pkp
 
 //rocket launchers

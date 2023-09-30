@@ -35,37 +35,35 @@
 #define GUN_INTERNAL_MAG			(1<<5)
 #define GUN_AUTO_EJECTOR			(1<<6)
 #define GUN_AMMO_COUNTER			(1<<7)
-#define GUN_BURST_ON				(1<<8)
-#define GUN_BURST_FIRING			(1<<9)
-#define GUN_FLASHLIGHT_ON			(1<<10)
-#define GUN_WY_RESTRICTED			(1<<11)
-#define GUN_CO_RESTRICTED			(1<<12)
-#define GUN_SPECIALIST				(1<<13)
-#define GUN_WIELDED_FIRING_ONLY		(1<<14)
-#define GUN_HAS_FULL_AUTO			(1<<15)
-#define GUN_FULL_AUTO_ON			(1<<16)
-#define GUN_ONE_HAND_WIELDED		(1<<17)
-#define GUN_ANTIQUE 				(1<<18)
-#define GUN_RECOIL_BUILDUP			(1<<19)
-#define GUN_SUPPORT_PLATFORM		(1<<20)
-#define GUN_BURST_ONLY				(1<<21)
-#define GUN_FULL_AUTO_ONLY			(1<<22)
-#define GUN_NO_DESCRIPTION			(1<<23)
+#define GUN_BURST_FIRING			(1<<8)
+#define GUN_FLASHLIGHT_ON			(1<<9)
+#define GUN_WY_RESTRICTED			(1<<10)
+#define GUN_CO_RESTRICTED			(1<<11)
+#define GUN_SPECIALIST				(1<<12)
+#define GUN_WIELDED_FIRING_ONLY		(1<<13)
+#define GUN_HAS_FULL_AUTO			(1<<14)
+#define GUN_FULL_AUTO_ON			(1<<15)
+#define GUN_ONE_HAND_WIELDED		(1<<16)
+#define GUN_ANTIQUE 				(1<<17)
+#define GUN_RECOIL_BUILDUP			(1<<18)
+#define GUN_SUPPORT_PLATFORM		(1<<19)
+#define GUN_FULL_AUTO_ONLY			(1<<20)
+#define GUN_NO_DESCRIPTION			(1<<21)
 
 //Gun mounted flags
 #define GUN_MOUNTING				(1<<0)
 #define GUN_MOUNTED					(1<<1) //only mounted using
 #define GUN_CAN_OVERRIDE_MOUNTED	(1<<2) //only mounted using
 
-#define FIRE_DELAY_GROUP_MOU "fdg_mou"
-
-//Gun attachable related flags.
-#define ATTACH_REMOVABLE	1
-#define ATTACH_ACTIVATION	2
-#define ATTACH_PROJECTILE	4 //for attachments that fire bullets
-#define ATTACH_RELOADABLE	8
-#define ATTACH_WEAPON		16 //is a weapon that fires stuff
-#define ATTACH_MELEE        32 //This attachment should activate if you attack() with it attached.
+//Gun attachable related flags
+#define ATTACH_REMOVABLE		(1<<0)
+#define ATTACH_ACTIVATION		(1<<1)
+#define ATTACH_PROJECTILE		(1<<2) // for attachments that fire bullets
+#define ATTACH_RELOADABLE		(1<<3)
+#define ATTACH_WEAPON			(1<<4) // is a weapon that fires stuff
+#define ATTACH_IGNORE_EMPTY		(1<<5) // This attachment should override ignore if it is empty
+#define ATTACH_MELEE			(1<<6) // This attachment should activate if you attack() with it attached.
+#define ATTACH_WIELD_OVERRIDE	(1<<7) // Override for attachies so you can fire them with a single hand . ONLY FOR PROJECTILES!!
 
 //Slowdowns for guns
 #define SLOWDOWN_ADS_NONE				0

@@ -544,8 +544,6 @@ Applied by gun suicide and high impact bullet executions, removed by rejuvenate,
 	overlays_standing[BELT_LAYER] = I
 	apply_overlay(BELT_LAYER)
 
-
-
 /mob/living/carbon/human/update_inv_wear_suit()
 	remove_overlay(SUIT_LAYER)
 	remove_overlay(SUIT_SQUAD_LAYER)
@@ -563,7 +561,7 @@ Applied by gun suicide and high impact bullet executions, removed by rejuvenate,
 
 		if(istype(wear_suit, /obj/item/clothing/suit/storage/marine))
 			var/obj/item/clothing/suit/storage/marine/marine_armor = wear_suit
-			if(marine_armor.flags_marine_armor & ARMOR_SQUAD_OVERLAY)
+			if(marine_armor.flags_armor_features & ARMOR_SQUAD_OVERLAY)
 				if(assigned_squad && assigned_squad.equipment_color && assigned_squad.use_stripe_overlay)
 					var/leader = assigned_squad.squad_leader
 					var/image/squad_overlay = image(marine_armor.squad_overlay_icon, icon_state = "std-armor")

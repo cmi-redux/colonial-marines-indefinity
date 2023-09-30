@@ -23,7 +23,7 @@
 	scaled = TRUE
 	selection_class = "job_mp"
 	gear_preset = /datum/equipment_preset/upp/military_police
-	entry_message_body = "<a href='"+URL_WIKI_MP_GUIDE+"'>You</a> are held by a higher standard and are required to obey not only the server rules but the <a href='"+URL_WIKI_LAW+"'>Marine Law</a>. Failure to do so may result in a job ban or server ban. Your primary job is to maintain peace and stability aboard the ship. Marines can get rowdy after a few weeks of cryosleep! In addition, you are tasked with the security of high-ranking personnel, including the command staff. Keep them safe!"
+	entry_message_body = "<a href='%WIKIURL%'>You</a> are held by a higher standard and are required to obey not only the server rules but the <a href='%WIKIURL%'>Marine Law</a>. Failure to do so may result in a job ban or server ban. Your primary job is to maintain peace and stability aboard the ship. Marines can get rowdy after a few weeks of cryosleep! In addition, you are tasked with the security of high-ranking personnel, including the command staff. Keep them safe!"
 
 /datum/job/upp/command/police/set_spawn_positions(count)
 	spawn_positions = mp_slot_formula(count)
@@ -58,7 +58,7 @@ AddTimelock(/datum/job/upp/command/police, list(
 	selection_class = "job_doctor"
 	flags_startup_parameters = NO_FLAGS
 	gear_preset = /datum/equipment_preset/upp/doctor
-	entry_message_body = "You're a commissioned officer of the UPP. <a href='"+URL_WIKI_DOC_GUIDE+"'>You are tasked with keeping the UPP healthy and strong, usually in the form of surgery.</a> You are also an expert when it comes to medication and treatment. If you do not know what you are doing, mentorhelp so a mentor can assist you."
+	entry_message_body = "You're a commissioned officer of the UPP. <a href='%WIKIURL%'>You are tasked with keeping the UPP healthy and strong, usually in the form of surgery.</a> You are also an expert when it comes to medication and treatment. If you do not know what you are doing, mentorhelp so a mentor can assist you."
 	balance_formulas = list("misc", BALANCE_FORMULA_OPERATIONS, BALANCE_FORMULA_MEDIC)
 
 /datum/job/upp/command/leytenant_doctor/set_spawn_positions(count)
@@ -92,7 +92,7 @@ AddTimelock(/datum/job/upp/command/leytenant_doctor, list(
 	spawn_positions = 2
 	scaled = FALSE
 	gear_preset = /datum/equipment_preset/upp/tank
-	entry_message_body = "<a href='"+URL_WIKI_VC_GUIDE+"'>Your job is to operate and maintain the ship's armored vehicles.</a> You are in charge of representing the armored presence amongst the marines during the operation, as well as maintaining and repairing your own vehicles."
+	entry_message_body = "<a href='%WIKIURL%'>Your job is to operate and maintain the ship's armored vehicles.</a> You are in charge of representing the armored presence amongst the marines during the operation, as well as maintaining and repairing your own vehicles."
 	balance_formulas = list(BALANCE_FORMULA_COMMANDING, BALANCE_FORMULA_MISC, BALANCE_FORMULA_FIELD)
 
 /datum/job/upp/command/crewman/set_spawn_positions(count)
@@ -130,7 +130,7 @@ AddTimelock(/datum/job/upp/command/crewman, list(
 	allow_additional = TRUE
 	scaled = FALSE
 	gear_preset = /datum/equipment_preset/upp/reconnaissance
-	entry_message_body = "<a href='"+URL_WIKI_IO_GUIDE+"'>Your job is to assist the UPP in collecting intelligence related</a> to the current operation to better inform command of their opposition. You are in charge of gathering any data disks, folders, and notes you may find on the operational grounds and decrypt them to grant the USCM additional resources."
+	entry_message_body = "<a href='%WIKIURL%'>Your job is to assist the UPP in collecting intelligence related</a> to the current operation to better inform command of their opposition. You are in charge of gathering any data disks, folders, and notes you may find on the operational grounds and decrypt them to grant the USCM additional resources."
 	balance_formulas = list(BALANCE_FORMULA_COMMANDING, BALANCE_FORMULA_MISC, BALANCE_FORMULA_SUPPORT, BALANCE_FORMULA_FIELD)
 
 /datum/job/upp/command/recon_officer/set_spawn_positions(count)
@@ -167,7 +167,7 @@ AddTimelock(/datum/job/upp/command/recon_officer, list(
 	allow_additional = TRUE
 	scaled = FALSE
 	gear_preset = /datum/equipment_preset/upp/officer
-	entry_message_body = "<a href='"+URL_WIKI_SO_GUIDE+"'>Your job is to control squads, man the CIC, and listen to your superior officers.</a> You are in charge of logistics and the overwatch system. You are also in line to take command after other eligible superior commissioned officers."
+	entry_message_body = "<a href='%WIKIURL%'>Your job is to control squads, man the CIC, and listen to your superior officers.</a> You are in charge of logistics and the overwatch system. You are also in line to take command after other eligible superior commissioned officers."
 
 /datum/job/upp/command/officer/set_spawn_positions(count)
 	spawn_positions = so_slot_formula(count)
@@ -204,7 +204,7 @@ AddTimelock(/datum/job/upp/command/officer, list(
 	allow_additional = TRUE
 	scaled = FALSE
 	gear_preset = /datum/equipment_preset/upp/officer/senior
-	entry_message_body = "<a href='"+URL_WIKI_SO_GUIDE+"'>Your job is to control squads, man the CIC, and listen to your superior officers.</a> You are in charge of logistics and the overwatch system. You are also in line to take command after other eligible superior commissioned officers."
+	entry_message_body = "<a href='%WIKIURL%'>Your job is to control squads, man the CIC, and listen to your superior officers.</a> You are in charge of logistics and the overwatch system. You are also in line to take command after other eligible superior commissioned officers."
 
 /datum/job/upp/command/senior_officer/set_spawn_positions(count)
 	spawn_positions = so_slot_formula(count)
@@ -238,7 +238,7 @@ AddTimelock(/datum/job/upp/command/senior_officer, list(
 	title = JOB_UPP_MAY_OFFICER
 	flags_startup_parameters = ROLE_ADMIN_NOTIFY
 	gear_preset = /datum/equipment_preset/upp/officer/major
-	entry_message_body = "<a href='"+URL_WIKI_XO_GUIDE+"'>You are second in command aboard the ship,</a> and are in next in the chain of command after the commanding officer. You may need to fill in for other duties if areas are understaffed, and you are given access to do so. Make the UPP proud!"
+	entry_message_body = "<a href='%WIKIURL%'>You are second in command aboard the ship,</a> and are in next in the chain of command after the commanding officer. You may need to fill in for other duties if areas are understaffed, and you are given access to do so. Make the UPP proud!"
 
 AddTimelock(/datum/job/upp/command/major, list(
 	JOB_COMMAND_ROLES = 10 HOURS,
@@ -266,7 +266,7 @@ AddTimelock(/datum/job/upp/command/major, list(
 	flags_startup_parameters = ROLE_ADMIN_NOTIFY|ROLE_WHITELISTED
 	flags_whitelist = WHITELIST_COMMANDER
 	gear_preset = /datum/equipment_preset/upp/officer/kolonel
-	entry_message_body = "<a href='"+URL_WIKI_CO_GUIDE+"'>You are the Kolonel of the operation buttle groop 'NINE'.</a> Your goal is to lead the UPP on their mission as well as protect and command the ship and her crew. Your job involves heavy roleplay and requires you to behave like a high-ranking officer and to stay in character at all times. As the Kolonel your only superior is Main Command itself. You must abide by the <a href='"+URL_WIKI_CO_RULES+"'>Captain's Code of Conduct</a>. Failure to do so may result in punitive action against you. Godspeed."
+	entry_message_body = "<a href='%WIKIURL%'>You are the Kolonel of the operation buttle groop 'NINE'.</a> Your goal is to lead the UPP on their mission as well as protect and command the ship and her crew. Your job involves heavy roleplay and requires you to behave like a high-ranking officer and to stay in character at all times. As the Kolonel your only superior is Main Command itself. You must abide by the <a href='"+URL_WIKI_CO_RULES+"'>Captain's Code of Conduct</a>. Failure to do so may result in punitive action against you. Godspeed."
 	balance_formulas = list(BALANCE_FORMULA_COMMANDING, BALANCE_FORMULA_MISC, BALANCE_FORMULA_ENGINEER, BALANCE_FORMULA_SUPPORT, BALANCE_FORMULA_OPERATIONS, BALANCE_FORMULA_MEDIC, BALANCE_FORMULA_FIELD)
 
 /datum/job/upp/command/kolonel/New()
@@ -314,7 +314,7 @@ AddTimelock(/datum/job/upp/command/major, list(
 	flags_startup_parameters = ROLE_ADMIN_NOTIFY|ROLE_WHITELISTED|ROLE_CUSTOM_SPAWN
 	flags_whitelist = WHITELIST_SYNTHETIC
 	gear_preset = /datum/equipment_preset/upp/synth
-	entry_message_body = "You are a <a href='"+URL_WIKI_SYN_GUIDE+"'>Synthetic!</a> You are held to a higher standard and are required to obey not only the Server Rules but Marine Law and Synthetic Rules. Failure to do so may result in your White-list Removal. Your primary job is to support and assist all USCM Departments and Personnel on-board. In addition, being a Synthetic gives you knowledge in every field and specialization possible on-board the ship. As a Synthetic you answer to the acting commanding officer. Special circumstances may change this!"
+	entry_message_body = "You are a <a href='%WIKIURL%'>Synthetic!</a> You are held to a higher standard and are required to obey not only the Server Rules but Marine Law and Synthetic Rules. Failure to do so may result in your White-list Removal. Your primary job is to support and assist all USCM Departments and Personnel on-board. In addition, being a Synthetic gives you knowledge in every field and specialization possible on-board the ship. As a Synthetic you answer to the acting commanding officer. Special circumstances may change this!"
 
 /datum/job/upp/synthetic/New()
 	. = ..()

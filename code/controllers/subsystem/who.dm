@@ -224,7 +224,7 @@ SUBSYSTEM_DEF(who)
 	var/list/listings
 	var/list/mappings
 	if(CONFIG_GET(flag/show_manager))
-		LAZYSET(mappings, "Management", R_HOST)
+		LAZYSET(mappings, "Management", R_PERMISSIONS)
 	if(CONFIG_GET(flag/show_devs))
 		LAZYSET(mappings, "Maintainers", R_PROFILER)
 	LAZYSET(mappings, "Administrators", R_ADMIN)

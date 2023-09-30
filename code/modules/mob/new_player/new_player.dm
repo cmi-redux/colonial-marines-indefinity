@@ -134,14 +134,14 @@
 				if(!client.prefs?.preview_dummy)
 					client.prefs.update_preview_icon()
 
-				var/mob/dead/observer/observer = new /mob/dead/observer(pick(GLOB.observer_starts), client.prefs.preview_dummy)
+				var/mob/dead/observer/observer = new /mob/dead/observer(null, client.prefs.preview_dummy)
 				observer.set_lighting_alpha_from_pref(client)
 				spawning = TRUE
 				observer.started_as_observer = TRUE
 
 				close_spawn_windows()
 
-				var/obj/effect/landmark/observer_start/O = pick(GLOB.observer_starts)
+				var/obj/effect/landmark/observer_start/O = SAFEPICK(GLOB.observer_starts)
 				if(istype(O))
 					to_chat(src, SPAN_NOTICE(client.auto_lang(LANGUAGE_LOBBY_TELEPORTING)))
 					observer.forceMove(O.loc)
@@ -241,7 +241,7 @@
 
 	GLOB.data_core.manifest_inject(character)
 	SSticker.minds += character.mind
-	SSticker.mode.latejoin_tally += SSticker.role_authority.calculate_role_weight(player_rank)
+	SSticker.mode.latejoin_tally += character.faction.get_role_coeff(player_rank)
 
 	for(var/datum/squad/sq in SSticker.role_authority.squads)
 		if(sq)

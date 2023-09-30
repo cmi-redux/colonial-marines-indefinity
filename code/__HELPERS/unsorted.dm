@@ -66,113 +66,7 @@
 
 #define ISDIAGONALDIR(d) (d&(d-1))
 
-/// Produces a mutable appearance glued to the [EMISSIVE_PLANE] dyed to be the [EMISSIVE_COLOR].
-/proc/emissive_appearance(icon, icon_state = "", layer = FLOAT_LAYER, alpha = 255, appearance_flags = NONE)
-	var/mutable_appearance/appearance = mutable_appearance(icon, icon_state, layer, EMISSIVE_PLANE, alpha, appearance_flags | EMISSIVE_APPEARANCE_FLAGS)
-	appearance.color = GLOB.emissive_color
-	return appearance
-
-/// Produces a mutable appearance glued to the [EMISSIVE_PLANE] dyed to be the [EM_BLOCK_COLOR].
-/proc/emissive_blocker(icon, icon_state = "", layer = FLOAT_LAYER, alpha = 255, appearance_flags = NONE)
-	var/mutable_appearance/appearance = mutable_appearance(icon, icon_state, layer, EMISSIVE_PLANE, alpha, appearance_flags | EMISSIVE_APPEARANCE_FLAGS)
-	appearance.color = GLOB.em_block_color
-	return appearance
-
 // GLOBAL PROCS //
-
-GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
-
-/// Version of view() which ignores darkness, because BYOND doesn't have it (I actually suggested it but it was tagged redundant, BUT HEARERS IS A T- /rant).
-/proc/dview(range = world.view, center, invis_flags = 0)
-	if(!center)
-		return
-
-	GLOB.dview_mob.loc = center
-
-	GLOB.dview_mob.see_invisible = invis_flags
-
-	. = view(range, GLOB.dview_mob)
-	GLOB.dview_mob.loc = null
-
-/mob/dview
-	name = "INTERNAL DVIEW MOB"
-	invisibility = 101
-	density = FALSE
-	see_in_dark = 1e6
-	var/ready_to_die = FALSE
-
-/mob/dview/Initialize() //Properly prevents this mob from gaining huds or joining any global lists
-	SHOULD_CALL_PARENT(FALSE)
-	if(flags_atom & INITIALIZED)
-		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	flags_atom |= INITIALIZED
-	return INITIALIZE_HINT_NORMAL
-
-/mob/dview/Destroy(force = FALSE)
-	if(!ready_to_die)
-		stack_trace("ALRIGHT WHICH FUCKER TRIED TO DELETE *MY* DVIEW?")
-
-		if(!force)
-			return QDEL_HINT_LETMELIVE
-
-		log_world("EVACUATE THE SHITCODE IS TRYING TO STEAL MUH JOBS")
-		GLOB.dview_mob = new
-	return ..()
-
-
-#define FOR_DVIEW(type, range, center, invis_flags) \
-	GLOB.dview_mob.loc = center;           \
-	GLOB.dview_mob.see_invisible = invis_flags; \
-	for(type in view(range, GLOB.dview_mob))
-
-#define FOR_DVIEW_END GLOB.dview_mob.loc = null
-
-/*
-
-Gets the turf this atom's *ICON* appears to inhabit
-It takes into account:
-* Pixel_x/y
-* Matrix x/y
-
-NOTE: if your atom has non-standard bounds then this proc
-will handle it, but:
-* if the bounds are even, then there are an even amount of "middle" turfs, the one to the EAST, NORTH, or BOTH is picked
-(this may seem bad, but you're atleast as close to the center of the atom as possible, better than byond's default loc being all the way off)
-* if the bounds are odd, the true middle turf of the atom is returned
-
-*/
-
-/proc/get_turf_pixel(atom/AM)
-	if(!istype(AM))
-		return
-
-	//Find AM's matrix so we can use it's X/Y pixel shifts
-	var/matrix/M = matrix(AM.transform)
-
-	var/pixel_x_offset = AM.pixel_x + M.get_x_shift()
-	var/pixel_y_offset = AM.pixel_y + M.get_y_shift()
-
-	//Irregular objects
-	var/icon/AMicon = icon(AM.icon, AM.icon_state)
-	var/AMiconheight = AMicon.Height()
-	var/AMiconwidth = AMicon.Width()
-	if(AMiconheight != world.icon_size || AMiconwidth != world.icon_size)
-		pixel_x_offset += ((AMiconwidth/world.icon_size)-1)*(world.icon_size*0.5)
-		pixel_y_offset += ((AMiconheight/world.icon_size)-1)*(world.icon_size*0.5)
-
-	//DY and DX
-	var/rough_x = round(round(pixel_x_offset,world.icon_size)/world.icon_size)
-	var/rough_y = round(round(pixel_y_offset,world.icon_size)/world.icon_size)
-
-	//Find coordinates
-	var/turf/T = get_turf(AM) //use AM's turfs, as it's coords are the same as AM's AND AM's coords are lost if it is inside another atom
-	if(!T)
-		return null
-	var/final_x = T.x + rough_x
-	var/final_y = T.y + rough_y
-
-	if(final_x || final_y)
-		return locate(final_x, final_y, T.z)
 
 //Returns the middle-most value
 /proc/dd_range(low, high, num)
@@ -2061,17 +1955,6 @@ GLOBAL_LIST_INIT(duplicate_forbidden_vars,list(
 	else
 		used_key_list[input_key] = 1
 	return input_key
-
-//Returns the atom sitting on the turf.
-//For example, using this on a disk, which is in a bag, on a mob, will return the mob because it's on the turf.
-//Optional arg 'type' to stop once it reaches a specific type instead of a turf.
-/proc/get_atom_on_turf(atom/movable/M, stop_type)
-	var/atom/turf_to_check = M
-	while(turf_to_check?.loc && !isturf(turf_to_check.loc))
-		turf_to_check = turf_to_check.loc
-		if(stop_type && istype(turf_to_check, stop_type))
-			break
-	return turf_to_check
 
 /// Given a direction, return the direction and the +-45 degree directions next to it
 /proc/get_related_directions(direction = NORTH)

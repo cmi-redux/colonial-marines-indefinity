@@ -160,18 +160,14 @@
 	A.attack_larva(src)
 	xeno_attack_delay(src) //Adds some lag to the 'attack'
 
-/proc/spawn_faction_larva(atom/A, datum/faction/faction)
-	if(!faction || isnull(A))
-		return
-
-	var/mob/living/carbon/xenomorph/larva/L = new /mob/living/carbon/xenomorph/larva(A)
-
-	L.set_hive_and_update(faction)
-
-	return L
-
 /mob/living/carbon/xenomorph/larva/emote(act, m_type, message, intentional, force_silence)
 	playsound(loc, "alien_roar_larva", 15)
 
 /mob/living/carbon/xenomorph/larva/is_xeno_grabbable()
 	return TRUE
+
+/proc/spawn_faction_larva(atom/spawn_turf, datum/faction/faction)
+	if(!istype(faction) || isnull(spawn_turf))
+		return
+	var/mob/living/carbon/xenomorph/larva/L = new /mob/living/carbon/xenomorph/larva(spawn_turf, null, faction)
+	return L

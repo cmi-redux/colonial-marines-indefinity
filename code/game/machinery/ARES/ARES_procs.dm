@@ -54,7 +54,7 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 		return FALSE
 	if(!link.p_interface || link.p_interface.inoperable())
 		return FALSE
-	link.apollo_log.Add("[worldtime2text()]: [speaker], '[message]'")
+	link.apollo_log.Add("[game_time_timestamp()]: [speaker], '[message]'")
 
 /datum/ares_link/proc/log_ares_bioscan(title, input)
 	interface.records_bioscan.Add(new /datum/ares_record/bioscan(title, input))
@@ -159,7 +159,7 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 /obj/structure/machinery/computer/ares_console/proc/message_ares(text, mob/Sender, ref)
 	var/msg = SPAN_STAFF_IC("<b><font color=orange>ARES:</font> [key_name(Sender, 1)] [ARES_MARK(Sender)] [ADMIN_PP(Sender)] [ADMIN_VV(Sender)] [ADMIN_SM(Sender)] [ADMIN_JMP_USER(Sender)] [ARES_REPLY(Sender, ref)]:</b> [text]")
 	var/datum/ares_record/talk_log/conversation = locate(ref)
-	conversation.conversation += "[last_login] at [worldtime2text()], '[text]'"
+	conversation.conversation += "[last_login] at [game_time_timestamp()], '[text]'"
 	for(var/client/admin in GLOB.admins)
 		if((R_ADMIN|R_MOD) & admin.admin_holder.rights)
 			to_chat(admin, msg)
@@ -169,7 +169,7 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 
 /obj/structure/machinery/computer/ares_console/proc/response_from_ares(text, ref)
 	var/datum/ares_record/talk_log/conversation = locate(ref)
-	conversation.conversation += "[MAIN_AI_SYSTEM] at [worldtime2text()], '[text]'"
+	conversation.conversation += "[MAIN_AI_SYSTEM] at [game_time_timestamp()], '[text]'"
 // ------ End ARES Interface Procs ------ //
 
 // ------ ARES Interface UI ------ //
@@ -200,7 +200,7 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 	data["access_level"] = authentication
 
 	data["alert_level"] = security_level
-	data["evac_status"] = EvacuationAuthority.evac_status
+	data["evac_status"] = SSevacuation.evac_status
 	data["worldtime"] = world.time
 
 	data["access_log"] = list()
@@ -374,7 +374,7 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 				playsound(src, 'sound/machines/buzz-two.ogg', 15, 1)
 				return FALSE
 			if(authentication)
-				access_list += "[last_login] at [worldtime2text()], Access Level [authentication] - [ares_auth_to_text(authentication)]."
+				access_list += "[last_login] at [game_time_timestamp()], Access Level [authentication] - [ares_auth_to_text(authentication)]."
 			current_menu = "main"
 
 		if("sudo")
@@ -390,10 +390,10 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 					return FALSE
 				sudo_holder = last_login
 				last_login = new_user
-				access_list += "[last_login] at [worldtime2text()], Sudo Access."
+				access_list += "[last_login] at [game_time_timestamp()], Sudo Access."
 				return TRUE
 		if("sudo_logout")
-			access_list += "[last_login] at [worldtime2text()], Sudo Logout."
+			access_list += "[last_login] at [game_time_timestamp()], Sudo Logout."
 			last_login = sudo_holder
 			sudo_holder = null
 			return
@@ -402,10 +402,10 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 			last_menu = current_menu
 			current_menu = "login"
 			if(sudo_holder)
-				access_list += "[last_login] at [worldtime2text()], Sudo Logout."
+				access_list += "[last_login] at [game_time_timestamp()], Sudo Logout."
 				last_login = sudo_holder
 				sudo_holder = null
-			access_list += "[last_login] logged out at [worldtime2text()]."
+			access_list += "[last_login] logged out at [game_time_timestamp()]."
 
 		if("home")
 			last_menu = current_menu
@@ -482,7 +482,7 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 		// -- 1:1 Conversation -- //
 		if("new_conversation")
 			var/datum/ares_record/talk_log/convo = new(last_login)
-			convo.conversation += "[MAIN_AI_SYSTEM] at [worldtime2text()], 'New 1:1 link initiated. Greetings, [last_login].'"
+			convo.conversation += "[MAIN_AI_SYSTEM] at [game_time_timestamp()], 'New 1:1 link initiated. Greetings, [last_login].'"
 			records_talking += convo
 
 		if("clear_conversation")
@@ -529,12 +529,12 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 				playsound(src, 'sound/machines/buzz-two.ogg', 15, 1)
 				return FALSE
 
-			if(EvacuationAuthority.flags_scuttle & FLAGS_EVACUATION_DENY)
+			if(SSevacuation.flags_scuttle & FLAGS_EVACUATION_DENY)
 				to_chat(usr, SPAN_WARNING("The USCM has placed a lock on deploying the evacuation pods."))
 				playsound(src, 'sound/machines/buzz-two.ogg', 15, 1)
 				return FALSE
 
-			if(!EvacuationAuthority.initiate_evacuation())
+			if(!SSevacuation.initiate_evacuation())
 				to_chat(usr, SPAN_WARNING("You are unable to initiate an evacuation procedure right now!"))
 				playsound(src, 'sound/machines/buzz-two.ogg', 15, 1)
 				return FALSE
@@ -770,13 +770,13 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 				playsound(src, 'sound/machines/buzz-two.ogg', 15, 1)
 				return FALSE
 			if(authentication)
-				login_list += "[last_login] at [worldtime2text()], Access Level [authentication] - [ares_auth_to_text(authentication)]."
+				login_list += "[last_login] at [game_time_timestamp()], Access Level [authentication] - [ares_auth_to_text(authentication)]."
 			current_menu = "main"
 
 		if("logout")
 			last_menu = current_menu
 			current_menu = "login"
-			login_list += "[last_login] logged out at [worldtime2text()]."
+			login_list += "[last_login] logged out at [game_time_timestamp()]."
 
 		if("home")
 			last_menu = current_menu
@@ -947,7 +947,7 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 
 				authentication = get_ares_access(identification)
 				if(authentication)
-					login_list += "[last_login] at [worldtime2text()], Surrendered Temporary Access Ticket."
+					login_list += "[last_login] at [game_time_timestamp()], Surrendered Temporary Access Ticket."
 				return TRUE
 
 			to_chat(operator, SPAN_WARNING("This ID card does not have an access ticket!"))

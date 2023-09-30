@@ -130,10 +130,6 @@ GLOBAL_LIST_EMPTY(thunderdome_observer)
 
 GLOBAL_LIST_EMPTY(defcon_drop_point)
 
-GLOBAL_LIST_EMPTY(latejoin)
-GLOBAL_LIST_EMPTY(latejoin_by_squad)
-GLOBAL_LIST_EMPTY(latejoin_by_job)
-
 GLOBAL_LIST_EMPTY(zombie_landmarks)
 
 GLOBAL_LIST_EMPTY(newplayer_start)

@@ -23,7 +23,6 @@
 /area/shuttle/drop2/sulaco)
 "bc" = (
 /obj/structure/shuttle/part/dropship2/transparent/left_outer_bottom_wing,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/template_noop,
 /area/shuttle/drop2/sulaco)
 "bJ" = (
@@ -43,7 +42,7 @@
 /area/shuttle/drop2/sulaco)
 "cj" = (
 /obj/structure/shuttle/part/dropship2/transparent/right_outer_bottom_wing,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/template_noop,
 /area/shuttle/drop2/sulaco)
 "do" = (
 /obj/effect/attach_point/crew_weapon/dropship2,
@@ -247,8 +246,7 @@
 /area/shuttle/drop2/sulaco)
 "nS" = (
 /obj/structure/shuttle/part/dropship2/lower_left_wall,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/space/basic,
+/turf/template_noop,
 /area/shuttle/drop2/sulaco)
 "oc" = (
 /obj/structure/shuttle/part/dropship2/transparent/nose_top_right,
@@ -293,7 +291,6 @@
 /area/shuttle/drop2/sulaco)
 "rw" = (
 /obj/structure/shuttle/part/dropship2/nose_front_right,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/template_noop,
 /area/shuttle/drop2/sulaco)
 "sk" = (
@@ -398,7 +395,6 @@
 /area/shuttle/drop2/sulaco)
 "BG" = (
 /obj/structure/shuttle/part/dropship2/transparent/engine_left_cap,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/template_noop,
 /area/shuttle/drop2/sulaco)
 "Cl" = (
@@ -607,7 +603,6 @@
 /area/shuttle/drop2/sulaco)
 "Ov" = (
 /obj/structure/shuttle/part/dropship2/transparent/right_inner_bottom_wing,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/template_noop,
 /area/shuttle/drop2/sulaco)
 "OI" = (
@@ -675,7 +670,7 @@
 /area/shuttle/drop2/sulaco)
 "QK" = (
 /obj/structure/shuttle/part/dropship2/lower_right_wall,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/turf/template_noop,
 /area/shuttle/drop2/sulaco)
 "Rr" = (
 /turf/template_noop,
@@ -718,7 +713,6 @@
 /area/shuttle/drop2/sulaco)
 "SB" = (
 /obj/structure/shuttle/part/dropship2/nose_front_left,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/template_noop,
 /area/shuttle/drop2/sulaco)
 "SC" = (
@@ -803,7 +797,6 @@
 /area/shuttle/drop2/sulaco)
 "Vh" = (
 /obj/structure/shuttle/part/dropship2/transparent/left_outer_inner_wing,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/template_noop,
 /area/shuttle/drop2/sulaco)
 "Vs" = (

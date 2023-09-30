@@ -133,17 +133,11 @@
 	)
 	pockets.max_storage_space = 8
 
-	light_holder = new(src)
-
 /obj/item/clothing/suit/storage/marine/skin(skin)
 	icon = 'icons/custom/items/clothings.dmi'
 	icon_state = "[icon_state]_[skin]"
 	item_state = "[item_state]_[skin]"
 	item_state_slots[WEAR_BODY] = icon_state
-
-/obj/item/clothing/suit/storage/marine/Destroy()
-	QDEL_NULL(light_holder)
-	return ..()
 
 /obj/item/clothing/suit/storage/marine/update_icon(mob/user)
 	var/image/I
@@ -184,7 +178,7 @@
 	var/mob/living/carbon/human/human = user
 	if(human.wear_suit != src)
 		return
-	turn_light(user, !light_on)
+	toggle_light(user, !light_on)
 	return TRUE
 
 /obj/item/clothing/suit/storage/marine/item_action_slot_check(mob/user, slot)
@@ -1776,6 +1770,3 @@
 	storage_slots = 7
 	slowdown = SLOWDOWN_ARMOR_LOWHEAVY
 	movement_compensation = SLOWDOWN_ARMOR_MEDIUM
-
-/atom/movable/marine_light
-	light_system = DIRECTIONAL_LIGHT

@@ -136,14 +136,14 @@
 		/obj/item/circuitboard/machine/pacman,
 	)
 	cost = 30
-	containername = "\improper P.A.C.M.A.N. portable generator construction kit"
+	containername = "P.A.C.M.A.N. portable generator construction kit"
 	containertype = /obj/structure/closet/crate/secure
 	group = "Engineering"
 
 /datum/supply_packs/super_pacman_parts
 	name = "Super P.A.C.M.A.N. portable generator parts"
 	cost = 40
-	containername = "\improper Super P.A.C.M.A.N. portable generator construction kit"
+	containername = "Super P.A.C.M.A.N. portable generator construction kit"
 	containertype = /obj/structure/closet/crate/secure
 	group = "Engineering"
 	contains = list(

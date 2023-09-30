@@ -28,7 +28,7 @@
 	)
 	cost = 10
 	containertype = /obj/structure/closet/crate/freezer
-	containername = "\improper Potato crate"
+	containername = "Potato crate"
 	group = "Food"
 
 /datum/supply_packs/tomato
@@ -57,7 +57,7 @@
 	)
 	cost = 10
 	containertype = /obj/structure/closet/crate/freezer
-	containername = "\improper Tomato crate"
+	containername = "Tomato crate"
 	group = "Food"
 
 /datum/supply_packs/wheat
@@ -86,7 +86,7 @@
 	)
 	cost = 10
 	containertype = /obj/structure/closet/crate/freezer
-	containername = "\improper Wheat crate"
+	containername = "Wheat crate"
 	group = "Food"
 
 //All the meats
@@ -102,7 +102,7 @@
 	)
 	cost = 10
 	containertype = /obj/structure/closet/crate/freezer
-	containername = "\improper meat crate"
+	containername = "meat crate"
 	group = "Food"
 
 /datum/supply_packs/carp_fillet
@@ -116,7 +116,7 @@
 	)
 	cost = 10
 	containertype = /obj/structure/closet/crate/freezer
-	containername = "\improper carp filet crate"
+	containername = "carp filet crate"
 	group = "Food"
 
 //all the condiment type items
@@ -135,7 +135,7 @@
 	)
 	cost = 10
 	containertype = /obj/structure/closet/crate/freezer
-	containername = "\improper crate of condiment"
+	containername = "crate of condiment"
 	group = "Food"
 
 	//all the finish snacks.
@@ -162,7 +162,7 @@
 	)
 	cost = 10
 	containertype = /obj/structure/closet/crate/supply
-	containername = "\improper USCM MRE crate(x2)"
+	containername = "USCM MRE crate(x2)"
 	group = "Food"
 
 /datum/supply_packs/funfood
@@ -203,7 +203,7 @@
 	)
 	cost = 10
 	containertype = /obj/structure/closet/crate/freezer
-	containername = "\improper Special ingredients crate"
+	containername = "Special ingredients crate"
 	group = "Food"
 
 /datum/supply_packs/pizzas
@@ -213,5 +213,5 @@
 	)
 	cost = 30
 	containertype = /obj/structure/closet/crate/freezer
-	containername = "\improper Pizza crate"
+	containername = "Pizza crate"
 	group = "Food"

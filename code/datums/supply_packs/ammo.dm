@@ -9,7 +9,7 @@
 	contains = list(/obj/item/ammo_box/rounds/smg)
 	cost = 20
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper SMG ammo crate"
+	containername = "SMG ammo crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_rounds_box_smg_ap
@@ -17,7 +17,7 @@
 	contains = list(/obj/item/ammo_box/rounds/smg/ap)
 	cost = 40
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper SMG AP ammo crate"
+	containername = "SMG AP ammo crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_rounds_box_rifle
@@ -25,7 +25,7 @@
 	contains = list(/obj/item/ammo_box/rounds)
 	cost = 20
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper rifle ammo crate"
+	containername = "rifle ammo crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_rounds_box_rifle_ap
@@ -33,7 +33,7 @@
 	contains = list(/obj/item/ammo_box/rounds/ap)
 	cost = 40
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper rifle AP ammo crate"
+	containername = "rifle AP ammo crate"
 	group = "Ammo"
 
 //------------------------Magazine Boxes crates----------------
@@ -47,7 +47,7 @@
 	)
 	cost = 20
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper M41A magazines crate"
+	containername = "M41A magazines crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_mag_box_ap
@@ -57,7 +57,7 @@
 	)
 	cost = 40
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper M41A AP magazines crate"
+	containername = "M41A AP magazines crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_mag_box_ext
@@ -67,7 +67,7 @@
 	)
 	cost = 30
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper M41A extended magazines crate"
+	containername = "M41A extended magazines crate"
 	group = "Ammo"
 
 //------------------------For M4RA----------------
@@ -79,7 +79,7 @@
 	)
 	cost = 20
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper M4RA magazines crate"
+	containername = "M4RA magazines crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_dmr_mag_box_ap
@@ -89,7 +89,7 @@
 	)
 	cost = 40
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper M4RA AP magazines crate"
+	containername = "M4RA AP magazines crate"
 	group = "Ammo"
 
 //------------------------For M39----------------
@@ -101,7 +101,7 @@
 	)
 	cost = 20
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper M39 HV magazines crate"
+	containername = "M39 HV magazines crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_smg_mag_box_ap
@@ -111,7 +111,7 @@
 	)
 	cost = 40
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper M39 AP magazines crate"
+	containername = "M39 AP magazines crate"
 	group = "Ammo"
 
 //------------------------For M4RA----------------
@@ -123,7 +123,7 @@
 	)
 	cost = 20
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper M4RA magazines crate"
+	containername = "M4RA magazines crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_m4ra_mag_box_ap
@@ -133,7 +133,7 @@
 	)
 	cost = 40
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper M4RA AP magazines crate"
+	containername = "M4RA AP magazines crate"
 	group = "Ammo"
 
 //------------------------For  M44----------------
@@ -145,7 +145,7 @@
 	)
 	cost = 20
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper M44 speed loaders crate"
+	containername = "M44 speed loaders crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_m44_mag_box_ap
@@ -155,7 +155,7 @@
 	)
 	cost = 30
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper M44 Marksman speed loaders crate"
+	containername = "M44 Marksman speed loaders crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_m44_mag_box_heavy
@@ -165,7 +165,7 @@
 	)
 	cost = 40
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper M44 Heavy speed loaders crate"
+	containername = "M44 Heavy speed loaders crate"
 	group = "Ammo"
 
 //------------------------For  M4A3----------------
@@ -177,7 +177,7 @@
 	)
 	cost = 20
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper M4A3 magazines crate"
+	containername = "M4A3 magazines crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_m4a3_mag_box_ap
@@ -187,7 +187,7 @@
 	)
 	cost = 30
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper M4A3 AP magazines crate"
+	containername = "M4A3 AP magazines crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_m4a3_mag_box_hp
@@ -197,7 +197,7 @@
 	)
 	cost = 30
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper M4A3 HP magazines crate"
+	containername = "M4A3 HP magazines crate"
 	group = "Ammo"
 
 //------------------------For  Shootgun ammo----------------
@@ -209,7 +209,7 @@
 	)
 	cost = 30
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper shotgun slugs crate"
+	containername = "shotgun slugs crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_shell_box_buck
@@ -219,7 +219,7 @@
 	)
 	cost = 30
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper shotgun buckshot crate"
+	containername = "shotgun buckshot crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_shell_box_flechette
@@ -229,7 +229,7 @@
 	)
 	cost = 30
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper shotgun flechette crate"
+	containername = "shotgun flechette crate"
 	group = "Ammo"
 
 //------------------------For 88M4 ----------------
@@ -241,7 +241,7 @@
 	)
 	cost = 20
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper 88 Mod 4 AP magazines crate"
+	containername = "88 Mod 4 AP magazines crate"
 	group = "Ammo"
 
 //------------------------Special or non common magazines----------------
@@ -253,7 +253,7 @@
 	)
 	cost = 40
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper VP78 magazines crate"
+	containername = "VP78 magazines crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_su6_mag_box
@@ -263,7 +263,7 @@
 	)
 	cost = 40
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper SU-6 magazines crate"
+	containername = "SU-6 magazines crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_hpr
@@ -274,7 +274,7 @@
 	name = "M41AE2 HPR Magazines crate (HPR ammo box x2)"
 	cost = 20
 	containertype = /obj/structure/closet/crate
-	containername = "\improper M41AE2 HPR magazines crate"
+	containername = "M41AE2 HPR magazines crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_hpr_holo
@@ -285,7 +285,7 @@
 	name = "M41AE2 HPR Holo-Target Magazines crate (HPR HT ammo box x2)"
 	cost = 30
 	containertype = /obj/structure/closet/crate
-	containername = "\improper M41AE2 HPR holo-target magazines crate"
+	containername = "M41AE2 HPR holo-target magazines crate"
 	group = "Ammo"
 
 //------------------------Smartgunner stuff----------------
@@ -300,7 +300,7 @@
 	)
 	cost = 40
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper smartgun battery crate"
+	containername = "smartgun battery crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_smartgun
@@ -311,7 +311,7 @@
 	)
 	cost = 30
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper smartgun drums crate"
+	containername = "smartgun drums crate"
 	group = "Ammo"
 
 //------------------------Sentries Ammo----------------
@@ -324,7 +324,7 @@
 	)
 	cost = 40
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper sentry ammo crate"
+	containername = "sentry ammo crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_sentry_flamer
@@ -335,7 +335,7 @@
 	)
 	cost = 40
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper sentry flamer ammo crate"
+	containername = "sentry flamer ammo crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_sentry_shotgun
@@ -346,7 +346,7 @@
 	)
 	cost = 40
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper sentry shotgun ammo crate"
+	containername = "sentry shotgun ammo crate"
 	group = "Ammo"
 
 //------------------------M240 flamer tanks----------------
@@ -361,7 +361,7 @@
 	)
 	cost = 40
 	containertype = /obj/structure/closet/crate/ammo/alt/flame
-	containername = "\improper napthal fuel crate"
+	containername = "napthal fuel crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_napalm_gel
@@ -374,7 +374,7 @@
 	)
 	cost = 40
 	containertype = /obj/structure/closet/crate/ammo/alt/flame
-	containername = "\improper napalm gel crate"
+	containername = "napalm gel crate"
 	group = "Ammo"
 
 /datum/supply_packs/ammo_flamer_mixed
@@ -430,5 +430,5 @@
 	)
 	cost = 60
 	containertype = /obj/structure/closet/crate/ammo
-	containername = "\improper surplus ammo crate"
+	containername = "surplus ammo crate"
 	group = "Ammo"

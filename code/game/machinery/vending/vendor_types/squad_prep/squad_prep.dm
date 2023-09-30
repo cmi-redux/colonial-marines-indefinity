@@ -131,7 +131,7 @@
 		list("MASK", -1, null, null, null),
 		list("Gas Mask", round(scale * 15), /obj/item/clothing/mask/gas, VENDOR_ITEM_REGULAR),
 		list("Heat Absorbent Coif", round(scale * 10), /obj/item/clothing/mask/rebreather/scarf, VENDOR_ITEM_REGULAR),
-		list("Rebreather", round(scale * 10), /obj/item/clothing/mask/rebreather, MARINE_CAN_BUY_MASK, VENDOR_ITEM_REGULAR),
+		list("Rebreather", round(scale * 10), /obj/item/clothing/mask/rebreather, VENDOR_CAN_BUY_MASK, VENDOR_ITEM_REGULAR),
 
 		list("MISCELLANEOUS", -1, null, null, null),
 		list("Gas Mask", round(scale * 10), /obj/item/clothing/mask/gas, VENDOR_ITEM_REGULAR),
@@ -301,14 +301,14 @@
 		list("handful of heavy buckshot shells", 20, /obj/item/ammo_magazine/handful/shotgun/heavy/buckshot, null, VENDOR_ITEM_REGULAR),
 		list("handful of heavy flechette shells", 20, /obj/item/ammo_magazine/handful/shotgun/heavy/flechette, null, VENDOR_ITEM_REGULAR),
 		list("handful of heavy shotgun slugs", 20, /obj/item/ammo_magazine/handful/shotgun/heavy/slug, null, VENDOR_ITEM_REGULAR),
-		list("PK-9 magazine", 8, /obj/item/ammo_magazine/pistol/c99, null, VENDOR_ITEM_REGULAR),
+		list("PK-9 magazine", 8, /obj/item/ammo_magazine/pistol/np92, null, VENDOR_ITEM_REGULAR),
 		list("CZ-81 20-round magazine", 16, /obj/item/ammo_magazine/pistol/skorpion, null, VENDOR_ITEM_REGULAR),
 		list("N-Y speed loader", 13, /obj/item/ammo_magazine/revolver/upp, null, VENDOR_ITEM_REGULAR),
 
 		list("SPECIAL AMMUNITION", 0, null, null, null),
 		list("Type 71 HEAP magazine", 50 * special_ammo_cmod, /obj/item/ammo_magazine/rifle/type71/heap, null, VENDOR_ITEM_REGULAR),
 		list("handful of dragon's breath shells", 30 * special_ammo_cmod, /obj/item/ammo_magazine/handful/shotgun/heavy/dragonsbreath, null, VENDOR_ITEM_REGULAR),
-		list("PK-9 tranquilizer magazine", 45 * special_ammo_cmod, /obj/item/ammo_magazine/pistol/c99/tranq, null, VENDOR_ITEM_REGULAR),
+		list("PK-9 tranquilizer magazine", 45 * special_ammo_cmod, /obj/item/ammo_magazine/pistol/np92/tranq, null, VENDOR_ITEM_REGULAR),
 		list("N-Y shrapnel-shot speed loader", 45 * special_ammo_cmod, /obj/item/ammo_magazine/revolver/upp/shrapnel, null, VENDOR_ITEM_REGULAR),
 
 		list("MIXED AMMUNITION", 0, null, null, null),
@@ -378,7 +378,7 @@
 /obj/structure/machinery/cm_vending/sorted/cargo_guns/squad/populate_product_list(scale)
 	listed_products = list(
 		list("FOOD", -1, null, null),
-		list("MRE", round(scale * 5), /obj/item/storage/box/MRE, VENDOR_ITEM_REGULAR),
+		list("MRE", round(scale * 5), /obj/item/storage/box/mre, VENDOR_ITEM_REGULAR),
 		list("MRE Box", round(scale * 1), /obj/item/ammo_box/magazine/misc/mre, VENDOR_ITEM_REGULAR),
 
 		list("TOOLS", -1, null, null),

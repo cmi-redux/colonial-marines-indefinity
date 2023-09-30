@@ -439,7 +439,7 @@ Make sure their actual health updates immediately.*/
 			if(!faction || !faction.faction_location)
 				queen_locator.icon_state = "trackoff"
 				return
-			tracking_atom = faction.hive_location
+			tracking_atom = faction.faction_location
 		if(TRACKER_LEADER)
 			if(!queen_locator.track_state[2])
 				queen_locator.icon_state = "trackoff"
@@ -559,16 +559,12 @@ Make sure their actual health updates immediately.*/
 		update_canmove()
 
 /mob/living/carbon/xenomorph/proc/handle_luminosity()
-	var/new_light_intensity = 0
+	light_range = 0
 	if(caste)
-		new_luminosity += caste.caste_luminosity
+		light_range += caste.caste_luminosity
 	if(on_fire)
-		new_luminosity += min(fire_stacks, 5)
-	set_light_range(new_luminosity) // light up xenos
-	if(new_luminosity)
-		set_light_on(TRUE)
-	else
-		set_light_on(FALSE)
+		light_range += min(fire_stacks, 5)
+	set_light_on(light_range)
 
 /mob/living/carbon/xenomorph/handle_stunned()
 	if(stunned)

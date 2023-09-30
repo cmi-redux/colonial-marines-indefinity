@@ -78,7 +78,7 @@
 	if(!on)
 		msg_admin_niche("Portable communication relay shut down for Z-Level [src.z] [ADMIN_JMP(src)]")
 
-/obj/structure/machinery/telecomms/relay/preset/tower/bullet_act(obj/projectile/proj)
+/obj/structure/machinery/telecomms/relay/preset/tower/bullet_act(obj/item/projectile/proj)
 	..()
 	if(istype(proj.ammo, /datum/ammo/xeno/boiler_gas))
 		update_health(50)
@@ -327,17 +327,17 @@ GLOBAL_LIST_EMPTY(all_static_telecomms_towers)
 
 	var/obj/effect/alien/weeds/node/pylon/cluster/parent_node = weeded_turf.weeds.parent
 
-	var/obj/effect/alien/resin/special/cluster/cluster_parent = parent_node.resin_parent
+	var/obj/effect/alien/resin/special/pylon/cluster/cluster_parent = parent_node.resin_parent
 
 	var/list/held_children_weeds = parent_node.children
 	var/cluster_loc = cluster_parent.loc
-	var/linked_hive = cluster_parent.linked_hive
+	var/datum/faction/faction = cluster_parent.faction
 
 	parent_node.children = list()
 
 	qdel(cluster_parent)
 
-	var/obj/effect/alien/resin/special/pylon/endgame/new_pylon = new(cluster_loc, linked_hive)
+	var/obj/effect/alien/resin/special/pylon/endgame/new_pylon = new(cluster_loc, faction)
 	new_pylon.node.children = held_children_weeds
 
 	for(var/obj/effect/alien/weeds/weed in new_pylon.node.children)

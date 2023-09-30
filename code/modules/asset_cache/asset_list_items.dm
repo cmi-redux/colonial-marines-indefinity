@@ -308,7 +308,7 @@
 		list("SL", "hudsquad_leader"),
 	)
 
-	for(var/datum/squad/marine/squad in RoleAuthority.squads)
+	for(var/datum/squad/marine/squad in SSticker.role_authority.squads)
 		var/color = squad.equipment_color
 		for(var/iref in icon_data)
 			var/list/iconref = iref

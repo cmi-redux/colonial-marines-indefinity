@@ -47,7 +47,6 @@
 /area/shuttle/drop1/sulaco)
 "cC" = (
 /obj/structure/shuttle/part/dropship1/nose_front_right,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "cR" = (
@@ -284,8 +283,7 @@
 /area/shuttle/drop1/sulaco)
 "rl" = (
 /obj/structure/shuttle/part/dropship1/lower_right_wall,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/space/basic,
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "rr" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -304,13 +302,11 @@
 /area/shuttle/drop1/sulaco)
 "rV" = (
 /obj/structure/shuttle/part/dropship1/transparent/left_outer_bottom_wing,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "sA" = (
 /obj/structure/shuttle/part/dropship1/lower_left_wall,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/space/basic,
+/turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "tR" = (
 /obj/item/device/radio/intercom/alamo{
@@ -587,7 +583,6 @@
 /area/shuttle/drop1/sulaco)
 "NQ" = (
 /obj/structure/shuttle/part/dropship1/transparent/left_inner_bottom_wing,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "Oq" = (
@@ -650,12 +645,10 @@
 /area/shuttle/drop1/sulaco)
 "QT" = (
 /obj/structure/shuttle/part/dropship1/nose_front_left,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "QW" = (
 /obj/structure/shuttle/part/dropship1/transparent/right_outer_bottom_wing,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "RI" = (
@@ -677,7 +670,6 @@
 /area/shuttle/drop1/sulaco)
 "Te" = (
 /obj/structure/shuttle/part/dropship1/transparent/right_inner_bottom_wing,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/template_noop,
 /area/shuttle/drop1/sulaco)
 "Tt" = (

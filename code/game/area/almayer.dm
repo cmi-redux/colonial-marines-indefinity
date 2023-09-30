@@ -172,7 +172,6 @@
 /area/almayer/shipboard/panic
 	name = "\improper Hangar Panic Room"
 	icon_state = "brig"
-	fake_zlevel = 2 // lowerdeck
 
 /area/almayer/shipboard/starboard_missiles
 	name = "\improper Missile Tubes Starboard"
@@ -293,7 +292,6 @@
 /area/almayer/living/auxiliary_officer_office
 	name = "\improper Auxiliary Support Officer office"
 	icon_state = "livingspace"
-	fake_zlevel = 2
 
 /area/almayer/squads/tankdeliveries
 	name = "\improper Vehicle ASRS"

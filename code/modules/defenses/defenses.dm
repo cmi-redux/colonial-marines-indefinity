@@ -427,7 +427,7 @@
 		return
 	update_health(severity)
 
-/obj/structure/machinery/defenses/bullet_act(obj/projectile/proj)
+/obj/structure/machinery/defenses/bullet_act(obj/item/projectile/proj)
 	bullet_ping(proj)
 	visible_message(SPAN_WARNING("[src] is hit by the [proj]!"))
 	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
@@ -450,6 +450,7 @@
 	if(linked_laptop)
 		linked_laptop.unpair_sentry(src)
 		linked_laptop = null
+	SSmapview.remove_marker(src)
 	. = ..()
 
 /obj/structure/machinery/defenses/verb/toggle_turret_locks_verb()

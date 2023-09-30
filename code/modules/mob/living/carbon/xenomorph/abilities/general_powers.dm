@@ -64,7 +64,7 @@
 
 	if(to_convert)
 		for(var/cur_weed in to_convert)
-			var/turf/target_turf = get_turf(cur_weed)
+			target_turf = get_turf(cur_weed)
 			if(target_turf && !target_turf.density)
 				new /obj/effect/alien/weeds(target_turf, new_node)
 			qdel(cur_weed)
@@ -624,18 +624,18 @@
 		to_chat(xeno, SPAN_WARNING("The weeds are still recovering from the death of the hive core, wait until the weeds have recovered!"))
 		return FALSE
 	if(xeno.faction.has_structure(XENO_STRUCTURE_CORE) || !xeno.faction.can_build_structure(XENO_STRUCTURE_CORE))
-		choice = tgui_input_list(xeno, "Choose a structure to build", "Build structure", xeno.faction.hive_structure_types + "help", theme="hive_status")
+		choice = tgui_input_list(xeno, "Choose a structure to build", "Build structure", xeno.faction.faction_structure_types + "help", theme="hive_status")
 		if(!choice)
 			return
 		if(choice == "help")
 			var/message = "<br>Placing a construction node creates a template for special structures that can benefit the hive, which require the insertion of [MATERIAL_CRYSTAL] to construct the following:<br>"
-			for(var/structure_name in xeno.faction.hive_structure_types)
+			for(var/structure_name in xeno.faction.faction_structure_types)
 				message += "[get_xeno_structure_desc(structure_name)]<br>"
 			to_chat(xeno, SPAN_NOTICE(message))
 			return TRUE
 	if(!xeno.check_state(TRUE) || !xeno.check_plasma(400))
 		return FALSE
-	var/structure_type = xeno.faction.hive_structure_types[choice]
+	var/structure_type = xeno.faction.faction_structure_types[choice]
 	var/datum/construction_template/xenomorph/structure_template = new structure_type()
 
 	if(!spacecheck(xeno, target_turf, structure_template))
@@ -769,7 +769,7 @@
 	SPAN_XENOWARNING("You spit a [xeno.ammo.name] at [target_atom]!") )
 	playsound(xeno.loc, sound_to_play, 25, 1)
 
-	var/obj/projectile/proj = new (current_turf, create_cause_data(xeno.ammo.name, xeno))
+	var/obj/item/projectile/proj = new (current_turf, create_cause_data(xeno.ammo.name, xeno))
 	proj.generate_bullet(xeno.ammo)
 	proj.permutated += xeno
 	proj.def_zone = xeno.get_limbzone_target()

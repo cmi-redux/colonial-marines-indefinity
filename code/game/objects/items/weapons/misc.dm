@@ -27,7 +27,7 @@
 	edge = 0
 	var/icon/broken_outline = icon('icons/obj/items/drinks.dmi', "broken")
 
-/obj/item/weapon/broken_bottle/bullet_act(obj/projectile/proj)
+/obj/item/weapon/broken_bottle/bullet_act(obj/item/projectile/proj)
 	. = ..()
 	new/obj/item/shard(src.loc)
 	new/obj/item/shard(src.loc)
@@ -50,7 +50,7 @@
 	edge = 0
 	var/icon/broken_outline = icon('icons/obj/items/drinks.dmi', "broken")
 
-/obj/item/weapon/broken_glass/bullet_act(obj/projectile/proj)
+/obj/item/weapon/broken_glass/bullet_act(obj/item/projectile/proj)
 	. = ..()
 	new/obj/item/shard(src.loc)
 	new/obj/item/shard(src.loc)

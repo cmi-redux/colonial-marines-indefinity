@@ -246,7 +246,7 @@
 					return
 
 			limb.heal_damage(15, 0, TRUE)
-			user.track_heal_damage(initial(name), H, 15)
+			user.track_heal_damage(initial(name), human, 15)
 			human.pain.recalculate_pain()
 			human.UpdateDamageIcon()
 			user.visible_message(SPAN_WARNING("\The [user] patches some dents on \the [human]'s [limb.display_name] with \the [src]."), \
@@ -729,7 +729,7 @@ Welding backpack
 	else
 		. += "No punctures are seen on \the [src] upon closer inspection."
 
-/obj/item/tool/weldpack/bullet_act(obj/projectile/proj)
+/obj/item/tool/weldpack/bullet_act(obj/item/projectile/proj)
 	var/damage = proj.damage
 	health -= damage
 	..()

@@ -11,7 +11,7 @@
 	arrival_message = "Give a round of applause for the marine who sent in ten-thousand Souto tabs to get me here! [MAIN_SHIP_NAME], Souto Man's here to party with YOU!"
 	return ..()
 
-/datum/emergency_call/souto/create_member(datum/mind/Mmind, turf/override_spawn_loc)
+/datum/emergency_call/souto/create_member(datum/mind/mind, turf/override_spawn_loc)
 	var/turf/spawn_loc = override_spawn_loc ? override_spawn_loc : get_spawn_point()
 
 	if(!istype(spawn_loc))

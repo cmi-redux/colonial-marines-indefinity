@@ -112,7 +112,7 @@
 	name = "holotargetting smartgun drum"
 	desc = "Holotargetting rounds for use in the royal marines commando L56A2 smartgun."
 	icon_state = "m56_drum"
-	default_ammo = /datum/ammo/bullet/smartgun/holo_target
+	ammo_preset = list(/datum/ammo/bullet/smartgun/holo_target)
 	gun_type = /obj/item/weapon/gun/smartgun/rmc
 //-------------------------------------------------------
 //Flare gun. Close enough?
@@ -354,9 +354,9 @@
 	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/upp.dmi'
 
 	max_rounds = 1
-	default_ammo = /datum/ammo/rocket
+	ammo_preset = list(/datum/ammo/rocket)
 	gun_type = /obj/item/weapon/gun/launcher/rocket/upp
-	reload_delay = 85
+	transfer_delay = 5 SECONDS
 
 /obj/item/ammo_magazine/rocket/upp/update_icon()
 	if(current_rounds <= 0)
@@ -371,9 +371,8 @@
 	icon_state = "hjra_tank"
 
 	max_rounds = 1
-	default_ammo = /datum/ammo/rocket/ap/anti_tank
+	ammo_preset = list(/datum/ammo/rocket/ap/anti_tank)
 	gun_type = /obj/item/weapon/gun/launcher/rocket/upp
-	reload_delay = 85
 
 /obj/item/ammo_magazine/rocket/upp/incen
 	name = "HJRA-12 Extreme-Intensity Incendiary Rocket"
@@ -382,6 +381,5 @@
 	icon_state = "hjra_incen"
 
 	max_rounds = 1
-	default_ammo = /datum/ammo/rocket/wp/upp
+	ammo_preset = list(/datum/ammo/rocket/wp/upp)
 	gun_type = /obj/item/weapon/gun/launcher/rocket/upp
-	reload_delay = 85

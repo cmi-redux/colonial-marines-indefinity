@@ -307,6 +307,13 @@
 /obj/structure/flora/bush/ausbushes/lavendergrass,
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/north_west_jungle)
+"AB" = (
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor{
+	icon_state = "whitebluefull";
+	tag = "icon-whitebluefull"
+	},
+/area/lv624/lazarus/medbay)
 "Be" = (
 /obj/structure/fence,
 /turf/open/gm/dirtgrassborder/grassdirt_corner/north_west,
@@ -813,7 +820,7 @@ Il
 yU
 QR
 QR
-YJ
+AB
 vm
 uV
 fX

@@ -56,7 +56,7 @@
 		else
 	return
 
-/obj/structure/machinery/computer/bullet_act(obj/projectile/proj)
+/obj/structure/machinery/computer/bullet_act(obj/item/projectile/proj)
 	if(exproof)
 		visible_message("[proj] ricochets off [src]!")
 		return 0

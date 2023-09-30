@@ -300,7 +300,7 @@
 	)
 
 /obj/item/storage/box/guncase/vulture/update_icon()
-	if(LAZYLEN(contents))
+	if(length(contents))
 		icon_state = "guncase_blue"
 	else
 		icon_state = "guncase_blue_e"

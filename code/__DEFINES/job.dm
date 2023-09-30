@@ -13,6 +13,7 @@
 #define SQUAD_MARINE_4 "Delta"
 #define SQUAD_MARINE_5 "Echo"
 #define SQUAD_MARINE_6 "Foxtrot"
+#define SQUAD_MARINE_7 "Intel"
 #define SQUAD_MARINE_SOF "SOF"
 
 //------------UPP squad------------------//
@@ -98,6 +99,7 @@
 #define JOB_SO "Staff Officer"
 
 //------------Auxiliaru roles------------//
+#define JOB_AUXILIARY_OFFICER "Auxiliary Support Officer"
 #define JOB_PILOT "Pilot Officer"
 #define JOB_DROPSHIP_CREW_CHIEF "Dropship Crew Chief"
 #define JOB_CREWMAN "Vehicle Crewman"
@@ -105,7 +107,7 @@
 #define JOB_DROPSHIP_ROLES   /datum/timelock/dropship
 #define JOB_DROPSHIP_ROLES_LIST   list(JOB_DROPSHIP_CREW_CHIEF, JOB_PILOT)
 #define JOB_AUXILIARY_ROLES    /datum/timelock/auxiliary
-#define JOB_AUXILIARY_ROLES_LIST   list(JOB_PILOT, JOB_DROPSHIP_CREW_CHIEF, JOB_CREWMAN, JOB_INTEL)
+#define JOB_AUXILIARY_ROLES_LIST   list(JOB_AUXILIARY_OFFICER, JOB_PILOT, JOB_DROPSHIP_CREW_CHIEF, JOB_CREWMAN, JOB_INTEL)
 
 //------------Police roles---------------//
 #define JOB_POLICE "Military Police"

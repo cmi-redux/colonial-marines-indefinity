@@ -30,7 +30,7 @@ Sunlight System
 	var/state = SKY_VISIBLE	// If we can see the see the sky, are blocked, or we have a blocked neighbour (SKY_BLOCKED/VISIBLE/VISIBLE_BORDER)
 	var/weatherproof = FALSE        // If we have a weather overlay
 	var/turf/source_turf
-	var/list/datum/lighting_corner/affecting_corners
+	var/list/datum/static_lighting_corner/affecting_corners
 
 /atom/movable/outdoor_effect/Destroy(force)
 	if(!force)
@@ -55,7 +55,7 @@ Sunlight System
 
 /atom/movable/outdoor_effect/proc/disable_sunlight()
 	var/turf/T = list()
-	for(var/datum/lighting_corner/C in affecting_corners)
+	for(var/datum/static_lighting_corner/C in affecting_corners)
 		LAZYREMOVE(C.glob_affect, src)
 		C.get_sunlight_falloff()
 		if( C.master_NE)
@@ -85,9 +85,8 @@ Sunlight System
 
 
 /atom/movable/outdoor_effect/proc/calc_sunlight_spread()
-
 	var/list/turf/turfs                    = list()
-	var/datum/lighting_corner/C
+	var/datum/static_lighting_corner/C
 	var/turf/T
 	var/list/tempMasterList = list() /* to mimimize double ups */
 	var/list/corners  = list() /* corners we are currently affecting */
@@ -99,8 +98,8 @@ Sunlight System
 	for(T in view(CEILING(GLOB.GLOBAL_LIGHT_RANGE, 1), source_turf))
 		if(IS_OPAQUE_TURF(T)) /* get_corners used to do opacity checks for arse */
 			continue
-		if(!T.lighting_corners_initialised)
-			T.generate_missing_corners()
+		if (!T.lighting_corners_initialised)
+			T.static_generate_missing_corners()
 		corners |= T.lighting_corner_NE
 		corners |= T.lighting_corner_SE
 		corners |= T.lighting_corner_SW
@@ -343,11 +342,11 @@ Sunlight System
 		T.reconsider_sunlight()
 
 /* corner fuckery */
-/datum/lighting_corner/var/list/glob_affect = list() /* list of sunlight objects affecting this corner */
-/datum/lighting_corner/var/sun_falloff = 0 /* smallest distance to sunlight turf, for sunlight falloff */
+/datum/static_lighting_corner/var/list/glob_affect = list() /* list of sunlight objects affecting this corner */
+/datum/static_lighting_corner/var/sun_falloff = 0 /* smallest distance to sunlight turf, for sunlight falloff */
 
 /* loop through and find our strongest sunlight value */
-/datum/lighting_corner/proc/get_sunlight_falloff()
+/datum/static_lighting_corner/proc/get_sunlight_falloff()
 	sun_falloff = 0
 
 	var/atom/movable/outdoor_effect/S

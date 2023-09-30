@@ -48,9 +48,10 @@
 #define AREA_NOTUNNEL				(1<<1)
 #define AREA_ALLOW_XENO_JOIN		(1<<2)
 #define AREA_CONTAINMENT			(1<<3)
-#define AREA_RECOVER_CORPSES		(1<<4)
 #define AREA_RECOVER_ITEMS			(1<<5)
 #define AREA_RECOVER_FULTON_ITEMS	(1<<6)
+#define AREA_RECOVER_CORPSES		(1<<7)
+#define AREA_UNWEEDABLE				(1<<8)
 
 /// Default number of ticks for do_after
 #define DA_DEFAULT_NUM_TICKS 5

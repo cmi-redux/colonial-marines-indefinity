@@ -169,12 +169,11 @@
 /obj/item/storage/backpack/marine/smartpack/proc/toggle_light(mob/user, toggle_on)
 	SIGNAL_HANDLER
 	if(!toggle_on)
-		turn_light(user, toggle_on)
 		playsound(src, 'sound/handling/click_2.ogg', 50, TRUE)
 	else
-		turn_light(user, toggle_on)
 		playsound(src, 'sound/handling/light_on_1.ogg', 50, TRUE)
 
+	turn_light(user, toggle_on)
 	update_icon(user)
 
 /obj/item/storage/backpack/marine/smartpack/unequipped(mob/user)
@@ -185,8 +184,6 @@
 	. = ..()
 	if(. != CHECKS_PASSED)
 		return
-	if(!user && ismob(loc))
-		user = loc
 	set_light_on(toggle_on)
 
 /obj/item/storage/backpack/marine/smartpack/proc/protective_form(mob/living/carbon/human/user)

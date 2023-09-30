@@ -20,7 +20,7 @@
 	if(PF)
 		PF.flags_can_pass_all = PASS_HIGH_OVER_ONLY
 
-/obj/structure/showcase/bullet_act(obj/projectile/proj)
+/obj/structure/showcase/bullet_act(obj/item/projectile/proj)
 	var/damage = proj.damage
 	health -= damage
 	..()

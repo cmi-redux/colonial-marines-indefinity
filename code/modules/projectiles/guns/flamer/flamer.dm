@@ -217,7 +217,7 @@
 		return
 
 	if(flamer_tank.glob_flame)
-		var/obj/projectile/proj = flamer_tank.transfer_bullet_out()
+		var/obj/item/projectile/proj = flamer_tank.transfer_bullet_out()
 		proj.forceMove(src)
 		apply_traits(proj)
 		proj.bullet_ready_to_fire(initial(name), null, user)

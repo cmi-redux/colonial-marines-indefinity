@@ -53,6 +53,12 @@
 		filling.color = mix_color_from_reagents(reagents.reagent_list)
 		underlays += filling
 
+/obj/item/reagent_container/blood/proc/update_beam()
+	if(current_beam)
+		QDEL_NULL(current_beam)
+	else if(connected_from && connected_to)
+		current_beam = connected_from.beam(connected_to, "iv_tube")
+
 /obj/item/reagent_container/blood/attack(mob/attacked_mob, mob/user)
 	. = ..()
 

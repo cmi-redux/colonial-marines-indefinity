@@ -163,7 +163,7 @@
 		return
 
 	if(!action_cooldown_check())
-		to_chat(user_xeno, SPAN_XENOWARNING("You're still recovering from detaching your old ovipositor. Wait [DisplayTimeText(timeleft(cooldown_timer_id), language = CLIENT_LANGUAGE_RUSSIAN)]."))
+		to_chat(user_xeno, SPAN_XENOWARNING("You're still recovering from detaching your old ovipositor. Wait [DisplayTimeText(timeleft(cooldown_timer_id), language = user_xeno.client.language)]."))
 		return
 
 	var/obj/effect/alien/weeds/alien_weeds = locate() in current_turf
@@ -511,9 +511,9 @@
 	var/area/AR = get_area(target_turf)
 	if(!AR.is_resin_allowed)
 		if(AR.flags_area & AREA_UNWEEDABLE)
-			to_chat(X, SPAN_XENOWARNING("This area is unsuited to host the hive!"))
+			to_chat(user_xeno, SPAN_XENOWARNING("This area is unsuited to host the hive!"))
 			return
-		to_chat(X, SPAN_XENOWARNING("It's too early to spread the hive this far."))
+		to_chat(user_xeno, SPAN_XENOWARNING("It's too early to spread the hive this far."))
 		return
 
 	var/obj/effect/alien/weeds/located_weeds = locate() in target_turf

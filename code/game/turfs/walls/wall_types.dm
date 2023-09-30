@@ -721,15 +721,14 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 	for(var/obj/effect/alien/weeds/node/weed_node in contents)
 		qdel(weed_node)
 
-	if(hivenumber == XENO_HIVE_NORMAL)
+	if(faction == GLOB.faction_datum[FACTION_XENOMORPH_NORMAL])
 		RegisterSignal(SSdcs, COMSIG_GLOB_GROUNDSIDE_FORSAKEN_HANDLING, PROC_REF(forsaken_handling))
 
 /turf/closed/wall/resin/proc/forsaken_handling()
 	SIGNAL_HANDLER
 	if(is_ground_level(z))
-		hivenumber = XENO_HIVE_FORSAKEN
-		set_hive_data(src, XENO_HIVE_FORSAKEN)
-
+		faction = GLOB.faction_datum[FACTION_XENOMORPH_FORSAKEN]
+		set_hive_data(src, faction)
 	UnregisterSignal(SSdcs, COMSIG_GLOB_GROUNDSIDE_FORSAKEN_HANDLING)
 
 /turf/closed/wall/resin/pillar
@@ -1001,10 +1000,10 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 	else
 		return attack_hand(user)
 
-/obj/structure/alien/movable_wall/get_projectile_hit_boolean(obj/projectile/proj)
+/obj/structure/alien/movable_wall/get_projectile_hit_boolean(obj/item/projectile/proj)
 	return TRUE
 
-/obj/structure/alien/movable_wall/bullet_act(obj/projectile/proj)
+/obj/structure/alien/movable_wall/bullet_act(obj/item/projectile/proj)
 	. = ..()
 	take_damage(proj.damage)
 
@@ -1118,7 +1117,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 	var/explosive_multiplier = 0.3
 	var/reflection_multiplier = 0.5
 
-/turf/closed/wall/resin/reflective/bullet_act(obj/projectile/proj)
+/turf/closed/wall/resin/reflective/bullet_act(obj/item/projectile/proj)
 	if(src in proj.permutated)
 		return
 
@@ -1130,7 +1129,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 		// Bullet gets absorbed if it has IFF or can't be reflected.
 		return
 
-	var/obj/projectile/new_proj = new(src, construction_data ? construction_data : create_cause_data(initial(name)))
+	var/obj/item/projectile/new_proj = new(src, construction_data ? construction_data : create_cause_data(initial(name)))
 	new_proj.generate_bullet(proj.ammo, src, 0, proj.projectile_override_flags|AMMO_HOMING)
 	new_proj.damage = proj.damage * reflection_multiplier // don't make it too punishing
 	new_proj.accuracy = HIT_ACCURACY_TIER_7 // 35% chance to hit something
@@ -1146,7 +1145,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 
 	return TRUE
 
-/turf/closed/wall/resin/reflective/proc/bullet_ignore_turf(obj/projectile/proj, turf/T)
+/turf/closed/wall/resin/reflective/proc/bullet_ignore_turf(obj/item/projectile/proj, turf/T)
 	SIGNAL_HANDLER
 	if(T == src)
 		return COMPONENT_BULLET_PASS_THROUGH

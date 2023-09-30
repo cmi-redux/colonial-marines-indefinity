@@ -41,31 +41,28 @@ var/cmp_field = "name"
 /proc/cmp_subsystem_priority(datum/controller/subsystem/a, datum/controller/subsystem/b)
 	return a.priority - b.priority
 
-/proc/cmp_filter_data_priority(list/A, list/B)
-	return A["priority"] - B["priority"]
+/proc/cmp_filter_data_priority(list/a, list/b)
+	return a["priority"] - b["priority"]
 
 /proc/cmp_timer(datum/timedevent/a, datum/timedevent/b)
 	return a.timeToRun - b.timeToRun
 
-/proc/cmp_qdel_item_time(datum/qdel_item/A, datum/qdel_item/B)
-	. = B.hard_delete_time - A.hard_delete_time
+/proc/cmp_qdel_item_time(datum/qdel_item/a, datum/qdel_item/b)
+	. = b.hard_delete_time - a.hard_delete_time
 	if(!.)
-		. = B.destroy_time - A.destroy_time
+		. = b.destroy_time - a.destroy_time
 	if(!.)
-		. = B.failures - A.failures
+		. = b.failures - a.failures
 	if(!.)
-		. = B.qdels - A.qdels
+		. = b.qdels - a.qdels
 
 var/atom/cmp_dist_origin = null
 
-/proc/cmp_typepaths_asc(A, B)
-	return sorttext("[B]","[A]")
-
 /// Compares mobs based on their timeofdeath value in ascending order
-/proc/cmp_mob_deathtime_asc(mob/A, mob/B)
-	return A.timeofdeath - B.timeofdeath
+/proc/cmp_mob_deathtime_asc(mob/a, mob/b)
+	return a.timeofdeath - b.timeofdeath
 
 /// Compares observers based on their larva_queue_time value in ascending order
 /// Assumes the client on the observer is not null
-/proc/cmp_obs_larvaqueuetime_asc(mob/dead/observer/A, mob/dead/observer/B)
-	return A.client.player_details.larva_queue_time - B.client.player_details.larva_queue_time
+/proc/cmp_obs_larvaqueuetime_asc(mob/dead/observer/a, mob/dead/observer/b)
+	return a.client.player_details.larva_queue_time - b.client.player_details.larva_queue_time

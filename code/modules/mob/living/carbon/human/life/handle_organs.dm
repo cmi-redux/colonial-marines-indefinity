@@ -58,4 +58,5 @@
 			if(pain.feels_pain)
 				emote("pain")
 			custom_pain("You can't stand on broken legs!", 1)
+			playsound_client(client, sound('sound/effects/Heart Beat.ogg', repeat = rand(1, 32), wait = rand(1, 20)), vol = 100, channel = SOUND_CHANNEL_HEARTBEAT)
 			apply_effect(5, WEAKEN)

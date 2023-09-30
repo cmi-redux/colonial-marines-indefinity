@@ -10,7 +10,7 @@
 	var/user
 
 /datum/ares_record/New(title, details)
-	time = worldtime2text()
+	time = game_time_timestamp()
 	src.title = title
 	src.details = details
 
@@ -24,7 +24,7 @@
 	record_name = ARES_RECORD_ASRS
 
 /datum/ares_record/requisition_log/New(title, details, user)
-	time = worldtime2text()
+	time = game_time_timestamp()
 	src.title = title
 	src.details = details
 	src.user = user
@@ -36,7 +36,7 @@
 	record_name = ARES_RECORD_ANTIAIR
 
 /datum/ares_record/security/antiair/New(details)
-	time = worldtime2text()
+	time = game_time_timestamp()
 	src.title = "AntiAir Adjustment"
 	src.details = details
 
@@ -44,7 +44,7 @@
 	record_name = ARES_RECORD_FLIGHT
 
 /datum/ares_record/flight/New(details, user)
-	time = worldtime2text()
+	time = game_time_timestamp()
 	src.title = "Flight Log"
 	src.details = details
 	src.user = user
@@ -53,7 +53,7 @@
 	record_name = ARES_RECORD_BOMB
 
 /datum/ares_record/bombardment/New(title, details, user)
-	time = worldtime2text()
+	time = game_time_timestamp()
 	src.title = title
 	src.details = details
 	src.user = user
@@ -62,7 +62,7 @@
 	record_name = ARES_RECORD_DELETED
 
 /datum/ares_record/deletion/New()
-	time = worldtime2text()
+	time = game_time_timestamp()
 
 /datum/ares_record/talk_log
 	record_name = "1:1 Data Log"
@@ -77,7 +77,7 @@
 	var/conversation = list()
 
 /datum/ares_record/deleted_talk/New()
-	time = worldtime2text()
+	time = game_time_timestamp()
 
 
 /datum/ares_ticket
@@ -103,7 +103,7 @@
 	var/pos = length(ref_holder)
 	var/new_id = "#[copytext("\ref[src]", pos - 4, pos)]"
 
-	ticket_time = worldtime2text()
+	ticket_time = game_time_timestamp()
 	ticket_submitter = user
 	ticket_details = details
 	ticket_name = name
@@ -122,7 +122,7 @@
 	var/pos = length(ref_holder)
 	var/new_id = "#[copytext("\ref[src]", pos - 4, pos)]"
 
-	ticket_time = worldtime2text()
+	ticket_time = game_time_timestamp()
 	ticket_submitter = user
 	ticket_details = details
 	ticket_name = name

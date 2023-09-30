@@ -216,14 +216,14 @@
 		return
 
 	var/is_announcing = TRUE
-	switch(alert(src, "Would you like to announce the distress beacon to the server population? This will reveal the distress beacon to all players.", usr.client.auto_lang(LANGUAGE_DISTRESS_ANNOUNCE), usr.client.auto_lang(LANGUAGE_YES)))
-		else(usr.client.auto_lang(LANGUAGE_NO))
-			is_announcing = FALSE
-		else(usr.client.auto_lang(LANGUAGE_YES))
-			is_announcing = TRUE
-		else
-			qdel(chosen_ert)
-			return
+	var/selected = alert(src, "Would you like to announce the distress beacon to the server population? This will reveal the distress beacon to all players.", usr.client.auto_lang(LANGUAGE_DISTRESS_ANNOUNCE), usr.client.auto_lang(LANGUAGE_YES))
+	if(!selected)
+		qdel(chosen_ert)
+		return
+	else if(selected == usr.client.auto_lang(LANGUAGE_NO))
+		is_announcing = FALSE
+	else
+		is_announcing = TRUE
 
 	var/turf/override_spawn_loc
 	var/prompt = alert(usr, "Spawn at their assigned spawnpoints, or at your location?", usr.client.auto_lang(LANGUAGE_DISTRESS_SPAWNPOINT), usr.client.auto_lang(LANGUAGE_DISTRESS_LOC_CURRENT), usr.client.auto_lang(LANGUAGE_DISTRESS_LOC_ASSIGNED))
@@ -235,7 +235,7 @@
 
 	chosen_ert.activate(is_announcing, override_spawn_loc)
 
-	message_admins("[key_name_admin(usr)] admin-called a [choice == "Randomize" ? "randomized ":""]distress beacon: [chosen_ert.name]")
+	message_admins("[key_name_admin(usr)] admin-called a [ert_choice == "Randomize" ? "randomized ":""]distress beacon: [chosen_ert.name]")
 
 /datum/admins/proc/admin_force_evacuation()
 	set name = "Trigger Evacuation"
@@ -429,7 +429,7 @@
 	new_order.approvedby = MAIN_AI_SYSTEM
 	supply_controller.shoppinglist += new_order
 
-	marine_announcement("A nuclear device has been supplied and will be delivered to requisitions via ASRS.", "NUCLEAR ARSENAL ACQUIRED", 'sound/misc/notice2.ogg')
+	faction_announcement("A nuclear device has been supplied and will be delivered to requisitions via ASRS.", "NUCLEAR ARSENAL ACQUIRED", 'sound/misc/notice2.ogg')
 	message_admins("[key_name_admin(usr)] admin-spawned a [encrypt] nuke.")
 	log_game("[key_name_admin(usr)] admin-spawned a [encrypt] nuke.")
 

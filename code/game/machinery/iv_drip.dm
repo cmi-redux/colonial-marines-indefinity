@@ -152,7 +152,7 @@
 				return
 			if(ishuman(patient))
 				var/mob/living/carbon/human/human_patient = patient
-				if(human_patient.species && human_patient.species.flags & NO_BLOOD)
+				if(human_patient.species && human_patient.species.species_flags & NO_BLOOD)
 					return
 
 			// If the human is losing too much blood, beep.

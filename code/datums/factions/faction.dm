@@ -1,5 +1,3 @@
-#define JOIN_AS_FACEHUGGER_DELAY 3 MINUTES
-
 /datum/faction
 	var/name = NAME_FACTION_NEUTRAL
 	var/desc = "Neutral Faction"
@@ -25,7 +23,6 @@
 	var/mob/living/carbon/faction_leader
 	var/datum/tacmap/faction_datum/tcmp_faction_datum
 	var/datum/objectives_datum/objectives_controller
-	var/obj/effect/alien/resin/special/pylon/core/hive_location
 	var/list/datum/faction_task/active_tasks = list()
 	var/faction_victory_points = 0
 	var/homes_sector_occupation = TRUE
@@ -64,20 +61,21 @@
 	var/destruction_allowed = XENO_LEADER //Who can destroy special structures
 	var/unnesting_allowed = TRUE
 	var/queen_leader_limit = 2
-	var/list/open_xeno_leader_positions = list(1, 2) // Ordered list of xeno leader positions (indexes in xeno_leader_list) that are not occupied
-	var/list/xeno_leader_list[2] // Ordered list (i.e. index n holds the nth xeno leader)
+	var/lesser_drone_limit = 0 //How many lesser drones the hive can support
+	var/lesser_drone_minimum = 2 //Slots available for lesser drones will never go below this number
+	var/playable_lesser_drones_max_divisor = 3 //This number divides the total xenos counted for slots to give the max number of lesser drones
+	var/list/open_xeno_leader_positions = list(1, 2) //Ordered list of xeno leader positions (indexes in xeno_leader_list) that are not occupied
+	var/list/xeno_leader_list[2] //Ordered list (i.e. index n holds the nth xeno leader)
 	var/partial_larva = 0
 	var/stored_larva = 0
-	/// Assoc list of free slots available to specific castes
 	var/list/free_slots = list(
 		/datum/caste_datum/burrower = 1,
 		/datum/caste_datum/hivelord = 1,
 		/datum/caste_datum/carrier = 1
-	)
-	/// Assoc list of free slots currently used by specific castes
-	var/list/used_free_slots
-	var/list/tier_2_xenos = list()//list of living tier2 xenos
-	var/list/tier_3_xenos = list()//list of living tier3 xenos
+	) //Assoc list of free slots available to specific castes
+	var/list/used_slots = list() //Assoc list of slots currently used by specific castes (for calculating free_slot usage)
+	var/list/tier_2_xenos = list() //list of living tier2 xenos
+	var/list/tier_3_xenos = list() //list of living tier3 xenos
 	var/xeno_queen_timer
 	var/isSlotOpen = TRUE //Set true for starting alerts only after the hive has reached its full potential
 	var/allowed_nest_distance = 15 //How far away do we allow nests from an ovied Queen. Default 15 tiles.
@@ -89,18 +87,17 @@
 	var/larva_gestation_multiplier = 1.0
 	var/bonus_larva_spawn_chance = 1.0
 	var/hijack_burrowed_surge = FALSE //at hijack, start spawning lots of pooled
+	var/hijack_burrowed_left = 0 //how many burrowed is going to spawn during larva surge
 	var/ignore_slots = FALSE
 	var/dynamic_evolution = TRUE
-	var/evolution_rate = 3 // Only has use if dynamic_evolution is false
+	var/evolution_rate = 3 //Only has use if dynamic_evolution is false
 	var/evolution_bonus = 0
 	var/allow_no_queen_actions = FALSE
 	var/evolution_without_ovipositor = TRUE //Temporary for the roundstart.
-	var/allow_queen_evolve = TRUE // Set to true if you want to prevent evolutions into Queens
-	var/hardcore = FALSE // Set to true if you want to prevent bursts and spawns of new xenos. Will also prevent healing if the queen no longer exists
+	var/allow_queen_evolve = TRUE //Set to true if you want to prevent evolutions into Queens
+	var/hardcore = FALSE //Set to true if you want to prevent bursts and spawns of new xenos. Will also prevent healing if the queen no longer exists
 	var/list/hive_inherant_traits
-	// Cultist Info
-	var/mob/living/carbon/leading_cult_sl
-	//List of how many maximum of each special structure you can have
+	var/mob/living/carbon/leading_cult_sl //Cultist Info
 	var/list/faction_structures_limit = list(
 		XENO_STRUCTURE_CORE = 1,
 		XENO_STRUCTURE_PYLON = 2,
@@ -109,8 +106,8 @@
 		XENO_STRUCTURE_EGGMORPH = 6,
 		XENO_STRUCTURE_EVOPOD = 2,
 		XENO_STRUCTURE_RECOVERY = 6,
-	)
-	var/global/list/hive_structure_types = list(
+	) //List of how many maximum of each special structure you can have
+	var/global/list/faction_structure_types = list(
 		XENO_STRUCTURE_CORE = /datum/construction_template/xenomorph/core,
 		XENO_STRUCTURE_PYLON = /datum/construction_template/xenomorph/pylon,
 		XENO_STRUCTURE_CLUSTER = /datum/construction_template/xenomorph/cluster,
@@ -129,11 +126,8 @@
 	var/list/resin_marks = list()
 	var/list/banished_ckeys = list()
 	var/hivecore_cooldown = FALSE
-	//Joining as Facehugger vars
-	/// When can huggers join the round
-	var/hugger_timelock = 15 MINUTES
-	/// How many huggers can the hive support
-	var/playable_hugger_limit = 0
+	var/hugger_timelock = 15 MINUTES //When can huggers join the round
+	var/playable_hugger_limit = 0 //How many huggers can the hive support
 
 //////////////
 /datum/faction/New()
@@ -574,35 +568,37 @@
 		),
 	)
 
-	var/pooled_factor = min(stored_larva, sqrt(4*stored_larva))
-	pooled_factor = round(pooled_factor)
-
 	var/used_tier_2_slots = length(tier_2_xenos)
 	var/used_tier_3_slots = length(tier_3_xenos)
-	for(var/caste_path in used_free_slots)
-		var/used_count = used_free_slots[caste_path]
-		if(!used_count)
-			continue
-		var/datum/caste_datum/caste_datum = caste_path
-		switch(initial(caste_datum.tier))
-			if(2)
-				used_tier_2_slots -= used_count
-			if(3)
-				used_tier_3_slots -= used_count
 
 	for(var/caste_path in free_slots)
-		var/slot_count = free_slots[caste_path]
-		if(!slot_count)
+		var/slots_free = free_slots[caste_path]
+		var/slots_used = used_slots[caste_path]
+		var/datum/caste_datum/current_caste = caste_path
+		if(slots_used)
+			// Don't count any free slots in use
+			switch(initial(current_caste.tier))
+				if(2)
+					used_tier_2_slots -= min(slots_used, slots_free)
+				if(3)
+					used_tier_3_slots -= min(slots_used, slots_free)
+		if(slots_free <= slots_used)
 			continue
-		var/datum/caste_datum/caste_datum = caste_path
-		switch(initial(caste_datum.tier))
-			if(2) slots[TIER_2][GUARANTEED_SLOTS][initial(caste_datum.caste_type)] = slot_count
-			if(3) slots[TIER_3][GUARANTEED_SLOTS][initial(caste_datum.caste_type)] = slot_count
+		// Display any free slots available
+		switch(initial(current_caste.tier))
+			if(2)
+				slots[TIER_2][GUARANTEED_SLOTS][initial(current_caste.caste_type)] = slots_free - slots_used
+			if(3)
+				slots[TIER_3][GUARANTEED_SLOTS][initial(current_caste.caste_type)] = slots_free - slots_used
 
-	var/effective_total = length(totalMobs) + pooled_factor
+	var/burrowed_factor = min(stored_larva, sqrt(4*stored_larva))
+	var/effective_total = round(burrowed_factor)
+	for(var/mob/living/carbon/xenomorph/xeno as anything in totalMobs)
+		if(xeno.counts_for_slots)
+			effective_total++
 
 	// Tier 3 slots are always 20% of the total xenos in the hive
-	slots[TIER_3][OPEN_SLOTS] = max(0, Ceiling(0.20*length(totalMobs)/tier_slot_multiplier) - used_tier_3_slots)
+	slots[TIER_3][OPEN_SLOTS] = max(0, Ceiling(0.20*effective_total/tier_slot_multiplier) - used_tier_3_slots)
 	// Tier 2 slots are between 30% and 50% of the hive, depending
 	// on how many T3s there are.
 	slots[TIER_2][OPEN_SLOTS] = max(0, Ceiling(0.5*effective_total/tier_slot_multiplier) - used_tier_2_slots - used_tier_3_slots)
@@ -686,19 +682,39 @@
 
 /datum/faction/proc/abandon_on_hijack()
 	var/area/hijacked_dropship = get_area(living_xeno_queen)
+	var/xenos_count = 0
+	var/shipside_humans_weighted_count = 0
 	for(var/name_ref in faction_structures)
 		for(var/obj/effect/alien/resin/special/resin in faction_structures[name_ref])
 			if(get_area(resin) == hijacked_dropship)
 				continue
+			resin.hijack_delete = TRUE
 			faction_structures[name_ref] -= resin
 			qdel(resin)
-	for(var/mob in totalMobs)
-		var/mob/living/carbon/faction_mobs = mob
-		if(get_area(faction_mobs) != hijacked_dropship && faction_mobs.loc && is_ground_level(faction_mobs.loc.z))
-			to_chat(faction_mobs, SPAN_XENOANNOUNCE("The Queen has left without you, you quickly find a hiding place to enter hibernation as you lose touch with the hive mind."))
-			qdel(faction_mobs)
-	for(var/mob in GLOB.alive_mob_list)
-		var/mob/living/potential_host = mob
+	for(var/mob/living/carbon/xenomorph/xeno as anything in totalMobs)
+		if(get_area(xeno) != hijacked_dropship && xeno.loc && is_ground_level(xeno.loc.z))
+			if(isfacehugger(xeno) || islesserdrone(xeno))
+				to_chat(xeno, SPAN_XENOANNOUNCE("The Queen has left without you, you quickly find a hiding place to enter hibernation as you lose touch with the hive mind."))
+				if(xeno.stomach_contents.len)
+					xeno.devour_timer = 0
+					xeno.handle_stomach_contents()
+				qdel(xeno)
+				continue
+			if(xeno.hunter_data.hunted && !isqueen(xeno))
+				to_chat(xeno, SPAN_XENOANNOUNCE("The Queen has left without you, seperating you from her hive! You must defend yourself from the headhunter before you can enter hibernation..."))
+				xeno.set_hive_and_update(GLOB.faction_datum[FACTION_XENOMORPH_FORSAKEN])
+			else
+				to_chat(xeno, SPAN_XENOANNOUNCE("The Queen has left without you, you quickly find a hiding place to enter hibernation as you lose touch with the hive mind."))
+				if(xeno.stomach_contents.len)
+					xeno.devour_timer = 0
+					xeno.handle_stomach_contents()
+				qdel(xeno)
+			stored_larva++
+			continue
+		if(xeno.tier >= 1)
+			xenos_count++
+	for(var/i in GLOB.alive_mob_list)
+		var/mob/living/potential_host = i
 		if(!(potential_host.status_flags & XENO_HOST))
 			continue
 		if(!is_ground_level(potential_host.z) || get_area(potential_host) == hijacked_dropship)
@@ -707,15 +723,95 @@
 		if(A && A.faction != src)
 			continue
 		for(var/obj/item/alien_embryo/embryo in potential_host)
-			qdel(embryo)
-		potential_host.death(create_cause_data("самоубийство лярвы"))
+			embryo.faction = GLOB.faction_datum[FACTION_XENOMORPH_FORSAKEN]
+		potential_host.update_med_icon()
+	for(var/mob/living/carbon/human/current_human as anything in GLOB.alive_human_list)
+		if(!(isspecieshuman(current_human) || isspeciessynth(current_human)))
+			continue
+		var/datum/job/job = SSticker.role_authority.roles_for_mode[current_human.job]
+		if(!job)
+			continue
+		var/turf/turf = get_turf(current_human)
+		if(is_mainship_level(turf?.z))
+			shipside_humans_weighted_count += current_human.faction.get_role_coeff(current_human.job)
+	hijack_burrowed_surge = TRUE
+	hijack_burrowed_left = max(n_ceil(shipside_humans_weighted_count * 0.5) - xenos_count, 5)
+	hivecore_cooldown = FALSE
+	xeno_message(SPAN_XENOBOLDNOTICE("The weeds have recovered! A new hive core can be built!"), 3, src)
 
-/datum/faction/proc/free_respawn(client/client)
+/datum/faction/proc/update_lesser_drone_limit()
+	var/countable_xeno_iterator = 0
+	for(var/mob/living/carbon/xenomorph/cycled_xeno as anything in totalMobs)
+		if(cycled_xeno.counts_for_slots)
+			countable_xeno_iterator++
+
+	lesser_drone_limit = max(round(countable_xeno_iterator / playable_lesser_drones_max_divisor), lesser_drone_minimum)
+
+/datum/faction/proc/can_spawn_as_lesser_drone(mob/dead/observer/user, obj/effect/alien/resin/special/pylon/spawning_pylon)
+	if(jobban_isbanned(user, JOB_XENOMORPH)) // User is jobbanned
+		to_chat(user, SPAN_WARNING("You are banned from playing aliens and cannot spawn as a xenomorph."))
+		return FALSE
+
+	if(world.time - user.timeofdeath < JOIN_AS_LESSER_DRONE_DELAY)
+		var/time_left = round((user.timeofdeath + JOIN_AS_LESSER_DRONE_DELAY - world.time) / 10)
+		to_chat(user, SPAN_WARNING("You ghosted too recently. You cannot become a lesser drone until 30 seconds have passed ([time_left] seconds remaining)."))
+		return FALSE
+
+	if(totalMobs.len <= 0)
+		to_chat(user, SPAN_WARNING("The hive has fallen, you can't join it!"))
+		return FALSE
+
+	if(!living_xeno_queen)
+		to_chat(user, SPAN_WARNING("The selected hive does not have a Queen!"))
+		return FALSE
+
+	if(spawning_pylon.lesser_drone_spawns < 1)
+		to_chat(user, SPAN_WARNING("The selected core or pylon does not have enough power for a lesser drone!"))
+		return FALSE
+
+	update_lesser_drone_limit()
+
+	var/current_lesser_drone_count = 0
+	for(var/mob/mob as anything in totalMobs)
+		if(islesserdrone(mob))
+			current_lesser_drone_count++
+
+	if(lesser_drone_limit <= current_lesser_drone_count)
+		to_chat(user, SPAN_WARNING("[name] cannot support more lesser drones! Limit: <b>[current_lesser_drone_count]/[lesser_drone_limit]</b>"))
+		return FALSE
+
+	if(!user.client)
+		return FALSE
+
+	return TRUE
+
+/datum/faction/proc/on_leader_death() //break alliances on queen's death
+	return TRUE
+
+/datum/faction/proc/free_respawn(client/xeno_client)
 	stored_larva++
-	if(!hive_location || !hive_location.spawn_burrowed_larva(client.mob))
+	if(!faction_location || !faction_location.spawn_burrowed_larva(xeno_client.mob))
 		stored_larva--
 	else
 		faction_ui.update_burrowed_larva()
+
+/datum/faction/proc/respawn_on_turf(client/xeno_client, turf/spawning_turf)
+	var/mob/living/carbon/xenomorph/larva/new_xeno = spawn_faction_larva(spawning_turf, src)
+	if(isnull(new_xeno))
+		return FALSE
+
+	if(!SSticker.mode.transfer_xenomorph(xeno_client.mob, new_xeno))
+		qdel(new_xeno)
+		return FALSE
+
+	new_xeno.visible_message(SPAN_XENODANGER("A larva suddenly emerges from a dead husk!"),
+	SPAN_XENOANNOUNCE("The hive has no core! You manage to emerge from your old husk as a larva!"))
+	msg_admin_niche("[key_name(new_xeno)] respawned at \a [spawning_turf]. [ADMIN_JMP(spawning_turf)]")
+	playsound(new_xeno, 'sound/effects/xeno_newlarva.ogg', 50, 1)
+	if(new_xeno.client?.prefs?.toggles_flashing & FLASH_POOLSPAWN)
+		window_flash(new_xeno.client)
+
+	faction_ui.update_burrowed_larva()
 
 /datum/faction/proc/do_buried_larva_spawn(mob/spawn_candidate)
 	var/spawning_area
@@ -756,10 +852,13 @@
 /datum/faction/proc/increase_larva_after_burst()
 	var/extra_per_burst = CONFIG_GET(number/extra_larva_per_burst)
 	partial_larva += extra_per_burst
+	convert_partial_larva_to_full_larva()
+
+///Called after times when partial larva are added to process them to stored larva
+/datum/faction/proc/convert_partial_larva_to_full_larva()
 	for(var/i = 1 to partial_larva)
 		partial_larva--
 		stored_larva++
-
 
 /datum/faction/proc/make_leader(mob/living/carbon/mob)
 	if(!istype(mob))

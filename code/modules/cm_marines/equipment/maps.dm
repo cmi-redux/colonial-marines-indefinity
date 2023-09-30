@@ -29,17 +29,6 @@
 //used by marine equipment machines to spawn the correct map.
 /obj/item/map/current_map
 
-/obj/item/map/current_map/Initialize(mapload, ...)
-	. = ..()
-	var/map_name = SSmapping.configs[GROUND_MAP].map_name
-	var/obj/item/map/map = GLOB.map_type_list[map_name]
-	if (!map && (map_name == MAP_RUNTIME || map_name == MAP_CHINOOK || map_name == MAIN_SHIP_DEFAULT_NAME))
-		return // "Maps" we don't have maps for so we don't need to throw a runtime for (namely in unit_testing)
-	name = map.name
-	desc = map.desc
-	html_link = map.html_link
-	color = map.color
-
 // Landmark - Used for mapping. Will spawn the appropriate map for each gamemode (LV map items will spawn when LV is the gamemode, etc)
 /obj/effect/landmark/map_item
 	name = "map item"

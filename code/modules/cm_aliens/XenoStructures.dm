@@ -69,7 +69,7 @@
 	health -= 50
 	healthcheck()
 
-/obj/effect/alien/resin/bullet_act(obj/projectile/proj)
+/obj/effect/alien/resin/bullet_act(obj/item/projectile/proj)
 	health -= proj.damage
 	..()
 	healthcheck()
@@ -355,7 +355,7 @@
 	health -= dam
 	healthcheck()
 
-/obj/structure/mineral_door/resin/bullet_act(obj/projectile/proj)
+/obj/structure/mineral_door/resin/bullet_act(obj/item/projectile/proj)
 	health -= proj.damage
 	..()
 	healthcheck()
@@ -520,7 +520,7 @@
 	if(get_dist(src, current_mob) > range)
 		return FALSE
 
-	if(C.ally(faction))
+	if(current_mob.ally(faction))
 		if(!isxeno(current_mob))
 			return FALSE
 		if(!current_mob.on_fire)
@@ -597,7 +597,7 @@
 	STOP_PROCESSING(SSprocessing, src)
 	return ..()
 
-/obj/effect/alien/resin/acid_pillar/get_projectile_hit_boolean(obj/projectile/proj)
+/obj/effect/alien/resin/acid_pillar/get_projectile_hit_boolean(obj/item/projectile/proj)
 	return TRUE
 
 /obj/effect/alien/resin/acid_pillar/strong
@@ -713,7 +713,7 @@
 	SIGNAL_HANDLER
 	hitby(AM)
 
-/obj/effect/alien/resin/resin_pillar/proc/handle_bullet(turf/T, obj/projectile/proj)
+/obj/effect/alien/resin/resin_pillar/proc/handle_bullet(turf/T, obj/item/projectile/proj)
 	SIGNAL_HANDLER
 	bullet_act(proj)
 	return COMPONENT_BULLET_ACT_OVERRIDE
@@ -850,7 +850,7 @@
 
 	var/range = 3
 
-/obj/item/explosive/grenade/alien/acid/get_projectile_hit_boolean(obj/projectile/proj)
+/obj/item/explosive/grenade/alien/acid/get_projectile_hit_boolean(obj/item/projectile/proj)
 	return FALSE
 
 /obj/item/explosive/grenade/alien/acid/prime(force)

@@ -191,7 +191,7 @@
 /turf/template_noop,
 /area/shuttle/lifeboat)
 "uX" = (
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat{
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat{
 	id = "Boat2-D2";
 	throw_dir = 1
 	},
@@ -216,7 +216,7 @@
 	},
 /area/shuttle/lifeboat)
 "ya" = (
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat{
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat{
 	id = "Boat2-D1";
 	throw_dir = 1
 	},

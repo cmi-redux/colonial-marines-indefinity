@@ -25,10 +25,10 @@
 	update_attachable(S.slot)
 
 /obj/item/ammo_magazine/pistol/tranq
-    name = "\improper Tranquilizer magazine (Horse Tranquilizer)"
+	name = "Tranquilizer magazine (Horse Tranquilizer)"
 	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/event.dmi'
-    ammo_preset = list(/datum/ammo/bullet/pistol/tranq)
-    caliber = CALIBER_22
-    icon_state = "pk-9_tranq"
-    max_rounds = 5
-    gun_type = /obj/item/weapon/gun/pistol/tranquilizer
+	ammo_preset = list(/datum/ammo/bullet/pistol/tranq)
+	caliber = CALIBER_22
+	icon_state = "pk-9_tranq"
+	max_rounds = 5
+	gun_type = /obj/item/weapon/gun/pistol/tranquilizer

@@ -3,10 +3,11 @@
 /mob/proc/gib(datum/cause_data/cause = create_cause_data("разрыва", src))
 	var/datum/shape/rectangle/zone = RECT(x, y, 7, 7)
 	for(var/mob/living/carbon/human/human in SSquadtree.players_in_range(zone, z))
-		spawn(rand(1, 20))
-			if(prob(50))
-				human << sound('sound/effects/Heart Beat.ogg', repeat = rand(20, 120), wait = 0, volume = 100, channel = 2) //play on same channel as ambience
-				human.emote("scream")
+		if(!human.client)
+			continue
+		if(prob(50))
+			playsound_client(human.client, sound('sound/effects/Heart Beat.ogg', repeat = rand(1, 32), wait = rand(1, 20)), vol = 100, channel = SOUND_CHANNEL_HEARTBEAT)
+			human.emote("scream")
 
 	if(stat != DEAD)
 		SSautobalancer.balance_action(src, "death")

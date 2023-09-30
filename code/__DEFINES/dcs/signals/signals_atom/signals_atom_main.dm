@@ -1,5 +1,3 @@
-///from base of atom/set_opacity(): (new_opacity)
-#define COMSIG_ATOM_SET_OPACITY "atom_set_opacity"
 ///from base of [/atom/proc/smooth_icon]: ()
 #define COMSIG_ATOM_SMOOTHED_ICON "atom_smoothed_icon"
 ///from base of atom/set_smoothed_icon_state(): (new_junction) //MOJAVE SUN EDIT - Wallening Testmerge

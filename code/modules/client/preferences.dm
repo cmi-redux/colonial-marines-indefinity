@@ -341,6 +341,8 @@ var/const/MAX_SAVE_SLOTS = 10
 			dat += "<br>"
 			dat += "\t<a href='?_src_=prefs;preference=job;task=menu'><b>[user.client.auto_lang(LANGUAGE_PREF_OCUP_CHOSE)]</b></a>"
 			dat += "</div>"
+			dat += "\t<a href='?_src_=prefs;preference=job_slot;task=menu'><b>[user.client.auto_lang(LANGUAGE_PREF_OCUP_CHOSE_CHAR)]</b></a>"
+			dat += "</div>"
 
 			dat += "<div id='column2'>"
 			dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_HUMAN_HAIR_EYES)]:</u></b></h2>"
@@ -655,7 +657,7 @@ var/const/MAX_SAVE_SLOTS = 10
 //splitJobs - Allows you split the table by job. You can make different tables for each department by including their heads. Defaults to CE to make it look nice.
 //width - Screen' width. Defaults to 550 to make it look nice.
 //height - Screen's height. Defaults to 500 to make it look nice.
-/datum/preferences/proc/SetChoices(mob/user, list/roles_pool, limit = 19, splitJobs = list(), width = 1200, height = 700)
+/datum/preferences/proc/set_choices(mob/user, list/roles_pool, limit = 19, splitJobs = list(), width = 1200, height = 700)
 	if(!SSticker.role_authority)
 		return
 
@@ -765,33 +767,34 @@ var/const/MAX_SAVE_SLOTS = 10
 
 	close_browser(user, "preferences")
 	show_browser(user, HTML, user.client.auto_lang(LANGUAGE_PREF_JOB_PREFERENCES), "mob_occupation", "size=[width]x[height]")
-	onclose(user, "mob_occupation", user.client, list("_src_" = "prefs", "preference" = "job", "task" = "close"))
+	onclose(user, "mob_occupation", user.client, list("_src_" = "prefs", "preference" = "job_slot", "task" = "close"))
 	return
 
 //limit - The amount of jobs allowed per column. Defaults to 13 to make it look nice.
 //splitJobs - Allows you split the table by job. You can make different tables for each department by including their heads. Defaults to CE to make it look nice.
 //width - Screen' width. Defaults to 550 to make it look nice.
 //height - Screen's height. Defaults to 500 to make it look nice.
-/datum/preferences/proc/set_job_slots(mob/user, limit = 19, list/splitJobs = list(JOB_CHIEF_REQUISITION), width = 950, height = 700)
-	if(!RoleAuthority)
+/datum/preferences/proc/set_job_slots(mob/user, list/roles_pool, limit = 19, splitJobs = list(), width = 1200, height = 700)
+	if(!SSticker.role_authority)
 		return
+
+	if(!observing_faction)
+		observing_faction = GLOB.faction_datum[SSticker.mode.factions_pool[pick(SSticker.mode.factions_pool)]]
+
+	roles_pool = observing_faction.roles_list[SSticker.mode.name]
 
 	var/HTML = "<body>"
 	HTML += "<tt><center>"
-	HTML += "<b>Assign character slots to jobs.</b><br>Unavailable occupations are crossed out.<br><br>"
-	HTML += "<center><a href='?_src_=prefs;preference=job_slot;task=close'>Done</a></center><br>" // Easier to press up here.
+	HTML += "<b>[user.client.auto_lang(LANGUAGE_PREF_CHAR_ROLES)]<br><br>"
+	HTML += "<b>[user.client.auto_lang(LANGUAGE_PREF_ROLES_FACTION)]: [observing_faction]<br><br>"
+	HTML += "<center><a href='?_src_=prefs;preference=job_slot;task=close'>[user.client.auto_lang(LANGUAGE_DONE)]</a></center><br>" // Easier to press up here.
 	HTML += "<table width='100%' cellpadding='1' cellspacing='0' style='color: black;'><tr><td valign='top' width='20%'>" // Table within a table for alignment, also allows you to easily add more colomns.
 	HTML += "<table width='100%' cellpadding='1' cellspacing='0'>"
 	var/index = -1
 
 	//The job before the current job. I only use this to get the previous jobs color when I'm filling in blank rows.
-
-	var/list/active_role_names = GLOB.gamemode_roles[GLOB.master_mode]
-	if(!active_role_names)
-		active_role_names = ROLES_DISTRESS_SIGNAL
-
-	for(var/role_name as anything in active_role_names)
-		var/datum/job/job = RoleAuthority.roles_by_name[role_name]
+	for(var/role_name in roles_pool)
+		var/datum/job/job = GET_MAPPED_ROLE(role_name)
 		if(!job)
 			debug_log("Missing job for prefs: [role_name]")
 			continue
@@ -804,7 +807,7 @@ var/const/MAX_SAVE_SLOTS = 10
 		if(jobban_isbanned(user, job.title))
 			HTML += "<b><del>[job.disp_title]</del></b></td><td width='60%'><b>BANNED</b></td></tr>"
 			continue
-		else if(job.flags_startup_parameters & ROLE_WHITELISTED && !(RoleAuthority.roles_whitelist[user.ckey] & job.flags_whitelist))
+		else if(job.flags_startup_parameters & ROLE_WHITELISTED && !(SSticker.role_authority.roles_whitelist[user.ckey] & job.flags_whitelist))
 			HTML += "<b><del>[job.disp_title]</del></b></td><td width='60%'>WHITELISTED</td></tr>"
 			continue
 		else if(!job.can_play_role(user.client))
@@ -841,7 +844,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	HTML += "</tt></body>"
 
 	close_browser(user, "preferences")
-	show_browser(user, HTML, "Job Assignment", "job_slots_assignment", "size=[width]x[height]")
+	show_browser(user, HTML, user.client.auto_lang(LANGUAGE_PREF_JOB_PREFERENCES), "job_slots_assignment", "size=[width]x[height]")
 	onclose(user, "job_slots_assignment", user.client, list("_src_" = "prefs", "preference" = "job_slot", "task" = "close"))
 	return
 
@@ -892,7 +895,7 @@ var/const/MAX_SAVE_SLOTS = 10
 
 	SetJobDepartment(job, priority)
 
-	SetChoices(user)
+	set_choices(user)
 	return TRUE
 
 /datum/preferences/proc/ResetJobs()
@@ -965,8 +968,8 @@ var/const/MAX_SAVE_SLOTS = 10
 /datum/preferences/proc/reset_job_slots()
 	pref_job_slots = list()
 	var/datum/job/J
-	for(var/role in RoleAuthority.roles_by_path)
-		J = RoleAuthority.roles_by_path[role]
+	for(var/role in SSticker.role_authority.roles_by_path)
+		J = SSticker.role_authority.roles_by_path[role]
 		pref_job_slots[J.title] = JOB_SLOT_CURRENT_SLOT
 
 /datum/preferences/proc/process_link(mob/user, href_list)
@@ -980,7 +983,7 @@ var/const/MAX_SAVE_SLOTS = 10
 					ShowChoices(user)
 				if("reset")
 					ResetJobs()
-					SetChoices(user)
+					set_choices(user)
 				if("random")
 					if(alternate_option == GET_RANDOM_JOB || alternate_option == BE_MARINE || alternate_option == RETURN_TO_LOBBY)
 						alternate_option++
@@ -988,7 +991,7 @@ var/const/MAX_SAVE_SLOTS = 10
 						alternate_option = 0
 					else
 						return 0
-					SetChoices(user)
+					set_choices(user)
 				if("input")
 					var/priority = text2num(href_list["target_priority"])
 					SetJob(user, href_list["text"], priority)
@@ -998,9 +1001,9 @@ var/const/MAX_SAVE_SLOTS = 10
 						return
 
 					observing_faction = GLOB.faction_datum[SSticker.mode.factions_pool[choice]]
-					SetChoices(user)
+					set_choices(user)
 				else
-					SetChoices(user)
+					set_choices(user)
 			return TRUE
 		if("job_slot")
 			switch(href_list["task"])
@@ -1750,7 +1753,7 @@ var/const/MAX_SAVE_SLOTS = 10
 						return
 					pref_special_job_options[job.title] = new_special_job_variant
 
-					SetChoices(user)
+					set_choices(user)
 					return
 		else
 			switch(href_list["preference"])

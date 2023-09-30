@@ -508,7 +508,6 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 
 	var/obj/structure/transmitter/internal/internal_transmitter
 	var/phone_category = PHONE_MARINE
-	var/base_icon
 
 /datum/action/item_action/rto_pack/use_phone/New(mob/living/user, obj/item/holder)
 	..()

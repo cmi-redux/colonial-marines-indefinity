@@ -1,7 +1,7 @@
 // thingy to print robot limbs :3
 
 /obj/structure/machinery/bioprinter
-	name = "\improper Weyland-Yutani synthetic limb printer 2000"
+	name = "Weyland-Yutani synthetic limb printer 2000"
 	desc = "A machine that can produce synthetic limbs of dubious quality. Smells of smoke and battery acid. The USCM has recently rejected an offer for the 3000 series, which can also print synthetic organs, on the basis of unreliability."
 	icon = 'icons/obj/structures/machinery/surgery.dmi'
 

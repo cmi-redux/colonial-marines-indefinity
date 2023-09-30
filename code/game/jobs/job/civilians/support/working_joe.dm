@@ -14,6 +14,7 @@
 	gear_preset = /datum/equipment_preset/synth/working_joe
 	gets_emergency_kit = FALSE
 
+	balance_formulas = list(BALANCE_FORMULA_COMMANDING, BALANCE_FORMULA_MISC)
 	job_options = list(STANDARD_VARIANT = "JOE", HAZMAT_VARIANT = "HAZ")
 	var/standard = TRUE
 
@@ -31,7 +32,7 @@
 /datum/job/civilian/working_joe/get_total_positions(latejoin = 0)
 	var/positions = spawn_positions
 	if(latejoin)
-		positions = working_joe_slot_formula(get_total_marines())
+		positions = working_joe_slot_formula(get_total_population(FACTION_MARINE))
 		if(positions <= total_positions_so_far)
 			positions = total_positions_so_far
 		else

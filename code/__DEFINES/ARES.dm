@@ -28,7 +28,7 @@
 #define ARES_RECORD_ACCESS "Access Ticket"
 #define ARES_RECORD_FLIGHT "Flight Record"
 
-/// Not by ARES logged through marine_announcement()
+/// Not by ARES logged through faction_announcement()
 #define ARES_LOG_NONE 0
 /// Logged with all announcements
 #define ARES_LOG_MAIN 1

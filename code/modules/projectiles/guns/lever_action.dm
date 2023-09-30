@@ -171,7 +171,7 @@ their unique feature is that a direct hit will buff your damage and firerate
 /obj/item/weapon/gun/lever_action/proc/unload_bullet(mob/user)
 	if(isnull(current_mag) || !current_mag.ammo_position)
 		return
-	var/obj/projectile/proj = current_mag.retrieve_ammo(1, user)
+	var/obj/item/projectile/proj = current_mag.retrieve_ammo(1, user)
 	if(user)
 		user.put_in_hands(proj)
 		playsound(user, reload_sound, 25, TRUE)
@@ -452,7 +452,7 @@ their unique feature is that a direct hit will buff your damage and firerate
 	if(!able_to_fire(user) || !target) //checks here since we don't want to fuck up applying the increase
 		return NONE
 	if(floating_penetration && in_chamber) //has to go before actual firing
-		var/obj/projectile/proj = in_chamber
+		var/obj/item/projectile/proj = in_chamber
 		switch(floating_penetration)
 			if(FLOATING_PENETRATION_TIER_1)
 				proj.ammo = GLOB.ammo_list[/datum/ammo/bullet/lever_action/xm88/pen20]
@@ -482,7 +482,7 @@ their unique feature is that a direct hit will buff your damage and firerate
 	wield_delay = initial(wield_delay)
 	cur_onehand_chance = initial(cur_onehand_chance)
 	if(in_chamber)
-		var/obj/projectile/proj = in_chamber
+		var/obj/item/projectile/proj = in_chamber
 		proj.ammo = GLOB.ammo_list[/datum/ammo/bullet/lever_action/xm88]
 	floating_penetration = FLOATING_PENETRATION_TIER_0
 	//these are init configs and so cannot be initial()

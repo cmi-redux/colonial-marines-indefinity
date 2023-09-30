@@ -189,21 +189,21 @@ SUBSYSTEM_DEF(evacuation)
 			ai_announcement("ВНИМАНИЕ: Приказ о эвакуации приведен в действие. Запуск спасательных капсул.", 'sound/AI/evacuation_confirmed.ogg')
 
 			for(var/obj/docking_port/stationary/lifeboat_dock/lifeboat_dock in GLOB.lifeboat_almayer_docks) //evacuation confirmed, time to open lifeboats
-				var/obj/docking_port/mobile/lifeboat/lifeboat = lifeboat_dock.get_docked()
+				var/obj/docking_port/mobile/crashable/lifeboat/lifeboat = lifeboat_dock.get_docked()
 				if(lifeboat && lifeboat.available)
 					lifeboat_dock.open_dock()
 
 			enable_self_destruct(FALSE, TRUE)
 
 			for(var/obj/docking_port/stationary/escape_pod/escape_pod in GLOB.escape_almayer_docks)
-				var/obj/docking_port/mobile/escape_shuttle/escape_shuttle = escape_pod.get_docked()
+				var/obj/docking_port/mobile/crashable/escape_shuttle/escape_shuttle = escape_pod.get_docked()
 				var/obj/structure/machinery/computer/shuttle/escape_pod_panel/evacuation_program = escape_shuttle.getControlConsole()
 				if(escape_shuttle && evacuation_program.pod_state != ESCAPE_STATE_BROKEN)
 					escape_shuttle.evac_launch() //May or may not launch, will do everything on its own.
 					sleep(5 SECONDS) //Sleeps 5 seconds each launch.
 
-			var/obj/docking_port/mobile/lifeboat/L1 = SSshuttle.getShuttle(MOBILE_SHUTTLE_LIFEBOAT_PORT)
-			var/obj/docking_port/mobile/lifeboat/L2 = SSshuttle.getShuttle(MOBILE_SHUTTLE_LIFEBOAT_STARBOARD)
+			var/obj/docking_port/mobile/crashable/lifeboat/L1 = SSshuttle.getShuttle(MOBILE_SHUTTLE_LIFEBOAT_PORT)
+			var/obj/docking_port/mobile/crashable/lifeboat/L2 = SSshuttle.getShuttle(MOBILE_SHUTTLE_LIFEBOAT_STARBOARD)
 			while(L1.available || L2.available)
 				sleep(5 SECONDS) //Sleep 5 more seconds to make sure everyone had a chance to leave. And wait for lifeboats
 
@@ -238,14 +238,14 @@ SUBSYSTEM_DEF(evacuation)
 // ESCAPE_POODS
 /datum/controller/subsystem/evacuation/proc/activate_escape()
 	for(var/obj/docking_port/stationary/escape_pod/escape_pod in GLOB.escape_almayer_docks)
-		var/obj/docking_port/mobile/escape_shuttle/escape_shuttle = escape_pod.get_docked()
+		var/obj/docking_port/mobile/crashable/escape_shuttle/escape_shuttle = escape_pod.get_docked()
 		var/obj/structure/machinery/computer/shuttle/escape_pod_panel/evacuation_program = escape_shuttle.getControlConsole()
 		if(escape_shuttle && evacuation_program.pod_state != ESCAPE_STATE_BROKEN)
 			escape_shuttle.prepare_evac()
 
 /datum/controller/subsystem/evacuation/proc/deactivate_escape()
 	for(var/obj/docking_port/stationary/escape_pod/escape_pod in GLOB.escape_almayer_docks)
-		var/obj/docking_port/mobile/escape_shuttle/escape_shuttle = escape_pod.get_docked()
+		var/obj/docking_port/mobile/crashable/escape_shuttle/escape_shuttle = escape_pod.get_docked()
 		var/obj/structure/machinery/computer/shuttle/escape_pod_panel/evacuation_program = escape_shuttle.getControlConsole()
 		if(escape_shuttle && evacuation_program.pod_state != ESCAPE_STATE_BROKEN)
 			escape_shuttle.prepare_evac()
@@ -254,7 +254,7 @@ SUBSYSTEM_DEF(evacuation)
 // LIFEBOATS CORNER
 /datum/controller/subsystem/evacuation/proc/activate_lifeboats()
 	for(var/obj/docking_port/stationary/lifeboat_dock/LD in GLOB.lifeboat_almayer_docks)
-		var/obj/docking_port/mobile/lifeboat/L = LD.get_docked()
+		var/obj/docking_port/mobile/crashable/lifeboat/L = LD.get_docked()
 		if(L && L.status != LIFEBOAT_LOCKED)
 			L.status = LIFEBOAT_ACTIVE
 			L.set_mode(SHUTTLE_RECHARGING)
@@ -262,7 +262,7 @@ SUBSYSTEM_DEF(evacuation)
 
 /datum/controller/subsystem/evacuation/proc/deactivate_lifeboats()
 	for(var/obj/docking_port/stationary/lifeboat_dock/LD in GLOB.lifeboat_almayer_docks)
-		var/obj/docking_port/mobile/lifeboat/L = LD.get_docked()
+		var/obj/docking_port/mobile/crashable/lifeboat/L = LD.get_docked()
 		if(L && L.status != LIFEBOAT_LOCKED)
 			L.status = LIFEBOAT_INACTIVE
 			L.set_mode(SHUTTLE_IDLE)

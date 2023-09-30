@@ -45,26 +45,8 @@
 
 	var/antipierce = 1
 
-	///Lumcount added by sources other than lighting datum objects, such as the overlay lighting component.
-	var/dynamic_lumcount = 0
-
 	///Bool, whether this turf will always be illuminated no matter what area it is in
 	var/always_lit = FALSE
-
-	var/tmp/lighting_corners_initialised = FALSE
-
-	///Our lighting object.
-	var/tmp/datum/lighting_object/lighting_object
-	///Lighting Corner datums.
-	var/tmp/datum/lighting_corner/lighting_corner_NE
-	var/tmp/datum/lighting_corner/lighting_corner_SE
-	var/tmp/datum/lighting_corner/lighting_corner_SW
-	var/tmp/datum/lighting_corner/lighting_corner_NW
-
-	///Which directions does this turf block the vision of, taking into account both the turf's opacity and the movable opacity_sources.
-	var/directional_opacity = NONE
-	///Lazylist of movable atoms providing opacity sources.
-	var/list/atom/movable/opacity_sources
 
 	var/list/baseturfs = /turf/baseturf_bottom
 	var/changing_turf = FALSE
@@ -109,21 +91,10 @@
 
 	visibilityChanged()
 
-	//Get area light
-	var/area/A = loc
-	if(A.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
-		add_overlay(GLOB.fullbright_overlay)
-
-	if(light_power && light_range)
-		update_light()
-
 	multiz_turfs()
 
-	if(opacity)
-		directional_opacity = ALL_CARDINALS
-
 	pass_flags = pass_flags_cache[type]
-	if(isnull(pass_flags))
+	if (isnull(pass_flags))
 		pass_flags = new()
 		initialize_pass_flags(pass_flags)
 		pass_flags_cache[type] = pass_flags
@@ -133,10 +104,21 @@
 	for(var/atom/movable/AM in src)
 		Entered(AM)
 
+	if(light_power && light_range)
+		update_light()
+
 	//Get area light
 	var/area/current_area = loc
 	if(current_area?.lighting_effect)
 		overlays += current_area.lighting_effect
+
+	if(opacity)
+		directional_opacity = ALL_CARDINALS
+
+	//Get area light
+	var/area/A = loc
+	if(A?.lighting_effect)
+		overlays += A.lighting_effect
 
 	return INITIALIZE_HINT_NORMAL
 
@@ -228,7 +210,7 @@
 	if(override)
 		return override & COMPONENT_TURF_ALLOW_MOVEMENT
 
-	if(isobserver(mover) || istype(mover, /obj/projectile))
+	if(isobserver(mover) || istype(mover, /obj/item/projectile))
 		return TRUE
 
 	var/fdir = get_dir(mover, src)
@@ -554,7 +536,7 @@
 
 	W.outdoor_effect = old_outdoor_effect
 	W.hybrid_lights_affecting = old_hybrid_lights_affecting
-	W.dynamic_lumcount = dynamic_lumcount
+	W.dynamic_lumcount = old_dynamic_lumcount
 
 	lighting_corner_NE = old_lighting_corner_NE
 	lighting_corner_SE = old_lighting_corner_SE

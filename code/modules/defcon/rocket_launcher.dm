@@ -60,7 +60,7 @@ GLOBAL_DATUM(rocket_launcher_eye_location, /datum/coords)
 /obj/structure/machinery/computer/rocket_launcher/attackby(obj/I as obj, mob/user as mob)  //Can't break or disassemble.
 	return
 
-/obj/structure/machinery/computer/rocket_launcher/bullet_act(obj/projectile/proj) //Can't shoot it
+/obj/structure/machinery/computer/rocket_launcher/bullet_act(obj/item/projectile/proj) //Can't shoot it
 	return FALSE
 
 /obj/structure/machinery/computer/rocket_launcher/proc/set_operator(mob/living/carbon/human/H)

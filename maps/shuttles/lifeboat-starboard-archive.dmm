@@ -101,7 +101,7 @@
 	},
 /area/shuttle/lifeboat)
 "lS" = (
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat{
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat{
 	id = "Boat2-D2";
 	throw_dir = 2
 	},
@@ -235,7 +235,7 @@
 	},
 /area/shuttle/lifeboat)
 "Ep" = (
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat{
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat{
 	id = "Boat2-D1";
 	throw_dir = 2
 	},

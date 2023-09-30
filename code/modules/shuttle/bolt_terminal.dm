@@ -159,14 +159,14 @@ DEFINE_BITFIELD(bt_shoot_flags, list(
 		sis_panel.operator.count_statistic_stat(STATISTICS_SACRIFICE)
 
 	detonate_animation()//launch proc here
-	var/obj/docking_port/mobile/lifeboat/L = SSshuttle.getShuttle(id)
-	if(!istype(L))
+	var/obj/docking_port/mobile/crashable/lifeboat/lifeboat = SSshuttle.getShuttle(id)
+	if(!istype(lifeboat))
 		return
 
-	if(L.mode == SHUTTLE_IDLE && L.available)
-		log_game("[key_name(usr)] has sent the shuttle [L] to infinite transit")
+	if(lifeboat.mode == SHUTTLE_IDLE && lifeboat.available)
+		log_game("[key_name(usr)] has sent the shuttle [lifeboat] to infinite transit")
 		visible_message(SPAN_NOTICE("<b>\The [src]</b> beeps, \"Shuttle departing. Please stand away from the doors.\""))
-		L.try_launch()
+		lifeboat.evac_launch()
 
 /obj/structure/machinery/bolt_control/target/proc/detonate_animation()
 	set waitfor = FALSE
@@ -201,7 +201,7 @@ DEFINE_BITFIELD(bt_shoot_flags, list(
 	icon = 'icons/obj/structures/machinery/bolt_terminal.dmi'
 	icon_state = "closed"
 	pixel_x = 1
-	req_one_access = list(ACCESS_MARINE_LEADER, ACCESS_MARINE_DROPSHIP, ACCESS_WY_CORPORATE)
+	req_one_access = list(ACCESS_MARINE_LEADER, ACCESS_MARINE_DROPSHIP, ACCESS_WY_EXEC)
 	var/access = NO_FLAGS
 	var/obj/structure/machinery/bolt_control/target/sis_target
 

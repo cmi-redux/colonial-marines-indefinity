@@ -85,7 +85,7 @@
 
 	var/remaining_time = timeofdeath + 15 MINUTES - world.time
 	if(remaining_time > 0)
-		to_chat(usr, SPAN_NOTICE("You still need wait [DisplayTimeText(remaining_time, language = CLIENT_LANGUAGE_RUSSIAN)] more to respawn."))
+		to_chat(usr, SPAN_NOTICE("You still need wait [DisplayTimeText(remaining_time, language = client.language)] more to respawn."))
 		return FALSE
 
 	message_admins("[key_name_admin(src)] has their donater respawn time left and returned to lobby.")

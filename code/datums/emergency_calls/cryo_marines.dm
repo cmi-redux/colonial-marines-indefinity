@@ -30,7 +30,7 @@
 	if(!istype(spawn_loc)) return //Didn't find a useable spawn point.
 
 	var/mob/living/carbon/human/human = new(spawn_loc)
-	GLOB.ert_mobs += H
+	GLOB.ert_mobs += human
 	if(mind)
 		mind.transfer_to(human, TRUE)
 	else
@@ -41,7 +41,7 @@
 				break
 
 	sleep(5)
-	var/datum/squad/marine/cryo/cryo_squad = RoleAuthority.squads_by_type[/datum/squad/marine/cryo]
+	var/datum/squad/marine/cryo/cryo_squad = SSticker.role_authority.squads_by_type[/datum/squad/marine/cryo]
 	if(leaders < cryo_squad.max_leaders && (!mind || (HAS_FLAG(human.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(human.client, JOB_SQUAD_LEADER, time_required_for_job))))
 		leader = human
 		leaders++

@@ -704,7 +704,7 @@
 /obj/structure/machinery/computer/crew/alt/yautja
 	name = "\improper Yautja health monitor"
 	desc = "Used to monitor active health sensors of all Yautja in the system. You can see that the console highlights the human's ship areas with BLUE and the hunting locations with RED."
-	faction = FACTION_YAUTJA
+	faction_to_get = FACTION_YAUTJA
 	crewmonitor_type = /datum/crewmonitor/yautja
 
 /obj/structure/machinery/computer/crew/upp
@@ -1103,7 +1103,7 @@ GLOBAL_LIST_EMPTY_TYPED(crewmonitor, /datum/crewmonitor)
 			jobs = list()
 
 /datum/crewmonitor/yautja
-	faction = FACTION_YAUTJA
+	faction_to_get = FACTION_YAUTJA
 
 /datum/crewmonitor/yautja/update_data()
 	var/list/results = list()

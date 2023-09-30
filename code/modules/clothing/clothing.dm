@@ -20,8 +20,16 @@
 	var/list/clothing_traits // Trait modification, lazylist of traits to add/take away, on equipment/drop in the correct slot
 	var/clothing_traits_active = TRUE //are the clothing traits that are applied to the item active (acting on the mob) or not?
 
-	light_system = MOVABLE_LIGHT
-	light_color = COLOR_WHITE
+	var/atom/movable/armor_light/light_holder
+	var/flags_armor_features
+
+/obj/item/clothing/Initialize(mapload)
+	. = ..()
+	light_holder = new(src)
+
+/obj/item/clothing/Destroy()
+	QDEL_NULL(light_holder)
+	return ..()
 
 /obj/item/clothing/get_examine_line(mob/user)
 	. = ..()
@@ -108,6 +116,42 @@
 			ret.overlays |= A.get_mob_overlay(user_mob, slot)
 	return ret
 
+/obj/item/clothing/unequipped(mob/user)
+	toggle_light(user, FALSE)
+	..()
+
+/obj/item/clothing/proc/toggle_light(mob/user, toggle_on, sparks = FALSE, forced = FALSE)
+	SIGNAL_HANDLER
+	if(!toggle_on)
+		playsound(src, 'sound/handling/click_2.ogg', 50, TRUE)
+	else
+		playsound(src, 'sound/handling/suitlight_on.ogg', 50, TRUE)
+
+	turn_light(user, toggle_on)
+	update_icon(user)
+
+/obj/item/clothing/turn_light(mob/user, toggle_on, sparks = FALSE, forced = FALSE)
+	. = ..()
+	if(. != CHECKS_PASSED)
+		return
+	flags_armor_features ^= ARMOR_LAMP_ON
+
+	light_holder.set_light_flags(LIGHT_ATTACHED)
+	light_holder.set_light_range(initial(light_range))
+	light_holder.set_light_power(initial(light_power))
+	light_holder.set_light_on(toggle_on)
+
+	for(var/datum/action/current_action as anything in actions)
+		current_action.update_button_icon()
+
+/obj/item/clothing/pickup(mob/living/M)
+	RegisterSignal(M, COMSIG_ATOM_OFF_LIGHT, TYPE_PROC_REF(/obj/item/clothing, toggle_light), FALSE, override = TRUE)
+	. = ..()
+
+/obj/item/clothing/dropped(mob/living/M)
+	UnregisterSignal(M, COMSIG_ATOM_OFF_LIGHT)
+	. = ..()
+
 ///////////////////////////////////////////////////////////////////////
 // Ears: headsets, earmuffs and tiny objects
 /obj/item/clothing/ears
@@ -169,13 +213,6 @@
 	w_class = SIZE_MEDIUM
 	sprite_sheets = list(SPECIES_MONKEY = 'icons/mob/humans/species/monkeys/onmob/suit_monkey_0.dmi')
 
-	light_system = MOVABLE_LIGHT_DIRECTIONAL
-	light_range = 7
-	light_power = 1
-	light_on = FALSE
-
-	var/flags_armor_features
-
 /obj/item/clothing/suit/update_clothing_icon()
 	if(ismob(src.loc))
 		var/mob/M = src.loc
@@ -202,30 +239,6 @@
 		var/image/I = image(C, icon_state)
 		I.color = color
 		return I
-
-/obj/item/clothing/suit/unequipped(mob/user)
-	turn_light(user, FALSE)
-	..()
-
-/obj/item/clothing/suit/turn_light(mob/user, toggle_on)
-	. = ..()
-	if(. != CHECKS_PASSED)
-		return
-	set_light_on(toggle_on)
-	flags_armor_features ^= ARMOR_LAMP_ON
-	playsound(src,'sound/handling/light_on_1.ogg', 50, TRUE)
-	update_icon(user)
-	for(var/X in actions)
-		var/datum/action/action = X
-		action.update_button_icon()
-
-/obj/item/clothing/suit/pickup(mob/living/M)
-	RegisterSignal(M, COMSIG_ATOM_OFF_LIGHT, TYPE_PROC_REF(/atom, turn_light), FALSE, override = TRUE)
-	..()
-
-/obj/item/clothing/suit/dropped(mob/living/M)
-	UnregisterSignal(M, COMSIG_ATOM_OFF_LIGHT)
-	..()
 
 /////////////////////////////////////////////////////////
 //Gloves
@@ -432,3 +445,6 @@
 		return TRUE
 
 	return ..()
+
+/atom/movable/armor_light
+	light_system = DIRECTIONAL_LIGHT

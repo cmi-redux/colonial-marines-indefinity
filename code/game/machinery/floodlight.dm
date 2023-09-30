@@ -34,10 +34,7 @@
 	if(. == NO_LIGHT_STATE_CHANGE)
 		return
 
-	if(toggle_on)
-		set_light(on_light_range)
-	else
-		set_light(0)
+	set_light_on(toggle_on)
 
 
 /obj/structure/machinery/floodlight/proc/updateicon()

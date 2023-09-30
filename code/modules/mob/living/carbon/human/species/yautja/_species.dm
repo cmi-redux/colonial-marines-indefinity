@@ -7,7 +7,7 @@
 	reagent_tag = IS_YAUTJA
 	mob_flags = KNOWS_TECHNOLOGY
 	uses_ethnicity = TRUE
-	flags = IS_WHITELISTED|HAS_SKIN_COLOR|NO_CLONE_LOSS|NO_POISON|NO_NEURO|SPECIAL_BONEBREAK|NO_SHRAPNEL|HAS_HARDCRIT
+	species_flags = IS_WHITELISTED|HAS_SKIN_COLOR|NO_CLONE_LOSS|NO_POISON|NO_NEURO|SPECIAL_BONEBREAK|NO_SHRAPNEL|HAS_HARDCRIT
 	mob_inherent_traits = list(
 		TRAIT_YAUTJA_TECH,
 		TRAIT_SUPER_STRONG,
@@ -94,22 +94,17 @@
 	ignores_stripdrag_flag = TRUE
 
 /datum/species/yautja/larva_impregnated(obj/item/alien_embryo/embryo)
-	var/datum/hive_status/hive = GLOB.hive_datum[embryo.hivenumber]
+	if(!(XENO_STRUCTURE_NEST in embryo.faction.faction_structure_types))
+		embryo.faction.faction_structure_types.Add(XENO_STRUCTURE_NEST)
 
-	if(!istype(hive))
-		return
+	if(!(XENO_STRUCTURE_NEST in embryo.faction.faction_structures_limit))
+		embryo.faction.faction_structures_limit.Add(XENO_STRUCTURE_NEST)
+		embryo.faction.faction_structures_limit[XENO_STRUCTURE_NEST] = 0
 
-	if(!(XENO_STRUCTURE_NEST in hive.hive_structure_types))
-		hive.hive_structure_types.Add(XENO_STRUCTURE_NEST)
+	embryo.faction.faction_structure_types[XENO_STRUCTURE_NEST] = /datum/construction_template/xenomorph/nest
+	embryo.faction.faction_structures_limit[XENO_STRUCTURE_NEST]++
 
-	if(!(XENO_STRUCTURE_NEST in hive.hive_structures_limit))
-		hive.hive_structures_limit.Add(XENO_STRUCTURE_NEST)
-		hive.hive_structures_limit[XENO_STRUCTURE_NEST] = 0
-
-	hive.hive_structure_types[XENO_STRUCTURE_NEST] = /datum/construction_template/xenomorph/nest
-	hive.hive_structures_limit[XENO_STRUCTURE_NEST]++
-
-	xeno_message(SPAN_XENOANNOUNCE("The hive senses that a headhunter has been infected! The thick resin nest is now available in the special structures list!"),hivenumber = hive.hivenumber)
+	xeno_message(SPAN_XENOANNOUNCE("The hive senses that a headhunter has been infected! The thick resin nest is now available in the special structures list!"), embryo.faction)
 
 /datum/species/yautja/handle_death(mob/living/carbon/human/H, gibbed)
 	if(gibbed)

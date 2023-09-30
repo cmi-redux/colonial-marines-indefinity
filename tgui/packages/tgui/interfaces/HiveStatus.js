@@ -109,7 +109,7 @@ const GeneralInformation = (props, context) => {
   const { data } = useBackend(context);
   const {
     queen_location,
-    hive_location,
+    faction_location,
     total_xenos,
     burrowed_larva,
     evilution_level,
@@ -121,10 +121,10 @@ const GeneralInformation = (props, context) => {
         <h3 className="whiteTitle">The Queen is in:</h3>
         <h1 className="whiteTitle">{queen_location}</h1>
       </Flex.Item>
-      {!!hive_location && (
+      {!!faction_location && (
         <Flex.Item textAlign="center" mt={2}>
           <h3 className="whiteTitle">The Hive location is:</h3>
-          <h1 className="whiteTitle">{hive_location}</h1>
+          <h1 className="whiteTitle">{faction_location}</h1>
         </Flex.Item>
       )}
       <Flex.Item mt={1}>

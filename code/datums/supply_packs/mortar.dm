@@ -23,7 +23,7 @@
 	)
 	cost = 60
 	containertype = /obj/structure/closet/crate/weapon
-	containername = "\improper M402 mortar crate"
+	containername = "M402 mortar crate"
 	group = "Mortar"
 
 //------------------------Mortar ammunition crates----------------
@@ -40,7 +40,7 @@
 		/obj/item/mortar_shell/he,
 	)
 	containertype = /obj/structure/closet/crate/secure/mortar_ammo
-	containername = "\improper M402 mortar HE shells crate"
+	containername = "M402 mortar HE shells crate"
 	group = "Mortar"
 
 /datum/supply_packs/ammo_mortar_incend
@@ -55,7 +55,7 @@
 		/obj/item/mortar_shell/incendiary,
 	)
 	containertype = /obj/structure/closet/crate/secure/mortar_ammo
-	containername = "\improper M402 mortar incendiary shells crate"
+	containername = "M402 mortar incendiary shells crate"
 	group = "Mortar"
 
 /datum/supply_packs/ammo_mortar_flare
@@ -70,5 +70,5 @@
 		/obj/item/mortar_shell/flare,
 	)
 	containertype = /obj/structure/closet/crate/secure/mortar_ammo
-	containername = "\improper M402 mortar flare shells crate"
+	containername = "M402 mortar flare shells crate"
 	group = "Mortar"

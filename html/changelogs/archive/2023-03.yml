@@ -274,7 +274,7 @@
   BeagleGaming1:
   - admin: IC mute now functions properly
   LynxSolstice, Harryob:
-  - code_imp: Changed the worldtime2text offset to be between 10 minutes and 4 hours.
+  - code_imp: Changed the game_time_timestamp offset to be between 10 minutes and 4 hours.
   carlarctg:
   - refactor: Refactors how magazine ammo color is handled into overlays.
   - refactor: Instead of filling up dmis with a ridiculous amount of icon states for

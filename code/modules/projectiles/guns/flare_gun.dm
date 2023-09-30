@@ -1,5 +1,5 @@
 /obj/item/weapon/gun/flare
-	name = "\improper M82-F flare gun"
+	name = "M82-F flare gun"
 	desc = "A flare gun issued to JTAC operators to use with flares. Comes with a miniscope. One shot, one... life saved?"
 	icon_state = "m82f"
 	item_state = "m82f"
@@ -13,9 +13,7 @@
 	flags_gun_features = GUN_INTERNAL_MAG|GUN_CAN_POINTBLANK
 	gun_category = GUN_CATEGORY_HANDGUN
 	attachable_allowed = list(/obj/item/attachable/scope/mini/flaregun)
-
 	var/last_signal_flare_name
-
 
 /obj/item/weapon/gun/flare/Initialize(mapload, spawn_empty)
 	. = ..()
@@ -24,12 +22,11 @@
 
 /obj/item/weapon/gun/flare/handle_starting_attachment()
 	..()
-	var/obj/item/attachable/scope/mini/flaregun/scope = new(src)
-	scope.hidden = TRUE
-	scope.flags_attach_features &= ~ATTACH_REMOVABLE
-	scope.Attach(src)
+	var/obj/item/attachable/scope/mini/flaregun/S = new(src)
+	S.hidden = TRUE
+	S.flags_attach_features &= ~ATTACH_REMOVABLE
+	S.Attach(src)
 	update_attachables()
-
 
 /obj/item/weapon/gun/flare/set_gun_attachment_offsets()
 	attachable_offset = list("muzzle_x" = 33, "muzzle_y" = 18,"rail_x" = 12, "rail_y" = 20, "under_x" = 19, "under_y" = 14, "stock_x" = 19, "stock_y" = 14)
@@ -53,24 +50,50 @@
 	to_chat(user, SPAN_WARNING("You pop out [src]'s tube!"))
 	update_icon()
 
-/obj/item/weapon/gun/flare/attackby(obj/item/attacking_item, mob/user)
-	if(istype(attacking_item, /obj/item/device/flashlight/flare))
-		var/obj/item/device/flashlight/flare/attacking_flare = attacking_item
-		if(attacking_flare.on)
+/obj/item/weapon/gun/flare/attackby(obj/item/I, mob/user)
+	if(istype(I, /obj/item/device/flashlight/flare))
+		var/obj/item/device/flashlight/flare/F = I
+		if(F.light_on)
 			to_chat(user, SPAN_WARNING("You can't put a lit flare in [src]!"))
 			return
-		if(!attacking_flare.fuel)
+		if(!F.fuel)
 			to_chat(user, SPAN_WARNING("You can't put a burnt out flare in [src]!"))
 			return
-		if(current_mag && current_mag.current_rounds == 0)
-			ammo = GLOB.ammo_list[attacking_flare.ammo_datum]
+		if(current_mag && current_mag.ammo_position == 0)
 			playsound(user, reload_sound, 25, 1)
-			to_chat(user, SPAN_NOTICE("You load [attacking_flare] into [src]."))
-			current_mag.current_rounds++
-			qdel(attacking_flare)
+			to_chat(user, SPAN_NOTICE("You load \the [F] into [src]."))
+			var/obj/item/projectile/flare = new(current_mag)
+			flare.ammo = F.ammo_datum
+			flare.caliber = current_mag.caliber
+			current_mag.ammo_position++
+			current_mag.current_rounds[current_mag.ammo_position] = flare
+			qdel(I)
 			update_icon()
 		else
-			to_chat(user, SPAN_WARNING("[src] is already loaded!"))
+			to_chat(user, SPAN_WARNING("\The [src] is already loaded!"))
+	else if(istype(I, /obj/item/tool/weldingtool))
+		var/obj/item/tool/weldingtool/WT = I
+		if(do_after(user, 60 * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD) && !broken)
+			if(WT.remove_fuel(3, user))
+				to_chat(user, SPAN_NOTICE("Вы починили повреждения [src]."))
+				durability += max_durability / 8
+				durability_percentage()
+				failure_probability--
+			return
+		to_chat(user, SPAN_NOTICE("[src] невозможно починить, для этого требуется специальное устройство."))
+	else if(istype(I, /obj/item/prop/helmetgarb/gunoil))
+		if(oil)
+			to_chat(user, SPAN_NOTICE("[src] недавно смазано."))
+			return
+		var/obj/item/prop/helmetgarb/gunoil/GO = I
+		var/oil_verb = pick("lubes", "oils", "cleans", "tends to", "gently strokes")
+		if(do_after(user, 60 * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_GENERIC))
+			if(GO.remove_oil(gun_category, user))
+				user.visible_message("[user] [oil_verb] [src]. It shines like new.", "You oil up and immaculately clean [src]. It shines like new.")
+				clean_blood()
+				oil(oil_max/2,0.5)
+		else
+			return
 	else
 		to_chat(user, SPAN_WARNING("That's not a flare!"))
 
@@ -85,9 +108,10 @@
 	if(current_mag.current_rounds)
 		var/obj/item/device/flashlight/flare/unloaded_flare = new ammo.handful_type(get_turf(src))
 		playsound(user, reload_sound, 25, TRUE)
-		current_mag.current_rounds--
+		var/obj/item/projectile/flare = current_mag.transfer_bullet_out()
+		qdel(flare)
 		if(user)
-			to_chat(user, SPAN_NOTICE("You unload [unloaded_flare] from \the [src]."))
+			to_chat(user, SPAN_NOTICE("You unload \the [unloaded_flare] from \the [src]."))
 			user.put_in_hands(unloaded_flare)
 		update_icon()
 
@@ -96,14 +120,13 @@
 		return
 
 	var/turf/flare_turf = user.loc
-	var/area/flare_area = flare_turf.loc
 
-	if(flare_area.ceiling > CEILING_GLASS)
+	if(!(flare_turf.turf_flags & TURF_WEATHER))
 		to_chat(user, SPAN_NOTICE("The roof above you is too dense."))
 		return
 
 	if(!istype(ammo, /datum/ammo/flare))
-		to_chat(user, SPAN_NOTICE("[src] jams as it is somehow loaded with incorrect ammo!"))
+		to_chat(user, SPAN_NOTICE("\The [src] jams as it is somehow loaded with incorrect ammo!"))
 		return
 
 	if(user.action_busy)
@@ -112,17 +135,13 @@
 	if(!do_after(user, 1 SECONDS, INTERRUPT_ALL, BUSY_ICON_GENERIC))
 		return
 
-	if(!current_mag || !current_mag.current_rounds)
-		return
-
-	current_mag.current_rounds--
-
-	flare_turf.ceiling_debris()
+	var/obj/item/projectile/flare = current_mag.transfer_bullet_out()
+	qdel(flare)
 
 	var/datum/ammo/flare/explicit_ammo = ammo
 
 	var/obj/item/device/flashlight/flare/fired_flare = new explicit_ammo.flare_type(get_turf(src))
-	to_chat(user, SPAN_NOTICE("You fire [fired_flare] into the air!"))
+	to_chat(user, SPAN_NOTICE("You fire \the [fired_flare] into the air!"))
 	fired_flare.visible_message(SPAN_WARNING("\A [fired_flare] bursts into brilliant light in the sky!"))
 	fired_flare.invisibility = INVISIBILITY_MAXIMUM
 	fired_flare.mouse_opacity = FALSE

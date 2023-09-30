@@ -44,6 +44,9 @@
 	if(affected_mob.pain && affected_mob.pain.feels_pain)
 		affected_mob.TalkStutter(2)
 
+	if(prob(25))
+		playsound_client(affected_mob.client, sound('sound/effects/Heart Beat.ogg', repeat = rand(1, 32), wait = rand(1, 20)), vol = 100, channel = SOUND_CHANNEL_HEARTBEAT)
+
 	return TRUE
 
 

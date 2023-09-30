@@ -86,7 +86,7 @@
 
 	var/obj/effect/alien/weeds/hive_weeds
 	var/obj/effect/alien/weeds/any_weeds
-	for(var/obj/effect/alien/weeds/weed in T)
+	for(var/obj/effect/alien/weeds/weed in target_turf)
 		if(weed.weed_strength >= WEED_LEVEL_HIVE && weed.faction == faction)
 			hive_weeds = weed
 			break

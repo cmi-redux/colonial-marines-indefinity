@@ -109,7 +109,7 @@
 		new /obj/effect/decal/cleanable/blood/oil(src.loc)
 	healthcheck()
 
-/obj/vehicle/bullet_act(obj/projectile/proj)
+/obj/vehicle/bullet_act(obj/item/projectile/proj)
 	var/damage = proj.damage
 	health -= damage
 	..()

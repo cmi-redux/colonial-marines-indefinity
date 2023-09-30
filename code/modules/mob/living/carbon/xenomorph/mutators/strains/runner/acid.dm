@@ -159,10 +159,10 @@
 
 	playsound(bound_xeno, 'sound/effects/blobattack.ogg', 75)
 	if(bound_xeno.client && bound_xeno.faction)
-		if(!faction.hive_location)
-			addtimer(CALLBACK(bound_xeno.faction, TYPE_PROC_REF(/datum/faction/xenomorph, respawn_on_turf), bound_xeno.client, get_turf(bound_xeno)), 0.5 SECONDS)
+		if(!bound_xeno.faction.faction_location)
+			addtimer(CALLBACK(bound_xeno.faction, TYPE_PROC_REF(/datum/faction, respawn_on_turf), bound_xeno.client, get_turf(bound_xeno)), 0.5 SECONDS)
 		else
-			addtimer(CALLBACK(bound_xeno.faction, TYPE_PROC_REF(/datum/faction/xenomorph, free_respawn), bound_xeno.client), 5 SECONDS)
+			addtimer(CALLBACK(bound_xeno.faction, TYPE_PROC_REF(/datum/faction, free_respawn), bound_xeno.client), 5 SECONDS)
 	bound_xeno.gib()
 
 /mob/living/carbon/xenomorph/runner/ventcrawl_carry()

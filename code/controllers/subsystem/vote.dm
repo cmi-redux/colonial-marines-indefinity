@@ -264,7 +264,7 @@ SUBSYSTEM_DEF(vote)
 				return FALSE
 
 			if(next_allowed_time > world.time && !admin)
-				to_chat(usr, SPAN_WARNING("Недавно было запущенно голосование, вы должны подождать [DisplayTimeText(next_allowed_time-world.time, language = CLIENT_LANGUAGE_RUSSIAN)] после чего новое голосование может начаться!"))
+				to_chat(usr, SPAN_WARNING("Недавно было запущенно голосование, вы должны подождать [DisplayTimeText(next_allowed_time-world.time, language = usr.client.language)] после чего новое голосование может начаться!"))
 				return FALSE
 
 		reset()

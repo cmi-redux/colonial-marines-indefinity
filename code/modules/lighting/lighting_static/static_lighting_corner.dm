@@ -74,7 +74,7 @@
 			master.lighting_corner_SE = src
 
 /datum/static_lighting_corner/proc/self_destruct_if_idle()
-	if (!LAZYLEN(affecting))
+	if (!length(affecting))
 		qdel(src, force = TRUE)
 
 /datum/static_lighting_corner/proc/vis_update()

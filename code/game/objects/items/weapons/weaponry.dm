@@ -259,12 +259,11 @@
 
 		M.apply_effect(kill_delay/15, STUN)
 
-
-	for(var/mob/O in hearers(world_view_size, M))
-		O << sound('sound/effects/Heart Beat.ogg', repeat = 1, wait = 0, volume = 100, channel = 2) //play on same channel as ambience
-		spawn(kill_delay)
-			O << sound(, , , , channel = 2) //cut sound
-
+	var/datum/shape/rectangle/zone = RECT(x, y, 7, 7)
+	for(var/mob/living/carbon/human/human in SSquadtree.players_in_range(zone, z))
+		if(!human.client)
+			continue
+		playsound_client(human.client, sound('sound/effects/Heart Beat.ogg', repeat = rand(1, 32), wait = 0), vol = 100, channel = SOUND_CHANNEL_HEARTBEAT)
 
 	spawn(kill_delay) //OMAE WA MOU SHINDEIRU
 

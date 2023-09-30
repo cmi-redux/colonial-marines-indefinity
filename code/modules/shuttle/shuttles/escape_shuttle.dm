@@ -1,4 +1,4 @@
-/obj/docking_port/mobile/escape_shuttle
+/obj/docking_port/mobile/crashable/escape_shuttle
 	name = "Escape Pod"
 	id = ESCAPE_SHUTTLE
 	area_type = /area/shuttle/escape_pod
@@ -14,7 +14,7 @@
 	var/launched = FALSE
 	var/evac_set = FALSE
 
-/obj/docking_port/mobile/escape_shuttle/Initialize(mapload)
+/obj/docking_port/mobile/crashable/escape_shuttle/Initialize(mapload)
 	. = ..(mapload)
 	for(var/place in shuttle_areas)
 		for(var/obj/structure/machinery/door/air in place)
@@ -23,7 +23,7 @@
 			air.indestructible = TRUE
 			air.unacidable = TRUE
 
-/obj/docking_port/mobile/escape_shuttle/proc/cancel_evac()
+/obj/docking_port/mobile/crashable/escape_shuttle/proc/cancel_evac()
 	door_handler.control_doors("force-unlock")
 	evac_set = FALSE
 
@@ -35,14 +35,14 @@
 		for(var/obj/structure/machinery/cryopod/evacuation/cryotube in interior_area)
 			cryotube.dock_state = STATE_IDLE
 
-/obj/docking_port/mobile/escape_shuttle/proc/prepare_evac()
+/obj/docking_port/mobile/crashable/escape_shuttle/proc/prepare_evac()
 	door_handler.control_doors("force-unlock")
 	evac_set = TRUE
 	for(var/area/interior_area in shuttle_areas)
 		for(var/obj/structure/machinery/cryopod/evacuation/cryotube in interior_area)
 			cryotube.dock_state = STATE_READY
 
-/obj/docking_port/mobile/escape_shuttle/proc/evac_launch()
+/obj/docking_port/mobile/crashable/escape_shuttle/proc/evac_launch()
 	if(mode == SHUTTLE_CRASHED)
 		return
 
@@ -76,31 +76,31 @@
 	setTimer(ignitionTime)
 	launched = TRUE
 
-/obj/docking_port/mobile/escape_shuttle/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
+/obj/docking_port/mobile/crashable/escape_shuttle/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
 	. = ..()
 	playsound(src,'sound/effects/escape_pod_launch.ogg', 50, 1)
 
-/obj/docking_port/mobile/escape_shuttle/e
+/obj/docking_port/mobile/crashable/escape_shuttle/e
 	id = ESCAPE_SHUTTLE_EAST
 	width = 4
 	height = 5
 
-/obj/docking_port/mobile/escape_shuttle/cl
+/obj/docking_port/mobile/crashable/escape_shuttle/cl
 	id = ESCAPE_SHUTTLE_EAST_CL
 	width = 4
 	height = 5
 
-/obj/docking_port/mobile/escape_shuttle/w
+/obj/docking_port/mobile/crashable/escape_shuttle/w
 	id = ESCAPE_SHUTTLE_WEST
 	width = 4
 	height = 5
 
-/obj/docking_port/mobile/escape_shuttle/n
+/obj/docking_port/mobile/crashable/escape_shuttle/n
 	id = ESCAPE_SHUTTLE_NORTH
 	width = 5
 	height = 4
 
-/obj/docking_port/mobile/escape_shuttle/s
+/obj/docking_port/mobile/crashable/escape_shuttle/s
 	id = ESCAPE_SHUTTLE_SOUTH
 	width = 5
 	height = 4

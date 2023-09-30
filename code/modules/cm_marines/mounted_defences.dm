@@ -397,17 +397,17 @@
 /obj/structure/machinery/mounted_defence/proc/toggle_burst()
 	if(!MD) return
 
-	if(MD.burst_amount < 2 && !(MD.flags_gun_features & GUN_HAS_FULL_AUTO))
+	if(!(MD.gun_firemode_list & GUN_FIREMODE_AUTOMATIC))
 		to_chat(usr, SPAN_WARNING("Это оружие не имеет режима стрельбы очередями!"))
 		return
 
-	if(MD.flags_gun_features & GUN_BURST_FIRING)//can't toggle mid burst
+	if(MD.gun_firemode & GUN_FIREMODE_BURSTFIRE)//can't toggle mid burst
 		return
 
 	playsound(usr, 'sound/weapons/handling/gun_burst_toggle.ogg', 15, 1)
 
-	MD.flags_gun_features ^= GUN_BURST_ON
-	to_chat(usr, SPAN_NOTICE("[icon2html(src, usr)] Вы [MD.flags_gun_features & GUN_BURST_ON ? "<B>включили</b>" : "<B>выключили</b>"] [src] режим стрельбы очередями."))
+	MD.do_toggle_firemode(src, null, GUN_FIREMODE_BURSTFIRE)
+	to_chat(usr, SPAN_NOTICE("[icon2html(src, usr)] Вы [MD.gun_firemode == GUN_FIREMODE_BURSTFIRE ? "<B>включили</b>" : "<B>выключили</b>"] [src] режим стрельбы очередями."))
 
 
 /obj/structure/machinery/mounted_defence/tripod

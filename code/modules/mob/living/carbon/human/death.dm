@@ -44,6 +44,9 @@
 		species?.handle_dead_death(src, gibbed)
 		return
 
+	if(client)
+		playsound_client(client, null, channel = SOUND_CHANNEL_HEARTBEAT)
+
 	GLOB.alive_human_list -= src
 
 	if(!gibbed)

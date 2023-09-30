@@ -242,7 +242,7 @@
 
 	if(faction)
 		faction.add_mob(new_xeno)
-		if(!affected_mob.first_xeno && faction.hive_location)
+		if(!affected_mob.first_xeno && faction.faction_location)
 			faction.increase_larva_after_burst()
 			faction.faction_ui.update_burrowed_larva()
 
@@ -271,7 +271,7 @@
 	if(!HAS_TRAIT(affected_mob, TRAIT_NESTED))
 		var/area/burst_area = get_area(src)
 		var/area_text = burst_area ? " at <b>[burst_area]</b>" : ""
-		notify_ghosts(header = "Burst Imminent", message = "A <b>[new_xeno.hive.prefix]Larva</b> is about to chestburst out of <b>[affected_mob]</b>[area_text]!", source = affected_mob)
+		notify_ghosts(header = "Burst Imminent", message = "A <b>[new_xeno.faction.prefix]Larva</b> is about to chestburst out of <b>[affected_mob]</b>[area_text]!", source = affected_mob)
 
 	stage = 7 // Begin the autoburst countdown
 
@@ -321,7 +321,6 @@
 	victim.spawn_gibs()
 
 	for(var/mob/living/carbon/xenomorph/larva/larva_embryo in victim)
-		var/datum/faction/faction = L.faction
 		larva_embryo.forceMove(get_turf(victim)) //moved to the turf directly so we don't get stuck inside a cryopod or another mob container.
 		playsound(larva_embryo, pick('sound/voice/alien_chestburst.ogg','sound/voice/alien_chestburst2.ogg'), 25)
 
@@ -336,20 +335,20 @@
 
 		if(SSticker.mode.round_statistics)
 			SSticker.mode.round_statistics.total_larva_burst++
-		GLOB.larva_burst_by_hive[hive] = (GLOB.larva_burst_by_hive[hive] || 0) + 1
+		GLOB.larva_burst_by_hive[larva_embryo.faction] = (GLOB.larva_burst_by_hive[larva_embryo.faction] || 0) + 1
 		burstcount++
 
-		if(!larva_embryo.ckey && larva_embryo.burrowable && loc && is_ground_level(loc.z) && (locate(/obj/structure/bed/nest) in loc) && faction.living_xeno_queen && faction.living_xeno_queen.z == loc.z)
+		if(!larva_embryo.ckey && larva_embryo.burrowable && loc && is_ground_level(loc.z) && (locate(/obj/structure/bed/nest) in loc) && larva_embryo.faction.living_xeno_queen && larva_embryo.faction.living_xeno_queen.z == loc.z)
 			larva_embryo.visible_message(SPAN_XENODANGER("[larva_embryo] quickly burrows into the ground."))
-			if(round_statistics && !larva_embryo.statistic_exempt)
-				round_statistics.track_new_participant(faction, -1) // keep stats sane
-			faction.stored_larva++
-			faction.faction_ui.update_burrowed_larva()
+			if(SSticker.mode.round_statistics && !larva_embryo.statistic_exempt)
+				SSticker.mode.round_statistics.track_new_participant(larva_embryo.faction, -1) // keep stats sane
+			larva_embryo.faction.stored_larva++
+			larva_embryo.faction.faction_ui.update_burrowed_larva()
 			qdel(larva_embryo)
 
 		if(!victim.first_xeno)
 			to_chat(larva_embryo, SPAN_XENOHIGHDANGER("The Queen's will overwhelms your instincts..."))
-			to_chat(larva_embryo, SPAN_XENOHIGHDANGER("\"[hive.hive_orders]\""))
+			to_chat(larva_embryo, SPAN_XENOHIGHDANGER("\"[larva_embryo.faction.orders]\""))
 			log_attack("[key_name(victim)] chestbursted in [get_area_name(larva_embryo)] at X[victim.x], Y[victim.y], Z[victim.z]. The larva was [key_name(larva_embryo)].") //this is so that admins are not spammed with los logs
 
 	for(var/obj/item/alien_embryo/AE in victim)

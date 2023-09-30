@@ -541,7 +541,7 @@
 	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/uscm.dmi'
 	icon_state = "vulture"
 	handful_state = "vulture_bullet"
-	default_ammo = /datum/ammo/bullet/sniper/anti_materiel/vulture
+	ammo_preset = list(/datum/ammo/bullet/sniper/anti_materiel/vulture)
 	max_rounds = 4
 	gun_type = /obj/item/weapon/gun/boltaction/vulture
 	w_class = SIZE_MEDIUM // maybe small? This shit's >4 inches long mind you
@@ -556,7 +556,7 @@
 	icon_state = "aug"
 	item_state = "aug"
 	w_class = SIZE_MEDIUM
-	default_ammo = /datum/ammo/bullet/rifle
+	ammo_preset = list(/datum/ammo/bullet/rifle)
 	max_rounds = 30
 	gun_type = /obj/item/weapon/gun/rifle/rmc_f90
 	ammo_band_icon = "+aug_band"
@@ -567,7 +567,7 @@
 	desc = "A 10mm armor-piercing assault rifle magazine used by the royal marines."
 	icon_state = "aug_dmr"
 	item_state = "aug_dmr"
-	default_ammo = /datum/ammo/bullet/rifle/ap
+	ammo_preset = list(/datum/ammo/bullet/rifle/ap)
 	gun_type = /obj/item/weapon/gun/rifle/rmc_f90/scope
 	max_rounds = 20
 	ammo_band_color = AMMO_BAND_COLOR_AP
@@ -577,7 +577,7 @@
 /obj/item/ammo_magazine/rifle/rmc_f90/heap
 	name = "\improper F903 HEAP magazine (10x24mm)"
 	desc = "A 10mm armor piercing high explosive assault rifle magazine used by the royal marines."
-	default_ammo = /datum/ammo/bullet/rifle/heap
+	ammo_preset = list(/datum/ammo/bullet/rifle/heap)
 	ammo_band_color = AMMO_BAND_COLOR_HEAP
 
 /obj/item/ammo_magazine/rifle/rmc_f90/marksman/heap
@@ -585,5 +585,5 @@
 	desc = "A 10mm armor piercing high explosive assault rifle magazine used by the royal marines."
 	icon_state = "aug_dmr"
 	item_state = "aug_dmr"
-	default_ammo = /datum/ammo/bullet/rifle/heap
+	ammo_preset = list(/datum/ammo/bullet/rifle/heap)
 	ammo_band_color = AMMO_BAND_COLOR_HEAP

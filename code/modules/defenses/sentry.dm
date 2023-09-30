@@ -1,5 +1,6 @@
 #define SENTRY_FIREANGLE 135
 #define SENTRY_RANGE 5
+#define SENTRY_MUZZLELUM 3
 #define SENTRY_ENGAGED_TIMEOUT 60 SECONDS
 #define SENTRY_LOW_AMMO_TIMEOUT 20 SECONDS
 #define SENTRY_LOW_AMMO_ALERT_PERCENTAGE 0.25
@@ -307,7 +308,7 @@
 	low_ammo_timer = null
 
 /obj/structure/machinery/defenses/sentry/proc/actual_fire(atom/A)
-	var/obj/projectile/proj = ammo.transfer_bullet_out()
+	var/obj/item/projectile/proj = ammo.transfer_bullet_out()
 	proj.forceMove(src)
 	apply_traits(proj)
 	proj.bullet_ready_to_fire(initial(name), null, owner_mob)
@@ -325,7 +326,7 @@
 		return TRUE
 	return FALSE
 
-/obj/structure/machinery/defenses/sentry/proc/apply_traits(obj/projectile/proj)
+/obj/structure/machinery/defenses/sentry/proc/apply_traits(obj/item/projectile/proj)
 	// Apply bullet traits from gun
 	for(var/entry in traits_to_give)
 		var/list/L

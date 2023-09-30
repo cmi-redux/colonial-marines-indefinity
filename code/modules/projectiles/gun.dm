@@ -86,7 +86,7 @@
 	var/datum/ammo/ammo			= null
 	var/force_ammo				= FALSE
 	 ///What is currently in the chamber. Most guns will want something in the chamber upon creation.
-	var/obj/projectile/in_chamber = null
+	var/obj/item/projectile/in_chamber = null
 	/*Ammo mags may or may not be internal, though the difference is a few additional variables. If they are not internal, don't call
 	on those unique vars. This is done for quicker pathing. Just keep in mind most mags aren't internal, though some are.
 	This is also the default magazine path loaded into a projectile weapon for reverse lookups on New(). Leave this null to do your own thing.*/
@@ -270,7 +270,7 @@
 	/// If this gun should spawn with automatic fire. Protected due to it never needing to be edited.
 	VAR_PROTECTED/start_automatic = FALSE
 	/// The type of projectile that this gun should shoot
-	var/projectile_type = /obj/projectile
+	var/projectile_type = /obj/item/projectile
 	/// The multiplier for how much slower this should fire in automatic mode. 1 is normal, 1.2 is 20% slower, 2 is 100% slower, etc. Protected due to it never needing to be edited.
 	VAR_PROTECTED/autofire_slow_mult = 1
 
@@ -629,7 +629,6 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 		return
 
 	if(user && user.client)
-		user.update_gun_icons()
 		user.client.mouse_pointer_icon = initial(user.client.mouse_pointer_icon)
 
 	unwield(user)
@@ -1056,7 +1055,7 @@ User can be passed as null, (a gun reloading itself for instance), so we need to
 	if(!in_chamber)
 		return
 	var/found_handful
-	var/obj/projectile/chambered = in_chamber
+	var/obj/item/projectile/chambered = in_chamber
 	for(var/obj/item/ammo_magazine/handful/H in user.loc)
 		if(H.caliber[1] == caliber[1] && H.ammo_position < H.max_rounds)
 			found_handful = TRUE
@@ -1118,7 +1117,7 @@ and you're good to go.
 			return
 
 		if(active_attachable.ammo_position > 0) //If it's still got ammo and stuff.
-			var/obj/projectile/proj = active_attachable.current_rounds[active_attachable.ammo_position]
+			var/obj/item/projectile/proj = active_attachable.current_rounds[active_attachable.ammo_position]
 			active_attachable.current_rounds[active_attachable.ammo_position] = "empty"
 			active_attachable.ammo_position--
 			apply_traits(proj)
@@ -1132,7 +1131,7 @@ and you're good to go.
 	else
 		return ready_in_chamber()//We're not using the active attachable, we must use the active mag if there is one.
 
-/obj/item/weapon/gun/proc/apply_traits(obj/projectile/proj)
+/obj/item/weapon/gun/proc/apply_traits(obj/item/projectile/proj)
 	// Apply bullet traits from gun
 	for(var/entry in traits_to_give)
 		var/list/L
@@ -1162,7 +1161,7 @@ and you're good to go.
 
 /obj/item/weapon/gun/proc/ready_in_chamber()
 	if(current_mag && current_mag.ammo_position > 0)
-		var/obj/projectile/proj = current_mag.current_rounds[current_mag.ammo_position]
+		var/obj/item/projectile/proj = current_mag.current_rounds[current_mag.ammo_position]
 		current_mag.current_rounds[current_mag.ammo_position] = "empty"
 		current_mag.ammo_position--
 		apply_traits(proj)
@@ -1183,7 +1182,7 @@ and you're good to go.
 	if(isliving(loc))
 		var/mob/M = loc
 		weapon_source_mob = M
-	var/obj/projectile/proj = new /obj/projectile()
+	var/obj/item/projectile/proj = new /obj/item/projectile()
 	proj.forceMove(src)
 	apply_traits(proj)
 	var/datum/cause_data/cause_data = create_cause_data(bullet_source, weapon_source_mob)
@@ -1228,7 +1227,7 @@ and you're good to go.
 
 	return in_chamber //Returns the projectile if it's actually successful.
 
-/obj/item/weapon/gun/proc/delete_bullet(obj/projectile/projectile_to_fire, refund = 0)
+/obj/item/weapon/gun/proc/delete_bullet(obj/item/projectile/projectile_to_fire, refund = 0)
 	if(active_attachable) //Attachables don't chamber rounds, so we want to delete it right away.
 		if(refund)
 			projectile_to_fire.forceMove(active_attachable)
@@ -1244,7 +1243,7 @@ and you're good to go.
 	qdel(projectile_to_fire)
 	return TRUE
 
-/obj/item/weapon/gun/proc/clear_jam(obj/projectile/projectile_to_fire, mob/user as mob) //Guns jamming, great.
+/obj/item/weapon/gun/proc/clear_jam(obj/item/projectile/projectile_to_fire, mob/user as mob) //Guns jamming, great.
 	flags_gun_features &= ~GUN_BURST_FIRING // Also want to turn off bursting, in case that was on. It probably was.
 	delete_bullet(projectile_to_fire, 1) //We're going to clear up anything inside if we need to.
 	//If it's a regular bullet, we're just going to keep it chambered.
@@ -1367,26 +1366,29 @@ and you're good to go.
 	var/turf/targloc = get_turf(target)
 	var/atom/original_target = target //This is for burst mode, in case the target changes per scatter chance in between fired bullets.
 
-		if(!handle_damage() && can_jammed)
+	if(loc != user && !(flags_mounted_gun_features & GUN_MOUNTING) || (flags_gun_features & GUN_WIELDED_FIRING_ONLY && !(flags_item & WIELDED)))
+		return TRUE
+
+	//The gun should return the bullet that it already loaded from the end cycle of the last Fire().
+	var/obj/item/projectile/projectile_to_fire = load_into_chamber(user) //Load a bullet in or check for existing one.
+	if(!projectile_to_fire) //If there is nothing to fire, click.
+		click_empty(user)
+		flags_gun_features &= ~GUN_BURST_FIRING
+		return NONE
+
+	if(projectile_to_fire.scrap_ammo_perc && prob(projectile_to_fire.scrap_ammo_perc))
+		if(prob(5))
+			weapon_critical_miss(projectile_to_fire)
+			return NONE
+		else if(!handle_damage() && can_jammed)
 			click_empty(user)
 			to_chat(user, "[src] дало осечку.")
 			sleep(20)
 			if(prob(80))
 				clear_jam(projectile_to_fire, user)
-				continue
 			else
 				req_fix = TRUE
-				break
-
-	if(loc != user || (flags_gun_features & GUN_WIELDED_FIRING_ONLY && !(flags_item & WIELDED)))
-		return TRUE
-
-	//The gun should return the bullet that it already loaded from the end cycle of the last Fire().
-	var/obj/projectile/projectile_to_fire = load_into_chamber(user) //Load a bullet in or check for existing one.
-	if(!projectile_to_fire) //If there is nothing to fire, click.
-		click_empty(user)
-		flags_gun_features &= ~GUN_BURST_FIRING
-		return NONE
+				return NONE
 
 	apply_bullet_effects(projectile_to_fire, user, reflex, dual_wield) //User can be passed as null.
 	SEND_SIGNAL(projectile_to_fire, COMSIG_BULLET_USER_EFFECTS, user)
@@ -1398,7 +1400,7 @@ and you're good to go.
 		target = original_target
 		targloc = get_turf(target)
 
-	projectile_to_fire.original = target
+	projectile_to_fire.original_target = target
 
 	// turf-targeted projectiles are fired without scatter, because proc would raytrace them further away
 	var/ammo_flags = projectile_to_fire.ammo.flags_ammo_behavior | projectile_to_fire.projectile_override_flags
@@ -1437,27 +1439,13 @@ and you're good to go.
 		click_empty(user)
 		return NONE
 
-	if(targloc != curloc || flags_mounted_gun_features & GUN_MOUNTING)
+	if(targloc != curloc)
 		simulate_recoil(dual_wield, user, target)
-		if(projectile_to_fire.scrap_ammo_perc && prob(projectile_to_fire.scrap_ammo_perc))
-			if(prob(5))
-				weapon_critical_miss(projectile_to_fire)
-				break
-			else if(!handle_damage() && can_jammed)
-				click_empty(user)
-				to_chat(user, "[src] дало осечку.")
-				sleep(20)
-				if(prob(80))
-					clear_jam(projectile_to_fire, user)
-					continue
-				else
-					req_fix = TRUE
-					break
 		projectile_to_fire.bullet_ready_to_fire(initial(name), null, user)
 		//This is where the projectile leaves the barrel and deals with projectile code only.
 		//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 		in_chamber = null // It's not in the gun anymore
-		INVOKE_ASYNC(projectile_to_fire, TYPE_PROC_REF(/obj/projectile, fire_at), target, user, src, null, bullet_velocity)
+		INVOKE_ASYNC(projectile_to_fire, TYPE_PROC_REF(/obj/item/projectile, fire_at), target, user, src, null, bullet_velocity)
 		projectile_to_fire = null // Important: firing might have made projectile collide early and ALREADY have deleted it. We clear it too.
 		//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1537,7 +1525,7 @@ and you're good to go.
 
 		if(active_attachable && !(active_attachable.flags_attach_features & ATTACH_PROJECTILE))
 			active_attachable.activate_attachment(src, null, TRUE)//We're not firing off a nade into our mouth.
-		var/obj/projectile/projectile_to_fire = load_into_chamber(user)
+		var/obj/item/projectile/projectile_to_fire = load_into_chamber(user)
 		if(projectile_to_fire) //We actually have a projectile, let's move on.
 			user.visible_message(SPAN_WARNING("[user] pulls the trigger!"))
 			var/actual_sound
@@ -1651,7 +1639,7 @@ and you're good to go.
 		if(QDELETED(attacked_mob)) //Target deceased.
 			break
 
-		var/obj/projectile/projectile_to_fire = load_into_chamber(user)
+		var/obj/item/projectile/projectile_to_fire = load_into_chamber(user)
 		if(!projectile_to_fire)
 			click_empty(user)
 			break
@@ -1683,9 +1671,9 @@ and you're good to go.
 		simulate_recoil(1, user)
 
 		if(projectile_to_fire.ammo.bonus_projectiles_amount)
-			var/obj/projectile/proj
+			var/obj/item/projectile/proj
 			for(var/i in 1 to projectile_to_fire.ammo.bonus_projectiles_amount)
-				proj = new /obj/projectile(attacked_mob.loc, create_cause_data(initial(name), user))
+				proj = new /obj/item/projectile(attacked_mob.loc, create_cause_data(initial(name), user))
 				proj.generate_bullet(GLOB.ammo_list[projectile_to_fire.ammo.bonus_projectiles_type], user, 0, NO_FLAGS)
 				proj.accuracy = round(proj.accuracy * projectile_to_fire.accuracy/initial(projectile_to_fire.accuracy)) //Modifies accuracy of pellets per fire_bonus_projectiles.
 				proj.damage *= damage_buff
@@ -1878,7 +1866,7 @@ not all weapons use normal magazines etc. load_into_chamber() itself is designed
 		user?.hud_used.update_ammo_hud(src, get_ammo_list(), get_display_ammo_count())
 
 //This proc applies some bonus effects to the shot/makes the message when a bullet is actually fired.
-/obj/item/weapon/gun/proc/apply_bullet_effects(obj/projectile/projectile_to_fire, mob/user, reflex = 0, dual_wield = 0)
+/obj/item/weapon/gun/proc/apply_bullet_effects(obj/item/projectile/projectile_to_fire, mob/user, reflex = 0, dual_wield = 0)
 	var/actual_sound = fire_sound
 	if(isnull(fire_sound))
 		actual_sound = pick(fire_sounds)
@@ -1957,7 +1945,7 @@ not all weapons use normal magazines etc. load_into_chamber() itself is designed
 
 	return 1
 
-/obj/item/weapon/gun/proc/simulate_scatter(obj/projectile/projectile_to_fire, atom/target, turf/curloc, turf/targloc, mob/user, bullets_fired = 1)
+/obj/item/weapon/gun/proc/simulate_scatter(obj/item/projectile/projectile_to_fire, atom/target, turf/curloc, turf/targloc, mob/user, bullets_fired = 1)
 	var/fire_angle = Get_Angle(curloc, targloc)
 	var/total_scatter_angle = projectile_to_fire.scatter
 

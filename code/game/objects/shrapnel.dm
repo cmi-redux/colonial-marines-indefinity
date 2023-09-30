@@ -28,7 +28,7 @@
 
 	var/mob/source_mob = cause_data?.resolve_mob()
 	for(var/i=0;i<shrapnel_number;i++)
-		var/obj/projectile/projectile = new(epicenter)
+		var/obj/item/projectile/projectile = new(epicenter)
 		projectile.weapon_cause_data = cause_data
 		projectile.firer = cause_data?.resolve_mob()
 		projectile.generate_bullet(new shrapnel_type, source_mob)

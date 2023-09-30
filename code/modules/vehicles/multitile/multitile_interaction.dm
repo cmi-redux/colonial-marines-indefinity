@@ -283,7 +283,7 @@
 
 //Differentiates between damage types from different bullets
 //Applies a linear transformation to bullet damage that will generally decrease damage done
-/obj/vehicle/multitile/bullet_act(obj/projectile/proj)
+/obj/vehicle/multitile/bullet_act(obj/item/projectile/proj)
 	var/dam_type = "bullet"
 	var/damage = proj.damage
 	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
@@ -295,7 +295,7 @@
 	if(proj.runtime_iff_group && ally(proj.runtime_iff_group))
 		return
 
-	if(ammo_flags & AMMO_ANTISTRUCT|AMMO_ANTIVEHICLE)
+	if(ammo_flags & AMMO_ANTISTRUCT)
 		// Multiplier based on tank railgun relationship, so might have to reconsider multiplier for AMMO_SIEGE in general
 		damage = round(damage*ANTISTRUCT_DMG_MULT_TANK)
 	if(ammo_flags & AMMO_ACIDIC)

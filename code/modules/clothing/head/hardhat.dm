@@ -47,46 +47,19 @@
 	if(!isturf(user.loc))
 		to_chat(user, SPAN_WARNING("You cannot turn the light [light_on ? "off" : "on"] while in [user.loc]"))
 		return
-	turn_light(user, !light_on)
+	toggle_light(user, !light_on)
 
 	update_icon()
-
-/obj/item/clothing/head/hardhat/unequipped(mob/user)
-	turn_light(user, FALSE)
-	..()
-
-/obj/item/clothing/head/hardhat/pickup(mob/living/M)
-	RegisterSignal(M, COMSIG_ATOM_OFF_LIGHT, TYPE_PROC_REF(/atom, turn_light), FALSE, override = TRUE)
-	..()
 
 /obj/item/clothing/head/hardhat/attack_alien(mob/living/carbon/xenomorph/attacking_xeno)
 	if(!can_be_broken)
 		return
 
-	if(turn_light(attacking_xeno, toggle_on = FALSE) != CHECKS_PASSED)
+	if(toggle_light(attacking_xeno, toggle_on = FALSE) != CHECKS_PASSED)
 		return
 
 	if(breaking_sound)
 		playsound(loc, breaking_sound, 25, 1)
-
-/obj/item/clothing/head/hardhat/dropped(mob/living/M)
-	UnregisterSignal(M, COMSIG_ATOM_OFF_LIGHT)
-	..()
-
-/obj/item/clothing/head/hardhat/turn_light(mob/user, toggle_on, sparks = FALSE, forced = FALSE)
-	. = ..()
-	if(. != CHECKS_PASSED)
-		return
-	set_light_on(toggle_on)
-	if(user == loc)
-		user.update_inv_head()
-
-	for(var/datum/action/current_action as anything in actions)
-		current_action.update_button_icon()
-
-/obj/item/clothing/head/hardhat/dropped(mob/user)
-	turn_light(user, FALSE)
-	..()
 
 /obj/item/clothing/head/hardhat/orange
 	icon_state = "hardhat0_orange"

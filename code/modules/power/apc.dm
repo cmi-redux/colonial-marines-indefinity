@@ -803,7 +803,7 @@ GLOBAL_LIST_INIT(apc_wire_descriptions, list(
 		if(grabber.a_intent == INTENT_GRAB)
 
 			//Synthpack recharge
-			if((grabber.species.flags & IS_SYNTHETIC) && istype(grabber.back, /obj/item/storage/backpack/marine/smartpack))
+			if((grabber.species.species_flags & IS_SYNTHETIC) && istype(grabber.back, /obj/item/storage/backpack/marine/smartpack))
 				var/obj/item/storage/backpack/marine/smartpack/s_pack = grabber.back
 				if(grabber.action_busy)
 					return
@@ -1315,7 +1315,7 @@ GLOBAL_LIST_INIT(apc_wire_descriptions, list(
 		cell.use(20)
 		spawn(0)
 			for(var/obj/structure/machinery/light/L in area)
-				L.on = 1
+				L.set_light_on(TRUE)
 				L.broken()
 				sleep(1)
 

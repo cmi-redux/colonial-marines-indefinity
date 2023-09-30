@@ -34,7 +34,7 @@
 		PF.flags_can_pass_front = NONE
 		PF.flags_can_pass_behind = NONE
 
-/obj/structure/blocker/tent/get_projectile_hit_boolean(obj/projectile/proj)
+/obj/structure/blocker/tent/get_projectile_hit_boolean(obj/item/projectile/proj)
 	. = ..()
 	return FALSE // Always fly through the tent
 

@@ -408,7 +408,7 @@ var/list/robot_verbs_default = list(
 /mob/living/silicon/robot/is_mob_restrained()
 	return FALSE
 
-/mob/living/silicon/robot/bullet_act(obj/projectile/proj)
+/mob/living/silicon/robot/bullet_act(obj/item/projectile/proj)
 	..(proj)
 	if(prob(75) && proj.damage > 0) spark_system.start()
 	return 2

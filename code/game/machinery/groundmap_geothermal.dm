@@ -1,5 +1,5 @@
 /obj/structure/machinery/power/geothermal
-	name = "\improper G-11 geothermal generator"
+	name = "G-11 geothermal generator"
 	icon = 'icons/obj/structures/machinery/geothermal.dmi'
 	icon_state = "weld"
 	desc = "A thermoelectric generator sitting atop a plasma-filled borehole. This one is heavily damaged. Use a blowtorch, wirecutters, then wrench to repair it."

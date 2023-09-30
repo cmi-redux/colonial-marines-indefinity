@@ -497,6 +497,7 @@ This function completely restores a damaged organ to perfect condition.
 					owner.visible_message(SPAN_WARNING("The wound on [owner.name]'s [display_name] widens with a nasty ripping noise."),
 					SPAN_WARNING("The wound on your [display_name] widens with a nasty ripping noise."),
 					SPAN_WARNING("You hear a nasty ripping noise, as if flesh is being torn apart."))
+					playsound_client(owner.client, sound('sound/effects/Heart Beat.ogg', repeat = rand(1, 32), wait = rand(1, 20)), vol = 100, channel = SOUND_CHANNEL_HEARTBEAT)
 				return
 
 	//Creating wound
@@ -601,6 +602,8 @@ This function completely restores a damaged organ to perfect condition.
 		if(world.time > knitting_time)
 			to_chat(owner, SPAN_WARNING("The bones in your [display_name] feel fully knitted."))
 			owner.pain.apply_pain(-PAIN_BONE_BREAK)
+			if(prob(10))
+				playsound_client(owner.client, sound('sound/effects/Heart Beat.ogg', repeat = rand(1, 32), wait = rand(1, 20)), vol = 100, channel = SOUND_CHANNEL_HEARTBEAT)
 			status &= ~LIMB_BROKEN //Let it be known that this code never unbroke the limb.
 			knitting_time = -1
 

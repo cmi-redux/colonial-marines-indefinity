@@ -71,7 +71,7 @@
 			. += "Зарядов Осталось: [selected_ability.charges]"
 
 		if(selected_ability.cooldown_timer_id != TIMER_ID_NULL)
-			. += "Перезарядка: [DisplayTimeText(timeleft(selected_ability.cooldown_timer_id), language = CLIENT_LANGUAGE_RUSSIAN)]"
+			. += "Перезарядка: [DisplayTimeText(timeleft(selected_ability.cooldown_timer_id), language = client.language)]"
 
 	. += ""
 

@@ -76,7 +76,7 @@
 	if(health <= 0)
 		unpack()
 
-/obj/structure/largecrate/bullet_act(obj/projectile/proj)
+/obj/structure/largecrate/bullet_act(obj/item/projectile/proj)
 	take_damage(proj.calculate_damage(proj.damage))
 	return TRUE
 
@@ -465,8 +465,8 @@
 	new /obj/item/weapon/throwing_knife(src)
 	new /obj/item/storage/box/uscm_mre(src)
 	new /obj/item/storage/box/donkpockets(src)
-	new /obj/item/storage/box/MRE(src)
-	new /obj/item/storage/box/MRE(src)
+	new /obj/item/storage/box/mre(src)
+	new /obj/item/storage/box/mre(src)
 	new /obj/item/storage/box/pizza(src)
 
 

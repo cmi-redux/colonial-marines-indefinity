@@ -88,6 +88,7 @@ Verbs related to getting fucking jacked, bro
 		stamina.apply_damage(staminaloss)
 		if(stamina.current_stamina < 10)
 			to_chat(src, SPAN_WARNING("You slump down to the floor, too tired to keep going."))
+			playsound_client(client, sound('sound/effects/Heart Beat.ogg', repeat = rand(1, 32), wait = rand(1, 20)), vol = 100, channel = SOUND_CHANNEL_HEARTBEAT)
 			return
 
 /mob/living/carbon/human/proc/can_do_pushup()

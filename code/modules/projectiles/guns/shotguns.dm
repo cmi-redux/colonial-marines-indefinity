@@ -82,7 +82,7 @@ can cause issues with ammo types getting mixed up during the burst.
 	if(isnull(current_mag) || !current_mag.ammo_position)
 		return
 
-	var/obj/projectile/projectile = current_mag.retrieve_ammo(1, user)
+	var/obj/item/projectile/projectile = current_mag.retrieve_ammo(1, user)
 
 	if(user)
 		user.put_in_hands(projectile)

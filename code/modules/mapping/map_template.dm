@@ -57,7 +57,7 @@
 		var/area/area = turf.loc
 		if(!area.static_lighting)
 			continue
-		turf.lighting_build_overlay()
+		turf.static_lighting_build_overlay()
 
 	//SSmachines.setup_template_powernets(cables)  // mapping TODO:
 

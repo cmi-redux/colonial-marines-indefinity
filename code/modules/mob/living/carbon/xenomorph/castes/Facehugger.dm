@@ -76,7 +76,7 @@
 
 	if(!client && !aghosted && away_timer > XENO_FACEHUGGER_LEAVE_TIMER)
 		// Become a npc once again
-		new /obj/item/clothing/mask/facehugger(loc, hivenumber)
+		new /obj/item/clothing/mask/facehugger(loc, faction)
 		qdel(src)
 	return ..()
 
@@ -221,7 +221,7 @@
 	else
 		. += "Lifetime Hugs: [total_facehugs]"
 
-
+/* fuck your self eng cm devs, eat shit, wtf... strains on facehugger? SUKA BLYAT KYS!
 /datum/xeno_mutator/watcher
 	name = "STRAIN: Facehugger - Watcher"
 	description = "You lose your ability to hide in exchange to see further and the ability to no longer take damage outside of weeds. This enables you to stalk your host from a distance and wait for the perfect oppertunity to strike."
@@ -252,3 +252,4 @@
 	facehugger.mutation_type = FACEHUGGER_WATCHER
 	mutator_update_actions(facehugger)
 	mutator_set.recalculate_actions(description, flavor_description)
+*/

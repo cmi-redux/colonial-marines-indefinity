@@ -127,7 +127,7 @@
 		qdel(src)
 		return
 
-/obj/structure/machinery/door/window/bullet_act(obj/projectile/proj)
+/obj/structure/machinery/door/window/bullet_act(obj/item/projectile/proj)
 	bullet_ping(proj)
 	if(proj.ammo.damage)
 		take_damage(round(proj.ammo.damage / 2))

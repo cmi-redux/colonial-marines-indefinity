@@ -292,6 +292,10 @@
 	else if(lifeboat.status == LIFEBOAT_ACTIVE)
 		switch(lifeboat.mode)
 			if(SHUTTLE_IDLE)
+				if(EVACUATION_ESTIMATE_DEPARTURE > 1 MINUTES)
+					to_chat(user, SPAN_NOTICE("[src]'s screen says \"Awaiting confirmation of the evacuation order\"."))
+					return
+
 				if(!istype(user, /mob/living/carbon/human))
 					to_chat(user, SPAN_NOTICE("[src]'s screen says \"Awaiting confirmation of the evacuation order\"."))
 					return
@@ -301,7 +305,7 @@
 					to_chat(user, SPAN_NOTICE("[src]'s screen says \"Awaiting confirmation of the evacuation order\"."))
 					return
 
-				if(tgui_alert(user, "Early launch the lifeboat?", "Confirm", list(client.auto_lang(LANGUAGE_YES), client.auto_lang(LANGUAGE_NO)), 10 SECONDS) == client.auto_lang(LANGUAGE_YES))
+				if(tgui_alert(user, "Early launch the lifeboat?", "Confirm", list(user.client.auto_lang(LANGUAGE_YES), user.client.auto_lang(LANGUAGE_NO)), 10 SECONDS) == user.client.auto_lang(LANGUAGE_YES))
 					to_chat(user, SPAN_NOTICE("[src]'s screen blinks and says \"Early launch accepted\"."))
 					lifeboat.evac_launch()
 					return

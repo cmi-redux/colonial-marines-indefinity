@@ -553,10 +553,6 @@
 
 	to_chat(user, SPAN_NOTICE("You plant the glowshroom."))
 
-<<<<<<< HEAD
-
-=======
->>>>>>> master
 // *************************************
 // Complex Grown Object Defines -
 // Putting these at the bottom so they don't clutter the list up. -Cheridan

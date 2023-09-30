@@ -703,7 +703,7 @@
 	new /obj/item/lightstick/red(src)
 	new /obj/item/lightstick/red(src)
 
-/obj/item/storage/box/MRE
+/obj/item/storage/box/mre
 	name = "\improper USCM MRE"
 	desc = "A Meal, Ready-to-Eat. A single-meal combat ration designed to provide a soldier with enough nutrients for a day of strenuous work. Its expiration date is at least 20 years ahead of your combat life expectancy."
 	icon_state = "mealpack"
@@ -714,10 +714,10 @@
 	use_sound = "rip"
 	var/isopened = 0
 
-/obj/item/storage/box/MRE/fill_preset_inventory()
+/obj/item/storage/box/mre/fill_preset_inventory()
 	pickflavor()
 
-/obj/item/storage/box/MRE/proc/pickflavor()
+/obj/item/storage/box/mre/proc/pickflavor()
 	var/main = pick("boneless pork ribs", "grilled chicken", "pizza square", "spaghetti chunks", "chicken tender")
 	var/second = pick("cracker", "cheese spread", "rice onigiri", "mashed potatoes", "risotto")
 	var/side = pick("biscuit", "meatballs", "pretzels", "peanuts", "sushi")
@@ -748,12 +748,12 @@
 		if(5)
 			new /obj/item/storage/fancy/cigar/matchbook/brown(src)
 
-/obj/item/storage/box/MRE/Initialize()
+/obj/item/storage/box/mre/Initialize()
 	. = ..()
 	isopened = 0
 	icon_state = "mealpack"
 
-/obj/item/storage/box/MRE/update_icon()
+/obj/item/storage/box/mre/update_icon()
 	if(!contents.len)
 		qdel(src)
 	else if(!isopened)

@@ -46,7 +46,7 @@
 	if(castepick == XENO_CASTE_QUEEN) //Special case for dealing with queenae
 		if(!MODE_HAS_FLAG(MODE_HARDCORE))
 			if(SSticker.mode && faction.xeno_queen_timer > world.time)
-				to_chat(src, SPAN_WARNING("You must wait about [DisplayTimeText(faction.xeno_queen_timer - world.time, 1, language = CLIENT_LANGUAGE_RUSSIAN)] for the hive to recover from the previous Queen's death."))
+				to_chat(src, SPAN_WARNING("You must wait about [DisplayTimeText(faction.xeno_queen_timer - world.time, 1, language = client.language)] for the hive to recover from the previous Queen's death."))
 				return
 
 			if(plasma_stored >= 500)
@@ -138,9 +138,9 @@
 	if(!is_admin_level(new_xeno.z) || (xeno_area.flags_atom & AREA_ALLOW_XENO_JOIN))
 		switch(new_xeno.tier) //They have evolved, add them to the slot count IF they are in regular game space
 			if(2)
-				hive.tier_2_xenos |= new_xeno
+				faction.tier_2_xenos |= new_xeno
 			if(3)
-				hive.tier_3_xenos |= new_xeno
+				faction.tier_3_xenos |= new_xeno
 
 	log_game("EVOLVE: [key_name(src)] evolved into [new_xeno].")
 	if(mind)
@@ -367,12 +367,12 @@
 				used_tier_3_slots -= min(slots_used, slots_free)
 
 	var/burrowed_factor = min(faction.stored_larva, sqrt(4*faction.stored_larva))
-	var/totalXenos = round(burrowed_factor)
+	var/totalMobs = round(burrowed_factor)
 	for(var/mob/living/carbon/xenomorph/xeno as anything in faction.totalMobs)
 		if(xeno.counts_for_slots)
-			totalXenos++
+			totalMobs++
 
-	if(tier == 1 && (((used_tier_2_slots + used_tier_3_slots) / totalXenos) * faction.tier_slot_multiplier) >= 0.5 && castepick != XENO_CASTE_QUEEN)
+	if(tier == 1 && (((used_tier_2_slots + used_tier_3_slots) / totalMobs) * faction.tier_slot_multiplier) >= 0.5 && castepick != XENO_CASTE_QUEEN)
 		to_chat(src, SPAN_WARNING("The hive cannot support another Tier 2, wait for either more aliens to be born or someone to die."))
 		return FALSE
 	else if(tier == 2 && ((used_tier_3_slots / length(faction.totalMobs)) * faction.tier_slot_multiplier) >= 0.20 && castepick != XENO_CASTE_QUEEN)

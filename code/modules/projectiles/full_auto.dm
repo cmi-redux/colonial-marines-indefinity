@@ -32,7 +32,6 @@
 		return
 
 	fa_firing = TRUE
-	fa_shots = 0
 	fa_target = A
 	fa_params = params
 

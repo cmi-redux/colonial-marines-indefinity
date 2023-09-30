@@ -176,14 +176,6 @@
 /// for areas, so they appear above everything else on map file.
 #define AREAS_LAYER 999
 
-//---------- EMISSIVES -------------
-//Layering order of these is not particularly meaningful.
-//Important part is the seperation of the planes for control via plane_master
-
-/// This plane masks out lighting to create an "emissive" effect, ie for glowing lights in otherwise dark areas.
-#define EMISSIVE_PLANE 90
-/// The render target used by the emissive layer.
-#define EMISSIVE_RENDER_TARGET "*EMISSIVE_PLANE"
 /// The layer you should use if you _really_ don't want an emissive overlay to be blocked.
 #define EMISSIVE_LAYER_UNBLOCKABLE 9999
 #define FOV_EFFECTS_LAYER 10000 //Blindness effects are not layer 4, they lie to you
@@ -199,17 +191,12 @@
 /// Bubble for typing indicators
 #define TYPING_LAYER 500
 
-#define O_LIGHTING_VISUAL_PLANE 120
-#define O_LIGHTING_VISUAL_LAYER 16
-#define O_LIGHTING_VISUAL_RENDER_TARGET "O_LIGHT_VISUAL_PLANE"
-
 #define LIGHTING_PRIMARY_LAYER 15	//The layer for the main lights of the station
 #define LIGHTING_PRIMARY_DIMMER_LAYER 15.1	//The layer that dims the main lights of the station
 #define LIGHTING_SECONDARY_LAYER 16	//The colourful, usually small lights that go on top
 
 #define LIGHTING_SHADOW_LAYER 17	//Where the shadows happen
 
-#define ABOVE_LIGHTING_PLANE 150
 #define ABOVE_LIGHTING_LAYER 18
 
 /*=============================*\
@@ -274,28 +261,21 @@
 #define FRILL_MASK_PLANE 95
 #define FRILL_MASK_RENDER_TARGET "*FRILL_MASK_RENDER_TARGET"
 
-///--------------- FULLSCREEN RUNECHAT BUBBLES ------------
-#define LIGHTING_PLANE 100
-#define EXTERIOR_LIGHTING_PLANE 101
-
 //------------------- LIGHTING -------------------
 //Normal 1 per turf dynamic lighting underlays
 #define LIGHTING_PLANE 100
 
-#define S_LIGHTING_VISUAL_PLANE 101
+#define S_LIGHTING_VISUAL_PLANE 120
 #define S_LIGHTING_VISUAL_RENDER_TARGET "S_LIGHT_VISUAL_PLANE"
 
-#define O_LIGHTING_VISUAL_PLANE 102
+#define O_LIGHTING_VISUAL_PLANE 130
 #define O_LIGHTING_VISUAL_RENDER_TARGET "O_LIGHT_VISUAL_PLANE"
 
-#define E_LIGHTING_VISUAL_PLANE 103
+#define E_LIGHTING_VISUAL_PLANE 140
 #define E_LIGHTING_VISUAL_RENDER_TARGET "E_LIGHT_VISUAL_PLANE"
 
 //Things that should render ignoring lighting
-#define ABOVE_LIGHTING_PLANE 120
-
-//visibility + hiding of things outside of light source range
-#define BYOND_LIGHTING_PLANE 130
+#define ABOVE_LIGHTING_PLANE 150
 
 //------------------- EMISSIVES -------------------
 //Layering order of these is not particularly meaningful.

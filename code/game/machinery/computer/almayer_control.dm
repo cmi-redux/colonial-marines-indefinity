@@ -1,6 +1,6 @@
 #define COMMAND_SHIP_ANNOUNCE "Command Ship Announcement"
 
-#define COMMAND_HQ_ANNOUNCE			"USCM High Command Announcement"
+#define COMMAND_HQ_ANNOUNCE "USCM High Command Announcement"
 
 /obj/structure/machinery/computer/almayer_control
 	name = "Консоль Управления 'Алмаером'"
@@ -145,9 +145,11 @@
 
 	data["worldtime"] = world.time
 
-	data["evac_status"] = EvacuationAuthority.evac_status
-	if(EvacuationAuthority.evac_status == EVACUATION_STATUS_INITIATING)
-		data["evac_eta"] = EvacuationAuthority.get_status_panel_eta()
+	data["evac_status"] = SSevacuation.evac_status
+	if(SSevacuation.evac_status == EVACUATION_STATUS_INITIATING)
+		data["evac_eta"] = SSevacuation.get_evac_status_panel_eta()
+	data["operation_stage"] = SSevacuation.get_ship_operation_stage_status_panel_eta()
+	data["operation_stage_status"] = SSevacuation.ship_operation_stage_status
 
 	if(!messagetitle.len)
 		data["messages"] = null
@@ -185,11 +187,11 @@
 				to_chat(usr, SPAN_WARNING("The ship must be under red alert in order to enact evacuation procedures."))
 				return FALSE
 
-			if(EvacuationAuthority.flags_scuttle & FLAGS_EVACUATION_DENY)
+			if(SSevacuation.flags_scuttle & FLAGS_EVACUATION_DENY)
 				to_chat(usr, SPAN_WARNING("The USCM has placed a lock on deploying the evacuation pods."))
 				return FALSE
 
-			if(!EvacuationAuthority.initiate_evacuation())
+			if(!SSevacuation.initiate_evacuation())
 				to_chat(usr, SPAN_WARNING("You are unable to initiate an evacuation procedure right now!"))
 				return FALSE
 
@@ -200,7 +202,7 @@
 			. = TRUE
 
 		if("evacuation_cancel")
-			if(!EvacuationAuthority.cancel_evacuation())
+			if(!SSevacuation.cancel_evacuation())
 				to_chat(usr, SPAN_WARNING("You are unable to cancel the evacuation right now!"))
 				return FALSE
 
@@ -422,16 +424,15 @@
 			addtimer(CALLBACK(src, PROC_REF(reactivate_announcement), usr), COOLDOWN_COMM_MESSAGE)
 			message_admins("[key_name(usr)] создал корабельное оповещение.")
 			log_announcement("[key_name(usr)] создал корабельное оповещение: [input]")
-
+*/
 
 // end tgui interact \\
 
 // end tgui \\
 
 /obj/structure/machinery/computer/almayer_control/proc/cancel_evac()
-	if(EvacuationAuthority.evac_status == EVACUATION_STATUS_STANDING_BY)//nothing changed during the wait
+	if(SSevacuation.evac_status == EVACUATION_STATUS_STANDING_BY)//nothing changed during the wait
 		//if the self_destruct is active we try to cancel it (which includes lowering alert level to red)
-		if(!EvacuationAuthority.cancel_self_destruct(1))
+		if(!SSevacuation.cancel_self_destruct(1))
 			//if SD wasn't active (likely canceled manually in the SD room), then we lower the alert level manually.
 			set_security_level(SEC_LEVEL_RED, TRUE) //both SD and evac are inactive, lowering the security level.
-*/

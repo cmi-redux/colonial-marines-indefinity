@@ -10,6 +10,7 @@
 	flags_whitelist = WHITELIST_SYNTHETIC
 	gear_preset = /datum/equipment_preset/synth/uscm
 	entry_message_body = "You are a <a href='%WIKIURL%'>Synthetic!</a> You are held to a higher standard and are required to obey not only the Server Rules but Marine Law and Synthetic Rules. Failure to do so may result in your White-list Removal. Your primary job is to support and assist all USCM Departments and Personnel on-board. In addition, being a Synthetic gives you knowledge in every field and specialization possible on-board the ship. As a Synthetic you answer to the acting commanding officer. Special circumstances may change this!"
+	balance_formulas = list(BALANCE_FORMULA_COMMANDING, BALANCE_FORMULA_MISC, BALANCE_FORMULA_ENGINEER, BALANCE_FORMULA_SUPPORT, BALANCE_FORMULA_OPERATIONS, BALANCE_FORMULA_MEDIC)
 
 /datum/job/civilian/synthetic/New()
 	. = ..()

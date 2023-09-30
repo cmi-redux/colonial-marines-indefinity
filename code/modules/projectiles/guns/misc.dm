@@ -277,9 +277,9 @@
 /obj/item/weapon/gun/pkp/update_icon()
 	. = ..()
 	if(cover_open)
-		overlays += "+[base_gun_icon]_cover_open"
+		overlays += "+[base_icon]_cover_open"
 	else
-		overlays += "+[base_gun_icon]_cover_closed"
+		overlays += "+[base_icon]_cover_closed"
 
 /obj/item/weapon/gun/pkp/able_to_fire(mob/living/user)
 	. = ..()

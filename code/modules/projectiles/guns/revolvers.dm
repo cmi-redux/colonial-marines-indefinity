@@ -165,7 +165,7 @@
 	if(current_mag)
 		if(current_mag.ammo_position > 0)
 			if(current_mag.current_rounds[pin_locked_on] != "empty")
-				var/obj/projectile/proj = current_mag.current_rounds[pin_locked_on]
+				var/obj/item/projectile/proj = current_mag.current_rounds[pin_locked_on]
 				current_mag.current_rounds[pin_locked_on] = "empty"
 				current_mag.ammo_position--
 				proj.forceMove(src)

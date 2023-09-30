@@ -1239,8 +1239,8 @@
 /area/adminlevel/ert_station/clf_station)
 "Ck" = (
 /obj/structure/surface/table/woodentable/poor,
-/obj/item/device/radio/headset/distress/CLF,
-/obj/item/device/radio/headset/distress/CLF/command,
+/obj/item/device/radio/headset/distress/clf,
+/obj/item/device/radio/headset/distress/clf/command,
 /obj/structure/machinery/recharger,
 /turf/open/floor/wood,
 /area/adminlevel/ert_station/clf_station)
@@ -1753,8 +1753,8 @@
 /area/adminlevel/ert_station/clf_station)
 "Qw" = (
 /obj/structure/surface/table/woodentable/poor,
-/obj/item/device/radio/headset/distress/CLF,
-/obj/item/device/radio/headset/distress/CLF/medic,
+/obj/item/device/radio/headset/distress/clf,
+/obj/item/device/radio/headset/distress/clf/medic,
 /obj/structure/machinery/light/small/built,
 /turf/open/floor/wood,
 /area/adminlevel/ert_station/clf_station)

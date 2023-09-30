@@ -111,5 +111,5 @@
 	if(set_luminosity)
 		affected_turf.luminosity = set_luminosity
 	//We are not lit by static light OR dynamic light.
-	else if(!LAZYLEN(affected_turf.hybrid_lights_affecting) && !A.base_lighting_alpha)
+	else if(!length(affected_turf.hybrid_lights_affecting) && !A.base_lighting_alpha)
 		affected_turf.luminosity = 0

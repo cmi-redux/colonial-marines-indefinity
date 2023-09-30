@@ -75,7 +75,7 @@
 	SIGNAL_HANDLER
 	L += "Cluster Stack: [cluster_stacks]/[MAX_CLUSTER_STACKS]"
 
-/datum/component/cluster_stack/proc/apply_cluster_stacks(mob/living/L, damage_result, ammo_flags, obj/projectile/proj)
+/datum/component/cluster_stack/proc/apply_cluster_stacks(mob/living/L, damage_result, ammo_flags, obj/item/projectile/proj)
 	SIGNAL_HANDLER
 	if(cluster_stacks >= MAX_CLUSTER_STACKS)
 		var/old_dmg_cont = damage_counter

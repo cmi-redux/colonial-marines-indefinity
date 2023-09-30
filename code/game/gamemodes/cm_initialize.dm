@@ -46,8 +46,8 @@ Additional game mode variables.
 	var/datum/mind/CO_survivor = null
 	var/datum/mind/hellhounds[] = list() //Hellhound spawning is not supported at round start.
 	var/list/dead_queens // A list of messages listing the dead queens
-	var/list/predators	= list()
-	var/list/joes		= list()
+	var/list/predators = list()
+	var/list/joes = list()
 
 	var/xeno_required_num = 0 //We need at least one. You can turn this off in case we don't care if we spawn or don't spawn xenos.
 	var/xeno_starting_num = 0 //To clamp starting xenos.
@@ -350,7 +350,7 @@ Additional game mode variables.
 
 	for(var/faction_to_get in FACTION_LIST_XENOMORPH)
 		var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
-		if(hive.stored_larva && (hive.hive_location || (world.time < XENO_BURIED_LARVA_TIME_LIMIT + SSticker.round_start_time)))
+		if(faction.stored_larva && (faction.faction_location || (world.time < XENO_BURIED_LARVA_TIME_LIMIT + SSticker.round_start_time)))
 			if(SSticker.mode && MODE_HAS_FLAG(MODE_RANDOM_HIVE))
 				available_xenos |= "any buried larva"
 				LAZYADD(available_xenos["any buried larva"], faction)
@@ -413,8 +413,8 @@ Additional game mode variables.
 				if(isnewplayer(xeno_candidate))
 					var/mob/new_player/noob = xeno_candidate
 					noob.close_spawn_windows()
-				if(picked_faction.hive_location)
-					picked_faction.hive_location.spawn_burrowed_larva(xeno_candidate)
+				if(picked_faction.faction_location)
+					picked_faction.faction_location.spawn_burrowed_larva(xeno_candidate)
 				else if((world.time < XENO_BURIED_LARVA_TIME_LIMIT + SSticker.round_start_time))
 					picked_faction.do_buried_larva_spawn(xeno_candidate)
 				else
@@ -585,7 +585,7 @@ Additional game mode variables.
 
 	return TRUE
 
-/datum/game_mode/proc/transfer_xeno(xeno_candidate, mob/living/new_xeno)
+/datum/game_mode/proc/transfer_xenomorph(xeno_candidate, mob/living/new_xeno)
 	if(!xeno_candidate || !isxeno(new_xeno) || QDELETED(new_xeno))
 		return FALSE
 	var/datum/mind/xeno_candidate_mind

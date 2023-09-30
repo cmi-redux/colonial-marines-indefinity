@@ -79,7 +79,7 @@
 		prefix += "[icon2html(byond, GLOB.clients)]"
 	if(CONFIG_GET(flag/ooc_country_flags) && (prefs.toggle_prefs & TOGGLE_OOC_FLAG))
 		prefix += "[country2chaticon(src.country, GLOB.clients)]"
-	if(donator)
+	if(player_data.donator_info.patreon_function_available("occ_color"))
 		prefix += "[icon2html('icons/ooc.dmi', GLOB.clients, "Donator")]"
 	if(isCouncil(src))
 		prefix += "[icon2html('icons/ooc.dmi', GLOB.clients, "WhitelistCouncil")]"

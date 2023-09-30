@@ -1,10 +1,9 @@
 /proc/create_all_lighting_objects()
-	for(var/area/A in world)
-
-		if(!A.static_lighting)
+	for(var/area/area in world)
+		if(!area.static_lighting)
 			continue
 
-		for(var/turf/T in A)
-			new/datum/static_lighting_object(T)
+		for(var/turf/turf in area)
+			new/datum/static_lighting_object(turf)
 			CHECK_TICK
 		CHECK_TICK

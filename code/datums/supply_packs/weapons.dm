@@ -139,7 +139,7 @@
 	name = "M41AE2 HPR crate (HPR x2, HPR ammo box x2)"
 	cost = 40
 	containertype = /obj/structure/closet/crate/weapon
-	containername = "\improper M41AE2 HPR crate"
+	containername = "M41AE2 HPR crate"
 	group = "Weapons"
 
 /datum/supply_packs/gun/merc
@@ -148,5 +148,5 @@
 	cost = 40
 	contraband = 1
 	containertype = /obj/structure/largecrate/guns/merc
-	containername = "\improper black market firearms crate"
+	containername = "black market firearms crate"
 	group = "Weapons"

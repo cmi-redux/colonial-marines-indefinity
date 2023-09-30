@@ -6,7 +6,7 @@
 	allow_additional = TRUE
 	balance_formulas = list("misc", BALANCE_FORMULA_FIELD)
 
-/datum/job/upp/squad/generate_entry_message(mob/living/carbon/human/H)
-	if(H.assigned_squad)
-		entry_message_intro = "You are a [title]!<br>You have been assigned to: <b><font size=3 color=[squad_colors[H.assigned_squad.color]]>[lowertext(H.assigned_squad.name)] squad</font></b>."
+/datum/job/upp/squad/generate_entry_message(mob/living/carbon/human/current_human)
+	if(current_human.assigned_squad)
+		entry_message_intro = "You are a [title]!<br>You have been assigned to: <b><font size=3 color=[current_human.assigned_squad.equipment_color]>[lowertext(current_human.assigned_squad.name)] squad</font></b>."
 	return ..()

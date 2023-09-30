@@ -59,22 +59,6 @@
 "fk" = (
 /turf/open/gm/dirtgrassborder/grassdirt_corner2/north_west,
 /area/lv624/ground/colony/south_medbay_road)
-"ft" = (
-/obj/item/clothing/gloves/marine/veteran/pmc{
-	armor_bio = 10;
-	armor_bomb = 10;
-	armor_bullet = 15;
-	armor_energy = 15;
-	armor_internaldamage = 15;
-	armor_laser = 15;
-	armor_melee = 15;
-	armor_rad = 10;
-	name = "damaged WY PMC gloves"
-	},
-/turf/open/floor{
-	icon_state = "platingdmg1"
-	},
-/area/lv624/lazarus/hydroponics)
 "fX" = (
 /obj/item/device/analyzer/plant_analyzer,
 /obj/effect/spawner/random/claymore,
@@ -150,26 +134,6 @@
 	dir = 4
 	},
 /turf/open/floor/plating,
-/area/lv624/lazarus/hydroponics)
-"mK" = (
-/obj/item/clothing/suit/storage/marine/veteran/pmc/light/synth{
-	desc = "A modification of the standard Armat Systems M3 armor. This variant was designed for PMC Support Units in the field, offering protection and storage while not restricting movement. This set seems damaged...";
-	name = "damaged M4 synthetic PMC armor";
-	pixel_x = -5;
-	pixel_y = -5
-	},
-/obj/effect/spawner/gibspawner/robot,
-/obj/item/limb/head/synth{
-	desc = "This appears to be the head of a synthetic, though it it is so destroyed there is no way in hell anyone is going to bring it back to even basic functionality.";
-	name = "shattered synthetic head";
-	pixel_x = 9;
-	pixel_y = 3
-	},
-/obj/item/robot_parts/arm/l_arm,
-/turf/open/floor{
-	dir = 9;
-	icon_state = "green"
-	},
 /area/lv624/lazarus/hydroponics)
 "np" = (
 /obj/item/tool/weldingtool,
@@ -327,6 +291,10 @@
 /turf/open/floor{
 	icon_state = "platingdmg1"
 	},
+/area/lv624/lazarus/hydroponics)
+"DN" = (
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/plating,
 /area/lv624/lazarus/hydroponics)
 "Ed" = (
 /obj/item/stack/sheet/metal,
@@ -509,18 +477,6 @@
 /obj/item/ammo_magazine/smg/fp9000,
 /obj/item/ammo_magazine/smg/fp9000,
 /obj/item/ammo_magazine/smg/fp9000,
-/obj/item/clothing/gloves/marine/veteran/pmc{
-	armor_bio = 10;
-	armor_bomb = 10;
-	armor_bullet = 15;
-	armor_energy = 15;
-	armor_internaldamage = 15;
-	armor_laser = 15;
-	armor_melee = 15;
-	armor_rad = 10;
-	name = "damaged WY PMC gloves";
-	pixel_y = 9
-	},
 /turf/open/floor/plating,
 /area/lv624/lazarus/hydroponics)
 "QR" = (
@@ -529,19 +485,8 @@
 	},
 /area/lv624/lazarus/hydroponics)
 "RT" = (
-/obj/item/clothing/shoes/veteran/pmc{
-	armor_bio = 15;
-	armor_bomb = 5;
-	armor_bullet = 15;
-	armor_energy = 5;
-	armor_internaldamage = 5;
-	armor_laser = 5;
-	armor_melee = 15;
-	desc = "The height of fashion, but these look to be woven with protective fiber. This pair seems heavily damaged, especially around the soles...";
-	name = "scuffed shoes";
-	pixel_x = -14;
-	pixel_y = -10;
-	slowdown = 0.5
+/turf/open/floor/plating{
+	icon_state = "platingdmg3"
 	},
 /area/lv624/lazarus/medbay)
 "TC" = (
@@ -801,11 +746,11 @@ Xv
 bd
 aO
 QR
-mK
-Wg
-TC
-Wg
-TC
+Xv
+DN
+RT
+Zm
+RT
 TC
 lm
 OI

@@ -155,7 +155,7 @@
 	if(!check_can_use(target, TRUE))
 		return
 
-	var/obj/projectile/aimed_proj = sniper_rifle.in_chamber
+	var/obj/item/projectile/aimed_proj = sniper_rifle.in_chamber
 	aimed_proj.projectile_flags |= PROJECTILE_BULLSEYE
 	aimed_proj.AddComponent(/datum/component/homing_projectile, target, human)
 	sniper_rifle.Fire(target, human)
@@ -183,7 +183,7 @@
 		to_chat(H, SPAN_WARNING("\The [M] is too close to get a proper shot!"))
 		return FALSE
 
-	var/obj/projectile/proj = sniper_rifle.in_chamber
+	var/obj/item/projectile/proj = sniper_rifle.in_chamber
 	// TODO: Make the below logic only occur in certain circumstances. Check goggles, maybe? -Kaga
 	if(check_shot_is_blocked(H, M, proj))
 		to_chat(H, SPAN_WARNING("Something is in the way, or you're out of range!"))
@@ -195,7 +195,7 @@
 	COOLDOWN_START(sniper_rifle, aimed_shot_cooldown, sniper_rifle.aimed_shot_cooldown_delay)
 	return TRUE
 
-/datum/action/item_action/specialist/aimed_shot/proc/check_shot_is_blocked(mob/firer, mob/target, obj/projectile/proj)
+/datum/action/item_action/specialist/aimed_shot/proc/check_shot_is_blocked(mob/firer, mob/target, obj/item/projectile/proj)
 	var/list/turf/path = getline2(firer, target, include_from_atom = FALSE)
 	if(!path.len || get_dist(firer, target) > proj.ammo.max_range)
 		return TRUE
@@ -1220,7 +1220,7 @@
 			current_mag.ammo_position = 0
 
 //Adding in the rocket backblast. The tile behind the specialist gets blasted hard enough to down and slightly wound anyone
-/obj/item/weapon/gun/launcher/rocket/apply_bullet_effects(obj/projectile/projectile_to_fire, mob/user, i = 1, reflex = 0)
+/obj/item/weapon/gun/launcher/rocket/apply_bullet_effects(obj/item/projectile/projectile_to_fire, mob/user, i = 1, reflex = 0)
 	. = ..()
 	if(!HAS_TRAIT(user, TRAIT_EAR_PROTECTION) && ishuman(user))
 		var/mob/living/carbon/human/huser = user
@@ -1396,7 +1396,7 @@
 	Integrated.Attach(src)
 	update_attachable(Integrated.slot)
 
-/obj/item/weapon/gun/launcher/rocket/upp/apply_bullet_effects(obj/projectile/projectile_to_fire, mob/user, i = 1, reflex = 0)
+/obj/item/weapon/gun/launcher/rocket/upp/apply_bullet_effects(obj/item/projectile/projectile_to_fire, mob/user, i = 1, reflex = 0)
 	. = ..()
 	if(!HAS_TRAIT(user, TRAIT_EAR_PROTECTION) && ishuman(user))
 		return

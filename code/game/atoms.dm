@@ -83,23 +83,6 @@
 	///a very temporary list of overlays to add
 	var/list/add_overlays
 
-	///Light systems, both shouldn't be active at the same time.
-	var/light_system = STATIC_LIGHT
-	///Range of the light in tiles. Zero means no light.
-	var/light_range = 0
-	///Intensity of the light. The stronger, the less shadows you will see on the lit area.
-	var/light_power = 1
-	///Hexadecimal RGB string representing the colour of the light. White by default.
-	var/light_color = COLOR_WHITE
-	///Boolean variable for toggleable lights. Has no effect without the proper light_system, light_range and light_power values.
-	var/light_on = FALSE
-	///Bitflags to determine lighting-related atom properties.
-	var/light_flags = NONE
-	///Our light source. Don't fuck with this directly unless you have a good reason!
-	var/tmp/datum/light_source/light
-	///Any light sources that are "inside" of us, for example, if src here was a mob that's carrying a flashlight, that flashlight's light source would be part of this list.
-	var/tmp/list/light_sources
-
 	///Default pixel x shifting for the atom's icon.
 	var/base_pixel_x = 0
 	///Default pixel y shifting for the atom's icon.
@@ -586,32 +569,6 @@ Parameters are passed from New.
 ///This proc is called on atoms when they are loaded into a shuttle
 /atom/proc/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock, idnum, override=FALSE)
 	return
-
-/**
- * If this object has lights, turn it on/off.
- * user: the mob actioning this
- * toggle_on: if TRUE, will try to turn ON the light. Opposite if FALSE
- * cooldown: how long until you can toggle the light on/off again
- * sparks: if a spark effect will be generated
- * forced: if TRUE and toggle_on = FALSE, will cause the light to turn on in cooldown second
- * originated_turf: if not null, will check if the obj_turf is closer than distance_max to originated_turf, and the proc will return if not
- * distance_max: used to check if originated_turf is close to obj.loc
-*/
-/atom/proc/turn_light(mob/user = null, toggle_on, sparks = FALSE, forced = FALSE, light_again = FALSE)
-	if(toggle_on == light_on)
-		return NO_LIGHT_STATE_CHANGE
-	if(light_again && !toggle_on) //Is true when turn light is called by nightfall and the light is already on
-		addtimer(CALLBACK(src, PROC_REF(reset_light)), 2)
-	if(sparks && light_on)
-		var/datum/effect_system/spark_spread/spark_system = new
-		spark_system.set_up(5, 0, src)
-		spark_system.attach(src)
-		spark_system.start(src)
-	return CHECKS_PASSED
-
-///Turn on the light, should be called by a timer
-/atom/proc/reset_light()
-	turn_light(null, TRUE, 1 SECONDS, FALSE, TRUE)
 
 /**
  * Hook for running code when a dir change occurs

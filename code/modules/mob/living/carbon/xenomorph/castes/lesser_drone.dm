@@ -30,8 +30,6 @@
 
 	aura_strength = 1
 
-	minimap_icon = "lesser_drone"
-
 /datum/caste_datum/lesser_drone/New()
 	. = ..()
 

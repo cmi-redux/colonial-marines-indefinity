@@ -273,7 +273,7 @@
 	desc = "A Desert Eagle anodized in gold and adorned with rosewood grips. The living definition of ostentatious, it's flashy, unwieldy, tremendously heavy, and kicks like a mule. But as a symbol of power, there's nothing like it."
 	icon_state = "g_deagle"
 	item_state = "g_deagle"
-	base_gun_icon = "g_deagle"
+	base_icon = "g_deagle"
 
 //-------------------------------------------------------
 //NP92 pistol

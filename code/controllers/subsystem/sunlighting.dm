@@ -304,12 +304,12 @@ SUBSYSTEM_DEF(sunlighting)
 		MA = get_sunlight_overlay(1,1,1,1) /* fully lit */
 	else //Indoor - do proper corner checks
 		/* check if we are globally affected or not */
-		var/static/datum/lighting_corner/dummy/dummy_lighting_corner = new
+		var/static/datum/static_lighting_corner/dummy/dummy_lighting_corner = new
 
-		var/datum/lighting_corner/cr = OE.source_turf.lighting_corner_SW || dummy_lighting_corner
-		var/datum/lighting_corner/cg = OE.source_turf.lighting_corner_SE || dummy_lighting_corner
-		var/datum/lighting_corner/cb = OE.source_turf.lighting_corner_NW || dummy_lighting_corner
-		var/datum/lighting_corner/ca = OE.source_turf.lighting_corner_NE || dummy_lighting_corner
+		var/datum/static_lighting_corner/cr = OE.source_turf.lighting_corner_SW || dummy_lighting_corner
+		var/datum/static_lighting_corner/cg = OE.source_turf.lighting_corner_SE || dummy_lighting_corner
+		var/datum/static_lighting_corner/cb = OE.source_turf.lighting_corner_NW || dummy_lighting_corner
+		var/datum/static_lighting_corner/ca = OE.source_turf.lighting_corner_NE || dummy_lighting_corner
 
 		var/fr = cr.sun_falloff
 		var/fg = cg.sun_falloff

@@ -56,7 +56,7 @@
 	if(range > max_range)
 		range = max_range
 
-	var/obj/projectile/projectile = generate_bullet(user, origin_turf)
+	var/obj/item/projectile/projectile = generate_bullet(user, origin_turf)
 	SEND_SIGNAL(projectile, COMSIG_BULLET_USER_EFFECTS, owner.seats[VEHICLE_GUNNER])
 	projectile.fire_at(A, owner.seats[VEHICLE_GUNNER], src, projectile.ammo.max_range, projectile.ammo.shell_speed)
 

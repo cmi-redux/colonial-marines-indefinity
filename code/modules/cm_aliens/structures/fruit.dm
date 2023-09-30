@@ -86,7 +86,7 @@
 	qdel(src)
 	..()
 
-/obj/effect/alien/resin/fruit/bullet_act(obj/projectile/proj)
+/obj/effect/alien/resin/fruit/bullet_act(obj/item/projectile/proj)
 	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
 	if(ammo_flags & (AMMO_XENO))
 		return
@@ -173,7 +173,7 @@
 		else
 			to_chat(affected_xeno, SPAN_XENOWARNING("[name] isn't ripe yet. You need to wait a little longer."))
 
-	if(affected_xeno.a_intent == INTENT_HARM && isxeno_builder(affected_xeno) || (!affected_xeno.can_not_harm(bound_xeno) && affected_xeno.hivenumber != hivenumber))
+	if(affected_xeno.a_intent == INTENT_HARM && isxeno_builder(affected_xeno) || (!affected_xeno.can_not_harm(bound_xeno) && affected_xeno.faction != faction))
 		affected_xeno.animation_attack_on(src)
 		affected_xeno.visible_message(SPAN_XENODANGER("[affected_xeno] removes [name]!"),
 		SPAN_XENODANGER("You remove [name]!"))

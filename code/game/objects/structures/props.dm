@@ -1357,7 +1357,7 @@
 	attacked()
 	return ..()
 
-/obj/structure/prop/invuln/joey/bullet_act(obj/projectile/P)
+/obj/structure/prop/invuln/joey/bullet_act(obj/item/projectile/P)
 	attacked()
 	return ..()
 

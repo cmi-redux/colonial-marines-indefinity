@@ -52,14 +52,14 @@ SUBSYSTEM_DEF(influxstats)
 	return result
 
 /datum/controller/subsystem/influxstats/proc/run_special_round_statistics()
-	for(var/hive_tag in GLOB.hive_datum)
-		var/datum/hive_status/hive = GLOB.hive_datum[hive_tag]
-		SSinfluxdriver.enqueue_stats("pooled_larva", list("hive" = hive.reporting_id), list("count" = hive.stored_larva))
-		var/burst_larvas = GLOB.larva_burst_by_hive[hive] || 0
-		SSinfluxdriver.enqueue_stats("burst_larva", list("hive" = hive.reporting_id), list("count" = burst_larvas))
+	for(var/faction_to_get in FACTION_LIST_XENOMORPH)
+		var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
+		SSinfluxdriver.enqueue_stats("pooled_larva", list("hive" = lowertext(faction.name)), list("count" = faction.stored_larva))
+		var/burst_larvas = GLOB.larva_burst_by_hive[faction] || 0
+		SSinfluxdriver.enqueue_stats("burst_larva", list("hive" = lowertext(faction.name)), list("count" = burst_larvas))
 
 /datum/controller/subsystem/influxstats/proc/run_round_statistics()
-	var/datum/entity/statistic/round/stats = SSticker?.mode?.round_stats
+	var/datum/entity/statistic_round/stats = SSticker?.mode?.round_statistics
 	if(!stats)
 		return // Sadge
 
@@ -104,7 +104,7 @@ SUBSYSTEM_DEF(influxstats)
 
 /datum/controller/subsystem/influxstats/proc/run_job_statistics()
 	var/list/team_job_stats = list()
-	var/list/squad_job_stats = ROLES_SQUAD_ALL.Copy()
+	var/list/squad_job_stats = ROLES_SQUAD_ALL
 	for(var/squad in squad_job_stats)
 		squad_job_stats[squad] = list()
 
@@ -122,7 +122,7 @@ SUBSYSTEM_DEF(influxstats)
 			team = "observers"
 		else if(!job)
 			continue
-		else if(mob.faction == FACTION_MARINE || mob.faction == FACTION_SURVIVOR)
+		else if(mob.faction.faction_name in SSticker.mode.factions_pool)
 			team = "humans"
 			var/mob/living/carbon/human/employed_human = mob
 			if(istype(employed_human))
@@ -135,11 +135,10 @@ SUBSYSTEM_DEF(influxstats)
 			team = "humans_others"
 		else if(isxeno(mob))
 			var/mob/living/xeno_enabled_mob = mob
-			var/datum/hive_status/hive = GLOB.hive_datum[xeno_enabled_mob.hivenumber]
-			if(!hive)
+			if(!xeno_enabled_mob.faction)
 				team = "xenos_others"
 			else
-				team = "xenos_[hive.reporting_id]"
+				team = "xenos_[lowertext(xeno_enabled_mob.faction.name)]"
 		else
 			team = "others"
 		LAZYINITLIST(team_job_stats[team])

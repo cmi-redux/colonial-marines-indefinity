@@ -875,7 +875,7 @@
 	update_icon()
 	return TRUE
 
-/obj/item/weapon/gun/launcher/spike/delete_bullet(obj/projectile/projectile_to_fire, refund = 0)
+/obj/item/weapon/gun/launcher/spike/delete_bullet(obj/item/projectile/projectile_to_fire, refund = 0)
 	qdel(projectile_to_fire)
 	if(refund) spikes++
 	return TRUE
@@ -962,7 +962,7 @@
 /obj/item/weapon/gun/energy/yautja/plasmarifle/load_into_chamber()
 	ammo = GLOB.ammo_list[/datum/ammo/energy/yautja/rifle/bolt]
 	charge_time -= 10
-	var/obj/projectile/proj = create_bullet(ammo, initial(name))
+	var/obj/item/projectile/proj = create_bullet(ammo, initial(name))
 	in_chamber = proj
 	return in_chamber
 
@@ -973,7 +973,7 @@
 	update_icon()
 	return TRUE
 
-/obj/item/weapon/gun/energy/yautja/plasmarifle/delete_bullet(obj/projectile/projectile_to_fire, refund = 0)
+/obj/item/weapon/gun/energy/yautja/plasmarifle/delete_bullet(obj/item/projectile/projectile_to_fire, refund = 0)
 	qdel(projectile_to_fire)
 	if(refund) charge_time *= 2
 	return TRUE
@@ -1058,7 +1058,7 @@
 /obj/item/weapon/gun/energy/yautja/plasmapistol/load_into_chamber()
 	if(charge_time < 1)
 		return
-	var/obj/projectile/proj = create_bullet(ammo, initial(name))
+	var/obj/item/projectile/proj = create_bullet(ammo, initial(name))
 	in_chamber = proj
 	charge_time -= shot_cost
 	return in_chamber
@@ -1070,7 +1070,7 @@
 /obj/item/weapon/gun/energy/yautja/plasmapistol/reload_into_chamber()
 	return TRUE
 
-/obj/item/weapon/gun/energy/yautja/plasmapistol/delete_bullet(obj/projectile/projectile_to_fire, refund = 0)
+/obj/item/weapon/gun/energy/yautja/plasmapistol/delete_bullet(obj/item/projectile/projectile_to_fire, refund = 0)
 	qdel(projectile_to_fire)
 	if(refund)
 		charge_time += shot_cost
@@ -1259,7 +1259,7 @@
 /obj/item/weapon/gun/energy/yautja/plasma_caster/reload_into_chamber()
 	return TRUE
 
-/obj/item/weapon/gun/energy/yautja/plasma_caster/delete_bullet(obj/projectile/projectile_to_fire, refund = 0)
+/obj/item/weapon/gun/energy/yautja/plasma_caster/delete_bullet(obj/item/projectile/projectile_to_fire, refund = 0)
 	qdel(projectile_to_fire)
 	if(refund)
 		source.charge += charge_cost

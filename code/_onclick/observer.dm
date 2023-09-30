@@ -46,7 +46,7 @@
 
 					var/deathtime = world.time - timeofdeath
 					if(deathtime < XENO_JOIN_DEAD_LARVA_TIME)
-						var/message = "You have been dead for [DisplayTimeText(deathtime, language = CLIENT_LANGUAGE_RUSSIAN)]."
+						var/message = "You have been dead for [DisplayTimeText(deathtime, language = client.language)]."
 						message = SPAN_WARNING("[message]")
 						to_chat(src, message)
 						to_chat(src, SPAN_WARNING("You must wait atleast 2.5 minutes before rejoining the game!"))
@@ -65,7 +65,7 @@
 				if(((!islarva(xeno) && xeno.away_timer < XENO_LEAVE_TIMER) || (islarva(xeno) && xeno.away_timer < XENO_LEAVE_TIMER_LARVA)) || xeno.stat == DEAD) // Do it again, just in case
 					to_chat(src, SPAN_WARNING("That xenomorph can no longer be controlled. Please try another."))
 					return FALSE
-				SSticker.mode.transfer_xeno(src, xeno)
+				SSticker.mode.transfer_xenomorph(src, xeno)
 				return TRUE
 			ManualFollow(target)
 			return TRUE

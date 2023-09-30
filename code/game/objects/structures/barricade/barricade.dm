@@ -253,7 +253,7 @@
 			playsound(src, barricade_hitsound, 35, 1)
 		hit_barricade(item)
 
-/obj/structure/barricade/bullet_act(obj/projectile/proj)
+/obj/structure/barricade/bullet_act(obj/item/projectile/proj)
 	bullet_ping(proj)
 
 	if(proj.ammo.damage_type == BURN)
@@ -470,8 +470,8 @@
 	update_damage_state()
 	material.use(1)
 	for(var/i=0;i<3;i++)
-		var/obj/projectile/proj = NG.current_mag.transfer_bullet_out()
+		var/obj/item/projectile/proj = nailgun.current_mag.transfer_bullet_out()
 		qdel(proj)
-	NG.in_chamber = null
-	NG.load_into_chamber()
+	nailgun.in_chamber = null
+	nailgun.load_into_chamber()
 	return TRUE

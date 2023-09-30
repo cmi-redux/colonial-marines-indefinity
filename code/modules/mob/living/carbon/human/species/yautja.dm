@@ -97,14 +97,14 @@
 	if(!istype(faction))
 		return
 
-	if(!(XENO_STRUCTURE_NEST in faction.hive_structure_types))
-		faction.hive_structure_types.Add(XENO_STRUCTURE_NEST)
+	if(!(XENO_STRUCTURE_NEST in faction.faction_structure_types))
+		faction.faction_structure_types.Add(XENO_STRUCTURE_NEST)
 
 	if(!(XENO_STRUCTURE_NEST in faction.faction_structures_limit))
 		faction.faction_structures_limit.Add(XENO_STRUCTURE_NEST)
 		faction.faction_structures_limit[XENO_STRUCTURE_NEST] = 0
 
-	faction.hive_structure_types[XENO_STRUCTURE_NEST] = /datum/construction_template/xenomorph/nest
+	faction.faction_structure_types[XENO_STRUCTURE_NEST] = /datum/construction_template/xenomorph/nest
 	faction.faction_structures_limit[XENO_STRUCTURE_NEST]++
 
 	xeno_message(SPAN_XENOANNOUNCE("The hive senses that a headhunter has been infected! The thick resin nest is now available in the special structures list!"), 3, faction)

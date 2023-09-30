@@ -335,7 +335,7 @@
 
 	return ..()
 
-/obj/bullet_act(obj/projectile/proj)
+/obj/bullet_act(obj/item/projectile/proj)
 	//Tasers and the like should not damage objects.
 	if(proj.ammo.damage_type == HALLOSS || proj.ammo.damage_type == TOX || proj.ammo.damage_type == CLONE || proj.damage == 0)
 		return 0
