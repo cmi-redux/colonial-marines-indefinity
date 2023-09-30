@@ -268,9 +268,9 @@ DEFINE_BITFIELD(reactor_flags, list(
 			icon_state = "reactor_on"
 		if(200 to RBMK_TEMPERATURE_OPERATING)
 			icon_state = "reactor_hot"
-		if(RBMK_TEMPERATURE_OPERATING to 750)
+		if(RBMK_TEMPERATURE_OPERATING to 1100)
 			icon_state = "reactor_veryhot"
-		if(750 to RBMK_TEMPERATURE_CRITICAL) //Point of no return.
+		if(1100 to RBMK_TEMPERATURE_CRITICAL) //Point of no return.
 			icon_state = "reactor_overheat"
 		if(RBMK_TEMPERATURE_CRITICAL to INFINITY)
 			icon_state = "reactor_meltdown"

@@ -66,9 +66,9 @@
 				faction.slashing_allowed = XENO_SLASH_ALLOWED
 				faction.set_living_xeno_queen(null)
 				//on the off chance there was somehow two queen alive
-				for(var/mob/living/carbon/xenomorph/queen/queen in GLOB.living_xeno_list)
-					if(!QDELETED(queen) && queen != src && queen.faction == faction)
-						faction.set_living_xeno_queen(queen)
+				for(var/mob/living/carbon/xenomorph/queen/selected_queen in GLOB.living_xeno_list)
+					if(!QDELETED(selected_queen) && selected_queen != src && selected_queen.faction == faction)
+						faction.set_living_xeno_queen(selected_queen)
 						break
 				faction.on_leader_death()
 				faction.handle_xeno_leader_pheromones()
