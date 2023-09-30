@@ -667,13 +667,6 @@
 	. = ..()
 	if(iff_enabled)
 		modify_fire_delay(FIRE_DELAY_TIER_12)
-		remove_firemode(GUN_FIREMODE_BURSTFIRE)
-		remove_firemode(GUN_FIREMODE_AUTOMATIC)
-
-	else
-		add_firemode(GUN_FIREMODE_BURSTFIRE)
-		add_firemode(GUN_FIREMODE_AUTOMATIC)
-
 
 /obj/item/weapon/gun/rifle/m46c/proc/name_after_co(mob/living/carbon/human/H)
 	linked_human = H
