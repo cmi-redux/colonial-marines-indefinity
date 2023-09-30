@@ -55,7 +55,7 @@
 	if(!can_be_broken)
 		return
 
-	if(toggle_light(attacking_xeno, toggle_on = FALSE) != CHECKS_PASSED)
+	if(toggle_light(attacking_xeno, FALSE) != CHECKS_PASSED)
 		return
 
 	if(breaking_sound)

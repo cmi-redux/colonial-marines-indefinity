@@ -125,12 +125,13 @@
 
 /obj/item/clothing/proc/toggle_light(mob/user, toggle_on, sparks = FALSE, forced = FALSE)
 	SIGNAL_HANDLER
+	if(toggle_on == light_on || turn_light(user, toggle_on) != CHECKS_PASSED)
+		return
+
 	if(!toggle_on)
 		playsound(src, 'sound/handling/click_2.ogg', 50, TRUE)
 	else
 		playsound(src, 'sound/handling/suitlight_on.ogg', 50, TRUE)
-
-	turn_light(user, toggle_on)
 
 /obj/item/clothing/turn_light(mob/user, toggle_on, sparks = FALSE, forced = FALSE)
 	. = ..()
