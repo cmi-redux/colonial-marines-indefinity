@@ -187,8 +187,11 @@
 		INVOKE_ASYNC(src, PROC_REF(stair_ascend), leaving)
 		return COMPONENT_ATOM_BLOCK_EXIT
 
-/obj/structure/stairs/Cross(atom/movable/AM)
-	if(isTerminator() && (get_dir(src, AM) == dir))
+/obj/structure/stairs/Cross(atom/movable/atom_movable)
+	if(isTerminator() && (get_dir(src, atom_movable) == dir))
+		if(istype(atom_movable, /obj/vehicle/multitile))
+			var/obj/vehicle/multitile/multitile = atom_movable
+			multitile.try_use_stairs()
 		return FALSE
 	return ..()
 

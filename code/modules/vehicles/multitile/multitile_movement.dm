@@ -57,7 +57,7 @@
 	return success
 
 // Attempts to execute the given movement input
-/obj/vehicle/multitile/proc/try_move(direction, force=FALSE)
+/obj/vehicle/multitile/proc/try_move(direction, force = FALSE)
 	if(!can_move(direction))
 		return FALSE
 
@@ -71,15 +71,51 @@
 	var/turf/old_turf = get_turf(src)
 	forceMove(get_step(src, direction))
 
+	var/turf/current_loc = get_turf(src)
 	for(var/obj/item/hardpoint/H in hardpoints)
-		H.on_move(old_turf, get_turf(src), direction)
+		H.on_move(old_turf, current_loc, direction)
 
 	if(movement_sound && world.time > move_next_sound_play)
 		playsound(src, movement_sound, vol = 20, sound_range = 30)
 		move_next_sound_play = world.time + 10
 
+	if(current_loc && !zfalling_blocked)
+		zfalling_blocked = TRUE
+		var/req_locs_to_zfall = round(length(locs) / 1.5)
+		var/locs_to_zfall = 0
+		for(var/turf/one_loc as anything in locs)
+			var/turf/target = get_step_multiz(current_loc, DOWN)
+			if(!can_z_move(DOWN, one_loc, target, ZMOVE_FALL_FLAGS))
+				continue
+			locs_to_zfall++
+		if(req_locs_to_zfall <= locs_to_zfall)
+			current_loc.zFall(src, falling_from_move = TRUE)
+			update_momentum(dir)
+			interior_crash_effect()
+		zfalling_blocked = FALSE
+
 	last_move_dir = direction
 	return TRUE
+
+// So we fucking step on stairs
+/obj/vehicle/multitile/proc/try_use_stairs()
+	var/turf/current_loc = get_turf(src)
+	if(current_loc && !zfalling_blocked)
+		zfalling_blocked = TRUE
+		var/req_locs_to_up = round(length(locs) / 3)
+		var/locs_to_up = 0
+		for(var/turf/one_loc as anything in locs)
+			for(var/obj/structure/stairs/stair in one_loc)
+				if(!stair.isTerminator())
+					continue
+				locs_to_up++
+		if(req_locs_to_up <= locs_to_up)
+			current_loc.zFall(src, falling_from_move = TRUE)
+			zMove(UP, z_move_flags = ZMOVE_STAIRS_FLAGS)
+			try_move(dir, TRUE)
+			update_momentum(dir)
+			interior_crash_effect()
+		zfalling_blocked = FALSE
 
 // Rotates the vehicle by deg degrees if possible
 /obj/vehicle/multitile/proc/try_rotate(deg)

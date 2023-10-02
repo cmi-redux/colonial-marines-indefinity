@@ -23,9 +23,7 @@
 
 	light_system = DIRECTIONAL_LIGHT
 	light_range = 8
-
-	var/vehicle_light_range = 5
-	var/vehicle_light_power = 2
+	light_on = FALSE
 
 	//Yay! Working cameras in the vehicles at last!!
 	var/obj/structure/machinery/camera/vehicle/camera = null
@@ -38,6 +36,9 @@
 
 	// List of verbs to give when a mob is seated in each seat type
 	var/list/seat_verbs
+
+	// Stairs multitile shitcode
+	var/zfalling_blocked = FALSE
 
 	move_delay = VEHICLE_SPEED_STATIC
 	// The next world.time when the vehicle can move
@@ -168,9 +169,6 @@
 	rotate_entrances(angle_to_turn)
 	rotate_bounds(angle_to_turn)
 
-	light_pixel_x = -bound_x
-	light_pixel_y = -bound_y
-
 	healthcheck()
 	update_icon()
 
@@ -226,25 +224,27 @@
 
 	var/amt_hardpoints = length(hardpoints)
 	if(amt_hardpoints)
-		var/list/hardpoint_images[amt_hardpoints]
-		var/list/C[HDPT_LAYER_MAX]
-
-		// Counting sort the images into a list so we get the hardpoint images sorted by layer
+		var/list/hardpoint_images = list()
 		for(var/obj/item/hardpoint/H in hardpoints)
-			C[H.hdpt_layer] += 1
+			hardpoint_images[H.get_hardpoint_image()] = H.hdpt_layer
 
-		for(var/i = 2 to HDPT_LAYER_MAX)
-			C[i] += C[i-1]
+		for(var/k = hardpoint_images.len, k > 0, k--)
+			for(var/j = 1, j < k, j++)
+				if(hardpoint_images[hardpoint_images[j]] > hardpoint_images[hardpoint_images[j+1]])
+					hardpoint_images.Swap(j, j+1)
 
-		for(var/obj/item/hardpoint/H in hardpoints)
-			hardpoint_images[C[H.hdpt_layer]] = H.get_hardpoint_image()
-			C[H.hdpt_layer] -= 1
+		for(var/i in hardpoint_images)
+			if(islist(i))
+				for(var/l in i)
+					var/image/P = l
+					if(istype(P))
+						P.layer = layer + (hardpoint_images[i]*0.1)
+					overlays += P
+				continue
 
-		for(var/i = 1 to amt_hardpoints)
-			var/image/I = hardpoint_images[i]
-			// get_hardpoint_image() can return a list of images
+			var/image/I = i
 			if(istype(I))
-				I.layer = layer + (i*0.1)
+				I.layer = layer + (hardpoint_images[i]*0.1)
 			overlays += I
 
 	if(clamped)

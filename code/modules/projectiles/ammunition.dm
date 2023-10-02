@@ -153,7 +153,7 @@ They're all essentially identical when it comes to getting the job done.
 			for(var/c = 1 to ammo_position)
 				current_rounds_updated[c-broken_ammoes] = current_rounds[c-broken_ammoes]
 			break
-	for(var/obj/item/projectile/proj in current_rounds_updated)
+	for(var/obj/item/projectile/proj as anything in current_rounds_updated)
 		current_rounds[current_rounds_updated[proj]] = proj
 	ammo_position -= broken_ammoes
 

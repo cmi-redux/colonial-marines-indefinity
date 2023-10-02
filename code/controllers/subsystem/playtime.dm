@@ -19,7 +19,7 @@ SUBSYSTEM_DEF(playtime)
 
 	var/list/datum/view_record/playtime/PTs = DB_VIEW(/datum/view_record/playtime/)
 	var/list/real_best_playtimes = list()
-	for(var/datum/view_record/playtime/PT in PTs)
+	for(var/datum/view_record/playtime/PT as anything in PTs)
 		var/role_id = PT.role_id
 		var/role_time = round(PT.total_minutes / 60, 0.1)
 		if(!(role_id in real_best_playtimes))

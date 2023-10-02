@@ -40,8 +40,6 @@
 	movement_sound = 'sound/vehicles/tank_driving.ogg'
 	honk_sound = 'sound/vehicles/honk_2_truck.ogg'
 
-	vehicle_light_range = 8
-
 	move_max_momentum = 3
 
 	hardpoints_allowed = list(

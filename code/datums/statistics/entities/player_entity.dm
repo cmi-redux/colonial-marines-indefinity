@@ -74,7 +74,7 @@
 	nemesis.value = 0
 	statistic_deaths = list()
 	var/list/causes = list()
-	for(var/datum/entity/statistic_death/statistic in statistics)
+	for(var/datum/entity/statistic_death/statistic as anything in statistics)
 		statistic_deaths += statistic
 		if(!statistic.cause_name)
 			continue
@@ -85,7 +85,7 @@
 
 /datum/statistic_groups/proc/load_statistic(list/datum/entity/statistic/statistics)
 	statistic_all = list()
-	for(var/datum/entity/statistic/statistic in statistics)
+	for(var/datum/entity/statistic/statistic as anything in statistics)
 		if(!statistic_all[statistic.statistic_type])
 			statistic_all[statistic.statistic_type] = list()
 
@@ -139,9 +139,9 @@
 	for(var/subtype in statistics)
 		var/datum/player_statistic_detail/detail_statistic = statistics[subtype]
 		detail_statistic.top_values_statistics = list()
-		for(var/datum/entity/statistic/potential_statistic in detail_statistic.statistics)
+		for(var/datum/entity/statistic/potential_statistic as anything in detail_statistic.statistics)
 			var/top = TRUE
-			for(var/datum/entity/statistic/statistic in statistic_all[potential_statistic.general_name] - potential_statistic)
+			for(var/datum/entity/statistic/statistic as anything in statistic_all[potential_statistic.general_name] - potential_statistic)
 				if(potential_statistic.value <= statistic.value)
 					top = FALSE
 					break
@@ -152,7 +152,7 @@
 	top_statistic = potential_top_statistic[1]
 
 	for(var/subtype in statistic_all)
-		for(var/datum/entity/statistic/statistic in statistic_all[subtype])
+		for(var/datum/entity/statistic/statistic as anything in statistic_all[subtype])
 			if(total[statistic.statistic_name])
 				total[statistic.statistic_name] += statistic.value
 			else
@@ -216,7 +216,7 @@
 		DB_FILTER(/datum/entity/statistic/medal, DB_COMP("player_id", DB_EQUALS, player.id), CALLBACK(src, TYPE_PROC_REF(/datum/player_entity, statistic_load_medals)))
 
 /datum/player_entity/proc/statistic_load_medals(list/datum/entity/statistic/medal/statistics)
-	for(var/datum/entity/statistic/medal/statistic in statistics)
+	for(var/datum/entity/statistic/medal/statistic as anything in statistics)
 		if(statistic in medals)
 			continue
 

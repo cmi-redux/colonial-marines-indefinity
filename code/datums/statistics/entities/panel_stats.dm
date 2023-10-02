@@ -20,7 +20,7 @@
 
 	if(length(medals))
 		var/list/medal_list = list()
-		for(var/datum/entity/statistic/medal/medal in medals)
+		for(var/datum/entity/statistic/medal/medal as anything in medals)
 			medal_list += list(list(
 				"round_id" = "[medal.round_id]",
 				"medal_type" = medal.medal_type,
@@ -45,7 +45,7 @@
 		if(group.nemesis)
 			nemesis = list("name" = group.nemesis.nemesis_name, "value" = group.nemesis.value)
 
-		for(var/datum/entity/statistic_death/statistic_death in group.statistic_deaths)
+		for(var/datum/entity/statistic_death/statistic_death as anything in group.statistic_deaths)
 			if(length(death_list) >= STATISTICS_DEATH_LIST_LEN)
 				break
 
@@ -86,7 +86,7 @@
 			if(player_statistic.top_statistic)
 				var/list/top_statistic_list = list()
 				var/datum/player_statistic_detail/detail_statistic = player_statistic.top_statistic
-				for(var/datum/entity/statistic/top_statistic_entity in detail_statistic.statistics)
+				for(var/datum/entity/statistic/top_statistic_entity as anything in detail_statistic.statistics)
 					top_statistic_list += list(list("name" = top_statistic_entity.statistic_name, "value" = top_statistic_entity.value))
 
 				top_statistics += list(list(
@@ -98,10 +98,10 @@
 				var/datum/player_statistic_detail/detail_statistic = player_statistic.statistics[statistic_subtype]
 				var/list/subtype_statistics = list()
 				var/list/subtype_top_statistics = list()
-				for(var/datum/entity/statistic/statistic in detail_statistic.statistics)
+				for(var/datum/entity/statistic/statistic as anything in detail_statistic.statistics)
 					subtype_statistics += list(list("name" = statistic.statistic_name, "value" = statistic.value))
 
-				for(var/datum/entity/statistic/statistic in detail_statistic.top_values_statistics)
+				for(var/datum/entity/statistic/statistic as anything in detail_statistic.top_values_statistics)
 					subtype_top_statistics += list(list("name" = statistic.statistic_name, "value" = statistic.value))
 
 				statistic_info += list(list(
@@ -159,7 +159,7 @@
 
 	total_deaths_list = length(total_deaths)
 
-	for(var/datum/entity/statistic_death/S in death_stats_list)
+	for(var/datum/entity/statistic_death/S as anything in death_stats_list)
 		if(new_death_stats_list.len >= STATISTICS_DEATH_LIST_LEN)
 			break
 		var/list/damage_list = list()

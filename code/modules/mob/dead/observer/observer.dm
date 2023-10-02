@@ -384,6 +384,7 @@ Works together with spawning an observer, noted above.
 	mind = null
 
 	if(ghost.client)
+		playsound_client(ghost.client, null, channel = SOUND_CHANNEL_HEARTBEAT)
 		ghost.client.init_verbs()
 		ghost.client.change_view(world_view_size) //reset view range to default
 		ghost.client.pixel_x = 0 //recenters our view

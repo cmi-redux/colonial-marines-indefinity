@@ -35,7 +35,7 @@
 	if(istype(O, /obj/item/ammo_parts/casing))
 		var/obj/item/ammo_parts/casing/ammo = O
 		var/checked_len = 0
-		for(var/obj/item/ammo_parts/part/part in ammo.parts)
+		for(var/obj/item/ammo_parts/part/part as anything in ammo.parts)
 			checked_len++
 			if(part.locked < 2)
 				to_chat(user, SPAN_WARNING("[part] недостаточно закреплено."))
@@ -242,7 +242,7 @@
 /obj/item/ammo_parts/casing/update_icon()
 	update_material_cost()
 	overlays.Cut()
-	for(var/obj/item/ammo_parts/part in parts)
+	for(var/obj/item/ammo_parts/part as anything in parts)
 		metal_cost += metal_cost
 		part.pixel_x = pixel_x
 		part.pixel_y = pixel_y
@@ -256,7 +256,7 @@
 		if(user.action_busy)
 			return
 		var/list/choices = list()
-		for(var/obj/item/ammo_parts/part/P in parts)
+		for(var/obj/item/ammo_parts/part/P as anything in parts)
 			if(P.locked == 2)
 				continue
 			choices += list("[P.name]" = P)
@@ -276,7 +276,7 @@
 		if(user.action_busy)
 			return
 		var/list/choices = list()
-		for(var/obj/item/ammo_parts/part/P in parts)
+		for(var/obj/item/ammo_parts/part/P as anything in parts)
 			choices += list("[P.name], [P.locked < 2 ? "" : "не "]закреплено" = P)
 		var/obj/item/ammo_parts/part/choiced = tgui_input_list(usr, "Выберети часть, которую хотите закрепить или открепить:","[src]", choices)
 		if(!skillcheck(user, SKILL_CONSTRUCTION, SKILL_CONSTRUCTION_TRAINED))
@@ -318,7 +318,7 @@
 
 /obj/item/ammo_parts/casing/proc/complite(mob/user)
 	var/checked_len = 0
-	for(var/obj/item/ammo_parts/part/part in parts)
+	for(var/obj/item/ammo_parts/part/part as anything in parts)
 		checked_len++
 		if(part.locked < 2)
 			to_chat(user, SPAN_WARNING("[part] недостаточно закреплено."))
@@ -339,7 +339,7 @@
 	if(!generated_ammo)
 		generated_ammo = new ammo_datum(loc)
 		generated_ammo.name = "[prob(50) ? "" : "[rand(0,9)]"][prob(50) ? "" : "[rand(0,9)]"][prob(50) ? "" : "[rand(0,9)]"][prob(50) ? "" : "[pick(alphabet_uppercase)]"][prob(50) ? "" : "[pick(alphabet_uppercase)]"][prob(50) ? "" : "[pick(alphabet_uppercase)]"] EXP AMMO"
-		for(var/obj/item/ammo_parts/part/part in parts)
+		for(var/obj/item/ammo_parts/part/part as anything in parts)
 			for(var/i in part.modificators)
 				bullet_stats[i] += part.modificators[i]
 			projectile_flags |= part.part_flags

@@ -201,7 +201,7 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic_death)
 
 	if(src)
 		to_chat(src, SPAN_DEADSAY(observer_message))
-	for(var/mob/dead/observer/g in GLOB.observer_list)
+	for(var/mob/dead/observer/g as anything in GLOB.observer_list)
 		to_chat(g, SPAN_DEADSAY("[observer_message] [OBSERVER_JMP(g, death_loc)]"))
 
 	var/ff_type = Dlog.cause_faction_name == Dlog.faction_name ? 1 : 0

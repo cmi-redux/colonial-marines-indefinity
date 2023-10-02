@@ -53,7 +53,10 @@
 			return
 		vehicle.set_seated_mob(seat, M)
 		if(M && M.client)
-			M.client.change_view(8, vehicle)
+			if(istype(vehicle, /obj/vehicle/multitile/tank))
+				M.client.change_view(9, vehicle)
+			else
+				M.client.change_view(8, vehicle)
 
 /obj/structure/bed/chair/comfy/vehicle/unbuckle()
 //	buckled_mob.remove_fov_trait(src, "no_fov")
@@ -201,6 +204,8 @@
 			if(istype(vehicle, /obj/vehicle/multitile/apc))
 				var/obj/vehicle/multitile/apc/APC = vehicle
 				M.client.change_view(APC.gunner_view_buff, vehicle)
+			else if(istype(vehicle, /obj/vehicle/multitile/tank))
+				M.client.change_view(9, vehicle)
 			else
 				M.client.change_view(8, vehicle)
 

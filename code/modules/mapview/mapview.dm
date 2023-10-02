@@ -56,10 +56,10 @@
 			passive_scan[zlevel] = FALSE
 
 	var/list/image/images_to_gen = list()
-	for(var/datum/tacmap/mob_datum/mob_datum in mobs_to_draw)
+	for(var/datum/tacmap/mob_datum/mob_datum as anything in mobs_to_draw)
 		if(mob_datum.atom_ref.z == text2num(zlevel))
 			images_to_gen += mob_datum.image_assoc[faction.faction_name]
-	for(var/datum/tacmap/mob_datum/mob_datum in faction_mobs_to_draw)
+	for(var/datum/tacmap/mob_datum/mob_datum as anything in faction_mobs_to_draw)
 		if(mob_datum.atom_ref.z == text2num(zlevel) && (mob_datum.atom_ref.tacmap_visibly || mob_datum.flags_tacmap & TCMP_INVISIBLY_OV))
 			images_to_gen += mob_datum.image_assoc[faction.faction_name]
 	return images_to_gen
@@ -78,11 +78,10 @@
 				mobs_to_draw -= tcov
 
 /datum/tacmap/faction_datum/proc/enemy_draw()
-	for(var/datum/tacmap/mob_datum/tcov in faction_mobs_to_draw)
+	for(var/datum/tacmap/mob_datum/tcov as anything in faction_mobs_to_draw)
 		var/list/view_candidates = SSquadtree.players_in_range(tcov.tcmp_effect.get_range_bounds(), tcov.atom_ref.z, QTREE_EXCLUDE_OBSERVER | QTREE_SCAN_MOBS)
 
-		for(var/A in view_candidates)
-			var/mob/living/M = A
+		for(var/mob/living/M as anything in view_candidates)
 			if(M.faction == faction)
 				continue
 			var/datum/tacmap/mob_datum/tcov_second = SSmapview.assoc_mobs_datums[M]
@@ -190,11 +189,11 @@
 		return list()
 	var/list/markers_view = list()
 	var/list/markers_ally = faction_tcmp_ref.faction_mobs_to_draw
-	for(var/datum/tacmap/mob_datum/M in markers_ally)
+	for(var/datum/tacmap/mob_datum/M as anything in markers_ally)
 		if(M.atom_ref.z & map.map_zlevels)
 			markers_view["[M.generated_tag_ally]"] = M
 	var/list/markers = faction_tcmp_ref.mobs_to_draw
-	for(var/datum/tacmap/mob_datum/M in markers)
+	for(var/datum/tacmap/mob_datum/M as anything in markers)
 		if(M.atom_ref.z & map.map_zlevels)
 			markers_view["[M.generated_tag]"] = M
 	return markers_view

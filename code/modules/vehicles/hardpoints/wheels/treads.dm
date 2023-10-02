@@ -31,6 +31,7 @@
 			OD.apply_buff(V)
 	if(move_delay)
 		V.move_delay = move_delay
+		V.next_move = world.time + V.move_delay
 	if(move_max_momentum)
 		V.move_max_momentum = move_max_momentum
 	if(move_momentum_build_factor)

@@ -132,23 +132,21 @@ Verbs related to getting fucking jacked, bro
 		if(SKILL_ENDURANCE_TRAINED)
 			stamina_loss -= 1
 		if(SKILL_ENDURANCE_MASTER)
-			stamina_loss -= 2
+			stamina_loss -= 2.5
 		if(SKILL_ENDURANCE_EXPERT)
-			stamina_loss -= 3
+			stamina_loss -= 4.9
 	if(wear_suit)
-		stamina_loss += 0.5
+		stamina_loss *= 1.2
 	if(back)
-		stamina_loss += 0.5
+		stamina_loss *= 1.2
 	if(pain.get_pain_percentage() >= 20)
-		stamina_loss += 3
+		stamina_loss *= 1.8
 	if(nutrition <= NUTRITION_LOW)
-		stamina_loss += 2
+		stamina_loss *= 1.6
 	if(on_knees)
-		stamina_loss -= 2
+		stamina_loss *= 0.5
 	if(health <= ((maxHealth / 10) * 9))
-		stamina_loss += 2
-	if(stamina_loss <= 0)
-		stamina_loss = 1
+		stamina_loss *= 1.4
 	if(isyautja(src))
-		stamina_loss = stamina_loss/2
+		stamina_loss *= 0.5
 	return stamina_loss
