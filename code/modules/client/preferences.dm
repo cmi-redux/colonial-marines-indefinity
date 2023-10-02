@@ -340,7 +340,7 @@ var/const/MAX_SAVE_SLOTS = 10
 			dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_OCUP)]:</u></b></h2>"
 			dat += "<br>"
 			dat += "\t<a href='?_src_=prefs;preference=job;task=menu'><b>[user.client.auto_lang(LANGUAGE_PREF_OCUP_CHOSE)]</b></a>"
-			dat += "</div>"
+			dat += "<br>"
 			dat += "\t<a href='?_src_=prefs;preference=job_slot;task=menu'><b>[user.client.auto_lang(LANGUAGE_PREF_OCUP_CHOSE_CHAR)]</b></a>"
 			dat += "</div>"
 
@@ -744,7 +744,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	HTML += "</td></tr></table>"
 	HTML += "</center></table>"
 
-	HTML += "<center><br><a class='green' href='?_src_=prefs;preference=job;task=faction'>Change faction</a></center><br>"
+	HTML += "<center><br><a class='green' href='?_src_=prefs;preference=job;task=faction'>[user.client.auto_lang(LANGUAGE_PREF_CHANGE_FACTION)]</a></center><br>"
 
 	if(user.client?.prefs) //Just makin sure
 		var/b_color = "green"
@@ -822,6 +822,8 @@ var/const/MAX_SAVE_SLOTS = 10
 
 	HTML += "</td></tr></table>"
 	HTML += "</center></table><br>"
+
+	HTML += "<center><br><a class='green' href='?_src_=prefs;preference=job_slot;task=faction'>[user.client.auto_lang(LANGUAGE_PREF_CHANGE_FACTION)]</a></center><br>"
 
 	var/b_color
 	var/msg
@@ -1020,6 +1022,13 @@ var/const/MAX_SAVE_SLOTS = 10
 					set_job_slots(user)
 				if("reset")
 					reset_job_slots()
+					set_job_slots(user)
+				if("faction")
+					var/choice = tgui_input_list(user, "Choose faction to observer roles:", "Factions", SSticker.mode.factions_pool)
+					if(!choice)
+						return
+
+					observing_faction = GLOB.faction_datum[SSticker.mode.factions_pool[choice]]
 					set_job_slots(user)
 				else
 					set_job_slots(user)

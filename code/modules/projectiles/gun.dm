@@ -1007,9 +1007,12 @@ User can be passed as null, (a gun reloading itself for instance), so we need to
 	return TRUE
 
 /obj/item/weapon/gun/proc/replace_magazine(mob/user, obj/item/ammo_magazine/magazine)
+	if(isstorage(magazine.loc))
+		var/obj/item/storage/master_storage = magazine.loc
+		master_storage.remove_from_storage(magazine)
 	user.drop_inv_item_to_loc(magazine, src) //Click!
 	current_mag = magazine
-	replace_ammo(user,magazine)
+	replace_ammo(user, magazine)
 	if(!in_chamber)
 		ready_in_chamber()
 		cock_gun(user)
@@ -1017,9 +1020,7 @@ User can be passed as null, (a gun reloading itself for instance), so we need to
 		SPAN_NOTICE("Вы заряжаете [magazine] в [src]!"), null, 3, CHAT_TYPE_COMBAT_ACTION)
 	if(reload_sound)
 		playsound(user, reload_sound, 25, 1, 5)
-
 	display_ammo(user)
-
 
 //Drop out the magazine. Keep the ammo type for next time so we don't need to replace it every time.
 //This can be passed with a null user, so we need to check for that as well.

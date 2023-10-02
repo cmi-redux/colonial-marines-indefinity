@@ -2929,7 +2929,6 @@ Defined in conflicts.dm of the #defines folder.
 	desc = "An antique underbarrel grenade launcher. Adopted in 1969 for the M16, it was made obsolete centuries ago; how its ended up here is a mystery to you. Holds only one propriatary 40mm grenade, does not have modern IFF systems, it won't pass through your friends."
 	icon_state = "grenade-m203"
 	attach_icon = "grenade-m203_a"
-	current_rounds = 0
 	max_rounds = 1
 	max_range = 14
 	attachment_firing_delay = 5 //one shot, so if you can reload fast you can shoot fast

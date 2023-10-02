@@ -151,11 +151,6 @@
 
 	. = ..()
 
-/obj/structure/window_frame/bullet_act(obj/item/projectile/proj)
-	bullet_ping(proj)
-	take_damage(proj.damage)
-	return TRUE
-
 /obj/structure/window_frame/proc/take_damage(damage)
 	health = max(0, (health - damage))
 	health = min(health, max_health)

@@ -228,6 +228,10 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 		logged_announcements += list(current_broadcast)
 	data["records_announcement"] = logged_announcements
 
+	data["defcon_lvl_prc"] = faction.objectives_controller.last_objectives_completion_percentage
+	data["defcon_lvl"] = faction.objectives_controller.current_level
+	data["defcon_points"] = "Оставшийся бюджет на DEFCON активы: [faction.objectives_controller.remaining_reward_points]"
+
 	var/list/logged_alerts = list()
 	for(var/datum/ares_record/security/security_alert as anything in records_security)
 		var/list/current_alert = list()
@@ -327,6 +331,9 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 	data["active_ref"] = active_ref
 	data["conversations"] = logged_convos
 
+	data["canLeave"] = SSevacuation.ship_evac_blocked() ? 0 : SSevacuation.ship_operation_stage_status > 3
+	data["operation_reason"] = SSevacuation.ship_evac_blocked()
+
 	return data
 
 /obj/structure/machinery/computer/ares_console/ui_static_data(mob/user)
@@ -391,7 +398,7 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 				sudo_holder = last_login
 				last_login = new_user
 				access_list += "[last_login] at [game_time_timestamp()], Sudo Access."
-				return TRUE
+				. = TRUE
 		if("sudo_logout")
 			access_list += "[last_login] at [game_time_timestamp()], Sudo Logout."
 			last_login = sudo_holder
@@ -428,6 +435,9 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 		if("page_access")
 			last_menu = current_menu
 			current_menu = "access_log"
+		if("page_defcon")
+			last_menu = current_menu
+			current_menu = "defcon"
 		if("page_security")
 			last_menu = current_menu
 			current_menu = "security"
@@ -507,6 +517,10 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 			last_menu = current_menu
 			current_menu = "read_deleted"
 
+		if("buy_defcon")
+			faction.objectives_controller.list_and_purchase_rewards()
+			. = TRUE
+
 		// -- Emergency Buttons -- //
 		if("general_quarters")
 			if(!COOLDOWN_FINISHED(src, ares_quarters_cooldown))
@@ -571,7 +585,7 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 			SSticker.mode.request_ert(usr, TRUE)
 			to_chat(usr, SPAN_NOTICE("A distress beacon request has been sent to USCM High Command."))
 			COOLDOWN_START(src, ares_distress_cooldown, COOLDOWN_COMM_REQUEST)
-			return TRUE
+			. = TRUE
 
 		if("nuclearbomb")
 			if(!SSticker.mode)
@@ -594,7 +608,7 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 			for(var/client/admin in GLOB.admins)
 				if((R_ADMIN|R_MOD) & admin.admin_holder.rights)
 					playsound_client(admin,'sound/effects/sos-morse-code.ogg',10)
-			message_admins("[key_name(usr)] has requested use of Nuclear Ordnance (via ARES)! Reason: <b>[reason]</b> [CC_MARK(usr)] (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];nukeapprove=\ref[usr]'>APPROVE</A>) (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];nukedeny=\ref[usr]'>DENY</A>) [ADMIN_JMP_USER(usr)] [CC_REPLY(usr)]")
+			message_admins("[key_name(usr)] has requested use of Nuclear Ordnance [SPAN_ORANGE("(via ARES)")]! Reason: <b>[reason]</b> [CC_MARK(usr)] (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];nukeapprove=\ref[usr]'>APPROVE</A>) (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];nukedeny=\ref[usr]'>DENY</A>) [ADMIN_JMP_USER(usr)] [CC_REPLY(usr)]")
 			to_chat(usr, SPAN_NOTICE("A nuclear ordnance request has been sent to USCM High Command for the following reason: [reason]"))
 			if(ares_can_log())
 				link.log_ares_security("Nuclear Ordnance Request", "[last_login] has sent a request for nuclear ordnance for the following reason: [reason]")
@@ -602,7 +616,21 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 				ai_silent_announcement("[last_login] has sent a request for nuclear ordnance to USCM High Command.", ".V")
 				ai_silent_announcement("Reason given: [reason].", ".V")
 			COOLDOWN_START(src, ares_nuclear_cooldown, COOLDOWN_COMM_DESTRUCT)
-			return TRUE
+			. = TRUE
+
+		if("operation_zone_leave")
+			if(security_level < SEC_LEVEL_RED)
+				to_chat(usr, SPAN_WARNING("The ship must be under red alert in order to enact evacuation procedures."))
+				playsound(src, 'sound/machines/buzz-two.ogg', 15, 1)
+				return FALSE
+
+			if(SSevacuation.initiate_ship_evacuation())
+				to_chat(usr, SPAN_WARNING("[link_id] покинит радиус досигаймости сигнала с колонией через: [duration2text_hour_min_sec(SSevacuation.ship_evac_time + SHIP_EVACUATION_AUTOMATIC_DEPARTURE - world.time, "hh:mm:ss")], [MAIN_AI_SYSTEM] все еще имеет право остановить завершение операции в случае нарушения протокола!"))
+				log_game("[key_name(usr)] начал свертывание операции.")
+				message_admins("[key_name_admin(usr)] начал свертывание операции [SPAN_ORANGE("(via ARES)")].")
+				. = TRUE
+			to_chat(usr, SPAN_WARNING("ОШИБКА, [MAIN_AI_SYSTEM] НЕ МОЖЕТ ПОДТВЕРДИТЬ ДАННОЕ ДЕЙСТВИЕ!"))
+			. = TRUE
 // ------ End ARES Interface UI ------ //
 
 

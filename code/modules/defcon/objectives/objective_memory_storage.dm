@@ -110,6 +110,7 @@
 	icon_state = "terminal1_old"
 	unslashable = TRUE
 	unacidable = TRUE
+	faction_to_get = FACTION_MARINE
 
 /obj/structure/machinery/computer/view_objectives/attack_hand(mob/living/user)
 	if(!user || !istype(user) || !user.mind || !user.faction.objective_memory)

@@ -31,7 +31,7 @@ var/list/shotgun_boxes_12g = list(
 	transfer_delay = 0.2 SECONDS
 
 /obj/item/ammo_magazine/shotgun/attack_self(mob/user)
-	if(current_rounds == 0)
+	if(ammo_position == 0)
 		new /obj/item/stack/sheet/cardboard(user.loc)
 		qdel(src)
 	else
@@ -284,7 +284,6 @@ var/list/shotgun_handfuls_12g = list(
 	ammo_preset = list(/datum/ammo/bullet/revolver)
 	caliber = ".44"
 	max_rounds = 8
-	current_rounds = 8
 	gun_type = /obj/item/weapon/gun/shotgun/double/cane
 
 /obj/item/ammo_magazine/handful/revolver/marksman
@@ -295,5 +294,5 @@ var/list/shotgun_handfuls_12g = list(
 /obj/item/ammo_magazine/handful/revolver/marksman/six_rounds
 	name = "handful of marksman revolver bullets (.44)"
 	ammo_preset = list(/datum/ammo/bullet/revolver/marksman)
-	current_rounds = 6
+	max_rounds = 6
 	gun_type = /obj/item/weapon/gun/shotgun/double/cane

@@ -1,9 +1,9 @@
 SUBSYSTEM_DEF(autobalancer)
 	name = "Autobalancer"
-	wait = 30 SECONDS
+	wait = 1 MINUTES
 	priority = SS_PRIORITY_BALANCER
-	flags = SS_NO_INIT
-	runlevels = RUNLEVEL_LOBBY | RUNLEVEL_SETUP | RUNLEVEL_GAME | RUNLEVEL_POSTGAME
+	flags = SS_NO_INIT|SS_POST_FIRE_TIMING
+	runlevels = RUNLEVEL_LOBBY|RUNLEVEL_SETUP|RUNLEVEL_GAME|RUNLEVEL_POSTGAME
 
 	var/list/faction_balance = list()
 	var/list/balance_rows = list()

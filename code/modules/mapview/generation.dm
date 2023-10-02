@@ -78,6 +78,8 @@
 				new_minimap.DrawBox(rgb(0,0,0), turf.x, turf.y)
 				continue
 
+			CHECK_TICK
+
 	new_minimap.Scale(480*2,480*2) //scale it up x2 to make it easer to see
 	new_minimap.Crop(1, 1, min(new_minimap.Width(), 480), min(new_minimap.Height(), 480)) //then cut all the empty pixels
 

@@ -96,6 +96,7 @@
 	return
 
 /obj/item/ammo_box/proc/explode(datum/cause_data/cause_data)
+	playsound(src, 'sound/effects/explosion_psss.ogg', 2, 1)
 	var/shrapnel_count
 	for(var/obj/item/ammo_magazine/a in contents)
 		shrapnel_count += a.ammo_position/6
@@ -232,15 +233,11 @@
 	if(istype(loc, /obj/structure/magazine_box))
 		host_box = loc
 	if(can_explode)
-		if(prob(10))
-			handle_side_effects(host_box, TRUE)
-			playsound(src, 'sound/effects/explosion_psss.ogg', 2, 1)
-			addtimer(CALLBACK(src, PROC_REF(explode), 2 SECONDS, flame_cause_data), 2 SECONDS)
-			return
-		handle_side_effects(host_box)
-		return
-	addtimer(CALLBACK(GLOBAL_PROC, PROC_REF(qdel), (host_box ? host_box : src)), 4 SECONDS)
-	return
+		var/time_until_explode = rand(1, 100)
+		handle_side_effects(host_box, time_until_explode < 20)
+		addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/item/ammo_box, explode), flame_cause_data), time_until_explode)
+	else
+		addtimer(CALLBACK(GLOBAL_PROC, PROC_REF(qdel), (host_box ? host_box : src)), 4 SECONDS)
 
 /obj/item/ammo_box/magazine/handle_side_effects(obj/structure/magazine_box/host_box, will_explode = FALSE)
 	var/shown_message = "\The [src] catches on fire!"
@@ -334,8 +331,6 @@
 	if(burning)
 		. += SPAN_DANGER("It's on fire and might explode!")
 
-
-
 /obj/item/ammo_box/rounds/is_loaded()
 	return ammo_position
 
@@ -428,15 +423,11 @@
 
 /obj/item/ammo_box/rounds/process_burning(datum/cause_data/flame_cause_data)
 	if(can_explode)
-		if(prob(10))
-			handle_side_effects(TRUE)
-			playsound(src, 'sound/effects/explosion_psss.ogg', 2, 1)
-			addtimer(CALLBACK(src, PROC_REF(explode), 2 SECONDS, flame_cause_data), 2 SECONDS)
-			return
-		handle_side_effects()
-		return
-	addtimer(CALLBACK(GLOBAL_PROC, PROC_REF(qdel), (src)), 6 SECONDS)
-	return
+		var/time_until_explode = rand(1, 100)
+		handle_side_effects(time_until_explode < 20)
+		addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/item/ammo_box, explode), flame_cause_data), time_until_explode)
+	else
+		addtimer(CALLBACK(GLOBAL_PROC, PROC_REF(qdel), (src)), 6 SECONDS)
 
 /obj/item/ammo_box/rounds/handle_side_effects(will_explode = FALSE)
 	if(will_explode)

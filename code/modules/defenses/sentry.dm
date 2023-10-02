@@ -297,7 +297,7 @@
 		SEND_SIGNAL(src, COMSIG_SENTRY_ENGAGED_ALERT, src)
 		engaged_timer = addtimer(CALLBACK(src, PROC_REF(reset_engaged_timer)), SENTRY_ENGAGED_TIMEOUT)
 
-	if(!low_ammo_timer && ammo?.current_rounds && (ammo?.current_rounds < (ammo?.max_rounds * SENTRY_LOW_AMMO_ALERT_PERCENTAGE)))
+	if(!low_ammo_timer && ammo?.ammo_position && (ammo?.ammo_position < (ammo?.max_rounds * SENTRY_LOW_AMMO_ALERT_PERCENTAGE)))
 		SEND_SIGNAL(src, COMSIG_SENTRY_LOW_AMMO_ALERT, src)
 		low_ammo_timer = addtimer(CALLBACK(src, PROC_REF(reset_low_ammo_timer)), SENTRY_LOW_AMMO_TIMEOUT)
 
@@ -698,12 +698,12 @@
 
 /obj/structure/machinery/defenses/sentry/launchable/attack_hand_checks(mob/user)
 	// Reloads the sentry using inherent rounds
-	if(!light_on && additional_rounds_stored && (ammo.current_rounds < ammo.max_rounds))
+	if(!light_on && additional_rounds_stored && (ammo.ammo_position < ammo.max_rounds))
 		if(!do_after(user, 2 SECONDS * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
 			to_chat(user, SPAN_WARNING("You were interrupted! Try to stay still while you reload the sentry..."))
 			return
 
-		to_chat(user, SPAN_WARNING("[src]'s internal magazine was reloaded with [ammo.current_rounds] rounds, [max_inherent_rounds] rounds left in storage"))
+		to_chat(user, SPAN_WARNING("[src]'s internal magazine was reloaded with [ammo.ammo_position] rounds, [max_inherent_rounds] rounds left in storage"))
 		playsound(loc, 'sound/weapons/handling/m40sd_reload.ogg', 25, 1)
 		update_icon()
 		return FALSE

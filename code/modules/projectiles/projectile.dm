@@ -1511,9 +1511,15 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 /obj/bullet_act(obj/item/projectile/proj)
 	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
 		return FALSE
+	if(proj.ammo.damage_type == HALLOSS || proj.ammo.damage_type == TOX || proj.ammo.damage_type == CLONE || proj.damage == 0)
+		return FALSE
 	bullet_ping(proj)
+	if(proj.ammo.damage)
+		update_health(round(proj.ammo.damage / 2))
 	return TRUE
 
+
+// ITEMS BULLET ACTS //
 /obj/item/bullet_act(obj/item/projectile/proj)
 	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
 		return FALSE
@@ -1522,6 +1528,8 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 		explosion_throw(proj.damage/2, proj.dir, 4)
 	return TRUE
 
+
+// STRUCTURES BULLET ACTS //
 /obj/structure/surface/table/bullet_act(obj/item/projectile/proj)
 	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
 		return FALSE
@@ -1531,6 +1539,61 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 		visible_message(SPAN_WARNING("[src] breaks down!"))
 		deconstruct()
 	return TRUE
+
+/obj/structure/machinery/door/airlock/bullet_act(obj/item/projectile/proj)
+	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
+		return FALSE
+	bullet_ping(proj)
+	if(proj.damage)
+		if(proj.ammo.flags_ammo_behavior & AMMO_ROCKET)
+			take_damage(proj.damage * 4, proj.firer) // rockets wreck airlocks
+			return TRUE
+		else
+			take_damage(proj.damage, proj.firer)
+			return TRUE
+	return FALSE
+
+/obj/structure/machinery/door/window/bullet_act(obj/item/projectile/proj)
+	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
+		return FALSE
+	bullet_ping(proj)
+	if(proj.ammo.damage)
+		take_damage(round(proj.ammo.damage / 2))
+		if(proj.ammo.damage_type == BRUTE)
+			playsound(src.loc, 'sound/effects/Glasshit.ogg', 25, 1)
+	return TRUE
+
+/obj/structure/machinery/telecomms/relay/preset/tower/bullet_act(obj/item/projectile/proj)
+	..()
+	if(istype(proj.ammo, /datum/ammo/xeno/boiler_gas))
+		update_health(50)
+
+	else if(proj.ammo.flags_ammo_behavior & AMMO_ANTISTRUCT)
+		update_health(proj.damage*ANTISTRUCT_DMG_MULT_BARRICADES)
+
+	update_health(round(proj.damage/2))
+	return TRUE
+
+/obj/structure/fence/bullet_act(obj/item/projectile/proj)
+	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
+		return FALSE
+	//Tasers and the like should not damage windows.
+	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
+	if(proj.ammo.damage_type == HALLOSS || proj.damage <= 0 || ammo_flags == AMMO_ENERGY)
+		return FALSE
+
+	health -= proj.damage * 0.3
+	..()
+	healthcheck()
+	return TRUE
+
+/obj/structure/window_frame/bullet_act(obj/item/projectile/proj)
+	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
+		return FALSE
+	bullet_ping(proj)
+	take_damage(proj.damage)
+	return TRUE
+
 
 
 //----------------------------------------------------------

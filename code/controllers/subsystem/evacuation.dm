@@ -19,7 +19,7 @@ SUBSYSTEM_DEF(evacuation)
 
 	var/ship_evac_time
 	var/ship_operation_stage_status = OPERATION_DECRYO
-	var/shuttles_to_check = list("USS Almayer Dropship 1", "USS Almayer Dropship 2")
+	var/shuttles_to_check = list(DROPSHIP_ALAMO, DROPSHIP_NORMANDY)
 	var/ship_evacuating = FALSE
 	var/ship_evacuating_forced = FALSE
 
@@ -86,13 +86,22 @@ SUBSYSTEM_DEF(evacuation)
 		if(SSticker.mode && SSticker.mode.is_in_endgame)
 			. = SSmapping.levels_by_any_trait(list(ZTRAIT_RESERVED, ZTRAIT_MARINE_MAIN_SHIP))
 
+/datum/controller/subsystem/evacuation/proc/ship_evac_blocked()
+	if(get_security_level() != "red")
+		return "Required RED alert"
+	else if(!critical_marine_loses() && !all_faction_mobs_onboard(GLOB.faction_datum[FACTION_MARINE]))
+		return "Not all forces onboard"
+	else if(!shuttels_onboard())
+		return "All shuttles should be loaded on ship"
+	return FALSE
+
 /datum/controller/subsystem/evacuation/proc/initiate_ship_evacuation(force = FALSE) //Begins the evacuation procedure.
-	if((force || (get_security_level() == "red" && (critical_marine_loses() || all_faction_mobs_onboard(GLOB.faction_datum[FACTION_MARINE]) && shuttels_onboard()))) && !ship_evacuating)
+	if((force || !ship_evac_blocked()) && !ship_evacuating)
 		ship_evacuating = TRUE
 		ship_evac_time = world.time
 		ship_operation_stage_status = OPERATION_LEAVING_OPERATION_PLACE
 		enter_allowed = FALSE
-		ai_announcement("Внимание. Чрезвычайная ситуация. Всему персоналу и морпехам немедленно вернуться на корабль, в связи с критической ситуацией начинается немедленный процесс отбытия с зоны операции, посадочные шатлы станут недоступны через [duration2text_hour_min_sec(SHIP_ESCAPE_ESTIMATE_DEPARTURE, "hh:mm:ss")]!", 'sound/AI/evacuate.ogg')
+		ai_announcement("Внимание. Чрезвычайная ситуация. Всему персоналу и морпехам немедленно вернуться на корабль, в связи с критической ситуацией начинается немедленный процесс отбытия с зоны операции, посадочные шатлы станут недоступны через [duration2text_hour_min_sec(SHIP_ESCAPE_ESTIMATE_DEPARTURE, "hh:mm:ss")]!", 'sound/AI/evacuate.ogg', logging = ARES_LOG_SECURITY)
 		xeno_message_all("Волна адреналина прокатилась по улью. Существа из плоти пытаются улететь, надо сейчас же попасть на их железный улей! У вас есть всего [duration2text_hour_min_sec(SHIP_ESCAPE_ESTIMATE_DEPARTURE, "hh:mm:ss")] до того как они покинут зону досягаемости.")
 
 		for(var/obj/structure/machinery/status_display/status_display in machines)
@@ -115,7 +124,7 @@ SUBSYSTEM_DEF(evacuation)
 		enter_allowed = TRUE
 		ship_evac_time = null
 		ship_operation_stage_status = OPERATION_ENDING
-		ai_announcement(reason, 'sound/AI/evacuate_cancelled.ogg')
+		ai_announcement(reason, 'sound/AI/evacuate_cancelled.ogg', logging = ARES_LOG_SECURITY)
 
 		for(var/shuttle_id in shuttles_to_check)
 			var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttle_id)
@@ -136,7 +145,9 @@ SUBSYSTEM_DEF(evacuation)
 /datum/controller/subsystem/evacuation/proc/shuttels_onboard()
 	for(var/shuttle_id in shuttles_to_check)
 		var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttle_id)
-		if(!is_mainship_level(shuttle.z))
+		if(!shuttle)
+			CRASH("Warning, something went wrong at evacuation shuttles check, please review shuttles spelling")
+		else if(!is_mainship_level(shuttle.z))
 			return shuttle_id
 	return FALSE
 
@@ -158,7 +169,7 @@ SUBSYSTEM_DEF(evacuation)
 		enter_allowed = FALSE
 		evac_time = world.time
 		evac_status = EVACUATION_STATUS_INITIATING
-		ai_announcement("Внимание. Чрезвычайная ситуация. Всему персоналу немедленно покинуть корабль. У вас есть всего [duration2text_hour_min_sec(EVACUATION_ESTIMATE_DEPARTURE, "hh:mm:ss")] до отлета капсул, после чего все вторичные системы выключатся.", 'sound/AI/evacuate.ogg')
+		ai_announcement("Внимание. Чрезвычайная ситуация. Всему персоналу немедленно покинуть корабль. У вас есть всего [duration2text_hour_min_sec(EVACUATION_ESTIMATE_DEPARTURE, "hh:mm:ss")] до отлета капсул, после чего все вторичные системы выключатся.", 'sound/AI/evacuate.ogg', logging = ARES_LOG_SECURITY)
 		xeno_message_all("Волна адреналина прокатилась по улью. Существа из плоти пытаются сбежать!")
 		for(var/obj/structure/machinery/status_display/status_display in machines)
 			if(is_mainship_level(status_display.z))
@@ -173,7 +184,7 @@ SUBSYSTEM_DEF(evacuation)
 		enter_allowed = TRUE
 		evac_time = null
 		evac_status = EVACUATION_STATUS_STANDING_BY
-		ai_announcement("Эвакуация отменена.", 'sound/AI/evacuate_cancelled.ogg')
+		ai_announcement("Эвакуация отменена.", 'sound/AI/evacuate_cancelled.ogg', logging = ARES_LOG_SECURITY)
 		if(get_security_level() == "red")
 			for(var/obj/structure/machinery/status_display/status_display in machines)
 				if(is_mainship_level(status_display.z))
@@ -186,7 +197,7 @@ SUBSYSTEM_DEF(evacuation)
 	if(evac_status == EVACUATION_STATUS_INITIATING)
 		evac_status = EVACUATION_STATUS_IN_PROGRESS //Cannot cancel at this point. All shuttles are off.
 		spawn() //One of the few times spawn() is appropriate. No need for a new proc.
-			ai_announcement("ВНИМАНИЕ: Приказ о эвакуации приведен в действие. Запуск спасательных капсул.", 'sound/AI/evacuation_confirmed.ogg')
+			ai_announcement("ВНИМАНИЕ: Приказ о эвакуации приведен в действие. Запуск спасательных капсул.", 'sound/AI/evacuation_confirmed.ogg', logging = ARES_LOG_SECURITY)
 
 			for(var/obj/docking_port/stationary/lifeboat_dock/lifeboat_dock in GLOB.lifeboat_almayer_docks) //evacuation confirmed, time to open lifeboats
 				var/obj/docking_port/mobile/crashable/lifeboat/lifeboat = lifeboat_dock.get_docked()
@@ -209,14 +220,14 @@ SUBSYSTEM_DEF(evacuation)
 
 			lifesigns += L1.survivors + L2.survivors
 
-			ai_announcement("ВНИМАНИЕ: Эвакуация спасательных капсул закончена. Исходящие жизненые сигналы: [lifesigns ? lifesigns  : "отсутсвуют"].", 'sound/AI/evacuation_complete.ogg')
+			ai_announcement("ВНИМАНИЕ: Эвакуация спасательных капсул закончена. Исходящие жизненые сигналы: [lifesigns ? lifesigns  : "отсутсвуют"].", 'sound/AI/evacuation_complete.ogg', logging = ARES_LOG_SECURITY)
 
 			evac_status = EVACUATION_STATUS_COMPLETE
 
 			if(L1.status != LIFEBOAT_LOCKED && L2.status != LIFEBOAT_LOCKED)
 				trigger_self_destruct()
 			else
-				ai_announcement("ВНИМАНИЕ: Не все спасательные шлюпки улетели, автоматическое самоуничтожение отменено, требуется ручное введение управляющих стержней.", 'sound/AI/evacuation_complete.ogg')
+				ai_announcement("ВНИМАНИЕ: Не все спасательные шлюпки улетели, автоматическое самоуничтожение отменено, требуется ручное введение управляющих стержней.", 'sound/AI/evacuation_complete.ogg', logging = ARES_LOG_SECURITY)
 
 		return TRUE
 
@@ -303,7 +314,7 @@ SUBSYSTEM_DEF(evacuation)
 				rod.lock_or_unlock(1)
 		dest_master.lock_or_unlock(1)
 		dest_index = 1
-		ai_announcement("Система аварийного самоуничтожения была деактивирована.", 'sound/AI/selfdestruct_deactivated.ogg')
+		ai_announcement("Система аварийного самоуничтожения была деактивирована.", 'sound/AI/selfdestruct_deactivated.ogg', logging = ARES_LOG_SECURITY)
 		if(evac_status == EVACUATION_STATUS_STANDING_BY) //the evac has also been cancelled or was never started.
 			set_security_level(SEC_LEVEL_RED, TRUE) //both status_display and evac are inactive, lowering the security level.
 		return TRUE
@@ -318,7 +329,7 @@ SUBSYSTEM_DEF(evacuation)
 		dest_master.in_progress = !dest_master.in_progress
 		for(rod in SSevacuation.dest_rods)
 			rod.in_progress = 1
-		ai_announcement("ОПАСНОСТЬ. ОПАСНОСТЬ. Система самоуничтожения активирована. ОПАСНОСТЬ. ОПАСНОСТЬ. Самоуничтожение выполняется. ОПАСНОСТЬ. ОПАСНОСТЬ.")
+		ai_announcement("ОПАСНОСТЬ. ОПАСНОСТЬ. Система самоуничтожения активирована. ОПАСНОСТЬ. ОПАСНОСТЬ. Самоуничтожение выполняется. ОПАСНОСТЬ. ОПАСНОСТЬ.", logging = ARES_LOG_SECURITY)
 		trigger_self_destruct(,,override)
 		return TRUE
 
@@ -411,6 +422,9 @@ SUBSYSTEM_DEF(evacuation)
 	. = ..()
 	SSevacuation.prepare()
 
+/obj/structure/machinery/self_destruct/ex_act()
+	return
+
 /obj/structure/machinery/self_destruct/proc/lock_or_unlock(lock)
 	playsound(src, 'sound/machines/hydraulics_1.ogg', 25, 1)
 
@@ -451,7 +465,7 @@ SUBSYSTEM_DEF(evacuation)
 			to_chat(usr, SPAN_NOTICE("The system must be booting up the self-destruct sequence now."))
 			playsound(src.loc, 'sound/items/rped.ogg', 25, TRUE)
 			sleep(2 SECONDS)
-			ai_announcement("Danger. The emergency destruct system is now activated. The ship will detonate in T-minus 20 minutes. Automatic detonation is unavailable. Manual detonation is required.", 'sound/AI/selfdestruct.ogg')
+			ai_announcement("Danger. The emergency destruct system is now activated. The ship will detonate in T-minus 20 minutes. Automatic detonation is unavailable. Manual detonation is required.", 'sound/AI/selfdestruct.ogg', ARES_LOG_SECURITY)
 			active_state = SELF_DESTRUCT_MACHINE_ARMED //Arm it here so the process can execute it later.
 			var/obj/structure/machinery/self_destruct/rod/rod = SSevacuation.dest_rods[SSevacuation.dest_index]
 			rod.activate_time = world.time

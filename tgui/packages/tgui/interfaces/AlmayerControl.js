@@ -35,7 +35,7 @@ export const AlmayerControl = (_props, context) => {
   } else if (data.time_request < worldTime) {
     distress_reason =
       'Beacon is currently recharging. Time remaining: ' +
-      Math.ceil((data.time_message - worldTime) / 10) +
+      Math.ceil((data.time_request - worldTime) / 10) +
       'secs.';
   } else if (data.time_destruct < worldTime) {
     destruct_reason =
@@ -103,7 +103,7 @@ export const AlmayerControl = (_props, context) => {
               {!canCentral && (
                 <Button color="bad" warning={1} fluid={1} icon="ban">
                   Quantum relay re-cycling :{' '}
-                  {Math.ceil((data.time_message - worldTime) / 10)} secs
+                  {Math.ceil((data.time_central - worldTime) / 10)} secs
                 </Button>
               )}
               {!!canCentral && (
@@ -125,6 +125,15 @@ export const AlmayerControl = (_props, context) => {
                 content="Give a medal"
                 onClick={() => act('award')}
               />
+            </Flex.Item>
+            <Flex.Item>
+              <Button
+                fluid={1}
+                icon="triangle-exclamation"
+                tooltip={defcon_points}
+                onClick={() => act('defcon')}>
+                DEFCON {data.defcon_lvl}: {data.defcon_lvl_prc}%.
+              </Button>
             </Flex.Item>
             <Section title="Emergency measures">
               {AlertLevel < 2 && (
@@ -218,6 +227,44 @@ export const AlmayerControl = (_props, context) => {
                     confirmContent="Confirm?"
                     confirmIcon="question"
                     onClick={() => act('distress')}
+                  />
+                )}
+              </Flex.Item>
+              <Flex.Item>
+                <NoticeBox color="bad" textAlign="center">
+                  Operation Stage: {data.operation_stage}
+                </NoticeBox>
+                {data.operation_leaving === 3 && (
+                  <Button
+                    disabled={1}
+                    content={'Unable to leave operation zone'}
+                    tooltip={data.operation_reason}
+                    fluid={1}
+                    icon="ban"
+                  />
+                )}
+                {data.operation_leaving === 0 && (
+                  <Button.Confirm
+                    fluid={1}
+                    color="red"
+                    icon="paper-plane"
+                    content={'Leave operation zone'}
+                    confirmColor="bad"
+                    confirmContent="Confirm?"
+                    confirmIcon="question"
+                    onClick={() => act('operation_zone_leave')}
+                  />
+                )}
+                {data.operation_leaving === 1 && (
+                  <Button.Confirm
+                    fluid={1}
+                    color="green"
+                    icon="paper-plane"
+                    content={'Return to operation zone'}
+                    confirmColor="bad"
+                    confirmContent="Confirm?"
+                    confirmIcon="question"
+                    onClick={() => act('operation_zone_return')}
                   />
                 )}
               </Flex.Item>

@@ -203,14 +203,14 @@
 			if(state == STATE_DISTRESS)
 				//Comment to test
 				if(world.time < DISTRESS_TIME_LOCK)
-					to_chat(usr, SPAN_WARNING("Вы не можете запустить аварийный маяк, АРЕС отменил ваш ордер из-за соображений оперативной безопасности, функция будет доступна через [time_left_until(DISTRESS_TIME_LOCK, world.time, 1 MINUTES)] минут попробуйте опять."))
+					to_chat(usr, SPAN_WARNING("Вы не можете запустить аварийный маяк, [MAIN_AI_SYSTEM] отменил ваш ордер из-за соображений оперативной безопасности, функция будет доступна через [time_left_until(DISTRESS_TIME_LOCK, world.time, 1 MINUTES)] минут попробуйте опять."))
 					return FALSE
 
 				if(!SSticker.mode)
 					return FALSE //Not a game mode?
 
 				if(SSticker.mode.force_end_at == 0)
-					to_chat(usr, SPAN_WARNING("АРЕС отменил ваш ордер из-за соображений оперативной безопасности."))
+					to_chat(usr, SPAN_WARNING("[MAIN_AI_SYSTEM] отменил ваш ордер из-за соображений оперативной безопасности."))
 					return FALSE
 
 				if(world.time < cooldown_request + COOLDOWN_COMM_REQUEST)
@@ -237,14 +237,14 @@
 			if(state == STATE_DESTROY)
 				//Comment to test
 				if(world.time < DISTRESS_TIME_LOCK)
-					to_chat(usr, SPAN_WARNING("Вы не можете активировать самоуничтожение, АРЕС отменил ваш ордер из-за соображений оперативной безопасности, функция будет доступна через [time_left_until(DISTRESS_TIME_LOCK, world.time, 1 MINUTES)] минут попробуйте опять."))
+					to_chat(usr, SPAN_WARNING("Вы не можете активировать самоуничтожение, [MAIN_AI_SYSTEM] отменил ваш ордер из-за соображений оперативной безопасности, функция будет доступна через [time_left_until(DISTRESS_TIME_LOCK, world.time, 1 MINUTES)] минут попробуйте опять."))
 					return FALSE
 
 				if(!SSticker.mode)
 					return FALSE //Not a game mode?
 
 				if(SSticker.mode.force_end_at == 0)
-					to_chat(usr, SPAN_WARNING("АРЕС отменил ваш ордер из-за соображений оперативной безопасности."))
+					to_chat(usr, SPAN_WARNING("[MAIN_AI_SYSTEM] отменил ваш ордер из-за соображений оперативной безопасности."))
 					return FALSE
 
 				if(world.time < cooldown_destruct + COOLDOWN_COMM_DESTRUCT)

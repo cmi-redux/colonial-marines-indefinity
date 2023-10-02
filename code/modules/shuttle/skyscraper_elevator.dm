@@ -31,10 +31,10 @@
 	var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/door
 	var/obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/button
 	var/list/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/doors = list()
-	var/list/obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/button/buttons = list()
 	var/list/turf/closed/shuttle/elevator/gears/sci/gears = list()
-	var/list/disabled_floors = list()
-	var/list/called_floors = list()
+	var/list/buttons[101]
+	var/list/disabled_floors[101]
+	var/list/called_floors[101]
 	var/called = 1
 	var/next_moving = 0
 	var/moving = FALSE
@@ -45,10 +45,10 @@
 	. = ..()
 	SSshuttle.sky_scraper_elevator = src
 	for(var/i=1;i<101;i++)
-		disabled_floors["[i]"] = TRUE
-	disabled_floors["100"] = FALSE
+		disabled_floors[i] = TRUE
+	disabled_floors[100] = FALSE
 	for(var/i=1;i<101;i++)
-		called_floors["[i]"] = FALSE
+		called_floors[i] = FALSE
 
 /obj/docking_port/mobile/sselevator/request(obj/docking_port/stationary/S) //No transit, no ignition, just a simple up/down platform
 	initiate_docking(S, force = TRUE)
@@ -67,7 +67,7 @@
 				calc_elevator_order(next_moving)
 				next_moving = 0
 
-	else if(called_floors["[z - floor_offset]"] == TRUE)
+	else if(called_floors[z - floor_offset] == TRUE)
 		sleep(2 SECONDS)
 		on_stop_actions()
 		sleep(13 SECONDS)
@@ -85,9 +85,11 @@
 		G.start()
 
 /obj/docking_port/mobile/sselevator/proc/on_stop_actions()
-	buttons["[z]"]?.update_icon()
+	var/obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/button = buttons[z]
+	if(button)
+		button.update_icon()
 	button.update_icon()
-	called_floors["[z - floor_offset]"] = FALSE
+	called_floors[z - floor_offset] = FALSE
 	called--
 	var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/B = doors["[z]"]
 	INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator, unlock_and_open))
@@ -113,8 +115,10 @@
 /obj/docking_port/mobile/sselevator/proc/calc_elevator_order(floor_calc)
 	if(floor_calc)
 		called++
-		buttons["[floor_calc]"].update_icon("_animated")
-		called_floors["[floor_calc - floor_offset]"] = TRUE
+		var/obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/button = buttons[floor_calc]
+		if(button)
+			button.update_icon("_animated")
+		called_floors[floor_calc - floor_offset] = TRUE
 		switch(moving)
 			if("DOWN")
 				if(floor_calc > next_moving)
@@ -169,11 +173,11 @@
 		elevator = SSshuttle.sky_scraper_elevator
 		if(floor != "control")
 			floor = z
-			elevator.buttons["[floor]"] = src
+			elevator.buttons[floor] = src
 
 /obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/Destroy()
 	if(floor != "control")
-		elevator.buttons["[floor]"] -= src
+		elevator.buttons[floor] -= src
 	. = ..()
 
 /obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/update_icon(icon_update = "")
@@ -203,7 +207,7 @@
 	data["buttons"] = list()
 	for(var/i=1;i<101;i++)
 		data["buttons"] += list(list(
-			id = i, title = "Floor [i]", disabled = elevator.disabled_floors["[i]"], called = elevator.called_floors["[i]"],
+			id = i, title = "Floor [i]", disabled = elevator.disabled_floors[i], called = elevator.called_floors[i],
 		))
 	return data
 
@@ -214,7 +218,7 @@
 
 	if(action == "click")
 		var/target_floor = params["id"] + elevator.floor_offset
-		if(elevator.z == target_floor || elevator.called_floors["[target_floor - elevator.floor_offset]"])
+		if(elevator.z == target_floor || elevator.called_floors[target_floor - elevator.floor_offset])
 			return
 		playsound(src, 'sound/machines/click.ogg', 15, 1)
 		elevator.calc_elevator_order(target_floor)
@@ -236,10 +240,10 @@
 		return
 	if(inoperable() || elevator.z == floor)
 		return
-	if(elevator.disabled_floors["[floor - elevator.floor_offset]"])
+	if(elevator.disabled_floors[floor - elevator.floor_offset])
 		visible_message(SPAN_WARNING("Лифт не может отправится на этот этаж, обратитесь на ближайший пост службы безопасности!"))
 		return
-	if(elevator.called_floors["[floor - elevator.floor_offset]"])
+	if(elevator.called_floors[floor - elevator.floor_offset])
 		visible_message(SPAN_NOTICE("Лифт уже едет на этот этаж, ожидайте."))
 		return
 	call_elevator(user)
@@ -456,7 +460,7 @@
 	visible_message(SPAN_NOTICE("[src] beeps as it program requires attention."))
 
 /obj/structure/machinery/computer/security_blocker/proc/unlock_floor()
-	elevator.disabled_floors["[z-elevator.floor_offset]"] = FALSE
+	elevator.disabled_floors[z-elevator.floor_offset] = FALSE
 	for(var/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/B in move_lock_doors)
 		INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door, open))
 	visible_message(SPAN_NOTICE("[src] beeps as it finishes generating code."))

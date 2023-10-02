@@ -1106,7 +1106,7 @@
 
 /obj/item/weapon/gun/launcher/rocket/get_examine_text(mob/user)
 	. = ..()
-	if(current_mag.current_rounds <= 0)
+	if(current_mag.ammo_position <= 0)
 		. += "It's not loaded."
 		return
 	if(current_mag.ammo_position > 0)

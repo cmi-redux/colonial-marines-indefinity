@@ -55,7 +55,6 @@ SUBSYSTEM_DEF(mapview)
 			var/datum/tacmap/minimap/minimap = minimaps_by_trait["[trait]"]
 			for(var/level in minimap.map_zlevels)
 				minimap.generate_minimap(level)
-				sleep(1)
 
 		message_admins("finished updating minimaps")
 

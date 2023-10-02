@@ -150,12 +150,12 @@ their unique feature is that a direct hit will buff your damage and firerate
 	current_mag.current_rounds.len = current_mag.max_rounds
 	for(var/i = 1 to current_mag.max_rounds) //We want to make sure to populate the internal_mag.
 		current_mag.current_rounds[i] = i > number_to_replace ? "empty" : new current_mag.default_projectile(current_mag, null, pick(current_mag.default_ammo), current_mag.caliber)
-	current_mag.ammo_position = current_mag.current_rounds //The position is always in the beginning [1]. It can move from there.
+	current_mag.ammo_position = number_to_replace
 
 /obj/item/weapon/gun/lever_action/proc/empty_chamber(mob/user)
 	if(!current_mag)
 		return
-	if(current_mag.current_rounds <= 0)
+	if(current_mag.ammo_position <= 0)
 		if(in_chamber)
 			in_chamber = null
 			var/obj/item/ammo_magazine/handful/new_handful = retrieve_bullet(ammo.type)
@@ -166,7 +166,7 @@ their unique feature is that a direct hit will buff your damage and firerate
 		return
 
 	unload_bullet(user)
-	if(!current_mag.current_rounds && !in_chamber) update_icon()
+	if(!current_mag.ammo_position && !in_chamber) update_icon()
 
 /obj/item/weapon/gun/lever_action/proc/unload_bullet(mob/user)
 	if(isnull(current_mag) || !current_mag.ammo_position)

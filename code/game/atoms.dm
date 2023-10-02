@@ -440,8 +440,6 @@ Parameters are passed from New.
 	if(loc)
 		SEND_SIGNAL(loc, COMSIG_ATOM_INITIALIZED_ON, src) /// Sends a signal that the new atom `src`, has been created at `loc`
 
-	if(light_system != MOVABLE_LIGHT && light_system != DIRECTIONAL_LIGHT && light_power && light_range)
-		update_light()
 	if(isturf(loc) && opacity)
 		var/turf/opaque_turf = loc
 		opaque_turf.directional_opacity = ALL_CARDINALS // No need to recalculate it in this case, it's guaranteed to be on afterwards anyways.

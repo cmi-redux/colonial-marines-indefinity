@@ -292,11 +292,11 @@ as having entered the turf.
 		if(z_transfer & UP)
 			var/turf/above_epicenter = SSmapping.get_turf_above(epicenter)
 			if(above_epicenter)
-				explosion(above_epicenter, z_level_scaled, falloff, falloff_shape, direction, explosion_cause_data, shrapnel, UP, FALSE)
+				cell_explosion(above_epicenter, z_level_scaled, falloff, falloff_shape, direction, explosion_cause_data, shrapnel, UP, FALSE)
 		if(z_transfer & DOWN)
 			var/turf/below_epicenter = SSmapping.get_turf_below(epicenter)
 			if(below_epicenter)
-				explosion(below_epicenter, z_level_scaled, falloff, falloff_shape, direction, explosion_cause_data, shrapnel, DOWN, FALSE)
+				cell_explosion(below_epicenter, z_level_scaled, falloff, falloff_shape, direction, explosion_cause_data, shrapnel, DOWN, FALSE)
 
 /proc/log_explosion(atom/A, datum/automata_cell/explosion/E)
 	if(isliving(A))

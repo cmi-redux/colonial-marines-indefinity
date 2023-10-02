@@ -118,6 +118,8 @@
 	icon_state = "console"
 	exproof = TRUE
 
+	faction_to_get = FACTION_MARINE
+
 	var/current_menu = "login"
 	var/last_menu = ""
 

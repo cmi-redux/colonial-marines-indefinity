@@ -335,15 +335,6 @@
 
 	return ..()
 
-/obj/bullet_act(obj/item/projectile/proj)
-	//Tasers and the like should not damage objects.
-	if(proj.ammo.damage_type == HALLOSS || proj.ammo.damage_type == TOX || proj.ammo.damage_type == CLONE || proj.damage == 0)
-		return 0
-	bullet_ping(proj)
-	if(proj.ammo.damage)
-		update_health(round(proj.ammo.damage / 2))
-	return 1
-
 /obj/item/proc/get_mob_overlay(mob/user_mob, slot)
 	var/bodytype = "Default"
 	var/mob/living/carbon/human/user_human

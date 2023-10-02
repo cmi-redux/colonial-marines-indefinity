@@ -339,16 +339,16 @@ They're all essentially identical when it comes to getting the job done.
 	if(!explosing_check())
 		return
 	explosing = TRUE
+	anchored = TRUE
 	playsound(src, 'sound/effects/explosion_psss.ogg', 2, 1)
 	if(!weapon_cause_data)
 		weapon_cause_data = create_cause_data(cause_data)
-	anchored = TRUE
-	spawn(0.5 SECONDS)
-		create_shrapnel(src, 4, , ,shrapnel_type, weapon_cause_data)
-		start_shoting(src, , , , weapon_cause_data)
-		cell_explosion(src, 50, 200, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data)
-		if(!QDELETED(src))
-			qdel(src)
+
+	create_shrapnel(src, 4, , ,shrapnel_type, weapon_cause_data)
+	start_shoting(src, , , , weapon_cause_data)
+	cell_explosion(src, 50, 200, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data)
+	if(!QDELETED(src))
+		qdel(src)
 
 /obj/item/ammo_magazine/proc/start_shoting(turf/epicenter, shrapnel_number = ammo_position, shrapnel_direction, shrapnel_spread = 90, datum/cause_data/cause_data_new, ignore_source_mob = FALSE, on_hit_coefficient = 0.15)
 	epicenter = get_turf(epicenter)

@@ -178,7 +178,7 @@
 	var/mob/living/carbon/human/human = user
 	if(human.wear_suit != src)
 		return
-	toggle_light(user, !light_on)
+	toggle_light(user, !light_holder.light_on)
 	return TRUE
 
 /obj/item/clothing/suit/storage/marine/item_action_slot_check(mob/user, slot)

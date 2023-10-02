@@ -271,6 +271,7 @@
 #define LANGUAGE_PREF_ROLES					"Choose occupation chances</b><br>Unavailable occupations are crossed out."
 #define LANGUAGE_PREF_CHAR_ROLES			"Assign character slots to jobs.</b><br>Unavailable occupations are crossed out."
 #define LANGUAGE_PREF_ROLES_FACTION			"Selected faction"
+#define LANGUAGE_PREF_CHANGE_FACTION		"Change faction"
 #define LANGUAGE_PREF_RANDOM_ROLE			"Get random job if preferences unavailable"
 #define LANGUAGE_PREF_MARINE_ROLE			"Be marine if preference unavailable"
 #define LANGUAGE_PREF_LOBBY_ROLE			"Return to lobby if preference unavailable"
@@ -749,6 +750,7 @@ GLOBAL_LIST_INIT(client_language_ru, list(
 	LANGUAGE_PREF_ROLES = "Выберите приоритеты ролей</b><br>Недоступные роли будут вычеркнуты.",
 	LANGUAGE_PREF_CHAR_ROLES = "Выберите приоритеты ролей для персонажа</b><br>Недоступные роли будут вычеркнуты.",
 	LANGUAGE_PREF_ROLES_FACTION = "Выбранная фракция",
+	LANGUAGE_PREF_CHANGE_FACTION = "Сменить Фракцию",
 	LANGUAGE_PREF_RANDOM_ROLE = "Взять рандомную роль, если желаемые роли недоступны",
 	LANGUAGE_PREF_MARINE_ROLE = "Стать Марином, если желаемые роли недоступны",
 	LANGUAGE_PREF_LOBBY_ROLE = "Вернуться в лобби, если желаемые роли недоступны",

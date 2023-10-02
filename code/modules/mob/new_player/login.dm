@@ -33,14 +33,14 @@
 		return
 	var/time_que = world.time - que_data.time_join
 	var/output = "<div align='center'>[client.auto_lang(LANGUAGE_WELCOME)],"
-	output +="<br><b>[client.key]</b>"
-	output +="<br><b>[client.auto_lang(LANGUAGE_WHO_PLAYERS)]: [GLOB.clients.len - GLOB.que_clients]</b>"
-	output +="<br><b>[client.auto_lang(LANGUAGE_QUEUE_START)]: [time2text(que_data.time_join, "mm.ss")]</b>"
-	output +="<br><b>[client.auto_lang(LANGUAGE_QUEUE_WAITING)]: [time2text(time_que, "mm.ss")]</b>"
-	output +="<br><b>[client.auto_lang(LANGUAGE_QUEUE_POS)]: [que_data.position]</b>"
-	output +="<br><b>[client.auto_lang(LANGUAGE_QUEUE_TOTAL_POS)]: [length(SSqueue.queued)]</b>"
+	output += "<br><b>[client.key]</b>"
+	output += "<br><b>[client.auto_lang(LANGUAGE_WHO_PLAYERS)]: [GLOB.clients.len - GLOB.que_clients]</b>"
+	output += "<br><b>[client.auto_lang(LANGUAGE_QUEUE_START)]: [time2text(que_data.time_join, "mm.ss")]</b>"
+	output += "<br><b>[client.auto_lang(LANGUAGE_QUEUE_WAITING)]: [time2text(time_que, "mm.ss")]</b>"
+	output += "<br><b>[client.auto_lang(LANGUAGE_QUEUE_POS)]: [que_data.position]</b>"
+	output += "<br><b>[client.auto_lang(LANGUAGE_QUEUE_TOTAL_POS)]: [length(SSqueue.queued)]</b>"
 	if(GLOB.last_time_qued)
-		output +="<br><b>[client.auto_lang(LANGUAGE_QUEUE_LAST_TIME_EXIT)]: [GLOB.last_time_qued]</b>"
+		output += "<br><b>[client.auto_lang(LANGUAGE_QUEUE_LAST_TIME_EXIT)]: [GLOB.last_time_qued]</b>"
 	output += "</div>"
 	if(refresh)
 		close_browser(src, "que")

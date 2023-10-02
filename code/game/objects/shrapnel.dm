@@ -31,7 +31,8 @@
 		var/obj/item/projectile/projectile = new(epicenter)
 		projectile.weapon_cause_data = cause_data
 		projectile.firer = cause_data?.resolve_mob()
-		projectile.generate_bullet(new shrapnel_type, source_mob)
+		projectile.ammo = GLOB.ammo_list[shrapnel_type]
+		projectile.bullet_ready_to_fire(source_mob, weapon_source_mob = source_mob)
 		if(!(ignore_source_mob && mob_standing_on_turf == source_mob) && mob_standing_on_turf && prob(100*on_hit_coefficient)) //if a non-prone mob is on the same turf as the shrapnel explosion, some of the shrapnel hits him
 			projectile.ammo.on_hit_mob(mob_standing_on_turf, projectile)
 			projectile.handle_mob(mob_standing_on_turf)

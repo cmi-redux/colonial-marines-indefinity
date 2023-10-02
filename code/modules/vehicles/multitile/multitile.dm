@@ -21,10 +21,8 @@
 
 	can_buckle = FALSE
 
-	light_system = MOVABLE_LIGHT
-	light_range = 5
-
-	var/atom/movable/vehicle_light_holder/lighting_holder
+	light_system = DIRECTIONAL_LIGHT
+	light_range = 8
 
 	var/vehicle_light_range = 5
 	var/vehicle_light_power = 2
@@ -169,14 +167,6 @@
 	var/angle_to_turn = turning_angle(SOUTH, dir)
 	rotate_entrances(angle_to_turn)
 	rotate_bounds(angle_to_turn)
-
-	if(bound_width > world.icon_size || bound_height > world.icon_size)
-		lighting_holder = new(src)
-		lighting_holder.set_light_range(vehicle_light_range)
-		lighting_holder.set_light_power(vehicle_light_power)
-		lighting_holder.set_light_on(vehicle_light_range || vehicle_light_power)
-	else if(light_range)
-		set_light_on(TRUE)
 
 	light_pixel_x = -bound_x
 	light_pixel_y = -bound_y
@@ -379,8 +369,8 @@
 		handle_all_modules_broken()
 
 	//vehicle is dead, no more lights
-	if(health <= 0 && lighting_holder.light_on)
-		lighting_holder.set_light_on(FALSE)
+	if(health <= 0 && light_on)
+		set_light_on(FALSE)
 	update_icon()
 
 /*

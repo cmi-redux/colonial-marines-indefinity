@@ -47,62 +47,6 @@
 
 // tgui boilerplate \\
 
-/*
-	var/dat = "<head><title>Консоль Управления [controled_ship]</title></head><body>"
-	dat += "<B>Задержка связи</B>: [duration2text_hour_min_sec(GLOB.ship_hc_delay, "hh:mm:ss")]<BR>"
-	dat += "<B>Статус Эвакуации</B>: [SSevacuation.get_evac_status_panel_eta()]<BR>"
-	dat += "<B>Стадия Операции</B>: [SSevacuation.get_ship_operation_stage_status_panel_eta()]<BR>"
-	dat += "<BR><hr>"
-	switch(state)
-		if(STATE_DEFAULT)
-			dat += "Alert Level: <A href='?src=\ref[src];operation=changeseclevel'>[get_security_level()]</A><BR>"
-			dat += "<BR><A HREF='?src=\ref[src];operation=ship_announce'>[is_announcement_active ? "Сделать Корабельное Оповещение" : "*Недоступно*"]</A>"
-			dat += super_energetic_rele_active ? "<BR><A HREF='?src=\ref[src];operation=messageUSCM'>Отправить Сообщение Высшему Командыванию USCM</A>" : "<BR>USCM высокоэнергетическое реле повреждено"
-			dat += "<BR><A HREF='?src=\ref[src];operation=award'>Выдать Награду</A>"
-
-			dat += "<BR><hr>"
-			if(!isnull(SSticker.mode) && !isnull(SSticker.mode.active_lz) && !isnull(SSticker.mode.active_lz.loc))
-				dat += "<BR>Основная ЗВ [SSticker.mode.active_lz.loc.loc]"
-			dat += "<BR>Взаимодействие с прогрессом операции:"
-			switch(SSevacuation.ship_operation_stage_status)
-				if(OPERATION_DECRYO)
-					dat += "<BR>Поднятие морпехов из крио"
-				if(OPERATION_BRIEFING)
-					dat += "<BR>Проведение инструктажа"
-					if(isnull(SSticker.mode.active_lz))
-						dat += "<BR><A HREF='?src=\ref[src];operation=selectlz'>Выбрать Основную ЗВ</A>"
-				if(OPERATION_FIRST_LANDING)
-					dat += "<BR>Первая высадка"
-					dat += "<BR>DEFCON [faction.objectives_controller.current_level]: [faction.objectives_controller.last_objectives_completion_percentage]%"
-					dat += "<BR>Оставшийся бюджет на DEFCON активы: [faction.objectives_controller.remaining_reward_points] поинтов."
-					dat += "<BR><A href='?src=\ref[src];operation=defcon'>Акивировать DEFCON Активы</A>"
-					dat += "<BR><A href='?src=\ref[src];operation=defconlist'>Список DEFCON Активы</A><BR>"
-				if(OPERATION_IN_PROGRESS)
-					dat += "<BR>Выполнение задач операции"
-					dat += "<BR><A HREF='?src=\ref[src];operation=escape'>Закончить Операцию (аварийная причина)</A><BR>"
-					dat += "<BR>DEFCON [faction.objectives_controller.current_level]: [faction.objectives_controller.last_objectives_completion_percentage]%"
-					dat += "<BR>Оставшийся бюджет на DEFCON активы: [faction.objectives_controller.remaining_reward_points] поинтов."
-					dat += "<BR><A href='?src=\ref[src];operation=defcon'>Акивировать DEFCON Активы</A>"
-					dat += "<BR><A href='?src=\ref[src];operation=defconlist'>Список DEFCON Активы</A><BR>"
-					dat += "<BR><A HREF='?src=\ref[src];operation=distress'>Запустить Аварийный Маяк</A>"
-					dat += "<BR><A HREF='?src=\ref[src];operation=destroy'>Активировать Самоуничтожение</A>"
-					switch(SSevacuation.evac_status)
-						if(EVACUATION_STATUS_STANDING_BY)
-							dat += "<BR><A HREF='?src=\ref[src];operation=evacuation_start'>Начать аварийную эвакуацию</A>"
-						if(EVACUATION_STATUS_INITIATING)
-							dat += "<BR><A HREF='?src=\ref[src];operation=evacuation_cancel'>Отменить аварийную эвакуацию</A>"
-				if(OPERATION_ENDING)
-					dat += "<BR>Завершение операции"
-					dat += "<BR><A HREF='?src=\ref[src];operation=escape'>Закончить Операцию Преждевременно</A>"
-				if(OPERATION_LEAVING_OPERATION_PLACE)
-					dat += "<BR>Покидание зоны операции"
-					dat += "<A HREF='?src=\ref[src];operation=escape_cancel'>Вернуться в Зону операции</A>"
-				if(OPERATION_DEBRIEFING)
-					dat += "<BR>Подведение итогов"
-				if(OPERATION_CRYO)
-					dat += "<BR>Перемещение экипажа в крио"
-*/
-
 /obj/structure/machinery/computer/almayer_control/tgui_interact(mob/user, datum/tgui/ui, datum/ui_state/state)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -149,7 +93,12 @@
 	if(SSevacuation.evac_status == EVACUATION_STATUS_INITIATING)
 		data["evac_eta"] = SSevacuation.get_evac_status_panel_eta()
 	data["operation_stage"] = SSevacuation.get_ship_operation_stage_status_panel_eta()
-	data["operation_stage_status"] = SSevacuation.ship_operation_stage_status
+	data["operation_leaving"] = SSevacuation.ship_evac_blocked() ? 0 : SSevacuation.ship_operation_stage_status > 3
+	data["operation_reason"] = SSevacuation.ship_evac_blocked()
+
+	data["defcon_lvl_prc"] = faction.objectives_controller.last_objectives_completion_percentage
+	data["defcon_lvl"] = faction.objectives_controller.current_level
+	data["defcon_points"] = "Оставшийся бюджет на DEFCON активы: [faction.objectives_controller.remaining_reward_points]"
 
 	if(!messagetitle.len)
 		data["messages"] = null
@@ -180,7 +129,30 @@
 			print_medal(usr, src)
 			. = TRUE
 
-		// evac stuff start \\
+		if("defcon")
+			faction.objectives_controller.list_and_purchase_rewards()
+			. = TRUE
+
+		if("operation_zone_leave")
+			if(SSevacuation.initiate_ship_evacuation())
+				to_chat(usr, SPAN_WARNING("[controled_ship] покинит радиус досигаймости сигнала с колонией через: [duration2text_hour_min_sec(SSevacuation.ship_evac_time + SHIP_EVACUATION_AUTOMATIC_DEPARTURE - world.time, "hh:mm:ss")], [MAIN_AI_SYSTEM] все еще имеет право остановить завершение операции в случае нарушения протокола!"))
+				log_game("[key_name(usr)] начал свертывание операции.")
+				message_admins("[key_name_admin(usr)] начал свертывание операции.")
+				. = TRUE
+			to_chat(usr, SPAN_WARNING("ОШИБКА, [MAIN_AI_SYSTEM] НЕ МОЖЕТ ПОДТВЕРДИТЬ ПРЕЖДЕВРЕМЕННОЕ ЗАВЕРШЕНИЕ ОПЕРАЦИИ, ПЕРЕПРОВЕРЬТЕ ПРОТОКОЛ ЗАВЕРШЕНИЯ ОПЕРАЦИИ!"))
+			. = TRUE
+
+		if("operation_zone_return")
+			var/input = stripped_multiline_input(usr, "Пожалуйста введите сообщение экипажу.", "Приоритетное Оповещение Для Экипажа", "")
+			if(!input || !(usr in view(1,src)))
+				return FALSE
+			if(SSevacuation.cancel_ship_evacuation(input) && !SSevacuation.ship_evacuating_forced)
+				to_chat(usr, SPAN_WARNING("Вы продолжили операцию, [controled_ship] возвращается на позицию!"))
+				log_game("[key_name(usr)] отменил свертывание операции.")
+				message_admins("[key_name_admin(usr)] отменил свертывание операции.")
+				. = TRUE
+			to_chat(usr, SPAN_WARNING("ОШИБКА, [MAIN_AI_SYSTEM] НЕ МОЖЕТ ПОДТВЕРДИТЬ ДАННОЕ ДЕЙСТВИЕ!"))
+			. = TRUE
 
 		if("evacuation_start")
 			if(security_level < SEC_LEVEL_RED)
@@ -213,8 +185,6 @@
 			var/datum/ares_link/link = GLOB.ares_link
 			link.log_ares_security("Cancel Evacuation", "[usr] has cancelled the emergency evacuation.")
 			. = TRUE
-
-		// evac stuff end \\
 
 		if("change_sec_level")
 			var/list/alert_list = list(num2seclevel(SEC_LEVEL_GREEN), num2seclevel(SEC_LEVEL_BLUE))
@@ -301,8 +271,6 @@
 
 			COOLDOWN_START(src, cooldown_request, COOLDOWN_COMM_REQUEST)
 			. = TRUE
-
-	// sd \\
 
 		if("destroy")
 			if(world.time < DISTRESS_TIME_LOCK)

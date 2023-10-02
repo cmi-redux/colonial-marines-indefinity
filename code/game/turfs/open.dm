@@ -1081,6 +1081,7 @@
 
 /turf/open/shuttle/elevator/grating
 	icon_state = "floor_grating"
+	allow_construction = TRUE
 
 
 //vehicle interior floors

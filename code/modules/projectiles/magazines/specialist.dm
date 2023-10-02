@@ -359,7 +359,7 @@
 	transfer_delay = 5 SECONDS
 
 /obj/item/ammo_magazine/rocket/upp/update_icon()
-	if(current_rounds <= 0)
+	if(ammo_position <= 0)
 		qdel(src)
 	else
 		icon_state = initial(icon_state)

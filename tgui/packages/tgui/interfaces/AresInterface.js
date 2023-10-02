@@ -15,6 +15,7 @@ const PAGES = {
   'talking': () => ARESTalk,
   'deleted_talks': () => DeletedTalks,
   'read_deleted': () => ReadingTalks,
+  'defcon': () => Defcon,
   'security': () => Security,
   'requisitions': () => Requisitions,
   'emergency': () => Emergency,
@@ -203,6 +204,18 @@ const MainMenu = (props, context) => {
           <Stack>
             <Stack.Item grow>
               <h3>Access Level 2</h3>
+            </Stack.Item>
+            <Stack.Item>
+              <Button
+                content="Defcon Interactions"
+                tooltip="Interact With Defcons."
+                icon="clipboard"
+                ml="auto"
+                px="2rem"
+                width="25vw"
+                bold
+                onClick={() => act('page_defcon')}
+              />
             </Stack.Item>
             <Stack.Item>
               <Button
@@ -1280,6 +1293,79 @@ const FlightLogs = (props, context) => {
   );
 };
 
+const Defcon = (props, context) => {
+  const { data, act } = useBackend(context);
+  const {
+    logged_in,
+    access_text,
+    last_page,
+    current_menu,
+    defcon_lvl_prc,
+    defcon_lvl,
+    defcon_points,
+    access_level,
+  } = data;
+
+  return (
+    <>
+      <Section>
+        <Flex align="center">
+          <Box>
+            <Button
+              icon="arrow-left"
+              px="2rem"
+              textAlign="center"
+              tooltip="Go back"
+              onClick={() => act('go_back')}
+              disabled={last_page === current_menu}
+            />
+            <Button
+              icon="house"
+              ml="auto"
+              mr="1rem"
+              tooltip="Navigation Menu"
+              onClick={() => act('home')}
+            />
+          </Box>
+
+          <h3>
+            {logged_in}, {access_text}
+          </h3>
+
+          <Button.Confirm
+            content="Logout"
+            icon="circle-user"
+            ml="auto"
+            px="2rem"
+            bold
+            onClick={() => act('logout')}
+          />
+        </Flex>
+      </Section>
+
+      <Section>
+        <h1 align="center">Defcon Interactions</h1>
+        <Flex align="center" justify="center" height="50%" direction="column">
+          <Button
+            fluid={1}
+            color="green"
+            icon="triangle-exclamation"
+            width="90vw"
+            textAlign="center"
+            fontSize="1.5rem"
+            p="1rem"
+            mt="5rem"
+            bold
+            tooltip={defcon_points}
+            onClick={() => act('buy_defcon')}>
+            DEFCON {defcon_lvl}: {defcon_lvl_prc}%.
+          </Button>
+        </Flex>
+      </Section>
+    </>
+  );
+};
+
 const Security = (props, context) => {
   const { data, act } = useBackend(context);
   const {
@@ -1391,6 +1477,8 @@ const Emergency = (props, context) => {
     mission_failed,
     nuketimelock,
     nuke_available,
+    operation_reason,
+    canLeave,
   } = data;
   const minimumEvacTime = worldtime > distresstimelock;
   const distressCooldown = worldtime < distresstime;
@@ -1536,6 +1624,20 @@ const Emergency = (props, context) => {
           bold
           onClick={() => act('nuclearbomb')}
           disabled={!canNuke}
+        />
+        <Button.Confirm
+          content="Leave Operation Zone"
+          tooltip={operation_reason}
+          icon="shuttle-space"
+          color="red"
+          width="40vw"
+          textAlign="center"
+          fontSize="1.5rem"
+          p="1rem"
+          mt="5rem"
+          bold
+          onClick={() => act('operation_zone_leave')}
+          disabled={!canLeave}
         />
       </Flex>
     </>

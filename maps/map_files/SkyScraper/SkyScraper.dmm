@@ -14128,8 +14128,9 @@
 /turf/open/auto_turf/strata_grass,
 /area/skyscraper/building/agro_sector)
 "Qr" = (
-/obj/effect/decal/cleanable/blood/xeno,
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator,
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator{
+	density = 0
+	},
 /turf/open/shuttle/elevator{
 	icon_state = "floor_w_g"
 	},

@@ -342,8 +342,31 @@
 	if(honk_sound)
 		playsound(loc, honk_sound, 75, TRUE, 15) //heard within ~15 tiles
 
-//Support gunner verbs
+/obj/vehicle/multitile/proc/toggle_light()
+	set name = "Toggle Vehicle Light"
+	set desc = "Light is on! Or we on fire?"
+	set category = "Vehicle"
 
+	var/mob/user = usr
+	if(!istype(user))
+		return
+
+	var/obj/vehicle/multitile/V = user.interactee
+	if(!istype(V))
+		return
+
+	var/seat
+	for(var/vehicle_seat in V.seats)
+		if(V.seats[vehicle_seat] == user)
+			seat = vehicle_seat
+			break
+	if(!seat)
+		return
+
+	to_chat(user, SPAN_NOTICE("You turn light [V.light_on ? "off" : "on"]."))
+	V.set_light_on(!V.light_on)
+
+//Support gunner verbs
 /obj/vehicle/multitile/proc/reload_firing_port_weapon()
 	set name = "Reload Firing Port Weapon"
 	set desc = "Initiates firing port weapon automated reload process."

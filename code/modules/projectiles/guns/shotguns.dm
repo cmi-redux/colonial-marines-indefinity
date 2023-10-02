@@ -845,9 +845,9 @@ can cause issues with ammo types getting mixed up during the burst.
 	fired_shots = 0
 
 /obj/item/weapon/gun/shotgun/double/twobore/Fire(atom/target, mob/living/carbon/human/user, params, reflex = 0, dual_wield) //Using this instead of apply_bullet_effects() as RPG does so I get more granular angles than just user direction.
-	var/prefire_rounds = current_mag.current_rounds //How many rounds do we have before we fire?
+	var/prefire_rounds = current_mag.ammo_position //How many rounds do we have before we fire?
 	. = ..()
-	if(current_mag.current_rounds == prefire_rounds) //We didn't fire a shot.
+	if(current_mag.ammo_position == prefire_rounds) //We didn't fire a shot.
 		return NONE
 	var/target_angle = Get_Compass_Dir(user, target) //More precise than get_dir().
 	fired_shots++

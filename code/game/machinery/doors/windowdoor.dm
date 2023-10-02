@@ -127,14 +127,6 @@
 		qdel(src)
 		return
 
-/obj/structure/machinery/door/window/bullet_act(obj/item/projectile/proj)
-	bullet_ping(proj)
-	if(proj.ammo.damage)
-		take_damage(round(proj.ammo.damage / 2))
-		if(proj.ammo.damage_type == BRUTE)
-			playsound(src.loc, 'sound/effects/Glasshit.ogg', 25, 1)
-	return 1
-
 //When an object is thrown at the window
 /obj/structure/machinery/door/window/hitby(atom/movable/AM)
 

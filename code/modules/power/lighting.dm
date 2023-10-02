@@ -318,7 +318,7 @@
 				if(status == LIGHT_OK && trigger)
 					status = LIGHT_BURNED
 					icon_state = "[base_state]-burned"
-					update()
+					seton(FALSE)
 			else
 				flik()
 				update_use_power(USE_POWER_ACTIVE)
@@ -340,13 +340,11 @@
 				if(status != LIGHT_OK)
 					break
 				seton(TRUE)
-				update()
 				var/sound = pick('sound/effects/light/blinks1.ogg', 'sound/effects/light/blinks2.ogg', 'sound/effects/light/blinks3.ogg')
 				playsound(src, sound,12,TRUE, 8,VOLUME_SFX,0,falloff = 5)
 				switchcount--
 				sleep(rand(5, 20))
 			seton(FALSE)
-			update()
 		flickering = FALSE
 
 
@@ -381,7 +379,7 @@
 		if(isliving(user))
 			var/mob/living/U = user
 			LR.ReplaceLight(src, U)
-			update()
+			seton(TRUE)
 			return
 
 	// attempt to insert light
@@ -792,10 +790,10 @@
 	set_light_on(FALSE)
 
 /obj/structure/machinery/landinglight/ds1
-	id = "USS Almayer Dropship 1" // ID for landing zone
+	id = "Alamo" // ID for landing zone
 
 /obj/structure/machinery/landinglight/ds2
-	id = "USS Almayer Dropship 2" // ID for landing zone
+	id = "Normandy" // ID for landing zone
 
 /obj/structure/machinery/landinglight/proc/turn_on()
 	icon_state = initial(icon_state) + "0"

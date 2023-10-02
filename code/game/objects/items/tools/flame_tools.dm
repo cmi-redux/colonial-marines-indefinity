@@ -194,6 +194,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	var/lastHolder = null
 	var/smoketime = 10 MINUTES
 	var/chem_volume = 15
+	toggle_light_sound = FALSE
 
 /obj/item/clothing/mask/cigarette/Initialize()
 	. = ..()

@@ -39846,22 +39846,6 @@
 	icon_state = "plate"
 	},
 /area/almayer/living/pilotbunks)
-"fsp" = (
-/obj/structure/machinery/door_control{
-	id = "areslockdownexterior";
-	name = "ARES Lockdown";
-	pixel_x = 25;
-	req_one_access_txt = "19"
-	},
-/obj/effect/decal/warning_stripes{
-	icon_state = "E";
-	tag = "icon-E"
-	},
-/turf/open/floor/almayer{
-	dir = 8;
-	icon_state = "cargo_arrow"
-	},
-/area/almayer/hallways/aft_hallway)
 "fth" = (
 /obj/structure/sign/safety/autoopenclose{
 	pixel_x = 7;
@@ -52186,7 +52170,6 @@
 /obj/structure/machinery/light{
 	dir = 8
 	},
-/obj/structure/machinery/cm_vending/sorted/medical/chemistry,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "emerald";
@@ -122616,7 +122599,7 @@ dek
 cus
 vUk
 juw
-fsp
+vHs
 vHs
 vHs
 juw

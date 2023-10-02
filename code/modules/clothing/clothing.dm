@@ -22,13 +22,14 @@
 
 	var/atom/movable/armor_light/light_holder
 	var/flags_armor_features
+	var/toggle_light_sound = TRUE
 
 /obj/item/clothing/Initialize(mapload)
 	. = ..()
 	light_holder = new(src)
 	light_holder.set_light_flags(LIGHT_ATTACHED)
-	light_holder.light_range = light_range
-	light_holder.light_power = light_power
+	light_holder.set_light_range(light_range)
+	light_holder.set_light_power(light_power)
 
 /obj/item/clothing/Destroy()
 	QDEL_NULL(light_holder)
@@ -128,16 +129,18 @@
 	if(toggle_on == light_on || turn_light(user, toggle_on) != CHECKS_PASSED)
 		return
 
-	if(!toggle_on)
-		playsound(src, 'sound/handling/click_2.ogg', 50, TRUE)
-	else
-		playsound(src, 'sound/handling/suitlight_on.ogg', 50, TRUE)
+	if(toggle_light_sound)
+		if(!toggle_on)
+			playsound(src, 'sound/handling/click_2.ogg', 50, TRUE)
+		else
+			playsound(src, 'sound/handling/suitlight_on.ogg', 50, TRUE)
 
 /obj/item/clothing/turn_light(mob/user, toggle_on, sparks = FALSE, forced = FALSE)
 	. = ..()
 	if(. != CHECKS_PASSED)
 		return
 	flags_armor_features ^= ARMOR_LAMP_ON
+	light_holder.set_light_range(toggle_on ? light_range : 0)
 	light_holder.set_light_on(toggle_on)
 	update_icon(user)
 	for(var/datum/action/current_action as anything in actions)

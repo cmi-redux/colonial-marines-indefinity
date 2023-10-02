@@ -4,7 +4,8 @@ SUBSYSTEM_DEF(cellauto)
 	name  = "Cellular Automata"
 	wait  = 0.05 SECONDS
 	priority = SS_PRIORITY_CELLAUTO
-	flags = SS_NO_INIT
+	flags = SS_NO_INIT|SS_POST_FIRE_TIMING
+	runlevels = RUNLEVEL_LOBBY|RUNLEVEL_SETUP|RUNLEVEL_GAME|RUNLEVEL_POSTGAME
 
 	var/list/currentrun = list()
 

@@ -214,7 +214,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 	//Guns handling
 	if(isgun(item_to_stock))
 		var/obj/item/weapon/gun/G = item_to_stock
-		if(G.in_chamber || (G.current_mag && !istype(G.current_mag, /obj/item/ammo_magazine/internal)) || (istype(G.current_mag, /obj/item/ammo_magazine/internal) && G.current_mag.current_rounds > 0) )
+		if(G.in_chamber || (G.current_mag && !istype(G.current_mag, /obj/item/ammo_magazine/internal)) || (istype(G.current_mag, /obj/item/ammo_magazine/internal) && G.current_mag.ammo_position > 0) )
 			to_chat(user, SPAN_WARNING("[G] is still loaded. Unload it before you can restock it."))
 			return
 		for(var/obj/item/attachable/A in G.contents) //Search for attachments on the gun. This is the easier method
@@ -268,7 +268,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 				to_chat(user, SPAN_WARNING("\The [FT] contains non-standard fuel."))
 				return
 		var/obj/item/ammo_magazine/A = item_to_stock
-		if(A.current_rounds < A.max_rounds)
+		if(A.ammo_position != A.max_rounds)
 			to_chat(user, SPAN_WARNING("\The [A] isn't full. You need to fill it before you can restock it."))
 			return
 	//magazine ammo boxes handling
@@ -280,15 +280,15 @@ GLOBAL_LIST_EMPTY(vending_products)
 			if(!AM)
 				to_chat(user, SPAN_WARNING("Something is wrong with \the [A], tell a coder."))
 				return
-			if(AM.current_rounds != AM.max_rounds)
+			if(AM.ammo_position != AM.max_rounds)
 				to_chat(user, SPAN_WARNING("\The [A] isn't full. You need to fill it before you can restock it."))
 				return
-		else if(A.contents.len < A.num_of_magazines)
+		else if(A.contents.len != A.num_of_magazines)
 			to_chat(user, SPAN_WARNING("[A] is not full."))
 			return
 		else
 			for(var/obj/item/ammo_magazine/M in A.contents)
-				if(M.current_rounds != M.max_rounds)
+				if(M.ammo_position != M.max_rounds)
 					to_chat(user, SPAN_WARNING("Not all magazines in \the [A] are full."))
 					return
 	//loose rounds ammo box handling
