@@ -523,31 +523,31 @@ var/datum/controller/supply/supply_controller = new()
 
 	// Sell manifests.
 	var/screams = FALSE
-	for(var/atom/movable/movable_atom in area_shuttle)
-		if(istype(movable_atom, /obj/item/paper/manifest))
-			var/obj/item/paper/manifest/M = movable_atom
+	for(var/atom/movable/atom_movable in area_shuttle)
+		if(istype(atom_movable, /obj/item/paper/manifest))
+			var/obj/item/paper/manifest/M = atom_movable
 			if(M.stamped && M.stamped.len)
 				points += points_per_slip
 
 		//black market points
 		if(black_market_enabled)
-			var/points_to_add = get_black_market_value(movable_atom)
+			var/points_to_add = get_black_market_value(atom_movable)
 			if(points_to_add == KILL_MENDOZA)
 				screams = TRUE
 				kill_mendoza()
-			black_market_sold_items[movable_atom.type] += 1
+			black_market_sold_items[atom_movable.type] += 1
 			black_market_points += points_to_add
 
 		// Don't disintegrate humans! Maul their corpse instead. >:)
-		if(ishuman(movable_atom))
+		if(ishuman(atom_movable))
 			var/timer = 0.5 SECONDS
 			screams = TRUE
 			for(var/index in 1 to 10)
 				timer += 0.5 SECONDS
-				addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(maul_human), movable_atom), timer)
+				addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(maul_human), atom_movable), timer)
 
 		// Delete everything else.
-		else qdel(movable_atom)
+		else qdel(atom_movable)
 
 	if(screams)
 		for(var/atom/computer as anything in bound_supply_computer_list)
@@ -1172,16 +1172,16 @@ var/datum/controller/supply/supply_controller = new()
 			temp += "If you see any, er.. 'elite' equipment, be sure to throw it down here. I know a few people that'd offer quite the amount of money for a USCM commander's gun, or pet. Even the armor is worth a fortune. Don't kill yourself doin' it, though.<BR>"
 			temp += "Hell, any kind of wildlife too, actually! Anythin' that isn't a replicant animal is worth a truly ridiculous sum back on Terra, I'll give ya quite the amount of points for 'em. As long as it isn't plannin' on killing me.<BR>"
 
-/proc/get_black_market_value(atom/movable/movable_atom)
+/proc/get_black_market_value(atom/movable/atom_movable)
 	var/return_value
-	if(istype(movable_atom, /obj/item/stack))
-		var/obj/item/stack/black_stack = movable_atom
+	if(istype(atom_movable, /obj/item/stack))
+		var/obj/item/stack/black_stack = atom_movable
 		return_value += (black_stack.black_market_value * black_stack.amount)
 	else
-		return_value = movable_atom.black_market_value
+		return_value = atom_movable.black_market_value
 
 	// so they cant sell the same thing over and over and over
-	return_value = POSITIVE(return_value - supply_controller.black_market_sold_items[movable_atom.type] * 0.5)
+	return_value = POSITIVE(return_value - supply_controller.black_market_sold_items[atom_movable.type] * 0.5)
 	return return_value
 
 /datum/controller/supply/proc/kill_mendoza()

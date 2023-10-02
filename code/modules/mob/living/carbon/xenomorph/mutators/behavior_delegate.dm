@@ -106,5 +106,5 @@
 	return bound_xeno.a_intent
 
 /// Used to do something when a xeno collides with a movable atom
-/datum/behavior_delegate/proc/on_collide(atom/movable/movable_atom)
+/datum/behavior_delegate/proc/on_collide(atom/movable/atom_movable)
 	return

@@ -243,9 +243,9 @@
 	if(!isobserver(arrived))
 		addtimer(CALLBACK(src, PROC_REF(enter_depths), arrived), 0.2 SECONDS)
 
-/turf/open/floor/almayer/empty/proc/enter_depths(atom/movable/movable_atom)
-	if(movable_atom.throwing == 0 && istype(get_turf(movable_atom), /turf/open/floor/almayer/empty))
-		movable_atom.visible_message(SPAN_WARNING("[movable_atom] falls into the depths!"), SPAN_WARNING("You fall into the depths!"))
+/turf/open/floor/almayer/empty/proc/enter_depths(atom/movable/atom_movable)
+	if(atom_movable.throwing == 0 && istype(get_turf(atom_movable), /turf/open/floor/almayer/empty))
+		atom_movable.visible_message(SPAN_WARNING("[atom_movable] falls into the depths!"), SPAN_WARNING("You fall into the depths!"))
 		for(var/atom/computer as anything in supply_controller.bound_supply_computer_list)
 			computer.balloon_alert_to_viewers("you hear horrifying noises coming from the elevator!")
 
@@ -256,13 +256,13 @@
 		for(var/turf/turf in area_shuttle)
 			turflist |= turf
 
-		movable_atom.forceMove(pick(turflist))
+		atom_movable.forceMove(pick(turflist))
 
-		if(ishuman(movable_atom))
+		if(ishuman(atom_movable))
 			var/timer = 0.5 SECONDS
 			for(var/index in 1 to 10)
 				timer += 0.5 SECONDS
-				addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(maul_human), movable_atom), timer)
+				addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(maul_human), atom_movable), timer)
 		return
 
 	else

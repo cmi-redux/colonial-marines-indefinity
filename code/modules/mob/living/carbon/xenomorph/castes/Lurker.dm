@@ -159,10 +159,10 @@
 	var/invis_message = (invis_start_time == -1) ? "N/A" : "[(invis_duration-(world.time - invis_start_time))/10] seconds."
 	. += "Invisibility Time Left: [invis_message]"
 
-/datum/behavior_delegate/lurker_base/on_collide(atom/movable/movable_atom)
+/datum/behavior_delegate/lurker_base/on_collide(atom/movable/atom_movable)
 	. = ..()
 
-	if(!ishuman(movable_atom))
+	if(!ishuman(atom_movable))
 		return
 
 	if(!bound_xeno || !bound_xeno.stealth)
@@ -172,7 +172,7 @@
 	if(!lurker_invisibility_action)
 		return
 
-	var/mob/living/carbon/human/bumped_into = movable_atom
+	var/mob/living/carbon/human/bumped_into = atom_movable
 	if(HAS_TRAIT(bumped_into, TRAIT_CLOAKED)) //ignore invisible scouts and preds
 		return
 
