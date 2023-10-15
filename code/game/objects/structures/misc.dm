@@ -166,6 +166,7 @@
 
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_EXIT = PROC_REF(on_exit),
+		COMSIG_ATOM_ENTERED = PROC_REF(on_enter)
 	)
 
 	AddElement(/datum/element/connect_loc, loc_connections)
@@ -187,13 +188,20 @@
 		INVOKE_ASYNC(src, PROC_REF(stair_ascend), leaving)
 		return COMPONENT_ATOM_BLOCK_EXIT
 
-/obj/structure/stairs/Cross(atom/movable/atom_movable)
-	if(isTerminator() && (get_dir(src, atom_movable) == dir))
-		if(istype(atom_movable, /obj/vehicle/multitile))
-			var/obj/vehicle/multitile/multitile = atom_movable
+/obj/structure/stairs/proc/on_enter(datum/source, atom/movable/arrived, old_loc, old_locs)
+	SIGNAL_HANDLER
+
+	if(arrived == src)
+		return
+
+	if(isTerminator() && arrived.dir == dir)
+		if(istype(arrived, /obj/vehicle/multitile))
+			var/obj/vehicle/multitile/multitile = arrived
 			multitile.try_use_stairs()
-		return FALSE
-	return ..()
+		else
+			arrived.set_currently_z_moving(CURRENTLY_Z_ASCENDING)
+			INVOKE_ASYNC(src, PROC_REF(stair_ascend), arrived)
+		return COMPONENT_ATOM_BLOCK_EXIT
 
 /obj/structure/stairs/proc/stair_ascend(atom/movable/climber)
 	var/turf/checking = get_step_multiz(get_turf(src), UP)

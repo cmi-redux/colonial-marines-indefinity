@@ -227,7 +227,7 @@
 			continue //hasn't moved recently
 		if(isrobot(M))
 			continue
-		if(M.ally(faction))
+		if(faction && M.ally(faction))
 			continue
 
 		apply_debuff(M)

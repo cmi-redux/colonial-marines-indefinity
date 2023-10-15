@@ -2116,7 +2116,7 @@ not all weapons use normal magazines etc. load_into_chamber() itself is designed
 		UnregisterSignal(target, COMSIG_PARENT_QDELETING)
 	target = object
 	if(target)
-		RegisterSignal(target, COMSIG_PARENT_QDELETING, PROC_REF(clean_target))
+		RegisterSignal(target, COMSIG_PARENT_QDELETING, PROC_REF(clean_target), TRUE)
 
 ///Set the target to its turf, so we keep shooting even when it was qdeled
 /obj/item/weapon/gun/proc/clean_target()

@@ -20,14 +20,13 @@ SUBSYSTEM_DEF(playtime)
 	var/list/datum/view_record/playtime/PTs = DB_VIEW(/datum/view_record/playtime/)
 	var/list/real_best_playtimes = list()
 	for(var/datum/view_record/playtime/PT as anything in PTs)
-		var/role_id = PT.role_id
 		var/role_time = round(PT.total_minutes / 60, 0.1)
-		if(!(role_id in real_best_playtimes))
-			real_best_playtimes[role_id] = list(role_time, PT)
+		if(!(PT.role_id in real_best_playtimes))
+			real_best_playtimes[PT.role_id] = list(role_time, PT)
 			continue
-		if(real_best_playtimes[role_id][1] > role_time)
+		if(real_best_playtimes[PT.role_id][1] > role_time)
 			continue
-		real_best_playtimes[role_id] = list(role_time, PT)
+		real_best_playtimes[PT.role_id] = list(role_time, PT)
 
 	for(var/role_name in real_best_playtimes)
 		var/list/info_list = real_best_playtimes[role_name]
@@ -36,6 +35,7 @@ SUBSYSTEM_DEF(playtime)
 			continue
 		var/datum/view_record/players/player = SAFEPICK(DB_VIEW(/datum/view_record/players, DB_COMP("id", DB_EQUALS, PT.player_id)))
 		if(!player)
+			stack_trace("[PT.player_id] not found for [PT.role_id] (tell a dev, db fucked up).")
 			continue
 		best_playtimes += list(list("ckey" = player.ckey) + PT.get_nanoui_data())
 

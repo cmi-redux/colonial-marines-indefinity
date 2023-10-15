@@ -1594,6 +1594,10 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 	take_damage(proj.damage)
 	return TRUE
 
+/obj/structure/machinery/door/poddoor/railing/bullet_act(obj/item/projectile/proj)
+	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
+		return FALSE
+	return FALSE
 
 
 //----------------------------------------------------------

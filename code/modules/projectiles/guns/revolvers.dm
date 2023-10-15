@@ -32,7 +32,6 @@
 	. = ..()
 	if(spawn_empty)
 		replace_cylinder(0)
-		pin_locked_on = 0
 
 /obj/item/weapon/gun/revolver/set_gun_config_values()
 	..()
@@ -73,7 +72,7 @@
 
 /obj/item/weapon/gun/revolver/proc/spin_cylinder(mob/user)
 	if(current_mag && current_mag.chamber_closed) //We're not spinning while it's open. Could screw up reloading.
-		pin_locked_on = rand(1,current_mag.max_rounds)
+		pin_locked_on = rand(1, current_mag.max_rounds)
 		to_chat(user, SPAN_NOTICE("You spin the cylinder."))
 		playsound(user, cocked_sound, 25, 1)
 		russian_roulette = TRUE //Sets to play RR. Resets when the gun is emptied.
@@ -85,8 +84,8 @@
 		var/i
 		for(i = 1 to current_mag.max_rounds) //We want to make sure to populate the cylinder.
 			current_mag.current_rounds[i] = i > number_to_replace ? "empty" : new current_mag.default_projectile(current_mag, null, pick(current_mag.default_ammo), current_mag.caliber)
-		pin_locked_on = max(1,number_to_replace)
-		current_mag.ammo_position = max(1,number_to_replace)
+		pin_locked_on = max(1, number_to_replace)
+		current_mag.ammo_position = max(0, number_to_replace)
 
 //The cylinder is always emptied out before a reload takes place.
 /obj/item/weapon/gun/revolver/proc/add_to_cylinder(mob/user) //Bullets are added forward.

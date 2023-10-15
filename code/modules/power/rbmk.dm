@@ -406,15 +406,16 @@ DEFINE_BITFIELD(reactor_flags, list(
 
 /obj/structure/machinery/computer/reactor/control_rods/attack_hand(mob/living/user)
 	. = ..()
-	ui_interact(user)
+	tgui_interact(user)
 
-/obj/structure/machinery/computer/reactor/control_rods/ui_interact(mob/user, datum/tgui/ui)
+/obj/structure/machinery/computer/reactor/control_rods/tgui_interact(mob/user, datum/tgui/ui)
 	if(!reactor)
 		reactor = tgui_input_list(user, "Select reactor to control.", "Reactors", GLOB.fusion_cores)
-		return
+		if(!reactor)
+			return
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "RbmkControlRods")
+		ui = new(user, src, "RbmkControlRods", "Reactor Control")
 		ui.open()
 		ui.set_autoupdate(TRUE)
 
@@ -447,15 +448,16 @@ DEFINE_BITFIELD(reactor_flags, list(
 
 /obj/structure/machinery/computer/reactor/stats/attack_hand(mob/living/user)
 	. = ..()
-	ui_interact(user)
+	tgui_interact(user)
 
-/obj/structure/machinery/computer/reactor/stats/ui_interact(mob/user, datum/tgui/ui)
+/obj/structure/machinery/computer/reactor/stats/tgui_interact(mob/user, datum/tgui/ui)
 	if(!reactor)
 		reactor = tgui_input_list(user, "Select reactor to control.", "Reactors", GLOB.fusion_cores)
-		return
+		if(!reactor)
+			return
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "RbmkStats")
+		ui = new(user, src, "RbmkStats", "Reactor Control")
 		ui.open()
 		ui.set_autoupdate(TRUE)
 

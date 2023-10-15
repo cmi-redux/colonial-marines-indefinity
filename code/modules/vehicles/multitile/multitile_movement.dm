@@ -105,7 +105,7 @@
 		var/req_locs_to_up = round(length(locs) / 3)
 		var/locs_to_up = 0
 		for(var/turf/one_loc as anything in locs)
-			for(var/obj/structure/stairs/stair in one_loc)
+			for(var/obj/structure/stairs/stair in one_loc.contents)
 				if(!stair.isTerminator())
 					continue
 				locs_to_up++

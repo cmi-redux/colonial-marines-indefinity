@@ -45955,9 +45955,7 @@
 /turf/open/floor/almayer,
 /area/almayer/hallways/hangar)
 "iix" = (
-/obj/structure/machinery/cm_vending/sorted/cargo_guns{
-	icon_state = "req_guns_wall"
-	},
+/obj/structure/machinery/cm_vending/sorted/cargo_guns/blend,
 /turf/open/floor/almayer{
 	dir = 10;
 	icon_state = "green";
@@ -80039,9 +80037,7 @@
 	},
 /area/almayer/engineering/upper_engineering)
 "wTU" = (
-/obj/structure/machinery/cm_vending/sorted/cargo_ammo{
-	icon_state = "req_ammo_wall"
-	},
+/obj/structure/machinery/cm_vending/sorted/cargo_ammo/blend,
 /turf/open/floor/almayer{
 	icon_state = "green";
 	tag = "icon-green"
