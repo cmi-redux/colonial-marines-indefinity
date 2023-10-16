@@ -145,7 +145,7 @@
 	if(length(sentrygun.nickname))
 		displayname = sentrygun.nickname
 	var/areaname = get_area(sentrygun)
-	var/message = "[displayname]:[areaname] Low ammo [sentrygun.ammo.current_rounds]/[sentrygun.ammo.max_rounds]."
+	var/message = "[displayname]:[areaname] Low ammo [sentrygun.ammo.ammo_position]/[sentrygun.ammo.max_rounds]."
 	INVOKE_ASYNC(src, PROC_REF(send_message), message)
 
 /**

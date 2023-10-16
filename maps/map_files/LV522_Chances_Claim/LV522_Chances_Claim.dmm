@@ -2776,7 +2776,7 @@
 /area/lv522/indoors/a_block/dorms)
 "byD" = (
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /obj/effect/decal{
 	icon = 'icons/mob/xenos/effects.dmi';
@@ -11439,7 +11439,7 @@
 /area/lv522/atmos/west_reactor)
 "eUf" = (
 /obj/item/ammo_magazine/m2c{
-	current_rounds = 0;
+	ammo_position = 0;
 	layer = 4.2;
 	pixel_x = 1;
 	pixel_y = 11
@@ -11870,7 +11870,7 @@
 /area/lv522/atmos/filt)
 "fdE" = (
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/floor/corsat{
 	icon_state = "plate"
@@ -12013,7 +12013,7 @@
 /area/lv522/indoors/a_block/medical/glass)
 "fgf" = (
 /obj/item/ammo_magazine/m2c{
-	current_rounds = 0;
+	ammo_position = 0;
 	layer = 4.2;
 	pixel_x = 17
 	},
@@ -12508,7 +12508,7 @@
 /area/lv522/indoors/a_block/dorms/glass)
 "fqU" = (
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_wall,
@@ -13969,7 +13969,7 @@
 	dir = 4
 	},
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/auto_turf/sand_white/layer0,
 /area/lv522/outdoors/colony_streets/north_street)
@@ -18050,7 +18050,7 @@
 /area/lv522/indoors/a_block/hallway)
 "hpI" = (
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/floor/corsat{
 	icon_state = "brown"
@@ -18488,7 +18488,7 @@
 /area/lv522/atmos/way_in_command_centre)
 "hzA" = (
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/auto_turf/sand_white/layer0,
 /area/lv522/outdoors/n_rockies)
@@ -18527,7 +18527,7 @@
 "hzV" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "N";
@@ -20129,7 +20129,7 @@
 /obj/item/device/flashlight/flare/on,
 /obj/effect/decal/cleanable/blood,
 /obj/item/ammo_magazine/rifle/extended{
-	current_rounds = 0;
+	ammo_position = 0;
 	pixel_x = 6;
 	pixel_y = 17
 	},
@@ -30918,7 +30918,7 @@
 /area/lv522/outdoors/nw_rockies)
 "lQA" = (
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/asphalt/cement{
@@ -31999,7 +31999,7 @@
 /area/lv522/indoors/a_block/admin)
 "mmh" = (
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "SE-out";
@@ -32133,7 +32133,7 @@
 "mnU" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/ammo_magazine/rifle/l42a/extended{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/floor/prison,
 /area/lv522/indoors/a_block/security/glass)
@@ -33628,7 +33628,7 @@
 /area/lv522/landing_zone_2/ceiling)
 "mQo" = (
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/floor/prison,
 /area/lv522/outdoors/colony_streets/north_street)
@@ -34366,7 +34366,7 @@
 /area/lv522/indoors/a_block/dorm_north)
 "nez" = (
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/floor/prison{
 	dir = 10;
@@ -36043,7 +36043,7 @@
 "nMw" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/floor/shiva{
 	icon_state = "radiator_tile2"
@@ -41230,7 +41230,7 @@
 /area/lv522/indoors/lone_buildings/engineering)
 "pCU" = (
 /obj/item/ammo_magazine/smg/nailgun{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/floor/prison{
 	dir = 4;
@@ -41430,7 +41430,7 @@
 /area/lv522/indoors/a_block/security)
 "pGe" = (
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "W";
@@ -43801,7 +43801,7 @@
 	dir = 8
 	},
 /obj/item/ammo_magazine/sniper{
-	current_rounds = 1
+	ammo_position = 1
 	},
 /turf/open/auto_turf/sand_white/layer0,
 /area/lv522/outdoors/colony_streets/north_east_street)
@@ -50527,7 +50527,7 @@
 /area/lv522/indoors/c_block/cargo)
 "sJP" = (
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
@@ -52060,7 +52060,7 @@
 /area/lv522/landing_zone_1/tunnel)
 "tlF" = (
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/prison{
@@ -54043,7 +54043,7 @@
 /area/lv522/outdoors/colony_streets/north_east_street)
 "tWy" = (
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/asphalt/cement{
 	icon_state = "cement3"
@@ -55429,7 +55429,7 @@
 /area/lv522/indoors/lone_buildings/outdoor_bot)
 "uvt" = (
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/corsat{
@@ -58405,7 +58405,7 @@
 /area/lv522/landing_zone_1/ceiling)
 "vuS" = (
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/floor/corsat{
 	dir = 8;
@@ -58880,7 +58880,7 @@
 /area/lv522/indoors/c_block/garage)
 "vDw" = (
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/item/stack/sheet/metal,
@@ -63464,7 +63464,7 @@
 /area/lv522/indoors/a_block/security/glass)
 "xhz" = (
 /obj/item/ammo_magazine/rifle/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/asphalt/cement{
 	icon_state = "cement1"

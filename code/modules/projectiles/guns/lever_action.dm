@@ -41,7 +41,7 @@ their unique feature is that a direct hit will buff your damage and firerate
 /obj/item/weapon/gun/lever_action/Initialize(mapload, spawn_empty)
 	. = ..()
 	if(current_mag)
-		replace_internal_mag(current_mag.current_rounds)
+		replace_internal_mag(current_mag.ammo_position)
 
 /obj/item/weapon/gun/lever_action/set_gun_config_values()
 	..()
@@ -253,7 +253,7 @@ their unique feature is that a direct hit will buff your damage and firerate
 	if(!active_attachable)
 		levered = FALSE //It was fired, so let's unlock the lever.
 		in_chamber = null
-		if(!current_mag.current_rounds && !in_chamber)
+		if(!current_mag.ammo_position && !in_chamber)
 			update_icon() //No rounds, nothing chambered.
 
 	return TRUE

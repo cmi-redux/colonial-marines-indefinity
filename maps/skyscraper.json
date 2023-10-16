@@ -3,9 +3,9 @@
     "map_path": "map_files/SkyScraper",
     "map_file": "SkyScraper.dmm",
     "weather": [
-    	"weather_rain",
-    	"weather_snow",
-    	"weather_dust"
+        "weather_rain",
+        "weather_snow",
+        "weather_dust"
     ],
     "survivor_types": [
         "/datum/equipment_preset/survivor/scientist/solaris",
@@ -38,7 +38,7 @@
             "Down": -1,
             "Baseturf": "/turf/open/openspace"
         }
-   ],
+    ],
     "xvx_hives": {
         "alpha_xenomorph": 0,
         "bravo_xenomorph": 0,

@@ -44,6 +44,11 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	luminosity = 1
 	base_lighting_alpha = 255
 
+/area/admin_test
+	name = "\improper Testing admin room"
+	icon_state = "start"
+	requires_power = FALSE
+
 /area/admin/droppod
 
 /area/admin/droppod/holding

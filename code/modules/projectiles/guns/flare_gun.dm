@@ -105,7 +105,7 @@
 /obj/item/weapon/gun/flare/proc/unload_flare(mob/user)
 	if(!current_mag)
 		return
-	if(current_mag.current_rounds)
+	if(current_mag.ammo_position)
 		var/obj/item/device/flashlight/flare/unloaded_flare = new ammo.handful_type(get_turf(src))
 		playsound(user, reload_sound, 25, TRUE)
 		var/obj/item/projectile/flare = current_mag.transfer_bullet_out()
@@ -116,7 +116,7 @@
 		update_icon()
 
 /obj/item/weapon/gun/flare/unique_action(mob/user)
-	if(!user || !isturf(user.loc) || !current_mag || !current_mag.current_rounds)
+	if(!user || !isturf(user.loc) || !current_mag || !current_mag.ammo_position)
 		return
 
 	var/turf/flare_turf = user.loc

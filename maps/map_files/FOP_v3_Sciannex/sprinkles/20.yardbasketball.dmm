@@ -222,7 +222,7 @@
 /area/template_noop)
 "U" = (
 /obj/item/ammo_magazine/smg/uzi{
-	current_rounds = 0;
+	ammo_position = 0;
 	pixel_x = 5;
 	pixel_y = 12
 	},

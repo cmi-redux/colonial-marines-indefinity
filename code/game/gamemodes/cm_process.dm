@@ -183,7 +183,7 @@ GLOBAL_VAR_INIT(next_admin_bioscan, 30 MINUTES)
 		SSevacuation.ship_operation_stage_status = OPERATION_FIRST_LANDING
 	// The announcement to all Humans.
 	var/name = "[MAIN_AI_SYSTEM] Стадия Операции"
-	var/input = "Командный ордер.\n\n[active_lz.loc.loc] определена как главная зона высадки."
+	var/input = "Командный ордер.\n\n[active_lz?.loc.loc] определена как главная зона высадки."
 	faction_announcement(input, name)
 
 /datum/game_mode/proc/announce_bioscans()

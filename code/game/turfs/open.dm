@@ -596,7 +596,7 @@
 
 	if(!covered)
 		if(isliving(arrived))
-			arrived.AddComponent(/datum/component/mob_overlay_effect, type, -8)
+			arrived.AddComponent(/datum/component/mob_overlay_effect, -8, -8)
 		var/mob/living/carbon/carbon = arrived
 		var/river_slowdown = base_river_slowdown
 
@@ -702,7 +702,7 @@
 /turf/open/gm/coast/Entered(atom/movable/arrived)
 	. = ..()
 	if(isliving(arrived))
-		arrived.AddComponent(/datum/component/mob_overlay_effect, type, -2)
+		arrived.AddComponent(/datum/component/mob_overlay_effect, -2, -2)
 
 /turf/open/gm/coast/north
 
@@ -763,7 +763,7 @@
 /turf/open/gm/riverdeep/Entered(atom/movable/arrived)
 	. = ..()
 	if(ishuman(arrived))
-		arrived.AddComponent(/datum/component/mob_overlay_effect, type, -16)
+		arrived.AddComponent(/datum/component/mob_overlay_effect, -16, -16)
 
 /turf/open/gm/river/no_overlay
 	no_overlay = TRUE

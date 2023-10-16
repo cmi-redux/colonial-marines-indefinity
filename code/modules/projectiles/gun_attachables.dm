@@ -2730,6 +2730,7 @@ Defined in conflicts.dm of the #defines folder.
 /obj/item/attachable/attached_gun/activate_attachment(obj/item/weapon/gun/gun, mob/living/user, turn_off)
 	if(gun.active_attachable == src)
 		if(user)
+			gun.active_attachable = null
 			to_chat(user, SPAN_NOTICE("You are no longer using [src]."))
 			playsound(user, gun_deactivate_sound, 30, 1)
 			user.hud_used.update_ammo_hud(src)
@@ -3106,7 +3107,7 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/attached_gun/flamer/advanced
 	name = "advanced mini flamethrower"
-	current_rounds = 50
+	ammo_position = 50
 	max_rounds = 50
 	max_range = 6
 	burn_level = BURN_LEVEL_TIER_5

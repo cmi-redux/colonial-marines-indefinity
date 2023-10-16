@@ -1,8 +1,11 @@
 {
-    "map_name": "Solaris Ridge",
-    "map_path": "map_files/BigRed",
-    "map_file": "BigRed.dmm",
+    "map_name": "Test",
+    "map_path": "map_files/generic",
+    "map_file": "Test.dmm",
+    "disable_ship_map": true,
     "weather": [
+        "weather_rain",
+        "weather_snow",
         "weather_dust"
     ],
     "survivor_types": [
@@ -12,14 +15,12 @@
         "/datum/equipment_preset/survivor/engineer/solaris",
         "/datum/equipment_preset/survivor/trucker/solaris",
         "/datum/equipment_preset/survivor/security/solaris",
-        "/datum/equipment_preset/survivor/colonial_marshal/solaris",
-        "/datum/equipment_preset/survivor/corporate/solaris",
-        "/datum/equipment_preset/survivor/clf",
-        "/datum/equipment_preset/survivor/civilian"
+        "/datum/equipment_preset/survivor/colonial_marshal/solaris"
     ],
-    "announce_text": "We've lost contact with the Weyland-Yutani's research facility, Solaris Ridge. The ###SHIPNAME### has been dispatched to assist.",
+    "survivor_message": "Testing has begun.",
+    "announce_text": "Bzzzzzzzzzzz, skill issue.",
     "monkey_types": [
-        "neaera"
+        "monkey"
     ],
     "traits": [
         {
@@ -28,21 +29,24 @@
         },
         {
             "Ground": true,
+            "Up": 1,
+            "Down": -1,
+            "Baseturf": "/turf/open/openspace"
+        },
+        {
+            "Ground": true,
             "Down": -1,
             "Baseturf": "/turf/open/openspace"
         }
     ],
-    "nightmare_path": "maps/Nightmare/maps/BigRed/",
     "xvx_hives": {
         "alpha_xenomorph": 0,
         "bravo_xenomorph": 0,
         "charlie_xenomorph": 0,
         "delta_xenomorph": 100
     },
-    "camouflage": "desert",
     "gamemodes": [
         "Distress Signal",
-        "Crash",
         "Hunter Games",
         "Hive Wars",
         "Faction Clash",
@@ -60,5 +64,5 @@
         "Sunset": 0.7916,
         "Dusk": 0.916
     },
-    "custom_time_length": 2422075
+    "custom_time_length": 3000
 }

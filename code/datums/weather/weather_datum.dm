@@ -293,7 +293,7 @@
 				new_slowdown += 4 SECONDS
 			living.next_move_slowdown = new_slowdown
 		set_diged_ways(GLOB.reverse_dir[living.dir])
-		living.AddComponent(/datum/component/mob_overlay_effect, "snow_[bleed_layer]", bleed_layer * 6, FALSE)
+		living.AddComponent(/datum/component/mob_overlay_effect, bleed_layer * 6, bleed_layer * 3, 255)
 
 /obj/structure/snow/Uncrossed(atom/movable/gone)
 	. = ..()

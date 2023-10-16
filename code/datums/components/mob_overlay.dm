@@ -2,16 +2,15 @@
 /datum/component/mob_overlay_effect
 	dupe_mode = COMPONENT_DUPE_UNIQUE_PASSARGS
 	var/datum/effects/mob_overlay_effect/mob_overlay_effect
-	var/target_type //! Turf type the effect applies to
 	var/ttl = 1
 
-/datum/component/mob_overlay_effect/Initialize(type_to_set, y_offset, will_alter_layerings = TRUE)
+/datum/component/mob_overlay_effect/Initialize(y_offset, mask_y_offset, effect_alpha)
 	if(!istype(parent, /atom/movable))
 		return COMPONENT_INCOMPATIBLE
-	target_type = type_to_set
 	mob_overlay_effect = new(parent)
 	mob_overlay_effect.pixel_y_offset = y_offset
-	mob_overlay_effect.will_alter_layerings = will_alter_layerings
+	mob_overlay_effect.mask_pixel_y_offset = mask_y_offset
+	mob_overlay_effect.the_effect.alpha = effect_alpha
 
 /datum/component/mob_overlay_effect/Destroy()
 	. = ..()
@@ -34,10 +33,11 @@
 	. = ..()
 	UnregisterSignal(parent, COMSIG_MOVABLE_MOVED)
 
-/datum/component/mob_overlay_effect/InheritComponent(datum/component/C, i_am_original, type_to_set, y_offset)
+/datum/component/mob_overlay_effect/InheritComponent(datum/component/C, i_am_original, y_offset, mask_y_offset, effect_alpha)
 	. = ..()
 
 	ttl = 1
-	target_type = type_to_set
 	mob_overlay_effect.pixel_y_offset = y_offset
+	mob_overlay_effect.mask_pixel_y_offset = mask_y_offset
+	mob_overlay_effect.the_effect.alpha = effect_alpha
 	mob_overlay_effect.update_icons(get_turf(parent))

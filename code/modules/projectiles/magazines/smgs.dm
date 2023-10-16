@@ -131,7 +131,7 @@
 		base_mag_icon = "mp7_[capacity]"
 		icon_state = "mp7_[capacity]"
 		bonus_overlay = "mp7_[capacity]_overlay"
-		current_rounds = capacity
+		ammo_position = capacity
 		max_rounds = capacity
 		random_magazine = FALSE
 	. = ..()

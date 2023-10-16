@@ -310,7 +310,7 @@
 	dir = 8
 	},
 /obj/item/ammo_magazine/rifle/type71/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/asphalt,
 /area/desert_dam/exterior/valley/bar_valley_dam)
@@ -697,7 +697,7 @@
 /area/desert_dam/exterior/valley/bar_valley_dam)
 "md" = (
 /obj/item/ammo_magazine/rifle/type71/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/mars{
 	icon_state = "mars_dirt_5"
@@ -848,7 +848,7 @@
 "oF" = (
 /obj/item/ammo_casing/bullet,
 /obj/item/ammo_magazine/rifle/type71/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/desert/dirt{
 	icon_state = "desert_transition_edge1"
@@ -1101,7 +1101,7 @@
 "tE" = (
 /obj/structure/flora/grass/desert/heavygrass_3,
 /obj/item/ammo_magazine/rifle/type71/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/desert/dirt,
 /area/desert_dam/exterior/valley/bar_valley_dam)
@@ -1452,7 +1452,7 @@
 "yF" = (
 /obj/effect/decal/cleanable/blood,
 /obj/item/ammo_magazine/rifle/type71/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/shuttle/dropship,
 /area/desert_dam/building/bar/bar)
@@ -1624,7 +1624,7 @@
 	pixel_x = 6
 	},
 /obj/item/ammo_magazine/rifle/type71/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15"
@@ -1665,7 +1665,7 @@
 /area/desert_dam/interior/dam_interior/south_tunnel_entrance)
 "BU" = (
 /obj/item/ammo_magazine/rifle/type71/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /obj/item/shard{
 	icon_state = "medium"
@@ -2002,7 +2002,7 @@
 /area/desert_dam/exterior/valley/bar_valley_dam)
 "GK" = (
 /obj/item/ammo_magazine/rifle/type71/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /obj/effect/decal/cleanable/blood/oil/streak,
 /turf/open/shuttle/dropship{
@@ -2517,7 +2517,7 @@
 /area/desert_dam/building/bar/bar_restroom)
 "Qk" = (
 /obj/item/ammo_magazine/rifle/type71/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/asphalt,
 /area/desert_dam/exterior/valley/bar_valley_dam)
@@ -2674,7 +2674,7 @@
 /area/desert_dam/exterior/valley/bar_valley_dam)
 "SL" = (
 /obj/item/ammo_magazine/rifle/type71/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/desert/dirt,
 /area/desert_dam/exterior/valley/bar_valley_dam)
@@ -2729,7 +2729,7 @@
 "Tl" = (
 /obj/effect/decal/sand_overlay/sand1,
 /obj/item/ammo_magazine/rifle/type71/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/asphalt/cement_sunbleached{
 	icon_state = "cement_sunbleached12"
@@ -2920,7 +2920,7 @@
 	dir = 4
 	},
 /obj/item/ammo_magazine/rifle/type71/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/asphalt,
 /area/desert_dam/exterior/valley/bar_valley_dam)
@@ -3021,7 +3021,7 @@
 	icon_state = "road_edge_decal2"
 	},
 /obj/item/ammo_magazine/rifle/type71/heap{
-	current_rounds = 0
+	ammo_position = 0
 	},
 /turf/open/asphalt,
 /area/desert_dam/exterior/valley/bar_valley_dam)

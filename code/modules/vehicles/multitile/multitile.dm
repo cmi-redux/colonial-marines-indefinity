@@ -38,7 +38,7 @@
 	var/list/seat_verbs
 
 	// Stairs multitile shitcode
-	var/zfalling_blocked = FALSE
+	var/z_interactiong_blocked = FALSE
 
 	move_delay = VEHICLE_SPEED_STATIC
 	// The next world.time when the vehicle can move

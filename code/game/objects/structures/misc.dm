@@ -195,12 +195,12 @@
 		return
 
 	if(isTerminator() && arrived.dir == dir)
-		if(istype(arrived, /obj/vehicle/multitile))
-			var/obj/vehicle/multitile/multitile = arrived
-			multitile.try_use_stairs()
-		else
-			arrived.set_currently_z_moving(CURRENTLY_Z_ASCENDING)
-			INVOKE_ASYNC(src, PROC_REF(stair_ascend), arrived)
+//		if(istype(arrived, /obj/vehicle/multitile))
+//			var/obj/vehicle/multitile/multitile = arrived
+//			multitile.try_use_stairs()
+//		else
+		arrived.set_currently_z_moving(CURRENTLY_Z_ASCENDING)
+		INVOKE_ASYNC(src, PROC_REF(stair_ascend), arrived)
 		return COMPONENT_ATOM_BLOCK_EXIT
 
 /obj/structure/stairs/proc/stair_ascend(atom/movable/climber)

@@ -1223,15 +1223,14 @@ and you're good to go.
 
 	return in_chamber //Returns the projectile if it's actually successful.
 
-/obj/item/weapon/gun/proc/delete_bullet(obj/item/projectile/projectile_to_fire, refund = 0)
-	if(active_attachable) //Attachables don't chamber rounds, so we want to delete it right away.
-		if(refund)
+/obj/item/weapon/gun/proc/delete_bullet(obj/item/projectile/projectile_to_fire, refund = FALSE)
+	if(refund)
+		if(active_attachable)
 			projectile_to_fire.forceMove(active_attachable)
 			active_attachable.ammo_position++
 			active_attachable.current_rounds[active_attachable.ammo_position] = projectile_to_fire
 			return TRUE
-	else
-		if(refund && current_mag)
+		else if(current_mag)
 			projectile_to_fire.forceMove(current_mag)
 			current_mag.ammo_position++
 			current_mag.current_rounds[current_mag.ammo_position] = projectile_to_fire
@@ -1259,7 +1258,7 @@ and you're good to go.
 /obj/item/weapon/gun/proc/get_display_ammo_count()
 	if(current_mag)
 		return current_mag.ammo_position
-	return 0
+	return FALSE
 
 //----------------------------------------------------------
 		//    \\
@@ -1315,7 +1314,7 @@ and you're good to go.
 			return
 
 		if(!(active_attachable.flags_attach_features & ATTACH_PROJECTILE)) //If it's unique projectile, this is where we fire it.
-			if((active_attachable.current_rounds <= 0) && !(active_attachable.flags_attach_features & ATTACH_IGNORE_EMPTY))
+			if((active_attachable.ammo_position <= 0) && !(active_attachable.flags_attach_features & ATTACH_IGNORE_EMPTY))
 				click_empty(user) //If it's empty, let them know.
 				to_chat(user, SPAN_WARNING("[active_attachable] пусто!"))
 				to_chat(user, SPAN_NOTICE("Вы деактивируете [active_attachable]."))

@@ -208,8 +208,8 @@ var/list/shotgun_handfuls_12g = list(
 /obj/item/ammo_magazine/handful/shotgun/custom_color/update_icon()
 	overlays.Cut()
 	. = ..()
-	icon_state = "shell_greyscale" + "_[current_rounds]"
-	var/image/I = image(icon, src, "+shell_base_[src.current_rounds]")
+	icon_state = "shell_greyscale" + "_[ammo_position]"
+	var/image/I = image(icon, src, "+shell_base_[src.ammo_position]")
 	I.color = "#ffffff"
 	I.appearance_flags = RESET_COLOR|KEEP_APART
 	overlays += I

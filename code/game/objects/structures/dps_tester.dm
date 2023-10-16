@@ -29,4 +29,4 @@
 		COOLDOWN_START(src, calculation_timer, time_calculation)
 	dps += damage
 
-	visible_message("DPS: [dps/(time_calculation-COOLDOWN_TIMELEFT(src, calculation_timer))]")
+	visible_message("DPS: [dps / max(1, (time_calculation-COOLDOWN_TIMELEFT(src, calculation_timer)) / 10)]")
