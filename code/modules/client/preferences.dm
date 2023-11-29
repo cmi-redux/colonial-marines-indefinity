@@ -48,7 +48,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/reload_cooldown = 0 //5s cooldown between loading slots
 
 	//game-preferences
-	var/client_language = CLIENT_LANGUAGE_RUSSIAN
+	var/client_language = CLIENT_LANGUAGE_ENGLISH
 	var/lastchangelog = "" // Saved changlog filesize to detect if there was a change
 	var/ooccolor
 	var/be_special = 0 // Special role selection
