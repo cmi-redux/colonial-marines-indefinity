@@ -5,8 +5,9 @@ SUBSYSTEM_DEF(objectives)
 	init_order = SS_INIT_OBJECTIVES
 	runlevels = RUNLEVEL_GAME
 	wait = 10 SECONDS
-	var/list/objectives = list()
-	var/list/processing_objectives = list()
+	var/list/datum/objectives_datum/active_objectives_controller = list()
+	var/total_objectives = 0
+	var/total_active_objectives = 0
 	var/next_sitrep = SITREP_INTERVAL
 	var/statistics = list()
 
@@ -48,19 +49,30 @@ SUBSYSTEM_DEF(objectives)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/objectives/stat_entry(msg)
-	msg = "O:[length(objectives)]|P:[length(processing_objectives)]|C:[length(GLOB.objective_controller)]"
+	msg = "OC:[length(GLOB.objective_controller)]|AOC:[length(active_objectives_controller)]|O:[total_objectives]|AO:[total_active_objectives]|"
 	return ..()
 
 /datum/controller/subsystem/objectives/fire(resumed = FALSE)
 	if(!resumed)
-		current_active_run = processing_objectives.Copy()
+		active_objectives_controller = list()
+		total_objectives = 0
+		total_active_objectives = 0
+		for(var/datum/objectives_datum/objectives_controller in GLOB.objective_controller)
+			total_objectives += length(objectives_controller.objectives)
+			if(!objectives_controller.check_status())
+				total_objectives += length(objectives_controller.processing_objectives)
+			else
+				total_active_objectives += length(objectives_controller.processing_objectives)
+				active_objectives_controller += objectives_controller
+
+		for(var/datum/objectives_datum/objectives_controller in active_objectives_controller)
+			current_active_run += objectives_controller.objectives.Copy()
 
 		if(world.time > next_sitrep)
 			next_sitrep = world.time + SITREP_INTERVAL
 			announce_stats()
 			if(MC_TICK_CHECK)
 				return
-
 
 	while(length(current_active_run))
 		var/datum/cm_objective/objective = current_active_run[length(current_active_run)]
@@ -69,7 +81,7 @@ SUBSYSTEM_DEF(objectives)
 		objective.process()
 		objective.check_completion()
 		if(objective.objective_state & OBJECTIVE_COMPLETE|OBJECTIVE_FAILED)
-			stop_processing_objective(objective)
+			GLOB.faction_datum[faction].objectives_controller.stop_processing_objective(objective)
 
 		if(MC_TICK_CHECK)
 			return
@@ -77,204 +89,49 @@ SUBSYSTEM_DEF(objectives)
 /// Allows to perform objective initialization later on in case of map changes
 /datum/controller/subsystem/objectives/proc/initialize_objectives()
 	SHOULD_NOT_SLEEP(TRUE)
-	generate_objectives()
-	connect_objectives()
-	var/datum/objectives_datum/objectives_controller = GLOB.objective_controller[pick(GLOB.objective_controller)]
-	objectives_controller.corpsewar.generate_corpses(CORPSES_TO_SPAWN)
-
-/datum/controller/subsystem/objectives/proc/generate_objectives()
-	if(!length(GLOB.objective_landmarks_close) || !length(GLOB.objective_landmarks_medium) \
-	|| !length(GLOB.objective_landmarks_far)   || !length(GLOB.objective_landmarks_science))
-		//The map doesn't have the correct landmarks, so we generate nothing, hoping the map has normal objectives
-		return
-
-	var/paper_scraps = 40
-	var/progress_reports = 15
-	var/folders = 30
-	var/technical_manuals = 10
-	var/disks = 30
-	var/experimental_devices = 15
-	var/research_papers = 15
-	var/vial_boxes = 20
-
-	//A stub of tweaking item spawns based on map
-	switch(SSmapping.configs[GROUND_MAP])
-		if(MAP_LV_624)
-			paper_scraps = 35
-			progress_reports = 12
-			folders = 25
-			disks = 25
-		if(MAP_CORSAT)
-			vial_boxes = 30
-			research_papers = 30
-			experimental_devices = 20
-
-	//Calculating document ratios so we don't end up with filing cabinets holding 10 documents because there are few filing cabinets
-	// TODO: use less dumb structuring than legacy one
-	var/relative_document_ratio_close = 0
-	for(var/key in GLOB.objective_landmarks_close)
-		if(GLOB.objective_landmarks_close[key])
-			relative_document_ratio_close++
-	relative_document_ratio_close /= length(GLOB.objective_landmarks_close)
-
-	var/relative_document_ratio_medium = 0
-	for(var/key in GLOB.objective_landmarks_medium)
-		if(GLOB.objective_landmarks_medium[key])
-			relative_document_ratio_medium++
-	relative_document_ratio_medium /= length(GLOB.objective_landmarks_medium)
-
-	var/relative_document_ratio_far = 0
-	for(var/key in GLOB.objective_landmarks_far)
-		if(GLOB.objective_landmarks_far[key])
-			relative_document_ratio_far++
-	relative_document_ratio_far /= length(GLOB.objective_landmarks_far)
-
-	var/relative_document_ratio_science = 0
-	for(var/key in GLOB.objective_landmarks_science)
-		if(GLOB.objective_landmarks_science[key])
-			relative_document_ratio_science++
-	relative_document_ratio_science /= length(GLOB.objective_landmarks_science)
-
-	//Intel
-	for(var/i=0;i<paper_scraps;i++)
-		var/dest = pick(20;"close", 5;"medium", 2;"far", 10;"science", 40*relative_document_ratio_close;"close_documents", 10*relative_document_ratio_medium;"medium_documents", 3*relative_document_ratio_far;"far_documents", 10*relative_document_ratio_science;"science_documents")
-		spawn_objective_at_landmark(dest, /obj/item/document_objective/paper)
-	for(var/i=0;i<progress_reports;i++)
-		var/dest = pick(10;"close", 55;"medium", 3;"far", 10;"science", 20*relative_document_ratio_close;"close_documents", 30*relative_document_ratio_medium;"medium_documents", 3*relative_document_ratio_far;"far_documents", 10*relative_document_ratio_science;"science_documents")
-		spawn_objective_at_landmark(dest, /obj/item/document_objective/report)
-	for(var/i=0;i<folders;i++)
-		var/dest = pick(20;"close", 5;"medium", 2;"far", 10;"science", 40*relative_document_ratio_close;"close_documents", 10*relative_document_ratio_medium;"medium_documents", 3*relative_document_ratio_far;"far_documents", 10*relative_document_ratio_science;"science_documents")
-		spawn_objective_at_landmark(dest, /obj/item/document_objective/folder)
-	for(var/i=0;i<technical_manuals;i++)
-		var/dest = pick(20;"close", 40;"medium", 20;"far", 20;"science")
-		spawn_objective_at_landmark(dest, /obj/item/document_objective/technical_manual)
-	for(var/i=0;i<disks;i++)
-		var/dest = pick(20;"close", 40;"medium", 20;"far", 20;"science")
-		spawn_objective_at_landmark(dest, /obj/item/disk/objective)
-	for(var/i=0;i<experimental_devices;i++)
-		var/dest = pick(10;"close", 20;"medium", 40;"far", 30;"science")
-		var/ex_dev = pick(
-			/obj/item/device/mass_spectrometer/adv/objective,
-			/obj/item/device/reagent_scanner/adv/objective,
-			/obj/item/device/healthanalyzer/objective,
-			/obj/item/device/autopsy_scanner/objective,
-		)
-		spawn_objective_at_landmark(dest, ex_dev)
-
-	//Research
-	for(var/i=0;i<research_papers;i++)
-		var/dest = pick(10;"close", 8;"medium", 2;"far", 20;"science", 15;"close_documents", 12;"medium_documents", 3;"far_documents", 30;"science_documents")
-		spawn_objective_at_landmark(dest, /obj/item/paper/research_notes)
-	for(var/i=0;i<vial_boxes;i++)
-		var/dest = pick(15;"close", 30;"medium", 5;"far", 50;"science")
-		spawn_objective_at_landmark(dest, /obj/item/storage/fancy/vials/random)
-
-// Populate the map with objective items.
-
-/datum/controller/subsystem/objectives/proc/spawn_objective_at_landmark(dest, obj/item/item)
-	var/picked_location
-	switch(dest)
-		if("close")
-			picked_location = pick(GLOB.objective_landmarks_close)
-		if("medium")
-			picked_location = pick(GLOB.objective_landmarks_medium)
-		if("far")
-			picked_location = pick(GLOB.objective_landmarks_far)
-		if("science")
-			picked_location = pick(GLOB.objective_landmarks_science)
-
-		if("close_documents")
-			var/list/candidates = list()
-			for(var/key in GLOB.objective_landmarks_close)
-				if(GLOB.objective_landmarks_close[key])
-					candidates += key
-			picked_location = SAFEPICK(candidates)
-			if(!picked_location)
-				picked_location = pick(GLOB.objective_landmarks_close)
-
-		if("medium_documents")
-			var/list/candidates = list()
-			for(var/key in GLOB.objective_landmarks_medium)
-				if(GLOB.objective_landmarks_medium[key])
-					candidates += key
-			picked_location = SAFEPICK(candidates)
-			if(!picked_location)
-				picked_location = pick(GLOB.objective_landmarks_medium)
-
-		if("far_documents")
-			var/list/candidates = list()
-			for(var/key in GLOB.objective_landmarks_far)
-				if(GLOB.objective_landmarks_far[key])
-					candidates += key
-			picked_location = SAFEPICK(candidates)
-			if(!picked_location)
-				picked_location = pick(GLOB.objective_landmarks_far)
-
-		if("science_documents")
-			var/list/candidates = list()
-			for(var/key in GLOB.objective_landmarks_science)
-				if(GLOB.objective_landmarks_science[key])
-					candidates += key
-			picked_location = SAFEPICK(candidates)
-			if(!picked_location)
-				picked_location = pick(GLOB.objective_landmarks_science)
-
-	picked_location = get_turf(picked_location)
-	if(!picked_location)
-		CRASH("Unable to pick a location at [dest] for [item]")
-
-	var/generated = FALSE
-	for(var/obj/objective in picked_location)
-		if(istype(objective, /obj/structure/closet) || istype(objective, /obj/structure/safe) || istype(objective, /obj/structure/filingcabinet))
-			if(istype(objective, /obj/structure/closet))
-				var/obj/structure/closet/closet = objective
-				if(closet.opened)
-					continue //container is open, don't put stuff into it
-			var/obj/item/new_item = new item(objective)
-			objective.contents += new_item
-			generated = TRUE
-			break
-
-	if(!generated)
-		new item(picked_location)
+	for(var/datum/objectives_datum/objectives_controller in GLOB.objective_controller)
+		objectives_controller.generate_objectives()
+		connect_objectives(objectives_controller)
+		objectives_controller.corpsewar.generate_corpses(CORPSES_TO_SPAWN)
 
 /datum/controller/subsystem/objectives/proc/pre_round_start()
 	SIGNAL_HANDLER
 	initialize_objectives()
-	for(var/datum/cm_objective/objective in objectives)
-		objective.pre_round_start()
+	for(var/datum/objectives_datum/objectives_controller in GLOB.objective_controller)
+		for(var/datum/cm_objective/objective in objectives_controller.objectives)
+			objective.pre_round_start()
 
 /datum/controller/subsystem/objectives/proc/post_round_start()
 	SIGNAL_HANDLER
-	for(var/datum/cm_objective/objective in objectives)
-		objective.post_round_start()
+	for(var/datum/objectives_datum/objectives_controller in GLOB.objective_controller)
+		for(var/datum/cm_objective/objective in objectives_controller.objectives)
+			objective.post_round_start()
 
-/datum/controller/subsystem/objectives/proc/connect_objectives()
+/datum/controller/subsystem/objectives/proc/connect_objectives(datum/objectives_datum/objectives_controller)
 	// Sets up the objective interdependance faction
 	// Every objective (which isn't a dead end) gets one guaranteed objective it unlocks.
 	// Every objective gets x random objectives that unlock it based on variable 'number_of_clues_to_generate'
 
-	var/list/low_value
-	var/list/medium_value
-	var/list/high_value
-	var/list/extreme_value
-	var/list/absolute_value
-
+	var/list/low_value = list()
+	var/list/medium_value = list()
+	var/list/high_value = list()
+	var/list/extreme_value = list()
+	var/list/absolute_value = list()
 	// Sort objectives into categories
-	for(var/datum/cm_objective/objective in objectives)
+	for(var/datum/cm_objective/objective in objectives_controller.objectives)
 		if(objective.objective_flags & OBJECTIVE_DO_NOT_TREE)
 			continue // exempt from the tree
 		switch(objective.value)
 			if(OBJECTIVE_LOW_VALUE)
-				LAZYADD(low_value, objective)
+				low_value += objective
 			if(OBJECTIVE_MEDIUM_VALUE)
-				LAZYADD(medium_value, objective)
+				medium_value += objective
 			if(OBJECTIVE_HIGH_VALUE)
-				LAZYADD(high_value, objective)
+				high_value += objective
 			if(OBJECTIVE_EXTREME_VALUE)
-				LAZYADD(extreme_value, objective)
+				extreme_value += objective
 			if(OBJECTIVE_ABSOLUTE_VALUE)
-				LAZYADD(absolute_value, objective)
+				absolute_value += objective
 
 	// Set up preqrequisites:
 	// Low
@@ -336,18 +193,6 @@ SUBSYSTEM_DEF(objectives)
 	LAZYADD(enabled_objective.required_objectives, required_objective)
 	LAZYADD(required_objective.enables_objectives, enabled_objective)
 
-/datum/controller/subsystem/objectives/proc/add_objective(datum/cm_objective/objective)
-	LAZYADD(objectives, objective)
-
-/datum/controller/subsystem/objectives/proc/remove_objective(datum/cm_objective/objective)
-	LAZYREMOVE(objectives, objective)
-
-/datum/controller/subsystem/objectives/proc/start_processing_objective(datum/cm_objective/objective)
-	processing_objectives += objective
-
-/datum/controller/subsystem/objectives/proc/stop_processing_objective(datum/cm_objective/objective)
-	processing_objectives -= objective
-
 /datum/controller/subsystem/objectives/proc/get_objectives_progress(faction)
 	var/point_total = 0
 	var/complete = 0
@@ -355,7 +200,7 @@ SUBSYSTEM_DEF(objectives)
 	var/list/categories = list()
 	var/list/notable_objectives = list()
 
-	for(var/datum/cm_objective/C as anything in objectives)
+	for(var/datum/cm_objective/C as anything in GLOB.faction_datum[faction].objectives_controller.objectives)
 		if(!C.observable_by_faction(faction))
 			continue
 		if(C.display_category)
@@ -373,7 +218,7 @@ SUBSYSTEM_DEF(objectives)
 		complete += C.get_point_value(faction)
 
 	var/dat = ""
-	if(length(objectives)) // protect against divide by zero
+	if(length(GLOB.faction_datum[faction].objectives_controller.objectives)) // protect against divide by zero
 		dat = "<b>Total Objectives:</b> [complete]pts achieved<br>"
 		if(length(categories))
 			var/total = 1 //To avoid divide by zero errors, just in case...
@@ -395,7 +240,7 @@ SUBSYSTEM_DEF(objectives)
 /datum/controller/subsystem/objectives/proc/get_scored_points(faction)
 	var/scored_points = 0
 
-	for(var/datum/cm_objective/L as anything in objectives)
+	for(var/datum/cm_objective/L as anything in GLOB.faction_datum[faction].objectives_controller.objectives)
 		if(!L.observable_by_faction(faction))
 			continue
 		scored_points += L.get_point_value(faction)
@@ -405,7 +250,7 @@ SUBSYSTEM_DEF(objectives)
 /datum/controller/subsystem/objectives/proc/get_total_points(faction)
 	var/total_points = 0
 
-	for(var/datum/cm_objective/L as anything in objectives)
+	for(var/datum/cm_objective/L as anything in GLOB.faction_datum[faction].objectives_controller.objectives)
 		if(!L.observable_by_faction(faction))
 			continue
 		total_points += L.total_point_value(faction)

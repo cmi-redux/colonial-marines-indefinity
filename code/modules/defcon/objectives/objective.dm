@@ -15,11 +15,11 @@
 /datum/cm_objective/New(faction_to_get)
 	if(faction_to_get)
 		controller = faction_to_get
-	SSobjectives.add_objective(src)
+	GLOB.faction_datum[controller].objectives_controller.add_objective(src)
 
 /datum/cm_objective/Destroy()
-	SSobjectives.stop_processing_objective(src)
-	SSobjectives.remove_objective(src)
+	GLOB.faction_datum[controller].objectives_controller.stop_processing_objective(src)
+	GLOB.faction_datum[controller].objectives_controller.remove_objective(src)
 	for(var/datum/cm_objective/R as anything in required_objectives)
 		LAZYREMOVE(R.enables_objectives, src)
 	for(var/datum/cm_objective/E as anything in enables_objectives)
@@ -53,11 +53,11 @@
 
 // Make this objective call process() and check_completion() every SS tick.
 /datum/cm_objective/proc/activate()
-	SSobjectives.start_processing_objective(src)
+	GLOB.faction_datum[controller].objectives_controller.start_processing_objective(src)
 
 // Stops the Objective from processing
 /datum/cm_objective/proc/deactivate()
-	SSobjectives.stop_processing_objective(src)
+	GLOB.faction_datum[controller].objectives_controller.start_processing_objective(src)
 
 /datum/cm_objective/proc/get_completion_status()
 	if(objective_state & OBJECTIVE_COMPLETE)
@@ -77,6 +77,6 @@
 	return value
 
 /datum/cm_objective/proc/observable_by_faction(faction)
-	if(controller == faction || objective_flags & OBJECTIVE_DO_NOT_TREE)
+	if(controller == faction || objective_flags & OBJECTIVE_NO_FACTION_LINK)
 		return TRUE
 	return FALSE
