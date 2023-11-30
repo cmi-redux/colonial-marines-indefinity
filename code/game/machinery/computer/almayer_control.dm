@@ -133,6 +133,10 @@
 			faction.objectives_controller.list_and_purchase_rewards()
 			. = TRUE
 
+		if("faction_interaction")
+			faction.objectives_controller.list_and_purchase_rewards()
+			. = TRUE
+
 		if("operation_zone_leave")
 			if(SSevacuation.initiate_ship_evacuation())
 				to_chat(usr, SPAN_WARNING("[controled_ship] покинит радиус досигаймости сигнала с колонией через: [duration2text_hour_min_sec(SSevacuation.ship_evac_time + SHIP_EVACUATION_AUTOMATIC_DEPARTURE - world.time, "hh:mm:ss")], [MAIN_AI_SYSTEM] все еще имеет право остановить завершение операции в случае нарушения протокола!"))

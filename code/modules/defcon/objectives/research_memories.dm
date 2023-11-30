@@ -49,7 +49,7 @@
 	// Chemicals
 	objectives += list(get_objective(
 		"Analyze Chemicals",
-		SSobjectives.statistics["chemicals_completed"],
+		SSfactions.statistics["chemicals_completed"],
 		FALSE,
 		chemical_data.rsc_credits,
 		"white"

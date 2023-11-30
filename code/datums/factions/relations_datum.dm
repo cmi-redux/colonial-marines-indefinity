@@ -3,9 +3,14 @@
 	var/list/allies = list()
 	var/list/datum/relations_action/relation_actions = list()
 	var/datum/faction/faction
+	var/atom/source
 
-/datum/faction_relations/New(datum/faction/faction_to_set)
+/datum/faction_relations/New(datum/faction/faction_to_set, atom/referenced_source)
 	faction = faction_to_set
+	if(referenced_source)
+		source = referenced_source
+	else
+		source = src
 
 /datum/faction_relations/proc/generate_relations_helper()
 	spawn(30 SECONDS)
@@ -29,9 +34,9 @@
 	relations[target_faction.faction_name] = clamp(relations[target_faction.faction_name] + opinion, RELATIONS_WAR[1], RELATIONS_MAX)
 
 /datum/faction_relations/tgui_interact(mob/user, datum/tgui/ui)
-	ui = SStgui.try_update_ui(user, src, ui)
+	ui = SStgui.try_update_ui(user, source, ui)
 	if(!ui)
-		ui = new(user, src, "FactionRelations", "[faction] Relations")
+		ui = new(user, source, "FactionRelations", "[faction] Relations")
 		ui.open()
 		ui.set_autoupdate(TRUE)
 
@@ -42,6 +47,8 @@
 		if(relations[i] == null || relations[i] > 1000)
 			continue
 		relations_mapping += list(list("name" = GLOB.faction_datum[i].name, "desc" = GLOB.faction_datum[i].desc, "color" = GLOB.faction_datum[i].ui_color, "value" = relations[i]))
+
+	.["actions"] = source != src ? TRUE : FALSE
 
 	.["faction_color"] = faction.ui_color
 	.["faction_relations"] = relations_mapping

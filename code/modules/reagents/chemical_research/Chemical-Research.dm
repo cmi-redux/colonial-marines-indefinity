@@ -134,8 +134,8 @@ var/global/datum/chemical_data/chemical_data = new /datum/chemical_data
 	chemical_identified_list[chem.id] = chem.objective_value
 	chemical_not_completed_objective_list -= chem.id
 
-	SSobjectives.statistics["chemicals_completed"]++
-	SSobjectives.statistics["chemicals_total_points_earned"] += chem.objective_value
+	SSfactions.statistics["chemicals_completed"]++
+	SSfactions.statistics["chemicals_total_points_earned"] += chem.objective_value
 
 	var/datum/objectives_datum/objectives_controller = GLOB.objective_controller[FACTION_MARINE]
 	objectives_controller.add_defcon_points(chem.objective_value)

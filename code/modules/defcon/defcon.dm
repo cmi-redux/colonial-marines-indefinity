@@ -161,9 +161,9 @@ TODO: Redo fully system per faction objectives with custom spawns and objectives
 
 /datum/objectives_datum/proc/check_defcon_level()
 	var/list/answer = list()
-	last_objectives_scored_points = SSobjectives.get_scored_points(associated_faction) + additional_points
+	last_objectives_scored_points = SSfactions.get_scored_points(associated_faction) + additional_points
 	answer["scored_points"] = last_objectives_scored_points
-	last_objectives_total_points = SSobjectives.get_total_points(associated_faction)
+	last_objectives_total_points = SSfactions.get_total_points(associated_faction)
 	answer["total_points"] = last_objectives_total_points
 	player_points_defcon = (level_triggers_modificator * max(length(GLOB.faction_datum[associated_faction].totalMobs), 1) + level_triggers_additional_points) * real_current_level * 0.65
 	answer["player_points_defcon"] = player_points_defcon

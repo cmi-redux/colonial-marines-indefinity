@@ -126,8 +126,7 @@
 #define SS_INIT_FINISH				-24
 #define SS_INIT_ADMIN				-26
 #define SS_INIT_PREDSHIPS			-30
-#define SS_INIT_OBJECTIVES			-31
-#define SS_INIT_TASKS				-32
+#define SS_INIT_FACTIONS			-31
 #define SS_INIT_LOBBYART			-33
 #define SS_INIT_ICON_SMOOTHING		-34
 #define SS_INIT_STATPANELS			-98

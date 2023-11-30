@@ -17,7 +17,7 @@
 	. = ..()
 
 /datum/cm_objective/crack_safe/pre_round_start()
-	SSobjectives.statistics["miscellaneous_total_instances"]++
+	SSfactions.statistics["miscellaneous_total_instances"]++
 
 /datum/cm_objective/crack_safe/Destroy()
 	target = null
@@ -42,8 +42,8 @@
 
 /datum/cm_objective/crack_safe/complete()
 	objective_state = OBJECTIVE_COMPLETE
-	SSobjectives.statistics["miscellaneous_completed"]++
-	SSobjectives.statistics["miscellaneous_total_points_earned"] += value
+	SSfactions.statistics["miscellaneous_completed"]++
+	SSfactions.statistics["miscellaneous_total_points_earned"] += value
 
 /datum/cm_objective/crack_safe/proc/on_safe_open(obj/structure/safe)
 	SIGNAL_HANDLER

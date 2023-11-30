@@ -133,8 +133,8 @@
 		var/area/A = get_area(T)
 		if(A.flags_area & AREA_RECOVER_CORPSES && A.faction_to_get == controller)
 			value += score_corpse(target)
-			SSobjectives.statistics["corpses_recovered"]++
-			SSobjectives.statistics["corpses_total_points_earned"] = value
+			SSfactions.statistics["corpses_recovered"]++
+			SSfactions.statistics["corpses_total_points_earned"] = value
 
 			LAZYREMOVE(corpses, target)
 			LAZYDISTINCTADD(scored_corpses, target)
@@ -226,8 +226,8 @@
 			return TRUE
 
 /datum/cm_objective/move_mob/complete()
-	SSobjectives.statistics["survivors_rescued"]++
-	SSobjectives.statistics["survivors_rescued_total_points_earned"] += value
+	SSfactions.statistics["survivors_rescued"]++
+	SSfactions.statistics["survivors_rescued_total_points_earned"] += value
 	deactivate()
 
 /datum/cm_objective/move_mob/almayer

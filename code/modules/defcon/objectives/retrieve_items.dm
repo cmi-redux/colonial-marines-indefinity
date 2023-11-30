@@ -37,7 +37,7 @@
 
 /datum/cm_objective/retrieve_item/complete()
 	objective_state = OBJECTIVE_COMPLETE
-	SSobjectives.statistics["item_retrieval_total_points_earned"] += value
+	SSfactions.statistics["item_retrieval_total_points_earned"] += value
 
 /datum/cm_objective/retrieve_item/get_tgui_data()
 	var/list/clue = list()
@@ -97,11 +97,11 @@
 	objective_flags = OBJECTIVE_DO_NOT_TREE | OBJECTIVE_START_PROCESSING_ON_DISCOVERY
 
 /datum/cm_objective/retrieve_item/document/pre_round_start()
-	SSobjectives.statistics["item_retrieval_total_instances"]++
+	SSfactions.statistics["item_retrieval_total_instances"]++
 
 /datum/cm_objective/retrieve_item/document/complete()
 	..()
-	SSobjectives.statistics["item_retrieval_completed"]++
+	SSfactions.statistics["item_retrieval_completed"]++
 
 /datum/cm_objective/retrieve_item/document/get_clue()
 	return

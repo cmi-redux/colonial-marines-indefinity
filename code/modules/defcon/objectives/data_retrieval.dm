@@ -16,7 +16,7 @@
 	decryption_password = "[pick(alphabet_uppercase)][rand(100,999)][pick(alphabet_uppercase)][rand(10,99)]"
 
 /datum/cm_objective/retrieve_data/pre_round_start()
-	SSobjectives.statistics["data_retrieval_total_instances"]++
+	SSfactions.statistics["data_retrieval_total_instances"]++
 
 /datum/cm_objective/retrieve_data/Destroy()
 	initial_area = null
@@ -30,8 +30,8 @@
 		complete()
 
 /datum/cm_objective/retrieve_data/complete()
-	SSobjectives.statistics["data_retrieval_total_points_earned"] += value
-	SSobjectives.statistics["data_retrieval_completed"]++
+	SSfactions.statistics["data_retrieval_total_points_earned"] += value
+	SSfactions.statistics["data_retrieval_completed"]++
 
 // --------------------------------------------
 // *** Upload data from a terminal ***
@@ -117,7 +117,7 @@
 	if(!reader.powered())
 		reader.visible_message(SPAN_WARNING("\The [reader] powers down mid-operation as the area looses power."))
 		playsound(reader, 'sound/machines/terminal_shutdown.ogg', 25, 1)
-		GLOB.faction_datum[controller].objectives_controller..stop_processing_objective(src)
+		GLOB.faction_datum[controller].objectives_controller.stop_processing_objective(src)
 		disk.forceMove(reader.loc)
 		reader.disk = null
 		return
