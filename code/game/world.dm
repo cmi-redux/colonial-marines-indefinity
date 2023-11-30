@@ -229,7 +229,22 @@ var/world_topic_spam_protect_time = world.timeofday
 		response["data"] = command.data
 		return json_encode(response)
 
-/world/Reboot(shutdown = FALSE, reason)
+/world/Reboot(auth, shutdown = FALSE, reason)
+	if(auth != GLOB.href_token) //Hotfix of byond skill issue, lummox good boi
+		var/msg = !auth ? "no" : "a bad"
+		message_admins("world.Reboot() called with with [msg] authorization key!")
+		log_admin_private("world.Reboot() called with [msg] authorization key!")
+		/// Here we rickrolling and nuking that big brain client
+		if(istype(usr, /client))
+			var/client/big_brain = usr
+			big_brain << link("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+			qdel(big_brain)
+		else if(istype(usr, /mob))
+			var/mob/big_brain = usr
+			big_brain.client << link("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+			qdel(big_brain.client)
+		return
+
 	if(!notify_restart())
 		log_debug("Failed to notify discord about restart")
 

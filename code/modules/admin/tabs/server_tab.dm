@@ -18,7 +18,7 @@
 		log_admin("[key_name(usr)] инициировал рестарт.")
 
 		sleep(50)
-		world.Reboot(SSticker.graceful)
+		world.Reboot(HrefToken(TRUE), SSticker.graceful)
 
 /datum/admins/proc/shutdown_server()
 	set name = "Shutdown Server"
@@ -91,7 +91,7 @@
 	if(waitforroundend)
 		return
 	sleep(50)
-	world.Reboot(TRUE)
+	world.Reboot(HrefToken(TRUE), TRUE)
 
 /datum/admins/proc/servermode()
 	set name = "Toggle Players Joining"

@@ -3,7 +3,7 @@
 	. = auth && (auth == href_token || auth == GLOB.href_token)
 	if(.)
 		return
-	var/msg = !auth ? usr.client.auto_lang(LANGUAGE_NO) : "a bad"
+	var/msg = !auth ? "no" : "a bad"
 	message_admins("[key_name_admin(usr)] clicked an href with [msg] authorization key!")
 	if(CONFIG_GET(flag/debug_admin_hrefs))
 		message_admins("Debug mode enabled, call not blocked. Please ask your coders to review this round's logs.")

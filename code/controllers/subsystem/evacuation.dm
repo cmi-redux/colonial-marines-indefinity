@@ -396,7 +396,7 @@ SUBSYSTEM_DEF(evacuation)
 				to_world(SPAN_ROUNDBODY("Рестарт через 30 секунд!"))
 				sleep(300)
 				log_game("Рестарт из-за самоуничтожения корабля.")
-				world.Reboot(SSticker.graceful)
+				world.Reboot(HrefToken(TRUE), SSticker.graceful)
 			return TRUE
 
 //Generic parent base for the self_destruct items.
