@@ -461,7 +461,6 @@
 	S["preferred_squad"] >> preferred_squad
 	S["preferred_armor"] >> preferred_armor
 	S["nanotrasen_relation"] >> nanotrasen_relation
-	//S["skin_style"] >> skin_style
 
 	S["uplinklocation"] >> uplinklocation
 	S["exploit_record"] >> exploit_record
@@ -610,7 +609,6 @@
 	S["nanotrasen_relation"] << nanotrasen_relation
 	S["preferred_squad"] << preferred_squad
 	S["preferred_armor"] << preferred_armor
-	//S["skin_style"] << skin_style
 
 	S["uplinklocation"] << uplinklocation
 	S["exploit_record"] << exploit_record

@@ -1728,10 +1728,6 @@ var/const/MAX_SAVE_SLOTS = 10
 						if("Mechanical")
 							organ_data[organ] = "mechanical"
 
-				if("skin_style")
-					var/skin_style_name = tgui_input_list(user, "Select a new skin style", "Skin style", list("default1", "default2", "default3"))
-					if(!skin_style_name) return
-
 				if("origin")
 					var/choice = tgui_input_list(user, "Please choose your character's origin.", "Origin Selection", GLOB.player_origins)
 					if(choice)
