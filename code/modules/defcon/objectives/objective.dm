@@ -15,6 +15,12 @@
 /datum/cm_objective/New(faction_to_get)
 	if(faction_to_get)
 		controller = faction_to_get
+	connect_objective()
+
+// Hotfix for testing, until rework in proper way pregenrated objectives (TODO: REMOVE WHEN PREGENERATED SPAWNS OF OBJECTIVES REMOVED)
+/datum/cm_objective/proc/connect_objective()
+	set waitfor = FALSE
+	UNTIL(GLOB.faction_datum[controller])
 	GLOB.faction_datum[controller].objectives_controller.add_objective(src)
 
 /datum/cm_objective/Destroy()

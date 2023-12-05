@@ -16,7 +16,7 @@ SUBSYSTEM_DEF(factions)
 	var/total_objectives = 0
 	var/total_active_objectives = 0
 	var/next_sitrep = SITREP_INTERVAL
-	var/statistics = list(
+	var/list/statistics = list(
 		"documents_completed" = 0,
 		"documents_total_instances" = 0,
 		"documents_total_points_earned" = 0,
@@ -80,44 +80,39 @@ SUBSYSTEM_DEF(factions)
 		if(world.time > next_sitrep)
 			next_sitrep = world.time + SITREP_INTERVAL
 			announce_stats()
-			if(MC_TICK_CHECK)
-				return
+
+		if(MC_TICK_CHECK)
+			return
 
 	while(length(current_active_run))
 		var/datum/faction/faction = current_active_run[length(current_active_run)]
-		if(!length(current_active_run_tasks))
+		if(!length(current_active_run_tasks) && !!length(current_active_run_objectives))
 			current_active_run_tasks = faction.active_tasks.Copy()
-		if(!length(current_active_run_objectives))
 			current_active_run_objectives = faction.objectives_controller.objectives.Copy()
 
 		while(length(current_active_run_tasks))
-			var/datum/faction_task/task = current_active_run_tasks[length(current_active_run_tasks)]
+			if(MC_TICK_CHECK)
+				return
 
+			var/datum/faction_task/task = current_active_run_tasks[length(current_active_run_tasks)]
 			current_active_run_tasks.len--
 			task.process()
 			task.check_completion()
 			if(task.state & OBJECTIVE_COMPLETE|OBJECTIVE_FAILED)
 				stop_processing_task(task)
 
+		while(length(current_active_run_objectives))
 			if(MC_TICK_CHECK)
 				return
 
-		while(length(current_active_run_objectives))
 			var/datum/cm_objective/objective = current_active_run_objectives[length(current_active_run_objectives)]
-
 			current_active_run_objectives.len--
 			objective.process()
 			objective.check_completion()
 			if(objective.objective_state & OBJECTIVE_COMPLETE|OBJECTIVE_FAILED)
 				GLOB.faction_datum[objective.controller].objectives_controller.stop_processing_objective(objective)
 
-			if(MC_TICK_CHECK)
-				return
-
 		current_active_run.len--
-
-		if(MC_TICK_CHECK)
-			return
 
 	try_to_set_task()
 
@@ -365,8 +360,9 @@ SUBSYSTEM_DEF(factions)
 		var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
 		if(!faction.objectives_active)
 			continue
-		var/list/objectives_status = faction.objectives_controller.check_defcon_level()
-		var/message = "Статус цели: [objectives_status["scored_points"]] / [objectives_status["player_points_defcon"]] ([objectives_status["objectives_percentage"]]%)."
+
+		faction.objectives_controller.check_defcon_level()
+		var/message = "Статус цели: [faction.objectives_controller.last_objectives_scored_points] / [faction.objectives_controller.player_points_defcon] ([faction.objectives_controller.last_objectives_completion_percentage]%)."
 		if(faction.faction_name == FACTION_MARINE)
 			ai_silent_announcement(message, ":i", TRUE)
 			ai_silent_announcement(message, ":t", TRUE)
