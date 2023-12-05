@@ -57,15 +57,16 @@
 /obj/docking_port/mobile/sselevator/afterShuttleMove()
 	offseted_z = z - floor_offset
 	if(offseted_z == target_floor)
-		on_stop_actions()
 		cooldown = TRUE
+		sleep(2 SECONDS)
+		on_stop_actions()
 		moving = FALSE
 		target_floor = 0
-		spawn(15 SECONDS)
-			cooldown = FALSE
-			if(next_moving)
-				calc_elevator_order(next_moving)
-				next_moving = 0
+		sleep(13 SECONDS)
+		cooldown = FALSE
+		if(next_moving)
+			calc_elevator_order(next_moving)
+			next_moving = 0
 
 	else if(called_floors[offseted_z])
 		sleep(2 SECONDS)
@@ -110,7 +111,7 @@
 		move_delay--
 	else
 		move_delay += 0.2 SECONDS
-	move_delay = Clamp(move_delay, 3 SECONDS, 1 SECONDS)
+	move_delay = Clamp(move_delay, 4 SECONDS, 0.5 SECONDS)
 
 /obj/docking_port/mobile/sselevator/proc/calc_elevator_order(floor_calc)
 	if(floor_calc)
@@ -204,7 +205,7 @@
 /obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/ui_data()
 	var/list/data = list()
 	data["buttons"] = list()
-	for(var/i=1;i<101;i++)
+	for(var/i=1;i<100;i++)
 		data["buttons"] += list(list(
 			id = i, title = "Floor [i]", disabled = elevator.disabled_floors[i], called = elevator.called_floors[i],
 		))
@@ -291,15 +292,14 @@
 /obj/structure/machinery/computer/security_blocker/Initialize()
 	. = ..()
 	GLOB.skyscrapers_sec_comps["[z]"] += src
-	return INITIALIZE_HINT_LATELOAD
+	connect_elevator()
 
-/obj/structure/machinery/computer/security_blocker/LateInitialize()
-	. = ..()
-	spawn()
-		UNTIL(SSshuttle.sky_scraper_elevator)
-		elevator = SSshuttle.sky_scraper_elevator
-		for(var/obj/structure/machinery/siren/S in sirens)
-			S.siren_warning_start("ТРЕВОГА, КРИТИЧЕСКАЯ СИТУАЦИЯ, ЗАПУЩЕН ПРОТОКОЛ МАКСИМАЛЬНОЙ БЕЗОПАСНОСТИ, ЭТАЖ [z - elevator.floor_offset]")
+/obj/structure/machinery/computer/security_blocker/proc/connect_elevator()
+	set waitfor = FALSE
+	UNTIL(SSshuttle.sky_scraper_elevator)
+	elevator = SSshuttle.sky_scraper_elevator
+	for(var/obj/structure/machinery/siren/S in sirens)
+		S.siren_warning_start("ТРЕВОГА, КРИТИЧЕСКАЯ СИТУАЦИЯ, ЗАПУЩЕН ПРОТОКОЛ МАКСИМАЛЬНОЙ БЕЗОПАСНОСТИ, ЭТАЖ [z - elevator.floor_offset]")
 
 /obj/structure/machinery/computer/security_blocker/ex_act(severity)
 	return
