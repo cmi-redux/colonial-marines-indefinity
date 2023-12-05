@@ -26,15 +26,16 @@
 
 	custom_ceiling = /turf/open/floor/roof/ship_hull/lab
 
-	var/target_floor = 102
+	var/target_floor = 100
 	var/floor_offset = 0
+	var/offseted_z = 0
 	var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/door
 	var/obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/button
 	var/list/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/doors = list()
 	var/list/turf/closed/shuttle/elevator/gears/sci/gears = list()
-	var/list/buttons[101]
-	var/list/disabled_floors[101]
-	var/list/called_floors[101]
+	var/list/buttons[100]
+	var/list/disabled_floors[100]
+	var/list/called_floors[100]
 	var/called = 1
 	var/next_moving = 0
 	var/moving = FALSE
@@ -44,19 +45,18 @@
 /obj/docking_port/mobile/sselevator/register()
 	. = ..()
 	SSshuttle.sky_scraper_elevator = src
-	for(var/i=1;i<101;i++)
+	for(var/i=1;i<100;i++)
 		disabled_floors[i] = TRUE
 	disabled_floors[100] = FALSE
-	for(var/i=1;i<101;i++)
+	for(var/i=1;i<100;i++)
 		called_floors[i] = FALSE
 
 /obj/docking_port/mobile/sselevator/request(obj/docking_port/stationary/S) //No transit, no ignition, just a simple up/down platform
 	initiate_docking(S, force = TRUE)
 
 /obj/docking_port/mobile/sselevator/afterShuttleMove()
-	if(!floor_offset)
-		return
-	if(z == target_floor)
+	offseted_z = z - floor_offset
+	if(offseted_z == target_floor)
 		on_stop_actions()
 		cooldown = TRUE
 		moving = FALSE
@@ -67,7 +67,7 @@
 				calc_elevator_order(next_moving)
 				next_moving = 0
 
-	else if(called_floors[z - floor_offset] == TRUE)
+	else if(called_floors[offseted_z])
 		sleep(2 SECONDS)
 		on_stop_actions()
 		sleep(13 SECONDS)
@@ -85,11 +85,11 @@
 		G.start()
 
 /obj/docking_port/mobile/sselevator/proc/on_stop_actions()
-	var/obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/button = buttons[z]
+	var/obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/button = buttons[offseted_z]
 	if(button)
 		button.update_icon()
 	button.update_icon()
-	called_floors[z - floor_offset] = FALSE
+	called_floors[offseted_z] = FALSE
 	called--
 	var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/B = doors["[z]"]
 	INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator, unlock_and_open))
@@ -98,15 +98,15 @@
 		G.stop()
 
 /obj/docking_port/mobile/sselevator/proc/move_elevator()
-	var/floor_to_move = z > target_floor ? z-1 : z+1
-	button.visible_message(SPAN_NOTICE("Лифт отправляется и прибудет на этаж [floor_to_move - floor_offset]. Пожалуйста стойте в стороне от дверей."))
+	var/floor_to_move = offseted_z > target_floor ? offseted_z - 1 : offseted_z + 1
+	button.visible_message(SPAN_NOTICE("Лифт отправляется и прибудет на этаж [floor_to_move]. Пожалуйста стойте в стороне от дверей."))
 	playsound(return_center_turf(), ignition_sound, 60, 0, falloff = 4)
 	sleep(4 SECONDS)
 	calculate_move_delay(floor_to_move)
-	SSshuttle.moveShuttleToDock(id, GLOB.ss_elevator_floors["[MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR]_[floor_to_move]"], move_delay, FALSE)
+	SSshuttle.moveShuttleToDock(id, GLOB.ss_elevator_floors["[MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR]_[floor_to_move + floor_offset]"], move_delay, FALSE)
 
 /obj/docking_port/mobile/sselevator/proc/calculate_move_delay(floor_calc)
-	if(z > target_floor ? z - floor_calc > 4 : floor_calc - z > 4)
+	if(offseted_z > target_floor ? offseted_z - floor_calc > 4 : floor_calc - offseted_z > 4)
 		move_delay--
 	else
 		move_delay += 0.2 SECONDS
@@ -118,7 +118,7 @@
 		var/obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/button = buttons[floor_calc]
 		if(button)
 			button.update_icon("_animated")
-		called_floors[floor_calc - floor_offset] = TRUE
+		called_floors[floor_calc] = TRUE
 		switch(moving)
 			if("DOWN")
 				if(floor_calc > next_moving)
@@ -131,13 +131,13 @@
 				else if(floor_calc < next_moving)
 					next_moving = floor_calc
 			else
-				if((floor_calc > next_moving > z) || (floor_calc < next_moving < z))
+				if((floor_calc > next_moving > offseted_z) || (floor_calc < next_moving < offseted_z))
 					next_moving = floor_calc
-				if((floor_calc > target_floor > z) || (floor_calc < target_floor < z))
+				if((floor_calc > target_floor > offseted_z) || (floor_calc < target_floor < offseted_z))
 					target_floor = floor_calc
 	if(!moving && !cooldown)
 		target_floor = floor_calc
-		moving = z > target_floor ? "DOWN" : "UP"
+		moving = offseted_z > target_floor ? "DOWN" : "UP"
 		on_move_actions()
 		move_elevator()
 
@@ -146,8 +146,8 @@
 
 /obj/docking_port/stationary/sselevator/floor_roof/load_roundstart()
 	. = ..()
-	SSshuttle.sky_scraper_elevator.target_floor = z
 	SSshuttle.sky_scraper_elevator.floor_offset = z - 100
+	SSshuttle.sky_scraper_elevator.target_floor = z - SSshuttle.sky_scraper_elevator.floor_offset
 	var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/B = SSshuttle.sky_scraper_elevator.doors["[z]"]
 	INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator, unlock_and_open))
 	SSshuttle.sky_scraper_elevator.on_stop_actions()
@@ -164,16 +164,15 @@
 
 /obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/Initialize(mapload, ...)
 	. = ..()
-	return INITIALIZE_HINT_LATELOAD
+	connect_elevator()
 
-/obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/LateInitialize()
-	. = ..()
-	spawn()
-		UNTIL(SSshuttle.sky_scraper_elevator)
-		elevator = SSshuttle.sky_scraper_elevator
-		if(floor != "control")
-			floor = z
-			elevator.buttons[floor] = src
+/obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/proc/connect_elevator()
+	set waitfor = FALSE
+	UNTIL(SSshuttle.sky_scraper_elevator)
+	elevator = SSshuttle.sky_scraper_elevator
+	if(floor != "control")
+		floor = z - elevator.floor_offset
+		elevator.buttons[floor] = src
 
 /obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/Destroy()
 	if(floor != "control")
@@ -217,8 +216,8 @@
 		return
 
 	if(action == "click")
-		var/target_floor = params["id"] + elevator.floor_offset
-		if(elevator.z == target_floor || elevator.called_floors[target_floor - elevator.floor_offset])
+		var/target_floor = params["id"]
+		if(elevator.offseted_z == target_floor || elevator.called_floors[target_floor])
 			return
 		playsound(src, 'sound/machines/click.ogg', 15, 1)
 		elevator.calc_elevator_order(target_floor)
@@ -238,12 +237,12 @@
 	if(!allowed(user))
 		to_chat(user, SPAN_WARNING("Доступ Запрещен!"))
 		return
-	if(inoperable() || elevator.z == floor)
+	if(inoperable() || elevator.offseted_z == floor)
 		return
-	if(elevator.disabled_floors[floor - elevator.floor_offset])
+	if(elevator.disabled_floors[floor])
 		visible_message(SPAN_WARNING("Лифт не может отправится на этот этаж, обратитесь на ближайший пост службы безопасности!"))
 		return
-	if(elevator.called_floors[floor - elevator.floor_offset])
+	if(elevator.called_floors[floor])
 		visible_message(SPAN_NOTICE("Лифт уже едет на этот этаж, ожидайте."))
 		return
 	call_elevator(user)
@@ -259,20 +258,20 @@
 	desc = "Used to control floors of sky scraper."
 	icon_state = "terminal1"
 
-	density = 1
-	unacidable = 1
-	anchored = 1
+	density = TRUE
+	unacidable = TRUE
+	anchored = TRUE
 	indestructible = TRUE
 
 	var/generate_time = 1 MINUTES
-	var/segment_time = 10 SECONDS
+	var/segment_time = 30 SECONDS
 
 	var/total_segments = 5 // total number of times the hack is required
 	var/completed_segments = 0 // what segment we are on, (once this hits total)
 	var/current_timer
 
 	var/working = FALSE
-	var/printed = FALSE
+	var/security_protocol = TRUE
 
 	var/list/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/stairs_doors = list()
 	var/list/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/elevator_doors = list()
@@ -292,7 +291,6 @@
 /obj/structure/machinery/computer/security_blocker/Initialize()
 	. = ..()
 	GLOB.skyscrapers_sec_comps["[z]"] += src
-	segment_time = round(segment_time/(max(length(GLOB.skyscrapers_sec_comps),1)*0.01))
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/machinery/computer/security_blocker/LateInitialize()
@@ -301,7 +299,7 @@
 		UNTIL(SSshuttle.sky_scraper_elevator)
 		elevator = SSshuttle.sky_scraper_elevator
 		for(var/obj/structure/machinery/siren/S in sirens)
-			S.siren_warning_start("ТРЕВОГА, КРИТИЧЕСКАЯ СИТУАЦИЯ, ЗАПУЩЕН ПРОТОКОЛ МАКСИМАЛЬНОЙ БЕЗОПАСНОСТИ, ЭТАЖ [z-elevator.floor_offset]")
+			S.siren_warning_start("ТРЕВОГА, КРИТИЧЕСКАЯ СИТУАЦИЯ, ЗАПУЩЕН ПРОТОКОЛ МАКСИМАЛЬНОЙ БЕЗОПАСНОСТИ, ЭТАЖ [z - elevator.floor_offset]")
 
 /obj/structure/machinery/computer/security_blocker/ex_act(severity)
 	return
@@ -333,11 +331,11 @@
 	. = ..()
 	user.set_interaction(src)
 	var/dat = ""
-	dat += "<div align='center'>Терминал безопасности [z-elevator.floor_offset] этажа</a></div>"
-	dat += "<br/><span><b>Протокол безопасности</b>: [printed ? "отключен" : "включен"]</span>"
-	if(printed)
+	dat += "<div align='center'>Терминал безопасности [z - elevator.floor_offset] этажа</a></div>"
+	dat += "<br/><span><b>Протокол безопасности</b>: [security_protocol ? "включен" : "отключен"]</span>"
+	if(!security_protocol)
 		if(istype(user,/mob/living/carbon/xenomorph/queen))
-			dat += "<div align='center'><a href='?src=[REF(src)];blastdoors=unlock'>Разблокировать [z-elevator.floor_offset] этаж</a></div>"
+			dat += "<div align='center'><a href='?src=[REF(src)];blastdoors=unlock'>Разблокировать [z - elevator.floor_offset] этаж</a></div>"
 		else if(current_timer)
 			dat += "<br/><span><b>Терминал заблокирован</b></span>"
 			dat += "<br/><span><b>Оставшееся время</b>: [current_timer ? round(timeleft(current_timer) * 0.1, 2) : 0.0]</span>"
@@ -426,11 +424,11 @@
 			to_chat(usr, SPAN_WARNING("Программа восстановления уже запущена."))
 			return
 
-		if(!printed && completed_segments == total_segments)
-			printed = TRUE
+		if(security_protocol && completed_segments == total_segments)
+			working = FALSE
 			usr.visible_message("[usr] запустил программу для разблокировки консоли.", "Вы запустили программу для разблокировки консоли.")
 			if(!do_after(usr, round(generate_time/5), INTERRUPT_ALL, BUSY_ICON_HOSTILE))
-				printed = FALSE
+				working = TRUE
 				return
 
 			unlock_floor()
@@ -460,7 +458,7 @@
 	visible_message(SPAN_NOTICE("[src] beeps as it program requires attention."))
 
 /obj/structure/machinery/computer/security_blocker/proc/unlock_floor()
-	elevator.disabled_floors[z-elevator.floor_offset] = FALSE
+	elevator.disabled_floors[z - elevator.floor_offset] = FALSE
 	for(var/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/B in move_lock_doors)
 		INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door, open))
 	visible_message(SPAN_NOTICE("[src] beeps as it finishes generating code."))
