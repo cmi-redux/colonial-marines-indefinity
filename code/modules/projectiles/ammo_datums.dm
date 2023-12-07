@@ -1484,7 +1484,7 @@ CUSTOM_AMMO_PENETRATION
 	burst(get_turf(proj),proj,damage_type)
 
 /datum/ammo/bullet/shotgun/incendiary/on_hit_turf(turf/T,obj/item/projectile/proj)
-	burst(get_turf(T),proj,damage_type)
+	burst(T,proj,damage_type)
 
 
 /datum/ammo/bullet/shotgun/flechette
@@ -2019,6 +2019,35 @@ CUSTOM_AMMO_PENETRATION
 		// 150% damage to runners (225), 300% against Big xenos (450), and 200% against all others (300). -Kaga
 		to_chat(proj.firer, SPAN_WARNING("Bullseye!"))
 
+/datum/ammo/bullet/tank/crowbar
+	name = "105mm \"crowbar\""
+	icon_state = "ltb" // TODO: DO FUCKING ICON
+	flags_ammo_behavior = AMMO_STRIKES_SURFACE
+
+	accuracy = HIT_ACCURACY_TIER_10
+	accurate_range = 64
+	max_range = 64
+	damage = 600
+	shell_speed = AMMO_SPEED_TIER_6
+
+/datum/ammo/bullet/tank/crowbar/on_hit_mob(mob/hit, obj/item/projectile/proj)
+	create_shrapnel(get_turf(hit), rand(5, 40), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/metal, proj.weapon_cause_data, TRUE)
+	if(istype(hit, /mob/living/carbon/xenomorph))
+		create_shrapnel(get_turf(hit), rand(5, 40), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/light/xeno, proj.weapon_cause_data, TRUE)
+	else
+		create_shrapnel(get_turf(hit), rand(1, 10), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/light/human, proj.weapon_cause_data, TRUE)
+		create_shrapnel(get_turf(hit), rand(2, 15), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/light/human/var1, proj.weapon_cause_data, TRUE)
+		create_shrapnel(get_turf(hit), rand(2, 15), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/light/human/var2, proj.weapon_cause_data, TRUE)
+
+/datum/ammo/bullet/tank/crowbar/on_hit_obj(obj/O, obj/item/projectile/proj)
+	create_shrapnel(get_turf(O), rand(10, 80), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/metal, proj.weapon_cause_data)
+
+/datum/ammo/bullet/tank/crowbar/on_hit_turf(turf/T, obj/item/projectile/proj)
+	create_shrapnel(T, rand(10, 80), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/metal, proj.weapon_cause_data)
+
+/datum/ammo/bullet/tank/crowbar/do_at_max_range(obj/item/projectile/proj)
+	create_shrapnel(get_turf(src), rand(10, 80), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/metal, proj.weapon_cause_data)
+
 /datum/ammo/bullet/tank/flak
 	name = "flak autocannon bullet"
 	icon_state = "autocannon"
@@ -2040,8 +2069,8 @@ CUSTOM_AMMO_PENETRATION
 	burst(get_turf(hit),proj,damage_type, 1 , 3 , 0)
 
 /datum/ammo/bullet/tank/flak/on_near_target(turf/T, obj/item/projectile/proj)
-	burst(get_turf(T),proj,damage_type, 2 , 3)
-	burst(get_turf(T),proj,damage_type, 1 , 3, 0)
+	burst(T,proj,damage_type, 2 , 3)
+	burst(T,proj,damage_type, 1 , 3, 0)
 	return 1
 
 /datum/ammo/bullet/tank/flak/on_hit_obj(obj/O,obj/item/projectile/proj)
@@ -2049,8 +2078,8 @@ CUSTOM_AMMO_PENETRATION
 	burst(get_turf(proj),proj,damage_type, 1 , 3 , 0)
 
 /datum/ammo/bullet/tank/flak/on_hit_turf(turf/T,obj/item/projectile/proj)
-	burst(get_turf(T),proj,damage_type, 2 , 3)
-	burst(get_turf(T),proj,damage_type, 1 , 3 , 0)
+	burst(T,proj,damage_type, 2 , 3)
+	burst(T,proj,damage_type, 1 , 3 , 0)
 
 /datum/ammo/bullet/tank/dualcannon
 	name = "dualcannon bullet"
@@ -2504,8 +2533,8 @@ CUSTOM_AMMO_PENETRATION
 	cell_explosion(get_turf(O), 200, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
 
 /datum/ammo/rocket/ltb/on_hit_turf(turf/T, obj/item/projectile/proj)
-	cell_explosion(get_turf(T), 220, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
-	cell_explosion(get_turf(T), 200, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
+	cell_explosion(T, 220, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
+	cell_explosion(T, 200, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
 
 /datum/ammo/rocket/ltb/do_at_max_range(obj/item/projectile/proj)
 	cell_explosion(get_turf(proj), 220, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)

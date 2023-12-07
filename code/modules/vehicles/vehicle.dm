@@ -41,6 +41,8 @@
 /obj/vehicle/Initialize(mapload, datum/faction/faction_to_set)
 	. = ..()
 
+	GLOB.special_turrets_targets += src
+
 	if(faction_to_set)
 		faction = faction_to_set
 

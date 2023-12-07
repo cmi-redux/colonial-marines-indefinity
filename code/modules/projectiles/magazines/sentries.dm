@@ -28,6 +28,14 @@
 	max_rounds = 50
 	ammo_preset = list(/datum/ammo/bullet/shotgun/buckshot)
 
+/obj/item/ammo_magazine/sentry/anti_tank
+	name = "105mm \"crowbars\" drum"
+	desc = "An ammo drum of 20 105mm \"crowbars\" drums for the UA AT DE-58 Sentry Gun. Just feed it into the sentry gun's ammo port when its ammo is depleted."
+	w_class = SIZE_HUGE
+	caliber = CALIBER_105MM
+	max_rounds = 20
+	ammo_preset = list(/datum/ammo/bullet/tank/crowbar)
+
 // FLAMER Sentry
 /obj/item/ammo_magazine/sentry_flamer
 	name = "sentry incinerator tank"

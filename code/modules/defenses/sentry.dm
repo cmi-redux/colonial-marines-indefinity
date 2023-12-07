@@ -1,12 +1,5 @@
-#define SENTRY_FIREANGLE 135
-#define SENTRY_RANGE 5
-#define SENTRY_MUZZLELUM 3
-#define SENTRY_ENGAGED_TIMEOUT 60 SECONDS
-#define SENTRY_LOW_AMMO_TIMEOUT 20 SECONDS
-#define SENTRY_LOW_AMMO_ALERT_PERCENTAGE 0.25
-
 /obj/structure/machinery/defenses/sentry
-	name = "\improper UA 571-C sentry gun"
+	name = "UA 571-C sentry gun"
 	icon = 'icons/obj/structures/machinery/defenses/sentry.dmi'
 	desc = "A deployable, semi-automated turret with AI targeting capabilities. Armed with an M30 Autocannon and a 500-round drum magazine."
 	req_one_access = list(ACCESS_MARINE_ENGINEERING, ACCESS_MARINE_ENGPREP, ACCESS_MARINE_LEADER)
@@ -21,13 +14,16 @@
 	var/obj/item/ammo_magazine/ammo = new /obj/item/ammo_magazine/sentry
 	var/sentry_type = "sentry" //Used for the icon
 	display_additional_stats = TRUE
-	/// Light strength when turned on
-	var/luminosity_strength = 5
 	/// Check if they have been upgraded or not, used for sentry post
 	var/upgraded = FALSE
 	var/omni_directional = FALSE
 	var/additional_rounds_stored = FALSE
-	var/sentry_range = SENTRY_RANGE
+	var/fire_angle = 135
+	var/sentry_range = 5
+	var/muzzlelum = 3
+	var/engaged_timeout = 60 SECONDS
+	var/low_ammo_timeout = 20 SECONDS
+	var/low_ammo_alert_percentage = 0.25
 	var/list/list/traits_to_give
 	has_camera = TRUE
 	var/damage_mult = 1
@@ -53,6 +49,8 @@
 		// SENTRY_CATEGORY_ROF = ROF_SINGLE,
 		SENTRY_CATEGORY_IFF = SENTRY_IFF_HALF,
 	)
+
+	light_range = 5
 
 /obj/structure/machinery/defenses/sentry/Initialize()
 	spark_system = new /datum/effect_system/spark_spread
@@ -81,7 +79,11 @@
 	if(!range_bounds)
 		set_range()
 	targets = SSquadtree.players_in_range(range_bounds, z, QTREE_SCAN_MOBS | QTREE_EXCLUDE_OBSERVER)
-	if(!targets)
+	for(var/atom/atom in GLOB.special_turrets_targets)
+		if(atom in range(sentry_range, src))
+			other_targets += atom
+
+	if(!targets && !other_targets)
 		return FALSE
 
 	if(!target && targets.len)
@@ -92,17 +94,18 @@
 
 /obj/structure/machinery/defenses/sentry/proc/set_range()
 	if(omni_directional)
-		range_bounds = RECT(x, y, 8, 8)
+		range_bounds = RECT(x, y, sentry_range, sentry_range)
 		return
+	var/size_bound = sentry_range * 2
 	switch(dir)
 		if(EAST)
-			range_bounds = RECT(x + 4, y, 7, 7)
+			range_bounds = RECT(x + sentry_range, y, size_bound, size_bound)
 		if(WEST)
-			range_bounds = RECT(x - 4, y, 7, 7)
+			range_bounds = RECT(x - sentry_range, y, size_bound, size_bound)
 		if(NORTH)
-			range_bounds = RECT(x, y + 4, 7, 7)
+			range_bounds = RECT(x, y + sentry_range, size_bound, size_bound)
 		if(SOUTH)
-			range_bounds = RECT(x, y - 4, 7, 7)
+			range_bounds = RECT(x, y - sentry_range, size_bound, size_bound)
 
 /obj/structure/machinery/defenses/sentry/proc/unset_range()
 	SIGNAL_HANDLER
@@ -295,11 +298,11 @@
 
 	if(!engaged_timer)
 		SEND_SIGNAL(src, COMSIG_SENTRY_ENGAGED_ALERT, src)
-		engaged_timer = addtimer(CALLBACK(src, PROC_REF(reset_engaged_timer)), SENTRY_ENGAGED_TIMEOUT)
+		engaged_timer = addtimer(CALLBACK(src, PROC_REF(reset_engaged_timer)), engaged_timeout)
 
-	if(!low_ammo_timer && ammo?.ammo_position && (ammo?.ammo_position < (ammo?.max_rounds * SENTRY_LOW_AMMO_ALERT_PERCENTAGE)))
+	if(!low_ammo_timer && ammo?.ammo_position && (ammo?.ammo_position < (ammo?.max_rounds * low_ammo_alert_percentage)))
 		SEND_SIGNAL(src, COMSIG_SENTRY_LOW_AMMO_ALERT, src)
-		low_ammo_timer = addtimer(CALLBACK(src, PROC_REF(reset_low_ammo_timer)), SENTRY_LOW_AMMO_TIMEOUT)
+		low_ammo_timer = addtimer(CALLBACK(src, PROC_REF(reset_low_ammo_timer)), low_ammo_timeout)
 
 /obj/structure/machinery/defenses/sentry/proc/reset_engaged_timer()
 	engaged_timer = null
@@ -350,11 +353,11 @@
 	if(isnull(angle))
 		return
 
-	light_range += SENTRY_MUZZLELUM
+	light_range += muzzlelum
 	update_light()
 //	play_fov_effect(src, 6, "gunfire", dir = NORTH, angle = angle)
 	spawn(5)
-		light_range -= SENTRY_MUZZLELUM
+		light_range -= muzzlelum
 		update_light()
 
 	var/image_layer = layer + 0.1
@@ -394,11 +397,18 @@
 				targets.Remove(M)
 				continue
 
-		else if(!(A.type in other_targets))
-			if(A == target)
-				target = null
-			targets.Remove(A)
-			continue
+		else
+			if(!(A in other_targets))
+				if(A == target)
+					target = null
+				targets.Remove(A)
+				continue
+			else
+				if(A.ally(faction) || A.invisibility)
+					if(A == target)
+						target = null
+					targets.Remove(A)
+					continue
 
 		if(!omni_directional)
 			var/opp
@@ -421,7 +431,7 @@
 			if(adj != 0)
 				r = abs(opp/adj)
 			var/angledegree = arcsin(r/sqrt(1+(r*r)))
-			if(adj < 0 || (angledegree*2) > SENTRY_FIREANGLE)
+			if(adj < 0 || (angledegree*2) > fire_angle)
 				if(A == target)
 					target = null
 				targets.Remove(A)
@@ -479,6 +489,8 @@
 				unconscious_targets += M
 			else
 				conscious_targets += M
+		else
+			target = A
 
 	if(conscious_targets.len)
 		target = pick(conscious_targets)
@@ -634,7 +646,7 @@
 	composite_icon = FALSE
 
 /obj/structure/machinery/defenses/sentry/launchable
-	name = "\improper UA 571-O sentry post"
+	name = "UA 571-O sentry post"
 	desc = "A deployable, omni-directional automated turret with AI targeting capabilities. Armed with an M30 Autocannon and a 100-round drum magazine with 500 rounds stored internally.  Due to the deployment method it is incapable of being moved."
 	ammo = new /obj/item/ammo_magazine/sentry/dropped
 	faction_to_get = FACTION_MARINE
@@ -650,7 +662,7 @@
 	var/obj/structure/machinery/camera/cas/linked_cam
 	var/static/sentry_count = 1
 	var/sentry_number
-	luminosity_strength = 9
+	light_range = 9
 
 /obj/structure/machinery/defenses/sentry/launchable/Initialize()
 	. = ..()
@@ -728,5 +740,9 @@
 		new /obj/item/stack/sheet/plasteel/medium_stack(loc)
 	return ..()
 
-#undef SENTRY_FIREANGLE
-#undef SENTRY_RANGE
+/obj/structure/machinery/defenses/sentry/anti_tank
+	name = "UAC AT DE-58 sentry gun"
+	desc = "A deployable, semi-automated turret with AI targeting capabilities. Armed with an 105mm cannon, with 20 rounds drum."
+	defense_type = "at" // TODO: DO FUCKING ICON
+	fire_delay = 5 SECONDS
+	ammo = new /obj/item/ammo_magazine/sentry/anti_tank

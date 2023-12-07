@@ -4,7 +4,7 @@
 #define TESLA_COIL_SLOW_EFFECT 3
 
 /obj/structure/machinery/defenses/tesla_coil
-	name = "\improper 21S tesla coil"
+	name = "21S tesla coil"
 	icon = 'icons/obj/structures/machinery/defenses/tesla.dmi'
 	desc = "A perfected way of producing high-voltage, low-current and high-frequency electricity. Minor modifications allow it to only hit hostile targets with a devastating shock."
 	var/list/targets
@@ -159,7 +159,7 @@
 #undef TESLA_COIL_STUN_FIRE_DELAY
 #define TESLA_COIL_MICRO_FIRE_DELAY 10
 /obj/structure/machinery/defenses/tesla_coil/micro
-	name = "\improper 25S micro tesla coil"
+	name = "25S micro tesla coil"
 	desc = "A perfected way of producing high-voltage, low-current and high-frequency electricity. Minor modifications allow it to only hit hostile targets with a devastating shock. This one is smaller and more lightweight."
 	handheld_type = /obj/item/defenses/handheld/tesla_coil/micro
 	disassemble_time = 0.5 SECONDS

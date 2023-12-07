@@ -24,3 +24,5 @@ GLOBAL_LIST_INIT_TYPED(custom_event_info_list, /datum/custom_event_info, setup_c
 		CEI.faction = faction
 		custom_event_info_list[CEI.faction_name] = CEI
 	return custom_event_info_list
+
+GLOBAL_LIST_INIT(special_turrets_targets, list())

@@ -2,7 +2,7 @@
 #define PLANTED_FLAG_RANGE 7
 
 /obj/structure/machinery/defenses/planted_flag
-	name = "\improper JIMA planted flag"
+	name = "JIMA planted flag"
 	icon = 'icons/obj/structures/machinery/defenses/planted_flag.dmi'
 	desc = "A planted flag with the iconic USCM flag plastered all over it, you feel a burst of energy by its mere sight."
 	handheld_type = /obj/item/defenses/handheld/planted_flag
