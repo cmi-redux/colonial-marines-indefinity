@@ -2,13 +2,6 @@
 "a" = (
 /turf/template_noop,
 /area/template_noop)
-"h" = (
-/obj/item/ammo_magazine/rifle/hunting{
-	pixel_x = 8;
-	pixel_y = 2
-	},
-/turf/template_noop,
-/area/template_noop)
 "p" = (
 /obj/structure/target,
 /turf/template_noop,
@@ -18,9 +11,6 @@
 /turf/template_noop,
 /area/template_noop)
 "W" = (
-/obj/item/weapon/gun/rifle/hunting{
-	pixel_y = 15
-	},
 /obj/item/device/binoculars/civ{
 	pixel_x = 6;
 	pixel_y = -2
@@ -47,7 +37,7 @@ a
 "}
 (2,1,1) = {"
 Y
-h
+a
 a
 a
 a

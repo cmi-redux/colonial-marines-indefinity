@@ -27,20 +27,8 @@
 "hc" = (
 /turf/open/gm/dirtgrassborder/south,
 /area/lv624/ground/jungle/east_jungle)
-"jd" = (
-/obj/structure/flora/grass/tall_grass/jungle/corner{
-	dir = 9
-	},
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/east_jungle)
 "je" = (
 /obj/structure/flora/grass/tall_grass/jungle,
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/east_jungle)
-"kf" = (
-/obj/structure/flora/grass/tall_grass/jungle/corner{
-	dir = 1
-	},
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/east_jungle)
 "lm" = (
@@ -62,12 +50,6 @@
 "nG" = (
 /turf/closed/wall/strata_ice/jungle,
 /area/lv624/ground/river/east_river)
-"oq" = (
-/obj/structure/flora/grass/tall_grass/jungle/corner{
-	dir = 10
-	},
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/east_jungle)
 "oA" = (
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/barrens/south_eastern_jungle_barrens)
@@ -85,12 +67,6 @@
 /obj/structure/flora/bush/ausbushes/reedbush,
 /turf/open/gm/river,
 /area/lv624/ground/river/east_river)
-"sa" = (
-/obj/structure/flora/grass/tall_grass/jungle/corner{
-	dir = 10
-	},
-/turf/open/gm/grass/grass2,
-/area/lv624/ground/jungle/east_jungle)
 "sn" = (
 /turf/closed/wall/strata_ice/jungle,
 /area/lv624/ground/jungle/east_jungle)
@@ -154,12 +130,6 @@
 /obj/effect/landmark/lv624/fog_blocker,
 /turf/open/gm/coast/south,
 /area/lv624/ground/river/east_river)
-"Hb" = (
-/obj/structure/flora/grass/tall_grass/jungle/corner{
-	dir = 4
-	},
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/east_jungle)
 "JA" = (
 /turf/open/gm/coast/beachcorner/south_east,
 /area/lv624/ground/river/east_river)
@@ -170,24 +140,12 @@
 /obj/structure/flora/bush/ausbushes/var3/fullgrass,
 /turf/open/gm/dirt,
 /area/lv624/ground/jungle/east_jungle)
-"KQ" = (
-/obj/structure/flora/grass/tall_grass/jungle/corner{
-	dir = 6
-	},
-/turf/open/gm/grass/grass2,
-/area/lv624/ground/jungle/east_jungle)
 "NJ" = (
 /turf/open/gm/dirtgrassborder/grassdirt_corner2/south_east,
 /area/lv624/ground/jungle/east_jungle)
 "Ov" = (
 /turf/open/gm/dirtgrassborder/north,
 /area/lv624/ground/barrens/south_eastern_jungle_barrens)
-"Pb" = (
-/obj/structure/flora/grass/tall_grass/jungle/corner{
-	dir = 5
-	},
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/east_jungle)
 "Pk" = (
 /turf/open/gm/coast/beachcorner2/south_east,
 /area/lv624/ground/river/east_river)
@@ -241,10 +199,6 @@
 /obj/structure/flora/bush/ausbushes/var3/fullgrass,
 /turf/open/gm/dirtgrassborder/grassdirt_corner/north_east,
 /area/lv624/ground/barrens/south_eastern_jungle_barrens)
-"YK" = (
-/obj/structure/flora/grass/tall_grass/jungle/corner,
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/east_jungle)
 
 (1,1,1) = {"
 cG
@@ -286,9 +240,9 @@ TQ
 Kd
 Qz
 PE
-KQ
-Hb
-Pb
+Pr
+tT
+tT
 "}
 (3,1,1) = {"
 ci
@@ -308,9 +262,9 @@ Pk
 JA
 Kp
 hc
-oq
+tT
 je
-kf
+tT
 "}
 (4,1,1) = {"
 Ov
@@ -331,8 +285,8 @@ Qz
 Qz
 hc
 tT
-YK
-kf
+tT
+tT
 "}
 (5,1,1) = {"
 Ov
@@ -353,8 +307,8 @@ Qz
 Qz
 hc
 tT
-YK
-kf
+tT
+tT
 "}
 (6,1,1) = {"
 CA
@@ -375,8 +329,8 @@ Qz
 NJ
 Qp
 tT
-sa
-jd
+Pr
+tT
 "}
 (7,1,1) = {"
 oA

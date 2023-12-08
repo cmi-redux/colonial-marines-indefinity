@@ -6,14 +6,14 @@
 	start_charge = 0
 	},
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "aN" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/computer/secure_data{
 	dir = 8
 	},
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "bp" = (
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	icon_state = "door_locked";
@@ -22,12 +22,12 @@
 	req_access = null
 	},
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "bx" = (
 /obj/structure/surface/table/almayer,
 /obj/item/device/motiondetector,
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "cO" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
@@ -49,7 +49,7 @@
 /obj/structure/surface/table/almayer,
 /obj/item/handcuffs,
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "ge" = (
 /obj/structure/closet/secure_closet/marshal,
 /turf/open/floor/greengrid,
@@ -73,14 +73,8 @@
 	},
 /area/bigredv2/outside/filtration_cave_cas)
 "kd" = (
-/obj/structure/surface/table/almayer,
-/obj/structure/transmitter/colony_net/rotary{
-	phone_category = "Solaris Ridge";
-	phone_color = "red";
-	phone_id = "Filtration Checkpoint"
-	},
-/turf/open/floor/greengrid,
-/area/bigred/ground/security)
+/turf/template_noop,
+/area/template_noop)
 "kG" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
@@ -131,7 +125,7 @@
 /obj/structure/surface/table/almayer,
 /obj/effect/spawner/random/tool,
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "qg" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
@@ -143,13 +137,13 @@
 /obj/item/device/radio,
 /obj/structure/surface/table/almayer,
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "rD" = (
 /obj/structure/machinery/camera/autoname{
 	dir = 8
 	},
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "rF" = (
 /obj/structure/machinery/deployable/barrier,
 /turf/open/floor/greengrid,
@@ -167,7 +161,7 @@
 "uk" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "uF" = (
 /obj/structure/surface/table/almayer,
 /obj/effect/spawner/random/technology_scanner,
@@ -186,12 +180,12 @@
 "vH" = (
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "vO" = (
 /obj/structure/surface/rack,
 /obj/item/stack/sheet/metal/small_stack,
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "wi" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
@@ -209,7 +203,7 @@
 	tag = ""
 	},
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "xr" = (
 /obj/structure/surface/rack,
 /obj/item/clothing/mask/gas,
@@ -218,7 +212,7 @@
 	dir = 4
 	},
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "zE" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
@@ -237,7 +231,7 @@
 /area/bigredv2/outside/filtration_cave_cas)
 "AY" = (
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "AZ" = (
 /turf/open/floor{
 	dir = 1;
@@ -301,14 +295,14 @@
 /obj/item/trash/sosjerky,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "LX" = (
 /obj/structure/machinery/light{
 	dir = 8
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "Mq" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/greengrid,
@@ -323,7 +317,7 @@
 	},
 /obj/structure/machinery/vending/security,
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "OD" = (
 /turf/open/floor{
 	dir = 4;
@@ -343,7 +337,7 @@
 /obj/effect/decal/cleanable/blood,
 /obj/effect/spawner/gibspawner/human,
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "PS" = (
 /turf/open/mars,
 /area/bigredv2/outside/se)
@@ -369,7 +363,7 @@
 /obj/structure/surface/rack,
 /obj/effect/spawner/random/toolbox,
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "SF" = (
 /obj/structure/window/framed/solaris/reinforced,
 /turf/open/floor/plating,
@@ -398,7 +392,7 @@
 "VI" = (
 /obj/structure/largecrate,
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "Wa" = (
 /turf/open/floor{
 	dir = 6;
@@ -417,7 +411,7 @@
 /obj/structure/surface/rack,
 /obj/item/storage/firstaid,
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 "YZ" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/computer/cameras/wooden_tv{
@@ -440,7 +434,7 @@
 	dir = 4
 	},
 /turf/open/floor,
-/area/bigred/ground/security)
+/area/bigred/uground/building/lambda_labs/office)
 
 (1,1,1) = {"
 PS
@@ -448,14 +442,14 @@ pJ
 EV
 OD
 Wa
-Sx
-Sx
-Sx
-Sx
-Sx
-Sx
-Sx
-Sx
+kd
+kd
+kd
+kd
+kd
+kd
+kd
+kd
 Qo
 "}
 (2,1,1) = {"
@@ -464,7 +458,7 @@ tV
 tV
 tV
 tV
-Sx
+kd
 IS
 LX
 qy
@@ -512,7 +506,7 @@ tV
 tV
 Qf
 Qf
-Sx
+kd
 YZ
 aN
 rD
@@ -528,14 +522,14 @@ mp
 Vg
 Vg
 XU
-Sx
-Sx
-Sx
-Sx
+kd
+kd
+kd
+kd
 bp
-Sx
-Sx
-Sx
+kd
+kd
+kd
 Qo
 "}
 (7,1,1) = {"
@@ -544,7 +538,7 @@ Ue
 Ih
 Aq
 qg
-Sx
+kd
 VI
 VI
 AY
@@ -560,7 +554,7 @@ AZ
 Ih
 Aq
 qg
-Sx
+kd
 ax
 AY
 uk
@@ -592,7 +586,7 @@ Gm
 Ih
 Ih
 HH
-Sx
+kd
 AY
 Pf
 vH
@@ -608,7 +602,7 @@ pb
 Ih
 Aq
 qg
-Sx
+kd
 vH
 ZK
 Sr
