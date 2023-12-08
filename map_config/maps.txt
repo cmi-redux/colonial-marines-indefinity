@@ -13,7 +13,7 @@ Format:
 endmap
 
 map lv624
-	disabled
+	default
 endmap
 
 map bigredv2
@@ -21,7 +21,6 @@ map bigredv2
 endmap
 
 map prison_station_fop
-	disabled
 endmap
 
 map fiorina_sciannex
@@ -61,7 +60,6 @@ map new_varadero
 endmap
 
 map skyscraper
-	default
 endmap
 
 map ravenue_5
