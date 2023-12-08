@@ -23,12 +23,15 @@ map prison_station_fop
 endmap
 
 map fiorina_sciannex
+	disabled
 endmap
 
 map corsat
+	disabled
 endmap
 
 map desert_dam
+	disabled
 endmap
 
 map ice_colony_v2
@@ -47,6 +50,7 @@ map sorokyne_strata
 endmap
 
 map lv522_chances_claim
+	disabled
 endmap
 
 map new_varadero
