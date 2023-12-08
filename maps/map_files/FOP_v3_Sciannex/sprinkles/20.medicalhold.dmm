@@ -537,15 +537,6 @@
 	icon_state = "whitegreen"
 	},
 /area/template_noop)
-"Hw" = (
-/obj/item/ammo_casing{
-	icon_state = "cartridge_1"
-	},
-/turf/open/floor/prison{
-	dir = 10;
-	icon_state = "whitegreenfull"
-	},
-/area/template_noop)
 "HS" = (
 /obj/structure/inflatable/door,
 /turf/open/floor/prison{
@@ -897,7 +888,7 @@
 /area/template_noop)
 
 (1,1,1) = {"
-Hw
+Be
 oy
 bs
 bv

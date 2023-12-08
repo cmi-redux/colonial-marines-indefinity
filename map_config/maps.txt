@@ -20,19 +20,15 @@ map bigredv2
 endmap
 
 map prison_station_fop
-	disabled
 endmap
 
 map fiorina_sciannex
-	disabled
 endmap
 
 map corsat
-	disabled
 endmap
 
 map desert_dam
-	disabled
 endmap
 
 map ice_colony_v2
