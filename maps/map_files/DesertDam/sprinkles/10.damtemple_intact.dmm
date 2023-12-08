@@ -98,7 +98,7 @@
 /area/desert_dam/interior/caves/temple)
 "hh" = (
 /turf/closed/wall/mineral/sandstone/runed/decor{
-	hull = TRUE
+	hull = 1
 	},
 /area/desert_dam/interior/caves/temple)
 "ik" = (
@@ -298,12 +298,6 @@
 	dir = 1;
 	icon_state = "phoronrwindow"
 	},
-/obj/item/weapon/katana{
-	color = "#b2ffff";
-	desc = "A finely made Japanese sword, with a well sharpened blade. It appears to have cobalt infused within the blade. There are Japanese engravings on the blade which say 'He who wields this sword becomes the next Titan.'.";
-	name = "ancient katana";
-	unacidable = 1
-	},
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -495,10 +489,6 @@
 	color = "#6b675e";
 	layer = 2.79
 	},
-/obj/item/stack/revival_jelly{
-	amount = 1;
-	name = "strange jelly"
-	},
 /obj/item/xeno_egg,
 /turf/open/floor/corsat{
 	dir = 1;
@@ -547,12 +537,6 @@
 "Jh" = (
 /obj/structure/surface/table/reinforced/prison{
 	color = "#6b675e"
-	},
-/obj/item/weapon/claymore/mercsword{
-	pixel_x = 7
-	},
-/obj/item/weapon/claymore/mercsword{
-	pixel_x = -7
 	},
 /turf/open/floor/sandstone/runed,
 /area/desert_dam/interior/caves/temple)
@@ -721,7 +705,7 @@
 /area/desert_dam/interior/caves/temple)
 "Vz" = (
 /turf/closed/wall/mineral/sandstone/runed{
-	hull = TRUE
+	hull = 1
 	},
 /area/desert_dam/interior/caves/temple)
 "WM" = (

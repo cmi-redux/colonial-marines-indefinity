@@ -15,12 +15,6 @@
 	name = "Buran"
 	},
 /area/desert_dam/exterior/valley/valley_civilian)
-"bV" = (
-/obj/structure/flora/grass/tallgrass/desert/corner{
-	dir = 9
-	},
-/turf/open/desert/dirt,
-/area/desert_dam/exterior/valley/valley_civilian)
 "cn" = (
 /turf/closed/shuttle/ert{
 	icon_state = "T5";
@@ -136,12 +130,6 @@
 	icon_state = "upp4";
 	name = "Buran"
 	},
-/area/desert_dam/exterior/valley/valley_civilian)
-"hP" = (
-/obj/structure/flora/grass/tallgrass/desert/corner{
-	dir = 5
-	},
-/turf/open/desert/dirt,
 /area/desert_dam/exterior/valley/valley_civilian)
 "ig" = (
 /obj/effect/decal/cleanable/blood/splatter,
@@ -288,10 +276,6 @@
 	},
 /area/desert_dam/exterior/valley/valley_civilian)
 "nX" = (
-/turf/open/desert/dirt,
-/area/desert_dam/exterior/valley/valley_civilian)
-"of" = (
-/obj/structure/flora/grass/tallgrass/desert/corner,
 /turf/open/desert/dirt,
 /area/desert_dam/exterior/valley/valley_civilian)
 "oj" = (
@@ -641,12 +625,6 @@
 /obj/structure/flora/grass/desert/lightgrass_2,
 /turf/open/desert/dirt,
 /area/desert_dam/exterior/valley/valley_civilian)
-"EW" = (
-/obj/structure/flora/grass/tallgrass/desert/corner{
-	dir = 6
-	},
-/turf/open/desert/dirt,
-/area/desert_dam/exterior/valley/valley_civilian)
 "FG" = (
 /obj/structure/flora/grass/desert/lightgrass_8,
 /turf/open/desert/dirt,
@@ -689,12 +667,6 @@
 	opacity = 0;
 	name = "Buran"
 	},
-/area/desert_dam/exterior/valley/valley_civilian)
-"Hu" = (
-/obj/structure/flora/grass/tallgrass/desert/corner{
-	dir = 10
-	},
-/turf/open/desert/dirt,
 /area/desert_dam/exterior/valley/valley_civilian)
 "HP" = (
 /obj/effect/decal/cleanable/dirt,
@@ -798,12 +770,6 @@
 /turf/open/asphalt/cement_sunbleached{
 	icon_state = "cement_sunbleached15"
 	},
-/area/desert_dam/exterior/valley/valley_civilian)
-"LD" = (
-/obj/structure/flora/grass/tallgrass/desert/corner{
-	dir = 1
-	},
-/turf/open/desert/dirt,
 /area/desert_dam/exterior/valley/valley_civilian)
 "Mo" = (
 /obj/effect/decal/sand_overlay/sand1{
@@ -1117,10 +1083,6 @@
 /turf/open/mars{
 	icon_state = "mars_dirt_5"
 	},
-/area/desert_dam/exterior/valley/valley_civilian)
-"Zm" = (
-/obj/structure/flora/grass/tallgrass/desert,
-/turf/open/desert/dirt,
 /area/desert_dam/exterior/valley/valley_civilian)
 "Zz" = (
 /obj/effect/decal/cleanable/dirt,
@@ -1457,8 +1419,8 @@ Xq
 "}
 (11,1,1) = {"
 FG
-EW
-hP
+nX
+nX
 nX
 xt
 Yv
@@ -1488,9 +1450,9 @@ Xq
 Xq
 "}
 (12,1,1) = {"
-EW
-Zm
-LD
+nX
+nX
+nX
 BJ
 Yv
 Yv
@@ -1520,9 +1482,9 @@ Xq
 Xq
 "}
 (13,1,1) = {"
-of
-Zm
-bV
+nX
+nX
+nX
 xt
 Yv
 Yv
@@ -1552,8 +1514,8 @@ Xq
 Xq
 "}
 (14,1,1) = {"
-Hu
-bV
+nX
+nX
 cG
 xt
 Yv

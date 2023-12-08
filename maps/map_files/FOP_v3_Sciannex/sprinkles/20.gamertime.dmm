@@ -127,10 +127,6 @@
 	dir = 8;
 	icon_state = "commb"
 	},
-/obj/item/device/encryptionkey/wy{
-	pixel_x = 4;
-	pixel_y = -8
-	},
 /turf/open/floor/prison{
 	dir = 8;
 	icon_state = "floor_marked"

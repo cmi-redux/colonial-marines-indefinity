@@ -55,7 +55,7 @@
 /area/shiva/interior/caves/cp_camp)
 "gf" = (
 /obj/structure/ice/thin/single{
-	opacity = TRUE;
+	opacity = 1;
 	unacidable = 0
 	},
 /obj/structure/blocker/forcefield/multitile_vehicles,
@@ -156,12 +156,6 @@
 /obj/effect/spider/stickyweb,
 /turf/open/auto_turf/ice/layer1,
 /area/shiva/interior/caves/left_spiders)
-"vX" = (
-/obj/effect/decal/cleanable/blood/writing{
-	dir = 9
-	},
-/turf/open/auto_turf/ice/layer2,
-/area/shiva/interior/caves/left_spiders)
 "wj" = (
 /turf/closed/wall/shiva/ice,
 /area/shiva/interior/caves/left_spiders)
@@ -222,12 +216,6 @@
 /obj/structure/prop/ice_colony/ground_wire,
 /turf/open/auto_turf/ice/layer1,
 /area/shiva/interior/caves/left_spiders)
-"Br" = (
-/obj/effect/decal/cleanable/blood/writing{
-	dir = 6
-	},
-/turf/open/auto_turf/ice/layer2,
-/area/shiva/interior/caves/left_spiders)
 "By" = (
 /turf/closed/wall/shiva/ice,
 /area/shiva/interior/oob)
@@ -264,13 +252,9 @@
 /area/shiva/interior/caves/left_spiders)
 "JM" = (
 /obj/structure/ice/thin/single{
-	opacity = TRUE;
+	opacity = 1;
 	unacidable = 0
 	},
-/turf/open/auto_turf/ice/layer2,
-/area/shiva/interior/caves/left_spiders)
-"Kd" = (
-/obj/effect/decal/cleanable/blood/writing,
 /turf/open/auto_turf/ice/layer2,
 /area/shiva/interior/caves/left_spiders)
 "Kh" = (
@@ -298,7 +282,7 @@
 /area/shiva/interior/caves/left_spiders)
 "NW" = (
 /obj/structure/ice/thin/single{
-	opacity = TRUE;
+	opacity = 1;
 	unacidable = 0
 	},
 /obj/structure/blocker/forcefield/multitile_vehicles,
@@ -451,8 +435,8 @@ By
 By
 By
 IQ
-vX
-Kd
+FT
+FT
 IQ
 IQ
 IQ
@@ -475,7 +459,7 @@ By
 By
 By
 IQ
-Br
+FT
 aL
 IQ
 IQ
