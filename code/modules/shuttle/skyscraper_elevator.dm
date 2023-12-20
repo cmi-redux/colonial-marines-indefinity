@@ -462,3 +462,107 @@
 	for(var/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/B in move_lock_doors)
 		INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door, open))
 	visible_message(SPAN_NOTICE("[src] beeps as it finishes generating code."))
+
+/turf/closed/wall/vents
+	name = "Vents"
+	desc = "Wall with big vents"
+	icon = 'icon/turf/vent.dmi'
+	icon_state = "vent_wall"
+	var/open = TRUE
+	var/welded = FALSE
+	var/max_pressure = 1000
+
+/turf/closed/wall/vents/proc/spread_smoke(transfer_pressure)
+	var/obj/effect/particle_effect/smoke/chlor/foundsmoke = locate() in get_turf(src)
+	if(transfer_pressure + foundsmoke.amount > max_pressure)
+		var/turf/above = SSmapping.get_turf_above(src)
+		if(istype(above, /turf/closed/wall/vents))
+			foundsmoke.smoke_action_in(above)
+	else
+		foundsmoke.amount += transfer_pressure
+
+
+/////////////////////////////////////////
+// CHLOR SMOKE
+/////////////////////////////////////////
+
+/obj/effect/particle_effect/smoke/chlor
+	color = "#c6d89e"
+	opacity = FALSE
+	spread_speed = 5
+	smokeranking = SMOKE_RANK_CHLOR
+
+/obj/effect/particle_effect/smoke/chlor/process()
+	amount--
+	if(amount <= 0)
+		qdel(src)
+		return
+
+	apply_smoke_effect(get_turf(src))
+
+/obj/effect/particle_effect/smoke/chlor/spread_smoke(direction)
+	set waitfor = FALSE
+	sleep(spread_speed)
+	if(QDELETED(src))
+		return
+	var/turf/own_turf = get_turf(src)
+	if(!own_turf)
+		return
+	for(var/next_direction in GLOB.cardinals)
+		if(direction && next_direction != direction)
+			continue
+		if(amount < 20)
+			return
+		var/turf/acting_turf = get_step(own_turf, next_direction)
+		if(check_airblock(own_turf, acting_turf)) //smoke can't spread that way
+			continue
+		smoke_action_in(acting_turf)
+
+/obj/effect/particle_effect/smoke/chlor/proc/smoke_action_in(turf/acting_turf)
+	var/obj/effect/particle_effect/smoke/foundsmoke = locate() in acting_turf
+	if(foundsmoke)
+		if(foundsmoke.smokeranking <= smokeranking)
+			qdel(foundsmoke)
+		else if(foundsmoke.smokeranking == smokeranking && foundsmoke.amount + 10 < amount)
+			foundsmoke.amount += 10
+			amount -= 10
+			if(foundsmoke.amount > 0)
+				foundsmoke.spread_smoke()
+		else
+			var/obj/effect/particle_effect/smoke/S = new type(acting_turf, 10, cause_data)
+			amount -= 10
+			S.setDir(pick(GLOB.cardinals))
+			if(S.amount > 0)
+				S.spread_smoke()
+
+/obj/effect/particle_effect/smoke/chlor/Crossed(mob/living/carbon/target as mob)
+	return
+
+/obj/effect/particle_effect/smoke/chlor/affect(mob/living/carbon/target)
+	..()
+
+	if(target.stat == DEAD)
+		return
+
+	if(istype(target.wear_mask, /obj/item/clothing/mask/gas))
+		if(prob(20))
+			to_chat(target, SPAN_DANGER("You're having trouble breathing, but you're breathing in fresh air"))
+		return
+
+	target.last_damage_data = cause_data
+	target.apply_damage(5, OXY) //Basic oxyloss from "can't breathe"
+	if(target.coughedtime != 1 && !target.stat && ishuman(target)) //Coughing/gasping
+		target.coughedtime = 1
+		if(prob(50))
+			target.emote("cough")
+		else
+			target.emote("gasp")
+		addtimer(VARSET_CALLBACK(target, coughedtime, 0), 1.5 SECONDS)
+
+	if(ishuman(target))
+		var/mob/living/carbon/human/H = target
+		H.apply_armoured_damage(amount*rand(5, 10), ARMOR_BIO, BURN) //Burn damage, randomizes between various parts //Amount corresponds to upgrade level, 1 to 2.5
+	else
+		target.burn_skin(5) //Failsafe for non-humans
+
+	target.updatehealth()
