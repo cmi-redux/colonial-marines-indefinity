@@ -44,7 +44,8 @@
 
 /datum/objectives_datum/proc/add_objective_spawn(objective_spawn_name, objective_spawn_weight, objective_spawn_location)
 	var/found = FALSE
-	for(var/datum/objective_spawn_handler/objective_handler in objective_spawns[objective_spawn_name])
+	var/list/obectives_spanws_list = objective_spawns[objective_spawn_name]
+	for(var/datum/objective_spawn_handler/objective_handler in obectives_spanws_list)
 		if(objective_handler.weight != objective_spawn_weight)
 			continue
 		objective_handler.linked_spawns += objective_spawn_location
@@ -60,14 +61,14 @@
 		return
 
 	//TODO: Combine objectives and faction tasks, plus make more "specialized" objectives and change system in per faction special faction objectives handler.
-	for(var/list/faction_objective in faction.objectives)
-		var/objective_type = faction_objective[1]
-		var/subtyope = faction_objective[2]
-		var/ammount = faction_objective[3]
-		if(!objective_spawns[subtyope])
+	for(var/subtyope in faction.objectives)
+		var/ammount = faction.objectives[subtyope]
+		var/objective_type
+		if(!length(objective_spawns[subtyope]))
 			continue
 		for(var/i=0;i<ammount;i++)
 			var/list/potential_spawns = list()
+			objective_type = pick(GLOB.objectives_links[subtyope])
 			for(var/datum/objective_spawn_handler/objective_handler in objective_spawns[subtyope])
 				var/atom/new_potential_spawn = SAFEPICK(objective_handler.linked_spawns)
 				if(!new_potential_spawn)
