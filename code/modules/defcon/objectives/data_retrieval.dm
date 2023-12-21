@@ -117,7 +117,7 @@
 	if(!reader.powered())
 		reader.visible_message(SPAN_WARNING("\The [reader] powers down mid-operation as the area looses power."))
 		playsound(reader, 'sound/machines/terminal_shutdown.ogg', 25, 1)
-		GLOB.faction_datum[controller].objectives_controller..stop_processing_objective(src)
+		GLOB.faction_datum[controller].objectives_controller.stop_processing_objective(src)
 		disk.forceMove(reader.loc)
 		reader.disk = null
 		return

@@ -81,7 +81,7 @@ SUBSYSTEM_DEF(objectives)
 		objective.process()
 		objective.check_completion()
 		if(objective.objective_state & OBJECTIVE_COMPLETE|OBJECTIVE_FAILED)
-			GLOB.faction_datum[faction].objectives_controller.stop_processing_objective(objective)
+			GLOB.faction_datum[objective.controller].objectives_controller.stop_processing_objective(objective)
 
 		if(MC_TICK_CHECK)
 			return
