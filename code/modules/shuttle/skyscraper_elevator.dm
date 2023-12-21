@@ -466,7 +466,7 @@
 /turf/closed/wall/vents
 	name = "Vents"
 	desc = "Wall with big vents"
-	icon = 'icon/turf/vent.dmi'
+	icon = 'icons/turf/vent.dmi'
 	icon_state = "vent_wall"
 	var/open = TRUE
 	var/welded = FALSE
