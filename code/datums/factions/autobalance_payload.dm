@@ -312,7 +312,7 @@
 		if("death")
 			active = 1
 		if("revive")
-			if(client.mob.client)
+			if(client.mob?.client)
 				active = 3
 			else
 				active = 2
