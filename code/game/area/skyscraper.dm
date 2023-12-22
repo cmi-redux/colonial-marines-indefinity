@@ -12,6 +12,7 @@
 	name = "Planet"
 	icon_state = "oob"
 	ceiling = CEILING_MAX
+	static_lighting = FALSE
 
 /area/skyscraper/building
 	name = "W-Y 'Almea'"
