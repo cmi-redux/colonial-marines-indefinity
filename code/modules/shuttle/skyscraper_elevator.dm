@@ -42,14 +42,17 @@
 	var/cooldown = FALSE
 	var/move_delay = 3 SECONDS
 
-/obj/docking_port/mobile/sselevator/register()
-	. = ..()
-	SSshuttle.sky_scraper_elevator = src
+/obj/docking_port/mobile/sselevator/Initialize()
 	for(var/i=1;i<100;i++)
 		disabled_floors[i] = TRUE
 	disabled_floors[100] = FALSE
 	for(var/i=1;i<100;i++)
 		called_floors[i] = FALSE
+	. = ..()
+
+/obj/docking_port/mobile/sselevator/register()
+	. = ..()
+	SSshuttle.sky_scraper_elevator = src
 
 /obj/docking_port/mobile/sselevator/request(obj/docking_port/stationary/S) //No transit, no ignition, just a simple up/down platform
 	initiate_docking(S, force = TRUE)
