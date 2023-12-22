@@ -20,8 +20,8 @@
 
 	landing_sound = null
 	ignition_sound = 'sound/machines/asrs_raising.ogg'
-	ambience_flight = null
-	ambience_idle = null
+	ambience_flight = 'sound/ambience/elevator_music.ogg'
+	ambience_idle = 'sound/ambience/elevator_music.ogg'
 	movement_force = list("KNOCKDOWN" = 0, "THROW" = 0)
 
 	custom_ceiling = /turf/open/floor/roof/ship_hull/lab
@@ -75,7 +75,7 @@
 		on_move_actions()
 		move_elevator()
 	else
-		move_elevator()
+		move_elevator(FALSE)
 
 /obj/docking_port/mobile/sselevator/proc/on_move_actions()
 	button.update_icon("_animated")
@@ -98,9 +98,10 @@
 	for(var/turf/closed/shuttle/elevator/gears/sci/G in gears)
 		G.stop()
 
-/obj/docking_port/mobile/sselevator/proc/move_elevator()
+/obj/docking_port/mobile/sselevator/proc/move_elevator(message = TRUE)
 	var/floor_to_move = offseted_z > target_floor ? offseted_z - 1 : offseted_z + 1
-	button.visible_message(SPAN_NOTICE("Лифт отправляется и прибудет на этаж [floor_to_move]. Пожалуйста стойте в стороне от дверей."))
+	if(message)
+		button.visible_message(SPAN_NOTICE("Лифт отправляется и прибудет на этаж [floor_to_move]. Пожалуйста стойте в стороне от дверей."))
 	playsound(return_center_turf(), ignition_sound, 60, 0, falloff = 4)
 	sleep(4 SECONDS)
 	calculate_move_delay(floor_to_move)
@@ -467,20 +468,112 @@
 	name = "Vents"
 	desc = "Wall with big vents"
 	icon = 'icons/turf/vent.dmi'
-	icon_state = "vent_wall"
-	var/open = TRUE
-	var/welded = FALSE
-	var/max_pressure = 1000
+	icon_state = "vent"
+// 0 open, 1 closed, 2 welded, 3 broken
+	var/state = 0
+	var/welding_stage = 0
+	var/pressure = 0
+	var/max_pressure = 10000
 
-/turf/closed/wall/vents/proc/spread_smoke(transfer_pressure)
+/turf/closed/wall/vents/can_be_dissolved()
+	return FALSE
+
+/turf/closed/wall/vents/thermitemelt()
+	return FALSE
+
+/turf/closed/wall/vents/dismantle_wall()
+	state = 3
+	icon_state = "vent_broken"
+
+/turf/closed/wall/vents/attackby(obj/item/attacking_item, mob/user)
+	if(!ishuman(user) && !isrobot(user))
+		to_chat(user, SPAN_WARNING("You don't have the dexterity to do this!"))
+		return
+
+	if(state > 1)
+		return
+	else if(HAS_TRAIT(attacking_item, TRAIT_TOOL_CROWBAR))
+		to_chat(user, SPAN_WARNING("You start [state ? "opening" : "closing"] vents with your [attacking_item]."))
+		if(!do_after(user, 10 SECONDS, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD, numticks = 3) || state > 1)
+			to_chat(user, SPAN_WARNING("You stop [state ? "opening" : "closing"] vents with your [attacking_item]."))
+			return FALSE
+		to_chat(user, SPAN_WARNING("You [state ? "opened" : "closed"] vents."))
+		state = !state
+	else if(istype(attacking_item, /obj/item/stack/sheet/metal) && welding_stage == 0)
+		if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
+			to_chat(user, SPAN_WARNING("You do not understand how to do it [src]."))
+			return FALSE
+		var/obj/item/stack/sheet/metal/metal = attacking_item
+		to_chat(user, SPAN_NOTICE("You start to reinforce \the [src]."))
+		if(!do_after(user, 3 SECONDS, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD, numticks = 3))
+			to_chat(user, SPAN_WARNING("You stop reinforcing \the [src]."))
+			return FALSE
+		if(!metal || !metal.use(40))
+			to_chat(user, SPAN_WARNING("You need a 40 sheets of metal to reinforce."))
+			return FALSE
+		to_chat(user, SPAN_NOTICE("You reinforced \the [src]."))
+		welding_stage++
+		return TRUE
+	else if(istype(attacking_item, /obj/item/stack/sheet/plasteel) && welding_stage == 1)
+		if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
+			to_chat(user, SPAN_WARNING("You do not understand how to do it [src]."))
+			return FALSE
+		var/obj/item/stack/sheet/plasteel/plasteel = attacking_item
+		to_chat(user, SPAN_NOTICE("You start to reinforce \the [src]."))
+		if(!do_after(user, 3 SECONDS, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD, numticks = 3))
+			to_chat(user, SPAN_WARNING("You stop reinforcing \the [src]."))
+			return FALSE
+		if(!plasteel || !plasteel.use(10))
+			to_chat(user, SPAN_WARNING("You need a 10 sheets of plasteel to reinforce."))
+			return FALSE
+		to_chat(user, SPAN_NOTICE("You reinforced \the [src]."))
+		welding_stage++
+		return TRUE
+	else if(iswelder(attacking_item) && welding_stage == 2)
+		if(!HAS_TRAIT(attacking_item, TRAIT_TOOL_BLOWTORCH))
+			to_chat(user, SPAN_WARNING("You need a stronger blowtorch!"))
+			return
+		var/obj/item/tool/weldingtool/weldingtool = attacking_item
+		if(!weldingtool.isOn())
+			to_chat(user, SPAN_WARNING("\The [weldingtool] needs to be on!"))
+			return
+		playsound(src, 'sound/items/Welder.ogg', 25, 1)
+		if(!do_after(user, 10 SECONDS, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD, numticks = 3) || state > 1)
+			to_chat(user, SPAN_WARNING("You stop welding \the [src]."))
+			return FALSE
+		if(!weldingtool || !weldingtool.isOn())
+			return
+		to_chat(user, SPAN_NOTICE("You welded vent."))
+		welding_stage++
+		state = 2
+
+/turf/closed/wall/vents/proc/spread_smoke(transfer_pressure, cause_data)
+	var/turf/closed/wall/vents/above = SSmapping.get_turf_above(src)
+	if(state == 1)
+		if(istype(above) && max_pressure - pressure + above.max_pressure - above.pressure > transfer_pressure)
+			pressure += transfer_pressure
+			if(pressure > max_pressure)
+				above.spread_smoke(pressure - max_pressure, cause_data)
+				pressure = max_pressure
+			return
+		pressure += transfer_pressure
+		playsound(src, 'sound/items/Welder.ogg', 25, 1)
+		state = 0
+		icon_state = "vent"
+
 	var/obj/effect/particle_effect/smoke/chlor/foundsmoke = locate() in get_turf(src)
-	if(transfer_pressure + foundsmoke.amount > max_pressure)
-		var/turf/above = SSmapping.get_turf_above(src)
-		if(istype(above, /turf/closed/wall/vents))
-			foundsmoke.smoke_action_in(above)
+	if(!foundsmoke)
+		foundsmoke = new(src, pressure, cause_data)
+		foundsmoke.setDir(pick(GLOB.cardinals))
+		foundsmoke.spread_smoke()
 	else
-		foundsmoke.amount += transfer_pressure
-
+		foundsmoke.amount = foundsmoke.amount + transfer_pressure
+		foundsmoke.spread_smoke()
+		pressure = foundsmoke.amount
+		if(pressure > max_pressure)
+			if(istype(above))
+				above.spread_smoke(pressure*0.5, cause_data)
+				foundsmoke.smoke_action_in(above)
 
 /////////////////////////////////////////
 // CHLOR SMOKE
