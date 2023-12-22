@@ -748,7 +748,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 	if(vend_flags & VEND_FACTION_THEMES)
 		.["theme"] = VENDOR_THEME_COMPANY //for potential future PMC version
 		var/mob/living/carbon/human/human = user
-		switch(human.faction)
+		switch(human.faction.faction_name)
 			if(FACTION_UPP)
 				.["theme"] = VENDOR_THEME_UPP
 			if(FACTION_CLF)
@@ -1296,6 +1296,8 @@ GLOBAL_LIST_INIT(cm_vending_gear_corresponding_types_list, list(
 			if(vending_machine.Adjacent(user))
 				user.put_in_any_hand_if_possible(new_item, disable_warning = TRUE)
 
+	new_item.faction = vending_machine.faction
+	new_item.faction_to_get = vending_machine.faction_to_get
 	new_item.post_vendor_spawn_hook(user)
 
 /proc/handle_vend(obj/structure/machinery/cm_vending/vending_machine, list/listed_products, mob/living/carbon/human/vending_human)

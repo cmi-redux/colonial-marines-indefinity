@@ -354,6 +354,25 @@ ICEY GRASS. IT LOOKS LIKE IT'S MADE OF ICE.
 	. = ..()
 	auto_grass()
 
+/obj/structure/flora/grass/short_grass/Destroy(force)
+	. = ..()
+	var/turf/T = get_turf(src)
+	for(var/i = 0, i <= 3, i++)
+		if(!get_step(src, 2**i))
+			continue
+		T = get_step(src, 2**i)
+		if(T && !T.contents.Find(/obj/structure/flora/grass/tall_grass))
+			T.cut_overlay(TallGrassEdgeCache[2**i])
+	T = get_step(src, NORTHWEST)
+	if(!T.contents.Find(/obj/structure/flora/grass/tall_grass))
+		T.cut_overlay(TallGrassEdgeCache[NORTHWEST])
+	T = get_step(src, SOUTHEAST)
+	if(!T.contents.Find(/obj/structure/flora/grass/tall_grass))
+		T.cut_overlay(TallGrassEdgeCache[SOUTHEAST])
+	T = get_step(src, SOUTHWEST)
+	if(!T.contents.Find(/obj/structure/flora/grass/tall_grass))
+		T.cut_overlay(TallGrassEdgeCache[SOUTHWEST])
+
 /obj/structure/flora/grass/short_grass/Crossed(atom/movable/arrived)
 	. = ..()
 	if(isliving(arrived))
@@ -367,7 +386,7 @@ ICEY GRASS. IT LOOKS LIKE IT'S MADE OF ICE.
 			continue
 		T = get_step(src, 2**i)
 		if(T && !T.contents.Find(/obj/structure/flora/grass/tall_grass))
-			T.overlays += TallGrassEdgeCache[2**i]
+			T.add_overlay(TallGrassEdgeCache[2**i])
 	T = get_step(src, NORTHWEST)
 	if(!T.contents.Find(/obj/structure/flora/grass/tall_grass))
 		T.add_overlay(TallGrassEdgeCache[NORTHWEST])

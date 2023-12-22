@@ -14,7 +14,7 @@ SUBSYSTEM_DEF(mapview)
 
 	var/list/datum/tacmap/faction_datum/faction_tcmp = list()
 	var/list/datum/tacmap/minimap/minimaps_by_trait = list()
-	var/list/datum/tacmap/atom_datum/assoc_mobs_datums = list()
+	var/list/datum/tacmap/atom_datum/assoc_atom_datums = list()
 	var/list/atom/movable/screen/minimap/hud_by_zlevel = list()
 	var/list/icon/flat_maps_by_zlevel = list()
 	var/list/datum/callback/removal_cbs = list()
@@ -36,7 +36,7 @@ SUBSYSTEM_DEF(mapview)
 /datum/controller/subsystem/mapview/Recover()
 	faction_tcmp = SSmapview.faction_tcmp
 	minimaps_by_trait = SSmapview.minimaps_by_trait
-	assoc_mobs_datums = SSmapview.assoc_mobs_datums
+	assoc_atom_datums = SSmapview.assoc_atom_datums
 	removal_cbs = SSmapview.removal_cbs
 
 /datum/controller/subsystem/mapview/fire(resumed)
@@ -73,7 +73,7 @@ SUBSYSTEM_DEF(mapview)
 	set waitfor = FALSE
 	WAIT_MAPVIEW_READY
 
-	if(assoc_mobs_datums[atom_ref])
+	if(assoc_atom_datums[atom_ref])
 		error("Trying to add marker with mob already in marker system [atom_ref], caution!")
 		return
 	if(!minimaps_by_trait["[SSmapping.level_minimap_trait(atom_ref.z)]"])
@@ -83,13 +83,13 @@ SUBSYSTEM_DEF(mapview)
 		return
 
 	var/datum/tacmap/atom_datum/new_mob_datum = new(atom_ref, iconstate, recoloring, rotating, custom_color, flags)
-	assoc_mobs_datums[atom_ref] = new_mob_datum
-	minimaps_by_trait["[SSmapping.level_minimap_trait(atom_ref.z)]"].assoc_mobs_datums[atom_ref] = new_mob_datum
+	assoc_atom_datums[atom_ref] = new_mob_datum
+	minimaps_by_trait["[SSmapping.level_minimap_trait(atom_ref.z)]"].assoc_atom_datums[atom_ref] = new_mob_datum
 	SSmapview.removal_cbs[atom_ref] = CALLBACK(src, PROC_REF(removeimage), new_mob_datum, atom_ref)
 	RegisterSignal(atom_ref, COMSIG_PARENT_QDELETING, PROC_REF(remove_marker))
 
 /datum/controller/subsystem/mapview/proc/removeimage(datum/tacmap/atom_datum/atom_datum, atom/movable/atom_ref)
-	var/ref = SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(atom_ref.z)]"].assoc_mobs_datums
+	var/ref = SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(atom_ref.z)]"].assoc_atom_datums
 	ref -= atom_datum // see above http://www.byond.com/forum/post/2661309
 	SSmapview.removal_cbs -= atom_datum
 
@@ -97,9 +97,9 @@ SUBSYSTEM_DEF(mapview)
 	SIGNAL_HANDLER
 	if(!SSmapview.removal_cbs[source]) //already removed
 		return
-	var/datum/tacmap/atom_datum/mob_datum = assoc_mobs_datums[source]
+	var/datum/tacmap/atom_datum/mob_datum = assoc_atom_datums[source]
 	mob_datum.UnregisterSignal(source, list(COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_MOVED, COMSIG_MOVABLE_Z_CHANGED))
-	assoc_mobs_datums -= source
+	assoc_atom_datums -= source
 	removal_cbs[source].Invoke()
 	removal_cbs -= source
 ///////////////////////

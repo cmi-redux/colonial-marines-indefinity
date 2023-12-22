@@ -33,10 +33,10 @@
 		image_assoc[faction_to_get] = generate_icon(faction_to_get)
 */
 	generated_tag_ally = "[atom_ref.name] [atom_ref_faction.name]"
-	generated_tag = "unknow entity [SSmapview.assoc_mobs_datums.len + 1]"
+	generated_tag = "unknow entity [SSmapview.assoc_atom_datums.len + 1]"
 
 	RegisterSignal(atom_source, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(on_z_change))
-	RegisterSignal(atom_source, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
+//	RegisterSignal(atom_source, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 /*
 /datum/tacmap/atom_datum/proc/generate_icon(faction_to_get)
 	var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
@@ -59,18 +59,18 @@
 
 /datum/tacmap/atom_datum/proc/on_z_change(oldz, newz)
 	SIGNAL_HANDLER
-	if(!SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(oldz)]"]?.assoc_mobs_datums[atom_ref])
+	if(!SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(oldz)]"]?.assoc_atom_datums[atom_ref])
 		return
 	//see previous byond bug comments http://www.byond.com/forum/post/2661309
-	var/ref_old = SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(oldz)]"].assoc_mobs_datums[atom_ref]
-	SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(newz)]"].assoc_mobs_datums[atom_ref] = ref_old
-	var/anotherref = SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(oldz)]"].assoc_mobs_datums
+	var/ref_old = SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(oldz)]"].assoc_atom_datums[atom_ref]
+	SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(newz)]"].assoc_atom_datums[atom_ref] = ref_old
+	var/anotherref = SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(oldz)]"].assoc_atom_datums
 	anotherref -= atom_ref
-	var/rawold = SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(oldz)]"].assoc_mobs_datums[atom_ref]
-	var/rawnew = SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(newz)]"].assoc_mobs_datums
+	var/rawold = SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(oldz)]"].assoc_atom_datums[atom_ref]
+	var/rawnew = SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(newz)]"].assoc_atom_datums
 	rawold -= ref_old
 	rawnew += ref_old
-
+/*
 /datum/tacmap/atom_datum/proc/on_move()
 	SIGNAL_HANDLER
 	if(!atom_ref.z)
@@ -87,3 +87,4 @@
 		return
 	tcmp_effect.range_bounds.center_x = cur_turf.x
 	tcmp_effect.range_bounds.center_y = cur_turf.y
+*/

@@ -33,6 +33,7 @@ FLOOR SAFES
 	layer = BELOW_OBJ_LAYER
 	unslashable = TRUE
 	unacidable = TRUE
+	faction_to_get = FACTION_MARINE
 	var/spawnkey = 1 //Spawn safe code on top of it?
 	var/open = 0 //is the safe open?
 	var/tumbler_1_pos //the tumbler position- from 0 to 72
@@ -56,7 +57,7 @@ FLOOR SAFES
 
 	if(is_ground_level(loc.z))
 		//adding an objective for cracking open the safe
-		new /datum/cm_objective/crack_safe(src)
+		new /datum/cm_objective/crack_safe(faction_to_get, src)
 
 	for(var/obj/item/I in loc)
 		if(space >= maxspace)

@@ -110,8 +110,8 @@ GLOBAL_LIST_EMPTY(unannounced_maps)
 	return images_to_gen
 
 /datum/tacmap/faction_datum/proc/passive_scan(zlevel)
-	for(var/atom/movable/M as anything in SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(zlevel)]"].assoc_mobs_datums)
-		var/datum/tacmap/atom_datum/tcov = SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(zlevel)]"].assoc_mobs_datums[M]
+	for(var/atom/movable/M as anything in SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(zlevel)]"].assoc_atom_datums)
+		var/datum/tacmap/atom_datum/tcov = SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(zlevel)]"].assoc_atom_datums[M]
 		if(LAZYISIN(mobs_to_draw, tcov))
 			continue
 		if(tcov.atom_ref_faction != faction)
@@ -129,7 +129,7 @@ GLOBAL_LIST_EMPTY(unannounced_maps)
 		for(var/mob/living/M as anything in view_candidates)
 			if(M.faction == faction)
 				continue
-			var/datum/tacmap/atom_datum/tcov_second = SSmapview.assoc_mobs_datums[M]
+			var/datum/tacmap/atom_datum/tcov_second = SSmapview.assoc_atom_datums[M]
 			if(LAZYISIN(mobs_to_draw, tcov_second))
 				continue
 			if(faction.faction_is_ally(tcov_second.atom_ref_faction))

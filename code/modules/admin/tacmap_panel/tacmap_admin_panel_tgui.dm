@@ -18,7 +18,7 @@ GLOBAL_DATUM_INIT(tacmap_admin_panel, /datum/tacmap_admin_panel, new)
 	if(!ui)
 
 		// Ensure we actually have the latest map images sent (recache can handle older/different faction maps)
-		resend_current_map_png(user)
+		resend_current_map_png(user, GLOB.faction_datum[faction_selected], selected_zlevel)
 
 		ui = new(user, src, "TacmapAdminPanel", "Tacmap Panel")
 		ui.open()
@@ -56,7 +56,7 @@ GLOBAL_DATUM_INIT(tacmap_admin_panel, /datum/tacmap_admin_panel, new)
 
 
 	.["faction_selection"] = faction_selection
-	.["faction_name"] = GLOB.faction_datum[faction_selection].name
+	.["faction_name"] = GLOB.faction_datum[faction_selected].name
 	.["last_update_time"] = last_update_time
 	.["factions"] = list()
 	for(var/faction_to_get in FACTION_LIST_ALL)

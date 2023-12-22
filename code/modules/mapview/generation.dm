@@ -12,7 +12,7 @@
 	///Actual icon of the drawn zlevel with all of it's atoms
 	var/list/icon/minimap_layers = list()
 	//Mobs assoc
-	var/list/datum/tacmap/atom_datum/assoc_mobs_datums = list()
+	var/list/datum/tacmap/atom_datum/assoc_atom_datums = list()
 	///x offset of the actual icon to center it to screens
 	var/x_offset = 0
 	///y offset of the actual icons to keep it to screens
@@ -85,7 +85,6 @@
 			if(istype(turf, /turf/open/space))
 				new_minimap.DrawBox(rgb(0,0,0), turf.x, turf.y)
 				continue
-		sleep(5)
 
 	new_minimap.Scale(new_minimap.Width()*MINIMAP_SCALE,new_minimap.Height()*MINIMAP_SCALE) //scale it up x2 to make it easer to see
 
@@ -100,7 +99,7 @@
 
 	minimap_layers["[level_to_gen]"] = new_minimap
 
-	var/icon/flat_map = getFlatIcon(new_minimap, appearance_flags = TRUE)
+	var/icon/flat_map = getFlatIcon(mapview, appearance_flags = TRUE)
 	if(!flat_map)
 		to_chat(usr, SPAN_WARNING("M: F1 error happened, contact coder."))
 	else

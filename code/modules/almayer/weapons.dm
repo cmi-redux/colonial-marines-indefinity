@@ -16,7 +16,7 @@
 		if(ammo.interceptable && intercept_chance > accuracy)
 			ammo.miss_target(picked_atom, TRUE)
 			intercepted++
-		else if(ammo.base_miss_chance + ammo.interceptable ? intercept_chance : 0 > accuracy)
+		else if(ammo.base_miss_chance + intercept_chance > accuracy)
 			ammo.miss_target(picked_atom, FALSE)
 			missed++
 		else

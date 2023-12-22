@@ -20,20 +20,8 @@
 	var/list/clothing_traits // Trait modification, lazylist of traits to add/take away, on equipment/drop in the correct slot
 	var/clothing_traits_active = TRUE //are the clothing traits that are applied to the item active (acting on the mob) or not?
 
-	var/atom/movable/armor_light/light_holder
 	var/flags_armor_features
 	var/toggle_light_sound = TRUE
-
-/obj/item/clothing/Initialize(mapload)
-	. = ..()
-	light_holder = new(src)
-	light_holder.set_light_flags(LIGHT_ATTACHED)
-	light_holder.set_light_range(light_range)
-	light_holder.set_light_power(light_power)
-
-/obj/item/clothing/Destroy()
-	QDEL_NULL(light_holder)
-	return ..()
 
 /obj/item/clothing/get_examine_line(mob/user)
 	. = ..()
@@ -126,7 +114,7 @@
 
 /obj/item/clothing/proc/toggle_light(mob/user, toggle_on, sparks = FALSE, forced = FALSE)
 	SIGNAL_HANDLER
-	if(toggle_on == light_on || turn_light(user, toggle_on) != CHECKS_PASSED)
+	if(turn_light(user, toggle_on) != CHECKS_PASSED)
 		return
 
 	if(toggle_light_sound)
@@ -140,8 +128,7 @@
 	if(. != CHECKS_PASSED)
 		return
 	flags_armor_features ^= ARMOR_LAMP_ON
-	light_holder.set_light_range(toggle_on ? light_range : 0)
-	light_holder.set_light_on(toggle_on)
+	set_light_on(toggle_on)
 	update_icon(user)
 	for(var/datum/action/current_action as anything in actions)
 		current_action.update_button_icon()

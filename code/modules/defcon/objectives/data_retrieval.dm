@@ -229,13 +229,14 @@
 	unslashable = TRUE
 	unacidable = TRUE
 	indestructible = TRUE
+	faction_to_get = FACTION_MARINE
 	var/datum/cm_objective/retrieve_data/terminal/objective
 
 /obj/structure/machinery/computer/objective/Initialize()
 	. = ..()
 	label = "[pick(greek_letters)]-[rand(100,999)]"
 	name = "data terminal [label]"
-	objective = new /datum/cm_objective/retrieve_data/terminal(src)
+	objective = new /datum/cm_objective/retrieve_data/terminal(faction_to_get, src)
 
 /obj/structure/machinery/computer/objective/ex_act(severity)
 	return
