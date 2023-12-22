@@ -299,7 +299,7 @@ GLOBAL_LIST_INIT(emote_list, init_emote_list())
 
 /proc/setup_defcons()
 	var/list/all_defcon_controllers = list()
-	for(var/faction_to_get in FACTION_LIST_ALL)
+	for(var/faction_to_get in FACTION_LIST_DEFCONED)
 		var/datum/objectives_datum/objectives_datum = new(faction_to_get)
 		objectives_datum.associated_faction = faction_to_get
 		all_defcon_controllers[faction_to_get] = objectives_datum

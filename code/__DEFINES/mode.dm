@@ -243,6 +243,7 @@
 #define OBJECTIVE_START_PROCESSING_ON_DISCOVERY (1<<2) // Should this objective process() every subsystem 'tick' once its breadcrumb trail of clues have been finished?
 #define OBJECTIVE_DISPLAY_AT_END (1<<3)
 #define OBJECTIVE_OBSERVABLE (1<<4)
+#define OBJECTIVE_NO_FACTION_LINK (1<<5)
 
 #define CLUE_CLOSE 50
 #define CLUE_MEDIUM 25

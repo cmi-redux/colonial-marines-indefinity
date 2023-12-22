@@ -68,13 +68,6 @@
 	},
 /turf/open/floor/wood,
 /area/template_noop)
-"k" = (
-/obj/item/ammo_casing{
-	dir = 6;
-	icon_state = "casing_10_1"
-	},
-/turf/open/floor/wood,
-/area/template_noop)
 "l" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "S"
@@ -222,7 +215,7 @@
 /area/template_noop)
 "U" = (
 /obj/item/ammo_magazine/smg/uzi{
-	ammo_position = 0;
+	current_rounds = 0;
 	pixel_x = 5;
 	pixel_y = 12
 	},
@@ -302,7 +295,7 @@ L
 "}
 (9,1,1) = {"
 s
-k
+Y
 W
 Y
 L

@@ -1302,7 +1302,6 @@
 /area/bigredv2/outside/building/office_complex)
 "dR" = (
 /obj/structure/surface/rack,
-/obj/item/map/big_red_map,
 /turf/open/shuttle/dropship{
 	tag = "icon-rasputin15";
 	icon_state = "rasputin15"
@@ -1461,62 +1460,7 @@
 /turf/open/floor{
 	icon_state = "platingdmg1"
 	},
-/area/bigredv2/outside/office_complex)
-"fv" = (
-/obj/structure/bed/chair/dropship/passenger{
-	dir = 8
-	},
-/obj/effect/landmark/survivor_spawner/bigred_crashed_pmc,
-/turf/open/shuttle/dropship{
-	icon_state = "rasputin15"
-	},
-/area/bigredv2/outside/office_complex)
-"fG" = (
-/obj/structure/bed/chair/dropship/passenger{
-	dir = 8
-	},
-/obj/item/device/radio/headset/distress/pmc/hvh,
-/turf/open/shuttle/dropship{
-	icon_state = "rasputin15"
-	},
-/area/bigredv2/outside/office_complex)
-"id" = (
-/obj/structure/bed/chair/dropship/passenger{
-	dir = 4
-	},
-/obj/effect/landmark/survivor_spawner/bigred_crashed_pmc,
-/turf/open/shuttle/dropship{
-	icon_state = "rasputin15"
-	},
-/area/bigredv2/outside/office_complex)
-"jx" = (
-/obj/effect/decal/cleanable/blood{
-	dir = 1;
-	icon_state = "gib6"
-	},
-/obj/item/limb/leg/l_leg,
-/turf/open/shuttle/dropship{
-	icon_state = "rasputin3"
-	},
-/area/bigredv2/outside/office_complex)
-"od" = (
-/obj/structure/bed/chair/dropship/passenger{
-	dir = 4
-	},
-/obj/item/clothing/gloves/marine/veteran/pmc,
-/turf/open/shuttle/dropship{
-	icon_state = "rasputin15"
-	},
-/area/bigredv2/outside/office_complex)
-"oF" = (
-/obj/structure/bed/chair/dropship/passenger{
-	dir = 4
-	},
-/obj/item/clothing/under/marine/veteran/pmc,
-/turf/open/shuttle/dropship{
-	icon_state = "rasputin15"
-	},
-/area/bigredv2/outside/office_complex)
+/area/bigredv2/outside/building/office_complex)
 "qX" = (
 /obj/effect/decal/cleanable/blood,
 /obj/effect/landmark/corpsespawner/pmc,
@@ -1536,45 +1480,6 @@
 /obj/item/clothing/under/marine/veteran/pmc,
 /obj/item/clothing/head/helmet/marine/veteran/pmc,
 /turf/open/shuttle/dropship{
-	icon_state = "rasputin15"
-	},
-/area/bigredv2/outside/office_complex)
-"rK" = (
-/obj/structure/bed/chair/dropship/passenger{
-	dir = 8
-	},
-/obj/effect/decal/cleanable/blood,
-/obj/effect/landmark/corpsespawner/wygoon,
-/turf/open/shuttle/dropship{
-	icon_state = "rasputin15"
-	},
-/area/bigredv2/outside/office_complex)
-"si" = (
-/obj/item/clothing/head/helmet/marine/veteran/pmc,
-/turf/open/shuttle/dropship{
-	icon_state = "rasputin3"
-	},
-/area/bigredv2/outside/office_complex)
-"sR" = (
-/obj/item/storage/firstaid,
-/turf/open/shuttle/dropship{
-	icon_state = "rasputin3"
-	},
-/area/bigredv2/outside/office_complex)
-"uC" = (
-/obj/effect/spawner/gibspawner/human,
-/obj/item/weapon/gun/rifle/m41a/corporate/no_lock{
-	desc = "A Weyland-Yutani creation, this M41A MK2 comes equipped in corporate white. Uses 10x24mm caseless ammunition. The IFF electronics appear to be non-functional.";
-	name = "battered M41A pulse rifle Mk2"
-	},
-/turf/open/shuttle/dropship{
-	icon_state = "rasputin3"
-	},
-/area/bigredv2/outside/office_complex)
-"uL" = (
-/obj/item/weapon/gun/rifle/nsg23/no_lock,
-/turf/open/shuttle/dropship{
-	tag = "icon-rasputin15";
 	icon_state = "rasputin15"
 	},
 /area/bigredv2/outside/building/office_complex)
@@ -1599,35 +1504,7 @@
 	tag = "icon-rasputin15";
 	icon_state = "rasputin15"
 	},
-/area/bigredv2/outside/office_complex)
-"Bu" = (
-/obj/effect/decal/cleanable/blood,
-/obj/effect/spawner/gibspawner/human,
-/obj/item/limb/arm/l_arm,
-/obj/item/limb/leg/l_leg,
-/obj/item/limb/hand/r_hand,
-/turf/open/shuttle/dropship{
-	icon_state = "rasputin3"
-	},
-/area/bigredv2/outside/office_complex)
-"EE" = (
-/obj/structure/bed/chair/dropship/passenger{
-	dir = 8
-	},
-/obj/item/limb/hand/l_hand,
-/turf/open/shuttle/dropship{
-	icon_state = "rasputin15"
-	},
-/area/bigredv2/outside/office_complex)
-"GG" = (
-/obj/item/weapon/gun/rifle/m41a/corporate/no_lock{
-	desc = "A Weyland-Yutani creation, this M41A MK2 comes equipped in corporate white. Uses 10x24mm caseless ammunition. The IFF electronics appear to be non-functional.";
-	name = "battered M41A pulse rifle Mk2"
-	},
-/turf/open/shuttle/dropship{
-	icon_state = "rasputin3"
-	},
-/area/bigredv2/outside/office_complex)
+/area/bigredv2/outside/building/office_complex)
 "Ha" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
@@ -1657,7 +1534,7 @@
 	icon_state = "floor8";
 	tag = "icon-rasputin7"
 	},
-/area/bigredv2/outside/office_complex)
+/area/bigredv2/outside/building/office_complex)
 
 (1,1,1) = {"
 ac

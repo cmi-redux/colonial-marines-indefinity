@@ -128,14 +128,6 @@
 	tag = "icon-rasputin7"
 	},
 /area/bigredv2/outside/building/general_offices)
-"aU" = (
-/obj/structure/surface/rack,
-/obj/item/map/big_red_map,
-/turf/open/shuttle/dropship{
-	icon_state = "rasputin15";
-	tag = "icon-rasputin15"
-	},
-/area/bigredv2/outside/building/general_offices)
 "aV" = (
 /turf/closed/shuttle/ert{
 	icon_state = "wy19"
@@ -1853,7 +1845,7 @@ eF
 aQ
 an
 aG
-aU
+ce
 bq
 bv
 bv

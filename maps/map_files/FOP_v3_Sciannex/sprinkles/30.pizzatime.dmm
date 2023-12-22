@@ -347,20 +347,6 @@
 	},
 /area/template_noop)
 "S" = (
-/obj/effect/decal/cleanable/blood/writing{
-	icon_state = "u_psycopath_l";
-	pixel_y = 4
-	},
-/obj/effect/decal/cleanable/blood/writing{
-	icon_state = "u_ketchup_l";
-	pixel_x = 8;
-	pixel_y = 4
-	},
-/obj/effect/decal/cleanable/blood/writing{
-	icon_state = "u_guilty_l";
-	pixel_x = -12;
-	pixel_y = 2
-	},
 /obj/effect/decal/cleanable/flour,
 /turf/open/floor/prison{
 	icon_state = "kitchen"

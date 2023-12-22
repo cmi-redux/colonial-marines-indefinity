@@ -48,7 +48,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/reload_cooldown = 0 //5s cooldown between loading slots
 
 	//game-preferences
-	var/client_language = CLIENT_LANGUAGE_RUSSIAN
+	var/client_language = CLIENT_LANGUAGE_ENGLISH
 	var/lastchangelog = "" // Saved changlog filesize to detect if there was a change
 	var/ooccolor
 	var/be_special = 0 // Special role selection
@@ -1727,10 +1727,6 @@ var/const/MAX_SAVE_SLOTS = 10
 							organ_data[organ] = "assisted"
 						if("Mechanical")
 							organ_data[organ] = "mechanical"
-
-				if("skin_style")
-					var/skin_style_name = tgui_input_list(user, "Select a new skin style", "Skin style", list("default1", "default2", "default3"))
-					if(!skin_style_name) return
 
 				if("origin")
 					var/choice = tgui_input_list(user, "Please choose your character's origin.", "Origin Selection", GLOB.player_origins)

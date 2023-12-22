@@ -13,15 +13,13 @@ Format:
 endmap
 
 map lv624
-	disabled
+	default
 endmap
 
 map bigredv2
-	disabled
 endmap
 
 map prison_station_fop
-	disabled
 endmap
 
 map fiorina_sciannex
@@ -45,7 +43,6 @@ map shivas_snowball
 endmap
 
 map kutjevo
-	disabled
 endmap
 
 map sorokyne_strata
@@ -61,7 +58,6 @@ map new_varadero
 endmap
 
 map skyscraper
-	default
 endmap
 
 map ravenue_5

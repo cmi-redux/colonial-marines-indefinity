@@ -229,7 +229,11 @@ var/world_topic_spam_protect_time = world.timeofday
 		response["data"] = command.data
 		return json_encode(response)
 
-/world/Reboot(shutdown = FALSE, reason)
+/world/Reboot(auth, shutdown = FALSE, reason)
+	if(auth != GLOB.href_token) //Hotfix of byond skill issue, lummox good boi
+		bad_reboot_auth(auth)
+		return
+
 	if(!notify_restart())
 		log_debug("Failed to notify discord about restart")
 
@@ -249,16 +253,14 @@ var/world_topic_spam_protect_time = world.timeofday
 	return
 	#endif
 
-	if(shutdown)
-		shutdown()
+	if(TgsAvailable())
+		TgsReboot()
+		TgsEndProcess()
 	else
-		..(reason)
-
-//	if(TgsAvailable())
-//		TgsReboot()
-//		TgsEndProcess()
-//	else
-//		shutdown()
+		if(shutdown)
+			shutdown()
+		else
+			..(reason)
 
 /world/proc/send_reboot_sound()
 	var/reboot_sound = SAFEPICK(reboot_sfx)

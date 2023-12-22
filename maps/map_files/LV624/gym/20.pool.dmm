@@ -121,9 +121,6 @@
 	icon_state = "whitepurple"
 	},
 /area/lv624/lazarus/fitness)
-"ma" = (
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/central_jungle)
 "oK" = (
 /obj/item/shard,
 /turf/open/floor{
@@ -173,9 +170,6 @@
 /obj/structure/flora/bush/ausbushes/genericbush,
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/east_central_jungle)
-"wO" = (
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/central_jungle)
 "xt" = (
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/central_jungle)
@@ -292,9 +286,6 @@
 	icon_state = "whitepurplecorner"
 	},
 /area/lv624/lazarus/fitness)
-"Jk" = (
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/central_jungle)
 "JM" = (
 /obj/effect/landmark/crap_item,
 /turf/open/gm/grass/grass1,
@@ -303,9 +294,6 @@
 /obj/structure/fence,
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/colony/north_nexus_road)
-"NC" = (
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/central_jungle)
 "Ot" = (
 /obj/structure/window_frame/colony,
 /turf/open/floor/plating,
@@ -359,9 +347,6 @@
 /obj/structure/machinery/colony_floodlight,
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/colony/south_medbay_road)
-"Ua" = (
-/turf/open/gm/grass/grass1,
-/area/lv624/ground/jungle/central_jungle)
 "Us" = (
 /obj/structure/closet/athletic_mixed,
 /obj/structure/machinery/light{
@@ -423,10 +408,10 @@ Vo
 Ez
 hX
 Vo
-NC
-Jk
-Ua
-Ua
+xt
+xt
+xt
+xt
 xt
 bA
 "}
@@ -441,11 +426,11 @@ lB
 tV
 sA
 sA
-NC
-Jk
-wO
-ma
-NC
+xt
+xt
+xt
+xt
+xt
 "}
 (3,1,1) = {"
 ZM
@@ -462,7 +447,7 @@ Vo
 Vo
 Ot
 sA
-NC
+xt
 "}
 (4,1,1) = {"
 Vb
@@ -496,7 +481,7 @@ bQ
 vq
 VM
 Vo
-NC
+xt
 "}
 (6,1,1) = {"
 wj
@@ -513,7 +498,7 @@ bQ
 vq
 Px
 sA
-NC
+xt
 "}
 (7,1,1) = {"
 sA

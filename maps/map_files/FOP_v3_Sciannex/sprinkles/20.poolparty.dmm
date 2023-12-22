@@ -553,10 +553,6 @@
 	dir = 4;
 	pixel_y = 24
 	},
-/obj/item/toy/plushie_cade{
-	pixel_x = 1;
-	pixel_y = -9
-	},
 /obj/effect/decal/cleanable/blood/oil/streak,
 /turf/open/floor/prison{
 	dir = 8;
@@ -731,10 +727,6 @@
 	dir = 8;
 	pixel_y = 24
 	},
-/obj/item/toy/plushie_cade{
-	pixel_x = -3;
-	pixel_y = -9
-	},
 /turf/open/floor/prison{
 	dir = 4;
 	icon_state = "darkbrown2"
@@ -762,10 +754,6 @@
 	pixel_x = 6;
 	pixel_y = 5;
 	layer = 3.1
-	},
-/obj/item/toy/farwadoll{
-	pixel_x = -5;
-	pixel_y = 4
 	},
 /obj/item/trash/cigbutt{
 	pixel_x = -6;
@@ -847,9 +835,6 @@
 /area/template_noop)
 "FD" = (
 /obj/structure/surface/table/reinforced/prison,
-/obj/item/toy/therapy_blue{
-	pixel_y = 4
-	},
 /obj/item/reagent_container/food/drinks/bottle/whiskey{
 	pixel_x = 10;
 	pixel_y = 4
@@ -1271,10 +1256,6 @@
 	dir = 4;
 	pixel_y = 24
 	},
-/obj/item/toy/plushie_cade{
-	pixel_x = 1;
-	pixel_y = -9
-	},
 /turf/open/floor/prison{
 	dir = 8;
 	icon_state = "darkbrown2"
@@ -1451,10 +1432,6 @@
 /obj/structure/prop/souto_land/pole{
 	dir = 8;
 	pixel_y = 24
-	},
-/obj/item/toy/plushie_cade{
-	pixel_x = -1;
-	pixel_y = -9
 	},
 /turf/open/floor/prison{
 	dir = 4;

@@ -198,7 +198,7 @@
 	S["tooltips"] >> tooltips
 
 	//Sanitize
-	client_language = sanitize_text(client_language, initial(client_language))
+	client_language = CLIENT_LANGUAGE_ENGLISH //sanitize_text(client_language, initial(client_language)) changing already exist config to normal one lang
 	ooccolor = sanitize_hexcolor(ooccolor, CONFIG_GET(string/ooc_color_default))
 	lastchangelog = sanitize_text(lastchangelog, initial(lastchangelog))
 	UI_style = sanitize_inlist(UI_style, list("white", "dark", "midnight", "orange", "old"), initial(UI_style))
@@ -461,7 +461,6 @@
 	S["preferred_squad"] >> preferred_squad
 	S["preferred_armor"] >> preferred_armor
 	S["nanotrasen_relation"] >> nanotrasen_relation
-	//S["skin_style"] >> skin_style
 
 	S["uplinklocation"] >> uplinklocation
 	S["exploit_record"] >> exploit_record
@@ -610,7 +609,6 @@
 	S["nanotrasen_relation"] << nanotrasen_relation
 	S["preferred_squad"] << preferred_squad
 	S["preferred_armor"] << preferred_armor
-	//S["skin_style"] << skin_style
 
 	S["uplinklocation"] << uplinklocation
 	S["exploit_record"] << exploit_record

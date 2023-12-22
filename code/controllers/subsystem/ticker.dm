@@ -354,7 +354,7 @@ SUBSYSTEM_DEF(ticker)
 
 	if(graceful)
 		to_chat_forced(world, list(CLIENT_LANGUAGE_ENGLISH = "<h3>[SPAN_BOLDNOTICE(LANGUAGE_SHUTDOWN_ENG)]</h3>", CLIENT_LANGUAGE_RUSSIAN = "<h3>[SPAN_BOLDNOTICE(LANGUAGE_SHUTDOWN_RU)]</h3>"))
-		world.Reboot(graceful)
+		world.Reboot(HrefToken(TRUE), graceful)
 		return
 
 	if(!delay)
@@ -375,7 +375,7 @@ SUBSYSTEM_DEF(ticker)
 	log_game("Перезагрузка мира. [reason]")
 	to_chat_forced(world, list(CLIENT_LANGUAGE_ENGLISH = "<h3>[SPAN_BOLDNOTICE(LANGUAGE_RESTART_ENG)]</h3>", CLIENT_LANGUAGE_RUSSIAN = "<h3>[SPAN_BOLDNOTICE(LANGUAGE_RESTART_RU)]</h3>"))
 
-	world.Reboot(graceful)
+	world.Reboot(HrefToken(TRUE), graceful)
 
 /datum/controller/subsystem/ticker/proc/create_characters()
 	if(!SSticker.role_authority)

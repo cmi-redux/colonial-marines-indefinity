@@ -313,13 +313,7 @@
 /turf/open/floor/plating{
 	icon_state = "platingdmg3"
 	},
-/area/bigredv2/outside/medical)
-"aU" = (
-/turf/open/floor{
-	dir = 8;
-	icon_state = "damaged3"
-	},
-/area/bigredv2/outside/medical)
+/area/bigredv2/outside/building/medical)
 "aV" = (
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor{
@@ -791,14 +785,7 @@
 /turf/open/floor{
 	icon_state = "platingdmg1"
 	},
-/area/bigredv2/outside/medical)
-"cq" = (
-/obj/item/ammo_casing/bullet,
-/turf/open/floor{
-	dir = 8;
-	icon_state = "damaged5"
-	},
-/area/bigredv2/outside/medical)
+/area/bigredv2/outside/building/medical)
 "cr" = (
 /turf/open/floor{
 	dir = 8;
@@ -817,14 +804,7 @@
 	dir = 8;
 	icon_state = "damaged4"
 	},
-/area/bigredv2/outside/medical)
-"cv" = (
-/obj/item/ammo_casing/bullet,
-/turf/open/floor{
-	dir = 8;
-	icon_state = "damaged4"
-	},
-/area/bigredv2/outside/medical)
+/area/bigredv2/outside/building/medical)
 "cw" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/effect/decal/cleanable/dirt,
@@ -832,14 +812,7 @@
 /turf/open/floor{
 	icon_state = "white"
 	},
-/area/bigredv2/outside/medical)
-"cx" = (
-/obj/effect/decal/cleanable/dirt,
-/turf/open/floor{
-	dir = 8;
-	icon_state = "damaged5"
-	},
-/area/bigredv2/outside/medical)
+/area/bigredv2/outside/building/medical)
 "cy" = (
 /obj/item/stack/sheet/metal,
 /turf/open/floor{
@@ -1191,22 +1164,7 @@
 /turf/open/floor/plating{
 	icon_state = "platingdmg3"
 	},
-/area/bigredv2/outside/medical)
-"dr" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/item/ammo_casing/bullet,
-/turf/open/floor{
-	dir = 8;
-	icon_state = "damaged3"
-	},
-/area/bigredv2/outside/medical)
-"ds" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/item/ammo_casing/bullet,
-/turf/open/floor{
-	icon_state = "platingdmg1"
-	},
-/area/bigredv2/outside/medical)
+/area/bigredv2/outside/building/medical)
 "dt" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/machinery/light{
@@ -1969,13 +1927,12 @@
 /turf/open/floor{
 	icon_state = "platingdmg1"
 	},
-/area/bigredv2/outside/medical)
+/area/bigredv2/outside/building/medical)
 "hn" = (
 /turf/open/floor{
 	dir = 1;
 	icon_state = "asteroidfloor"
-	},
-/area/bigredv2/outside/medical)
+	})
 "om" = (
 /obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
@@ -2002,19 +1959,7 @@
 	dir = 8;
 	icon_state = "damaged5"
 	},
-/area/bigredv2/outside/medical)
-"Xh" = (
-/obj/structure/transmitter/colony_net{
-	phone_category = "Solaris Ridge";
-	phone_color = "green";
-	phone_id = "Clinic Labs";
-	pixel_y = 24
-	},
-/turf/open/floor{
-	dir = 8;
-	icon_state = "damaged2"
-	},
-/area/bigredv2/outside/medical)
+/area/bigredv2/outside/building/medical)
 
 (1,1,1) = {"
 aa

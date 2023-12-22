@@ -186,7 +186,7 @@ SUBSYSTEM_DEF(vote)
 				active_admins = TRUE
 				break
 		if(!active_admins)
-			world.Reboot(SSticker.graceful, "Рестарт голосование выполнено успешно.")
+			world.Reboot(HrefToken(TRUE), SSticker.graceful, "Рестарт голосование выполнено успешно.")
 		else
 			to_chat(world, "<span style='boltnotice'>Уведомление:Рестарт голосование не перезапускает сервер автоматически, если есть активные админы.</span>")
 			message_admins("Голосование за рестарт прошло успешно, но на сервере есть администраторы с +SERVER, по этому рестарт отменен. Если вы пожелаете, вы можете перезапустить сервер.")
