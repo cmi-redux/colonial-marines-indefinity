@@ -99,11 +99,6 @@
 	icon_state = "whitepurple"
 	},
 /area/template_noop)
-"gB" = (
-/turf/open/floor/prison{
-	icon_state = "darkpurplefull2"
-	},
-/area/template_noop)
 "gR" = (
 /obj/structure/extinguisher_cabinet{
 	pixel_y = 29
@@ -260,9 +255,6 @@
 /obj/structure/toilet{
 	dir = 8;
 	pixel_y = 8
-	},
-/obj/effect/decal/cleanable/blood/writing{
-	dir = 6
 	},
 /obj/effect/landmark/corpsespawner/prisoner,
 /turf/open/floor/prison{
@@ -528,12 +520,6 @@
 	name = "metal wall"
 	},
 /area/template_noop)
-"Hf" = (
-/turf/open/floor/prison{
-	dir = 1;
-	icon_state = "whitepurple"
-	},
-/area/template_noop)
 "Hp" = (
 /turf/open/floor/prison{
 	icon_state = "whitepurple"
@@ -715,12 +701,6 @@
 /obj/effect/spawner/gibspawner/human,
 /turf/open/space/basic,
 /area/template_noop)
-"Pd" = (
-/turf/open/floor/prison{
-	dir = 4;
-	icon_state = "whitepurple"
-	},
-/area/template_noop)
 "Pk" = (
 /obj/effect/decal/cleanable/spiderling_remains,
 /turf/open/floor/prison{
@@ -768,11 +748,6 @@
 /obj/effect/landmark/corpsespawner/ua_riot,
 /turf/open/floor/prison{
 	icon_state = "floorscorched2"
-	},
-/area/template_noop)
-"TD" = (
-/turf/open/floor/prison{
-	icon_state = "whitepurple"
 	},
 /area/template_noop)
 "TE" = (
@@ -1001,7 +976,7 @@ pP
 gy
 uF
 ES
-gB
+cL
 KF
 gy
 gy
@@ -1023,7 +998,7 @@ qu
 Pk
 cL
 zA
-Pd
+tr
 tr
 Qn
 oR
@@ -1275,7 +1250,7 @@ LM
 LM
 LM
 LM
-Hf
+DV
 FP
 Hp
 Yw
@@ -1317,7 +1292,7 @@ Dt
 LM
 tI
 IW
-TD
+Hp
 LM
 zA
 Zw

@@ -106,7 +106,6 @@
 	icon_state = "wall"
 	},
 /obj/structure/blocker/invisible_wall,
-/turf/open/floor/almayer_hull,
 /area/template_noop)
 "P" = (
 /turf/closed/shuttle/ert{
@@ -121,7 +120,6 @@
 	dir = 4
 	},
 /obj/effect/decal/cleanable/blood/oil,
-/turf/open/floor/almayer_hull,
 /area/template_noop)
 "V" = (
 /obj/structure/machinery/light/small{

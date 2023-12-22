@@ -1365,25 +1365,23 @@ and you're good to go.
 		return TRUE
 
 	//The gun should return the bullet that it already loaded from the end cycle of the last Fire().
-	var/obj/item/projectile/projectile_to_fire = load_into_chamber(user) //Load a bullet in or check for existing one.
-	if(!projectile_to_fire) //If there is nothing to fire, click.
+	var/obj/item/projectile/projectile_to_fire = load_into_chamber(user)
+	var/miss_fire = projectile_to_fire.scrap_ammo_perc && prob(projectile_to_fire.scrap_ammo_perc)
+	var/action_stage = rand(1, 3)
+	if(!projectile_to_fire || (miss_fire && action_stage == 1))
 		click_empty(user)
 		flags_gun_features &= ~GUN_BURST_FIRING
 		return NONE
 
-	if(projectile_to_fire.scrap_ammo_perc && prob(projectile_to_fire.scrap_ammo_perc))
+	if(!(miss_fire && action_stage == 2))
 		if(prob(5))
 			weapon_critical_miss(projectile_to_fire)
+			flags_gun_features &= ~GUN_BURST_FIRING
 			return NONE
 		else if(!handle_damage() && can_jammed)
 			click_empty(user)
-			to_chat(user, "[src] дало осечку.")
-			sleep(20)
-			if(prob(80))
-				clear_jam(projectile_to_fire, user)
-			else
-				req_fix = TRUE
-				return NONE
+			flags_gun_features &= ~GUN_BURST_FIRING
+			return NONE
 
 	apply_bullet_effects(projectile_to_fire, user, reflex, dual_wield) //User can be passed as null.
 	SEND_SIGNAL(projectile_to_fire, COMSIG_BULLET_USER_EFFECTS, user)
@@ -1461,6 +1459,22 @@ and you're good to go.
 				user.swap_hand()
 			else
 				INVOKE_ASYNC(akimbo, PROC_REF(Fire), target, user, params, 0, TRUE)
+
+		if(!(miss_fire && action_stage == 3))
+			if(prob(5))
+				weapon_critical_miss()
+				flags_gun_features &= ~GUN_BURST_FIRING
+				return NONE
+			else if(!handle_damage() && can_jammed)
+				click_empty(user)
+				to_chat(user, "[src] дало осечку.")
+				flags_gun_features &= ~GUN_BURST_FIRING
+				sleep(20)
+				if(prob(80))
+					clear_jam(projectile_to_fire, user)
+				else
+					req_fix = TRUE
+					return NONE
 
 	else
 		return TRUE

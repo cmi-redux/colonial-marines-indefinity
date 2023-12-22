@@ -253,16 +253,14 @@ var/world_topic_spam_protect_time = world.timeofday
 	return
 	#endif
 
-	if(shutdown)
-		shutdown()
+	if(TgsAvailable())
+		TgsReboot()
+		TgsEndProcess()
 	else
-		..(reason)
-
-//	if(TgsAvailable())
-//		TgsReboot()
-//		TgsEndProcess()
-//	else
-//		shutdown()
+		if(shutdown)
+			shutdown()
+		else
+			..(reason)
 
 /world/proc/send_reboot_sound()
 	var/reboot_sound = SAFEPICK(reboot_sfx)

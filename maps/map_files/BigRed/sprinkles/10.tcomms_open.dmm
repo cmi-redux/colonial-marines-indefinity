@@ -43,14 +43,6 @@
 	icon_state = "damaged4"
 	},
 /area/bigredv2/outside/building/telecomm)
-"h" = (
-/obj/effect/decal/cleanable/dirt,
-/turf/open/floor{
-	dir = 1;
-	icon_state = "asteroidfloor";
-	tag = "icon-asteroidfloor (NORTH)"
-	},
-/area/bigredv2/outside/building/telecomm)
 "j" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
@@ -274,7 +266,7 @@ A
 (6,1,1) = {"
 e
 f
-h
+j
 l
 q
 b

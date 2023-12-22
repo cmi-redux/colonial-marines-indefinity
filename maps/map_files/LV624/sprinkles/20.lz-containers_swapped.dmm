@@ -27,12 +27,6 @@
 	tag = "loading"
 	},
 /area/lv624/lazarus/landing_zones/lz1)
-"j" = (
-/turf/open/floor{
-	dir = 8;
-	icon_state = "warning"
-	},
-/area/lv624/lazarus/landing_zones/lz1)
 "k" = (
 /obj/structure/machinery/bot/mulebot{
 	auto_pickup = 0;
@@ -150,7 +144,7 @@
 a
 a
 a
-j
+a
 a
 a
 a
