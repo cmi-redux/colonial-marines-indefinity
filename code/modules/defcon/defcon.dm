@@ -44,8 +44,7 @@
 
 /datum/objectives_datum/proc/add_objective_spawn(objective_spawn_name, objective_spawn_weight, objective_spawn_location)
 	var/found = FALSE
-	var/list/obectives_spanws_list = objective_spawns[objective_spawn_name]
-	for(var/datum/objective_spawn_handler/objective_handler in obectives_spanws_list)
+	for(var/datum/objective_spawn_handler/objective_handler in objective_spawns[objective_spawn_name])
 		if(objective_handler.weight != objective_spawn_weight)
 			continue
 		objective_handler.linked_spawns += objective_spawn_location

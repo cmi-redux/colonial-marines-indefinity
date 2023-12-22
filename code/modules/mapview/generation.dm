@@ -1,10 +1,18 @@
-#define MINIMAP_FILE_DIR "maps/minimaps/"
+///Default HUD screen minimap object
+/atom/movable/screen/minimap
+	name = "Minimap"
+	icon = null
+	icon_state = ""
+	layer = ABOVE_HUD_LAYER
+	screen_loc = "1,1"
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /datum/tacmap/minimap
+	var/map_ref
 	///Actual icon of the drawn zlevel with all of it's atoms
 	var/list/icon/minimap_layers = list()
 	//Mobs assoc
-	var/list/datum/tacmap/mob_datum/assoc_mobs_datums = list()
+	var/list/datum/tacmap/atom_datum/assoc_mobs_datums = list()
 	///x offset of the actual icon to center it to screens
 	var/x_offset = 0
 	///y offset of the actual icons to keep it to screens
@@ -77,36 +85,24 @@
 			if(istype(turf, /turf/open/space))
 				new_minimap.DrawBox(rgb(0,0,0), turf.x, turf.y)
 				continue
+		sleep(5)
 
-			CHECK_TICK
+	new_minimap.Scale(new_minimap.Width()*MINIMAP_SCALE,new_minimap.Height()*MINIMAP_SCALE) //scale it up x2 to make it easer to see
 
-	new_minimap.Scale(480*2,480*2) //scale it up x2 to make it easer to see
-	new_minimap.Crop(1, 1, min(new_minimap.Width(), 480), min(new_minimap.Height(), 480)) //then cut all the empty pixels
-
-	var/largest_x = 0
-	var/smallest_x = SCREEN_PIXEL_SIZE
-	var/largest_y = 0
-	var/smallest_y = SCREEN_PIXEL_SIZE
-	for(var/xval=1 to SCREEN_PIXEL_SIZE step 2) //step 2 is twice as fast :)
-		for(var/yval=1 to SCREEN_PIXEL_SIZE step 2) //keep in mind 1 wide giant straight lines will offset wierd but you shouldnt be mapping those anyway right???
-			if(!new_minimap.GetPixel(xval, yval))
-				continue
-			if(xval > largest_x)
-				largest_x = xval
-			else if(xval < smallest_x)
-				smallest_x = xval
-			if(yval > largest_y)
-				largest_y = yval
-			else if(yval < smallest_y)
-				smallest_y = yval
-	sizes = list(largest_x, largest_y, smallest_x, smallest_y)
-
-	x_offset = FLOOR((SCREEN_PIXEL_SIZE-largest_x-smallest_x)/2, 1)
-	y_offset = FLOOR((SCREEN_PIXEL_SIZE-largest_y-smallest_y)/2, 1)
-
-	new_minimap.Shift(EAST, x_offset)
-	new_minimap.Shift(NORTH, y_offset)
+	var/atom/movable/screen/minimap/mapview = SSmapview.hud_by_zlevel["[level_to_gen]"]
+	if(mapview)
+		mapview.icon = new_minimap
+	else
+		mapview = new
+		mapview.icon = new_minimap
+		mapview.screen_loc = "[level_to_gen]_mapview:1,1"
+		SSmapview.hud_by_zlevel["[level_to_gen]"] = mapview
 
 	minimap_layers["[level_to_gen]"] = new_minimap
 
-	fcopy(new_minimap, "[MINIMAP_FILE_DIR][level_to_gen].dmi")
+	var/icon/flat_map = getFlatIcon(new_minimap, appearance_flags = TRUE)
+	if(!flat_map)
+		to_chat(usr, SPAN_WARNING("M: F1 error happened, contact coder."))
+	else
+		qdel(SSmapview.flat_maps_by_zlevel["[level_to_gen]"])
+		SSmapview.flat_maps_by_zlevel["[level_to_gen]"] = flat_map

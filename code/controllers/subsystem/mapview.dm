@@ -14,7 +14,9 @@ SUBSYSTEM_DEF(mapview)
 
 	var/list/datum/tacmap/faction_datum/faction_tcmp = list()
 	var/list/datum/tacmap/minimap/minimaps_by_trait = list()
-	var/list/datum/tacmap/mob_datum/assoc_mobs_datums = list()
+	var/list/datum/tacmap/atom_datum/assoc_mobs_datums = list()
+	var/list/atom/movable/screen/minimap/hud_by_zlevel = list()
+	var/list/icon/flat_maps_by_zlevel = list()
 	var/list/datum/callback/removal_cbs = list()
 
 /datum/controller/subsystem/mapview/stat_entry(msg)
@@ -80,22 +82,22 @@ SUBSYSTEM_DEF(mapview)
 		error("Trying to add marker without faction [atom_ref], [atom_ref?.faction], caution!")
 		return
 
-	var/datum/tacmap/mob_datum/new_mob_datum = new(atom_ref, iconstate, recoloring, rotating, custom_color, flags)
+	var/datum/tacmap/atom_datum/new_mob_datum = new(atom_ref, iconstate, recoloring, rotating, custom_color, flags)
 	assoc_mobs_datums[atom_ref] = new_mob_datum
 	minimaps_by_trait["[SSmapping.level_minimap_trait(atom_ref.z)]"].assoc_mobs_datums[atom_ref] = new_mob_datum
 	SSmapview.removal_cbs[atom_ref] = CALLBACK(src, PROC_REF(removeimage), new_mob_datum, atom_ref)
 	RegisterSignal(atom_ref, COMSIG_PARENT_QDELETING, PROC_REF(remove_marker))
 
-/datum/controller/subsystem/mapview/proc/removeimage(datum/tacmap/mob_datum/new_atom, atom/movable/atom_ref)
+/datum/controller/subsystem/mapview/proc/removeimage(datum/tacmap/atom_datum/atom_datum, atom/movable/atom_ref)
 	var/ref = SSmapview.minimaps_by_trait["[SSmapping.level_minimap_trait(atom_ref.z)]"].assoc_mobs_datums
-	ref -= new_atom // see above http://www.byond.com/forum/post/2661309
-	SSmapview.removal_cbs -= new_atom
+	ref -= atom_datum // see above http://www.byond.com/forum/post/2661309
+	SSmapview.removal_cbs -= atom_datum
 
 /datum/controller/subsystem/mapview/proc/remove_marker(atom/movable/source)
 	SIGNAL_HANDLER
 	if(!SSmapview.removal_cbs[source]) //already removed
 		return
-	var/datum/tacmap/mob_datum/mob_datum = assoc_mobs_datums[source]
+	var/datum/tacmap/atom_datum/mob_datum = assoc_mobs_datums[source]
 	mob_datum.UnregisterSignal(source, list(COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_MOVED, COMSIG_MOVABLE_Z_CHANGED))
 	assoc_mobs_datums -= source
 	removal_cbs[source].Invoke()

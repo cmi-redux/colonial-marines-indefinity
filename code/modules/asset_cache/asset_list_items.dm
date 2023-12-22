@@ -12,29 +12,6 @@
 		"jquery.min.js" = 'html/jquery.min.js',
 	)
 
-/datum/asset/simple/minimap
-	legacy = TRUE
-	keep_local_name = TRUE
-	assets = list()
-
-/datum/asset/simple/minimap/register()
-	for(var/i in SSmapview.minimaps_by_trait)
-		var/datum/tacmap/minimap/GM = SSmapview.minimaps_by_trait["[i]"]
-		for(var/level in GM.map_zlevels)
-			var/asset = GM.minimap_layers["[level]"]
-			if(!asset)
-				continue
-			var/asset_name = "minimap.[level]"
-			var/datum/asset_cache_item/ACI = SSassets.transport.register_asset(asset_name, asset)
-			if(!ACI)
-				log_asset("ERROR: Invalid asset: [type]:[asset_name]:[ACI]")
-				return
-			if(legacy)
-				ACI.legacy = legacy
-			if(keep_local_name)
-				ACI.keep_local_name = keep_local_name
-	..()
-
 /datum/asset/directory
 	var/list/common = list()
 	var/list/common_dirs = list()
