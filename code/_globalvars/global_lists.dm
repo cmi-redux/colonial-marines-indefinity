@@ -164,6 +164,8 @@ GLOBAL_LIST_EMPTY(tracked_yautja_gear) // list of pred gear with a tracking elem
 
 GLOBAL_LIST_INIT_TYPED(all_yautja_capes, /obj/item/clothing/yautja_cape, setup_yautja_capes())
 
+GLOBAL_LIST_EMPTY(special_turrets_targets)
+
 //Languages/species/whitelist.
 GLOBAL_LIST_INIT_TYPED(all_species, /datum/species, setup_species())
 GLOBAL_REFERENCE_LIST_INDEXED(all_languages, /datum/language, name)
