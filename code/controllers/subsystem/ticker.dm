@@ -164,7 +164,7 @@ SUBSYSTEM_DEF(ticker)
 
 /datum/controller/subsystem/ticker/proc/handle_map_reboot()
 	if(SSmapping?.next_map_configs && SSmapping?.next_map_configs?[GROUND_MAP])
-		Reboot(HrefToken(TRUE), SSticker.graceful)
+		Reboot(GLOB.href_token, SSticker.graceful)
 	addtimer(CALLBACK(
 		SSvote,
 		/datum/controller/subsystem/vote/proc/initiate_vote,
@@ -354,7 +354,7 @@ SUBSYSTEM_DEF(ticker)
 
 	if(graceful)
 		to_chat_forced(world, list(CLIENT_LANGUAGE_ENGLISH = "<h3>[SPAN_BOLDNOTICE(LANGUAGE_SHUTDOWN_ENG)]</h3>", CLIENT_LANGUAGE_RUSSIAN = "<h3>[SPAN_BOLDNOTICE(LANGUAGE_SHUTDOWN_RU)]</h3>"))
-		world.Reboot(HrefToken(TRUE), graceful)
+		world.Reboot(GLOB.href_token, graceful)
 		return
 
 	if(!delay)
@@ -375,7 +375,7 @@ SUBSYSTEM_DEF(ticker)
 	log_game("Перезагрузка мира. [reason]")
 	to_chat_forced(world, list(CLIENT_LANGUAGE_ENGLISH = "<h3>[SPAN_BOLDNOTICE(LANGUAGE_RESTART_ENG)]</h3>", CLIENT_LANGUAGE_RUSSIAN = "<h3>[SPAN_BOLDNOTICE(LANGUAGE_RESTART_RU)]</h3>"))
 
-	world.Reboot(HrefToken(TRUE), graceful)
+	world.Reboot(GLOB.href_token, graceful)
 
 /datum/controller/subsystem/ticker/proc/create_characters()
 	if(!SSticker.role_authority)
