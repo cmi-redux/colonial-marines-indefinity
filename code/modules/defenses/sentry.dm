@@ -13,11 +13,12 @@
 	var/immobile = FALSE //Used for prebuilt ones.
 	var/obj/item/ammo_magazine/ammo = new /obj/item/ammo_magazine/sentry
 	var/sentry_type = "sentry" //Used for the icon
+	var/sentry_icon = 'icons/obj/structures/machinery/defenses/sentry.dmi'
+	var/sentry_icon_resize = 0
 	display_additional_stats = TRUE
 	/// Check if they have been upgraded or not, used for sentry post
 	var/upgraded = FALSE
 	var/omni_directional = FALSE
-	var/additional_rounds_stored = FALSE
 	var/fire_angle = 135
 	var/sentry_range = 5
 	var/muzzlelum = 3
@@ -29,7 +30,8 @@
 	var/damage_mult = 1
 	var/accuracy_mult = 1
 	var/burst = 1
-	var/max_inherent_rounds = 500
+	var/inherent_rounds = 0
+	var/max_inherent_rounds = 0
 	handheld_type = /obj/item/defenses/handheld/sentry
 
 	/// timer triggered when sentry gun shoots at a target to not spam the laptop
@@ -117,16 +119,17 @@
 
 	overlays.Cut()
 	if(stat == DEFENSE_DAMAGED)
-		overlays += "[defense_type] uac_[sentry_type]_destroyed"
+		overlays += image(icon = sentry_icon, icon_state = "[defense_type] [sentry_type]_destroyed", pixel_x = sentry_icon_resize, pixel_y = sentry_icon_resize)
 		return
 
 	if(!ammo || ammo && !ammo.ammo_position)
-		overlays += "[defense_type] uac_[sentry_type]_noammo"
+		overlays += image(icon = sentry_icon, icon_state = "[defense_type] [sentry_type]_noammo", pixel_x = sentry_icon_resize, pixel_y = sentry_icon_resize)
 		return
+
 	if(light_on)
-		overlays += "[defense_type] uac_[sentry_type]_on"
+		overlays += image(icon = sentry_icon, icon_state = "[defense_type] [sentry_type]_on", pixel_x = sentry_icon_resize, pixel_y = sentry_icon_resize)
 	else
-		overlays += "[defense_type] uac_[sentry_type]"
+		overlays += image(icon = sentry_icon, icon_state = "[defense_type] [sentry_type]", pixel_x = sentry_icon_resize, pixel_y = sentry_icon_resize)
 
 
 /obj/structure/machinery/defenses/sentry/attack_hand_checks(mob/user)
@@ -134,7 +137,29 @@
 		to_chat(user, SPAN_WARNING("[src]'s panel is completely locked, you can't do anything."))
 		return FALSE
 
+	// Reloads the sentry using inherent rounds
+	if(!light_on && inherent_rounds && (ammo.ammo_position < ammo.max_rounds))
+		use_inherent_rounds(user)
+		return FALSE
+
 	return TRUE
+
+/obj/structure/machinery/defenses/sentry/proc/use_inherent_rounds(mob/user)
+	if(user)
+		if(!do_after(user, 2 SECONDS * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
+			to_chat(user, SPAN_WARNING("You were interrupted! Try to stay still while you reload the sentry..."))
+			return
+
+		to_chat(user, SPAN_WARNING("[src]'s internal magazine with [ammo.ammo_position] rounds, [inherent_rounds] rounds left in storage"))
+		playsound(loc, 'sound/weapons/handling/m40sd_reload.ogg', 25, 1)
+		update_icon()
+
+	playsound(loc, pick('sound/weapons/handling/mag_refill_1.ogg', 'sound/weapons/handling/mag_refill_2.ogg', 'sound/weapons/handling/mag_refill_3.ogg'), 150, 1)
+	var/ammo_to_fill = min(ammo.max_rounds - ammo.ammo_position, inherent_rounds)
+	for(var/i = 1 to ammo_to_fill)
+		ammo.ammo_position++
+		ammo.current_rounds[ammo.ammo_position] = new ammo.default_projectile(src, null, ammo.default_ammo[i % ammo.default_ammo.len + 1], ammo.caliber)
+	inherent_rounds -= ammo_to_fill
 
 /obj/structure/machinery/defenses/sentry/update_choice(mob/user, category, selection)
 	. = ..()
@@ -171,13 +196,13 @@
 	. = ..()
 	if(ammo)
 		. += SPAN_NOTICE("[src] has [ammo.ammo_position]/[ammo.max_rounds] rounds loaded.")
-	if(additional_rounds_stored)
-		. += SPAN_NOTICE("\The [src] has [max_inherent_rounds] round\s left in storage.")
+	if(inherent_rounds)
+		. += SPAN_NOTICE("\The [src] has [inherent_rounds] round\s left in storage.")
 	if(upgraded)
 		. += SPAN_NOTICE("\The [src] has been reinforced with metal sheets.")
 	else
 		. += SPAN_NOTICE("\The [src] is empty and needs to be refilled with ammo.")
-		if(additional_rounds_stored)
+		if(inherent_rounds)
 			. += SPAN_HELPFUL("Click \The [src] while it's turned off to reload.")
 
 /obj/structure/machinery/defenses/sentry/power_on_action()
@@ -652,7 +677,8 @@
 	faction_to_get = FACTION_MARINE
 	light_range = 5
 	omni_directional = TRUE
-	additional_rounds_stored = TRUE
+	inherent_rounds = 500
+	max_inherent_rounds = 500
 	immobile = TRUE
 	static = TRUE
 	/// Cost to give sentry extra health
@@ -708,21 +734,6 @@
 	else
 		to_chat(user, SPAN_WARNING("You need at least [upgrade_cost] sheets of metal to upgrade this."))
 
-/obj/structure/machinery/defenses/sentry/launchable/attack_hand_checks(mob/user)
-	// Reloads the sentry using inherent rounds
-	if(!light_on && additional_rounds_stored && (ammo.ammo_position < ammo.max_rounds))
-		if(!do_after(user, 2 SECONDS * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
-			to_chat(user, SPAN_WARNING("You were interrupted! Try to stay still while you reload the sentry..."))
-			return
-
-		to_chat(user, SPAN_WARNING("[src]'s internal magazine was reloaded with [ammo.ammo_position] rounds, [max_inherent_rounds] rounds left in storage"))
-		playsound(loc, 'sound/weapons/handling/m40sd_reload.ogg', 25, 1)
-		update_icon()
-		return FALSE
-	else
-
-		return TRUE // We want to be able to turn it on / off while keeping it immobile
-
 /obj/structure/machinery/defenses/sentry/launchable/handle_empty()
 	// Checks if its completely dry or just needs reload, deconstruct if completely empty
 	if(max_inherent_rounds > 0)
@@ -746,3 +757,7 @@
 	defense_type = "at" // TODO: DO FUCKING ICON
 	fire_delay = 5 SECONDS
 	ammo = new /obj/item/ammo_magazine/sentry/anti_tank
+	sentry_icon = 'icons/obj/structures/machinery/defenses/big_sentry.dmi'
+	sentry_icon_resize = -16
+	inherent_rounds = 18
+	max_inherent_rounds = 18

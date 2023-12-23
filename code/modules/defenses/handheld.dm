@@ -148,6 +148,12 @@
 	defense_type = /obj/structure/machinery/defenses/sentry/mini
 	deployment_time = 0.75 SECONDS
 
+/obj/item/defenses/handheld/sentry/heavy
+	name = "handheld UAC AT DE-58 sentry sentry"
+	icon_state = "AT sentry_handheld"
+	defense_type = /obj/structure/machinery/defenses/sentry/anti_tank
+	deployment_time = 30 SECONDS
+
 
 // FLAMER BASE AND UPGRADES
 /obj/item/defenses/handheld/sentry/flamer

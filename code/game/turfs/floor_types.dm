@@ -333,6 +333,11 @@
 
 /turf/open/floor/roof/ship_hull/lab
 	icon = 'icons/turf/roofs/roof_lab.dmi'
+	icon_state = "ship"
+	name = "ship lab roof"
+
+/turf/open/floor/roof/lab
+	icon = 'icons/turf/roofs/roof_lab.dmi'
 	name = "lab roof"
 
 /turf/open/floor/roof/metal

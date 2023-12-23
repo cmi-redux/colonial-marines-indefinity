@@ -16,6 +16,7 @@
 	var/handheld_type = /obj/item/defenses/handheld
 	var/disassemble_time = 20
 	var/defense_type = "Normal"
+	var/defense_base = "defense_base"
 	var/static = FALSE
 	var/locked = FALSE
 	var/composite_icon = TRUE
@@ -69,9 +70,9 @@
 	if(!composite_icon)
 		icon_state = null
 	else if(light_on)
-		icon_state = "defense_base"
+		icon_state = defense_base
 	else
-		icon_state = "defense_base_off"
+		icon_state = "[defense_base]_off"
 
 
 /obj/structure/machinery/defenses/get_examine_text(mob/user)

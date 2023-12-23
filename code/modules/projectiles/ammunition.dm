@@ -249,7 +249,6 @@ They're all essentially identical when it comes to getting the job done.
 		var/obj/item/projectile/projectile_sample = current_rounds[ammo_position]
 		new_handful = new projectile_sample.ammo.handful_type(src, TRUE, TRUE)
 		new_handful.generate_handful(current_rounds[ammo_position].ammo, caliber, transfer_handful_amount, gun_type)
-		new_handful.generate_ammo(TRUE)
 		to_transfer = min(new_handful.max_rounds, ammo_position)
 
 		var/obj/item/projectile/projectile_transfering = transfer_bullet_out(user)
@@ -311,11 +310,12 @@ They're all essentially identical when it comes to getting the job done.
 	acting_with = FALSE
 	return transfered // We return the number transferred if it was successful.
 
-/obj/item/ammo_magazine/proc/generate_ammo(empty)
+/obj/item/ammo_magazine/proc/generate_ammo(empty, skip_filled)
 	current_rounds = list()
 	current_rounds.len = max_rounds
 	for(var/i = 1 to max_rounds)
-		current_rounds[i] = empty ? "empty" : new default_projectile(src, null, default_ammo[i % default_ammo.len + 1], caliber)
+		if(!skip_filled || current_rounds[i] == "empty")
+			current_rounds[i] = empty ? "empty" : new default_projectile(src, null, default_ammo[i % default_ammo.len + 1], caliber)
 	if(!empty)
 		ammo_position = current_rounds.len
 	update_icon()

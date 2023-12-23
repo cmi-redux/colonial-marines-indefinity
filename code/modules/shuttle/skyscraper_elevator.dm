@@ -26,6 +26,7 @@
 
 	custom_ceiling = /turf/open/floor/roof/ship_hull/lab
 
+	var/disabled_elevator = TRUE // Fix of auto mode, when shuttle got in troubles or loading
 	var/target_floor = 100
 	var/floor_offset = 0
 	var/offseted_z = 0
@@ -36,19 +37,18 @@
 	var/list/buttons[100]
 	var/list/disabled_floors[100]
 	var/list/called_floors[100]
-	var/called = 1
 	var/next_moving = 0
 	var/moving = FALSE
 	var/cooldown = FALSE
 	var/move_delay = 3 SECONDS
 
 /obj/docking_port/mobile/sselevator/Initialize()
+	. = ..()
 	for(var/i=1;i<100;i++)
 		disabled_floors[i] = TRUE
 	disabled_floors[100] = FALSE
 	for(var/i=1;i<100;i++)
 		called_floors[i] = FALSE
-	. = ..()
 
 /obj/docking_port/mobile/sselevator/register()
 	. = ..()
@@ -58,6 +58,8 @@
 	initiate_docking(S, force = TRUE)
 
 /obj/docking_port/mobile/sselevator/afterShuttleMove()
+	if(disabled_elevator)
+		return
 	offseted_z = z - floor_offset
 	if(offseted_z == target_floor)
 		cooldown = TRUE
@@ -85,7 +87,7 @@
 	var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/B = doors["[z]"]
 	INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator, close_and_lock))
 	INVOKE_ASYNC(door, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator, close_and_lock))
-	for(var/turf/closed/shuttle/elevator/gears/sci/G in gears)
+	for(var/turf/closed/shuttle/elevator/gears/sci/G as anything in gears)
 		G.start()
 
 /obj/docking_port/mobile/sselevator/proc/on_stop_actions()
@@ -94,11 +96,10 @@
 		button.update_icon()
 	button.update_icon()
 	called_floors[offseted_z] = FALSE
-	called--
 	var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/B = doors["[z]"]
 	INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator, unlock_and_open))
 	INVOKE_ASYNC(door, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator, unlock_and_open))
-	for(var/turf/closed/shuttle/elevator/gears/sci/G in gears)
+	for(var/turf/closed/shuttle/elevator/gears/sci/G as anything in gears)
 		G.stop()
 
 /obj/docking_port/mobile/sselevator/proc/move_elevator(message = TRUE)
@@ -118,8 +119,16 @@
 	move_delay = Clamp(move_delay, 4 SECONDS, 0.5 SECONDS)
 
 /obj/docking_port/mobile/sselevator/proc/calc_elevator_order(floor_calc)
-	if(floor_calc)
-		called++
+	if(!moving && !cooldown)
+		var/obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/button = buttons[floor_calc]
+		if(button)
+			button.update_icon("_animated")
+		called_floors[floor_calc] = TRUE
+		target_floor = floor_calc
+		moving = offseted_z > target_floor ? "DOWN" : "UP"
+		on_move_actions()
+		move_elevator()
+	else
 		var/obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/button = buttons[floor_calc]
 		if(button)
 			button.update_icon("_animated")
@@ -140,17 +149,13 @@
 					next_moving = floor_calc
 				if((floor_calc > target_floor > offseted_z) || (floor_calc < target_floor < offseted_z))
 					target_floor = floor_calc
-	if(!moving && !cooldown)
-		target_floor = floor_calc
-		moving = offseted_z > target_floor ? "DOWN" : "UP"
-		on_move_actions()
-		move_elevator()
 
 /obj/docking_port/stationary/sselevator/floor_roof
 	roundstart_template = /datum/map_template/shuttle/sky_scraper_elevator
 
 /obj/docking_port/stationary/sselevator/floor_roof/load_roundstart()
 	. = ..()
+	SSshuttle.sky_scraper_elevator.disabled_elevator = FALSE
 	SSshuttle.sky_scraper_elevator.floor_offset = z - 100
 	SSshuttle.sky_scraper_elevator.target_floor = z - SSshuttle.sky_scraper_elevator.floor_offset
 	var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/B = SSshuttle.sky_scraper_elevator.doors["[z]"]
@@ -282,6 +287,7 @@
 	var/list/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/elevator_doors = list()
 	var/list/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/move_lock_doors = list()
 	var/list/obj/structure/machinery/siren/sirens = list()
+	var/list/obj/structure/machinery/light/double/almenia/lights = list()
 	var/obj/docking_port/mobile/sselevator/elevator
 	var/list/locked = list("stairs" = FALSE, "elevator" = FALSE)
 
@@ -302,8 +308,10 @@
 	set waitfor = FALSE
 	UNTIL(SSshuttle.sky_scraper_elevator)
 	elevator = SSshuttle.sky_scraper_elevator
-	for(var/obj/structure/machinery/siren/S in sirens)
+	for(var/obj/structure/machinery/siren/S as anything in sirens)
 		S.siren_warning_start("ТРЕВОГА, КРИТИЧЕСКАЯ СИТУАЦИЯ, ЗАПУЩЕН ПРОТОКОЛ МАКСИМАЛЬНОЙ БЕЗОПАСНОСТИ, ЭТАЖ [z - elevator.floor_offset]")
+	for(var/obj/structure/machinery/light/double/almenia/L as anything in lights)
+		L.change_almenia_state(1)
 
 /obj/structure/machinery/computer/security_blocker/ex_act(severity)
 	return
@@ -338,8 +346,8 @@
 	dat += "<div align='center'>Терминал безопасности [z - elevator.floor_offset] этажа</a></div>"
 	dat += "<br/><span><b>Протокол безопасности</b>: [security_protocol ? "включен" : "отключен"]</span>"
 	if(!security_protocol)
-		if(istype(user,/mob/living/carbon/xenomorph/queen))
-			dat += "<div align='center'><a href='?src=[REF(src)];blastdoors=unlock'>Разблокировать [z - elevator.floor_offset] этаж</a></div>"
+		if(istype(user,/mob/living/carbon/xenomorph/queen) && !current_timer)
+			dat += "<div align='center'><a href='?src=[REF(src)];blastdoors=unlock'>Разблокировать этаж</a></div>"
 		else if(current_timer)
 			dat += "<br/><span><b>Терминал заблокирован</b></span>"
 			dat += "<br/><span><b>Оставшееся время</b>: [current_timer ? round(timeleft(current_timer) * 0.1, 2) : 0.0]</span>"
@@ -372,7 +380,7 @@
 		dat += "<br/><span><b>Сообщение</b>: [message]</span>"
 
 		var/flair = ""
-		for(var/i in 1 to completed_segments)
+		for(var/i = 1 to completed_segments)
 			flair += "[technobabble[i]]<br/>"
 
 		dat += "<br/><br/><span style='font-family: monospace, monospace;'>[flair]</span>"
@@ -394,7 +402,7 @@
 		switch(href_list["blastdoors"])
 			if("stairs")
 				if(!elevator)
-					for(var/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/B in stairs_doors)
+					for(var/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/B as anything  in stairs_doors)
 						if(stairs)
 							INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door, open))
 						else
@@ -407,7 +415,7 @@
 					return
 			if("elevator")
 				if(!stairs)
-					for(var/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/B in elevator_doors)
+					for(var/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/B as anything in elevator_doors)
 						if(elevator)
 							INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door, open))
 						else
@@ -419,8 +427,12 @@
 					to_chat(usr, SPAN_WARNING("Блокировка лестницы не допускает блокировку лифта!"))
 					return
 			if("unlock")
-				for(var/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/B in stairs_doors + elevator_doors + move_lock_doors)
-					INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door, open))
+				for(var/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/B as anything in stairs_doors + elevator_doors + move_lock_doors)
+					if(B.density)
+						INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door, open))
+					locked["stairs"] = FALSE
+					locked["elevator"] = FALSE
+
 		current_timer = addtimer(CALLBACK(src, TYPE_PROC_REF(/datum, process)), segment_time)
 
 	else if(href_list["generate"])
@@ -463,8 +475,14 @@
 
 /obj/structure/machinery/computer/security_blocker/proc/unlock_floor()
 	elevator.disabled_floors[z - elevator.floor_offset] = FALSE
-	for(var/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/B in move_lock_doors)
-		INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door, open))
+	security_protocol = FALSE
+	for(var/obj/structure/machinery/siren/S as anything in sirens)
+		S.siren_warning_stop()
+	for(var/obj/structure/machinery/light/double/almenia/L as anything in lights)
+		L.change_almenia_state(0)
+	for(var/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/B as anything in move_lock_doors)
+		if(B.density)
+			INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door, open))
 	visible_message(SPAN_NOTICE("[src] beeps as it finishes generating code."))
 
 /turf/closed/wall/vents
@@ -477,6 +495,9 @@
 	var/welding_stage = 0
 	var/pressure = 0
 	var/max_pressure = 10000
+
+/turf/closed/wall/vents/update_icon()
+	return FALSE
 
 /turf/closed/wall/vents/can_be_dissolved()
 	return FALSE
@@ -550,7 +571,7 @@
 		welding_stage++
 		state = 2
 
-/turf/closed/wall/vents/proc/spread_smoke(transfer_pressure, cause_data)
+/turf/closed/wall/vents/proc/spread_smoke(transfer_pressure, datum/cause_data/cause_data)
 	var/turf/closed/wall/vents/above = SSmapping.get_turf_above(src)
 	if(state == 1)
 		if(istype(above) && max_pressure - pressure + above.max_pressure - above.pressure > transfer_pressure)

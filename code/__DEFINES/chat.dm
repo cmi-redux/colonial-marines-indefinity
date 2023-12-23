@@ -18,6 +18,8 @@
 
 #define examine_block(str) ("<div class='examine_block'>" + str + "</div>")
 
+// TODO: DO IT IN TGUI, LAZY NIG
+
 //											LANGUAGE
 #define CLIENT_LANGUAGE_ENGLISH				"English"
 #define CLIENT_LANGUAGE_RUSSIAN				"Russian"

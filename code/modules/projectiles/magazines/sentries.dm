@@ -31,9 +31,10 @@
 /obj/item/ammo_magazine/sentry/anti_tank
 	name = "105mm \"crowbars\" drum"
 	desc = "An ammo drum of 20 105mm \"crowbars\" drums for the UA AT DE-58 Sentry Gun. Just feed it into the sentry gun's ammo port when its ammo is depleted."
+	icon_state = "ua571c_hs"
 	w_class = SIZE_HUGE
 	caliber = CALIBER_105MM
-	max_rounds = 20
+	max_rounds = 6
 	ammo_preset = list(/datum/ammo/bullet/tank/crowbar)
 
 // FLAMER Sentry

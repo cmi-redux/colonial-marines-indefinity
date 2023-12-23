@@ -131,9 +131,9 @@
 
 /obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/LateInitialize()
 	. = ..()
-	if(!GLOB.skyscrapers_sec_comps["[z]"])
-		CRASH("[src] located on zlevel without skyscraper sec_comp")
 	var/obj/structure/machinery/computer/security_blocker/blocker = GLOB.skyscrapers_sec_comps["[z]"]
+	if(!blocker)
+		return
 	if(lock_type == "stairs")
 		blocker.stairs_doors += src
 	else if(lock_type == "elevator")
