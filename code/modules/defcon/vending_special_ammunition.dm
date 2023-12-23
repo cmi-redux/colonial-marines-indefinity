@@ -1232,6 +1232,7 @@ GLOBAL_REFERENCE_LIST_INDEXED_SORTED(gears_defcon, /datum/defcon_asset, name)
 	item_state = "m42a"
 	unacidable = TRUE
 	indestructible = 1
+	faction_to_get = FACTION_MARINE
 
 	fire_sound = 'sound/weapons/gun_sniper.ogg'
 	current_mag = /obj/item/ammo_magazine/railgun
@@ -1246,9 +1247,10 @@ GLOBAL_REFERENCE_LIST_INDEXED_SORTED(gears_defcon, /datum/defcon_asset, name)
 	// Hellpullverizer ready or not??
 	var/charged = FALSE
 
-/obj/item/weapon/gun/rifle/railgun/Initialize(mapload, spawn_empty)
-	. = ..()
-	AddElement(/datum/element/bullet_trait_iff)
+/obj/item/weapon/gun/rifle/railgun/set_bullet_traits()
+	LAZYADD(traits_to_give, list(
+		BULLET_TRAIT_ENTRY_ID("iff", /datum/element/bullet_trait_iff)
+	))
 
 /obj/item/weapon/gun/rifle/railgun/able_to_fire()
 	return charged
