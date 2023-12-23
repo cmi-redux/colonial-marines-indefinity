@@ -229,8 +229,6 @@
 			start_processing()
 	update_icon()
 
-	start_processing()
-
 /obj/structure/machinery/light/double/almenia/process()
 	if(prob(25) && status == LIGHT_OK)
 		flik_light()
