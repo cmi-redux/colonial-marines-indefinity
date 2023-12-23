@@ -175,7 +175,7 @@
 // Black & invisible to the mouse. used by vehicle interiors
 /turf/open/void
 	name = "void"
-	icon = 'icons/turf/floors/space.dmi'
+	icon = 'icons/turf/open_space.dmi'
 	icon_state = "black"
 	mouse_opacity = FALSE
 	can_bloody = FALSE
@@ -773,7 +773,7 @@
 //ELEVATOR SHAFT-----------------------------------//
 /turf/open/gm/empty
 	name = "empty space"
-	icon = 'icons/turf/floors/floors.dmi'
+	icon = 'icons/turf/open_space.dmi'
 	icon_state = "black"
 	turf_flags = TURF_MULTIZ
 	density = TRUE

@@ -217,7 +217,7 @@
 /turf/open/floor/almayer/empty
 	name = "empty space"
 	desc = "There seems to be an awful lot of machinery down below"
-	icon = 'icons/turf/floors/floors.dmi'
+	icon = 'icons/turf/open_space.dmi'
 	icon_state = "black"
 	turf_flags = TURF_MULTIZ
 
