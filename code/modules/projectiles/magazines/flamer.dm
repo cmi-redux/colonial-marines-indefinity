@@ -61,7 +61,7 @@
 	var/shrapnel_count
 	if(flamer_chem)
 		shrapnel_count = ammo_position
-	if(shrapnel_count)
+	if(shrapnel_count > 10)
 		create_shrapnel(src, shrapnel_count, , , shrapnel_type, weapon_cause_data)
 		reagents.handle_volatiles()
 		cell_explosion(src, 50, 200, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data)

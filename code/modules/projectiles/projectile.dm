@@ -271,11 +271,6 @@
 	if(!original_target)
 		original_target = istype(original_override) ? original_override : target
 
-	if(!(projectile_flags & PROJECTILE_SHRAPNEL))
-		forceMove(get_turf(shooter))
-	else
-		forceMove(get_turf(source))
-
 	//Safety checks.
 	if(QDELETED(target) && !isnum(angle)) //We can work with either a target or an angle, or both, but not without any.
 		stack_trace("fire_at called on a QDELETED target ([target]) with no original_target_turf and a null angle.")
@@ -296,7 +291,11 @@
 	if(source)
 		shot_from = source
 
-	if(!isturf(loc))
+	if(!(projectile_flags & PROJECTILE_SHRAPNEL) && shooter)
+		forceMove(get_turf(shooter))
+	else if(source)
+		forceMove(get_turf(source))
+	else
 		forceMove(get_turf(src))
 
 	starting_turf = loc

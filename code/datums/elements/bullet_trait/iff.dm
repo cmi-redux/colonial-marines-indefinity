@@ -33,7 +33,7 @@
 /datum/element/bullet_trait_iff/proc/check_iff(datum/target, mob/living/carbon/human/projectile_target)
 	SIGNAL_HANDLER
 
-	if(projectile_target.ally(GLOB.faction_datum[iff_group]))
+	if(GLOB.faction_datum[iff_group] && projectile_target.ally(GLOB.faction_datum[iff_group]))
 		return COMPONENT_SKIP_MOB
 
 /datum/element/bullet_trait_iff/proc/set_iff(datum/target, mob/living/carbon/human/firer)
