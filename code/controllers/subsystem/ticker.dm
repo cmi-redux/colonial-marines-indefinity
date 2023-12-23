@@ -164,7 +164,7 @@ SUBSYSTEM_DEF(ticker)
 
 /datum/controller/subsystem/ticker/proc/handle_map_reboot()
 	if(SSmapping?.next_map_configs && SSmapping?.next_map_configs?[GROUND_MAP])
-		Reboot()
+		Reboot(HrefToken(TRUE), SSticker.graceful)
 	addtimer(CALLBACK(
 		SSvote,
 		/datum/controller/subsystem/vote/proc/initiate_vote,
