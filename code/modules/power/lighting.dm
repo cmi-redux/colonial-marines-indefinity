@@ -490,8 +490,8 @@
 // true if area has power and lightswitch is on
 /obj/structure/machinery/light/proc/has_power()
 	var/area/A = loc.loc
-	if(!needs_power && (A.master.lightswitch || !req_light_switch))
-		return TRUE
+	if(!needs_power)
+		return (A.master.lightswitch || !req_light_switch)
 	return ((A.master.lightswitch && A.master.power_light) || !req_light_switch)
 
 // ai attack - make lights flicker, because why not
