@@ -254,7 +254,7 @@
 	base_state = "bslight"
 	desc = "A wide light fixture fitted with a large, blue, very bright fluorescent light tube. You want to sneeze just looking at it."
 	fitting = "large tube"
-	light_type = /obj/item/light_bulb/tube/large/
+	light_type = /obj/item/light_bulb/tube/large
 	brightness = 12
 
 
@@ -491,8 +491,8 @@
 /obj/structure/machinery/light/proc/has_power()
 	var/area/A = loc.loc
 	if(!needs_power)
-		return A.master.lightswitch || !req_light_switch
-	return A.master.lightswitch && A.master.power_light
+		return (A.master.lightswitch || req_light_switch)
+	return ((A.master.lightswitch && A.master.power_light) || req_light_switch)
 
 // ai attack - make lights flicker, because why not
 
@@ -629,9 +629,9 @@
 		if(loc)
 			var/area/A = get_area(src)
 			if(!needs_power || A.unlimited_power)
-				seton(A.lightswitch)
+				seton(A.lightswitch || req_light_switch)
 				return
-			seton(A.lightswitch && A.power_light)
+			seton((A.lightswitch && A.power_light) || req_light_switch)
 
 // called when on fire
 
