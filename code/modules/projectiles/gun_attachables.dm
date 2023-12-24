@@ -2697,8 +2697,8 @@ Defined in conflicts.dm of the #defines folder.
 	icon = 'icons/obj/items/weapons/guns/attachments/under.dmi'
 	attachment_action_type = /datum/action/item_action/toggle
 	//Some attachments may be fired. So here are the variables related to that.
-	var/max_range 		= 0 //Determines # of tiles distance the attachable can fire, if it's not a projectile.
-	var/last_fired 	//When the attachment was last fired.
+	var/max_range = 0 //Determines # of tiles distance the attachable can fire, if it's not a projectile.
+	var/last_fired //When the attachment was last fired.
 	var/attachment_firing_delay = 0 //the delay between shots, for attachments that fires stuff
 	var/fire_sound = null //Sound to play when firing it alternately
 	var/gun_original_damage_mult = 1 //so you don't buff the underbarrell gun with charger for the wrong weapon
@@ -2729,8 +2729,8 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/attached_gun/activate_attachment(obj/item/weapon/gun/gun, mob/living/user, turn_off)
 	if(gun.active_attachable == src)
+		gun.active_attachable = null
 		if(user)
-			gun.active_attachable = null
 			to_chat(user, SPAN_NOTICE("You are no longer using [src]."))
 			playsound(user, gun_deactivate_sound, 30, 1)
 			user.hud_used.update_ammo_hud(src)
@@ -2739,17 +2739,23 @@ Defined in conflicts.dm of the #defines folder.
 		gun.active_attachable = src
 		gun_original_damage_mult = gun.damage_mult
 		gun.damage_mult = 1
-		icon_state += "-on"
 		if(user && user.client)
 			to_chat(user, SPAN_NOTICE("You are now using [src]."))
 			playsound(user, gun_activate_sound, 60, 1)
 			display_ammo(user)
 
 	SEND_SIGNAL(gun, COMSIG_GUN_INTERRUPT_FIRE)
+	update_icon()
 
 	for(var/datum/action/action in gun.actions)
 		action.update_button_icon()
 	return TRUE
+
+/obj/item/attachable/attached_gun/grenade/update_icon()
+	. = ..()
+	icon_state = initial(icon_state)
+	if(gun.active_attachable == src)
+		icon_state += "-on"
 
 /obj/item/attachable/attached_gun/proc/display_ammo(mob/living/user)
 	user?.hud_used.update_ammo_hud(src, get_attachment_ammo_type(), get_attachment_ammo_count())
