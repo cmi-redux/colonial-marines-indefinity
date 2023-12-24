@@ -2730,6 +2730,7 @@ Defined in conflicts.dm of the #defines folder.
 /obj/item/attachable/attached_gun/activate_attachment(obj/item/weapon/gun/gun, mob/living/user, turn_off)
 	if(gun.active_attachable == src)
 		gun.active_attachable = null
+		icon_state = initial(icon_state)
 		if(user)
 			to_chat(user, SPAN_NOTICE("You are no longer using [src]."))
 			playsound(user, gun_deactivate_sound, 30, 1)
@@ -2739,6 +2740,7 @@ Defined in conflicts.dm of the #defines folder.
 		gun.active_attachable = src
 		gun_original_damage_mult = gun.damage_mult
 		gun.damage_mult = 1
+		icon_state += "-on"
 		if(user && user.client)
 			to_chat(user, SPAN_NOTICE("You are now using [src]."))
 			playsound(user, gun_activate_sound, 60, 1)
@@ -2750,12 +2752,6 @@ Defined in conflicts.dm of the #defines folder.
 	for(var/datum/action/action in gun.actions)
 		action.update_button_icon()
 	return TRUE
-
-/obj/item/attachable/attached_gun/grenade/update_icon()
-	. = ..()
-	icon_state = initial(icon_state)
-	if(gun.active_attachable == src)
-		icon_state += "-on"
 
 /obj/item/attachable/attached_gun/proc/display_ammo(mob/living/user)
 	user?.hud_used.update_ammo_hud(src, get_attachment_ammo_type(), get_attachment_ammo_count())
