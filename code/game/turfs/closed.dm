@@ -333,6 +333,7 @@
 	icon_state = "wall_w"
 	opacity = FALSE
 
+//TODO: Do it in fucking object, fucking turf not moving really, so we spaming it in list
 // Wall with gears that animate when elevator is moving
 /turf/closed/shuttle/elevator/gears
 	icon_state = "wall_gear"

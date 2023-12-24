@@ -9,7 +9,6 @@
 
 	antipierce = 2
 
-	var/hull = FALSE
 	var/walltype = WALL_METAL
 	var/junctiontype //when walls smooth with one another, the type of junction each wall is.
 	var/thermite = 0

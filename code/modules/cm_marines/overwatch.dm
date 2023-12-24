@@ -760,29 +760,26 @@
 	var/y_coord = deobfuscate_y(y_bomb)
 	var/z_coord = SSmapping.levels_by_trait(ZTRAIT_GROUND)
 	if(length(z_coord))
-		z_coord = z_coord[1]
+		if(user && length(z_coord) > 2)
+			var/our_value = tgui_input_number(user, "Atmosphere entering detonator delay (in seconds, 0 - on ground hit, other value - in air)", "Explosion in air delay", 0, length(z_coord) - z_coord[1], 0, 30 SECONDS, TRUE)
+			z_coord = length(z_coord) - (our_value + z_coord[1])
+		else
+			z_coord = z_coord[1]
 	else
-		z_coord = 1 // fuck it
+		z_coord = 2 // fuck it
 
 	var/turf/turf = locate(x_coord, y_coord, z_coord)
-	var/turf/target_turf = turf.can_air_strike(20, turf.get_real_roof())
-
 	if(isnull(turf) || istype(turf, /turf/open/space))
 		to_chat(user, "[icon2html(src, user)] [SPAN_WARNING("The target zone appears to be out of bounds. Please check coordinates.")]")
 		return
 
-	if(target_turf)
-		to_chat(user, "[icon2html(src, user)] [SPAN_WARNING("The target zone is deep underground. The orbital strike cannot reach here.")]")
-		return
-
-
 	//All set, let's do this.
 	busy = TRUE
 	visible_message("[icon2html(src, viewers(src))] [SPAN_BOLDNOTICE("Orbital bombardment request for squad '[current_squad]' accepted. Orbital cannons are now calibrating.")]")
-	playsound(target_turf, 'sound/effects/alert.ogg', 25, 1)
-	addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/structure/machinery/computer/overwatch, alert_ob), target_turf), 2 SECONDS)
+	playsound(turf, 'sound/effects/alert.ogg', 5, 1)
+	addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/structure/machinery/computer/overwatch, alert_ob), turf), 2 SECONDS)
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/structure/machinery/computer/overwatch, begin_fire)), 6 SECONDS)
-	addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/structure/machinery/computer/overwatch, fire_bombard), user, get_area(target_turf), target_turf), 6 SECONDS + 6)
+	addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/structure/machinery/computer/overwatch, fire_bombard), user, get_area(turf), turf), 6 SECONDS + 6)
 
 /obj/structure/machinery/computer/overwatch/proc/begin_fire()
 	for(var/mob/living/carbon/H in GLOB.alive_mob_list)

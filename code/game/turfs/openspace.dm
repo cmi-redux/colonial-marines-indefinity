@@ -8,6 +8,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 	plane = OPENSPACE_BACKDROP_PLANE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	vis_flags = VIS_INHERIT_ID
+	alpha = 50
 
 /turf/open/space/openspace
 	icon = 'icons/turf/open_space.dmi'

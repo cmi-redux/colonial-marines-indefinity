@@ -71,7 +71,8 @@
 			continue
 		if(tcov.atom_ref_faction != faction)
 			var/turf/turf = get_turf(tcov.atom_ref.loc)
-			if(!turf.can_air_strike(25, turf.get_real_roof()))
+			var/turf/roof = turf.get_real_roof()
+			if(!roof.air_strike(25, turf, TRUE))
 				continue
 			mobs_to_draw += tcov
 			spawn(4 SECONDS)

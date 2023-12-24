@@ -227,6 +227,7 @@
 			base_state = "ptube"
 			bulb_colour = COLOR_SOFT_RED
 			start_processing()
+	update()
 	update_icon()
 
 /obj/structure/machinery/light/double/almenia/process()
@@ -366,13 +367,15 @@
 		if(status != LIGHT_OK)
 			break
 		flik_light()
+		playsound(src, pick('sound/effects/light/blinks1.ogg', 'sound/effects/light/blinks2.ogg', 'sound/effects/light/blinks3.ogg'), 12, TRUE, 8, VOLUME_SFX, 0, falloff = 5)
 	flickering = FALSE
 
 /obj/structure/machinery/light/proc/flik_light()
 	set_light_on(FALSE)
-	sleep(rand(5, 20))
+	update_icon()
+	sleep(rand(5, 50))
 	set_light_on(status == LIGHT_OK)
-	playsound(src, pick('sound/effects/light/blinks1.ogg', 'sound/effects/light/blinks2.ogg', 'sound/effects/light/blinks3.ogg'), 12, TRUE, 8, VOLUME_SFX, 0, falloff = 5)
+	update_icon()
 
 // attempt to set the light's on/off status
 // will not switch on if broken/burned/empty

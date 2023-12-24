@@ -217,7 +217,8 @@ var/list/ob_type_fuel_requirements
 	if(user)
 		tray.warhead.source_mob = user
 
-	tray.warhead.warhead_impact(target)
+	var/turf/roof = target.get_real_roof()
+	tray.warhead.warhead_impact(roof.air_strike(rand(10, 15), target))
 
 	sleep(OB_CRASHING_DOWN)
 
@@ -526,16 +527,14 @@ var/list/ob_type_fuel_requirements
 	var/list/turf_list = list()
 
 	for(var/turf/turf in range(range_num, target))
-		if(!turf.can_air_strike(20, turf.get_real_roof()))
-			continue
 		turf_list += turf
 
 	for(var/i = 1 to total_amount)
 		for(var/k = 1 to instant_amount)
 			var/turf/U = pick(turf_list)
-			U = U.air_hit(rand(1, 5), U.get_real_roof())
+			var/turf/roof = target.get_real_roof()
+			U = roof.air_strike(rand(10, 15), U)
 			fire_in_a_hole(U)
-
 		sleep(delay_between_clusters)
 
 /obj/structure/ob_ammo/warhead/cluster/proc/fire_in_a_hole(turf/loc)

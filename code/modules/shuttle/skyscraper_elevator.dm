@@ -160,7 +160,6 @@
 	SSshuttle.sky_scraper_elevator.target_floor = z - SSshuttle.sky_scraper_elevator.floor_offset
 	var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/B = SSshuttle.sky_scraper_elevator.doors["[z]"]
 	INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator, unlock_and_open))
-	SSshuttle.sky_scraper_elevator.on_stop_actions()
 
 //Console
 
