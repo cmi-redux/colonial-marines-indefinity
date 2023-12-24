@@ -7,6 +7,9 @@
 	},
 /area/shuttle/sky_scraper_elevator)
 "b" = (
+/obj/structure/machinery/gear/sky_scraper{
+	dir = 4
+	},
 /turf/closed/shuttle/elevator/gears/sci{
 	dir = 4
 	},
@@ -97,6 +100,7 @@
 	},
 /area/shuttle/sky_scraper_elevator)
 "S" = (
+/obj/structure/machinery/gear/sky_scraper,
 /turf/closed/shuttle/elevator/gears/sci,
 /area/shuttle/sky_scraper_elevator)
 "U" = (

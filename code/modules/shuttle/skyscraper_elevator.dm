@@ -33,7 +33,7 @@
 	var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/door
 	var/obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/button
 	var/list/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/doors = list()
-	var/list/turf/closed/shuttle/elevator/gears/sci/gears = list()
+	var/list/obj/structure/machinery/gear/gears = list()
 	var/list/buttons[100]
 	var/list/disabled_floors[100]
 	var/list/called_floors[100]
@@ -84,11 +84,10 @@
 
 /obj/docking_port/mobile/sselevator/proc/on_move_actions()
 	button.update_icon("_animated")
-	var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/B = doors["[z]"]
-	INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator, close_and_lock))
+	INVOKE_ASYNC(doors["[z]"], TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator, close_and_lock))
 	INVOKE_ASYNC(door, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator, close_and_lock))
-	for(var/turf/closed/shuttle/elevator/gears/sci/G as anything in gears)
-		G.start()
+	for(var/obj/structure/machinery/gear/gear as anything in gears)
+		gear.start_moving()
 
 /obj/docking_port/mobile/sselevator/proc/on_stop_actions()
 	var/obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/button = buttons[offseted_z]
@@ -96,11 +95,10 @@
 		button.update_icon()
 	button.update_icon()
 	called_floors[offseted_z] = FALSE
-	var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/B = doors["[z]"]
-	INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator, unlock_and_open))
+	INVOKE_ASYNC(doors["[z]"], TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator, unlock_and_open))
 	INVOKE_ASYNC(door, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator, unlock_and_open))
-	for(var/turf/closed/shuttle/elevator/gears/sci/G as anything in gears)
-		G.stop()
+	for(var/obj/structure/machinery/gear/gear as anything in gears)
+		gear.stop_moving()
 
 /obj/docking_port/mobile/sselevator/proc/move_elevator(message = TRUE)
 	var/floor_to_move = offseted_z > target_floor ? offseted_z - 1 : offseted_z + 1

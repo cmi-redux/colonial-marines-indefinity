@@ -140,9 +140,6 @@
 		blocker.elevator_doors += src
 	else if(lock_type == "move_lock")
 		blocker.move_lock_doors += src
-		if(GLOB.skyscrapers_sec_comps["[z+1]"])
-			var/obj/structure/machinery/computer/security_blocker/upper_blocker = GLOB.skyscrapers_sec_comps["[z+1]"]
-			upper_blocker.move_lock_doors += src
 
 //transit shutters used by marine dropships
 /obj/structure/machinery/door/poddoor/shutters/transit
