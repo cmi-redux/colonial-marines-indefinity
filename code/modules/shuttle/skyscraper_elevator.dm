@@ -592,7 +592,7 @@
 
 	var/obj/effect/particle_effect/smoke/chlor/foundsmoke = locate() in get_turf(src)
 	if(!foundsmoke)
-		foundsmoke = new(src, pressure, cause_data)
+		foundsmoke = new(src, transfer_pressure, cause_data)
 		foundsmoke.setDir(pick(GLOB.cardinals))
 		foundsmoke.spread_smoke()
 	else

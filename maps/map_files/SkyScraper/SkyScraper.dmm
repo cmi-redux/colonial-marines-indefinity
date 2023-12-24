@@ -8815,6 +8815,9 @@
 	},
 /turf/open/floor/wood,
 /area/skyscraper/building/security_sector/blockpost)
+"rM" = (
+/turf/closed/wall/vents,
+/area/skyscraper/building/building_in_progress_sector)
 "rN" = (
 /turf/open/gm/dirtgrassborder/grassdirt_corner2{
 	dir = 4
@@ -17447,6 +17450,9 @@
 	tag = "icon-sterile_green_corner (EAST)"
 	},
 /area/skyscraper/building/science_sector)
+"LH" = (
+/turf/closed/wall/vents,
+/area/skyscraper/building/eco_emulation_sector)
 "LI" = (
 /obj/structure/machinery/cm_vending/sorted/medical/blood,
 /obj/structure/machinery/light/double/almenia{
@@ -19682,6 +19688,9 @@
 	tag = "icon-blue (NORTHEAST)"
 	},
 /area/skyscraper/building/landing_zone/one)
+"QU" = (
+/turf/closed/wall/vents,
+/area/skyscraper/building/security_sector/blockpost)
 "QV" = (
 /obj/structure/sink{
 	dir = 4;
@@ -20525,6 +20534,9 @@
 	tag = "icon-sterile"
 	},
 /area/skyscraper/building/agro_sector)
+"Te" = (
+/turf/closed/wall/vents,
+/area/skyscraper/building)
 "Tf" = (
 /obj/structure/barricade/metal/wired{
 	dir = 4
@@ -21361,6 +21373,9 @@
 	},
 /turf/open/asphalt/cement,
 /area/skyscraper/building/landing_zone/one)
+"Ve" = (
+/turf/closed/wall/vents,
+/area/skyscraper/building/engineering/upper)
 "Vf" = (
 /obj/effect/landmark/corpsespawner/pmc,
 /obj/effect/decal/cleanable/blood/xeno,
@@ -538358,7 +538373,7 @@ iD
 iD
 iD
 iD
-aY
+Vr
 Bd
 pU
 pU
@@ -538461,7 +538476,7 @@ iD
 iD
 iD
 iD
-aY
+QU
 IS
 pU
 pU
@@ -538564,7 +538579,7 @@ iD
 iD
 iD
 iD
-aY
+Vr
 od
 pU
 pU
@@ -548865,7 +548880,7 @@ AR
 AR
 AR
 AR
-Rl
+LH
 af
 so
 so
@@ -559269,7 +559284,7 @@ pb
 pb
 pb
 pb
-Rl
+LH
 af
 so
 so
@@ -569673,7 +569688,7 @@ pb
 pb
 pb
 pb
-Rl
+LH
 af
 so
 so
@@ -580077,7 +580092,7 @@ pb
 pb
 pb
 pb
-Rl
+LH
 af
 so
 so
@@ -590481,7 +590496,7 @@ AR
 AR
 AR
 AR
-Rl
+LH
 af
 so
 so
@@ -600885,7 +600900,7 @@ pb
 pb
 pb
 pb
-Rl
+LH
 af
 so
 so
@@ -611289,7 +611304,7 @@ pb
 pb
 pb
 pb
-Rl
+LH
 af
 so
 so
@@ -621693,7 +621708,7 @@ pb
 pb
 pb
 pb
-Rl
+LH
 af
 so
 so
@@ -632097,7 +632112,7 @@ pb
 pb
 pb
 pb
-Rl
+LH
 af
 so
 so
@@ -642501,7 +642516,7 @@ ai
 ai
 qt
 qt
-ai
+rM
 Sw
 my
 my
@@ -652802,7 +652817,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -652905,7 +652920,7 @@ qt
 qt
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -653008,7 +653023,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -663206,7 +663221,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -663309,7 +663324,7 @@ ai
 ai
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -663412,7 +663427,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -673610,7 +673625,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -673713,7 +673728,7 @@ qt
 qt
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -673816,7 +673831,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -684014,7 +684029,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -684117,7 +684132,7 @@ ai
 ai
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -684220,7 +684235,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -694418,7 +694433,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -694521,7 +694536,7 @@ qt
 qt
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -694624,7 +694639,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -704822,7 +704837,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -704925,7 +704940,7 @@ ai
 ai
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -705028,7 +705043,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -715226,7 +715241,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -715329,7 +715344,7 @@ qt
 qt
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -715432,7 +715447,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -725630,7 +725645,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -725733,7 +725748,7 @@ ai
 ai
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -725836,7 +725851,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -736034,7 +736049,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -736137,7 +736152,7 @@ qt
 qt
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -736240,7 +736255,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -746438,7 +746453,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -746541,7 +746556,7 @@ ai
 ai
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -746644,7 +746659,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -756842,7 +756857,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -756945,7 +756960,7 @@ qt
 qt
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -757048,7 +757063,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -767246,7 +767261,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -767349,7 +767364,7 @@ ai
 ai
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -767452,7 +767467,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -777650,7 +777665,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -777753,7 +777768,7 @@ qt
 qt
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -777856,7 +777871,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -788054,7 +788069,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -788157,7 +788172,7 @@ ai
 ai
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -788260,7 +788275,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -798458,7 +798473,7 @@ Db
 qp
 Vr
 JB
-aY
+aP
 zj
 jf
 jq
@@ -798561,7 +798576,7 @@ pD
 Ys
 Vr
 Lz
-aY
+Te
 NC
 Lj
 VA
@@ -798664,7 +798679,7 @@ Pk
 Jr
 Vr
 nZ
-aY
+aP
 zj
 jf
 bh
@@ -808862,7 +808877,7 @@ Gn
 tf
 zv
 AR
-aY
+aP
 zJ
 so
 so
@@ -808965,7 +808980,7 @@ Gn
 tf
 zv
 AR
-aY
+Te
 af
 so
 so
@@ -809068,7 +809083,7 @@ zv
 tf
 zv
 AR
-aY
+aP
 Of
 so
 so
@@ -819266,7 +819281,7 @@ pb
 pb
 pw
 Qt
-aY
+aP
 zJ
 so
 so
@@ -819369,7 +819384,7 @@ pb
 pb
 pw
 Qt
-aY
+Te
 af
 so
 so
@@ -819472,7 +819487,7 @@ pb
 pb
 zi
 Qt
-aY
+aP
 Of
 so
 so
@@ -829670,7 +829685,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -829773,7 +829788,7 @@ ai
 ai
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -829876,7 +829891,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -840074,7 +840089,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -840177,7 +840192,7 @@ qt
 qt
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -840280,7 +840295,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -850478,7 +850493,7 @@ Db
 qp
 Vr
 JB
-aY
+aP
 zj
 jf
 jq
@@ -850581,7 +850596,7 @@ pD
 Ys
 Vr
 Lz
-aY
+Te
 NC
 Lj
 VA
@@ -850684,7 +850699,7 @@ Pk
 Jr
 Vr
 nZ
-aY
+aP
 zj
 jf
 bh
@@ -860882,7 +860897,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -860985,7 +861000,7 @@ ai
 ai
 qt
 SD
-aY
+Te
 vd
 my
 my
@@ -861088,7 +861103,7 @@ ai
 fC
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -871286,7 +871301,7 @@ qt
 SD
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -871389,7 +871404,7 @@ qt
 qt
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -871492,7 +871507,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -881690,7 +881705,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -881793,7 +881808,7 @@ SD
 qt
 SD
 qt
-aY
+Te
 vd
 my
 my
@@ -881896,7 +881911,7 @@ qt
 qt
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -892094,7 +892109,7 @@ ai
 ai
 SD
 qt
-aY
+aP
 mA
 my
 SD
@@ -892197,7 +892212,7 @@ ai
 ai
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -892300,7 +892315,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -902498,7 +902513,7 @@ Db
 qp
 Vr
 JB
-aY
+aP
 zj
 jf
 jq
@@ -902601,7 +902616,7 @@ pD
 Ys
 Vr
 Lz
-aY
+Te
 NC
 Lj
 VA
@@ -902704,7 +902719,7 @@ Pk
 Jr
 Vr
 nZ
-aY
+aP
 zj
 jf
 bh
@@ -912902,7 +912917,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 mA
 my
 my
@@ -913005,7 +913020,7 @@ ai
 ai
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -913108,7 +913123,7 @@ ai
 ai
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -923306,7 +923321,7 @@ Gn
 tf
 zv
 AR
-aY
+aP
 zJ
 so
 so
@@ -923409,7 +923424,7 @@ Gn
 tf
 zv
 AR
-aY
+Te
 af
 so
 so
@@ -923512,7 +923527,7 @@ zv
 tf
 zv
 AR
-aY
+aP
 Of
 so
 so
@@ -933710,7 +933725,7 @@ pb
 pb
 pw
 Qt
-aY
+aP
 zJ
 so
 so
@@ -933813,7 +933828,7 @@ pb
 pb
 pw
 Qt
-aY
+Te
 af
 so
 so
@@ -933916,7 +933931,7 @@ pb
 pb
 zi
 Qt
-aY
+aP
 Of
 so
 so
@@ -944114,7 +944129,7 @@ BT
 Hn
 El
 BT
-aY
+aP
 pc
 ut
 Cf
@@ -944217,7 +944232,7 @@ Hn
 Hn
 El
 BT
-aY
+Te
 bB
 Cf
 Cf
@@ -944320,7 +944335,7 @@ Hn
 Hn
 El
 Hn
-aY
+aP
 kP
 Cf
 Cf
@@ -954518,7 +954533,7 @@ Db
 qp
 Vr
 JB
-aY
+aP
 zj
 jf
 jq
@@ -954621,7 +954636,7 @@ pD
 Ys
 Vr
 DV
-aY
+Te
 NC
 Lj
 VA
@@ -954724,7 +954739,7 @@ Pk
 Jr
 Vr
 nZ
-aY
+aP
 zj
 jf
 bh
@@ -964922,7 +964937,7 @@ hp
 hF
 aS
 hF
-aY
+aP
 tE
 WP
 SZ
@@ -965025,7 +965040,7 @@ hF
 hF
 aS
 hF
-aY
+Te
 YM
 SZ
 WP
@@ -965128,7 +965143,7 @@ Zy
 Zy
 aS
 hF
-aY
+aP
 eV
 WP
 WP
@@ -975326,7 +975341,7 @@ ev
 ev
 pn
 KL
-aY
+aP
 tE
 SZ
 WP
@@ -975429,7 +975444,7 @@ ev
 ev
 pn
 aS
-aY
+Te
 YM
 WP
 SZ
@@ -975532,7 +975547,7 @@ ev
 ev
 pn
 aS
-aY
+aP
 eV
 WP
 WP
@@ -985730,7 +985745,7 @@ GX
 qt
 GX
 qt
-aY
+aP
 mA
 my
 iJ
@@ -985833,7 +985848,7 @@ qt
 GX
 GX
 qt
-aY
+Te
 vd
 my
 my
@@ -985936,7 +985951,7 @@ qt
 GX
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -996134,7 +996149,7 @@ Qx
 ai
 GX
 qt
-aY
+aP
 mA
 FT
 my
@@ -996237,7 +996252,7 @@ Qx
 Um
 qt
 qt
-aY
+Te
 vd
 my
 my
@@ -996340,7 +996355,7 @@ Qx
 ai
 qt
 qt
-aY
+aP
 sq
 my
 my
@@ -1006538,7 +1006553,7 @@ Db
 qp
 Vr
 JB
-aY
+aP
 zj
 jf
 jq
@@ -1006641,7 +1006656,7 @@ pD
 Ys
 Vr
 Lz
-aY
+Te
 NC
 Lj
 VA
@@ -1006744,7 +1006759,7 @@ Pk
 Jr
 Vr
 nZ
-aY
+aP
 zj
 jf
 bh
@@ -1017045,7 +1017060,7 @@ eA
 fU
 cU
 gC
-cU
+Ve
 gY
 hR
 hR
@@ -1027346,7 +1027361,7 @@ qG
 qG
 tn
 sG
-aX
+aP
 vl
 gp
 rr
@@ -1027449,7 +1027464,7 @@ qG
 qG
 tr
 sH
-aX
+Te
 vn
 qG
 qG
@@ -1027552,7 +1027567,7 @@ qG
 qG
 qG
 qG
-aX
+aP
 vq
 rr
 cy
@@ -1037750,7 +1037765,7 @@ FM
 Cj
 CY
 Du
-aY
+aP
 HS
 QL
 ew
@@ -1037853,7 +1037868,7 @@ FO
 Cj
 De
 Du
-aY
+Te
 HT
 Iw
 II
@@ -1037956,7 +1037971,7 @@ Ew
 Cj
 CY
 Du
-aY
+aP
 HV
 QL
 dS
@@ -1048154,7 +1048169,7 @@ PV
 PY
 PY
 PY
-aY
+aP
 RV
 Sr
 SN
@@ -1048257,7 +1048272,7 @@ Pz
 PY
 PY
 PY
-aY
+Te
 RZ
 Ss
 SO
@@ -1048360,7 +1048375,7 @@ PY
 Rd
 PY
 PY
-aY
+aP
 Sb
 St
 SP

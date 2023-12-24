@@ -758,6 +758,7 @@
 	fire_delay = 5 SECONDS
 	ammo = new /obj/item/ammo_magazine/sentry/anti_tank
 	sentry_icon = 'icons/obj/structures/machinery/defenses/big_sentry.dmi'
+	omni_directional = TRUE
 	sentry_icon_resize = -16
 	inherent_rounds = 18
 	max_inherent_rounds = 18
