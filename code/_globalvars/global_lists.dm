@@ -178,7 +178,14 @@ GLOBAL_REFERENCE_LIST_INDEXED_SORTED(xeno_mutator_list, /datum/xeno_mutation/mut
 GLOBAL_REFERENCE_LIST_INDEXED_SORTED(xeno_strain_list, /datum/xeno_mutation/strain, name)
 
 GLOBAL_LIST_INIT_TYPED(objectives_reward_list, /datum/objectives_reward, create_objectives_rewards_list())
-GLOBAL_LIST_INIT_TYPED(objective_controller, /datum/objectives_datum, setup_defcons())
+GLOBAL_LIST_EMPTY_TYPED(objective_controller, /datum/objectives_datum)
+GLOBAL_LIST_INIT(objectives_links, list(
+	"objective" = list(/obj/item/storage/fancy/vials/random, /obj/item/disk/objective, /obj/item/document_objective/technical_manual, /obj/item/document_objective/paper),
+	"close" = list(/obj/item/disk/objective, /obj/item/document_objective/technical_manual, /obj/item/document_objective/folder, /obj/item/document_objective/report, /obj/item/document_objective/paper),
+	"medium" = list(/obj/item/device/mass_spectrometer/adv/objective, /obj/item/device/reagent_scanner/adv/objective, /obj/item/device/healthanalyzer/objective, /obj/item/device/autopsy_scanner/objective, /obj/item/document_objective/paper),
+	"far" = list(/obj/item/storage/fancy/vials/random, /obj/item/paper/research_notes, /obj/item/disk/objective,/obj/item/document_objective/folder, /obj/item/document_objective/report, /obj/item/document_objective/paper),
+	"science" = list(/obj/item/storage/fancy/vials/random, /obj/item/paper/research_notes, /obj/item/document_objective/paper)
+))
 
 GLOBAL_LIST_INIT(xeno_evolve_times, setup_xeno_evolve_times())
 
@@ -296,14 +303,6 @@ GLOBAL_LIST_INIT(emote_list, init_emote_list())
 			continue
 		all_rewards[reward.associated_faction] += reward
 	return all_rewards
-
-/proc/setup_defcons()
-	var/list/all_defcon_controllers = list()
-	for(var/faction_to_get in FACTION_LIST_DEFCONED)
-		var/datum/objectives_datum/objectives_datum = new(faction_to_get)
-		objectives_datum.associated_faction = faction_to_get
-		all_defcon_controllers[faction_to_get] = objectives_datum
-	return all_defcon_controllers
 
 /proc/setup_species()
 	var/rkey = 0

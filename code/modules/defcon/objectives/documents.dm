@@ -15,7 +15,7 @@
 	initial_area = get_area(document)
 
 /datum/cm_objective/document/pre_round_start()
-	SSobjectives.statistics["documents_total_instances"]++
+	SSfactions.statistics["documents_total_instances"]++
 
 /datum/cm_objective/document/Destroy()
 	document?.objective = null
@@ -29,7 +29,7 @@
 /datum/cm_objective/document/complete(mob/living/carbon/human/user)
 	. = ..()
 
-	SSobjectives.statistics["documents_total_points_earned"] += value
+	SSfactions.statistics["documents_total_points_earned"] += value
 
 	if(user && user.faction)
 		user.faction.store_objective(document.retrieve_objective)
@@ -180,7 +180,7 @@
 	// Our first time reading this successfully.
 	if(!(objective.objective_state & OBJECTIVE_COMPLETE))
 		objective.complete(user)
-		SSobjectives.statistics["documents_completed"]++
+		SSfactions.statistics["documents_completed"]++
 		objective.objective_state = OBJECTIVE_COMPLETE
 
 /obj/item/document_objective/paper

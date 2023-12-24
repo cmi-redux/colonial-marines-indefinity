@@ -65,3 +65,11 @@
 	target_faction.relations_datum.allies[initiator_faction.faction_name] = initiator_faction
 	initiator_faction.relations_datum.gain_opinion(target_faction, 200)
 	target_faction.relations_datum.gain_opinion(initiator_faction, 200)
+
+/datum/relations_action/
+
+
+/*
+оскорблеения
+
+*/

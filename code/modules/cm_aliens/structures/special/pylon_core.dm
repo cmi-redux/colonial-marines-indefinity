@@ -181,7 +181,7 @@
 		if(selected_faction == faction)
 			xeno_announcement(SPAN_XENOANNOUNCE("We have harnessed the tall's communication relay at [get_area(src)]. Hold it!"), selected_faction, XENO_GENERAL_ANNOUNCE)
 		else
-			xeno_announcement(SPAN_XENOANNOUNCE("Another hive has harnessed the tall's communication relay at [get_area(src)].[faction.faction_is_ally(selected_faction.name) ? "" : " Stop them!"]"), selected_faction, XENO_GENERAL_ANNOUNCE)
+			xeno_announcement(SPAN_XENOANNOUNCE("Another hive has harnessed the tall's communication relay at [get_area(src)].[faction.faction_is_ally(selected_faction) ? "" : " Stop them!"]"), selected_faction, XENO_GENERAL_ANNOUNCE)
 
 	activated = TRUE
 	addtimer(CALLBACK(src, PROC_REF(give_larva)), XENO_PYLON_ACTIVATION_COOLDOWN, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_LOOP|TIMER_DELETE_ME)

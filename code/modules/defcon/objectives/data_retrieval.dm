@@ -16,7 +16,7 @@
 	decryption_password = "[pick(alphabet_uppercase)][rand(100,999)][pick(alphabet_uppercase)][rand(10,99)]"
 
 /datum/cm_objective/retrieve_data/pre_round_start()
-	SSobjectives.statistics["data_retrieval_total_instances"]++
+	SSfactions.statistics["data_retrieval_total_instances"]++
 
 /datum/cm_objective/retrieve_data/Destroy()
 	initial_area = null
@@ -30,8 +30,8 @@
 		complete()
 
 /datum/cm_objective/retrieve_data/complete()
-	SSobjectives.statistics["data_retrieval_total_points_earned"] += value
-	SSobjectives.statistics["data_retrieval_completed"]++
+	SSfactions.statistics["data_retrieval_total_points_earned"] += value
+	SSfactions.statistics["data_retrieval_completed"]++
 
 // --------------------------------------------
 // *** Upload data from a terminal ***
@@ -229,13 +229,14 @@
 	unslashable = TRUE
 	unacidable = TRUE
 	indestructible = TRUE
+	faction_to_get = FACTION_MARINE
 	var/datum/cm_objective/retrieve_data/terminal/objective
 
 /obj/structure/machinery/computer/objective/Initialize()
 	. = ..()
 	label = "[pick(greek_letters)]-[rand(100,999)]"
 	name = "data terminal [label]"
-	objective = new /datum/cm_objective/retrieve_data/terminal(src)
+	objective = new /datum/cm_objective/retrieve_data/terminal(faction_to_get, src)
 
 /obj/structure/machinery/computer/objective/ex_act(severity)
 	return

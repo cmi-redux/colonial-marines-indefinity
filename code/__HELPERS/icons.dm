@@ -347,7 +347,8 @@ world
 /// appearance system (overlays/underlays, etc.) is not available.
 ///
 /// Only the first argument is required.
-/proc/getFlatIcon(image/appearance, defdir, deficon, defstate, defblend, start = TRUE, no_anim = FALSE)
+/// appearance_flags indicates whether appearance_flags should be respected (at the cost of about 10-20% perf)
+/proc/getFlatIcon(image/appearance, defdir, deficon, defstate, defblend, start = TRUE, no_anim = FALSE, appearance_flags = FALSE)
 	// Loop through the underlays, then overlays, sorting them into the layers list
 	#define PROCESS_OVERLAYS_OR_UNDERLAYS(flat, process, base_layer) \
 		for (var/i in 1 to process.len) { \
@@ -453,11 +454,21 @@ world
 			if(layer_image.alpha == 0)
 				continue
 
+			// variables only relevant when accounting for appearance_flags:
+			var/apply_color = TRUE
+			var/apply_alpha = TRUE
+
 			if(layer_image == copy) // 'layer_image' is an /image based on the object being flattened.
 				curblend = BLEND_OVERLAY
 				add = icon(layer_image.icon, layer_image.icon_state, base_icon_dir)
 			else // 'I' is an appearance object.
-				add = getFlatIcon(image(layer_image), curdir, curicon, curstate, curblend, FALSE, no_anim)
+				var/image/layer_as_image = image(layer_image)
+				if(appearance_flags)
+					if(layer_as_image.appearance_flags & RESET_COLOR)
+						apply_color = FALSE
+					if(layer_as_image.appearance_flags & RESET_ALPHA)
+						apply_alpha = FALSE
+				add = getFlatIcon(layer_as_image, curdir, curicon, curstate, curblend, FALSE, no_anim, appearance_flags)
 			if(!add)
 				continue
 
@@ -469,9 +480,9 @@ world
 
 			if (
 				addX1 != flatX1 \
-				&& addX2 != flatX2 \
-				&& addY1 != flatY1 \
-				&& addY2 != flatY2 \
+				|| addX2 != flatX2 \
+				|| addY1 != flatY1 \
+				|| addY2 != flatY2 \
 			)
 				// Resize the flattened icon so the new icon fits
 				flat.Crop(
@@ -482,21 +493,34 @@ world
 				)
 
 				flatX1 = addX1
-				flatX2 = addY1
-				flatY1 = addX2
+				flatX2 = addX2
+				flatY1 = addY1
 				flatY2 = addY2
+
+			if(appearance_flags)
+				// apply parent's color/alpha to the added layers if the layer didn't opt
+				if(apply_color && appearance.color)
+					if(islist(appearance.color))
+						add.MapColors(arglist(appearance.color))
+					else
+						add.Blend(appearance.color, ICON_MULTIPLY)
+
+				if(apply_alpha && appearance.alpha < 255)
+					add.Blend(rgb(255, 255, 255, appearance.alpha), ICON_MULTIPLY)
 
 			// Blend the overlay into the flattened icon
 			flat.Blend(add, blendMode2iconMode(curblend), layer_image.pixel_x + 2 - flatX1, layer_image.pixel_y + 2 - flatY1)
 
-		if(appearance.color)
-			if(islist(appearance.color))
-				flat.MapColors(arglist(appearance.color))
-			else
-				flat.Blend(appearance.color, ICON_MULTIPLY)
+		if(!appearance_flags)
+			// If we didn't apply parent colors individually per layer respecting appearance_flags, then do it just the one time now
+			if(appearance.color)
+				if(islist(appearance.color))
+					flat.MapColors(arglist(appearance.color))
+				else
+					flat.Blend(appearance.color, ICON_MULTIPLY)
 
-		if(appearance.alpha < 255)
-			flat.Blend(rgb(255, 255, 255, appearance.alpha), ICON_MULTIPLY)
+			if(appearance.alpha < 255)
+				flat.Blend(rgb(255, 255, 255, appearance.alpha), ICON_MULTIPLY)
 
 		if(no_anim)
 			//Clean up repeated frames
@@ -678,8 +702,9 @@ world
  * * moving - whether or not to use a moving state for the given icon
  * * sourceonly - if TRUE, only generate the asset and send back the asset url, instead of tags that display the icon to players
  * * extra_clases - string of extra css classes to use when returning the icon string
+ * * keyonly - if TRUE, only returns the asset key to use get_asset_url manually. Overrides sourceonly.
  */
-/proc/icon2html(atom/thing, client/target, icon_state, dir = SOUTH, frame = 1, moving = FALSE, sourceonly = FALSE, extra_classes = null)
+/proc/icon2html(atom/thing, client/target, icon_state, dir = SOUTH, frame = 1, moving = FALSE, sourceonly = FALSE, extra_classes = null, keyonly = FALSE)
 	if(!thing)
 		return
 
@@ -703,13 +728,15 @@ world
 	//for asset generation to get around byond limitations
 	var/icon_path = get_icon_dmi_path(thing)
 
-	if (!isicon(icon2collapse))
-		if (isfile(thing)) //special snowflake
+	if(!isicon(icon2collapse))
+		if(isfile(thing)) //special snowflake
 			var/name = SANITIZE_FILENAME("[generate_asset_name(thing)].png")
-			if (!SSassets.cache[name])
+			if(!SSassets.cache[name])
 				SSassets.transport.register_asset(name, thing)
 			for (var/thing2 in targets)
 				SSassets.transport.send_assets(thing2, name)
+			if(keyonly)
+				return name
 			if(sourceonly)
 				return SSassets.transport.get_asset_url(name)
 			return "<img class='[extra_classes] icon icon-misc' src='[SSassets.transport.get_asset_url(name)]'>"
@@ -717,18 +744,18 @@ world
 		//its either an atom, image, or mutable_appearance, we want its icon var
 		icon2collapse = thing.icon
 
-		if (isnull(icon_state))
+		if(isnull(icon_state))
 			icon_state = thing.icon_state
 			//Despite casting to atom, this code path supports mutable appearances, so let's be nice to them
 			if(isnull(icon_state) || (isatom(thing) && thing.flags_atom & HTML_USE_INITAL_ICON))
 				icon_state = initial(thing.icon_state)
-				if (isnull(dir))
+				if(isnull(dir))
 					dir = initial(thing.dir)
 
-		if (isnull(dir))
+		if(isnull(dir))
 			dir = thing.dir
 
-		if (ishuman(thing)) // Shitty workaround for a BYOND issue.
+		if(ishuman(thing)) // Shitty workaround for a BYOND issue.
 			var/icon/temp = icon2collapse
 			icon2collapse = icon()
 			icon2collapse.Insert(temp, dir = SOUTH)
@@ -751,6 +778,8 @@ world
 		SSassets.transport.register_asset(key, rsc_ref, file_hash, icon_path)
 	for (var/client_target in targets)
 		SSassets.transport.send_assets(client_target, key)
+	if(keyonly)
+		return key
 	if(sourceonly)
 		return SSassets.transport.get_asset_url(key)
 	return "<img class='[extra_classes] icon icon-[icon_state]' src='[SSassets.transport.get_asset_url(key)]'>"

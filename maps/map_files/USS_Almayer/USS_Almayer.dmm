@@ -17432,6 +17432,7 @@
 /turf/open/floor/almayer,
 /area/almayer/command/computerlab)
 "bAm" = (
+/obj/effect/step_trigger/ares_alert/access_control,
 /turf/closed/wall/almayer/reinforced,
 /area/almayer/command/securestorage)
 "bAn" = (
@@ -29349,6 +29350,7 @@
 	},
 /area/almayer/living/cryo_cells)
 "cIU" = (
+/obj/effect/step_trigger/ares_alert/access_control,
 /turf/closed/wall/almayer/reinforced,
 /area/almayer/command/computerlab)
 "cIV" = (
@@ -74474,6 +74476,10 @@
 /obj/structure/closet/firecloset,
 /turf/open/floor/plating/plating_catwalk,
 /area/almayer/hull/lower_hull/l_a_s)
+"uFN" = (
+/obj/effect/step_trigger/ares_alert/access_control,
+/turf/closed/wall/almayer/reinforced,
+/area/almayer/command/airoom)
 "uFO" = (
 /turf/closed/wall/almayer/research/containment/wall/corner,
 /area/almayer/medical/containment/cell)
@@ -122685,16 +122691,16 @@ aRU
 fMa
 jjb
 ddH
-baj
-baj
-baj
-baj
-baj
-baj
+uFN
+uFN
+uFN
+uFN
+uFN
+uFN
 gXc
 gXc
 gXc
-baj
+uFN
 bJz
 bJz
 bJz
@@ -122781,7 +122787,7 @@ aRV
 kpB
 dhF
 bai
-baj
+uFN
 gnW
 bdI
 bdI
@@ -122790,7 +122796,7 @@ jUH
 bxm
 bxn
 bxn
-baj
+uFN
 doO
 bYQ
 ftL
@@ -122877,7 +122883,7 @@ aBy
 xQx
 dhF
 trK
-baj
+uFN
 mox
 dFm
 dFm
@@ -122886,7 +122892,7 @@ jUH
 bxn
 bxn
 lnv
-baj
+uFN
 snY
 ftU
 bmP
@@ -122973,7 +122979,7 @@ aBy
 trK
 dhL
 trK
-baj
+uFN
 bgw
 bnm
 bnm
@@ -122982,7 +122988,7 @@ jUH
 cur
 bxn
 maa
-baj
+uFN
 bQV
 vVt
 pni
@@ -123069,7 +123075,7 @@ aBz
 qna
 dhL
 trK
-baj
+uFN
 baj
 baj
 baj
@@ -123078,7 +123084,7 @@ baj
 bxo
 bzZ
 bCZ
-baj
+uFN
 gcf
 jFx
 nzy
@@ -123165,7 +123171,7 @@ aBz
 qtp
 aXf
 den
-baj
+uFN
 bgB
 bgC
 bgj
@@ -123174,7 +123180,7 @@ buA
 bxn
 uwX
 oIz
-baj
+uFN
 eJb
 gny
 pni
@@ -123261,7 +123267,7 @@ aRY
 gKg
 cZk
 den
-baj
+uFN
 ddU
 pHr
 pHr
@@ -123270,7 +123276,7 @@ baj
 bxp
 bAa
 edZ
-baj
+uFN
 seF
 bAj
 cut

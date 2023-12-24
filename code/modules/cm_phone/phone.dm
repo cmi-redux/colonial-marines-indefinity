@@ -81,7 +81,7 @@ GLOBAL_LIST_EMPTY_TYPED(transmitters, /obj/structure/transmitter)
 
 	for(var/possible_phone in GLOB.transmitters)
 		var/obj/structure/transmitter/target_phone = possible_phone
-		if(TRANSMITTER_UNAVAILABLE(target_phone) || !target_phone.callable || !target_phone.faction.faction_is_ally(faction)) // Phone not available
+		if(TRANSMITTER_UNAVAILABLE(target_phone) || !target_phone.callable || !faction || !target_phone.faction || !target_phone.faction.faction_is_ally(faction)) // Phone not available
 			continue
 
 		var/id = target_phone.phone_id

@@ -8,8 +8,10 @@
 	var/current_level = 5
 	var/real_current_level = 1
 
-	var/list/objectives = list()
-	var/list/processing_objectives = list()
+	var/list/datum/cm_objective/objectives = list()
+	var/list/datum/cm_objective/processing_objectives = list()
+
+	var/list/datum/objective_spawn_handler/objective_spawns = list()
 
 	var/list/purchased_rewards = list()
 	var/remaining_reward_points = REWARD_POINT_GAIN_PER_LEVEL
@@ -40,7 +42,74 @@
 		return TRUE
 	return FALSE
 
+/datum/objectives_datum/proc/add_objective_spawn(objective_spawn_name, objective_spawn_weight, objective_spawn_location)
+	var/found = FALSE
+	for(var/datum/objective_spawn_handler/objective_handler in objective_spawns[objective_spawn_name])
+		if(objective_handler.weight != objective_spawn_weight)
+			continue
+		objective_handler.linked_spawns += objective_spawn_location
+		found = TRUE
+		break
+
+	if(!found)
+		objective_spawns[objective_spawn_name] += new(objective_spawn_name, objective_spawn_weight, objective_spawn_location)
+
 /datum/objectives_datum/proc/generate_objectives()
+	var/datum/faction/faction = GLOB.faction_datum[associated_faction]
+	if(!faction.objectives_active && length(faction.objectives))
+		return
+
+	//TODO: Combine objectives and faction tasks, plus make more "specialized" objectives and change system in per faction special faction objectives handler.
+	for(var/subtyope in faction.objectives)
+		var/ammount = faction.objectives[subtyope]
+		var/objective_type
+		if(!length(objective_spawns[subtyope]))
+			continue
+		for(var/i=0;i<ammount;i++)
+			var/list/potential_spawns = list()
+			objective_type = pick(GLOB.objectives_links[subtyope])
+			for(var/datum/objective_spawn_handler/objective_handler in objective_spawns[subtyope])
+				var/atom/new_potential_spawn = SAFEPICK(objective_handler.linked_spawns)
+				if(!new_potential_spawn)
+					continue
+				//TODO: Make multi use spawning objection points (something like machines)
+				objective_handler.linked_spawns -= new_potential_spawn
+				potential_spawns += list(new_potential_spawn = objective_handler.weight)
+
+			if(!length(potential_spawns))
+				return
+
+			var/atom/chosen_spawn = pickweight(potential_spawns)
+			var/generated = FALSE
+			if(istype(chosen_spawn, /obj/structure/closet) || istype(chosen_spawn, /obj/structure/safe) || istype(chosen_spawn, /obj/structure/filingcabinet))
+				if(istype(chosen_spawn, /obj/structure/closet))
+					var/obj/structure/closet/closet = chosen_spawn
+					if(closet.opened)
+						continue //container is open, don't put stuff into it
+				var/obj/item/new_item = new objective_type(chosen_spawn)
+				chosen_spawn.contents += new_item
+				generated = TRUE
+				break
+
+			if(!generated)
+				new objective_type(chosen_spawn)
+
+//TODO: Through this is datum make spawns and custom objectives, not only items (like terminals, safes and etc)
+/datum/objective_spawn_handler
+	var/name = "normal"
+	var/weight = 20
+	var/list/atom/linked_spawns = list()
+
+/datum/objective_spawn_handler/New(objective_spawn_name, objective_spawn_weight, objective_linked_spawns)
+	name = objective_spawn_name
+	weight = objective_spawn_weight
+	linked_spawns += objective_linked_spawns
+
+//list(typepath = list([1], [2]), ...)
+//[1] = list(1;"a", 1;"b", 1;"c", ...)
+//[2] = list("a" = list([0x???], [0x???], [0x???]), "b" = list([0x???], [0x???], [0x???]), "c" = list([0x???], [0x???], [0x???]), ...)
+// переделать в датум контейнящий инфу по спавну, а так же условиям спавна
+
 /*
 TODO: Redo fully system per faction objectives with custom spawns and objectives based on pop plus faction tasks
 
@@ -98,45 +167,13 @@ TODO: Redo fully system per faction objectives with custom spawns and objectives
 	for(var/i=0;i<vial_boxes;i++)
 		var/dest = pick(15;"close", 30;"medium", 5;"far", 50;"science")
 		spawn_objective_at_landmark(dest, /obj/item/storage/fancy/vials/random)
-
-// Populate the map with objective items.
-
-/datum/objectives_datum/proc/spawn_objective_at_landmark(dest, obj/item/item)
-	var/picked_location
-	switch(dest)
-		if("close")
-			picked_location = pick(GLOB.objective_landmarks_close)
-		if("medium")
-			picked_location = pick(GLOB.objective_landmarks_medium)
-		if("far")
-			picked_location = pick(GLOB.objective_landmarks_far)
-		if("science")
-			picked_location = pick(GLOB.objective_landmarks_science)
-
-	picked_location = get_turf(picked_location)
-	if(!picked_location)
-		CRASH("Unable to pick a location at [dest] for [item]")
-
-	var/generated = FALSE
-	for(var/obj/objective in picked_location)
-		if(istype(objective, /obj/structure/closet) || istype(objective, /obj/structure/safe) || istype(objective, /obj/structure/filingcabinet))
-			if(istype(objective, /obj/structure/closet))
-				var/obj/structure/closet/closet = objective
-				if(closet.opened)
-					continue //container is open, don't put stuff into it
-			var/obj/item/new_item = new item(objective)
-			objective.contents += new_item
-			generated = TRUE
-			break
-
-	if(!generated)
-		new item(picked_location)
 */
+
 /datum/objectives_datum/proc/add_objective(datum/cm_objective/objective)
-	LAZYADD(objectives, objective)
+	objectives += objective
 
 /datum/objectives_datum/proc/remove_objective(datum/cm_objective/objective)
-	LAZYREMOVE(objectives, objective)
+	objectives -= objective
 
 /datum/objectives_datum/proc/start_processing_objective(datum/cm_objective/objective)
 	processing_objectives += objective
@@ -160,21 +197,13 @@ TODO: Redo fully system per faction objectives with custom spawns and objectives
 		return percentage * 100
 
 /datum/objectives_datum/proc/check_defcon_level()
-	var/list/answer = list()
-	last_objectives_scored_points = SSobjectives.get_scored_points(associated_faction) + additional_points
-	answer["scored_points"] = last_objectives_scored_points
-	last_objectives_total_points = SSobjectives.get_total_points(associated_faction)
-	answer["total_points"] = last_objectives_total_points
+	last_objectives_scored_points = SSfactions.get_scored_points(associated_faction) + additional_points
+	last_objectives_total_points = SSfactions.get_total_points(associated_faction)
 	player_points_defcon = (level_triggers_modificator * max(length(GLOB.faction_datum[associated_faction].totalMobs), 1) + level_triggers_additional_points) * real_current_level * 0.65
-	answer["player_points_defcon"] = player_points_defcon
 	last_objectives_completion_percentage = check_objectives_percentage()
-	answer["objectives_percentage"] = last_objectives_completion_percentage
-
 	if(current_level > 1)
 		if(last_objectives_scored_points > player_points_defcon)
 			decrease_level()
-
-	return answer
 
 /datum/objectives_datum/proc/decrease_level()
 	if(current_level > 1)

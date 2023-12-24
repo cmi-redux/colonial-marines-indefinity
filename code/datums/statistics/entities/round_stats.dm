@@ -33,10 +33,10 @@
 
 	var/list/abilities_used = list() // types of /datum/entity/statistic, "tail sweep" = 10, "screech" = 2
 
-	var/list/participants = list() // types of /datum/entity/statistic, "[human.faction]" = 10, "xeno" = 2
-	var/list/final_participants = list() // types of /datum/entity/statistic, "[human.faction]" = 0, "xeno" = 45
-	var/list/hijack_participants = list() // types of /datum/entity/statistic, "[human.faction]" = 0, "xeno" = 45
-	var/list/total_deaths = list() // types of /datum/entity/statistic, "[human.faction]" = 0, "xeno" = 45
+	var/list/participants = list() // types of /datum/entity/statistic, "[mob.faction]" = 10
+	var/list/final_participants = list() // types of /datum/entity/statistic, "[mob.faction]" = 0
+	var/list/hijack_participants = list() // types of /datum/entity/statistic, "[mob.faction]" = 0
+	var/list/total_deaths = list() // types of /datum/entity/statistic, "[mob.faction]" = 0
 	var/list/caste_stats_list = list() // list of types /datum/player_stats/caste
 	var/list/weapon_stats_list = list() // list of types /datum/entity/weapon_stats
 	var/list/job_stats_list = list() // list of types /datum/entity/job_stats

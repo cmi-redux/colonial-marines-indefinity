@@ -4,8 +4,6 @@
 /// Converts the overworld x and y to minimap x and y values
 #define MINIMAP_SCALE 2
 #define MINIMAP_PIXEL_FROM_WORLD(val) (val*MINIMAP_SCALE-3)
-/// actual size of a users screen in pixels
-#define SCREEN_PIXEL_SIZE 480
 /// tacmaps traits
 #define TCMP_MAPS_TRAITS list(ZTRAIT_MARINE_MAIN_SHIP, ZTRAIT_GROUND)
 

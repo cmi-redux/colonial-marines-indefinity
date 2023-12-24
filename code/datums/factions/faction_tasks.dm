@@ -22,21 +22,21 @@
 		total_time += rand(-total_time, total_time) / 2
 
 	faction_owner = faction_to_set
-	SStasks.add_task(src)
+	SSfactions.add_task(src)
 	activate()
 
 /datum/faction_task/Destroy()
-	SStasks.stop_processing_task(src)
-	SStasks.remove_task(src)
+	SSfactions.stop_processing_task(src)
+	SSfactions.remove_task(src)
 	return ..()
 
 /datum/faction_task/proc/activate()
 	if(total_time)
 		COOLDOWN_START(src, total_time, total_time)
-	SStasks.start_processing_task(src)
+	SSfactions.start_processing_task(src)
 
 /datum/faction_task/proc/deactivate()
-	SStasks.stop_processing_task(src)
+	SSfactions.stop_processing_task(src)
 
 /datum/faction_task/proc/check_completion()
 	return

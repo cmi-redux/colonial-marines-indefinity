@@ -41,10 +41,10 @@
 		for(var/faction_name in factions_pool)
 			var/datum/faction/faction = GLOB.faction_datum[factions_pool[faction_name]]
 			faction.objectives_active = TRUE
-			if(SStasks.make_potential_tasks(faction, TRUE))
+			if(SSfactions.make_potential_tasks(faction, TRUE))
 				break
 
-	SStasks.build_sectors()
+	SSfactions.build_sectors()
 	return ..()
 
 ////////////////////////////////////////////////////////////////////////////////////////

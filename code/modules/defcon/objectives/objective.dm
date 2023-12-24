@@ -5,8 +5,8 @@
 	var/name = "An objective to complete"
 	var/objective_state = OBJECTIVE_INACTIVE // Whether the objective is inactive, active or complete.
 	var/value = OBJECTIVE_NO_VALUE // The point value of this objective.
-	var/list/required_objectives //List of objectives that are required to complete this objectives.
-	var/list/enables_objectives //List of objectives that require this objective to complete.
+	var/list/required_objectives = list() //List of objectives that are required to complete this objectives.
+	var/list/enables_objectives = list() //List of objectives that require this objective to complete.
 	var/objective_flags = NO_FLAGS // functionality related flags.
 	var/number_of_clues_to_generate = 1 // miminum number of clues we generate for the objective(aka how many things will point to this objective).
 	var/controller = FACTION_NEUTRAL
@@ -15,15 +15,21 @@
 /datum/cm_objective/New(faction_to_get)
 	if(faction_to_get)
 		controller = faction_to_get
+	connect_objective()
+
+// Hotfix for testing, until rework in proper way pregenrated objectives (TODO: REMOVE WHEN PREGENERATED SPAWNS OF OBJECTIVES REMOVED)
+/datum/cm_objective/proc/connect_objective()
+	set waitfor = FALSE
+	UNTIL(length(GLOB.faction_datum))
 	GLOB.faction_datum[controller].objectives_controller.add_objective(src)
 
 /datum/cm_objective/Destroy()
 	GLOB.faction_datum[controller].objectives_controller.stop_processing_objective(src)
 	GLOB.faction_datum[controller].objectives_controller.remove_objective(src)
 	for(var/datum/cm_objective/R as anything in required_objectives)
-		LAZYREMOVE(R.enables_objectives, src)
+		R.enables_objectives -= src
 	for(var/datum/cm_objective/E as anything in enables_objectives)
-		LAZYREMOVE(E.required_objectives, src)
+		E.required_objectives -= src
 	required_objectives = null
 	enables_objectives = null
 	return ..()

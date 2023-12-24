@@ -2,6 +2,7 @@
 	name = NAME_FACTION_MARINE
 	faction_name = FACTION_MARINE
 	faction_iff_tag_type = /obj/item/faction_tag/uscm/marine
+	objectives = list("objective" = 40, "close" = 30, "medium" = 25, "far" = 10, "science" = 20) // TODO: Other way???
 	objectives_active = TRUE
 
 	role_mappings = list(

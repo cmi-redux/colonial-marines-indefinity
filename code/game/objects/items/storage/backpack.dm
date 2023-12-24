@@ -505,6 +505,7 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 	sensor_radius = 12
 
 	flags_item = ITEM_OVERRIDE_NORTHFACE
+	faction_to_get = FACTION_MARINE
 
 	var/obj/structure/transmitter/internal/internal_transmitter
 	var/phone_category = PHONE_MARINE
@@ -531,7 +532,6 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 	internal_transmitter.relay_obj = src
 	internal_transmitter.phone_category = phone_category
 	internal_transmitter.enabled = FALSE
-	internal_transmitter.faction = faction
 	RegisterSignal(internal_transmitter, COMSIG_TRANSMITTER_UPDATE_ICON, PROC_REF(check_for_ringing))
 	GLOB.radio_packs += src
 
