@@ -107,7 +107,7 @@
 	playsound(return_center_turf(), ignition_sound, 60, 0, falloff = 4)
 	sleep(4 SECONDS)
 	calculate_move_delay(floor_to_move)
-	SSshuttle.moveShuttleToDock(id, GLOB.ss_elevator_floors["[MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR]_[floor_to_move]"], move_delay, FALSE)
+	SSshuttle.moveShuttleToDock(id, GLOB.ss_elevator_floors["[MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR]_[floor_to_move + floor_offset]"], move_delay, FALSE)
 
 /obj/docking_port/mobile/sselevator/proc/calculate_move_delay(floor_calc)
 	if(offseted_z > target_floor ? offseted_z - floor_calc > 4 : floor_calc - offseted_z > 4)
