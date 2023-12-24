@@ -193,8 +193,6 @@
 	if(!allowed(user))
 		to_chat(user, SPAN_WARNING("Доступ Запрещен!"))
 		return
-	if(inoperable())
-		return
 	if(!isRemoteControlling(user))
 		user.set_interaction(src)
 	tgui_interact(user)
@@ -244,7 +242,7 @@
 	if(!allowed(user))
 		to_chat(user, SPAN_WARNING("Доступ Запрещен!"))
 		return
-	if(inoperable() || elevator.offseted_z == floor)
+	if(elevator.offseted_z == floor)
 		return
 	if(elevator.disabled_floors[floor])
 		visible_message(SPAN_WARNING("Лифт не может отправится на этот этаж, обратитесь на ближайший пост службы безопасности!"))

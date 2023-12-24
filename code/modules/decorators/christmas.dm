@@ -38,6 +38,7 @@
 	wire.icon = 'icons/obj/items/marine-items_christmas.dmi'
 	wire.update_icon()
 
+/*
 // helmet definition. Also only a single definition
 /datum/decorator/christmas/marine_helmet/get_decor_types()
 	return list(/obj/item/clothing/head/helmet/marine)
@@ -54,6 +55,7 @@
 	helmet.flags_inv_hide = HIDEEARS|HIDEALLHAIR
 	helmet.flags_marine_helmet = NO_FLAGS
 	helmet.update_icon()
+*/
 
 // barricade definition. Also only a single definition
 // some types are not represented in that DMI, so we have to cherrypick
