@@ -35,6 +35,7 @@
 #define SMOKE_RANK_MED 3
 #define SMOKE_RANK_HIGH 4
 #define SMOKE_RANK_BOILER 5
+#define SMOKE_RANK_CHLOR 6
 
 // What kind of function to use for Explosions falling off.
 

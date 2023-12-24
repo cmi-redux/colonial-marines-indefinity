@@ -116,8 +116,8 @@
 		for(var/obj/structure/machinery/computer/shuttle_control/ice_colony/C in area)
 			C.animate_on()
 
-		for(var/turf/closed/shuttle/elevator/gears/G in area)
-			G.start()
+		for(var/obj/structure/machinery/gear/gear in area)
+			gear.start_moving()
 
 		for(var/obj/structure/machinery/door/airlock/D in area)//For elevators
 			INVOKE_ASYNC(src, PROC_REF(force_close_launch), D)

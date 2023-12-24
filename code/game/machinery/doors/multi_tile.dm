@@ -346,16 +346,15 @@
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/Initialize(mapload, ...)
 	. = ..()
-	return INITIALIZE_HINT_LATELOAD
+	connect_elevator()
 
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/LateInitialize()
-	. = ..()
-	spawn()
-		UNTIL(SSshuttle.sky_scraper_elevator)
-		elevator = SSshuttle.sky_scraper_elevator
-		if(floor != "control")
-			floor = src.z
-			elevator.doors["[floor]"] = src
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/proc/connect_elevator()
+	set waitfor = FALSE
+	UNTIL(SSshuttle.sky_scraper_elevator)
+	elevator = SSshuttle.sky_scraper_elevator
+	if(floor != "control")
+		floor = src.z
+		elevator.doors["[floor]"] = src
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/try_to_activate_door(mob/user)
 	return

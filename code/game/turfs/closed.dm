@@ -332,22 +332,8 @@
 	icon = 'icons/turf/elevator.dmi'
 	icon_state = "wall_w"
 	opacity = FALSE
-
-// Wall with gears that animate when elevator is moving
 /turf/closed/shuttle/elevator/gears
 	icon_state = "wall_gear"
-
-/turf/closed/shuttle/elevator/gears/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock, idnum, override)
-	. = ..()
-	if(istype(port, /obj/docking_port/mobile/sselevator))
-		var/obj/docking_port/mobile/sselevator/L = port
-		L.gears += src
-
-/turf/closed/shuttle/elevator/gears/proc/start()
-	icon_state = "[initial(icon_state)]_animated"
-
-/turf/closed/shuttle/elevator/gears/proc/stop()
-	icon_state = initial(icon_state)
 
 /turf/closed/shuttle/elevator/gears/sci
 	icon_state = "wall_w_gear"

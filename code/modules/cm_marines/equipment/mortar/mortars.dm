@@ -222,7 +222,6 @@
 			to_chat(user, SPAN_WARNING("[src] needs to be aimed first."))
 			return
 		var/turf/turf = locate(targ_x + dial_x + offset_x, targ_y + dial_y + offset_y, z)
-		var/turf/target_turf = turf.can_air_strike(5, turf.get_real_roof())
 		if(!turf)
 			to_chat(user, SPAN_WARNING("You cannot fire [src] to this target."))
 			return
@@ -230,19 +229,14 @@
 		if(!istype(area))
 			to_chat(user, SPAN_WARNING("This area is out of bounds!"))
 			return
-		if(!target_turf)
-			to_chat(user, SPAN_WARNING("You cannot hit the target. It is probably underground."))
-			return
 		if(SSticker.mode && MODE_HAS_TOGGLEABLE_FLAG(MODE_LZ_PROTECTION) && area.is_landing_zone)
 			to_chat(user, SPAN_WARNING("You cannot bomb the landing zone!"))
 			return
 
 		//Small amount of spread so that consecutive mortar shells don't all land on the same tile
-		var/turf/second_turf = locate(turf.x + pick(-1,0,0,1), turf.y + pick(-1,0,0,1), turf.z)
+		var/turf/second_turf = locate(turf.x + rand(-1, 1), turf.y + rand(-1, 1), turf.z)
 		if(second_turf)
-			turf = second_turf.can_air_strike(5, second_turf.get_real_roof())
-			if(turf)
-				target_turf = turf
+			turf = second_turf
 
 		user.visible_message(SPAN_NOTICE("[user] starts loading \a [mortar_shell.name] into [src]."),
 		SPAN_NOTICE("You start loading \a [mortar_shell.name] into [src]."))
@@ -268,7 +262,7 @@
 			for(var/mob/M in range(7))
 				shake_camera(M, 3, 1)
 
-			addtimer(CALLBACK(src, PROC_REF(handle_shell), target_turf, mortar_shell), travel_time)
+			addtimer(CALLBACK(src, PROC_REF(handle_shell), turf, mortar_shell), travel_time)
 
 	if(HAS_TRAIT(O, TRAIT_TOOL_WRENCH))
 		if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_TRAINED))
@@ -308,7 +302,9 @@
 
 /obj/structure/mortar/proc/handle_shell(turf/target, obj/item/mortar_shell/shell)
 	playsound(target, 'sound/weapons/gun_mortar_travel.ogg', 50, 1)
-	target = target.air_hit(rand(1, 5), target.get_real_roof())
+	var/turf/roof = target.get_real_roof()
+	var/penetration = rand(5, 10)
+	target = roof.air_strike(penetration, target, TRUE)
 	var/relative_dir
 	for(var/mob/M in range(15, target))
 		if(get_turf(M) == target)
@@ -330,7 +326,7 @@
 			SPAN_HIGHDANGER("YOU HEAR SOMETHING VERY CLOSE COMING DOWN [SPAN_UNDERLINE(relative_dir ? uppertext(("TO YOUR " + dir2text(relative_dir))) : uppertext("right above you"))]!"), SHOW_MESSAGE_AUDIBLE \
 		)
 	sleep(2 SECONDS) // Wait out the rest of the landing time
-	shell.detonate(target)
+	shell.detonate(roof.air_strike(penetration, target))
 	qdel(shell)
 	firing = FALSE
 
@@ -386,7 +382,8 @@
 	if(!is_ground_level(deploy_turf.z))
 		to_chat(user, SPAN_WARNING("You cannot deploy [src] here."))
 		return
-	if(!deploy_turf.can_air_strike(1, deploy_turf.get_real_roof()))
+	var/turf/roof = deploy_turf.get_real_roof()
+	if(!roof.air_strike(1, deploy_turf.get_real_roof(), TRUE))
 		to_chat(user, SPAN_WARNING("You probably shouldn't deploy [src] indoors."))
 		return
 	user.visible_message(SPAN_NOTICE("[user] starts deploying [src]."), \

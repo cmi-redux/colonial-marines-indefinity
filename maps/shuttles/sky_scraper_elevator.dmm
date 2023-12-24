@@ -7,6 +7,9 @@
 	},
 /area/shuttle/sky_scraper_elevator)
 "b" = (
+/obj/structure/machinery/gear/sky_scraper{
+	dir = 4
+	},
 /turf/closed/shuttle/elevator/gears/sci{
 	dir = 4
 	},
@@ -19,7 +22,8 @@
 /area/shuttle/sky_scraper_elevator)
 "d" = (
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator{
-	floor = "control"
+	floor = "control";
+	density = 0
 	},
 /turf/open/shuttle/elevator{
 	icon_state = "floor_w_g"
@@ -96,6 +100,7 @@
 	},
 /area/shuttle/sky_scraper_elevator)
 "S" = (
+/obj/structure/machinery/gear/sky_scraper,
 /turf/closed/shuttle/elevator/gears/sci,
 /area/shuttle/sky_scraper_elevator)
 "U" = (

@@ -202,6 +202,38 @@
 	base_state = "bptube"
 	bulb_colour = COLOR_SOFT_BLUE
 
+/obj/structure/machinery/light/double/almenia
+	icon_state = "bptube1"
+	base_state = "bptube"
+	bulb_colour = COLOR_SOFT_BLUE
+
+/obj/structure/machinery/light/double/almenia/Initialize()
+	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/structure/machinery/light/double/almenia/LateInitialize()
+	. = ..()
+	var/obj/structure/machinery/computer/security_blocker/blocker = GLOB.skyscrapers_sec_comps["[z]"]
+	if(blocker)
+		blocker.lights += src
+
+/obj/structure/machinery/light/double/almenia/proc/change_almenia_state(alert)
+	switch(alert)
+		if(0)
+			base_state = "bptube"
+			bulb_colour = COLOR_SOFT_BLUE
+			stop_processing()
+		if(1)
+			base_state = "ptube"
+			bulb_colour = COLOR_SOFT_RED
+			start_processing()
+	update()
+	update_icon()
+
+/obj/structure/machinery/light/double/almenia/process()
+	if(prob(25) && status == LIGHT_OK)
+		flik_light()
+
 /obj/structure/machinery/light/alt
 	icon_state = "ltube1"
 	base_state = "ltube"
@@ -222,7 +254,7 @@
 	base_state = "bslight"
 	desc = "A wide light fixture fitted with a large, blue, very bright fluorescent light tube. You want to sneeze just looking at it."
 	fitting = "large tube"
-	light_type = /obj/item/light_bulb/tube/large/
+	light_type = /obj/item/light_bulb/tube/large
 	brightness = 12
 
 
@@ -313,45 +345,42 @@
 				if(status == LIGHT_OK && trigger)
 					message_admins("LOG: Rigged light explosion, last touched by [fingerprintslast]")
 					explode()
-
 			else if(prob(min(60, (switchcount ^ 2) * 0.01)))
 				if(status == LIGHT_OK && trigger)
 					status = LIGHT_BURNED
 					icon_state = "[base_state]-burned"
 					seton(FALSE)
-			else
-				flik()
-				update_use_power(USE_POWER_ACTIVE)
-				set_light(l_range = brightness_set, l_power = power_set, l_color = color_set)
+			else if(prob(min(60, (switchcount ^ 4) * 0.01)))
+				flicker()
+
+			update_use_power(USE_POWER_ACTIVE)
+			set_light(l_range = brightness_set, l_power = power_set, l_color = color_set)
 	else
 		update_use_power(USE_POWER_NONE)
 
-/obj/structure/machinery/light/proc/flik(flik_chance = rand(0, 99))
-	if((flik_chance < 10 && switchcount > 4) || !flik_chance)
-		flicker()
-
-/obj/structure/machinery/light/proc/flicker(amount = rand(1, 10))
+/obj/structure/machinery/light/proc/flicker(amount = rand(1, 20))
+	set waitfor = FALSE
 	if(flickering)
 		return
 	flickering = TRUE
-	spawn(0)
-		if(light_on && status == LIGHT_OK)
-			for(var/i = 0; i < amount; i++)
-				if(status != LIGHT_OK)
-					break
-				seton(TRUE)
-				var/sound = pick('sound/effects/light/blinks1.ogg', 'sound/effects/light/blinks2.ogg', 'sound/effects/light/blinks3.ogg')
-				playsound(src, sound,12,TRUE, 8,VOLUME_SFX,0,falloff = 5)
-				switchcount--
-				sleep(rand(5, 20))
-			seton(FALSE)
-		flickering = FALSE
+	for(var/i = 0; i < amount; i++)
+		if(status != LIGHT_OK)
+			break
+		flik_light()
+		playsound(src, pick('sound/effects/light/blinks1.ogg', 'sound/effects/light/blinks2.ogg', 'sound/effects/light/blinks3.ogg'), 12, TRUE, 8, VOLUME_SFX, 0, falloff = 5)
+	flickering = FALSE
 
+/obj/structure/machinery/light/proc/flik_light()
+	set_light_on(FALSE)
+	update_icon()
+	sleep(rand(5, 50))
+	set_light_on(status == LIGHT_OK)
+	update_icon()
 
 // attempt to set the light's on/off status
 // will not switch on if broken/burned/empty
 /obj/structure/machinery/light/proc/seton(s)
-	set_light_on(((s && status == LIGHT_OK) || !req_light_switch))
+	set_light_on(s && status == LIGHT_OK)
 	update()
 
 // examine verb
@@ -397,14 +426,10 @@
 				rigged = L.rigged
 				brightness = L.brightness
 				seton(has_power())
-
 				if(user.temp_drop_inv_item(L))
 					qdel(L)
-
 					if(light_on && rigged)
-
 						message_admins("LOG: Rigged light explosion, last touched by [fingerprintslast]")
-
 						explode()
 			else
 				to_chat(user, "This type of light requires a [fitting].")
@@ -466,8 +491,8 @@
 /obj/structure/machinery/light/proc/has_power()
 	var/area/A = loc.loc
 	if(!needs_power)
-		return A.master.lightswitch || !req_light_switch
-	return A.master.lightswitch && A.master.power_light
+		return (A.master.lightswitch || !req_light_switch)
+	return ((A.master.lightswitch && A.master.power_light) || !req_light_switch)
 
 // ai attack - make lights flicker, because why not
 
@@ -563,7 +588,7 @@
 // s.set_up(3, 1, src)
 // s.start()
 	status = LIGHT_BROKEN
-	seton()
+	seton(FALSE)
 
 /obj/structure/machinery/light/proc/fix()
 	if(status == LIGHT_OK)
@@ -604,9 +629,9 @@
 		if(loc)
 			var/area/A = get_area(src)
 			if(!needs_power || A.unlimited_power)
-				seton(A.lightswitch)
+				seton(A.lightswitch || !req_light_switch)
 				return
-			seton(A.lightswitch && A.power_light)
+			seton((A.lightswitch && A.power_light) || !req_light_switch)
 
 // called when on fire
 

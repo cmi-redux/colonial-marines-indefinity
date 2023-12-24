@@ -80,7 +80,7 @@
 	if(QDELETED(src)) return
 	var/turf/U = get_turf(src)
 	if(!U) return
-	for(var/i in  GLOB.cardinals)
+	for(var/i in GLOB.cardinals)
 		if(direction && i != direction)
 			continue
 		var/turf/T = get_step(U, i)
@@ -88,12 +88,12 @@
 			continue
 		var/obj/effect/particle_effect/smoke/foundsmoke = locate() in T // Check for existing smoke and act accordingly
 		if(foundsmoke)
-			if(foundsmoke.smokeranking <= src.smokeranking)
+			if(foundsmoke.smokeranking <= smokeranking)
 				qdel(foundsmoke)
 			else
 				continue
 		var/obj/effect/particle_effect/smoke/S = new type(T, amount, cause_data)
-		S.setDir(pick( GLOB.cardinals))
+		S.setDir(pick(GLOB.cardinals))
 		S.time_to_live = time_to_live
 		if(S.amount>0)
 			S.spread_smoke()
@@ -550,7 +550,7 @@
 	if(QDELETED(src)) return
 	var/turf/U = get_turf(src)
 	if(!U) return
-	for(var/i in  GLOB.cardinals)
+	for(var/i in GLOB.cardinals)
 		if(direction && i != direction)
 			continue
 		var/turf/T = get_step(U, i)
@@ -558,13 +558,13 @@
 			continue
 		var/obj/effect/particle_effect/smoke/foundsmoke = locate() in T // Check for existing smoke and act accordingly
 		if(foundsmoke)
-			if(foundsmoke.smokeranking <= src.smokeranking)
+			if(foundsmoke.smokeranking <= smokeranking)
 				qdel(foundsmoke)
 			else
 				continue
 		var/obj/effect/particle_effect/smoke/S = new type(T, amount, cause_data)
 
-		for (var/atom/A in T)
+		for(var/atom/A in T)
 			if(istype(A, /mob/living))
 				var/mob/living/M = A
 				M.ExtinguishMob()
@@ -651,7 +651,7 @@
 		location = get_turf(holder)
 	var/obj/effect/particle_effect/smoke/S = new smoke_type(location, amount+1, cause_data)
 
-	for (var/atom/A in location)
+	for(var/atom/A in location)
 		if(istype(A, /mob/living))
 			var/mob/living/M = A
 			M.ExtinguishMob()

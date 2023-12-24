@@ -6,7 +6,7 @@
 #define IMP_SLOWDOWN_TIME 3
 
 /obj/structure/machinery/defenses/bell_tower
-	name = "\improper R-1NG bell tower"
+	name = "R-1NG bell tower"
 	icon = 'icons/obj/structures/machinery/defenses/bell_tower.dmi'
 	desc = "A tactical advanced version of a normal alarm. Designed to trigger an old instinct ingrained in humans when they hear a wake-up alarm, for fast response."
 	var/list/tripwires_placed = list()

@@ -217,7 +217,7 @@
 /turf/open/floor/almayer/empty
 	name = "empty space"
 	desc = "There seems to be an awful lot of machinery down below"
-	icon = 'icons/turf/floors/floors.dmi'
+	icon = 'icons/turf/open_space.dmi'
 	icon_state = "black"
 	turf_flags = TURF_MULTIZ
 
@@ -332,6 +332,11 @@
 	smoothing_flags = NO_FLAGS
 
 /turf/open/floor/roof/ship_hull/lab
+	icon = 'icons/turf/roofs/roof_lab.dmi'
+	icon_state = "ship"
+	name = "ship lab roof"
+
+/turf/open/floor/roof/lab
 	icon = 'icons/turf/roofs/roof_lab.dmi'
 	name = "lab roof"
 

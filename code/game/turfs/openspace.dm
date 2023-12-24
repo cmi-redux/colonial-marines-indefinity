@@ -3,14 +3,15 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 /atom/movable/openspace_backdrop
 	name = "openspace_backdrop"
 	anchored = TRUE
-	icon = 'icons/turf/floors/floors.dmi'
+	icon = 'icons/turf/open_space.dmi'
 	icon_state = "grey"
 	plane = OPENSPACE_BACKDROP_PLANE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	vis_flags = VIS_INHERIT_ID
+	alpha = 50
 
 /turf/open/space/openspace
-	icon = 'icons/turf/floors/floors.dmi'
+	icon = 'icons/turf/open_space.dmi'
 	icon_state = "invisible"
 	baseturfs = /turf/open/openspace
 	weatherproof = FALSE
@@ -59,6 +60,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 
 
 /turf/open/openspace
+	icon = 'icons/turf/open_space.dmi'
 	name = "open space"
 	desc = "Watch your step!"
 	icon_state = "invisible"

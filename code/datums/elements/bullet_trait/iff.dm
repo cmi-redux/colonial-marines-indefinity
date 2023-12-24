@@ -16,7 +16,7 @@
 	if(!istype(target, /obj/item/projectile))
 		return ELEMENT_INCOMPATIBLE
 
-	if(!iff_group)
+	if(!GLOB.faction_datum[iff_group])
 		RegisterSignal(target, COMSIG_BULLET_USER_EFFECTS, PROC_REF(set_iff))
 	else
 		src.iff_group = iff_group

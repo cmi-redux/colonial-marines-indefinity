@@ -358,6 +358,10 @@ var/list/ob_type_fuel_requirements
 	var/max_knockdown_time
 
 /obj/structure/ob_ammo/warhead/proc/warhead_impact(turf/target)
+	var/turf/roof = target.get_real_roof()
+	var/randed_penetration = rand(10, 15)
+	roof.air_strike(randed_penetration, target, TRUE)
+
 	// make damn sure everyone hears it
 	playsound(target, 'sound/weapons/gun_orbital_travel.ogg', 100, 1, 75)
 
@@ -398,6 +402,7 @@ var/list/ob_type_fuel_requirements
 	if(orbital_cannon_cancellation["[cancellation_token]"]) // the cancelling notification is in the topic
 		target.ceiling_debris_check(5)
 		orbital_cannon_cancellation["[cancellation_token]"] = null
+		target = roof.air_strike(randed_penetration, target)
 		return TRUE
 	return FALSE
 
@@ -490,7 +495,7 @@ var/list/ob_type_fuel_requirements
 	if(fire_color)
 		fire_type = "dynamic"
 
-	new /obj/effect/overlay/temp/blinking_laser (target)
+	new /obj/effect/overlay/temp/blinking_laser(target)
 	sleep(10)
 	var/datum/cause_data/cause_data = create_cause_data(initial(name), source_mob)
 	cell_explosion(target, clear_power, clear_falloff, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data) //break shit around
@@ -526,16 +531,14 @@ var/list/ob_type_fuel_requirements
 	var/list/turf_list = list()
 
 	for(var/turf/turf in range(range_num, target))
-		if(!turf.can_air_strike(20, turf.get_real_roof()))
-			continue
 		turf_list += turf
 
 	for(var/i = 1 to total_amount)
 		for(var/k = 1 to instant_amount)
 			var/turf/U = pick(turf_list)
-			U = U.air_hit(rand(1, 5), U.get_real_roof())
+			var/turf/roof = U.get_real_roof()
+			U = roof.air_strike(rand(10, 15), U)
 			fire_in_a_hole(U)
-
 		sleep(delay_between_clusters)
 
 /obj/structure/ob_ammo/warhead/cluster/proc/fire_in_a_hole(turf/loc)

@@ -128,7 +128,6 @@ SUBSYSTEM_DEF(sunlighting)
 	sun_color.blend_mode = BLEND_ADD
 	sun_color.filters += filter(type = "layer", render_source = S_LIGHTING_VISUAL_RENDER_TARGET)
 	initialized = TRUE
-	fire(FALSE, TRUE)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/sunlighting/proc/set_game_time_length(new_value)
@@ -189,15 +188,13 @@ SUBSYSTEM_DEF(sunlighting)
 			current_color = BlendRGB(current_color, weather_datum.weather_color_offset, min(weather_blend_amount, weather_blend_ammount))
 		animate(sun_color, color = current_color, time = time_to_animate)
 
-/datum/controller/subsystem/sunlighting/fire(resumed, init_tick_checks)
+/datum/controller/subsystem/sunlighting/fire(resumed)
 	if(sun_color)
 		sun_color.name = "SUN_COLOR_[rand()*rand(1,9999999)]" // force rendering refresh because byond is a bitch
 
 	update_color()
 
 	MC_SPLIT_TICK_INIT(3)
-	if(!init_tick_checks)
-		MC_SPLIT_TICK
 	var/i = 0
 
 	//Add our weather particle obj to any new weather screens
@@ -206,9 +203,7 @@ SUBSYSTEM_DEF(sunlighting)
 			var/atom/movable/screen/plane_master/weather_effect/W = weather_planes_need_vis[i]
 			if(W)
 				W.vis_contents = list(SSparticle_weather.get_weather_effect())
-			if(init_tick_checks)
-				CHECK_TICK
-			else if(MC_TICK_CHECK)
+			if(MC_TICK_CHECK)
 				break
 		if(i)
 			weather_planes_need_vis.Cut(1, i+1)
@@ -221,17 +216,13 @@ SUBSYSTEM_DEF(sunlighting)
 			if(T.outdoor_effect)
 				GLOB.SUNLIGHT_QUEUE_UPDATE += T.outdoor_effect
 
-		if(init_tick_checks)
-			CHECK_TICK
-		else if(MC_TICK_CHECK)
+		if(MC_TICK_CHECK)
 			break
 	if(i)
 		GLOB.SUNLIGHT_QUEUE_WORK.Cut(1, i+1)
 		i = 0
 
-
-	if(!init_tick_checks)
-		MC_SPLIT_TICK
+	MC_SPLIT_TICK
 
 	for(i in 1 to GLOB.SUNLIGHT_QUEUE_UPDATE.len)
 		var/atom/movable/outdoor_effect/U = GLOB.SUNLIGHT_QUEUE_UPDATE[i]
@@ -239,17 +230,14 @@ SUBSYSTEM_DEF(sunlighting)
 			U.process_state()
 			update_outdoor_effect_overlays(U)
 
-		if(init_tick_checks)
-			CHECK_TICK
-		else if(MC_TICK_CHECK)
+		if(MC_TICK_CHECK)
 			break
 	if(i)
 		GLOB.SUNLIGHT_QUEUE_UPDATE.Cut(1, i+1)
 		i = 0
 
 
-	if(!init_tick_checks)
-		MC_SPLIT_TICK
+	MC_SPLIT_TICK
 
 	for(i in 1 to GLOB.SUNLIGHT_QUEUE_CORNER.len)
 		var/turf/T = GLOB.SUNLIGHT_QUEUE_CORNER[i]
@@ -272,9 +260,7 @@ SUBSYSTEM_DEF(sunlighting)
 		update_outdoor_effect_overlays(U)
 
 
-		if(init_tick_checks)
-			CHECK_TICK
-		else if(MC_TICK_CHECK)
+		if(MC_TICK_CHECK)
 			break
 
 	if(i)

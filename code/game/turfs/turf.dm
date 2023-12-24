@@ -43,6 +43,7 @@
 	var/list/datum/automata_cell/autocells
 	var/list/obj/effect/decal/cleanable/cleanables
 
+	var/hull = FALSE
 	var/antipierce = 1
 
 	///Bool, whether this turf will always be illuminated no matter what area it is in
@@ -629,49 +630,37 @@
 		return src
 	return turf_above.get_real_roof()
 
-/turf/proc/can_air_strike(protection_penetration, turf/initial_turf)
-	protection_penetration = protection_penetration - get_pylon_protection_level()
+/turf/proc/air_strike(protection_penetration, turf/target_turf, checking = FALSE)
 	var/turf/turf_above = SSmapping.get_turf_above(src)
-	if(turf_above)
-		if(istype(turf_above, /turf/closed/wall))
-			var/turf/closed/wall/turf = turf_above
-			if(turf && turf.hull)
-				protection_penetration -= 19
-			else
-				protection_penetration -= turf_above.antipierce
-		else
-			protection_penetration -= turf_above.antipierce
-	var/turf/turf_below = SSmapping.get_turf_below(src)
-	if(get_sector_protection(src))
+	if(get_sector_protection() || protection_penetration <= 0)
+		if(checking && turf_above != target_turf)
+			return FALSE
 		if(turf_above)
 			return turf_above
-	else if(!turf_below)
-		if(protection_penetration == 0)
-			return src
-		else
-			if(turf_above)
-				return turf_above
-	else
-		return turf_below.can_air_strike(protection_penetration, initial_turf)
-	return FALSE
-
-/turf/proc/air_hit(size = 1, turf/initial_turf)
-	var/turf/turf_above = SSmapping.get_turf_above(src)
-	var/turf/turf_below = SSmapping.get_turf_below(src)
-	if(turf_above && !istype(turf_above, /turf/open/openspace))
-		if(istype(turf_above, /turf/closed/wall))
-			var/turf/closed/wall/turf = turf_above
-			if(turf && !turf.hull)
-				turf_above.ceiling_debris(size)
-				turf_above.ChangeTurf(/turf/open/openspace)
-		else
-			turf_above.ceiling_debris(size)
-			turf_above.ChangeTurf(/turf/open/openspace)
-	else if(prob(10))
 		return src
+
+	if(!checking)
+		if(turf_above && !istype(turf_above, /turf/open/openspace))
+			if(istype(turf_above, /turf/closed/wall))
+				var/turf/closed/wall/turf = turf_above
+				if(turf && !turf.hull)
+					turf_above.ceiling_debris(protection_penetration)
+					turf_above.ChangeTurf(/turf/open/openspace)
+			else
+				turf_above.ceiling_debris(protection_penetration)
+				turf_above.ChangeTurf(/turf/open/openspace)
+
+	protection_penetration -= get_pylon_protection_level()
+	if(hull)
+		protection_penetration -= 10
+	else
+		protection_penetration -= antipierce
+
+	var/turf/turf_below = SSmapping.get_turf_below(src)
 	if(!turf_below)
 		return src
-	return turf_below.air_hit(size, initial_turf)
+	else
+		return turf_below.air_strike(protection_penetration, target_turf, checking)
 
 /turf/proc/ceiling_debris_check(size = 1)
 	return
@@ -691,7 +680,7 @@
 		spawn(8)
 			if(size > 1)
 				below_turf.visible_message(SPAN_BOLDNOTICE("Shards of glass rain down from above!"))
-			for(var/i = 1, i <= size, i++)
+			for(var/i = 1 to size)
 				new /obj/item/shard(pick(turfs))
 				new /obj/item/shard(pick(turfs))
 	else if(istype(src, /turf/open/floor/roof/metal) || istype(src, /turf/open/floor/roof/sheet) || istype(src, /turf/open/floor/roof/ship_hull))
@@ -699,20 +688,20 @@
 		spawn(8)
 			if(size > 1)
 				below_turf.visible_message(SPAN_BOLDNOTICE("Pieces of metal crash down from above!"))
-			for(var/i = 1, i <= size, i++)
+			for(var/i = 1 to size)
 				new /obj/item/stack/sheet/metal(pick(turfs))
 	else if(istype(src, /turf/open/desert/rock) || istype(src, /turf/closed/wall/mineral))
 		playsound(below_turf, "sound/effects/meteorimpact.ogg", 60, 1)
 		spawn(8)
 			if(size > 1)
 				below_turf.visible_message(SPAN_BOLDNOTICE("Chunks of rock crash down from above!"))
-			for(var/i = 1, i <= size, i++)
+			for(var/i = 1 to size)
 				new /obj/item/ore(pick(turfs))
 				new /obj/item/ore(pick(turfs))
 	else if(istype(src, /turf/open) || istype(src, /turf/closed))
 		playsound(below_turf, "sound/effects/metal_crash.ogg", 60, 1)
 		spawn(8)
-			for(var/i =1 , i <= size, i++)
+			for(var/i = 1 to size)
 				new /obj/item/stack/sheet/metal(pick(turfs))
 				new /obj/item/ore(pick(turfs))
 

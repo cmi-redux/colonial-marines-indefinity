@@ -165,7 +165,7 @@
 	var/step = 1
 	for(step = 1; step<=steps; step++)
 		if(step > next_step)
-			current_turf = get_step(current_turf,direction)
+			current_turf = get_step(current_turf, direction)
 			next_step += tally_step
 			if(envelope)
 				envelope.change_current_loc(current_turf)
@@ -177,9 +177,9 @@
 			if(current_turf == null)
 				return -1
 			var/turf/target_turf = locate(current_turf.x + sx*offset, current_turf.y + sy*offset, current_turf.z)
-			var/turf/real_target_turf = target_turf.can_air_strike(10, target_turf.get_real_roof())
-			if(real_target_turf)
-				item.weapon.open_fire_firemission(real_target_turf)
+			if(!target_turf)
+				target_turf = current_turf
+			item.weapon.open_fire_firemission(target_turf.get_real_roof())
 		sleep(step_delay)
 	if(envelope)
 		envelope.change_current_loc(null)

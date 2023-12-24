@@ -186,6 +186,7 @@
 #define CALIBER_8G			list("8g" = 8.8)
 #define CALIBER_20G			list("20g" = 20)
 #define CALIBER_24G			list("24g" = 24)
+#define CALIBER_105MM		list("105mm" = 105)
 //							MARINES USING
 #define CALIBER_45_70		list("45-70" = 11.6)
 #define CALIBER_7_62X51MM	list("7.62x51mm" = 7.92)

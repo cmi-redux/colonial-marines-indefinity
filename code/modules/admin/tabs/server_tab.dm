@@ -102,7 +102,7 @@
 	if(!locked_conect)
 		to_world("<B>Players may now join to server.</B>")
 	else
-		to_world("<B>Players don't can now join to server.</B>")
+		to_world("<B>Players may no longer join to server.</B>")
 	message_admins("[key_name_admin(usr)] toggled players joining mode.")
 	world.update_status()
 

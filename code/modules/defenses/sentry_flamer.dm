@@ -1,5 +1,5 @@
 /obj/structure/machinery/defenses/sentry/flamer
-	name = "\improper UA 42-F sentry flamer"
+	name = "UA 42-F sentry flamer"
 	icon = 'icons/obj/structures/machinery/defenses/flamer.dmi'
 	desc = "A deployable, semi-automated turret with AI targeting capabilities. Armed with a special flamer and a 100 liters fuel tank."
 	fire_delay = 30

@@ -22,8 +22,9 @@
 
 /obj/structure/machinery/siren/LateInitialize()
 	. = ..()
-	var/obj/structure/machinery/computer/security_blocker/SB = GLOB.skyscrapers_sec_comps["[z]"]
-	SB.sirens += src
+	var/obj/structure/machinery/computer/security_blocker/blocker = GLOB.skyscrapers_sec_comps["[z]"]
+	if(blocker)
+		blocker.sirens += src
 
 /obj/structure/machinery/siren/power_change()
 	return
@@ -53,7 +54,7 @@
 	stop_processing()
 
 /obj/structure/machinery/siren/process()
-	if(prob(2))
+	if(prob(1))
 		playsound(loc, sound, 80, 0)
 		visible_message(SPAN_DANGER("[src] издает сигнал. [message]."))
 

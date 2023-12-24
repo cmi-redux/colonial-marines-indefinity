@@ -120,9 +120,6 @@ GLOBAL_DATUM(rocket_launcher_eye_location, /datum/coords)
 	if(operator)
 		to_chat(operator, SPAN_NOTICE("[icon2html(src)] Loaded in a shell [SPAN_BOLD("([ammo]/[max_ammo] shells left).")]"))
 
-/obj/effect/warning/rocket_launcher
-	color = "#0000ff"
-
 /obj/structure/machinery/computer/rocket_launcher/proc/fire_gun(mob/living/carbon/human/H, atom/A, mods)
 	SIGNAL_HANDLER
 
@@ -133,7 +130,6 @@ GLOBAL_DATUM(rocket_launcher_eye_location, /datum/coords)
 	if(!istype(turf))
 		return
 
-	turf = turf.can_air_strike(15, turf.get_real_roof())
 	if(!turf)
 		to_chat(H, SPAN_WARNING("[icon2html(src)] This area is too reinforced to fire into."))
 		return FALSE
@@ -148,24 +144,21 @@ GLOBAL_DATUM(rocket_launcher_eye_location, /datum/coords)
 
 	to_chat(H, SPAN_NOTICE("[icon2html(src)] Firing shell. [SPAN_BOLD("([ammo]/[max_ammo] shells left).")]"))
 
-	var/obj/effect/warning/rocket_launcher/warning_zone = new(turf)
-
-	var/image/I = image(warning_zone.icon, warning_zone.loc, warning_zone.icon_state, warning_zone.layer)
-	I.color = warning_zone.color
+	var/image/I = image('icons/effects/alert.dmi', turf, "alert_greyscale", ABOVE_OBJ_LAYER)
+	I.color = "#0000ff"
 
 	H.client.images += I
 	playsound_client(H.client, 'sound/machines/rocket_launcher/rocket_launcher_shoot.ogg')
 
-	addtimer(CALLBACK(src, PROC_REF(land_shot), turf, H.client, warning_zone, I), 10 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(land_shot), turf, H.client, I), 10 SECONDS)
 
-/obj/structure/machinery/computer/rocket_launcher/proc/land_shot(turf/turf, client/firer, obj/effect/warning/droppod/warning_zone, image/to_remove)
-	if(warning_zone)
-		qdel(warning_zone)
-
+/obj/structure/machinery/computer/rocket_launcher/proc/land_shot(turf/target_turf, client/firer, image/to_remove)
 	if(firer)
 		firer.images -= to_remove
-		playsound(turf, 'sound/machines/rocket_launcher/rocket_launcher_impact.ogg', sound_range = 75)
-		cell_explosion(turf, power, power/range, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("rocket_launcher", firer.mob))
+		var/turf/roof = target_turf.get_real_roof()
+		target_turf = roof.air_strike(rand(10, 15), target_turf)
+		playsound(target_turf, 'sound/machines/rocket_launcher/rocket_launcher_impact.ogg', sound_range = 75)
+		cell_explosion(target_turf, power, power/range, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("rocket_launcher", firer.mob))
 
 /obj/structure/machinery/computer/rocket_launcher/proc/remove_current_operator()
 	SIGNAL_HANDLER
@@ -244,7 +237,8 @@ GLOBAL_DATUM(rocket_launcher_eye_location, /datum/coords)
 /mob/hologram/rocket_launcher/proc/allow_turf_entry(mob/self, turf/to_enter)
 	SIGNAL_HANDLER
 
-	if(!to_enter.can_air_strike(15, to_enter.get_real_roof()))
+	var/turf/roof = to_enter.get_real_roof()
+	if(!roof.air_strike(5, to_enter, TRUE))
 		to_chat(linked_mob, SPAN_WARNING("[icon2html(src)] This area is too reinforced to enter."))
 		return COMPONENT_TURF_DENY_MOVEMENT
 

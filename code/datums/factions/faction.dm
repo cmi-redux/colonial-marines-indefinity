@@ -219,7 +219,17 @@
 	facehugger.generate_name()
 
 //Ally procs
-/mob/proc/ally(datum/faction/ally_faction)
+/atom/movable/proc/ally(datum/faction/ally_faction)
+	var/list/factions = list()
+	factions += ally_faction
+	for(var/datum/faction/i in ally_faction.relations_datum.allies)
+		factions += i
+	if(isnull(factions) || !faction)
+		return FALSE
+
+	return faction in factions
+
+/mob/ally(datum/faction/ally_faction)
 	var/list/factions = list()
 	factions += ally_faction
 	for(var/datum/faction/i in ally_faction.relations_datum.allies)

@@ -6,7 +6,6 @@
 	weedable = NOT_WEEDABLE
 	weather_affectable = FALSE
 	can_bloody = FALSE
-	light_power = 0.25
 	always_lit = TRUE
 	supports_surgery = FALSE
 	plane = PLANE_SPACE
@@ -24,9 +23,6 @@
 	flags_atom |= INITIALIZED
 
 	turfs += src
-
-	if(light_power && light_range)
-		update_light()
 
 	if(opacity)
 		directional_opacity = ALL_CARDINALS

@@ -1,67 +1,67 @@
 /datum/ammo
-	var/name 		= "generic bullet"
+	var/name			= "generic bullet"
 	var/headshot_state	= null //Icon state when a human is permanently killed with it by execution/suicide.
 	 ///Bullet type on the Ammo HUD
-	var/hud_state   = "unknown"
+	var/hud_state		= "unknown"
 	 ///Empty bullet type on the Ammo HUD
-	var/hud_state_empty = "unknown"
-	var/icon 		= 'icons/obj/items/weapons/projectiles.dmi'
-	var/icon_state 	= "bullet"
-	var/ping 		= "ping_b" //The icon that is displayed when the bullet bounces off something.
+	var/hud_state_empty	= "unknown"
+	var/icon			= 'icons/obj/items/weapons/projectiles.dmi'
+	var/icon_state		= "bullet"
+	var/ping			= "ping_b" //The icon that is displayed when the bullet bounces off something.
 	var/sound_hit //When it deals damage.
 	var/sound_armor //When it's blocked by human armor.
 	var/sound_miss //When it misses someone.
 	var/sound_bounce //When it bounces off something.
 	var/sound_shield_hit //When the bullet is absorbed by a xeno_shield
 
-	var/accurate_range_min 			= 0			// Snipers use this to simulate poor accuracy at close ranges
-	var/scatter  					= 0 		// How much the ammo scatters when burst fired, added to gun scatter, along with other mods
-	var/stamina_damage 				= 0
-	var/damage 						= 0 		// This is the base damage of the bullet as it is fired
-	var/damage_type 				= BRUTE 	// BRUTE, BURN, TOX, OXY, CLONE are the only things that should be in here
+	var/accurate_range_min			= 0			// Snipers use this to simulate poor accuracy at close ranges
+	var/scatter						= 0 		// How much the ammo scatters when burst fired, added to gun scatter, along with other mods
+	var/stamina_damage				= 0
+	var/damage						= 0 		// This is the base damage of the bullet as it is fired
+	var/damage_type					= BRUTE 	// BRUTE, BURN, TOX, OXY, CLONE are the only things that should be in here
 	var/penetration					= 0 		// How much armor it ignores before calculations take place
-	var/shrapnel_chance 			= 0 		// The % chance it will imbed in a human
+	var/shrapnel_chance				= 0 		// The % chance it will imbed in a human
 	var/shrapnel_type				= 0			// The shrapnel type the ammo will embed, if the chance rolls
-	var/bonus_projectiles_type 					// Type path of the extra projectiles
-	var/bonus_projectiles_amount 	= 0 		// How many extra projectiles it shoots out. Works kind of like firing on burst, but all of the projectiles travel together
+	var/bonus_projectiles_type					// Type path of the extra projectiles
+	var/bonus_projectiles_amount	= 0 		// How many extra projectiles it shoots out. Works kind of like firing on burst, but all of the projectiles travel together
 	var/debilitate[]				= null 		// Stun,knockdown,knockout,irradiate,stutter,eyeblur,drowsy,agony
 	var/pen_armor_punch				= 0.5		// how much armor breaking will be done per point of penetration. This is for weapons that penetrate with their shape (like needle bullets)
 	var/damage_armor_punch			= 0.5		// how much armor breaking is done by sheer weapon force. This is for big blunt weapons
 	var/sound_override				= null		// if we should play a special sound when firing.
-	var/flags_ammo_behavior 		= NO_FLAGS
+	var/flags_ammo_behavior			= NO_FLAGS
 
-	var/accuracy 			= HIT_ACCURACY_TIER_1 	// This is added to the bullet's base accuracy.
-	var/accuracy_var_low	= PROJECTILE_VARIANCE_TIER_9 	// How much the accuracy varies when fired. // This REDUCES the lower bound of accuracy variance by 2%, to 96%.
-	var/accuracy_var_high	= PROJECTILE_VARIANCE_TIER_9	// This INCREASES the upper bound of accuracy variance by 2%, to 107%.
-	var/accurate_range 		= 6 	// For most guns, this is where the bullet dramatically looses accuracy. Not for snipers though.
-	var/max_range 			= 22 	// This will de-increment a counter on the bullet.
-	var/damage_var_low		= PROJECTILE_VARIANCE_TIER_9 	// Same as with accuracy variance.
-	var/damage_var_high		= PROJECTILE_VARIANCE_TIER_9	// This INCREASES the upper bound of damage variance by 2%, to 107%.
-	var/damage_falloff 		= DAMAGE_FALLOFF_TIER_10 // How much damage the bullet loses per turf traveled after the effective range
-	var/damage_buildup 		= DAMAGE_BUILDUP_TIER_1 // How much damage the bullet loses per turf away before the effective range
-	var/effective_range_min	= EFFECTIVE_RANGE_OFF	//What minimum range the ammo deals full damage, builds up the closer you get. 0 for no minimum. Added onto gun range as a modifier.
-	var/effective_range_max	= EFFECTIVE_RANGE_OFF	//What maximum range the ammo deals full damage, tapers off using damage_falloff after hitting this value. 0 for no maximum. Added onto gun range as a modifier.
-	var/shell_speed 		= AMMO_SPEED_TIER_1 	// How fast the projectile moves.
+	var/accuracy					= HIT_ACCURACY_TIER_1 	// This is added to the bullet's base accuracy.
+	var/accuracy_var_low			= PROJECTILE_VARIANCE_TIER_9 	// How much the accuracy varies when fired. // This REDUCES the lower bound of accuracy variance by 2%, to 96%.
+	var/accuracy_var_high			= PROJECTILE_VARIANCE_TIER_9	// This INCREASES the upper bound of accuracy variance by 2%, to 107%.
+	var/accurate_range				= 6 	// For most guns, this is where the bullet dramatically looses accuracy. Not for snipers though.
+	var/max_range					= 22 	// This will de-increment a counter on the bullet.
+	var/damage_var_low				= PROJECTILE_VARIANCE_TIER_9 	// Same as with accuracy variance.
+	var/damage_var_high				= PROJECTILE_VARIANCE_TIER_9	// This INCREASES the upper bound of damage variance by 2%, to 107%.
+	var/damage_falloff				= DAMAGE_FALLOFF_TIER_10 // How much damage the bullet loses per turf traveled after the effective range
+	var/damage_buildup				= DAMAGE_BUILDUP_TIER_1 // How much damage the bullet loses per turf away before the effective range
+	var/effective_range_min			= EFFECTIVE_RANGE_OFF	//What minimum range the ammo deals full damage, builds up the closer you get. 0 for no minimum. Added onto gun range as a modifier.
+	var/effective_range_max			= EFFECTIVE_RANGE_OFF	//What maximum range the ammo deals full damage, tapers off using damage_falloff after hitting this value. 0 for no maximum. Added onto gun range as a modifier.
+	var/shell_speed					= AMMO_SPEED_TIER_1 	// How fast the projectile moves.
 
 	///Determines what color our bullet will be when it flies
-	var/bullet_color = COLOR_WHITE
+	var/bullet_color				= COLOR_WHITE
 
-	var/handful_type 		= /obj/item/ammo_magazine/handful
+	var/handful_type				= /obj/item/ammo_magazine/handful
 	var/handful_color
-	var/handful_state = "bullet" //custom handful sprite, for shotgun shells or etc.
+	var/handful_state				= "bullet" //custom handful sprite, for shotgun shells or etc.
 	var/multiple_handful_name //so handfuls say 'buckshot shells' not 'shell'
 
 	/// Does this apply xenomorph behaviour delegate?
-	var/apply_delegate = TRUE
+	var/apply_delegate				= TRUE
 
 	/// An assoc list in the format list(/datum/element/bullet_trait_to_give = list(...args))
 	/// that will be given to a projectile with the current ammo datum
 	var/list/list/traits_to_give
 
-	var/flamer_reagent_type = /datum/reagent/napalm/ut
+	var/flamer_reagent_type			= /datum/reagent/napalm/ut
 
 	/// The flicker that plays when a bullet hits a target. Usually red. Can be nulled so it doesn't show up at all.
-	var/hit_effect_color = "#FF0000"
+	var/hit_effect_color			= "#FF0000"
 
 /datum/ammo/New()
 	set_bullet_traits()
@@ -1484,7 +1484,7 @@ CUSTOM_AMMO_PENETRATION
 	burst(get_turf(proj),proj,damage_type)
 
 /datum/ammo/bullet/shotgun/incendiary/on_hit_turf(turf/T,obj/item/projectile/proj)
-	burst(get_turf(T),proj,damage_type)
+	burst(T,proj,damage_type)
 
 
 /datum/ammo/bullet/shotgun/flechette
@@ -2019,6 +2019,35 @@ CUSTOM_AMMO_PENETRATION
 		// 150% damage to runners (225), 300% against Big xenos (450), and 200% against all others (300). -Kaga
 		to_chat(proj.firer, SPAN_WARNING("Bullseye!"))
 
+/datum/ammo/bullet/tank/crowbar
+	name = "105mm \"crowbar\""
+	icon_state = "ltb" // TODO: DO FUCKING ICON
+	flags_ammo_behavior = AMMO_STRIKES_SURFACE
+
+	accuracy = HIT_ACCURACY_TIER_10
+	accurate_range = 64
+	max_range = 64
+	damage = 600
+	shell_speed = AMMO_SPEED_TIER_6
+
+/datum/ammo/bullet/tank/crowbar/on_hit_mob(mob/hit, obj/item/projectile/proj)
+	create_shrapnel(get_turf(hit), rand(5, 40), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/metal, proj.weapon_cause_data, TRUE)
+	if(istype(hit, /mob/living/carbon/xenomorph))
+		create_shrapnel(get_turf(hit), rand(5, 40), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/light/xeno, proj.weapon_cause_data, TRUE)
+	else
+		create_shrapnel(get_turf(hit), rand(1, 10), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/light/human, proj.weapon_cause_data, TRUE)
+		create_shrapnel(get_turf(hit), rand(2, 15), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/light/human/var1, proj.weapon_cause_data, TRUE)
+		create_shrapnel(get_turf(hit), rand(2, 15), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/light/human/var2, proj.weapon_cause_data, TRUE)
+
+/datum/ammo/bullet/tank/crowbar/on_hit_obj(obj/O, obj/item/projectile/proj)
+	create_shrapnel(get_turf(O), rand(10, 80), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/metal, proj.weapon_cause_data)
+
+/datum/ammo/bullet/tank/crowbar/on_hit_turf(turf/T, obj/item/projectile/proj)
+	create_shrapnel(T, rand(10, 80), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/metal, proj.weapon_cause_data)
+
+/datum/ammo/bullet/tank/crowbar/do_at_max_range(obj/item/projectile/proj)
+	create_shrapnel(get_turf(src), rand(10, 80), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/metal, proj.weapon_cause_data)
+
 /datum/ammo/bullet/tank/flak
 	name = "flak autocannon bullet"
 	icon_state = "autocannon"
@@ -2040,8 +2069,8 @@ CUSTOM_AMMO_PENETRATION
 	burst(get_turf(hit),proj,damage_type, 1 , 3 , 0)
 
 /datum/ammo/bullet/tank/flak/on_near_target(turf/T, obj/item/projectile/proj)
-	burst(get_turf(T),proj,damage_type, 2 , 3)
-	burst(get_turf(T),proj,damage_type, 1 , 3, 0)
+	burst(T,proj,damage_type, 2 , 3)
+	burst(T,proj,damage_type, 1 , 3, 0)
 	return 1
 
 /datum/ammo/bullet/tank/flak/on_hit_obj(obj/O,obj/item/projectile/proj)
@@ -2049,8 +2078,8 @@ CUSTOM_AMMO_PENETRATION
 	burst(get_turf(proj),proj,damage_type, 1 , 3 , 0)
 
 /datum/ammo/bullet/tank/flak/on_hit_turf(turf/T,obj/item/projectile/proj)
-	burst(get_turf(T),proj,damage_type, 2 , 3)
-	burst(get_turf(T),proj,damage_type, 1 , 3 , 0)
+	burst(T,proj,damage_type, 2 , 3)
+	burst(T,proj,damage_type, 1 , 3 , 0)
 
 /datum/ammo/bullet/tank/dualcannon
 	name = "dualcannon bullet"
@@ -2504,8 +2533,8 @@ CUSTOM_AMMO_PENETRATION
 	cell_explosion(get_turf(O), 200, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
 
 /datum/ammo/rocket/ltb/on_hit_turf(turf/T, obj/item/projectile/proj)
-	cell_explosion(get_turf(T), 220, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
-	cell_explosion(get_turf(T), 200, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
+	cell_explosion(T, 220, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
+	cell_explosion(T, 200, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
 
 /datum/ammo/rocket/ltb/do_at_max_range(obj/item/projectile/proj)
 	cell_explosion(get_turf(proj), 220, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)

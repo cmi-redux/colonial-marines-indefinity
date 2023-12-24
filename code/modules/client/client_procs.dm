@@ -740,8 +740,8 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 // WIP, ~~disabled because prefered auditory changed to english plus unfinished and~~ can be done through TGUI (better optimisation)
 	language = language == CLIENT_LANGUAGE_RUSSIAN ? CLIENT_LANGUAGE_ENGLISH : CLIENT_LANGUAGE_RUSSIAN
 	prefs.client_language = language
-	prefs.save_preferences()
 	to_chat(src, SPAN_BOLDNOTICE(auto_lang(LANGUAGE_CHANGE_MESSAGE)))
+	prefs.save_preferences()
 	init_verbs()
 	for(var/window_id in tgui_windows)
 		var/datum/tgui_window/window = tgui_windows[window_id]

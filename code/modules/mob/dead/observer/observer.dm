@@ -829,8 +829,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return
 
 	var/list/mobs_by_role = list() // the list the mobs are assigned to first, for sorting purposes
-	for(var/datum/weakref/ref as anything in GLOB.freed_mob_list)
-		var/mob/living/resolved_mob = ref.resolve()
+	for(var/mob/living/resolved_mob as anything in GLOB.freed_mob_list)
 		var/role_name = resolved_mob.get_role_name()
 		if(!role_name)
 			role_name = "No Role"

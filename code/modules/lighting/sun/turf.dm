@@ -58,7 +58,7 @@ Sunlight System
 	for(var/datum/static_lighting_corner/C in affecting_corners)
 		LAZYREMOVE(C.glob_affect, src)
 		C.get_sunlight_falloff()
-		if( C.master_NE)
+		if(C.master_NE)
 			T |= C.master_NE
 		if(C.master_SE)
 			T |= C.master_SE
@@ -85,7 +85,7 @@ Sunlight System
 
 
 /atom/movable/outdoor_effect/proc/calc_sunlight_spread()
-	var/list/turf/turfs                    = list()
+	var/list/turf/turfs = list()
 	var/datum/static_lighting_corner/C
 	var/turf/T
 	var/list/tempMasterList = list() /* to mimimize double ups */
