@@ -650,12 +650,13 @@
 			amount -= 10
 			if(foundsmoke.amount > 0)
 				foundsmoke.spread_smoke()
-		else
-			var/obj/effect/particle_effect/smoke/S = new type(acting_turf, 10, cause_data)
-			amount -= 10
-			S.setDir(pick(GLOB.cardinals))
-			if(S.amount > 0)
-				S.spread_smoke()
+			return
+
+	var/obj/effect/particle_effect/smoke/S = new type(acting_turf, 10, cause_data)
+	amount -= 10
+	S.setDir(pick(GLOB.cardinals))
+	if(S.amount > 0)
+		S.spread_smoke()
 
 /obj/effect/particle_effect/smoke/chlor/Crossed(mob/living/carbon/target as mob)
 	return
