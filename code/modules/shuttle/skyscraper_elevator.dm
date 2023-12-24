@@ -482,6 +482,14 @@
 	for(var/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/B as anything in move_lock_doors)
 		if(B.density)
 			INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door, open))
+	var/obj/structure/machinery/computer/security_blocker/parrent_blocker
+	if((z - SSshuttle.sky_scraper_elevator.floor_offset) % 2 == 1)
+		parrent_blocker = GLOB.skyscrapers_sec_comps["[z-1]"]
+	else
+		parrent_blocker = GLOB.skyscrapers_sec_comps["[z+1]"]
+	for(var/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper/B as anything in parrent_blocker.move_lock_doors)
+		if(B.density)
+			INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door, open))
 	visible_message(SPAN_NOTICE("[src] beeps as it finishes generating code."))
 
 /turf/closed/wall/vents

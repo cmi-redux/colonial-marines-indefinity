@@ -43,6 +43,18 @@
 /area/skyscraper/building/agro_sector
 	name = "W-Y 'Almea' Agro Sector"
 
+/area/skyscraper/building/eco_emulation_sector
+	name = "W-Y 'Almea' Eco Emulation Sector"
+
+/area/skyscraper/building/internal_cargo_sector
+	name = "W-Y 'Almea' Eco Emulation Sector"
+
+/area/skyscraper/building/morgue_sector
+	name = "W-Y 'Almea' Morgue Sector"
+
+/area/skyscraper/building/building_in_progress_sector
+	name = "W-Y 'Almea' Empty Sector"
+
 /area/skyscraper/building/science_sector
 	name = "W-Y 'Almea' Science Sector"
 
