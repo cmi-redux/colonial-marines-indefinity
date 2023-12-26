@@ -392,7 +392,7 @@
 //	var/icon/I = new /icon('icons/custom/items/attach_recoloring.dmi', skin)
 //	attachment_recoloring = image(I)
 //	attachment_recoloring.alpha = 180
-//	attachment_recoloring.blend_mode = BLEND_MULTIPLY|BLEND_INSET_OVERLAY|BLEND_SUBTRACT
+//	attachment_recoloring.blend_mode = BLEND_ADD|BLEND_INSET_OVERLAY|BLEND_SUBTRACT
 	update_icon()
 
 /// Populate traits_to_give in this proc

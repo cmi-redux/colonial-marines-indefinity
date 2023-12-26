@@ -5,7 +5,7 @@
 #define UPLOAD_LIMIT 10485760 //Restricts client uploads to the server to 10MB //Boosted this thing. What's the worst that can happen?
 #define MIN_CLIENT_VERSION 0 //Just an ambiguously low version for now, I don't want to suddenly stop people playing.
 									//I would just like the code ready should it ever need to be used.
-#define GOOD_BYOND_MAJOR 513
+#define GOOD_BYOND_MAJOR 514
 #define GOOD_BYOND_MINOR 1500
 
 GLOBAL_LIST_INIT(blacklisted_builds, list(

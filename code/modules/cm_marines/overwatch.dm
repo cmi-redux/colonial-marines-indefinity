@@ -47,7 +47,7 @@
 	set waitfor = FALSE
 	WAIT_MAPVIEW_READY
 	for(var/i in ALL_MAPVIEW_MAPTYPES)
-		var/datum/ui_minimap/new_minimap = SSmapview.get_minimap_ui(faction, i, minimap_name)
+		var/datum/ui_minimap/new_minimap = SSmapview.get_minimap_ui(faction, i, src, FALSE, minimap_name)
 		minimap += list("[i]" = new_minimap)
 
 /obj/structure/machinery/computer/overwatch/attackby(obj/I as obj, mob/user as mob)  //Can't break or disassemble.

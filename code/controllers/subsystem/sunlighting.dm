@@ -1,6 +1,5 @@
 #define WAIT_SUNLIGHT_READY while(!SSsunlighting.initialized) {stoplag();}
 
-//TODO: Change verbiage to outdoor_effects rather than sunlight
 /datum/time_of_day
 	var/name = ""
 	var/color = ""

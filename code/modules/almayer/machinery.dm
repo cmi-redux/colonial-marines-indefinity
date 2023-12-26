@@ -97,7 +97,7 @@
 /obj/structure/machinery/prop/almayer/CICmap/proc/link_minimap()
 	set waitfor = FALSE
 	WAIT_MAPVIEW_READY
-	minimap = SSmapview.get_minimap_ui(faction, GROUND_MAP_Z, minimap_name)
+	minimap = SSmapview.get_minimap_ui(faction, GROUND_MAP_Z, src, FALSE, minimap_name)
 
 /obj/structure/machinery/prop/almayer/CICmap/examine(mob/living/user)
 	if((ishuman(user) && get_dist(src,user) < 3 && powered()) || !Adjacent(user))

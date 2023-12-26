@@ -112,7 +112,7 @@
 /turf/open/trench/Entered(atom/movable/arrived)
 	. = ..()
 	if(isliving(arrived))
-		arrived.AddComponent(/datum/component/mob_overlay_effect, -4)
+		arrived.AddComponent(/datum/component/mob_overlay_effect, -4, -4)
 		var/mob/living/C = arrived
 		if(C && C.throwing)
 			return

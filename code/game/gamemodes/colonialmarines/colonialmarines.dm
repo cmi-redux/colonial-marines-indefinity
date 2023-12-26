@@ -216,8 +216,7 @@
 							to_chat(M, SPAN_XENOANNOUNCE("The Queen Mother reaches into your mind from worlds away."))
 							to_chat(M, SPAN_XENOANNOUNCE("Для моих детей и их Королевы. Я чувствую что большие двери ловушки откроются через 30 секунд."))
 						addtimer(CALLBACK(src, PROC_REF(open_podlocks), "map_lockdown"), 300)
-
-			if(round_should_check_for_win)
+			if(round_should_check_for_win && SSticker.current_state == GAME_STATE_PLAYING)
 				check_win()
 			round_checkwin = 0
 
@@ -316,9 +315,6 @@
 //Checks to see who won///
 //////////////////////////
 /datum/game_mode/colonialmarines/check_win()
-	if(SSticker.current_state != GAME_STATE_PLAYING)
-		return
-
 	var/living_player_list[] = count_humans_and_xenos(SSevacuation.get_affected_zlevels())
 	var/num_humans = living_player_list[1]
 	var/num_xenos = living_player_list[2]
@@ -336,10 +332,10 @@
 			if(SSticker.mode && SSticker.mode.is_in_endgame)
 				round_finished = MODE_INFESTATION_X_MINOR //Evacuation successfully took place.
 			else
-				SSticker.roundend_check_paused = TRUE
+//				SSticker.roundend_check_paused = TRUE
 				round_finished = MODE_INFESTATION_M_MAJOR //Humans destroyed the xenomorphs.
 				ares_conclude()
-				addtimer(VARSET_CALLBACK(SSticker, roundend_check_paused, FALSE), MARINE_MAJOR_ROUND_END_DELAY)
+//				addtimer(VARSET_CALLBACK(SSticker, roundend_check_paused, FALSE), MARINE_MAJOR_ROUND_END_DELAY)
 		else if(!num_humans && !num_xenos)
 			round_finished = MODE_INFESTATION_DRAW_DEATH //Both were somehow destroyed.
 

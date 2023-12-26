@@ -2,8 +2,6 @@
 	name = "vehicle elevator"
 	width = 5
 	height = 5
-	dwidth = 2
-	dheight = 2
 
 	id = MOBILE_SHUTTLE_VEHICLE_ELEVATOR
 
@@ -13,6 +11,8 @@
 	ignition_sound = 'sound/machines/asrs_raising.ogg'
 	ambience_idle = null
 	ambience_flight = null
+
+	custom_ceiling = /turf/open/floor/roof/ship_hull/lab
 
 	var/list/railings = list()
 	var/list/gears = list()
@@ -50,8 +50,6 @@
 	id = "root vehicle"
 	width = 5
 	height = 5
-	dwidth = 2
-	dheight = 2
 
 /obj/docking_port/stationary/vehicle_elevator/almayer
 	name = "Almayer Vehicle Elevator Dock"

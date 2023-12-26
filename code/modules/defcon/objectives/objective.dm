@@ -17,7 +17,7 @@
 		controller = faction_to_get
 	connect_objective()
 
-// Hotfix for testing, until rework in proper way pregenrated objectives (TODO: REMOVE WHEN PREGENERATED SPAWNS OF OBJECTIVES REMOVED)
+// Hotfix for testing, until rework in proper way pregenerated objectives (TODO: REMOVE WHEN PREGENERATED SPAWNS OF OBJECTIVES REMOVED)
 /datum/cm_objective/proc/connect_objective()
 	set waitfor = FALSE
 	UNTIL(length(GLOB.faction_datum))

@@ -20,7 +20,6 @@ GLOBAL_LIST_FILE_LOAD(whitelist, WHITELISTFILE)
 
 GLOBAL_LIST_FILE_LOAD(alien_whitelist, "config/alienwhitelist.txt")
 
-//todo: admin aliens
 /proc/is_alien_whitelisted(mob/M, species)
 	if(!CONFIG_GET(flag/usealienwhitelist)) //If there's not config to use the whitelist.
 		return 1

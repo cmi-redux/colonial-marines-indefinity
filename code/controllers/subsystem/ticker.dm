@@ -34,9 +34,6 @@ SUBSYSTEM_DEF(ticker)
 	var/queue_delay = 0
 	var/list/queued_players = list() //used for join queues when the server exceeds the hard population cap
 
-	// TODO: move this into mapview ss
-	var/toweractive = FALSE
-
 	var/list/minds = list()
 
 	var/automatic_delay_end = FALSE
@@ -101,7 +98,7 @@ SUBSYSTEM_DEF(ticker)
 		if(GAME_STATE_PLAYING)
 			mode.process(wait * 0.1)
 
-			if(!roundend_check_paused && mode.check_finished(force_ending) || force_ending)
+			if((!roundend_check_paused && mode.check_finished(force_ending)) || force_ending)
 				current_state = GAME_STATE_FINISHED
 				ooc_allowed = TRUE
 				mode.declare_completion(force_ending)

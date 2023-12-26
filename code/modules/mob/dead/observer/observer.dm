@@ -57,6 +57,7 @@
 	var/own_orbit_size = 0
 	var/observer_actions = list(/datum/action/observer_action/join_xeno, /datum/action/observer_action/join_lesser_drone)
 	var/datum/action/minimap/observer/minimap
+	var/list/datum/ui_minimap/minimap_ui = list()
 	var/larva_queue_cached_message
 	///Used to bypass time of death checks such as when being selected for larva.
 	var/bypass_time_of_death_checks = FALSE
@@ -166,6 +167,15 @@
 
 	verbs -= /mob/verb/pickup_item
 	verbs -= /mob/verb/pull_item
+
+	link_minimap()
+
+/mob/dead/observer/proc/link_minimap()
+	set waitfor = FALSE
+	WAIT_MAPVIEW_READY
+	for(var/i in ALL_MAPVIEW_MAPTYPES)
+		var/datum/ui_minimap/new_minimap = SSmapview.get_minimap_ui(null, i, src, FALSE, "Spectator Minimap")
+		minimap_ui += list("[i]" = new_minimap)
 
 /mob/dead/observer/proc/set_lighting_alpha_from_pref(client/ghost_client)
 	var/vision_level = ghost_client?.prefs?.ghost_vision_pref
@@ -813,7 +823,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Join as Zombie"
 	set desc = "Select an alive but logged-out Zombie to rejoin the game."
 
-	GLOB.faction_datum[FACTION_ZOMBIE].get_join_status(src)
+	GLOB.faction_datum[FACTION_ZOMBIE]?.get_join_status(src)
 
 /mob/dead/verb/join_as_freed_mob()
 	set category = "Ghost.Join"
@@ -850,18 +860,18 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	handle_joining_as_freed_mob(L)
 
 /mob/dead/proc/handle_joining_as_freed_mob(mob/living/freed_mob)
-	if(!freed_mob || !(WEAKREF(freed_mob) in GLOB.freed_mob_list))
+	if(!freed_mob || !(freed_mob in GLOB.freed_mob_list))
 		return
 
 	if(!istype(freed_mob))
 		return
 
 	if(QDELETED(freed_mob) || freed_mob.client)
-		GLOB.freed_mob_list -= WEAKREF(freed_mob)
+		GLOB.freed_mob_list -= freed_mob
 		to_chat(src, SPAN_WARNING("Something went wrong."))
 		return
 
-	GLOB.freed_mob_list -= WEAKREF(freed_mob)
+	GLOB.freed_mob_list -= freed_mob
 	mind.transfer_to(freed_mob, TRUE)
 
 /mob/dead/verb/join_as_hellhound()

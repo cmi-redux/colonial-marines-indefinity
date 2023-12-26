@@ -3,32 +3,27 @@
 /obj/effect/decal/warning_stripes{
 	icon_state = "SE-out"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/shuttle/vehicle_elevator)
 "b" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "S"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/shuttle/vehicle_elevator)
 "c" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "SW-out"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/shuttle/vehicle_elevator)
 "d" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "E"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/shuttle/vehicle_elevator)
 "e" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -37,33 +32,28 @@
 /obj/effect/decal/warning_stripes{
 	icon_state = "W"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/shuttle/vehicle_elevator)
 "g" = (
-/obj/docking_port/mobile/vehicle_elevator,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/shuttle/vehicle_elevator)
 "h" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "NE-out"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/docking_port/mobile/vehicle_elevator,
 /turf/open/floor/plating/plating_catwalk,
 /area/shuttle/vehicle_elevator)
 "i" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "N"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/shuttle/vehicle_elevator)
 "j" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "NW-out"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/shuttle/vehicle_elevator)
 

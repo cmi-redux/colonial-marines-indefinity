@@ -59,7 +59,7 @@
 		/obj/item/attachable/flashlight,
 	)
 
-	flags_gun_features = GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY
+	flags_gun_features = GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_AMMO_COUNTER
 	gun_category = GUN_CATEGORY_HEAVY
 	starting_attachment_types = list(/obj/item/attachable/smartbarrel)
 	auto_retrieval_slot = WEAR_J_STORE
@@ -108,18 +108,6 @@
 	LAZYADD(traits_to_give, list(
 		BULLET_TRAIT_ENTRY_ID("iff", /datum/element/bullet_trait_iff)
 	))
-
-/obj/item/weapon/gun/smartgun/get_ammo_type()
-	if(!ammo)
-		return list("smartgun", "smartgun_empty")
-	else //for clarity's sake, smartguns will not return the chamber ammo but the magazine ammo
-		return list(ammo.hud_state, ammo.hud_state_empty)
-
-/obj/item/weapon/gun/smartgun/get_ammo_count()
-	if(!current_mag)
-		return 0
-	else
-		return current_mag.ammo_position
 
 /obj/item/weapon/gun/smartgun/get_examine_text(mob/user)
 	. = ..()

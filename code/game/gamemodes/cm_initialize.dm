@@ -415,7 +415,7 @@ Additional game mode variables.
 					noob.close_spawn_windows()
 				if(picked_faction.faction_location)
 					picked_faction.faction_location.spawn_burrowed_larva(xeno_candidate)
-				else if((world.time < XENO_BURIED_LARVA_TIME_LIMIT + SSticker.round_start_time))
+				else if((world.time < XENO_BURIED_LARVA_TIME_LIMIT + SSticker.round_start_time) && length(picked_faction.totalMobs))
 					picked_faction.do_buried_larva_spawn(xeno_candidate)
 				else
 					to_chat(xeno_candidate, SPAN_WARNING("Seems like something went wrong. Try again?"))

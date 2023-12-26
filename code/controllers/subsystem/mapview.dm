@@ -60,10 +60,10 @@ SUBSYSTEM_DEF(mapview)
 
 	message_admins("finished updating minimaps")
 
-/datum/controller/subsystem/mapview/proc/get_minimap_ui(datum/faction/faction, zlevel, map_name)
+/datum/controller/subsystem/mapview/proc/get_minimap_ui(datum/faction/faction, zlevel, owner, acting_setting, map_name)
 	set waitfor = FALSE
 	WAIT_MAPVIEW_READY
-	return new /datum/ui_minimap(faction?.tcmp_faction_datum, minimaps_by_trait["[SSmapping.level_minimap_trait(zlevel)]"], map_name)
+	return new /datum/ui_minimap(faction?.tcmp_faction_datum, minimaps_by_trait["[SSmapping.level_minimap_trait(zlevel)]"], owner, acting_setting, map_name)
 
 
 ///////////////////////

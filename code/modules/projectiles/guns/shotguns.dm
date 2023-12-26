@@ -29,20 +29,6 @@ can cause issues with ammo types getting mixed up during the burst.
 		var/chambered_round = in_chamber ? TRUE : FALSE
 		. += "It has [current_mag.ammo_position][chambered_round ? "+1" : ""] / [current_mag.max_rounds] rounds remaining."
 
-/obj/item/weapon/gun/shotgun/get_ammo_type()
-	if(!ammo)
-		return list("shotgun_slug", "shotgun_empty")
-	else if(!in_chamber)
-		return list(ammo.hud_state, ammo.hud_state_empty)
-	else
-		return list(in_chamber.ammo.hud_state, in_chamber.ammo.hud_state_empty)
-
-/obj/item/weapon/gun/shotgun/get_ammo_count()
-	if(!current_mag)
-		return in_chamber ? 1 : 0
-	else
-		return in_chamber ? (current_mag.ammo_position + 1) : current_mag.ammo_position
-
 /obj/item/weapon/gun/shotgun/set_gun_config_values()
 	..()
 	set_fire_delay(FIRE_DELAY_TIER_5)
@@ -82,13 +68,8 @@ can cause issues with ammo types getting mixed up during the burst.
 	if(isnull(current_mag) || !current_mag.ammo_position)
 		return
 
-	var/obj/item/projectile/projectile = current_mag.retrieve_ammo(1, user)
-
-	if(user)
-		user.put_in_hands(projectile)
+	if(current_mag.retrieve_ammo(1, user))
 		playsound(user, reload_sound, 25, 1)
-	else
-		projectile.forceMove(get_turf(src))
 	return TRUE
 
 /obj/item/weapon/gun/shotgun/proc/check_ammo_position()

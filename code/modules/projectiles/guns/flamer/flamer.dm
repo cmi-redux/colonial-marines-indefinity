@@ -70,14 +70,7 @@
 	else
 		. += "There's no tank in [src]!"
 
-/obj/item/weapon/gun/flamer/get_ammo_type()
-	if(!current_mag)
-		return list("empty", "empty")
-	else
-		var/obj/item/ammo_magazine/flamer_tank/flame_tank = current_mag
-		return list(flame_tank.hud_state, flame_tank.hud_state_empty)
-
-/obj/item/weapon/gun/flamer/get_ammo_count()
+/obj/item/weapon/gun/flamer/get_display_ammo_count()
 	if(!current_mag)
 		return 0
 	else
@@ -151,7 +144,7 @@
 	else
 		user.track_shot(initial(name))
 		unleash_flame(target, user)
-		get_ammo_count()
+		user?.hud_used.update_ammo_hud(src, get_ammo_list(), get_display_ammo_count())
 		return AUTOFIRE_CONTINUE
 	return NONE
 
@@ -176,15 +169,17 @@
 		if(user)
 			if(magazine.transfer_delay > 1)
 				to_chat(user, SPAN_NOTICE("You begin reloading [src]. Hold still..."))
-				if(do_after(user, magazine.transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE, BUSY_ICON_FRIENDLY)) replace_magazine(user)
+				if(do_after(user, magazine.transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE, BUSY_ICON_FRIENDLY))
+					replace_magazine(user, magazine)
 				else
 					to_chat(user, SPAN_WARNING("Your reload was interrupted!"))
 					return
-			else replace_magazine(user, magazine)
+			else
+				replace_magazine(user, magazine)
 		else
 			current_mag = magazine
 			magazine.forceMove(src)
-			replace_ammo(,magazine)
+			replace_ammo(, magazine)
 	var/obj/item/ammo_magazine/flamer_tank/tank = magazine
 	fuel_pressure = tank.fuel_pressure
 	update_icon()

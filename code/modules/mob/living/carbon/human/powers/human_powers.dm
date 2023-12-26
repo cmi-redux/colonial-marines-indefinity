@@ -199,6 +199,8 @@
 
 	resting = !resting
 
+	SEND_SIGNAL(src, COMSIG_LIVING_REST)
+
 	to_chat(src, SPAN_NOTICE("You are now [resting ? "resting." : "getting up."]"))
 
 /mob/living/carbon/human/proc/toggle_inherent_nightvison()

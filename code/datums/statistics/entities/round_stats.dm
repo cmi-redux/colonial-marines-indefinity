@@ -137,7 +137,7 @@
 	real_time_end = time2text(world.realtime)
 	for(var/i in GLOB.alive_mob_list)
 		var/mob/M = i
-		if(M.mind)
+		if(M.mind && M.faction)
 			track_final_participant(M.faction.name)
 
 	if(current_map)

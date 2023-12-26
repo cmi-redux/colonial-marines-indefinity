@@ -144,6 +144,7 @@
 	if(SSticker.mode.faction_round_end_state[winstate])
 		SSticker.mode.faction_won = GLOB.faction_datum[SSticker.mode.faction_round_end_state[winstate]]
 	SSticker.mode.round_finished = winstate
+	SSticker.force_ending = TRUE
 
 	log_admin("[key_name(usr)] has made the round end early - [winstate].")
 	message_admins("[key_name(usr)] has made the round end early - [winstate].")

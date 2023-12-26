@@ -152,7 +152,7 @@ GLOBAL_LIST_EMPTY(unannounced_maps)
 
 	var/datum/tacmap/faction_datum/faction_tcmp_ref
 	var/datum/tacmap/atom_datum/active_marker
-	var/datum/tacmap/minimap/map
+	var/datum/tacmap/minimap/minimap_ref
 
 	/// current flattend map
 	var/datum/flattened_tacmap/new_current_map
@@ -161,8 +161,8 @@ GLOBAL_LIST_EMPTY(unannounced_maps)
 	/// current svg
 	var/datum/svg_overlay/current_svg
 
-	var/atom/owner
-	var/acting = FALSE
+	var/atom/owner_ref
+	var/acting_setting = FALSE
 	var/selected_zlevel
 
 	var/coldown_duration = 5 MINUTES
@@ -172,25 +172,24 @@ GLOBAL_LIST_EMPTY(unannounced_maps)
 	var/updated_canvas = FALSE
 	var/last_update_time = 0
 
-/datum/ui_minimap/New(datum/tacmap/faction_datum/ftcmp_ref, datum/tacmap/minimap/minimap_ref, atom/owner_ref, acting_setting, map_name)
-	if(faction_tcmp_ref)
-		faction_tcmp_ref = ftcmp_ref
-	map = minimap_ref
-	owner = owner_ref
-	acting = acting_setting
-	minimap_name = map_name
-	if(!map)
+/datum/ui_minimap/New(datum/tacmap/faction_datum/_faction_tcmp_ref, datum/tacmap/minimap/_minimap_ref, atom/_owner_ref, _acting_setting, _minimap_name)
+	faction_tcmp_ref = _faction_tcmp_ref
+	minimap_ref = _minimap_ref
+	owner_ref = _owner_ref
+	acting_setting = _acting_setting
+	minimap_name = _minimap_name
+	if(!minimap_ref)
 		error("UI minimap tried to load without map")
 		qdel(src)
 
 /datum/ui_minimap/Destroy()
 	faction_tcmp_ref = null
 	active_marker = null
-	map = null
+	minimap_ref = null
 	new_current_map = null
 	old_map = null
 	current_svg = null
-	owner = null
+	owner_ref = null
 	return ..()
 
 /datum/ui_minimap/proc/distribute_current_map_png(minimap_zlevel)
@@ -214,22 +213,24 @@ GLOBAL_LIST_EMPTY(unannounced_maps)
 
 /datum/ui_minimap/tgui_interact(mob/user, datum/tgui/ui)
 	if(!selected_zlevel)
-		selected_zlevel = pick(map.map_zlevels)
+		selected_zlevel = pick(minimap_ref.map_zlevels)
 
 	new_current_map = GLOB.unannounced_maps["[selected_zlevel]"]
-	if(faction_tcmp_ref.drawnings["[selected_zlevel]"])
-		old_map = faction_tcmp_ref.drawnings["[selected_zlevel]"][length(faction_tcmp_ref.drawnings["[selected_zlevel]"])]
-	if(faction_tcmp_ref.svg_drawns["[selected_zlevel]"])
-		current_svg = faction_tcmp_ref.svg_drawns["[selected_zlevel]"][length(faction_tcmp_ref.svg_drawns["[selected_zlevel]"])]
+	if(faction_tcmp_ref)
+		if(faction_tcmp_ref.drawnings["[selected_zlevel]"])
+			old_map = faction_tcmp_ref.drawnings["[selected_zlevel]"][length(faction_tcmp_ref.drawnings["[selected_zlevel]"])]
+		if(faction_tcmp_ref.svg_drawns["[selected_zlevel]"])
+			current_svg = faction_tcmp_ref.svg_drawns["[selected_zlevel]"][length(faction_tcmp_ref.svg_drawns["[selected_zlevel]"])]
 
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		// Ensure we actually have the map image sent
 		resend_current_map_png(user, user.faction, selected_zlevel)
 
-		if(acting)
-			user.client.register_map_obj(SSmapview.hud_by_zlevel["[selected_zlevel]"])
-			distribute_current_map_png(selected_zlevel)
+		user.client.register_map_obj(SSmapview.hud_by_zlevel["[selected_zlevel]"])
+		if(acting_setting)
+			if(faction_tcmp_ref)
+				distribute_current_map_png(selected_zlevel)
 			last_update_time = world.time
 
 		ui = new(user, src, "TacticalMap", minimap_name)
@@ -258,7 +259,7 @@ GLOBAL_LIST_EMPTY(unannounced_maps)
 	.["markers"] = list()
 	for(var/i in markers)
 		var/datum/tacmap/atom_datum/M = markers[i]
-		var/marker_color = M.get_color(faction_tcmp_ref.faction)
+		var/marker_color = M.get_color(faction_tcmp_ref?.faction)
 		.["markers"] += list(list(
 			name = i,
 			icon_file = M.icon_file,
@@ -276,7 +277,7 @@ GLOBAL_LIST_EMPTY(unannounced_maps)
 	. = list()
 	.["mapRef"] = "[selected_zlevel]_mapview"
 	.["canvasCooldownDuration"] = coldown_duration
-	.["canDraw"] = acting
+	.["canDraw"] = acting_setting
 	.["selectedTheme"] = istype(user, /mob/living/carbon/xenomorph) // TODO: Do it right way, don't leave shitcode from original
 
 /datum/ui_minimap/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
@@ -298,12 +299,15 @@ GLOBAL_LIST_EMPTY(unannounced_maps)
 					updated_canvas = FALSE
 					toolbar_updated_selection = toolbar_color_selection  // doing this if it == canvas can cause a latency issue with the stroke.
 			else
-				if(!acting)
+				if(!acting_setting)
 					msg_admin_niche("[key_name(user)] made an unauthorized attempt to 'menuSelect' the 'new canvas' panel of the tacmap!")
 					return FALSE
 				distribute_current_map_png(selected_zlevel)
 				last_update_time = world.time
 				// An attempt to get the image to load on first try in the interface, but doesn't seem always reliable
+
+			if(!faction_tcmp_ref)
+				return
 
 			new_current_map = GLOB.unannounced_maps["[selected_zlevel]"]
 			if(faction_tcmp_ref.drawnings["[selected_zlevel]"])
@@ -312,28 +316,46 @@ GLOBAL_LIST_EMPTY(unannounced_maps)
 				current_svg = faction_tcmp_ref.svg_drawns["[selected_zlevel]"][length(faction_tcmp_ref.svg_drawns["[selected_zlevel]"])]
 
 		if("updateCanvas")
+			if(!faction_tcmp_ref)
+				return
+
 			toolbar_updated_selection = "export"
 			updated_canvas = TRUE
 
 		if("clearCanvas")
+			if(!faction_tcmp_ref)
+				return
+
 			toolbar_updated_selection = "clear"
 			updated_canvas = FALSE
 
 		if("undoChange")
+			if(!faction_tcmp_ref)
+				return
+
 			toolbar_updated_selection = "undo"
 			updated_canvas = FALSE
 
 		if("selectColor")
+			if(!faction_tcmp_ref)
+				return
+
 			var/newColor = params["color"]
 			if(newColor)
 				toolbar_color_selection = newColor
 				toolbar_updated_selection = newColor
 
 		if("onDraw")
+			if(!faction_tcmp_ref)
+				return
+
 			updated_canvas = FALSE
 
 		if("selectAnnouncement")
-			if(!acting)
+			if(!faction_tcmp_ref)
+				return
+
+			if(!acting_setting)
 				msg_admin_niche("[key_name(user)] made an unauthorized attempt to 'selectAnnouncement' the tacmap!")
 				return FALSE
 
@@ -359,18 +381,15 @@ GLOBAL_LIST_EMPTY(unannounced_maps)
 	. = TRUE
 
 /datum/ui_minimap/proc/get_markers()
-	if(!faction_tcmp_ref)
-		return list()
-	var/list/markers_view = list()
-	var/list/markers_ally = faction_tcmp_ref.faction_mobs_to_draw
-	for(var/datum/tacmap/atom_datum/M as anything in markers_ally)
-		if(M.atom_ref.z & map.map_zlevels)
-			markers_view["[M.generated_tag_ally]"] = M
-	var/list/markers = faction_tcmp_ref.mobs_to_draw
-	for(var/datum/tacmap/atom_datum/M as anything in markers)
-		if(M.atom_ref.z & map.map_zlevels)
-			markers_view["[M.generated_tag]"] = M
-	return markers_view
+	. = list()
+	for(var/datum/faction/faction in faction_tcmp_ref ? list(faction_tcmp_ref.faction) : GLOB.faction_datum)
+		var/datum/tacmap/faction_datum/faction_tcmp = faction.tcmp_faction_datum
+		for(var/datum/tacmap/atom_datum/M as anything in faction_tcmp.faction_mobs_to_draw)
+			if(M.atom_ref.z & minimap_ref.map_zlevels)
+				.["[M.generated_tag_ally]"] = M
+		for(var/datum/tacmap/atom_datum/M as anything in faction_tcmp.mobs_to_draw)
+			if(M.atom_ref.z & minimap_ref.map_zlevels)
+				.["[M.generated_tag]"] = M
 
 /datum/ui_minimap/ui_close(mob/user)
 	. = ..()
@@ -378,11 +397,11 @@ GLOBAL_LIST_EMPTY(unannounced_maps)
 	toolbar_color_selection = "black"
 	toolbar_updated_selection = "black"
 
-/datum/ui_minimap/ui_state(mob/user)
-	if(!isatom(owner))
+/datum/ui_minimap/ui_status(mob/user)
+	if(!isatom(owner_ref))
 		return UI_INTERACTIVE
 
-	var/dist = get_dist(owner, user)
+	var/dist = get_dist(owner_ref, user)
 	if(dist <= 1)
 		return UI_INTERACTIVE
 	else if(dist <= 2)

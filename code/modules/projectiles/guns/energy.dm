@@ -66,19 +66,11 @@
 			else
 				overlays += charge_icon + "_0"
 
-/obj/item/weapon/gun/energy/get_ammo_type()
-	if(!ammo)
-		return list("unknown", "unknown")
-	else if(!in_chamber)
-		return list(GLOB.ammo_list[ammo].hud_state, GLOB.ammo_list[ammo].hud_state_empty)
-	else
-		return list(in_chamber.ammo.hud_state, in_chamber.ammo.hud_state_empty)
-
-/obj/item/weapon/gun/energy/get_ammo_count()
+/obj/item/weapon/gun/energy/get_display_ammo_count()
 	if(!cell)
 		return 0
 	else
-		return FLOOR(cell.charge / max(charge_cost, 1),1)
+		return FLOOR(cell.charge / max(charge_cost, 1), 1)
 
 /obj/item/weapon/gun/energy/emp_act(severity)
 	cell.use(round(cell.maxcharge / severity))

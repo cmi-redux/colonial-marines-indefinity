@@ -376,7 +376,7 @@ ICEY GRASS. IT LOOKS LIKE IT'S MADE OF ICE.
 /obj/structure/flora/grass/short_grass/Crossed(atom/movable/arrived)
 	. = ..()
 	if(isliving(arrived))
-		arrived.AddComponent(/datum/component/mob_overlay_effect, 0, -2, 255)
+		arrived.AddComponent(/datum/component/mob_overlay_effect, -2, 12, 255)
 
 /obj/structure/flora/grass/short_grass/proc/auto_grass()
 	set waitfor = FALSE
@@ -419,7 +419,7 @@ ICEY GRASS. IT LOOKS LIKE IT'S MADE OF ICE.
 	. = ..()
 	if(isliving(arrived))
 		set_diged_ways(GLOB.reverse_dir[arrived.dir])
-		arrived.AddComponent(/datum/component/mob_overlay_effect, 0, -4, 255)
+		arrived.AddComponent(/datum/component/mob_overlay_effect, -4, 15, 255)
 
 /obj/structure/flora/grass/tall_grass/Uncrossed(atom/movable/gone)
 	. = ..()

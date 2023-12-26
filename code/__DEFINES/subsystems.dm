@@ -120,17 +120,17 @@
 #define SS_INIT_RADIO				-2
 #define SS_INIT_UNSPECIFIED			-3
 #define SS_INIT_EMERGENCY_SHUTTLE	-20
-#define SS_INIT_MAPVIEW				-21
 #define SS_INIT_ASSETS				-22
 #define SS_INIT_VOTE				-23
 #define SS_INIT_FINISH				-24
 #define SS_INIT_ADMIN				-26
 #define SS_INIT_PREDSHIPS			-30
 #define SS_INIT_FACTIONS			-31
-#define SS_INIT_LOBBYART			-33
 #define SS_INIT_ICON_SMOOTHING		-34
-#define SS_INIT_STATPANELS			-98
-#define SS_INIT_QUEUE				-99
+#define SS_INIT_STATPANELS			-96
+#define SS_INIT_QUEUE				-97
+#define SS_INIT_MAPVIEW				-98
+#define SS_INIT_LOBBYART			-99
 #define SS_INIT_CHAT				-100 //Should be last to ensure chat remains smooth during init.
 #define SS_INIT_EARLYRUNTIMES		-500
 

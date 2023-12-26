@@ -57,15 +57,6 @@
 			to_chat(user, SPAN_DANGER("[current_mag.ammo_position] / [current_mag.max_rounds] ROUNDS REMAINING"))
 		..()
 
-/obj/item/weapon/gun/revolver/get_ammo_type()
-	if(!ammo)
-		return list("revolver", "revolver_empty")
-	else
-		return list(ammo.hud_state, ammo.hud_state_empty)
-
-/obj/item/weapon/gun/revolver/get_ammo_count()
-	return current_mag ? current_mag.ammo_position : 0
-
 /obj/item/weapon/gun/revolver/proc/rotate_cylinder(mob/user) //Cylinder moves backward.
 	if(current_mag)
 		pin_locked_on = pin_locked_on == 1 ? current_mag.max_rounds : pin_locked_on - 1

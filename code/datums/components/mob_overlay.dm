@@ -27,11 +27,11 @@
 
 /datum/component/mob_overlay_effect/RegisterWithParent(datum/target)
 	. = ..()
-	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(update_turf_overlays_effects))
+	RegisterSignal(parent, list(COMSIG_MOVABLE_MOVED, COMSIG_LIVING_REST), PROC_REF(update_turf_overlays_effects))
 
 /datum/component/mob_overlay_effect/UnregisterFromParent(datum/source, force)
 	. = ..()
-	UnregisterSignal(parent, COMSIG_MOVABLE_MOVED)
+	UnregisterSignal(parent, list(COMSIG_MOVABLE_MOVED, COMSIG_LIVING_REST))
 
 /datum/component/mob_overlay_effect/InheritComponent(datum/component/C, i_am_original, y_offset, mask_y_offset, effect_alpha)
 	. = ..()

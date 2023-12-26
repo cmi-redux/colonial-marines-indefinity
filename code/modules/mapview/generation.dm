@@ -95,6 +95,7 @@
 		mapview = new
 		mapview.icon = new_minimap
 		mapview.screen_loc = "[level_to_gen]_mapview:1,1"
+		mapview.assigned_map = "[level_to_gen]"
 		SSmapview.hud_by_zlevel["[level_to_gen]"] = mapview
 
 	minimap_layers["[level_to_gen]"] = new_minimap

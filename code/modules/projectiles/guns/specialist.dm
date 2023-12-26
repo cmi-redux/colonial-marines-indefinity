@@ -868,14 +868,14 @@
 	fired.forceMove(get_turf(src))
 	fired.throw_atom(target, 20, SPEED_VERY_FAST, user, null, NORMAL_LAUNCH, pass_flags)
 
-/obj/item/weapon/gun/launcher/grenade/get_ammo_type()
+/obj/item/weapon/gun/launcher/grenade/get_ammo_list()
 	if(length(cylinder.contents) == 0)
 		return list("grenade_empty", "grenade_empty")
 	else
-		var/obj/item/explosive/grenade/F = cylinder.contents[1]
-		return list(F.hud_state, F.hud_state_empty)
+		var/obj/item/explosive/grenade/grenade = cylinder.contents[1]
+		return list(grenade.hud_state, grenade.hud_state_empty)
 
-/obj/item/weapon/gun/launcher/grenade/get_ammo_count()
+/obj/item/weapon/gun/launcher/grenade/get_display_ammo_count()
 	return length(cylinder.contents)
 
 //Doesn't use these. Listed for reference.
@@ -1072,20 +1072,6 @@
 	. = ..()
 	smoke = new()
 	smoke.attach(src)
-
-/obj/item/weapon/gun/launcher/rocket/get_ammo_type()
-	if(!ammo)
-		return list("rocket_he", "rocket_empty")
-	else if(!in_chamber)
-		return list(ammo.hud_state, ammo.hud_state_empty)
-	else
-		return list(in_chamber.ammo.hud_state, in_chamber.ammo.hud_state_empty)
-
-/obj/item/weapon/gun/launcher/rocket/get_ammo_count()
-	if(!current_mag)
-		return 0
-	else
-		return current_mag.ammo_position
 
 /obj/item/weapon/gun/launcher/rocket/Destroy()
 	QDEL_NULL(smoke)

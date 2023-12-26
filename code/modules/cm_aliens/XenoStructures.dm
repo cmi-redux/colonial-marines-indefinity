@@ -376,7 +376,7 @@
 /obj/structure/mineral_door/resin/TryToSwitchState(atom/user)
 	if(isxeno(user))
 		var/mob/living/carbon/xenomorph/xeno_user = user
-		if(xeno_user.ally(faction))
+		if(!xeno_user.ally(faction))
 			return
 		if(xeno_user.scuttle(src))
 			return

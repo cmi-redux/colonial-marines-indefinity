@@ -18,12 +18,14 @@
 /atom/movable/screen/ghost/minimap
 	name = "Minimap"
 	icon_state = "minimap"
-/*
+
 /atom/movable/screen/ghost/minimap/Click()
 	var/mob/dead/observer/ghost = usr
 
-	ghost.minimap.action_activate()
-*/
+	var/datum/ui_minimap/chosed = ghost.minimap_ui["[tgui_input_list(ghost, "Choose map to view.", "Ghost Minimap", ALL_MAPVIEW_MAPTYPES)]"]
+	if(chosed)
+		chosed.tgui_interact(ghost)
+
 // /atom/movable/screen/ghost/follow_xeno
 // name = "Follow Xeno"
 // icon_state = "follow_xeno"

@@ -700,7 +700,8 @@
 
 /mob/living/carbon/xenomorph/proc/mapview()
 	var/datum/ui_minimap/chosed = minimap["[map_to_view]"]
-	chosed.tgui_interact(src)
+	if(chosed)
+		chosed.tgui_interact(src)
 
 /mob/living/carbon/xenomorph/proc/xeno_tacmap_loc_change()
 	set name = "Xeno Tacmap Location Change"

@@ -1367,7 +1367,7 @@ var/datum/controller/supply/supply_controller = new()
 		dat += "Moving"
 	else
 		if(is_mainship_level(SSshuttle.vehicle_elevator.z))
-			dat += "Raised"
+			dat += "Raised<br>"
 			dat += "<a href='?src=\ref[src];lower_platform=TRUE'>Lower platform</a><br>"
 		else
 			dat += "Lowered"

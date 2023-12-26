@@ -437,9 +437,6 @@
 
 	in_transit_time_left = 0
 
-	if(SSevacuation.dest_status >= NUKE_EXPLOSION_IN_PROGRESS)
-		return FALSE //If a nuke is in progress, don't attempt a landing.
-
 	//This is where things change and shit gets real
 
 	faction_announcement("DROPSHIP ON COLLISION COURSE. CRASH IMMINENT." , "EMERGENCY", 'sound/AI/dropship_emergency.ogg', logging = ARES_LOG_SECURITY)
@@ -451,9 +448,6 @@
 	playsound_area(get_area(turfs_int[sound_target]), channel = SOUND_CHANNEL_AMBIENCE, status = SOUND_UPDATE)
 
 	sleep(85)
-
-	if(SSevacuation.dest_status == NUKE_EXPLOSION_FINISHED)
-		return FALSE //If a nuke finished, don't land.
 
 	if(security_level < SEC_LEVEL_RED) //automatically set security level to red.
 		set_security_level(SEC_LEVEL_RED, TRUE)

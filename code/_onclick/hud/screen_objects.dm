@@ -1,6 +1,6 @@
 /*
 	Screen objects
-	Todo: improve/re-implement
+	TODO: improve/re-implement
 
 	Screen objects are only used for the hud and should not appear anywhere "in-game".
 	They are used with the client/screen list and the screen_loc var.

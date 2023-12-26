@@ -171,12 +171,8 @@ their unique feature is that a direct hit will buff your damage and firerate
 /obj/item/weapon/gun/lever_action/proc/unload_bullet(mob/user)
 	if(isnull(current_mag) || !current_mag.ammo_position)
 		return
-	var/obj/item/projectile/proj = current_mag.retrieve_ammo(1, user)
-	if(user)
-		user.put_in_hands(proj)
+	if(current_mag.retrieve_ammo(1, user))
 		playsound(user, reload_sound, 25, TRUE)
-	else
-		proj.forceMove(get_turf(src))
 	return TRUE
 
 /obj/item/weapon/gun/lever_action/proc/retrieve_bullet(selection)

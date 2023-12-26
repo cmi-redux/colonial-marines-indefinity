@@ -50,7 +50,7 @@
 /datum/tacmap/atom_datum/proc/get_color(datum/faction/faction)
 	if(flags_tacmap & TCMP_CUSTOM_COLOR)
 		return color
-	else if(atom_ref_faction.faction_is_ally(faction) && atom_ref_faction != faction)
+	else if(!faction || (atom_ref_faction.faction_is_ally(faction) && atom_ref_faction != faction))
 		return faction.color
 	else if(faction == atom_ref_faction)
 		return COLOR_GREEN

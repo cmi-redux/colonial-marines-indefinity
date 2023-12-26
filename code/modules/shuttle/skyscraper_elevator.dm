@@ -107,7 +107,7 @@
 	playsound(return_center_turf(), ignition_sound, 60, 0, falloff = 4)
 	sleep(4 SECONDS)
 	calculate_move_delay(floor_to_move)
-	SSshuttle.moveShuttleToDock(id, GLOB.ss_elevator_floors["[MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR]_[floor_to_move + floor_offset]"], move_delay, FALSE)
+	SSshuttle.moveShuttleToDock(src, GLOB.ss_elevator_floors["[MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR]_[floor_to_move + floor_offset]"], move_delay, FALSE)
 
 /obj/docking_port/mobile/sselevator/proc/calculate_move_delay(floor_calc)
 	if(offseted_z > target_floor ? offseted_z - floor_calc > 4 : floor_calc - offseted_z > 4)
@@ -323,9 +323,6 @@
 	visible_message("<b>[src]</b> выключается из-за отсутствия питания.")
 	updateUsrDialog()
 	return PROCESS_KILL
-
-/obj/structure/machinery/computer/security_blocker/attackby(mob/user as mob)
-	interact(user)
 
 /obj/structure/machinery/computer/security_blocker/attack_hand(mob/user as mob)
 	. = ..()

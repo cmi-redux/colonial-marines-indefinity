@@ -259,6 +259,14 @@
 	appearance_flags = PLANE_MASTER //should use client color
 	blend_mode = BLEND_OVERLAY
 
+//Contains all weather overlays
+/atom/movable/screen/plane_master/mob_reverse_overlay
+	name = "mob reverse overlay master"
+	plane = MOB_REVERSE_OVERLAY_PLANE
+	render_target = MOB_REVERSE_RENDER_TARGET
+	render_relay_plane = null
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+
 ///Contains space parallax
 /atom/movable/screen/plane_master/parallax
 	name = "parallax plane master"

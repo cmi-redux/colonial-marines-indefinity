@@ -33,3 +33,6 @@
 /// From /mob/living/Collide(): (atom/A)
 #define COMSIG_LIVING_PRE_COLLIDE "living_pre_collide"
 	#define COMPONENT_LIVING_COLLIDE_HANDLED (1<<0)
+
+/// From /mob/living/rest()
+#define COMSIG_LIVING_REST "living_rest"

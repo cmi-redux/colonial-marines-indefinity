@@ -244,7 +244,7 @@
 		addtimer(CALLBACK(src, PROC_REF(enter_depths), arrived), 0.2 SECONDS)
 
 /turf/open/floor/almayer/empty/proc/enter_depths(atom/movable/atom_movable)
-	if(atom_movable.throwing == 0 && istype(get_turf(atom_movable), /turf/open/floor/almayer/empty))
+	if(atom_movable.throwing == 0 && istype(get_turf(atom_movable), /turf/open/floor/almayer/empty) && !istype(atom_movable, /obj/docking_port))
 		atom_movable.visible_message(SPAN_WARNING("[atom_movable] falls into the depths!"), SPAN_WARNING("You fall into the depths!"))
 		for(var/atom/computer as anything in supply_controller.bound_supply_computer_list)
 			computer.balloon_alert_to_viewers("you hear horrifying noises coming from the elevator!")

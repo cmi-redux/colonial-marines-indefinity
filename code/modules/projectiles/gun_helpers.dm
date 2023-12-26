@@ -367,12 +367,6 @@ ERROR CODE R1: negative current_rounds on examine. <------------ Applies to ammu
 /obj/item/weapon/proc/unique_action(mob/user) //moved this up a path to make macroing for other weapons easier -spookydonut
 	return
 
-/obj/item/weapon/gun/proc/get_ammo_type()
-	return null //usually a list
-
-/obj/item/weapon/gun/proc/get_ammo_count()
-	return 0
-
 /obj/item/weapon/gun/proc/check_inactive_hand(mob/user)
 	if(user)
 		var/obj/item/weapon/gun/in_hand = user.get_inactive_hand()

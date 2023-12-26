@@ -28,7 +28,7 @@
 	set waitfor = FALSE
 	WAIT_MAPVIEW_READY
 	for(var/i in ALL_MAPVIEW_MAPTYPES)
-		var/datum/ui_minimap/new_minimap = SSmapview.get_minimap_ui(faction, i, minimap_name)
+		var/datum/ui_minimap/new_minimap = SSmapview.get_minimap_ui(faction, i, src, TRUE, minimap_name)
 		minimap += list("[i]" = new_minimap)
 
 /obj/structure/machinery/computer/groundside_operations/attack_remote(mob/user as mob)

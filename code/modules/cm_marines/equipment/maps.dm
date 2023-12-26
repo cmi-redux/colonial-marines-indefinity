@@ -21,7 +21,7 @@
 /obj/item/map/proc/link_minimap()
 	set waitfor = FALSE
 	WAIT_MAPVIEW_READY
-	minimap = SSmapview.get_minimap_ui(null, GROUND_MAP_Z, minimap_name)
+	minimap = SSmapview.get_minimap_ui(null, GROUND_MAP_Z, src, FALSE, minimap_name)
 
 /obj/item/map/attack()
 	return

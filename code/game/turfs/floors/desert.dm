@@ -107,7 +107,7 @@
 /turf/open/desert/desert_shore/Entered(atom/movable/arrived)
 	. = ..()
 	if(isliving(arrived))
-		arrived.AddComponent(/datum/component/mob_overlay_effect, -2, -2)
+		arrived.AddComponent(/datum/component/mob_overlay_effect, -2, 12)
 
 /turf/open/desert/desert_shore/update_icon()
 	..()
@@ -239,7 +239,7 @@
 	. = ..()
 	if(!covered)
 		if(isliving(arrived))
-			arrived.AddComponent(/datum/component/mob_overlay_effect, -8, -8)
+			arrived.AddComponent(/datum/component/mob_overlay_effect, -8, 18)
 
 /turf/open/gm/river/desert/shallow/covered
 	covered = 1
@@ -254,7 +254,7 @@
 	. = ..()
 	if(!covered)
 		if(isliving(arrived))
-			arrived.AddComponent(/datum/component/mob_overlay_effect, -12, -12)
+			arrived.AddComponent(/datum/component/mob_overlay_effect, -12, 22)
 
 /turf/open/gm/river/desert/shallow_edge/covered
 	covered = 1
@@ -269,7 +269,7 @@
 	. = ..()
 	if(!covered)
 		if(isliving(arrived))
-			arrived.AddComponent(/datum/component/mob_overlay_effect, -12, -12)
+			arrived.AddComponent(/datum/component/mob_overlay_effect, -12, 22)
 
 /turf/open/gm/river/desert/shallow_corner/covered
 	covered = 1
@@ -285,7 +285,7 @@
 	. = ..()
 	if(!covered)
 		if(isliving(arrived))
-			arrived.AddComponent(/datum/component/mob_overlay_effect, -16, -16)
+			arrived.AddComponent(/datum/component/mob_overlay_effect, -16, 28)
 
 /turf/open/gm/river/desert/deep/covered
 	covered = 1
