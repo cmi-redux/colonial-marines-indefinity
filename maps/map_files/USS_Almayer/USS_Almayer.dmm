@@ -27244,6 +27244,7 @@
 /obj/structure/machinery/light{
 	dir = 8
 	},
+/obj/structure/painting_table,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -39080,10 +39081,6 @@
 	tag = "icon-green (SOUTHEAST)"
 	},
 /area/almayer/shipboard/brig/cells)
-"faZ" = (
-/obj/structure/painting_table,
-/turf/open/floor/almayer,
-/area/almayer/squads/charlie_delta_shared)
 "fbA" = (
 /obj/effect/landmark/start/cargo,
 /turf/open/floor/plating/plating_catwalk,
@@ -50531,10 +50528,6 @@
 	icon_state = "kitchen"
 	},
 /area/almayer/living/grunt_rnr)
-"kqs" = (
-/obj/structure/painting_table,
-/turf/open/floor/almayer,
-/area/almayer/squads/alpha_bravo_shared)
 "kqz" = (
 /turf/open/floor/almayer{
 	dir = 4;
@@ -98384,13 +98377,13 @@ bWG
 ekT
 bTg
 vsY
-kqs
+bRF
 bRF
 bRF
 kDF
 kDF
 bRF
-kqs
+bRF
 sRw
 aMT
 jJZ
@@ -98428,13 +98421,13 @@ dgt
 kuG
 deL
 sQx
-faZ
+ddg
 ddg
 ddg
 xcE
 xcE
 ddg
-faZ
+ddg
 rNU
 qrH
 vub

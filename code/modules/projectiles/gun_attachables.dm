@@ -2727,6 +2727,10 @@ Defined in conflicts.dm of the #defines folder.
 	SIGNAL_HANDLER
 	target = get_turf(target)
 
+/obj/item/attachable/attached_gun/Detach(mob/user, obj/item/weapon/gun/detaching_gub)
+	. = ..()
+	user.hud_used.update_ammo_hud(src)
+
 /obj/item/attachable/attached_gun/activate_attachment(obj/item/weapon/gun/gun, mob/living/user, turn_off)
 	if(gun.active_attachable == src)
 		gun.active_attachable = null
@@ -3048,6 +3052,7 @@ Defined in conflicts.dm of the #defines folder.
 		unleash_flame(target, user)
 		if(attached_gun.last_fired < world.time)
 			attached_gun.last_fired = world.time
+		display_ammo(user)
 
 /obj/item/attachable/attached_gun/flamer/proc/unleash_flame(atom/target, mob/living/user)
 	set waitfor = FALSE
@@ -3317,6 +3322,7 @@ Defined in conflicts.dm of the #defines folder.
 	var/turf/user_turf = get_turf(user)
 	playsound(user_turf, pick(fire_sounds), 50, TRUE)
 
+	display_ammo(user)
 	to_chat(user, SPAN_WARNING("The gauge reads: <b>[round(gun.current_mag.get_ammo_percent())]</b>% fuel remaining!"))
 
 /obj/item/attachable/verticalgrip

@@ -1,4 +1,5 @@
 /obj/structure/shuttle/part
+	plane = WALL_PLANE
 	opacity = TRUE
 	density = TRUE
 	unslashable = TRUE
