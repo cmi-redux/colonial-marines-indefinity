@@ -27,28 +27,23 @@
 	custom_ceiling = /turf/open/floor/roof/ship_hull/lab
 
 	var/disabled_elevator = TRUE // Fix of auto mode, when shuttle got in troubles or loading
-	var/target_floor = 100
+	var/total_floors = 100
+	var/visual_floors_offset = 0 // Cool effect of underground floors? Yeah... useles, but cool.
+	var/target_floor = 0
 	var/floor_offset = 0
 	var/offseted_z = 0
+	var/obj/docking_port/stationary/initial_dock = null // Home of elevator
 	var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/door
 	var/obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/button
 	var/list/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/doors = list()
 	var/list/obj/structure/machinery/gear/gears = list()
-	var/list/buttons[100]
-	var/list/disabled_floors[100]
-	var/list/called_floors[100]
+	var/list/buttons
+	var/list/disabled_floors
+	var/list/called_floors
 	var/next_moving = 0
 	var/moving = FALSE
 	var/cooldown = FALSE
 	var/move_delay = 3 SECONDS
-
-/obj/docking_port/mobile/sselevator/Initialize()
-	. = ..()
-	for(var/i=1;i<100;i++)
-		disabled_floors[i] = TRUE
-	disabled_floors[100] = FALSE
-	for(var/i=1;i<100;i++)
-		called_floors[i] = FALSE
 
 /obj/docking_port/mobile/sselevator/register()
 	. = ..()
@@ -148,16 +143,46 @@
 				if((floor_calc > target_floor > offseted_z) || (floor_calc < target_floor < offseted_z))
 					target_floor = floor_calc
 
+// Reseting elevator if something messed up, because this system is not hard coded, so we can fuck up it easy
+/obj/docking_port/mobile/sselevator/proc/handle_initial_data(obj/docking_port/stationary/target_dock)
+	disabled_elevator = TRUE
+	moving = TRUE
+	cooldown = TRUE
+	if(target_dock)
+		initial_dock = target_dock
+
+	if(initial_dock != get_docked())
+		SSshuttle.moveShuttleToDock(src, initial_dock, move_delay, FALSE)
+
+	disabled_elevator = FALSE
+	moving = FALSE
+	cooldown = FALSE
+	floor_offset = z - total_floors
+	offseted_z = z - floor_offset
+	target_floor = z - offseted_z
+	next_moving = 0
+
+	buttons = list()
+	buttons.len = total_floors
+	disabled_floors = list()
+	disabled_floors.len = total_floors
+	called_floors = list()
+	called_floors.len = total_floors
+	for(var/i = 1 to total_floors)
+		disabled_floors[i] = TRUE
+		called_floors[i] = FALSE
+
+	disabled_floors[target_floor] = FALSE
+
+	var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/blastdoor = doors["[z]"]
+	INVOKE_ASYNC(blastdoor, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator, unlock_and_open))
+
 /obj/docking_port/stationary/sselevator/floor_roof
 	roundstart_template = /datum/map_template/shuttle/sky_scraper_elevator
 
 /obj/docking_port/stationary/sselevator/floor_roof/load_roundstart()
 	. = ..()
-	SSshuttle.sky_scraper_elevator.disabled_elevator = FALSE
-	SSshuttle.sky_scraper_elevator.floor_offset = z - 100
-	SSshuttle.sky_scraper_elevator.target_floor = z - SSshuttle.sky_scraper_elevator.floor_offset
-	var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/B = SSshuttle.sky_scraper_elevator.doors["[z]"]
-	INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator, unlock_and_open))
+	SSshuttle.sky_scraper_elevator.handle_initial_data(src)
 
 //Console
 
@@ -203,17 +228,15 @@
 
 	if(!ui)
 		// Open UI
-		ui = new(user, src, "Elevator", name, 600, 600)
+		ui = new(user, src, "Elevator", name)
 		ui.open()
 
 /obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/ui_data()
-	var/list/data = list()
-	data["buttons"] = list()
-	for(var/i=1;i<100;i++)
-		data["buttons"] += list(list(
-			id = i, title = "Floor [i]", disabled = elevator.disabled_floors[i], called = elevator.called_floors[i],
+	. = list("buttons" = list())
+	for(var/i = 1 to elevator.total_floors)
+		.["buttons"] += list(list(
+			id = i, title = "Floor [i - elevator.visual_floors_offset]", disabled = elevator.disabled_floors[i], called = elevator.called_floors[i],
 		))
-	return data
 
 /obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/ui_act(action, list/params)
 	. = ..()
@@ -610,7 +633,7 @@
 	smokeranking = SMOKE_RANK_CHLOR
 
 /obj/effect/particle_effect/smoke/chlor/process()
-	amount--
+	amount -= 0.1
 	if(amount <= 0)
 		qdel(src)
 		return
@@ -628,7 +651,7 @@
 	for(var/next_direction in GLOB.cardinals)
 		if(direction && next_direction != direction)
 			continue
-		if(amount < 20)
+		if(amount < 6)
 			return
 		var/turf/acting_turf = get_step(own_turf, next_direction)
 		if(check_airblock(own_turf, acting_turf)) //smoke can't spread that way
@@ -640,18 +663,18 @@
 	if(foundsmoke)
 		if(foundsmoke.smokeranking <= smokeranking)
 			qdel(foundsmoke)
-		else if(foundsmoke.smokeranking == smokeranking && foundsmoke.amount + 10 < amount)
-			foundsmoke.amount += 10
-			amount -= 10
+		else if(foundsmoke.smokeranking == smokeranking && foundsmoke.amount < amount)
+			var/amount_to_transfer = amount - foundsmoke.amount
+			foundsmoke.amount += amount_to_transfer / 2
+			amount += amount_to_transfer / 2
 			if(foundsmoke.amount > 0)
 				foundsmoke.spread_smoke()
 			return
 
-	var/obj/effect/particle_effect/smoke/S = new type(acting_turf, 10, cause_data)
-	amount -= 10
+	var/obj/effect/particle_effect/smoke/S = new type(acting_turf, amount / 2, cause_data)
+	amount /= 2
 	S.setDir(pick(GLOB.cardinals))
-	if(S.amount > 0)
-		S.spread_smoke()
+	S.spread_smoke()
 
 /obj/effect/particle_effect/smoke/chlor/Crossed(mob/living/carbon/target as mob)
 	return
@@ -679,7 +702,7 @@
 
 	if(ishuman(target))
 		var/mob/living/carbon/human/H = target
-		H.apply_armoured_damage(amount*rand(5, 10), ARMOR_BIO, BURN) //Burn damage, randomizes between various parts //Amount corresponds to upgrade level, 1 to 2.5
+		H.apply_armoured_damage(amount * (rand(1, 100) * 0.01), ARMOR_BIO, BURN) //Burn damage, randomizes between various parts //Amount corresponds to upgrade level, 1 to 2.5
 	else
 		target.burn_skin(5) //Failsafe for non-humans
 
