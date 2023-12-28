@@ -154,7 +154,6 @@
 /area/bigredv2/outside/building/space_port)
 "ay" = (
 /obj/structure/machinery/computer/shuttle/dropship/flight/lz1{
-	onboard = 0
 	},
 /obj/structure/surface/table,
 /turf/open/floor{

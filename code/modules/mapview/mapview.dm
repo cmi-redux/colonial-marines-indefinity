@@ -247,6 +247,7 @@ GLOBAL_LIST_EMPTY(unannounced_maps)
 	.["toolbarColorSelection"] = toolbar_color_selection
 	.["toolbarUpdatedSelection"] = toolbar_updated_selection
 
+	.["minimap_zlevels"] = minimap_ref.map_zlevels
 	.["canvasCooldown"] = max(canvas_cooldown - world.time, 0)
 	.["updatedCanvas"] = updated_canvas
 	.["lastUpdateTime"] = last_update_time
@@ -385,10 +386,10 @@ GLOBAL_LIST_EMPTY(unannounced_maps)
 	for(var/datum/faction/faction in faction_tcmp_ref ? list(faction_tcmp_ref.faction) : GLOB.faction_datum)
 		var/datum/tacmap/faction_datum/faction_tcmp = faction.tcmp_faction_datum
 		for(var/datum/tacmap/atom_datum/M as anything in faction_tcmp.faction_mobs_to_draw)
-			if(M.atom_ref.z & minimap_ref.map_zlevels)
+			if(M.atom_ref.z in minimap_ref.map_zlevels)
 				.["[M.generated_tag_ally]"] = M
 		for(var/datum/tacmap/atom_datum/M as anything in faction_tcmp.mobs_to_draw)
-			if(M.atom_ref.z & minimap_ref.map_zlevels)
+			if(M.atom_ref.z in minimap_ref.map_zlevels)
 				.["[M.generated_tag]"] = M
 
 /datum/ui_minimap/ui_close(mob/user)

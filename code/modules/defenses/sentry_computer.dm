@@ -131,7 +131,7 @@
 		displayname = sentrygun.nickname
 	var/message = "[displayname]:[get_area(sentrygun)] Engaged"
 	if(can_identify_target)
-		message += " [sentrygun.target]"
+		message += " [sentrygun.actual_target]"
 	INVOKE_ASYNC(src, PROC_REF(send_message), message)
 
 /**

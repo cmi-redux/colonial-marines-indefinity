@@ -191,7 +191,7 @@ var/datum/controller/supply/supply_controller = new()
 
 	var/list/squad_list = list()
 	for(var/datum/squad/current_squad in SSticker.role_authority.squads)
-		if(current_squad.active && current_squad.faction == faction && current_squad.equipment_color)
+		if(current_squad.active && current_squad.faction == faction.faction_name && current_squad.equipment_color)
 			squad_list += list(list(
 				"squad_name" = current_squad.name,
 				"squad_color" = current_squad.equipment_color

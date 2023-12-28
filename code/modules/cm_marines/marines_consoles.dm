@@ -580,7 +580,7 @@
 	var/list/data = list()
 	var/list/squads = list()
 	for(var/datum/squad/current_squad in SSticker.role_authority.squads)
-		if(current_squad.name != "Root" && !current_squad.locked && current_squad.active && current_squad.faction == faction)
+		if(current_squad.name != "Root" && !current_squad.locked && current_squad.active && current_squad.faction == faction.faction_name)
 			var/list/squad = list(list(
 				"name" = current_squad.name,
 				"color" = current_squad.equipment_color

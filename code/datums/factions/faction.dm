@@ -220,6 +220,9 @@
 
 //Ally procs
 /atom/movable/proc/ally(datum/faction/ally_faction)
+	if(!ally_faction)
+		return FALSE
+
 	var/list/factions = list()
 	factions += ally_faction
 	for(var/datum/faction/i in ally_faction.relations_datum.allies)
@@ -230,6 +233,9 @@
 	return faction in factions
 
 /mob/ally(datum/faction/ally_faction)
+	if(!ally_faction)
+		return FALSE
+
 	var/list/factions = list()
 	factions += ally_faction
 	for(var/datum/faction/i in ally_faction.relations_datum.allies)
@@ -241,6 +247,9 @@
 	return faction in factions
 
 /mob/living/carbon/ally(datum/faction/ally_faction)
+	if(!ally_faction)
+		return FALSE
+
 	if(client in ally_faction.banished_ckeys)
 		return FALSE
 

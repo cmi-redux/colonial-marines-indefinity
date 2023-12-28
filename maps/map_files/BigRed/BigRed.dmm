@@ -5837,7 +5837,8 @@
 	},
 /turf/open/floor{
 	icon_state = "delivery"
-	})
+	},
+/area/bigredv2/outside/building/marshal_office)
 "apI" = (
 /turf/closed/wall/solaris/reinforced/hull,
 /area/bigredv2/outside/lambda_cave_cas)
@@ -23493,7 +23494,8 @@
 	},
 /turf/open/floor{
 	icon_state = "delivery"
-	})
+	},
+/area/bigredv2/outside/building/cargo)
 "bkp" = (
 /turf/open/mars{
 	icon_state = "mars_dirt_9";
@@ -23527,7 +23529,8 @@
 	},
 /turf/open/floor{
 	icon_state = "delivery"
-	})
+	},
+/area/bigredv2/outside/building/filtration_plant)
 "bkw" = (
 /obj/structure/machinery/door/airlock/almayer/engineering{
 	dir = 1;
@@ -23536,7 +23539,8 @@
 	},
 /turf/open/floor{
 	icon_state = "delivery"
-	})
+	},
+/area/bigredv2/outside/building/filtration_plant)
 "bkx" = (
 /obj/effect/spawner/gibspawner/human,
 /obj/structure/pipes/standard/simple/hidden/green,
@@ -23547,7 +23551,8 @@
 	},
 /turf/open/floor{
 	icon_state = "delivery"
-	})
+	},
+/area/bigredv2/outside/building/filtration_plant)
 "bky" = (
 /turf/open/mars_cave{
 	icon_state = "mars_dirt_7";
@@ -23871,7 +23876,8 @@
 /obj/structure/machinery/camera/autoname{
 	dir = 8
 	},
-/turf/open/floor/plating)
+/turf/open/floor/plating,
+/area/bigredv2/outside/building/filtration_plant)
 "blL" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor{
@@ -24222,7 +24228,8 @@
 	},
 /turf/open/floor{
 	icon_state = "delivery"
-	})
+	},
+/area/bigredv2/outside/building/filtration_plant)
 "bnl" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/pipes/standard/simple/hidden/green{
@@ -25508,13 +25515,6 @@
 /obj/effect/spawner/random/toolbox,
 /turf/open/floor,
 /area/bigredv2/outside/building/engineering)
-"bsX" = (
-/obj/structure/machinery/door/airlock/multi_tile/almayer/generic{
-	name = "\improper Engineering Complex"
-	},
-/turf/open/floor{
-	icon_state = "delivery"
-	})
 "bsY" = (
 /obj/structure/machinery/door/airlock/multi_tile/almayer/generic{
 	name = "\improper Atmospherics Condenser"
@@ -31506,7 +31506,8 @@
 "gad" = (
 /turf/open/floor{
 	icon_state = "delivery"
-	})
+	},
+/area/bigredv2/outside/building/filtration_plant)
 "gan" = (
 /obj/structure/platform_decoration/shiva{
 	dir = 1
@@ -32856,15 +32857,6 @@
 	tag = "icon-mars_dirt_6"
 	},
 /area/bigredv2/caves/mining)
-"iXT" = (
-/obj/structure/machinery/door/airlock/multi_tile/almayer/engidoor/glass{
-	dir = 1;
-	name = "\improper Atmospherics Condenser";
-	req_one_access = null
-	},
-/turf/open/floor{
-	icon_state = "delivery"
-	})
 "iYN" = (
 /obj/structure/closet/secure_closet,
 /obj/effect/landmark/objective_landmark/close,
@@ -40971,7 +40963,8 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
 	icon_state = "delivery"
-	})
+	},
+/area/bigredv2/outside/building/engineering)
 "xFZ" = (
 /turf/open/mars_cave,
 /area/bigredv2/caves_lambda)
@@ -45871,7 +45864,7 @@ aah
 aah
 aaF
 aah
-aau
+aah
 aei
 aaf
 aaf
@@ -46702,7 +46695,7 @@ aah
 aah
 aah
 aah
-aah
+aau
 aah
 aah
 aah
@@ -47231,7 +47224,7 @@ bjo
 bie
 bje
 bie
-biI
+bie
 bsc
 eWd
 eWd
@@ -48061,7 +48054,7 @@ bie
 bie
 bie
 bie
-bie
+biI
 bie
 bie
 bie
@@ -50053,7 +50046,7 @@ pXu
 rgp
 aae
 aaw
-gad
+ahK
 aaW
 aaw
 aaw
@@ -58559,7 +58552,7 @@ bkb
 bkb
 bks
 bjw
-bsX
+swV
 bmy
 bmZ
 bmZ
@@ -61083,7 +61076,7 @@ axr
 axr
 awp
 gad
-iXT
+bnA
 awp
 awp
 awp

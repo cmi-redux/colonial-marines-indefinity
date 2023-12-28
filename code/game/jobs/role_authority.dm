@@ -119,9 +119,9 @@ var/global/players_preassigned = 0
 	squads = list()
 	squads_by_type = list()
 	for(var/squad in squads_all) //Setting up our squads.
-		var/datum/squad/S = new squad()
-		squads += S
-		squads_by_type[S.type] = S
+		var/datum/squad/new_squad = new squad()
+		squads += new_squad
+		squads_by_type[new_squad.type] = new_squad
 
 	load_whitelist()
 
@@ -558,9 +558,9 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 	var/list/mixed_squads = list()
 
 	for(var/i= 1 to squads_copy.len)
-		var/datum/squad/S = pick_n_take(squads_copy)
-		if(S.roundstart && S.usable && S.faction == human.faction.faction_name && S.name != "Root")
-			mixed_squads += S
+		var/datum/squad/squad = pick_n_take(squads_copy)
+		if(squad.roundstart && squad.usable && squad.faction == human.faction.faction_name && squad.name != "Root")
+			mixed_squads += squad
 
 	var/datum/squad/lowest = pick(mixed_squads)
 
@@ -568,10 +568,10 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 	if(human && human.client && human.client.prefs.preferred_squad && human.client.prefs.preferred_squad != "None")
 		preferred_squad = SQUAD_BY_FACTION[human.faction.faction_name][SQUAD_SELECTOR[human.client.prefs.preferred_squad]]
 
-	for(var/datum/squad/L in mixed_squads)
-		if(L.usable)
+	for(var/datum/squad/lowest_squad in mixed_squads)
+		if(lowest_squad.usable)
 			if(preferred_squad)
-				lowest = L
+				lowest = lowest_squad
 				break
 
 	if(!lowest)
@@ -583,15 +583,15 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 
 	if(!preferred_squad)
 		//Loop through squads.
-		for(var/datum/squad/S in mixed_squads)
-			if(!S)
+		for(var/datum/squad/squad in mixed_squads)
+			if(!squad)
 				to_world("Warning: Null squad in get_lowest_squad. Call a coder!")
 				break //null squad somehow, let's just abort
-			current_count = S.count //Grab our current squad's #
+			current_count = squad.count //Grab our current squad's #
 			if(current_count >= (lowest_count - 2)) //Current squad count is not much lower than the chosen one. Skip it.
 				continue
 			lowest_count = current_count //We found a winner! This squad is much lower than our default. Make it the new default.
-			lowest = S //'Select' this squad.
+			lowest = squad //'Select' this squad.
 
 	return lowest //Return whichever squad won the competition.
 
@@ -612,9 +612,9 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 	var/list/mixed_squads = list()
 	// The following code removes non useable squads from the lists of squads we assign marines too.
 	for(var/i= 1 to squads_copy.len)
-		var/datum/squad/S = pick_n_take(squads_copy)
-		if(S.roundstart && S.usable && S.faction == human.faction.faction_name && S.name != "Root")
-			mixed_squads += S
+		var/datum/squad/squad = pick_n_take(squads_copy)
+		if(squad.roundstart && squad.usable && squad.faction == human.faction.faction_name && squad.name != "Root")
+			mixed_squads += squad
 
 	//Deal with IOs first
 	if(human.job == JOB_INTEL)
@@ -638,88 +638,88 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 		var/datum/squad/lowest
 
 		if(real_job in JOB_SQUAD_ENGI_LIST)
-			for(var/datum/squad/S in mixed_squads)
-				if(S.usable && S.roundstart)
-					if(!skip_limit && S.num_engineers >= S.max_engineers)
+			for(var/datum/squad/squad in mixed_squads)
+				if(squad.usable && squad.roundstart)
+					if(!skip_limit && squad.num_engineers >= squad.max_engineers)
 						continue
-					if(S == preferred_squad)
-						S.put_marine_in_squad(human) //fav squad has a spot for us, no more searching needed.
+					if(squad == preferred_squad)
+						squad.put_marine_in_squad(human) //fav squad has a spot for us, no more searching needed.
 						return
 
 					if(!lowest)
-						lowest = S
-					else if(S.num_engineers < lowest.num_engineers)
-						lowest = S
+						lowest = squad
+					else if(squad.num_engineers < lowest.num_engineers)
+						lowest = squad
 
 		else if(real_job in JOB_SQUAD_MEDIC_LIST)
-			for(var/datum/squad/S in mixed_squads)
-				if(S.usable && S.roundstart)
-					if(!skip_limit && S.num_medics >= S.max_medics)
+			for(var/datum/squad/squad in mixed_squads)
+				if(squad.usable && squad.roundstart)
+					if(!skip_limit && squad.num_medics >= squad.max_medics)
 						continue
-					if(S == preferred_squad)
-						S.put_marine_in_squad(human) //fav squad has a spot for us.
+					if(squad == preferred_squad)
+						squad.put_marine_in_squad(human) //fav squad has a spot for us.
 						return
 
 					if(!lowest)
-						lowest = S
-					else if(S.num_medics < lowest.num_medics)
-						lowest = S
+						lowest = squad
+					else if(squad.num_medics < lowest.num_medics)
+						lowest = squad
 
 		else if(real_job in JOB_SQUAD_LEADER_LIST)
-			for(var/datum/squad/S in mixed_squads)
-				if(S.usable && S.roundstart)
-					if(!skip_limit && S.num_leaders >= S.max_leaders)
+			for(var/datum/squad/squad in mixed_squads)
+				if(squad.usable && squad.roundstart)
+					if(!skip_limit && squad.num_leaders >= squad.max_leaders)
 						continue
-					if(S == preferred_squad)
-						S.put_marine_in_squad(human) //fav squad has a spot for us.
+					if(squad == preferred_squad)
+						squad.put_marine_in_squad(human) //fav squad has a spot for us.
 						return
 
 					if(!lowest)
-						lowest = S
-					else if(S.num_leaders < lowest.num_leaders)
-						lowest = S
+						lowest = squad
+					else if(squad.num_leaders < lowest.num_leaders)
+						lowest = squad
 
 		else if(real_job in JOB_SQUAD_SPEC_LIST)
-			for(var/datum/squad/S in mixed_squads)
-				if(S.usable && S.roundstart)
-					if(!skip_limit && S.num_specialists >= S.max_specialists)
+			for(var/datum/squad/squad in mixed_squads)
+				if(squad.usable && squad.roundstart)
+					if(!skip_limit && squad.num_specialists >= squad.max_specialists)
 						continue
-					if(S == preferred_squad)
-						S.put_marine_in_squad(human) //fav squad has a spot for us.
+					if(squad == preferred_squad)
+						squad.put_marine_in_squad(human) //fav squad has a spot for us.
 						return
 
 					if(!lowest)
-						lowest = S
-					else if(S.num_specialists < lowest.num_specialists)
-						lowest = S
+						lowest = squad
+					else if(squad.num_specialists < lowest.num_specialists)
+						lowest = squad
 
 		else if(real_job in JOB_SQUAD_SUP_LIST)
-			for(var/datum/squad/S in mixed_squads)
-				if(S.usable && S.roundstart)
-					if(!skip_limit && S.num_tl >= S.max_tl)
+			for(var/datum/squad/squad in mixed_squads)
+				if(squad.usable && squad.roundstart)
+					if(!skip_limit && squad.num_tl >= squad.max_tl)
 						continue
-					if(S == preferred_squad)
-						S.put_marine_in_squad(human) //fav squad has a spot for us.
+					if(squad == preferred_squad)
+						squad.put_marine_in_squad(human) //fav squad has a spot for us.
 						return
 
 					if(!lowest)
-						lowest = S
-					else if(S.num_tl < lowest.num_tl)
-						lowest = S
+						lowest = squad
+					else if(squad.num_tl < lowest.num_tl)
+						lowest = squad
 
 		else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
-			for(var/datum/squad/S in mixed_squads)
-				if(S.usable && S.roundstart)
-					if(!skip_limit && S.num_smartgun >= S.max_smartgun)
+			for(var/datum/squad/squad in mixed_squads)
+				if(squad.usable && squad.roundstart)
+					if(!skip_limit && squad.num_smartgun >= squad.max_smartgun)
 						continue
-					if(S == preferred_squad)
-						S.put_marine_in_squad(human) //fav squad has a spot for us.
+					if(squad == preferred_squad)
+						squad.put_marine_in_squad(human) //fav squad has a spot for us.
 						return
 
 					if(!lowest)
-						lowest = S
-					else if(S.num_smartgun < lowest.num_smartgun)
-						lowest = S
+						lowest = squad
+					else if(squad.num_smartgun < lowest.num_smartgun)
+						lowest = squad
 		if(!lowest)
 			var/ranpick = rand(1,4)
 			lowest = mixed_squads[ranpick]

@@ -629,8 +629,9 @@ GLOBAL_LIST_INIT(maintenance_categories, list(
 				log_game("[key_name(usr)] начал свертывание операции.")
 				message_admins("[key_name_admin(usr)] начал свертывание операции [SPAN_ORANGE("(via ARES)")].")
 				. = TRUE
-			to_chat(usr, SPAN_WARNING("ОШИБКА, [MAIN_AI_SYSTEM] НЕ МОЖЕТ ПОДТВЕРДИТЬ ДАННОЕ ДЕЙСТВИЕ!"))
-			. = TRUE
+			else
+				to_chat(usr, SPAN_WARNING("ОШИБКА, [MAIN_AI_SYSTEM] НЕ МОЖЕТ ПОДТВЕРДИТЬ ДАННОЕ ДЕЙСТВИЕ!"))
+				. = TRUE
 // ------ End ARES Interface UI ------ //
 
 

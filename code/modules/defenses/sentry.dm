@@ -5,16 +5,16 @@
 	req_one_access = list(ACCESS_MARINE_ENGINEERING, ACCESS_MARINE_ENGPREP, ACCESS_MARINE_LEADER)
 	var/list/targets = list() // Lists of current potential targets
 	var/list/other_targets = list() //List of special target types to shoot at, if needed.
-	var/atom/movable/target = null
+	var/atom/movable/actual_target = null
 	var/datum/shape/rectangle/range_bounds
 	var/datum/effect_system/spark_spread/spark_system //The spark system, used for generating... sparks?
 	var/last_fired = 0
 	var/fire_delay = 4
 	var/immobile = FALSE //Used for prebuilt ones.
 	var/obj/item/ammo_magazine/ammo = new /obj/item/ammo_magazine/sentry
-	var/sentry_type = "sentry" //Used for the icon
 	var/sentry_icon = 'icons/obj/structures/machinery/defenses/sentry.dmi'
-	var/sentry_icon_resize = 0
+	var/sentry_icon_resize_x = 0
+	var/sentry_icon_resize_y = 0
 	display_additional_stats = TRUE
 	/// Check if they have been upgraded or not, used for sentry post
 	var/upgraded = FALSE
@@ -66,7 +66,7 @@
 /obj/structure/machinery/defenses/sentry/Destroy() //Clear these for safety's sake.
 	targets = null
 	other_targets = null
-	target = null
+	actual_target = null
 	QDEL_NULL(range_bounds)
 	QDEL_NULL(spark_system)
 	QDEL_NULL(ammo)
@@ -88,10 +88,10 @@
 	if(!targets && !other_targets)
 		return FALSE
 
-	if(!target && targets.len)
-		target = pick(targets)
+	if(!actual_target && targets.len)
+		actual_target = pick(targets)
 
-	get_target(target)
+	get_target(actual_target)
 	return TRUE
 
 /obj/structure/machinery/defenses/sentry/proc/set_range()
@@ -119,18 +119,17 @@
 
 	overlays.Cut()
 	if(stat == DEFENSE_DAMAGED)
-		overlays += image(icon = sentry_icon, icon_state = "[defense_type] [sentry_type]_destroyed", pixel_x = sentry_icon_resize, pixel_y = sentry_icon_resize)
+		overlays += image(icon = sentry_icon, icon_state = "[defense_type] [defense_icon]_destroyed", pixel_x = sentry_icon_resize_x, pixel_y = sentry_icon_resize_y)
 		return
 
 	if(!ammo || ammo && !ammo.ammo_position)
-		overlays += image(icon = sentry_icon, icon_state = "[defense_type] [sentry_type]_noammo", pixel_x = sentry_icon_resize, pixel_y = sentry_icon_resize)
+		overlays += image(icon = sentry_icon, icon_state = "[defense_type] [defense_icon]_noammo", pixel_x = sentry_icon_resize_x, pixel_y = sentry_icon_resize_y)
 		return
 
 	if(light_on)
-		overlays += image(icon = sentry_icon, icon_state = "[defense_type] [sentry_type]_on", pixel_x = sentry_icon_resize, pixel_y = sentry_icon_resize)
+		overlays += image(icon = sentry_icon, icon_state = "[defense_type] [defense_icon]_on", pixel_x = sentry_icon_resize_x, pixel_y = sentry_icon_resize_y)
 	else
-		overlays += image(icon = sentry_icon, icon_state = "[defense_type] [sentry_type]", pixel_x = sentry_icon_resize, pixel_y = sentry_icon_resize)
-
+		overlays += image(icon = sentry_icon, icon_state = "[defense_type] [defense_icon]", pixel_x = sentry_icon_resize_x, pixel_y = sentry_icon_resize_y)
 
 /obj/structure/machinery/defenses/sentry/attack_hand_checks(mob/user)
 	if(immobile)
@@ -206,7 +205,7 @@
 			. += SPAN_HELPFUL("Click \The [src] while it's turned off to reload.")
 
 /obj/structure/machinery/defenses/sentry/power_on_action()
-	target = null
+	actual_target = null
 
 	set_light_on(TRUE)
 
@@ -295,7 +294,7 @@
 	..()
 
 
-/obj/structure/machinery/defenses/sentry/proc/fire(atom/A)
+/obj/structure/machinery/defenses/sentry/proc/fire(atom/target)
 	if(!(world.time-last_fired >= fire_delay) || !light_on || !ammo || QDELETED(target))
 		return
 
@@ -313,9 +312,10 @@
 		owner_mob = src
 
 	if(omni_directional)
-		setDir(get_dir(src, A))
+		setDir(get_dir(src, target))
+
 	for(var/i in 1 to burst)
-		if(actual_fire(A))
+		if(!actual_fire(target))
 			break
 
 	if(targets.len)
@@ -335,24 +335,23 @@
 /obj/structure/machinery/defenses/sentry/proc/reset_low_ammo_timer()
 	low_ammo_timer = null
 
-/obj/structure/machinery/defenses/sentry/proc/actual_fire(atom/A)
+/obj/structure/machinery/defenses/sentry/proc/actual_fire(atom/target)
+	if(!ammo.ammo_position)
+		handle_empty()
+		return FALSE
 	var/obj/item/projectile/proj = ammo.transfer_bullet_out()
 	proj.forceMove(src)
 	apply_traits(proj)
-	proj.bullet_ready_to_fire(initial(name), null, owner_mob)
+	proj.bullet_ready_to_fire(initial(name), weapon_source_mob = owner_mob)
 	var/datum/cause_data/cause_data = create_cause_data(initial(name), owner_mob, src)
 	proj.weapon_cause_data = cause_data
 	proj.firer = cause_data?.resolve_mob()
 	proj.damage *= damage_mult
 	proj.accuracy *= accuracy_mult
-	GIVE_BULLET_TRAIT(proj, /datum/element/bullet_trait_iff, faction)
-	proj.fire_at(A, src, owner_mob, proj.ammo.max_range, proj.ammo.shell_speed, null)
-	muzzle_flash(Get_Angle(get_turf(src), A))
+	proj.fire_at(target, src, owner_mob, proj.ammo.max_range, proj.ammo.shell_speed, null)
+	muzzle_flash(Get_Angle(get_turf(src), target))
 	track_shot()
-	if(!ammo.ammo_position)
-		handle_empty()
-		return TRUE
-	return FALSE
+	return TRUE
 
 /obj/structure/machinery/defenses/sentry/proc/apply_traits(obj/item/projectile/proj)
 	// Apply bullet traits from gun
@@ -407,32 +406,34 @@
 	var/list/conscious_targets = list()
 	var/list/unconscious_targets = list()
 
-	for(var/atom/movable/A in targets) // orange allows sentry to fire through gas and darkness
-		if(isliving(A))
-			var/mob/living/M = A
-			if(M.stat & DEAD)
-				if(A == target)
-					target = null
-				targets.Remove(A)
+	for(var/atom/movable/target in targets) // orange allows sentry to fire through gas and darkness
+		if(isobserver(target))
+			continue
+		else if(isliving(target))
+			var/mob/living/mob = target
+			if(mob.stat & DEAD)
+				if(target == actual_target)
+					actual_target = null
+				targets.Remove(target)
 				continue
 
-			if(M.ally(faction) || M.invisibility || HAS_TRAIT(M, TRAIT_ABILITY_BURROWED))
-				if(M == target)
-					target = null
-				targets.Remove(M)
+			if(mob.ally(faction) || mob.invisibility || HAS_TRAIT(mob, TRAIT_ABILITY_BURROWED))
+				if(mob == actual_target)
+					actual_target = null
+				targets.Remove(mob)
 				continue
 
 		else
-			if(!(A in other_targets))
-				if(A == target)
+			if(!(target in other_targets))
+				if(target == target)
 					target = null
-				targets.Remove(A)
+				targets.Remove(target)
 				continue
 			else
-				if(A.ally(faction) || A.invisibility)
-					if(A == target)
+				if(target.ally(faction) || target.invisibility)
+					if(target == target)
 						target = null
-					targets.Remove(A)
+					targets.Remove(target)
 					continue
 
 		if(!omni_directional)
@@ -440,33 +441,33 @@
 			var/adj
 			switch(dir)
 				if(NORTH)
-					opp = x-A.x
-					adj = A.y-y
+					opp = x-target.x
+					adj = target.y-y
 				if(SOUTH)
-					opp = x-A.x
-					adj = y-A.y
+					opp = x-target.x
+					adj = y-target.y
 				if(EAST)
-					opp = y-A.y
-					adj = A.x-x
+					opp = y-target.y
+					adj = target.x-x
 				if(WEST)
-					opp = y-A.y
-					adj = x-A.x
+					opp = y-target.y
+					adj = x-target.x
 
 			var/r = 9999
 			if(adj != 0)
 				r = abs(opp/adj)
 			var/angledegree = arcsin(r/sqrt(1+(r*r)))
 			if(adj < 0 || (angledegree*2) > fire_angle)
-				if(A == target)
-					target = null
-				targets.Remove(A)
+				if(target == actual_target)
+					actual_target = null
+				targets.Remove(target)
 				continue
 
-		var/list/turf/path = getline2(src, A, include_from_atom = FALSE)
-		if(!path.len || get_dist(src, A) > sentry_range)
-			if(A == target)
-				target = null
-			targets.Remove(A)
+		var/list/turf/path = getline2(src, target, include_from_atom = FALSE)
+		if(!path.len || get_dist(src, target) > sentry_range)
+			if(target == actual_target)
+				actual_target = null
+			targets.Remove(target)
 			continue
 
 		var/blocked = FALSE
@@ -503,29 +504,29 @@
 				break
 
 		if(blocked)
-			if(A == target)
-				target = null
-			targets.Remove(A)
+			if(target == actual_target)
+				actual_target = null
+			targets.Remove(target)
 			continue
 
-		if(isliving(A))
-			var/mob/living/M = A
-			if(M.stat & UNCONSCIOUS)
-				unconscious_targets += M
+		if(isliving(target))
+			var/mob/living/mob = target
+			if(mob.stat & UNCONSCIOUS)
+				unconscious_targets += mob
 			else
-				conscious_targets += M
+				conscious_targets += mob
 		else
-			target = A
+			actual_target = target
 
 	if(conscious_targets.len)
-		target = pick(conscious_targets)
+		actual_target = pick(conscious_targets)
 	else if(unconscious_targets.len)
-		target = pick(unconscious_targets)
+		actual_target = pick(unconscious_targets)
 
-	if(!target) //No targets, don't bother firing
+	if(!actual_target) //No targets, don't bother firing
 		return
 
-	fire(target)
+	fire(actual_target)
 
 /obj/structure/machinery/defenses/sentry/premade
 	name = "UA-577 Gauss Turret"
@@ -725,8 +726,8 @@
 			return
 
 		if(sheets.use(upgrade_cost))
-			src.health_max += health_upgrade
-			src.update_health(-health_upgrade)
+			health_max += health_upgrade
+			update_health(-health_upgrade)
 			upgraded = TRUE
 			to_chat(user, SPAN_WARNING("You added some metal plating to the sentry, increasing its durability!"))
 		else
@@ -754,11 +755,15 @@
 /obj/structure/machinery/defenses/sentry/anti_tank
 	name = "UAC AT DE-58 sentry gun"
 	desc = "A deployable, semi-automated turret with AI targeting capabilities. Armed with an 105mm cannon, with 20 rounds drum."
-	defense_type = "at" // TODO: DO FUCKING ICON
+	icon_state = "heavy_sentry_base_off"
+	defense_base = "heavy_sentry_base"
+	defense_type = "AT"
+	sentry_icon = 'icons/obj/structures/machinery/defenses/big_sentry.dmi'
 	fire_delay = 5 SECONDS
 	ammo = new /obj/item/ammo_magazine/sentry/anti_tank
-	sentry_icon = 'icons/obj/structures/machinery/defenses/big_sentry.dmi'
 	omni_directional = TRUE
-	sentry_icon_resize = -16
+	sentry_range = 32
+	sentry_icon_resize_x = -9
+	sentry_icon_resize_y = -4
 	inherent_rounds = 18
 	max_inherent_rounds = 18

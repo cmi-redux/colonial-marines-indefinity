@@ -130,7 +130,7 @@ export const AlmayerControl = (_props, context) => {
               <Button
                 fluid={1}
                 icon="triangle-exclamation"
-                tooltip={defcon_points}
+                tooltip={data.defcon_points}
                 onClick={() => act('defcon')}>
                 DEFCON {data.defcon_lvl}: {data.defcon_lvl_prc}%.
               </Button>

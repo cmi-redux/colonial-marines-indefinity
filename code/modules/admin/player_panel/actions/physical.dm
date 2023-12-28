@@ -199,8 +199,8 @@
 
 /datum/player_action/set_squad/act(client/user, mob/living/carbon/human/target, list/params)
 	var/list/squads = list()
-	for(var/datum/squad/S in SSticker.role_authority.squads)
-		squads[S.name] = S
+	for(var/datum/squad/squad in SSticker.role_authority.squads)
+		squads[squad.name] = squad
 
 	var/selected_squad = tgui_input_list(user, "Select a squad.", "Squad Selection", squads)
 	if(!selected_squad)

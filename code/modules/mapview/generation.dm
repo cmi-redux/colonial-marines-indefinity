@@ -9,8 +9,6 @@
 
 /datum/tacmap/minimap
 	var/map_ref
-	///Actual icon of the drawn zlevel with all of it's atoms
-	var/list/icon/minimap_layers = list()
 	//Mobs assoc
 	var/list/datum/tacmap/atom_datum/assoc_atom_datums = list()
 	///x offset of the actual icon to center it to screens
@@ -26,7 +24,6 @@
 	map_trait = trait
 	map_zlevels = SSmapping.levels_by_trait(map_trait)
 	for(var/level in map_zlevels)
-		map_zlevels += level
 		generate_minimap(level)
 
 /datum/tacmap/minimap/proc/generate_minimap(level_to_gen)
@@ -97,8 +94,6 @@
 		mapview.screen_loc = "[level_to_gen]_mapview:1,1"
 		mapview.assigned_map = "[level_to_gen]"
 		SSmapview.hud_by_zlevel["[level_to_gen]"] = mapview
-
-	minimap_layers["[level_to_gen]"] = new_minimap
 
 	var/icon/flat_map = getFlatIcon(mapview, appearance_flags = TRUE)
 	if(!flat_map)

@@ -1104,53 +1104,28 @@
 	if(. && istype(user)) //Let's check all that other stuff first.
 		if(skill_locked && !skillcheck(user, SKILL_SPEC_WEAPONS, SKILL_SPEC_ALL) && user.skills.get_skill_level(SKILL_SPEC_WEAPONS) != SKILL_SPEC_ROCKET && !(flags_mounted_gun_features & GUN_MOUNTING))
 			to_chat(user, SPAN_WARNING("You don't seem to know how to use \the [src]..."))
-			return 0
+			return FALSE
 		if(user.faction == GLOB.faction_datum[FACTION_MARINE] && explosive_antigrief_check(src, user))
 			to_chat(user, SPAN_WARNING("\The [name]'s safe-area accident inhibitor prevents you from firing!"))
 			msg_admin_niche("[key_name(user)] attempted to fire \a [name] in [get_area(src)] [ADMIN_JMP(loc)]")
 			return FALSE
-		if(current_mag && current_mag.ammo_position > 0)
-			make_rocket(user, 0, 1)
+		if(current_mag && !current_mag.ammo_position)
+			if(user)
+				user.put_in_hands(current_mag)
+				current_mag.update_icon()
+			else
+				current_mag.forceMove(get_turf(src))
+			current_mag = null
+			user?.hud_used.update_ammo_hud(src, get_ammo_list(), get_display_ammo_count())
 
 /obj/item/weapon/gun/launcher/rocket/load_into_chamber(mob/user)
-// if(active_attachable) active_attachable = null
 	return ready_in_chamber()
 
 //No such thing
 /obj/item/weapon/gun/launcher/rocket/reload_into_chamber(mob/user)
 	return TRUE
 
-/obj/item/weapon/gun/launcher/rocket/proc/make_rocket(mob/user, drop_override = 0, empty = 1)
-	if(!current_mag)
-		return
-
-	var/obj/item/ammo_magazine/rocket/r = new current_mag.type()
-	//if there's ever another type of custom rocket ammo this logic should just be moved into a function on the rocket
-	if(istype(current_mag, /obj/item/ammo_magazine/rocket/custom) && !empty)
-		//set the custom rocket variables here.
-		var/obj/item/ammo_magazine/rocket/custom/k = new /obj/item/ammo_magazine/rocket/custom
-		var/obj/item/ammo_magazine/rocket/custom/cur_mag_cast = current_mag
-		k.contents = cur_mag_cast.contents
-		k.desc = cur_mag_cast.desc
-		k.fuel = cur_mag_cast.fuel
-		k.icon_state = cur_mag_cast.icon_state
-		k.warhead = cur_mag_cast.warhead
-		k.locked = cur_mag_cast.locked
-		k.name = cur_mag_cast.name
-		k.filters = cur_mag_cast.filters
-		r = k
-
-	if(empty)
-		r.ammo_position = 0
-	if(drop_override || !user) //If we want to drop it on the ground or there's no user.
-		r.forceMove(get_turf(src)) //Drop it on the ground.
-	else
-		user.put_in_hands(r)
-		r.update_icon()
-
 /obj/item/weapon/gun/launcher/rocket/reload(mob/user, obj/item/ammo_magazine/rocket)
-	if(!current_mag)
-		return
 	if(flags_gun_features & GUN_BURST_FIRING)
 		return
 
@@ -1158,7 +1133,7 @@
 		to_chat(user, SPAN_WARNING("That's not going to fit!"))
 		return
 
-	if(current_mag.ammo_position > 0)
+	if(current_mag)
 		to_chat(user, SPAN_WARNING("[src] is already loaded!"))
 		return
 
@@ -1168,8 +1143,7 @@
 
 	if(user)
 		to_chat(user, SPAN_NOTICE("You begin reloading [src]. Hold still..."))
-		if(do_after(user, current_mag.transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE, BUSY_ICON_FRIENDLY))
-			qdel(current_mag)
+		if(do_after(user, rocket.transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE, BUSY_ICON_FRIENDLY))
 			user.drop_inv_item_on_ground(rocket)
 			current_mag = rocket
 			rocket.forceMove(src)
@@ -1179,31 +1153,40 @@
 				playsound(user, reload_sound, 25, 1)
 			else
 				playsound(user,'sound/machines/click.ogg', 25, 1)
+			user?.hud_used.update_ammo_hud(src, get_ammo_list(), get_display_ammo_count())
 		else
 			to_chat(user, SPAN_WARNING("Your reload was interrupted!"))
 			return
 	else
-		qdel(current_mag)
 		current_mag = rocket
 		rocket.forceMove(src)
 		replace_ammo(,rocket)
 	return TRUE
 
-/obj/item/weapon/gun/launcher/rocket/unload(mob/user,  reload_override = 0, drop_override = 0)
-	if(user && current_mag)
-		if(current_mag.ammo_position <= 0)
-			to_chat(user, SPAN_WARNING("[src] is already empty!"))
+/obj/item/weapon/gun/launcher/rocket/unload(mob/user, reload_override = FALSE, drop_override = FALSE)
+	if(!user)
+		return
+
+	if(!current_mag)
+		to_chat(user, SPAN_WARNING("[src] is already empty!"))
+		return
+
+	to_chat(user, SPAN_NOTICE("You begin unloading [src]. Hold still..."))
+	if(do_after(user, current_mag.transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE, BUSY_ICON_FRIENDLY))
+		if(!current_mag)
+			to_chat(user, SPAN_WARNING("You have already unloaded \the [src]."))
 			return
-		to_chat(user, SPAN_NOTICE("You begin unloading [src]. Hold still..."))
-		if(do_after(user, current_mag.transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE, BUSY_ICON_FRIENDLY))
-			if(current_mag.ammo_position <= 0)
-				to_chat(user, SPAN_WARNING("You have already unloaded \the [src]."))
-				return
-			playsound(user, unload_sound, 25, 1)
-			user.visible_message(SPAN_NOTICE("[user] unloads [ammo] from [src]."),
-			SPAN_NOTICE("You unload [ammo] from [src]."))
-			make_rocket(user, drop_override, 0)
-			current_mag.ammo_position = 0
+
+		playsound(user, unload_sound, 25, 1)
+		user.visible_message(SPAN_NOTICE("[user] unloads [ammo] from [src]."),
+		SPAN_NOTICE("You unload [ammo] from [src]."))
+		if(!drop_override)
+			user.put_in_hands(current_mag)
+			current_mag.update_icon()
+		else
+			current_mag.forceMove(get_turf(src))
+		current_mag = null
+		user?.hud_used.update_ammo_hud(src, get_ammo_list(), get_display_ammo_count())
 
 //Adding in the rocket backblast. The tile behind the specialist gets blasted hard enough to down and slightly wound anyone
 /obj/item/weapon/gun/launcher/rocket/apply_bullet_effects(obj/item/projectile/projectile_to_fire, mob/user, i = 1, reflex = 0)

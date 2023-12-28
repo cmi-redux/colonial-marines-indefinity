@@ -5,11 +5,14 @@
 	var/initial_angle = 0
 	var/angle_increment = 0
 	if(shrapnel_direction)
-		initial_angle = dir2angle(shrapnel_direction) - shrapnel_spread
-		angle_increment = shrapnel_spread*2/shrapnel_number
+		if(shrapnel_direction in GLOB.alldirs)
+			initial_angle = dir2angle(shrapnel_direction) - shrapnel_spread / 2
+		else
+			initial_angle = shrapnel_direction - shrapnel_spread / 2
+		angle_increment = shrapnel_spread * 2 / shrapnel_number
 	else
-		angle_increment = 360/shrapnel_number
-	var/angle_randomization = angle_increment/2
+		angle_increment = 360 / shrapnel_number
+	var/angle_randomization = angle_increment / 2
 
 	var/mob/living/mob_standing_on_turf
 	var/mob/living/mob_lying_on_turf

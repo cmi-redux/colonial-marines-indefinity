@@ -4,7 +4,7 @@
 	desc = "A deployable, semi-automated turret with AI targeting capabilities. Armed with a special flamer and a 100 liters fuel tank."
 	fire_delay = 30
 	ammo = new /obj/item/ammo_magazine/sentry_flamer
-	sentry_type = "flamer"
+	defense_icon = "flamer"
 	handheld_type = /obj/item/defenses/handheld/sentry/flamer
 	health = 200
 	health_max = 200
@@ -22,8 +22,7 @@
 	var/obj/item/projectile/proj = ammo.transfer_bullet_out()
 	proj.forceMove(src)
 	apply_traits(proj)
-	proj.bullet_ready_to_fire(initial(name), null, owner_mob)
-	GIVE_BULLET_TRAIT(proj, /datum/element/bullet_trait_iff, faction)
+	proj.bullet_ready_to_fire(initial(name), weapon_source_mob = owner_mob)
 	proj.fire_at(A, src, owner_mob, proj.ammo.max_range, proj.ammo.shell_speed, null)
 	track_shot()
 	if(ammo.ammo_position == 0)

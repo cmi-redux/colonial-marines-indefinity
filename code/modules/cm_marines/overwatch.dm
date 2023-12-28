@@ -28,6 +28,7 @@
 
 	faction_to_get = FACTION_MARINE
 
+	var/selected_zlevel
 	var/minimap_name = "Marine Tactical Map"
 	var/current_mapviewer
 	var/list/datum/ui_minimap/minimap = list()
@@ -49,6 +50,12 @@
 	for(var/i in ALL_MAPVIEW_MAPTYPES)
 		var/datum/ui_minimap/new_minimap = SSmapview.get_minimap_ui(faction, i, src, FALSE, minimap_name)
 		minimap += list("[i]" = new_minimap)
+
+/obj/structure/machinery/computer/overwatch/proc/mapview(map_to_view)
+	if(!Adjacent(current_mapviewer))
+		return
+	var/datum/ui_minimap/chosed = minimap["[map_to_view]"]
+	chosed.tgui_interact(current_mapviewer)
 
 /obj/structure/machinery/computer/overwatch/attackby(obj/I as obj, mob/user as mob)  //Can't break or disassemble.
 	return
@@ -90,43 +97,30 @@
 		return TRUE
 	. = ..()
 
-/obj/structure/machinery/computer/overwatch/ui_static_data(mob/user)
-	var/list/data = list()
-//	data["mapRef"] = tacmap.map_holder.map_ref
-	return data
-
 /obj/structure/machinery/computer/overwatch/tgui_interact(mob/user, datum/tgui/ui)
-/*
-	if(!tacmap.map_holder)
-		var/level = SSmapping.levels_by_trait(tacmap.targeted_ztrait)
-		if(!level[1])
-			return
-		tacmap.map_holder = SSminimaps.fetch_tacmap_datum(level[1], tacmap.allowed_flags)
-*/
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-//		user.client.register_map_obj(tacmap.map_holder.map)
 		ui = new(user, src, "OverwatchConsole", "Overwatch Console")
 		ui.open()
 
 /obj/structure/machinery/computer/overwatch/ui_data(mob/user)
-	var/list/data = list()
+	. = list()
 
-	data["theme"] = ui_theme
+	.["theme"] = ui_theme
 
 	if(!current_squad)
-		data["squad_list"] = list()
+		.["squad_list"] = list()
 		for(var/datum/squad/current_squad in SSticker.role_authority.squads)
-			if(current_squad.active && !current_squad.overwatch_officer && current_squad.faction == faction && current_squad.name != "Root")
-				data["squad_list"] += current_squad.name
-		return data
+			if(current_squad.active && !current_squad.overwatch_officer && current_squad.faction == faction.faction_name && current_squad.name != "Root")
+				.["squad_list"] += current_squad.name
+		return
 
-	data["current_squad"] = current_squad.name
+	.["current_squad"] = current_squad.name
 
-	data["primary_objective"] = current_squad.primary_objective
-	data["secondary_objective"] = current_squad.secondary_objective
+	.["primary_objective"] = current_squad.primary_objective
+	.["secondary_objective"] = current_squad.secondary_objective
 
-	data["marines"] = list()
+	.["marines"] = list()
 
 	var/leader_count = 0
 	var/ftl_count = 0
@@ -282,49 +276,47 @@
 					marines_alive++
 
 		var/marine_data = list(list("name" = mob_name, "state" = mob_state, "has_helmet" = has_helmet, "role" = role, "acting_sl" = acting_sl, "fteam" = fteam, "distance" = distance, "area_name" = area_name,"ref" = REF(marine)))
-		data["marines"] += marine_data
+		.["marines"] += marine_data
 		if(is_squad_leader)
-			if(!data["squad_leader"])
-				data["squad_leader"] = marine_data[1]
+			if(!.["squad_leader"])
+				.["squad_leader"] = marine_data[1]
 
-	data["total_deployed"] = leader_count + ftl_count + spec_count + medic_count + engi_count + smart_count + marine_count
-	data["living_count"] = leaders_alive + ftl_alive + spec_alive + medic_alive + engi_alive + smart_alive + marines_alive
+	.["total_deployed"] = leader_count + ftl_count + spec_count + medic_count + engi_count + smart_count + marine_count
+	.["living_count"] = leaders_alive + ftl_alive + spec_alive + medic_alive + engi_alive + smart_alive + marines_alive
 
-	data["leader_count"] = leader_count
-	data["ftl_count"] = ftl_count
-	data["spec_count"] = spec_count
-	data["medic_count"] = medic_count
-	data["engi_count"] = engi_count
-	data["smart_count"] = smart_count
+	.["leader_count"] = leader_count
+	.["ftl_count"] = ftl_count
+	.["spec_count"] = spec_count
+	.["medic_count"] = medic_count
+	.["engi_count"] = engi_count
+	.["smart_count"] = smart_count
 
-	data["leaders_alive"] = leaders_alive
-	data["ftl_alive"] = ftl_alive
-	data["spec_alive"] = spec_alive
-	data["medic_alive"] = medic_alive
-	data["engi_alive"] = engi_alive
-	data["smart_alive"] = smart_alive
-	data["specialist_type"] = specialist_type ? specialist_type : "NONE"
+	.["leaders_alive"] = leaders_alive
+	.["ftl_alive"] = ftl_alive
+	.["spec_alive"] = spec_alive
+	.["medic_alive"] = medic_alive
+	.["engi_alive"] = engi_alive
+	.["smart_alive"] = smart_alive
+	.["specialist_type"] = specialist_type ? specialist_type : "NONE"
 
-	data["z_hidden"] = z_hidden
+	.["z_hidden"] = z_hidden
 
-	data["saved_coordinates"] = list()
+	.["saved_coordinates"] = list()
 	for(var/i in 1 to length(saved_coordinates))
-		data["saved_coordinates"] += list(list("x" = saved_coordinates[i]["x"], "y" = saved_coordinates[i]["y"], "comment" = saved_coordinates[i]["comment"], "index" = i))
+		.["saved_coordinates"] += list(list("x" = saved_coordinates[i]["x"], "y" = saved_coordinates[i]["y"], "comment" = saved_coordinates[i]["comment"], "index" = i))
 
 	var/has_supply_pad = FALSE
 	var/obj/structure/closet/crate/supply_crate
 	if(current_squad.drop_pad)
 		supply_crate = locate() in current_squad.drop_pad.loc
 		has_supply_pad = TRUE
-	data["can_launch_crates"] = has_supply_pad
-	data["has_crate_loaded"] = supply_crate
-	data["supply_cooldown"] = COOLDOWN_TIMELEFT(current_squad, next_supplydrop)
-	data["ob_cooldown"] = COOLDOWN_TIMELEFT(almayer_orbital_cannon, ob_firing_cooldown)
-	data["ob_loaded"] = almayer_orbital_cannon.chambered_tray
+	.["can_launch_crates"] = has_supply_pad
+	.["has_crate_loaded"] = supply_crate
+	.["supply_cooldown"] = COOLDOWN_TIMELEFT(current_squad, next_supplydrop)
+	.["ob_cooldown"] = COOLDOWN_TIMELEFT(almayer_orbital_cannon, ob_firing_cooldown)
+	.["ob_loaded"] = almayer_orbital_cannon.chambered_tray
 
-	data["operator"] = operator.name
-
-	return data
+	.["operator"] = operator.name
 
 /obj/structure/machinery/computer/overwatch/ui_state(mob/user)
 	return GLOB.not_incapacitated_and_adjacent_strict_state
@@ -339,20 +331,18 @@
 	if((user.contents.Find(src) || (in_range(src, user) && istype(loc, /turf))) || (ishighersilicon(user)))
 		user.set_interaction(src)
 
-	switch(action)/*
-		if("mapview_ground")
-			current_mapviewer = usr
-			mapview("[GROUND_MAP_Z]")
+	switch(action)
+		if("tacmap_unpin")
+			current_mapviewer = user
+			mapview("[tgui_input_list(user, "Which map you wanna watch", "Open map", minimap)]")
 			return
-		if("mapview_ship")
-			current_mapviewer = usr
-			mapview("[SHIP_MAP_Z]")*/
+
 		if("pick_squad")
 			if(current_squad)
 				return
 			var/datum/squad/selected_squad
 			for(var/datum/squad/searching_squad in SSticker.role_authority.squads)
-				if(searching_squad.active && !searching_squad.overwatch_officer && searching_squad.faction == faction && searching_squad.name != "Root" && searching_squad.name == params["squad"])
+				if(searching_squad.active && !searching_squad.overwatch_officer && searching_squad.faction == faction.faction_name && searching_squad.name != "Root" && searching_squad.name == params["squad"])
 					selected_squad = searching_squad
 					break
 
@@ -366,6 +356,7 @@
 				current_squad.send_squad_message("Your Overwatch officer is: [operator.name].", displayed_icon = src)
 				visible_message("[icon2html(src, viewers(src))] [SPAN_BOLDNOTICE("Tactical data for squad '[current_squad]' loaded. All tactical functions initialized.")]")
 				return TRUE
+
 		if("logout")
 			if(current_squad?.release_overwatch())
 				if(ishighersilicon(user))
@@ -443,6 +434,7 @@
 
 		if("insubordination")
 			mark_insubordination()
+
 		if("transfer_marine")
 			transfer_squad()
 
@@ -457,8 +449,7 @@
 				else
 					z_hidden = HIDE_NONE
 					to_chat(user, "[icon2html(src, usr)] [SPAN_NOTICE("No location is ignored anymore.")]")
-//		if("tacmap_unpin")
-//			tacmap.tgui_interact(user)
+
 		if("dropbomb")
 			if(!params["x"] || !params["y"])
 				return
@@ -489,6 +480,7 @@
 				popleft(saved_coordinates)
 			saved_coordinates += list(list("x" = text2num(params["x"]), "y" = text2num(params["y"])))
 			return TRUE
+
 		if("change_coordinate_comment")
 			if(!params["index"] || !params["comment"])
 				return
@@ -522,6 +514,7 @@
 					cam = new_cam
 					user.reset_view(cam)
 					user.RegisterSignal(cam, COMSIG_PARENT_QDELETING, TYPE_PROC_REF(/mob, reset_observer_view_on_deletion))
+
 		if("change_operator")
 			if(operator != user)
 				if(operator && ishighersilicon(operator))
@@ -641,10 +634,10 @@
 		return
 	var/ob_type = almayer_orbital_cannon.tray.warhead ? almayer_orbital_cannon.tray.warhead.warhead_kind : "UNKNOWN"
 
-	for(var/datum/squad/S in SSticker.role_authority.squads)
-		if(!S.active)
+	for(var/datum/squad/squad in SSticker.role_authority.squads)
+		if(!squad.active)
 			continue
-		for(var/mob/living/carbon/human/M in S.marines_list)
+		for(var/mob/living/carbon/human/M in squad.marines_list)
 			if(!is_ground_level(M.z))
 				continue
 			if(M.stat != CONSCIOUS || !M.client)

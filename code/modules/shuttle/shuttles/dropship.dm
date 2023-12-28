@@ -221,7 +221,7 @@
 		var/obj/structure/machinery/computer/shuttle/dropship/flight/console = dropship.getControlConsole()
 		console?.update_equipment(dropship = dropship)
 
-	if(is_ground_level(z) && faction.objectives_controller && !faction.objectives_controller.first_drop_complete)
+	if(is_ground_level(z) && faction?.objectives_controller && !faction.objectives_controller.first_drop_complete)
 		faction.objectives_controller.first_drop_complete = TRUE
 		SSticker.mode.ds_first_landed(src)
 		SSticker.mode.flags_round_type |= MODE_DS_LANDED

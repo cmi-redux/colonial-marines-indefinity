@@ -12,7 +12,7 @@
 	health = 200
 	var/health_max = 200
 	var/mob/owner_mob = null
-	var/defense_icon = "uac_sentry"
+	var/defense_icon = "sentry"
 	var/handheld_type = /obj/item/defenses/handheld
 	var/disassemble_time = 20
 	var/defense_type = "Normal"
@@ -59,12 +59,13 @@
 	if(handheld_ref)
 		HD = handheld_ref
 	else
+		placed = TRUE
 		HD = new handheld_type(src, faction, src)
 
 	if(light_on)
-		power_on_action()
-
-	update_icon()
+		power_on()
+	else
+		update_icon()
 
 /obj/structure/machinery/defenses/update_icon()
 	if(!composite_icon)
@@ -95,7 +96,7 @@
 /obj/structure/machinery/defenses/proc/power_on()
 	if(stat == DEFENSE_DAMAGED)
 		return FALSE
-	if(!(placed||static))
+	if(!(placed || static))
 		return FALSE
 
 	power_on_action()
@@ -145,15 +146,12 @@
 	if(owner_mob && owner_mob != src)
 		owner_mob.track_shot(initial(name))
 
-/obj/structure/machinery/defenses/proc/friendly_faction(mob/living/carbon/C)
-	return C.ally(faction)
-
 /obj/structure/machinery/defenses/attackby(obj/item/O as obj, mob/user as mob)
 	if(QDELETED(O))
 		return
 
 	if(HAS_TRAIT(O, TRAIT_TOOL_MULTITOOL))
-		if(!friendly_faction(user))
+		if(!user.ally(faction))
 			to_chat(user, SPAN_WARNING("This doesn't seem safe..."))
 			var/additional_shock = 1
 			if(!do_after(user, hack_time * user.get_skill_duration_multiplier(SKILL_CONSTRUCTION), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD, src))
@@ -335,7 +333,7 @@
 
 	add_fingerprint(user)
 
-	if(!friendly_faction(user))
+	if(!user.ally(faction))
 		return
 
 	if(!anchored)
@@ -461,14 +459,18 @@
 	set src in view(1)
 	if(static)
 		return
-	if(!ishuman(usr))
+
+	var/mob/user = usr
+	if(!ishuman(user))
 		return
-	if(!friendly_faction(usr))
+
+	if(!user.ally(faction))
 		return
-	if(!skillcheck(usr, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
-		to_chat(usr, SPAN_WARNING("You don't have the training to do this."))
+
+	if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
+		to_chat(user, SPAN_WARNING("You don't have the training to do this."))
 		return
 
 	locked = !locked
-	to_chat(usr, SPAN_NOTICE("You [locked? "lock" : "unlock"] [src] to non-engineers."))
+	to_chat(user, SPAN_NOTICE("You [locked? "lock" : "unlock"] [src] to non-engineers."))
 	update_icon()

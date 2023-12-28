@@ -51934,6 +51934,10 @@
 /obj/structure/largecrate/random,
 /turf/open/floor/plating,
 /area/prison/maintenance/residential/sw)
+"sSU" = (
+/obj/structure/machinery/camera/autoname/lz_camera,
+/turf/open/floor/plating,
+/area/prison/hanger/main)
 "sTb" = (
 /obj/structure/filingcabinet,
 /obj/structure/machinery/light{
@@ -52324,6 +52328,10 @@
 	icon_state = "darkred2"
 	},
 /area/prison/security/checkpoint/highsec_medsec)
+"tSn" = (
+/obj/structure/machinery/camera/autoname/lz_camera,
+/turf/open/floor/plating,
+/area/prison/hanger/research)
 "tTf" = (
 /obj/structure/janitorialcart,
 /obj/item/reagent_container/glass/bucket{
@@ -92220,6 +92228,15 @@ amu
 ajx
 amu
 amu
+tSn
+amu
+amu
+amu
+amu
+amu
+amu
+amu
+tSn
 amu
 amu
 amu
@@ -92228,16 +92245,7 @@ amu
 amu
 amu
 amu
-amu
-amu
-amu
-amu
-amu
-amu
-amu
-amu
-amu
-amu
+tSn
 amu
 axy
 jDr
@@ -94340,6 +94348,15 @@ amu
 ajz
 amu
 amu
+tSn
+amu
+amu
+amu
+amu
+amu
+amu
+amu
+tSn
 amu
 amu
 amu
@@ -94348,16 +94365,7 @@ amu
 amu
 amu
 amu
-amu
-amu
-amu
-amu
-amu
-amu
-amu
-amu
-amu
-amu
+tSn
 awF
 axA
 jDr
@@ -102867,6 +102875,15 @@ aYM
 aYj
 aYM
 aYM
+sSU
+aYM
+aYM
+aYM
+aYM
+aYM
+aYM
+aYM
+sSU
 aYM
 aYM
 aYM
@@ -102875,16 +102892,7 @@ aYM
 aYM
 aYM
 aYM
-aYM
-aYM
-aYM
-aYM
-aYM
-aYM
-aYM
-aYM
-aYM
-aYM
+sSU
 aYM
 bts
 blH
@@ -104987,7 +104995,7 @@ aYM
 aYl
 aYM
 aYM
-aYM
+sSU
 aYM
 aYM
 bqa
@@ -104995,6 +105003,7 @@ aYM
 aYM
 aYM
 aYM
+sSU
 aYM
 aYM
 aYM
@@ -105003,8 +105012,7 @@ aYM
 aYM
 aYM
 aYM
-aYM
-aYM
+sSU
 aYM
 btv
 blH

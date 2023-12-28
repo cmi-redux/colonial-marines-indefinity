@@ -1,3 +1,5 @@
+// TODO: Redo that fully copypasted shit from closed PR on upstream, cool idea but fucking shit
+
 //MODE DEFINES
 #define MISSION_DISPLAY_OFF 0
 #define MISSION_DISPLAY_SHIP 1
@@ -109,8 +111,8 @@
 	var/obj/state[20][7]
 
 	//Vars shuttle
-	var/datum/shuttle/ferry/marine/shuttle1
-	var/datum/shuttle/ferry/marine/shuttle2
+	var/obj/docking_port/mobile/marine_dropship/shuttle1
+	var/obj/docking_port/mobile/marine_dropship/shuttle2
 
 	var/planet = "lv624"
 	var/datum/squad/selected_squad
@@ -270,11 +272,11 @@
 	var/shuttle_location
 	var/shuttle_locked
 	if(number == SHIP_ALAMO)
-		shuttle_location = shuttle1.location
-		shuttle_locked = shuttle1.queen_locked
+		shuttle_location = FALSE //shuttle1.location
+		shuttle_locked = shuttle1.is_hijacked
 	else
-		shuttle_location = shuttle2.location
-		shuttle_locked = shuttle2.queen_locked
+		shuttle_location = FALSE //shuttle2.location
+		shuttle_locked = shuttle2.is_hijacked
 	remove_state(index)
 	if(!shuttle_location)
 		state[index][STATE_IMAGE] = image('icons/obj/structures/machinery/mission_display.dmi', planet2name(planet) + "_shuttle" + num2text(number) + "_down" )
@@ -300,9 +302,9 @@
 /obj/structure/machinery/mission_display/proc/cas_mission(index, number, time, totaltime)
 	var/shuttle_location
 	if(number == SHIP_ALAMO)
-		shuttle_location = shuttle1.location
+		shuttle_location = FALSE //shuttle1.location
 	else
-		shuttle_location = shuttle2.location
+		shuttle_location = FALSE //shuttle2.location
 	if(!shuttle_location)
 		remove_state(index)
 		if(time > totaltime/2)
@@ -341,73 +343,83 @@
 /obj/structure/machinery/mission_display/process()
 	switch(mode)
 		if(MISSION_DISPLAY_SHIP)
-			if(shuttle1.automated_launch)
+/*
+			if(shuttle1.automated_delay)
 				set_state(STATE1, "auto")
 			else
 				remove_state(STATE1)
-			if(shuttle2.automated_launch)
+			if(shuttle2.automated_delay)
 				set_state(STATE2, "auto")
 			else
 				remove_state(STATE2)
-			switch(shuttle1.process_state)
-				if(IDLE_STATE)
+			switch(shuttle1.mode)
+				if(SHUTTLE_IDLE)
 					if(!shuttle1.location)
 						set_state(STATE3, "holding_ship")
 					else
 						set_state(STATE3, "holding_planet")
-					if(shuttle1.recharging)
-						set_state(STATE3, "recharging")
-				if(WAIT_LAUNCH, FORCE_LAUNCH)
-					set_state(STATE3, "spinning")
-				if(WAIT_FINISH)
-					set_state(STATE3, "dropping")
-					remove_state(STATE5)
-				else
-					//Transport
-					if(shuttle1.moving_status == SHUTTLE_INTRANSIT && shuttle1.transit_gun_mission == 0 && !shuttle1.queen_locked)
-						set_state(STATE3, "transit")
-						if(shuttle1.in_transit_time_left > 0)
-							move_shuttle(STATE5, SHIP_ALAMO, shuttle1.in_transit_time_left, shuttle1.move_time)
-					//CAS
-					if(shuttle1.moving_status == SHUTTLE_INTRANSIT && shuttle1.transit_gun_mission == 1 && !shuttle1.queen_locked)
-						set_state(STATE3, "cas")
-						if(shuttle1.in_transit_time_left > 0)
-							cas_mission(STATE5, SHIP_ALAMO, shuttle1.in_transit_time_left, shuttle1.move_time)
-					if(shuttle1.moving_status == SHUTTLE_INTRANSIT && shuttle1.transit_gun_mission == 0 && shuttle1.queen_locked)
-						set_state(STATE3, "crash")
-						if(shuttle1.in_transit_time_left > 0)
-							move_shuttle(STATE5, SHIP_ALAMO, shuttle1.in_transit_time_left, shuttle1.move_time)
-			switch(shuttle2.process_state)
-				if(IDLE_STATE)
+				if(SHUTTLE_RECHARGING)
+					set_state(STATE3, "recharging")
 					if(!shuttle2.location)
 						set_state(STATE4, "holding_ship")
 					else
 						set_state(STATE4, "holding_planet")
-					if(shuttle2.recharging)
-						set_state(STATE4, "recharging")
-				if(WAIT_LAUNCH, FORCE_LAUNCH)
+				if(SHUTTLE_IGNITING)
+					set_state(STATE3, "spinning")
+				if(SHUTTLE_RECHARGING)
+					set_state(STATE3, "dropping")
+					remove_state(STATE5)
+				else
+					//Transport
+					if(shuttle1.mode == SHUTTLE_INTRANSIT && !shuttle1.in_flyby && !shuttle1.is_hijacked)
+						set_state(STATE3, "transit")
+						if(shuttle1.in_transit_time_left > 0)
+							move_shuttle(STATE5, SHIP_ALAMO, shuttle1.in_transit_time_left, shuttle1.move_time)
+					//CAS
+					if(shuttle1.mode == SHUTTLE_INTRANSIT && shuttle1.in_flyby && !shuttle1.is_hijacked)
+						set_state(STATE3, "cas")
+						if(shuttle1.in_transit_time_left > 0)
+							cas_mission(STATE5, SHIP_ALAMO, shuttle1.in_transit_time_left, shuttle1.move_time)
+					if(shuttle1.mode == SHUTTLE_INTRANSIT && !shuttle1.in_flyby && shuttle1.is_hijacked)
+						set_state(STATE3, "crash")
+						if(shuttle1.in_transit_time_left > 0)
+							move_shuttle(STATE5, SHIP_ALAMO, shuttle1.in_transit_time_left, shuttle1.move_time)
+			switch(shuttle2.process_state)
+				if(SHUTTLE_IDLE)
+					if(!shuttle2.location)
+						set_state(STATE4, "holding_ship")
+					else
+						set_state(STATE4, "holding_planet")
+				if(SHUTTLE_RECHARGING)
+					set_state(STATE3, "recharging")
+					if(!shuttle2.location)
+						set_state(STATE4, "holding_ship")
+					else
+						set_state(STATE4, "holding_planet")
+				if(SHUTTLE_IGNITING)
 					set_state(STATE4, "spinning")
-				if(WAIT_FINISH)
+				if(SHUTTLE_RECHARGING)
 					remove_state(STATE6)
 					set_state(STATE4, "dropping")
 				else
 					//Transport
-					if(shuttle2.moving_status == SHUTTLE_INTRANSIT && shuttle2.transit_gun_mission == 0 && !shuttle2.queen_locked)
+					if(shuttle2.mode == SHUTTLE_INTRANSIT && shuttle2.in_flyby == 0 && !shuttle2.is_hijacked)
 						set_state(STATE4, "transit")
 						if(shuttle2.in_transit_time_left > 0)
 							move_shuttle(STATE6, SHIP_NORMANDY, shuttle2.in_transit_time_left, shuttle1.move_time)
 					//CAS
-					if(shuttle2.moving_status == SHUTTLE_INTRANSIT && shuttle2.transit_gun_mission == 1 && !shuttle2.queen_locked)
+					if(shuttle2.mode == SHUTTLE_INTRANSIT && shuttle2.in_flyby == 1 && !shuttle2.is_hijacked)
 						set_state(STATE4, "cas")
 						if(shuttle2.in_transit_time_left > 0)
 							cas_mission(STATE6, SHIP_NORMANDY, shuttle2.in_transit_time_left, shuttle2.move_time)
-					if(shuttle2.moving_status == SHUTTLE_INTRANSIT && shuttle2.transit_gun_mission == 0 && shuttle2.queen_locked)
+					if(shuttle2.mode == SHUTTLE_INTRANSIT && shuttle2.in_flyby == 0 && shuttle2.is_hijacked)
 						set_state(STATE4, "crash")
 						if(shuttle2.in_transit_time_left > 0)
 							move_shuttle(STATE6, SHIP_NORMANDY, shuttle2.in_transit_time_left, shuttle1.move_time)
+*/
 		if(MISSION_DISPLAY_CANNON)
 			set_state(STATE7, "reload")
-			if(shuttle1.queen_locked || shuttle2.queen_locked)
+			if(shuttle1.is_hijacked || shuttle2.is_hijacked)
 				set_state(STATE7, "locked")
 				return
 			if(almayer_orbital_cannon.chambered_tray)
@@ -517,8 +529,8 @@
 
 /obj/structure/machinery/mission_display/proc/populate()
 	set waitfor = FALSE
-	for(var/datum/squad/S in SSticker.role_authority.squads)
-		squad_list += S.name
+	for(var/datum/squad/squad in SSticker.role_authority.squads)
+		squad_list += squad.name
 	planet = SSmapping.configs[GROUND_MAP].map_name
 	state[STATE1][X_COORDINATE] = SHIP_STATE1_X
 	state[STATE1][Y_COORDINATE] = SHIP_STATE1_Y
@@ -562,8 +574,8 @@
 	state[STATE20][Y_COORDINATE] = APC_STATE6_Y
 
 	UNTIL(shuttle_controller)
-	shuttle1 = shuttle_controller.shuttles["[MAIN_SHIP_NAME] Dropship 1"]
-	shuttle2 = shuttle_controller.shuttles["[MAIN_SHIP_NAME] Dropship 2"]
+	shuttle1 = SSshuttle.getShuttle(DROPSHIP_ALAMO)
+	shuttle2 = SSshuttle.getShuttle(DROPSHIP_NORMANDY)
 
 /obj/structure/machinery/mission_display/proc/planet2name(name)
 	switch(name)

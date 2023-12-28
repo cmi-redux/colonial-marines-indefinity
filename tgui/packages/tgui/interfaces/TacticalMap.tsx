@@ -20,6 +20,7 @@ interface TacMapProps {
   currentMenu: string;
   lastUpdateTime: any;
   canvasCooldownDuration: any;
+  minimap_zlevels: any;
   canvasCooldown: any;
   exportedTacMapImage: any;
   selectedTheme: boolean;
@@ -83,11 +84,7 @@ const colors: Record<string, string> = {
 
 export const TacticalMap = (props, context) => {
   const { data, act } = useBackend<TacMapProps>(context);
-  const [pageIndex, setPageIndex] = useLocalState(
-    context,
-    'pageIndex',
-    0
-  );
+  const [pageIndex, setPageIndex] = useLocalState(context, 'pageIndex', 0);
   const PageComponent = PAGES[pageIndex].component();
 
   const handleTacmapOnClick = (i, pageTitle) => {

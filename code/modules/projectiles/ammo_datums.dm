@@ -83,7 +83,7 @@
 /datum/ammo/proc/on_embed(mob/embedded_mob, obj/limb/target_organ)
 	return
 
-/datum/ammo/proc/do_at_max_range(obj/item/projectile/proj)
+/datum/ammo/proc/do_at_max_range(turf/T, obj/item/projectile/proj)
 	SHOULD_NOT_SLEEP(TRUE)
 	return
 
@@ -241,17 +241,17 @@
 	shrapnel_type = /obj/item/shard/shrapnel
 	shell_speed = AMMO_SPEED_TIER_4
 
-/datum/ammo/bullet/proc/handle_battlefield_execution(datum/ammo/firing_ammo, mob/living/hit_mob, obj/item/projectile/firing_projectile, mob/living/user, obj/item/weapon/gun/fired_from)
+/datum/ammo/bullet/proc/handle_battlefield_execution(datum/ammo/firing_ammo, mob/living/hit, obj/item/projectile/firing_projectile, mob/living/user, obj/item/weapon/gun/fired_from)
 	SIGNAL_HANDLER
 
-	if(!user || hit_mob == user || user.zone_selected != "head" || user.a_intent != INTENT_HARM || !ishuman_strict(hit_mob))
+	if(!user || hit == user || user.zone_selected != "head" || user.a_intent != INTENT_HARM || !ishuman_strict(hit))
 		return
 
 	if(!skillcheck(user, SKILL_EXECUTION, SKILL_EXECUTION_TRAINED))
 		to_chat(user, SPAN_DANGER("You don't know how to execute someone correctly."))
 		return
 
-	var/mob/living/carbon/human/execution_target = hit_mob
+	var/mob/living/carbon/human/execution_target = hit
 
 	if(execution_target.status_flags & PERMANENTLY_DEAD)
 		to_chat(user, SPAN_DANGER("[execution_target] has already been executed!"))
@@ -337,7 +337,7 @@ CUSTOM_AMMO_PENETRATION
 /datum/ammo/bullet/custom/on_embed(mob/embedded_mob, obj/limb/target_organ)
 	. = ..()
 
-/datum/ammo/bullet/custom/do_at_max_range(obj/item/projectile/proj)
+/datum/ammo/bullet/custom/do_at_max_range(turf/T, obj/item/projectile/proj)
 	. = ..()
 
 /datum/ammo/bullet/custom/on_shield_block(mob/hit, obj/item/projectile/proj) //Does it do something special when shield blocked? Ie. a flare or grenade that still blows up.
@@ -1978,10 +1978,10 @@ CUSTOM_AMMO_PENETRATION
 	sound_hit = 'sound/bullets/bullet_vulture_impact.ogg'
 	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SNIPER|AMMO_IGNORE_COVER|AMMO_ANTISTRUCT
 
-/datum/ammo/bullet/sniper/anti_materiel/vulture/on_hit_mob(mob/hit_mob, obj/item/projectile/bullet)
+/datum/ammo/bullet/sniper/anti_materiel/vulture/on_hit_mob(mob/hit, obj/item/projectile/proj)
 	. = ..()
-	knockback(hit_mob, bullet, 30)
-	hit_mob.apply_effect(3, SLOW)
+	knockback(hit, proj, 30)
+	hit.apply_effect(3, SLOW)
 
 /datum/ammo/bullet/sniper/anti_materiel/vulture/set_bullet_traits()
 	. = ..()
@@ -2021,16 +2021,26 @@ CUSTOM_AMMO_PENETRATION
 
 /datum/ammo/bullet/tank/crowbar
 	name = "105mm \"crowbar\""
-	icon_state = "ltb" // TODO: DO FUCKING ICON
-	flags_ammo_behavior = AMMO_STRIKES_SURFACE
+	handful_state = "vulture_bullet"
+	sound_hit = 'sound/bullets/bullet_vulture_impact.ogg'
+	flags_ammo_behavior = AMMO_IGNORE_COVER|AMMO_ANTISTRUCT|AMMO_BALLISTIC|AMMO_NO_DEFLECT
 
 	accuracy = HIT_ACCURACY_TIER_10
-	accurate_range = 64
-	max_range = 64
-	damage = 600
+	accurate_range = 32
+	max_range = 32
+	damage = 400
 	shell_speed = AMMO_SPEED_TIER_6
 
+/datum/ammo/bullet/tank/crowbar/set_bullet_traits()
+	. = ..()
+	LAZYADD(traits_to_give, list(
+		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_penetrating/heavy)
+	))
+
 /datum/ammo/bullet/tank/crowbar/on_hit_mob(mob/hit, obj/item/projectile/proj)
+	knockback(hit, proj, 30)
+	hit.apply_effect(3, SLOW)
+	cell_explosion(get_turf(hit), 100, 50, direction = proj.dir, explosion_cause_data = proj.weapon_cause_data, shrapnel = FALSE)
 	create_shrapnel(get_turf(hit), rand(5, 40), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/metal, proj.weapon_cause_data, TRUE)
 	if(istype(hit, /mob/living/carbon/xenomorph))
 		create_shrapnel(get_turf(hit), rand(5, 40), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/light/xeno, proj.weapon_cause_data, TRUE)
@@ -2040,13 +2050,16 @@ CUSTOM_AMMO_PENETRATION
 		create_shrapnel(get_turf(hit), rand(2, 15), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/light/human/var2, proj.weapon_cause_data, TRUE)
 
 /datum/ammo/bullet/tank/crowbar/on_hit_obj(obj/O, obj/item/projectile/proj)
+	cell_explosion(get_turf(O), 100, 50, direction = proj.dir, explosion_cause_data = proj.weapon_cause_data, shrapnel = FALSE)
 	create_shrapnel(get_turf(O), rand(10, 80), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/metal, proj.weapon_cause_data)
 
 /datum/ammo/bullet/tank/crowbar/on_hit_turf(turf/T, obj/item/projectile/proj)
+	cell_explosion(T, 100, 50, direction = proj.dir, explosion_cause_data = proj.weapon_cause_data, shrapnel = FALSE)
 	create_shrapnel(T, rand(10, 80), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/metal, proj.weapon_cause_data)
 
-/datum/ammo/bullet/tank/crowbar/do_at_max_range(obj/item/projectile/proj)
-	create_shrapnel(get_turf(src), rand(10, 80), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/metal, proj.weapon_cause_data)
+/datum/ammo/bullet/tank/crowbar/do_at_max_range(turf/T, obj/item/projectile/proj)
+	cell_explosion(T, 100, 50, direction = proj.dir, explosion_cause_data = proj.weapon_cause_data, shrapnel = FALSE)
+	create_shrapnel(T, rand(10, 80), proj.dir_angle, 90, /datum/ammo/bullet/shrapnel/metal, proj.weapon_cause_data)
 
 /datum/ammo/bullet/tank/flak
 	name = "flak autocannon bullet"
@@ -2413,7 +2426,7 @@ CUSTOM_AMMO_PENETRATION
 	smoke.set_up(1, T)
 	smoke.start()
 
-/datum/ammo/rocket/do_at_max_range(obj/item/projectile/proj)
+/datum/ammo/rocket/do_at_max_range(turf/T, obj/item/projectile/proj)
 	cell_explosion(get_turf(proj), 150, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
 	smoke.set_up(1, get_turf(proj))
 	smoke.start()
@@ -2470,8 +2483,7 @@ CUSTOM_AMMO_PENETRATION
 	smoke.set_up(1, T)
 	smoke.start()
 
-/datum/ammo/rocket/ap/do_at_max_range(obj/item/projectile/proj)
-	var/turf/T = get_turf(proj)
+/datum/ammo/rocket/ap/do_at_max_range(turf/T, obj/item/projectile/proj)
 	var/hit_something = 0
 	for(var/mob/hit in T)
 		hit.ex_act(250, proj.dir, proj.weapon_cause_data, 100)
@@ -2536,7 +2548,7 @@ CUSTOM_AMMO_PENETRATION
 	cell_explosion(T, 220, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
 	cell_explosion(T, 200, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
 
-/datum/ammo/rocket/ltb/do_at_max_range(obj/item/projectile/proj)
+/datum/ammo/rocket/ltb/do_at_max_range(turf/T, obj/item/projectile/proj)
 	cell_explosion(get_turf(proj), 220, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
 	cell_explosion(get_turf(proj), 200, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
 
@@ -2579,7 +2591,7 @@ CUSTOM_AMMO_PENETRATION
 /datum/ammo/rocket/wp/on_hit_turf(turf/T, obj/item/projectile/proj)
 	drop_flame(T, proj.weapon_cause_data)
 
-/datum/ammo/rocket/wp/do_at_max_range(obj/item/projectile/proj)
+/datum/ammo/rocket/wp/do_at_max_range(turf/T, obj/item/projectile/proj)
 	drop_flame(get_turf(proj), proj.weapon_cause_data)
 
 /datum/ammo/rocket/wp/upp
@@ -2615,7 +2627,7 @@ CUSTOM_AMMO_PENETRATION
 /datum/ammo/rocket/wp/upp/on_hit_turf(turf/T, obj/item/projectile/proj)
 	drop_flame(T, proj.weapon_cause_data)
 
-/datum/ammo/rocket/wp/upp/do_at_max_range(obj/item/projectile/proj)
+/datum/ammo/rocket/wp/upp/do_at_max_range(turf/T, obj/item/projectile/proj)
 	drop_flame(get_turf(proj), proj.weapon_cause_data)
 
 /datum/ammo/rocket/wp/quad
@@ -2639,7 +2651,7 @@ CUSTOM_AMMO_PENETRATION
 	drop_flame(T, proj.weapon_cause_data)
 	explosion(proj.loc,  -1, 2, 4, 5, , , ,proj.weapon_cause_data)
 
-/datum/ammo/rocket/wp/quad/do_at_max_range(obj/item/projectile/proj)
+/datum/ammo/rocket/wp/quad/do_at_max_range(turf/T, obj/item/projectile/proj)
 	drop_flame(get_turf(proj), proj.weapon_cause_data)
 	explosion(proj.loc,  -1, 2, 4, 5, , , ,proj.weapon_cause_data)
 
@@ -2667,7 +2679,7 @@ CUSTOM_AMMO_PENETRATION
 /datum/ammo/rocket/custom/on_hit_turf(turf/T, obj/item/projectile/proj)
 	prime(T, proj)
 
-/datum/ammo/rocket/custom/do_at_max_range(obj/item/projectile/proj)
+/datum/ammo/rocket/custom/do_at_max_range(turf/T, obj/item/projectile/proj)
 	prime(null, proj)
 
 /*
@@ -2781,8 +2793,8 @@ CUSTOM_AMMO_PENETRATION
 	icon_state = "shrapnel_plasma"
 	damage_type = BURN
 
-/datum/ammo/bullet/shrapnel/plasma/on_hit_mob(mob/hit_mob, obj/item/projectile/hit_projectile)
-	hit_mob.apply_effect(2, WEAKEN)
+/datum/ammo/bullet/shrapnel/plasma/on_hit_mob(mob/hit, obj/item/projectile/hit_projectile)
+	hit.apply_effect(2, WEAKEN)
 
 /datum/ammo/energy/yautja/caster
 	name = "root caster bolt"
@@ -2858,7 +2870,7 @@ CUSTOM_AMMO_PENETRATION
 		multitile_vehicle.ex_act(150, proj.dir, proj.weapon_cause_data, 100)
 	cell_explosion(get_turf(proj), 170, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
 
-/datum/ammo/energy/yautja/caster/sphere/do_at_max_range(obj/item/projectile/proj)
+/datum/ammo/energy/yautja/caster/sphere/do_at_max_range(turf/T, obj/item/projectile/proj)
 	cell_explosion(get_turf(proj), 170, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
 
 
@@ -2881,7 +2893,7 @@ CUSTOM_AMMO_PENETRATION
 /datum/ammo/energy/yautja/caster/sphere/stun/on_hit_obj(obj/O,obj/item/projectile/proj)
 	do_area_stun(proj)
 
-/datum/ammo/energy/yautja/caster/sphere/stun/do_at_max_range(obj/item/projectile/proj)
+/datum/ammo/energy/yautja/caster/sphere/stun/do_at_max_range(turf/T, obj/item/projectile/proj)
 	do_area_stun(proj)
 
 /datum/ammo/energy/yautja/caster/sphere/stun/proc/do_area_stun(obj/item/projectile/proj)
@@ -2936,7 +2948,7 @@ CUSTOM_AMMO_PENETRATION
 	cell_explosion(get_turf(O), 100, 30, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
 	..()
 
-/datum/ammo/energy/yautja/rifle/blast/do_at_max_range(obj/item/projectile/proj)
+/datum/ammo/energy/yautja/rifle/blast/do_at_max_range(turf/T, obj/item/projectile/proj)
 	cell_explosion(get_turf(proj), 100, 30, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
 	..()
 
@@ -3132,7 +3144,7 @@ CUSTOM_AMMO_PENETRATION
 /datum/ammo/xeno/sticky/on_hit_turf(turf/T,obj/item/projectile/proj)
 	drop_resin(T)
 
-/datum/ammo/xeno/sticky/do_at_max_range(obj/item/projectile/proj)
+/datum/ammo/xeno/sticky/do_at_max_range(turf/T, obj/item/projectile/proj)
 	drop_resin(get_turf(proj))
 
 /datum/ammo/xeno/sticky/proc/drop_resin(turf/T)
@@ -3252,7 +3264,7 @@ CUSTOM_AMMO_PENETRATION
 /datum/ammo/xeno/prae_skillshot/on_hit_turf(turf/T, obj/item/projectile/proj)
 	acid_stacks_aoe(get_turf(proj))
 
-/datum/ammo/xeno/prae_skillshot/do_at_max_range(obj/item/projectile/proj)
+/datum/ammo/xeno/prae_skillshot/do_at_max_range(turf/T, obj/item/projectile/proj)
 	acid_stacks_aoe(get_turf(proj))
 
 /datum/ammo/xeno/prae_skillshot/proc/acid_stacks_aoe(turf/T)
@@ -3352,7 +3364,7 @@ CUSTOM_AMMO_PENETRATION
 	else
 		drop_nade(Turf, proj)
 
-/datum/ammo/xeno/boiler_gas/do_at_max_range(obj/item/projectile/proj)
+/datum/ammo/xeno/boiler_gas/do_at_max_range(turf/T, obj/item/projectile/proj)
 	drop_nade(get_turf(proj), proj)
 
 /datum/ammo/xeno/boiler_gas/proc/set_xeno_smoke(obj/item/projectile/proj)
@@ -3795,7 +3807,7 @@ CUSTOM_AMMO_PENETRATION
 /datum/ammo/flamethrower/on_hit_turf(turf/T, obj/item/projectile/proj)
 	drop_flame(T, proj.weapon_cause_data)
 
-/datum/ammo/flamethrower/do_at_max_range(obj/item/projectile/proj)
+/datum/ammo/flamethrower/do_at_max_range(turf/T, obj/item/projectile/proj)
 	drop_flame(get_turf(proj), proj.weapon_cause_data)
 
 /datum/ammo/flamethrower/tank_flamer
@@ -3881,7 +3893,7 @@ CUSTOM_AMMO_PENETRATION
 	else
 		drop_flare(T, proj, proj.firer)
 
-/datum/ammo/flare/do_at_max_range(obj/item/projectile/proj, mob/firer)
+/datum/ammo/flare/do_at_max_range(turf/T, obj/item/projectile/proj)
 	drop_flare(get_turf(proj), proj, proj.firer)
 
 /datum/ammo/flare/proc/drop_flare(turf/T, obj/item/projectile/fired_projectile, mob/firer)
@@ -3963,7 +3975,7 @@ CUSTOM_AMMO_PENETRATION
 /datum/ammo/souto/on_hit_turf(turf/T, obj/item/projectile/proj)
 	drop_can(proj.loc, proj) //We make a can at the location.
 
-/datum/ammo/souto/do_at_max_range(obj/item/projectile/proj)
+/datum/ammo/souto/do_at_max_range(turf/T, obj/item/projectile/proj)
 	drop_can(proj.loc, proj) //We make a can at the location.
 
 /datum/ammo/souto/on_shield_block(mob/hit, obj/item/projectile/proj)
@@ -3999,7 +4011,7 @@ CUSTOM_AMMO_PENETRATION
 /datum/ammo/grenade_container/on_hit_turf(turf/T,obj/item/projectile/proj)
 	drop_nade(proj)
 
-/datum/ammo/grenade_container/do_at_max_range(obj/item/projectile/proj)
+/datum/ammo/grenade_container/do_at_max_range(turf/T, obj/item/projectile/proj)
 	drop_nade(proj)
 
 /datum/ammo/grenade_container/proc/drop_nade(obj/item/projectile/proj)
@@ -4040,7 +4052,7 @@ CUSTOM_AMMO_PENETRATION
 /datum/ammo/hugger_container/on_hit_turf(turf/T,obj/item/projectile/proj)
 	spawn_hugger(get_turf(proj))
 
-/datum/ammo/hugger_container/do_at_max_range(obj/item/projectile/proj)
+/datum/ammo/hugger_container/do_at_max_range(turf/T, obj/item/projectile/proj)
 	spawn_hugger(get_turf(proj))
 
 /datum/ammo/hugger_container/proc/spawn_hugger(turf/T)

@@ -143,8 +143,9 @@
 				log_game("[key_name(usr)] начал свертывание операции.")
 				message_admins("[key_name_admin(usr)] начал свертывание операции.")
 				. = TRUE
-			to_chat(usr, SPAN_WARNING("ОШИБКА, [MAIN_AI_SYSTEM] НЕ МОЖЕТ ПОДТВЕРДИТЬ ПРЕЖДЕВРЕМЕННОЕ ЗАВЕРШЕНИЕ ОПЕРАЦИИ, ПЕРЕПРОВЕРЬТЕ ПРОТОКОЛ ЗАВЕРШЕНИЯ ОПЕРАЦИИ!"))
-			. = TRUE
+			else
+				to_chat(usr, SPAN_WARNING("ОШИБКА, [MAIN_AI_SYSTEM] НЕ МОЖЕТ ПОДТВЕРДИТЬ ПРЕЖДЕВРЕМЕННОЕ ЗАВЕРШЕНИЕ ОПЕРАЦИИ, ПЕРЕПРОВЕРЬТЕ ПРОТОКОЛ ЗАВЕРШЕНИЯ ОПЕРАЦИИ!"))
+				. = TRUE
 
 		if("operation_zone_return")
 			var/input = stripped_multiline_input(usr, "Пожалуйста введите сообщение экипажу.", "Приоритетное Оповещение Для Экипажа", "")
@@ -155,8 +156,9 @@
 				log_game("[key_name(usr)] отменил свертывание операции.")
 				message_admins("[key_name_admin(usr)] отменил свертывание операции.")
 				. = TRUE
-			to_chat(usr, SPAN_WARNING("ОШИБКА, [MAIN_AI_SYSTEM] НЕ МОЖЕТ ПОДТВЕРДИТЬ ДАННОЕ ДЕЙСТВИЕ!"))
-			. = TRUE
+			else
+				to_chat(usr, SPAN_WARNING("ОШИБКА, [MAIN_AI_SYSTEM] НЕ МОЖЕТ ПОДТВЕРДИТЬ ДАННОЕ ДЕЙСТВИЕ!"))
+				. = TRUE
 
 		if("evacuation_start")
 			if(security_level < SEC_LEVEL_RED)

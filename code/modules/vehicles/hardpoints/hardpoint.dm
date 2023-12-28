@@ -136,7 +136,7 @@
 /obj/item/hardpoint/proc/generate_bullet(mob/user, turf/origin_turf)
 	var/obj/item/projectile/projectile = ammo.transfer_bullet_out()
 	projectile.cause_data = create_cause_data(initial(name), user)
-	projectile.bullet_ready_to_fire(initial(name), null, user)
+	projectile.bullet_ready_to_fire(initial(name), weapon_source_mob = user)
 	projectile.forceMove(origin_turf)
 	// Apply bullet traits from gun
 	for(var/entry in traits_to_give)

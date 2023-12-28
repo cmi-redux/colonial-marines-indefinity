@@ -1436,7 +1436,7 @@ and you're good to go.
 
 	if(targloc != curloc)
 		simulate_recoil(dual_wield, user, target)
-		projectile_to_fire.bullet_ready_to_fire(initial(name), null, user)
+		projectile_to_fire.bullet_ready_to_fire(initial(name), weapon_source_mob = user)
 		//This is where the projectile leaves the barrel and deals with projectile code only.
 		//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 		in_chamber = null // It's not in the gun anymore
@@ -1659,7 +1659,7 @@ and you're good to go.
 			flags_gun_features &= ~GUN_BURST_FIRING
 			return TRUE
 
-		projectile_to_fire.bullet_ready_to_fire(initial(name), null, user)
+		projectile_to_fire.bullet_ready_to_fire(initial(name), weapon_source_mob = user)
 		//We actually have a projectile, let's move on. We're going to simulate the fire cycle.
 		if(projectile_to_fire.ammo.on_pointblank(attacked_mob, projectile_to_fire, user, src))
 			flags_gun_features &= ~GUN_BURST_FIRING

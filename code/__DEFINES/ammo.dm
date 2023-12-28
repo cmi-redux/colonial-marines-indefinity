@@ -18,7 +18,7 @@
 #define AMMO_IGNORE_RESIST		(1<<10)
 #define AMMO_BALLISTIC			(1<<11)
 #define AMMO_IGNORE_COVER		(1<<12)
-#define AMMO_SCANS_NEARBY		(1<<13) //ammo that is scanning stuff nearby - VERY resource intensive
+#define AMMO_SCANS_NEARBY		(1<<13) // Ammo that is scanning stuff nearby - VERY resource intensive
 #define AMMO_STOPPED_BY_COVER	(1<<14)
 #define AMMO_SPECIAL_EMBED		(1<<15)
 #define AMMO_STRIKES_SURFACE	(1<<16) // If the projectile hits a dense turf it'll do on_hit_turf on the turf just in front of the turf instead of on the turf itself
@@ -26,9 +26,9 @@
 #define AMMO_ALWAYS_FF			(1<<18)
 #define AMMO_HOMING				(1<<19) // If the bullet target is a mob, it will correct its trajectory toward the mob.
 #define AMMO_NO_DEFLECT			(1<<20) // Can't be deflected
-#define AMMO_MP					(1<<21) //Can only hit people with criminal status
+#define AMMO_MP					(1<<21) // Can only hit people with criminal status
 #define AMMO_FLAME				(1<<22) // Handles sentry flamers glob
-#define AMMO_LEAVE_TURF			(1<<23) //If the projectile does something with on_leave_turf()
+#define AMMO_LEAVE_TURF			(1<<23) // If the projectile does something with on_leave_turf()
 
 //Special flags for custom ammo
 #define CUSTOM_AMMO_EXPLOSION	(1<<0)

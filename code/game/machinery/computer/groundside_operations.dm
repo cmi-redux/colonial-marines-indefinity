@@ -252,9 +252,9 @@
 
 		if("pick_squad")
 			var/list/squad_list = list()
-			for(var/datum/squad/S in SSticker.role_authority.squads)
-				if(S.name != "Root" && !S.locked && S.active && S.faction == faction.faction_name)
-					squad_list += S.name
+			for(var/datum/squad/searching_squad in SSticker.role_authority.squads)
+				if(searching_squad.name != "Root" && !searching_squad.locked && searching_squad.active && searching_squad.faction == faction.faction_name)
+					squad_list += searching_squad.name
 
 			var/name_sel = tgui_input_list(usr, "Which squad would you like to look at?", "Pick Squad", squad_list)
 			if(!name_sel)

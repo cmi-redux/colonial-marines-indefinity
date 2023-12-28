@@ -171,7 +171,7 @@
 	for(var/list/entry in bullet_traits)
 		proj.apply_bullet_trait(entry.Copy())
 
-/obj/item/projectile/proc/bullet_ready_to_fire(bullet_source = null, happened = null, weapon_source_mob = null)
+/obj/item/projectile/proc/bullet_ready_to_fire(bullet_source = null, happened = "выстрел", weapon_source_mob = null)
 	unacidable = TRUE
 	anchored = TRUE
 	flags_atom = NOINTERACT
@@ -708,8 +708,8 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 		//this thing scans depending on dir
 		var/cardinal_dir = get_perpen_dir(proj_dir)
 		if(!cardinal_dir)
-			var/d1 = proj_dir&(proj_dir-1)		// eg west		(1+8)&(8) = 8
-			var/d2 = proj_dir - d1			// eg north		(1+8) - 8 = 1
+			var/d1 = proj_dir&(proj_dir-1)	// eg west	(1+8)&(8) = 8
+			var/d2 = proj_dir - d1			// eg north	(1+8) - 8 = 1
 			cardinal_dir = list(d1,d2)
 
 		var/remote_detonation = 0
@@ -721,9 +721,11 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 			for(var/atom/movable/dA in dturf)
 				if(!isliving(dA))
 					continue
+
 				var/mob/living/dL = dA
 				if(dL.is_dead())
 					continue
+
 				if(SEND_SIGNAL(src, COMSIG_BULLET_CHECK_MOB_SKIPPING, dL) & COMPONENT_SKIP_MOB\
 					|| runtime_iff_group && dL.ally(runtime_iff_group)\
 				)
@@ -735,11 +737,14 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 
 					if(!istype(F))
 						continue
+
 					if(F.can_not_harm(X))
 						continue
+
 				remote_detonation = 1
 				kill_proj = ammo.on_near_target(turf_to_scan, src)
 				break
+
 			if(remote_detonation)
 				break
 
@@ -753,9 +758,11 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 	for(var/obj/O in turf_to_scan) //check objects before checking mobs, so that barricades protect
 		if(handle_object(O))
 			return TRUE
+
 	for(var/mob/living/L in turf_to_scan)
 		if(handle_mob(L))
 			return TRUE
+
 	if(hit_turf)
 		ammo.on_hit_turf(turf_to_scan, src)
 		if(turf_to_scan && turf_to_scan.loc)
@@ -842,7 +849,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 				ammo.on_hit_turf(get_turf(src),src)
 				T.bullet_act(src)
 			else if(L && L.loc && (L.bullet_act(src) != -1))
-				ammo.on_hit_mob(L,src, firer)
+				ammo.on_hit_mob(L, src, firer)
 
 				// If we are a xeno shooting something
 				if(istype(ammo, /datum/ammo/xeno) && isxeno(firer) && L.stat != DEAD && ammo.apply_delegate)
