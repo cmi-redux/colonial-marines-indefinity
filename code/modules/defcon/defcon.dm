@@ -65,7 +65,7 @@
 		var/objective_type
 		if(!length(objective_spawns[subtyope]))
 			continue
-		for(var/i=0;i<ammount;i++)
+		for(var/i = 1 to ammount)
 			var/list/potential_spawns = list()
 			objective_type = pick(GLOB.objectives_links[subtyope])
 			for(var/datum/objective_spawn_handler/objective_handler in objective_spawns[subtyope])

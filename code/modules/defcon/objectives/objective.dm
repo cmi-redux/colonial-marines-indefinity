@@ -13,8 +13,10 @@
 	var/display_category // group objectives for round end display
 
 /datum/cm_objective/New(faction_to_get)
-	if(faction_to_get)
-		controller = faction_to_get
+	if(!faction_to_get)
+		qdel(src)
+		return
+	controller = faction_to_get
 	connect_objective()
 
 // Hotfix for testing, until rework in proper way pregenerated objectives (TODO: REMOVE WHEN PREGENERATED SPAWNS OF OBJECTIVES REMOVED)

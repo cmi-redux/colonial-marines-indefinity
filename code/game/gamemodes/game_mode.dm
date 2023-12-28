@@ -44,7 +44,6 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 	var/list/factions_pool = list()
 
 	var/planet_nuked = NUKE_NONE
-	var/corpses_to_spawn = 0
 
 /datum/game_mode/New()
 	..()
@@ -86,8 +85,6 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 	setup_structures()
 	if(static_comms_amount)
 		spawn_static_comms()
-	if(corpses_to_spawn)
-		generate_corpses()
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MODE_PRESETUP)
 	return 1
 
@@ -320,29 +317,6 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 		if(player.mind && (player.job in ROLES_COMMAND))
 			heads += player.mind
 	return heads
-
-
-/datum/game_mode/proc/generate_corpses()
-	var/list/obj/effect/landmark/corpsespawner/gamemode_spawn_corpse = GLOB.corpse_spawns.Copy()
-	while(corpses_to_spawn--)
-		if(!length(gamemode_spawn_corpse))
-			break
-		var/obj/effect/landmark/corpsespawner/spawner = pick(gamemode_spawn_corpse)
-		var/turf/spawnpoint = get_turf(spawner)
-		if(spawnpoint)
-			var/mob/living/carbon/human/M = new /mob/living/carbon/human(spawnpoint)
-			M.create_hud() //Need to generate hud before we can equip anything apparently...
-			arm_equipment(M, spawner.equip_path, TRUE, FALSE)
-			for(var/obj/structure/bed/nest/found_nest in spawnpoint)
-				for(var/turf/the_turf in list(get_step(found_nest, NORTH),get_step(found_nest, EAST),get_step(found_nest, WEST)))
-					if(the_turf.density)
-						found_nest.dir = get_dir(found_nest, the_turf)
-						found_nest.pixel_x = found_nest.buckling_x["[found_nest.dir]"]
-						found_nest.pixel_y = found_nest.buckling_y["[found_nest.dir]"]
-						M.dir = get_dir(the_turf,found_nest)
-				if(!found_nest.buckled_mob)
-					found_nest.do_buckle(M,M)
-		gamemode_spawn_corpse.Remove(spawner)
 
 /datum/game_mode/proc/spawn_static_comms()
 	for(var/i = 1 to static_comms_amount)

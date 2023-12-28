@@ -7,7 +7,6 @@
 	name = MODE_NAME_HUMAN_WARS
 	config_tag = MODE_NAME_HUMAN_WARS
 	required_players = 2
-	corpses_to_spawn = 0
 	end_game_announce = "Битва закончена, осталось лишь только убирать последствия и трупы... на"
 
 	round_end_states = list(MODE_HVH_UPP_WIN, MODE_HVH_MARINE_WIN, MODE_HVH_WY_WIN, MODE_HVH_CLF_WIN, MODE_HVH_PEACE_CONFERENCE, MODE_HVH_NUCLEAR_DESTRUCTION)

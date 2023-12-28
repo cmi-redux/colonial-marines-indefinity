@@ -62,6 +62,8 @@
 
 	var/list/weather = list()
 
+	var/total_corpses = 0
+
 	var/vote_cycle = 1
 
 	var/nightmare_path
@@ -347,6 +349,11 @@
 	else if(!isnull(json["weather"]))
 		log_world("map_config weather is not a list!")
 		return
+
+	if(islist(json["total_corpses"]))
+		total_corpses = json["total_corpses"]
+	else
+		total_corpses = 50
 
 	if(json["nightmare_path"])
 		nightmare_path = json["nightmare_path"]

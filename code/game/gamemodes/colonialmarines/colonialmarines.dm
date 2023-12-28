@@ -12,7 +12,6 @@
 	required_players = 2
 	xeno_required_num = 1
 	monkey_amount = 5
-	corpses_to_spawn = 0
 	flags_round_type = MODE_INFESTATION|MODE_FOG_ACTIVATED|MODE_NEW_SPAWN
 	static_comms_amount = 1
 	var/round_status_flags

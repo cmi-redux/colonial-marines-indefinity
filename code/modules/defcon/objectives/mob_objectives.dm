@@ -5,7 +5,9 @@
 	name = "Recover corpses"
 	objective_state = OBJECTIVE_ACTIVE
 	/// List of list of active corpses per tech-faction ownership
-	var/list/corpses = list()
+	var/static/list/total_corpses = list()
+	var/static/list/corpses = list()
+	var/list/handling_corpses = list()
 	var/list/scored_corpses = list()
 
 /datum/cm_objective/recover_corpses/New(faction_to_get)
@@ -17,11 +19,12 @@
 	), PROC_REF(handle_mob_deaths))
 
 /datum/cm_objective/recover_corpses/Destroy()
-	corpses = null
+	handling_corpses = null
+	scored_corpses = null
 	. = ..()
 
 /datum/cm_objective/recover_corpses/proc/generate_corpses(numCorpsesToSpawn)
-	var/list/obj/effect/landmark/corpsespawner/objective_spawn_corpse = GLOB.corpse_spawns.Copy()
+	var/list/obj/effect/landmark/corpsespawner/objective_spawn_corpse = GLOB.corpse_spawns
 	while(numCorpsesToSpawn--)
 		if(!length(objective_spawn_corpse))
 			break
@@ -29,17 +32,19 @@
 		var/turf/spawnpoint = get_turf(spawner)
 		if(spawnpoint)
 			var/mob/living/carbon/human/M = new /mob/living/carbon/human(spawnpoint)
+			total_corpses += M
+			handling_corpses += M
 			M.create_hud() //Need to generate hud before we can equip anything apparently...
 			arm_equipment(M, spawner.equip_path, TRUE, FALSE)
 			for(var/obj/structure/bed/nest/found_nest in spawnpoint)
-				for(var/turf/the_turf in list(get_step(found_nest, NORTH),get_step(found_nest, EAST),get_step(found_nest, WEST)))
+				for(var/turf/the_turf in list(get_step(found_nest, NORTH), get_step(found_nest, EAST), get_step(found_nest, WEST)))
 					if(the_turf.density)
 						found_nest.dir = get_dir(found_nest, the_turf)
 						found_nest.pixel_x = found_nest.buckling_x["[found_nest.dir]"]
 						found_nest.pixel_y = found_nest.buckling_y["[found_nest.dir]"]
 						M.dir = get_dir(the_turf,found_nest)
 				if(!found_nest.buckled_mob)
-					found_nest.do_buckle(M,M)
+					found_nest.do_buckle(M, M)
 		objective_spawn_corpse.Remove(spawner)
 
 /datum/cm_objective/recover_corpses/post_round_start()
@@ -48,14 +53,13 @@
 /datum/cm_objective/recover_corpses/proc/handle_mob_deaths(datum/source, mob/living/carbon/dead_mob, gibbed)
 	SIGNAL_HANDLER
 
-	if(!iscarbon(dead_mob))
+	if(!(dead_mob in handling_corpses) && (dead_mob in total_corpses))
 		return
 
-	// This mob has already been scored before
-	if(LAZYISIN(scored_corpses, dead_mob))
+	if(dead_mob in corpses + scored_corpses)
 		return
 
-	LAZYDISTINCTADD(corpses, dead_mob)
+	corpses |= dead_mob
 	RegisterSignal(dead_mob, COMSIG_PARENT_QDELETING, PROC_REF(handle_corpse_deletion))
 	RegisterSignal(dead_mob, COMSIG_LIVING_REJUVENATED, PROC_REF(handle_mob_revival))
 
@@ -75,7 +79,7 @@
 	else
 		UnregisterSignal(revived_mob, COMSIG_HUMAN_REVIVED)
 
-	LAZYREMOVE(corpses, revived_mob)
+	corpses -= revived_mob
 
 
 /datum/cm_objective/recover_corpses/proc/handle_corpse_deletion(mob/living/carbon/deleted_mob)
@@ -91,7 +95,7 @@
 	else
 		UnregisterSignal(deleted_mob, COMSIG_HUMAN_REVIVED)
 
-	LAZYREMOVE(corpses, deleted_mob)
+	corpses -= deleted_mob
 
 /// Get score value for a given corpse
 /datum/cm_objective/recover_corpses/proc/score_corpse(mob/target)
@@ -122,10 +126,9 @@
 	return cost_value
 
 /datum/cm_objective/recover_corpses/process()
-
 	for(var/mob/target as anything in corpses)
 		if(QDELETED(target))
-			LAZYREMOVE(corpses, target)
+			corpses -= target
 			continue
 
 		// Add points depending on who controls it
@@ -136,8 +139,8 @@
 			SSfactions.statistics["corpses_recovered"]++
 			SSfactions.statistics["corpses_total_points_earned"] = value
 
-			LAZYREMOVE(corpses, target)
-			LAZYDISTINCTADD(scored_corpses, target)
+			corpses -= target
+			scored_corpses |= target
 
 			if(isxeno(target))
 				UnregisterSignal(target, COMSIG_XENO_REVIVED)

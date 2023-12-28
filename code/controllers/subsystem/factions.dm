@@ -86,7 +86,7 @@ SUBSYSTEM_DEF(factions)
 
 	while(length(current_active_run))
 		var/datum/faction/faction = current_active_run[length(current_active_run)]
-		if(!length(current_active_run_tasks) && !!length(current_active_run_objectives))
+		if(!length(current_active_run_tasks) && !length(current_active_run_objectives))
 			current_active_run_tasks = faction.active_tasks.Copy()
 			current_active_run_objectives = faction.objectives_controller.objectives.Copy()
 
@@ -186,10 +186,14 @@ SUBSYSTEM_DEF(factions)
 /// Allows to perform objective initialization later on in case of map changes
 /datum/controller/subsystem/factions/proc/initialize_objectives()
 	SHOULD_NOT_SLEEP(TRUE)
+	var/datum/map_config/ground_map = SSmapping.configs[GROUND_MAP]
+	var/total_percent = length(GLOB.clients) / 100
 	for(var/datum/objectives_datum/objectives_controller in GLOB.objective_controller)
 		objectives_controller.generate_objectives()
 		connect_objectives(objectives_controller)
-		objectives_controller.corpsewar.generate_corpses(CORPSES_TO_SPAWN)
+		var/faction_mobs = length(GLOB.faction_datum[objectives_controller.associated_faction].totalMobs)
+		if(faction_mobs)
+			objectives_controller.corpsewar.generate_corpses(round(ground_map.total_corpses * faction_mobs / total_percent))
 
 /datum/controller/subsystem/factions/proc/pre_round_start()
 	SIGNAL_HANDLER
