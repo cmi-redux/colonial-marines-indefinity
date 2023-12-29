@@ -298,15 +298,19 @@
 	if(!(world.time-last_fired >= fire_delay) || !light_on || !ammo || QDELETED(target))
 		return
 
+	last_fired = world.time
+
 	if(world.time-last_fired >= 30 SECONDS) //if we haven't fired for a while, beep first
 		playsound(loc, 'sound/machines/twobeep.ogg', 50, 1)
 		sleep(3)
 
-	if(ammo && ammo.ammo_position <= 0)
+	if(!ammo.ammo_position)
+		if(sent_empty_ammo > 3)
+			power_off()
+			return
 		to_chat(usr, SPAN_WARNING("[name] does not have any ammo."))
+		sent_empty_ammo++
 		return
-
-	last_fired = world.time
 
 	if(QDELETED(owner_mob))
 		owner_mob = src
@@ -336,9 +340,6 @@
 	low_ammo_timer = null
 
 /obj/structure/machinery/defenses/sentry/proc/actual_fire(atom/target)
-	if(!ammo.ammo_position)
-		handle_empty()
-		return FALSE
 	var/obj/item/projectile/proj = ammo.transfer_bullet_out()
 	proj.forceMove(src)
 	apply_traits(proj)
@@ -351,6 +352,9 @@
 	proj.fire_at(target, src, owner_mob, proj.ammo.max_range, proj.ammo.shell_speed, null)
 	muzzle_flash(Get_Angle(get_turf(src), target))
 	track_shot()
+	if(!ammo.ammo_position)
+		handle_empty()
+		return FALSE
 	return TRUE
 
 /obj/structure/machinery/defenses/sentry/proc/apply_traits(obj/item/projectile/proj)
@@ -369,7 +373,7 @@
 	visible_message("[icon2html(src, viewers(src))] [SPAN_WARNING("The [name] beeps steadily and its ammo light blinks red.")]")
 	playsound(loc, 'sound/weapons/smg_empty_alarm.ogg', 25, 1)
 	update_icon()
-	sent_empty_ammo = TRUE
+	sent_empty_ammo++
 	SEND_SIGNAL(src, COMSIG_SENTRY_EMPTY_AMMO_ALERT, src)
 
 //Mostly taken from gun code.
@@ -395,8 +399,10 @@
 	flash.flick_overlay(src, 3)
 
 /obj/structure/machinery/defenses/sentry/proc/get_target(atom/movable/new_target)
+	actual_target = null
 	if(!islist(targets))
 		return
+
 	if(!targets.Find(new_target))
 		targets.Add(new_target)
 
@@ -412,14 +418,10 @@
 		else if(isliving(target))
 			var/mob/living/mob = target
 			if(mob.stat & DEAD)
-				if(target == actual_target)
-					actual_target = null
 				targets.Remove(target)
 				continue
 
 			if(mob.ally(faction) || mob.invisibility || HAS_TRAIT(mob, TRAIT_ABILITY_BURROWED))
-				if(mob == actual_target)
-					actual_target = null
 				targets.Remove(mob)
 				continue
 
@@ -458,15 +460,11 @@
 				r = abs(opp/adj)
 			var/angledegree = arcsin(r/sqrt(1+(r*r)))
 			if(adj < 0 || (angledegree*2) > fire_angle)
-				if(target == actual_target)
-					actual_target = null
 				targets.Remove(target)
 				continue
 
 		var/list/turf/path = getline2(src, target, include_from_atom = FALSE)
 		if(!path.len || get_dist(src, target) > sentry_range)
-			if(target == actual_target)
-				actual_target = null
 			targets.Remove(target)
 			continue
 
@@ -504,8 +502,6 @@
 				break
 
 		if(blocked)
-			if(target == actual_target)
-				actual_target = null
 			targets.Remove(target)
 			continue
 
@@ -518,9 +514,9 @@
 		else
 			actual_target = target
 
-	if(conscious_targets.len)
+	if(length(conscious_targets))
 		actual_target = pick(conscious_targets)
-	else if(unconscious_targets.len)
+	else if(length(unconscious_targets) && !actual_target)
 		actual_target = pick(unconscious_targets)
 
 	if(!actual_target) //No targets, don't bother firing

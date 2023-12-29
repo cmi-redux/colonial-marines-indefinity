@@ -125,8 +125,6 @@
 				update_icon()
 			return
 
-
-
 		if(istype(charging, /obj/item/clothing/suit/auto_cpr))
 			var/obj/item/clothing/suit/auto_cpr/A = charging
 			if(!A.pdcell.fully_charged())
@@ -168,35 +166,16 @@
 
 		if(istype(charging, /obj/item/smartgun_battery))
 			var/obj/item/smartgun_battery/charging_smartgun_battery = charging
-			if(charging_smartgun_battery.power_cell)
-				if(!charging_smartgun_battery.power_cell.fully_charged())
-					charging_smartgun_battery.power_cell.give(charge_amount)
-					percent_charge_complete = charging_smartgun_battery.power_cell.percent()
-					update_use_power(USE_POWER_ACTIVE)
-					update_icon()
-					return
-
-			percent_charge_complete = 100
-			update_use_power(USE_POWER_IDLE)
-			update_icon()
-			return
-
-		/* Disable defib recharging
-		if(istype(charging, /obj/item/device/defibrillator))
-			var/obj/item/device/defibrillator/D = charging
-			if(D.dcell)
-				if(!D.dcell.fully_charged())
-					icon_state = icon_state_charging
-					D.dcell.give(active_power_usage*CELLRATE)
-					update_use_power(USE_POWER_ACTIVE)
-				else
-					icon_state = icon_state_charged
-					update_use_power(USE_POWER_IDLE)
+			if(charging_smartgun_battery.power_cell && !charging_smartgun_battery.power_cell.fully_charged())
+				charging_smartgun_battery.power_cell.give(charge_amount)
+				percent_charge_complete = charging_smartgun_battery.power_cell.percent()
+				update_use_power(USE_POWER_ACTIVE)
+				update_icon()
 			else
-				icon_state = icon_state_idle
+				percent_charge_complete = 100
 				update_use_power(USE_POWER_IDLE)
+				update_icon()
 			return
-		*/
 
 /obj/structure/machinery/recharger/power_change()
 	..()
@@ -206,12 +185,7 @@
 	if(inoperable() || !anchored)
 		..(severity)
 		return
-/*
-	if(istype(charging,  /obj/item/weapon/gun/energy))
-		var/obj/item/weapon/gun/energy/E = charging
-		if(E.power_supply)
-			E.power_supply.emp_act(severity)
-*/
+
 	if(istype(charging, /obj/item/weapon/baton))
 		var/obj/item/weapon/baton/B = charging
 		if(B.bcell)
@@ -252,15 +226,3 @@
 
 /obj/structure/machinery/recharger/unanchored
 	anchored = FALSE
-
-/*
-/obj/structure/machinery/recharger/wallcharger
-	name = "wall recharger"
-	icon = 'icons/obj/structures/props/stationobjs.dmi'
-	icon_state = "wrecharger0"
-	active_power_usage = 25000 //25 kW , It's more specialized than the standalone recharger (guns and batons only) so make it more powerful
-	allowed_devices = list(/obj/item/weapon/gun/energy, /obj/item/weapon/baton)
-	icon_state_charged = "wrecharger2"
-	icon_state_idle = "wrecharger0"
-	icon_state_charging = "wrecharger1"
-*/

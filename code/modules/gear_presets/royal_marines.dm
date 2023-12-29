@@ -1,6 +1,7 @@
 /datum/equipment_preset/twe
 	name = "Three World Empire"
 	faction = FACTION_TWE
+	rank = FACTION_TWE
 	languages = list(LANGUAGE_ENGLISH, LANGUAGE_JAPANESE)
 
 /datum/equipment_preset/twe/royal_marine/load_name(mob/living/carbon/human/new_human, randomise)
