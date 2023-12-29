@@ -102,7 +102,6 @@ const PlaytimeTableGlob = (props: { data: PlaytimeRecordGlob[] }, context) => {
   return (
     <Table>
       {props.data
-        .slice(props.data.length > 1 ? 1 : 0)
         .filter((x) => x.playtime !== 0)
         .map((x) => (
           <TableRow key={x.job} className="PlaytimeRowGlob">

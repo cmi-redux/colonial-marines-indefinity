@@ -10,6 +10,9 @@
 	use_power = USE_POWER_NONE
 	stat = DEFENSE_FUNCTIONAL
 	health = 200
+
+	faction_to_get = null
+
 	var/health_max = 200
 	var/mob/owner_mob = null
 	var/defense_icon = "sentry"

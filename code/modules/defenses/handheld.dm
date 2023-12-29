@@ -4,6 +4,8 @@
 	icon = 'icons/obj/structures/machinery/defenses/sentry.dmi'
 	icon_state = "DMR uac_sentry_handheld"
 
+	faction_to_get = null
+
 	force = 5
 	throwforce = 5
 	throw_speed = SPEED_SLOW

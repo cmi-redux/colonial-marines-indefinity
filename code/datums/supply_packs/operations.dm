@@ -1,78 +1,14 @@
 //the idea is to put all the bulk items scanner secure crate with lot's of flares MRE in it and at the end OB and non buyable.
 
-//non buyable
-
-/datum/supply_packs/ob_incendiary
+/datum/supply_packs/faction_tags
+	name = "Faction IFF Tag Case (x7 tags)"
 	contains = list(
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/warhead/incendiary,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/warhead/incendiary,
+		/obj/item/storage/tag_case/uscm/marine/full
 	)
-
-	name = "OB Incendiary Crate"
-	cost = 0
-	containertype = /obj/structure/closet/crate/secure/ob
-	containername = "OB Ammo Crate (Incendiary x2)"
-	buyable = 0
+	cost = 100
+	containertype = /obj/structure/closet/crate/secure/weyland
+	containername = "IFF tag crate"
 	group = "Operations"
-	iteration_needed = null
-
-/datum/supply_packs/ob_explosive
-	contains = list(
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/warhead/explosive,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/warhead/explosive,
-	)
-
-	name = "OB HE Crate"
-	cost = 0
-	containertype = /obj/structure/closet/crate/secure/ob
-	containername = "OB Ammo Crate (HE x2)"
-	buyable = 0
-	group = "Operations"
-	iteration_needed = null
-
-/datum/supply_packs/ob_cluster
-	contains = list(
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/warhead/cluster,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/warhead/cluster,
-	)
-
-	name = "OB Cluster Crate"
-	cost = 0
-	containertype = /obj/structure/closet/crate/secure/ob
-	containername = "OB Ammo Crate (Cluster x2)"
-	buyable = 0
-	group = "Operations"
-	iteration_needed = null
 
 /datum/supply_packs/telecommsparts
 	name = "Replacement Telecommunications Parts"
@@ -90,34 +26,107 @@
 	cost = 40
 	containertype = /obj/structure/closet/crate/supply
 	buyable = 0
-	containername = "replacement telecommunications crate"
+	containername = "Replacement Telecommunications Crate"
 	group = "Operations"
 
-/datum/supply_packs/technuclearbomb
-	name = "Encrypted Operational Nuke"
-	cost = 0
-	containertype = /obj/structure/machinery/nuclearbomb/tech
-	buyable = 0
-	group = "Operations"
-	iteration_needed = null
+//non buyable
 
-/datum/supply_packs/obnuclearbomb
+/datum/supply_packs/ob_incendiary
+	name = "OB Incendiary Crate"
 	contains = list(
 		/obj/structure/ob_ammo/ob_fuel,
 		/obj/structure/ob_ammo/ob_fuel,
 		/obj/structure/ob_ammo/ob_fuel,
 		/obj/structure/ob_ammo/ob_fuel,
 		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/warhead/incendiary,
 		/obj/structure/ob_ammo/ob_fuel,
-		/obj/structure/ob_ammo/warhead/nuke,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/warhead/incendiary,
 	)
-
-	name = "OB Nuclear Crate"
 	cost = 0
-	containertype = /obj/structure/closet/crate/secure/ammo
+	containertype = /obj/structure/closet/crate/secure/ob
+	containername = "OB Ammo Crate (Incendiary x2)"
 	buyable = 0
 	group = "Operations"
 	iteration_needed = null
+
+/datum/supply_packs/ob_explosive
+	name = "OB HE Crate"
+	contains = list(
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/warhead/explosive,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/warhead/explosive,
+	)
+	cost = 0
+	containertype = /obj/structure/closet/crate/secure/ob
+	containername = "OB Ammo Crate (HE x2)"
+	buyable = 0
+	group = "Operations"
+	iteration_needed = null
+
+/datum/supply_packs/ob_cluster
+	name = "OB Cluster Crate"
+	contains = list(
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/warhead/cluster,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/warhead/cluster,
+	)
+	cost = 0
+	containertype = /obj/structure/closet/crate/secure/ob
+	containername = "OB Ammo Crate (Cluster x2)"
+	buyable = 0
+	group = "Operations"
+	iteration_needed = null
+
+/datum/supply_packs/upgrade_turrets_kits
+	name = "Upgrade Turret Kits Crate (x4)"
+	contains = list(
+		/obj/item/engi_upgrade_kit,
+		/obj/item/engi_upgrade_kit,
+		/obj/item/engi_upgrade_kit,
+		/obj/item/engi_upgrade_kit
+	)
+	cost = 0
+	buyable = FALSE
+	containertype = /obj/structure/closet/crate/medical
+	containername = "Upgrade Turret Kits Crate"
+	group = "Operations"
+
+/datum/supply_packs/upgraded_medical_kits
+	name = "Upgraded Medical Equipment Crate (x4)"
+	contains = list(
+		/obj/item/storage/box/czsp/medic_upgraded_kits,
+		/obj/item/storage/box/czsp/medic_upgraded_kits,
+		/obj/item/storage/box/czsp/medic_upgraded_kits,
+		/obj/item/storage/box/czsp/medic_upgraded_kits
+	)
+	cost = 0
+	buyable = FALSE
+	containertype = /obj/structure/closet/crate/medical
+	containername = "Upgraded Medical Equipment Crate"
+	group = "Operations"
 
 /datum/supply_packs/spec_kits
 	name = "Specialist Kits"
@@ -129,7 +138,7 @@
 	)
 	cost = 0
 	containertype = /obj/structure/closet/crate/supply
-	containername = "specialist kits crate"
+	containername = "Specialist Kits Crate"
 	buyable = 0
 	group = "Operations"
 	iteration_needed = null
@@ -144,7 +153,7 @@
 	)
 	cost = 0
 	containertype = /obj/structure/closet/crate/supply
-	containername = "weapons specialist kits crate"
+	containername = "Weapons Specialist Kits Crate"
 	buyable = 0
 	group = "Operations"
 	iteration_needed = null
@@ -163,7 +172,7 @@
 	)
 	cost = 0
 	containertype = /obj/structure/closet/crate/supply
-	containername = "special ammo supply crate"
+	containername = "Special Ammo Supply Crate"
 	buyable = 0
 	group = "Operations"
 
@@ -181,44 +190,46 @@
 	)
 	cost = 0
 	containertype = /obj/structure/closet/crate/supply
-	containername = "experemental guns supply crate"
+	containername = "Experemental Guns Supply Crate"
 	buyable = 0
 	group = "Operations"
 
-/datum/supply_packs/upgrade_turrets_kits
-	name = "upgrade turret kits crate (x4)"
+/datum/supply_packs/operational_special_assets
+	name = "Operational Special Assets"
 	contains = list(
-					/obj/item/engi_upgrade_kit,
-					/obj/item/engi_upgrade_kit,
-					/obj/item/engi_upgrade_kit,
-					/obj/item/engi_upgrade_kit
-					)
-	cost = 0
-	buyable = FALSE
-	containertype = /obj/structure/closet/crate/medical
-	containername = "upgrade turret kits crate"
-	group = "Operations"
-
-/datum/supply_packs/upgraded_medical_kits
-	name = "upgraded medical equipment crate (x4)"
-	contains = list(
-					/obj/item/storage/box/czsp/medic_upgraded_kits,
-					/obj/item/storage/box/czsp/medic_upgraded_kits,
-					/obj/item/storage/box/czsp/medic_upgraded_kits,
-					/obj/item/storage/box/czsp/medic_upgraded_kits
-					)
-	cost = 0
-	buyable = FALSE
-	containertype = /obj/structure/closet/crate/medical
-	containername = "upgraded medical equipment crate"
-	group = "Operations"
-
-/datum/supply_packs/faction_tags
-	name = "Faction IFF Tag Case (x7 tags)"
-	contains = list(
-		/obj/item/storage/tag_case/uscm/marine/full
+		/obj/item/defenses/handheld/sentry/heavy,
+		/obj/item/defenses/handheld/sentry/heavy,
+//TODO: Add here more funny assets
 	)
-	cost = 100
-	containertype = /obj/structure/closet/crate/secure/weyland
-	containername = "IFF tag crate"
+	cost = 0
+	containertype = /obj/structure/closet/crate/secure/ammo
+	containername = "Secured Special Weapons Crate"
+	buyable = 0
 	group = "Operations"
+	iteration_needed = null
+
+/datum/supply_packs/obnuclearbomb
+	name = "Operational OB Nuke"
+	contains = list(
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/ob_fuel,
+		/obj/structure/ob_ammo/warhead/nuke,
+	)
+	cost = 0
+	containertype = /obj/structure/closet/crate/secure/ammo
+	containername = "Secured Special Weapons Crate"
+	buyable = 0
+	group = "Operations"
+	iteration_needed = null
+
+/datum/supply_packs/technuclearbomb
+	name = "Encrypted Operational Nuke"
+	cost = 0
+	containertype = /obj/structure/machinery/nuclearbomb/tech
+	buyable = 0
+	group = "Operations"
+	iteration_needed = null

@@ -23,8 +23,6 @@
 /datum/tacmap/minimap/New(trait)
 	map_trait = trait
 	map_zlevels = SSmapping.levels_by_trait(map_trait)
-	for(var/level in map_zlevels)
-		generate_minimap(level)
 
 /datum/tacmap/minimap/proc/generate_minimap(level_to_gen)
 	var/icon/new_minimap = new('icons/minimap.dmi') //480x480 blank icon template for drawing on the map

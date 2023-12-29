@@ -114,6 +114,14 @@ export const PlayerPanel = (props, context) => {
                 onClick={() => act('access_playtimes')}
               />
             </Stack.Item>
+            <Stack.Item>
+              <Button
+                icon="window-restore"
+                content="View Statistics"
+                disabled={!hasPermission(data, 'show_notes')}
+                onClick={() => act('access_statistics')}
+              />
+            </Stack.Item>
           </Stack>
           <Stack mt={1}>
             <Stack.Item width="80px" color="label">

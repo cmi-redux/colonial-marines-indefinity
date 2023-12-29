@@ -14,19 +14,19 @@ SUBSYSTEM_DEF(playtime)
 
 /datum/controller/subsystem/playtime/proc/get_best_playtimes()
 	set waitfor = FALSE
+	set background = TRUE
 
 	WAIT_DB_READY
 
 	var/list/datum/view_record/playtime/PTs = DB_VIEW(/datum/view_record/playtime/)
 	var/list/real_best_playtimes = list()
 	for(var/datum/view_record/playtime/PT as anything in PTs)
-		var/role_time = round(PT.total_minutes / 60, 0.1)
 		if(!(PT.role_id in real_best_playtimes))
-			real_best_playtimes[PT.role_id] = list(role_time, PT)
+			real_best_playtimes[PT.role_id] = list(PT.total_minutes, PT)
 			continue
-		if(real_best_playtimes[PT.role_id][1] > role_time)
+		if(real_best_playtimes[PT.role_id][1] > PT.total_minutes)
 			continue
-		real_best_playtimes[PT.role_id] = list(role_time, PT)
+		real_best_playtimes[PT.role_id] = list(PT.total_minutes, PT)
 
 	for(var/role_name in real_best_playtimes)
 		var/list/info_list = real_best_playtimes[role_name]

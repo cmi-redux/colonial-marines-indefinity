@@ -792,10 +792,40 @@ TODO: Redo fully system per faction objectives with custom spawns and objectives
 	tank.req_one_access = list()
 
 
+/datum/objectives_reward/marine/turrets
+	name = LANGUAGE_DEFCON_SPECIAL_ASSETS
+	cost = REWARD_COST_LUDICROUS
+	minimum_level = 2
+	unique = TRUE
+	announcement_message = "Специальные наборы для укрепления позиций доставлены в карго, внимание, требуется использовать с повышенной осторожностью, не забудьте выполнить протокол перед использованием и все расходы USCM теперь на вашей ответсвенности"
+
+	accessing_type = DEFCON_ASSET_DELIVERY_CARGO
+	reward_name = "Operational Special Assets"//TODO: Add here more funny assets
+
+/datum/objectives_reward/marine/nuke/announce_reward(name = "СТРАТЕГИЧЕСКОЕ ЭКСПЕРЕМЕНТАЛЬНОЕ ОРУЖИЕ АВТОРИЗОВАННО")
+	faction_announcement(announcement_message, name, 'sound/misc/notice1.ogg')
+
+
+/datum/objectives_reward/marine/nuke
+	name = LANGUAGE_DEFCON_PLANETARY_NUKE
+	cost = REWARD_COST_LUDICROUS
+	minimum_level = 2
+	unique = TRUE
+	announcement_message = "Ядерная боеголовка была загружена в карго лифт, не забудьте выполнить протокол перед использованием и все расходы USCM теперь на вашей ответсвенности, также требуется соблюсти 10 пунктов из операционных правил USCM по применению оружия."
+
+	accessing_type = DEFCON_ASSET_DELIVERY_CARGO
+	reward_name = "Encrypted Operational Nuke"
+
+/datum/objectives_reward/marine/nuke/announce_reward(name = "СТРАТЕГИЧЕСКОЕ ЯДЕРНОЕ ОРУЖИЕ АВТОРИЗОВАННО")
+	faction_announcement(announcement_message, name, 'sound/misc/notice1.ogg')
+
+
+
+//1 DEFCON//
 /datum/objectives_reward/marine/obnuke
 	name = LANGUAGE_DEFCON_OB_NUKE
 	cost = REWARD_COST_LUDICROUS
-	minimum_level = 2
+	minimum_level = 1
 	unique = TRUE
 	announcement_message = "Орбитальная ядерная боеголовка была загружена в карго лифт, не забудьте выполнить протокол перед использованием и все расходы USCM теперь на вашей ответсвенности, а также требуется соблюсти 93 пункта использования космического ядерного оружия вблизи планет и 10 пунктов из операционных правил USCM по применению оружия."
 
@@ -803,20 +833,4 @@ TODO: Redo fully system per faction objectives with custom spawns and objectives
 	reward_name = "Operational OB Nuke"
 
 /datum/objectives_reward/marine/obnuke/announce_reward(name = "СТРАТЕГИЧЕСКОЕ КОСМИЧЕСКОЕ ЯДЕРНОЕ ОРУЖИЕ АВТОРИЗОВАННО")
-	faction_announcement(announcement_message, name, 'sound/misc/notice1.ogg')
-
-
-
-//1 DEFCON//
-/datum/objectives_reward/marine/nuke
-	name = LANGUAGE_DEFCON_PLANETARY_NUKE
-	cost = REWARD_COST_LUDICROUS
-	minimum_level = 1
-	unique = TRUE
-	announcement_message = "Ядерная боеголовка была загружена в карго лифт, не забудьте выполнить протокол перед использованием и все расходы USCM теперь на вашей ответсвенности, также требуется соблюсти 10 пунктов из операционных правил USCM по применению оружия."
-
-	accessing_type = DEFCON_ASSET_DELIVERY_CARGO
-	reward_name = "Operational Nuke"
-
-/datum/objectives_reward/marine/nuke/announce_reward(name = "СТРАТЕГИЧЕСКОЕ ЯДЕРНОЕ ОРУЖИЕ АВТОРИЗОВАННО")
 	faction_announcement(announcement_message, name, 'sound/misc/notice1.ogg')

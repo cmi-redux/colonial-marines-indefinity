@@ -404,8 +404,9 @@
 #define LANGUAGE_DEFCON_SPEC				"Four Specialist Kits"
 #define LANGUAGE_DEFCON_ROCKETS				"Access To Ship Rockets"
 #define LANGUAGE_DEFCON_LTB					"M34A2 Longstreet Light Tank (LTB)"
-#define LANGUAGE_DEFCON_OB_NUKE				"OB projectiles - Nuclear Warhead"
+#define LANGUAGE_DEFCON_SPECIAL_ASSETS		"Special Experemental Assets"
 #define LANGUAGE_DEFCON_PLANETARY_NUKE		"Planetary Nuclear Warhead"
+#define LANGUAGE_DEFCON_OB_NUKE				"OB projectiles - Nuclear Warhead"
 //											XENO
 #define LANGUAGE_XENO_EVOLVED				"You emerge in a greater form from the husk of your old body. For the hive!"
 #define LANGUAGE_XENO_CANT_EVOLVED_BP		"You can't evolve here."
@@ -883,8 +884,9 @@ GLOBAL_LIST_INIT(client_language_ru, list(
 	LANGUAGE_DEFCON_SPEC = "Четыре Набора Специалиста",
 	LANGUAGE_DEFCON_ROCKETS = "Доступ к Ракетным Батареям",
 	LANGUAGE_DEFCON_LTB = "M34A2 Longstreet Легкий Танк (LTB)",
-	LANGUAGE_DEFCON_OB_NUKE = "ОБ Снаряд - Ядерная Боеголовка",
+	LANGUAGE_DEFCON_SPECIAL_ASSETS = "Специальные Эксперементальные Ассеты",
 	LANGUAGE_DEFCON_PLANETARY_NUKE = "Планетарная Ядерная Боеголовка",
+	LANGUAGE_DEFCON_OB_NUKE = "ОБ Снаряд - Ядерная Боеголовка",
 //	XENO
 	LANGUAGE_XENO_EVOLVED = "Ты появляешься в более великой форме из шелухи своего старого тела. За улей!",
 	LANGUAGE_XENO_CANT_EVOLVED_BP = "Ты не можешь эволюционировать здесь.",
