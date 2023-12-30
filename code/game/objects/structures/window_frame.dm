@@ -20,13 +20,13 @@
 	projectile_coverage = PROJECTILE_COVERAGE_MEDIUM
 	surgery_duration_multiplier = SURGERY_SURFACE_MULT_UNSUITED
 
-	tiles_with = list(
-		/turf/closed/wall)
-	var/tiles_special = list(
+	tiles_with = list(/turf/closed/wall)
+	var/tiles_special[] = list(
 		/obj/structure/machinery/door/airlock,
 		/obj/structure/window/framed,
 		/obj/structure/girder,
-		/obj/structure/window_frame)
+		/obj/structure/window_frame
+	)
 
 /obj/structure/window_frame/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
@@ -40,8 +40,8 @@
 
 	return ..()
 
-/obj/structure/window_frame/New(loc, from_window_shatter)
-	..()
+/obj/structure/window_frame/Initialize(loc, from_window_shatter)
+	. = ..()
 	var/obj/effect/alien/weeds/node/weed_found
 	if(from_window_shatter)
 		for(var/obj/effect/alien/weeds/weedwall/window/W in loc)
@@ -56,7 +56,6 @@
 			W.update_icon()
 		if(weed_found)
 			new /obj/effect/alien/weeds/weedwall/frame(loc, weed_found) //after smoothing to get the correct junction value
-
 
 /obj/structure/window_frame/proc/update_nearby_icons()
 	relativewall_neighbours()
@@ -297,4 +296,5 @@
 	window_type = /obj/structure/window/framed/corsat/research
 
 /obj/structure/window_frame/corsat/security
+
 	window_type = /obj/structure/window/framed/corsat/security

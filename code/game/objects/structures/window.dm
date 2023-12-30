@@ -86,7 +86,7 @@
 		junction = 0
 		if(anchored)
 			var/turf/TU
-			for(var/dirn in  GLOB.cardinals)
+			for(var/dirn in GLOB.cardinals)
 				TU = get_step(src, dirn)
 				var/obj/structure/window/W = locate() in TU
 				if(W && W.anchored && W.density && W.legacy_full) //Only counts anchored, non-destroyed, legacy full-tile windows.
@@ -112,7 +112,8 @@
 		if(user && istype(user))
 			user.count_statistic_stat(STATISTICS_DESTRUCTION_WINDOWS, 1)
 			SEND_SIGNAL(user, COMSIG_MOB_DESTROY_WINDOW, src)
-			user.visible_message(SPAN_DANGER("[user] smashes through [src][AM ? " with [AM]":""]!"))
+			if(!istype(AM, /obj/item/projectile))
+				user.visible_message(SPAN_DANGER("[user] smashes through [src][AM ? " with [AM]":""]!"))
 			if(is_mainship_level(z))
 				SSclues.create_print(get_turf(user), user, "A small glass piece is found on the fingerprint.")
 		if(make_shatter_sound)
@@ -126,13 +127,17 @@
 	//Tasers and the like should not damage windows.
 	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
 	if(proj.ammo.damage_type == HALLOSS || proj.damage <= 0 || ammo_flags == AMMO_ENERGY)
-		return 0
+		return FALSE
 
 	if(!not_damageable) //Impossible to destroy
 		health -= proj.damage
 	..()
-	healthcheck(user = proj.firer)
-	return 1
+	if(health > 0)
+		healthcheck(FALSE, TRUE, user = proj.firer, AM = proj)
+
+	handle_debris(proj.damage, proj.dir)
+	deconstruct(disassembled = FALSE)
+	return TRUE
 
 /obj/structure/window/ex_act(severity, explosion_direction, datum/cause_data/cause_data)
 	if(not_damageable) //Impossible to destroy
@@ -155,7 +160,7 @@
 		SEND_SIGNAL(M, COMSIG_MOB_WINDOW_EXPLODED, src)
 
 	handle_debris(severity, explosion_direction)
-	deconstruct(FALSE)
+	deconstruct(disassembled = FALSE)
 	return
 
 /obj/structure/window/get_explosion_resistance(direction)
@@ -284,7 +289,7 @@
 			to_chat(user, (anchored ? SPAN_NOTICE("You have fastened the window to the floor.") : SPAN_NOTICE("You have unfastened the window.")))
 		else if(static_frame && state == 0)
 			SEND_SIGNAL(user, COMSIG_MOB_DISASSEMBLE_WINDOW, src)
-			deconstruct(TRUE)
+			deconstruct(disassembled = TRUE)
 	else if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR) && reinf && state <= 1 && !not_deconstructable)
 		state = 1 - state
 		playsound(loc, 'sound/items/Crowbar.ogg', 25, 1)
@@ -309,13 +314,13 @@
 			new /obj/item/stack/sheet/glass/reinforced(loc, 2)
 		else
 			new /obj/item/stack/sheet/glass(loc, 2)
-	return ..()
+	..()
 
 
 /obj/structure/window/proc/shatter_window(create_debris)
 	if(create_debris)
 		handle_debris()
-	deconstruct(FALSE)
+	deconstruct(disassembled = FALSE)
 
 /obj/structure/window/clicked(mob/user, list/mods)
 	if(mods["alt"])
@@ -358,7 +363,7 @@
 //This proc is used to update the icons of nearby windows.
 /obj/structure/window/proc/update_nearby_icons()
 	update_icon()
-	for(var/direction in  GLOB.cardinals)
+	for(var/direction in GLOB.cardinals)
 		for(var/obj/structure/window/W in get_step(src, direction))
 			W.update_icon()
 
@@ -502,14 +507,13 @@
 	static_frame = 1
 	flags_atom = FPRINT
 	var/window_frame //For perspective windows,so the window frame doesn't magically dissapear
-
-	tiles_with = list(
-		/turf/closed/wall)
-	var/tiles_special = list(
+	var/list/tiles_special = list(
 		/obj/structure/machinery/door/airlock,
 		/obj/structure/window/framed,
 		/obj/structure/girder,
-		/obj/structure/window_frame)
+		/obj/structure/window_frame,
+	)
+	tiles_with = list(/turf/closed/wall)
 
 /obj/structure/window/framed/Initialize()
 	. = ..()
@@ -565,10 +569,10 @@
 
 /obj/structure/window/framed/deconstruct(disassembled = TRUE)
 	if(window_frame)
-		var/obj/structure/window_frame/new_window_frame = new window_frame(loc, TRUE)
+		var/obj/structure/window_frame/new_window_frame = new window_frame(get_turf(src), TRUE)
 		new_window_frame.icon_state = "[new_window_frame.basestate][junction]_frame"
 		new_window_frame.setDir(dir)
-	return ..()
+	..()
 
 /obj/structure/window/framed/almayer
 	name = "reinforced window"
@@ -958,7 +962,7 @@
 		return
 
 	triggered = 1
-	for(var/direction in  GLOB.cardinals)
+	for(var/direction in GLOB.cardinals)
 		if(direction == from_dir)
 			continue //doesn't check backwards
 

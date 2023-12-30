@@ -345,17 +345,16 @@ They're all essentially identical when it comes to getting the job done.
 		weapon_cause_data = create_cause_data(cause_data)
 
 	create_shrapnel(src, 4, , ,shrapnel_type, weapon_cause_data)
-	start_shoting(src, , , , weapon_cause_data)
+	if(ammo_position)
+		start_shoting(src, weapon_cause_data)
 	cell_explosion(src, 50, 200, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, weapon_cause_data)
 	if(!QDELETED(src))
 		qdel(src)
 
-/obj/item/ammo_magazine/proc/start_shoting(turf/epicenter, shrapnel_number = ammo_position, shrapnel_direction, shrapnel_spread = 90, datum/cause_data/cause_data_new, ignore_source_mob = FALSE, on_hit_coefficient = 0.15)
+/obj/item/ammo_magazine/proc/start_shoting(turf/epicenter, datum/cause_data/cause_data_new, ignore_source_mob = FALSE, on_hit_coefficient = 0.15)
 	epicenter = get_turf(epicenter)
 
-	var/time_to_shot = 1 SECONDS
-	if(shrapnel_number)
-		time_to_shot = 5 SECONDS / shrapnel_number
+	var/time_to_shot = 5 SECONDS / ammo_position
 
 	var/mob/living/mob_standing_on_turf
 	var/mob/living/mob_lying_on_turf
@@ -370,8 +369,7 @@ They're all essentially identical when it comes to getting the job done.
 	if(mob_standing_on_turf && isturf(mob_standing_on_turf.loc))
 		source = mob_standing_on_turf//we designate any mob standing on the turf as the "source" so that they don't simply get hit by every projectile
 
-
-	for(var/i = 0 to shrapnel_number)
+	while(ammo_position)
 		var/obj/item/projectile/proj = transfer_bullet_out()
 		proj.bullet_ready_to_fire(initial(name), cause_data)
 		if(cause_data_new)
