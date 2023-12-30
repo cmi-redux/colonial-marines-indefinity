@@ -27,9 +27,6 @@
 
 /obj/docking_port/mobile/sselevator
 	name = "sky scraper elevator"
-
-	var/elevator_id = "normal_elevator"
-
 	id = MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR
 	width = 7
 	height = 7
@@ -65,7 +62,7 @@
 
 /obj/docking_port/mobile/sselevator/register()
 	. = ..()
-	SSshuttle.scraper_elevators[elevator_id] = src
+	SSshuttle.scraper_elevators[id] = src
 
 /obj/docking_port/mobile/sselevator/request(obj/docking_port/stationary/S) //No transit, no ignition, just a simple up/down platform
 	initiate_docking(S, force = TRUE)
@@ -120,7 +117,7 @@
 	playsound(return_center_turf(), ignition_sound, 60, 0, falloff = 4)
 	sleep(4 SECONDS)
 	calculate_move_delay(floor_to_move)
-	SSshuttle.moveShuttleToDock(src, GLOB.ss_elevator_floors["[MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR]_[floor_to_move + floor_offset]"], move_delay, FALSE)
+	SSshuttle.moveShuttleToDock(src, GLOB.ss_elevator_floors["[id]_[floor_to_move + floor_offset]"], move_delay, FALSE)
 
 /obj/docking_port/mobile/sselevator/proc/calculate_move_delay(floor_calc)
 	if(offseted_z > target_floor ? offseted_z - floor_calc > 4 : floor_calc - offseted_z > 4)
@@ -207,14 +204,10 @@
 	INVOKE_ASYNC(blastdoor, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator, unlock_and_open))
 
 /obj/docking_port/mobile/sselevator/one
-	elevator_id = "sky_scraper_elevator_one"
-
 	id = MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR_ONE
 
 
 /obj/docking_port/mobile/sselevator/two
-	elevator_id = "sky_scraper_elevator_two"
-
 	id = MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR_TWO
 
 
