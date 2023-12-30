@@ -65,11 +65,13 @@
 
 	var/scatter = 0
 	var/distance_travelled = 0
+	var/range_fallof = 0
 
 	var/projectile_speed = 1 //Tiles travelled per full tick.
 
 	var/projectile_override_flags = NO_FLAGS
 	var/projectile_flags = NO_FLAGS
+	var/projectile_status_flags = NO_FLAGS
 
 	var/datum/cause_data/weapon_cause_data
 	var/list/bullet_traits
@@ -82,6 +84,9 @@
 	/// How much to make the bullet fall off by accuracy-wise when closer than the ideal range
 	var/accuracy_range_falloff = 10
 
+	///The icon of the laser beam that will be created
+	var/effect_icon = null
+
 	//Fired processing vars
 	var/last_projectile_move = 0
 	var/stored_moves = 0
@@ -92,21 +97,24 @@
 //custom bullets, used only in custom projectiles, but can in normal if you wanna make hard custom proj
 	var/obj/item/ammo_parts/part/container/container = null
 
-/obj/item/projectile/Initialize(mapload, datum/cause_data/cause_data, datum/ammo/ammo_datum, ammo_caliber)
+/obj/item/projectile/Initialize(mapload, datum/cause_data/_weapon_cause_data, datum/ammo/_ammo, _caliber, _effect_icon)
 	. = ..(mapload)
 	permutated = list()
 	if(can_be_scraped && prob(scrapping_probability))
 		scrap_ammo_perc = rand(1, 100)
 
-	if(cause_data)
-		weapon_cause_data = cause_data
+	if(_weapon_cause_data)
+		weapon_cause_data = _weapon_cause_data
 
-	if(ammo_datum)
-		ammo = ammo_datum
-		name = ammo_datum.name
+	if(_ammo)
+		ammo = _ammo
+		name = _ammo.name
 
-	if(ammo_caliber)
-		caliber = ammo_caliber
+	if(_caliber)
+		caliber = _caliber
+
+	if(_effect_icon)
+		effect_icon = _effect_icon
 
 	pixel_x = rand(-8.0, 8) //Want to move them just a tad.
 	pixel_y = rand(-8.0, 8)
@@ -188,7 +196,12 @@
 
 /obj/item/projectile/ex_act()
 	if(fire_ready)
-		return FALSE //We do not want anything to delete these, simply to make sure that all the bullet references are not runtiming. Otherwise, constantly need to check if the bullet exists.
+		return FALSE
+	. = ..()
+
+/obj/item/projectile/throw_atom()
+	if(fire_ready)
+		return FALSE
 	. = ..()
 
 /obj/item/projectile/proc/generate_bullet(ammo_datum = null, bullet_generator, bonus_damage = 0, special_flags = NO_FLAGS)
@@ -323,6 +336,46 @@
 	x_offset = round(sin(dir_angle), 0.01)
 	y_offset = round(cos(dir_angle), 0.01)
 
+
+	var/ammo_flags = ammo.flags_ammo_behavior | projectile_override_flags
+	if(SSticker.mode.round_statistics && ammo_flags & AMMO_BALLISTIC)
+		SSticker.mode.round_statistics.total_projectiles_fired++
+		if(ammo.bonus_projectiles_amount)
+			SSticker.mode.round_statistics.total_projectiles_fired += ammo.bonus_projectiles_amount
+
+	if(firer && ismob(firer) && weapon_cause_data)
+		var/mob/M = firer
+		M.track_shot(weapon_cause_data.cause_name)
+
+	//If we have the right kind of ammo, we can fire several projectiles at once.
+	if(ammo.bonus_projectiles_amount && ammo.bonus_projectiles_type)
+		ammo.fire_bonus_projectiles(src)
+
+	if(shooter && !(projectile_flags & PROJECTILE_SHRAPNEL))
+		firer = shooter
+		permutated |= firer //Don't hit the shooter
+
+	if(projectile_flags & PROJECTILE_HITSCAN)
+		if(shooter.Adjacent(target) && ismob(target))
+			var/mob/mob_to_hit = target
+			ammo.on_hit_mob(mob_to_hit, src)
+			mob_to_hit.bullet_act(src)
+			qdel(src)
+			return
+
+		x_offset = round(sin(dir_angle), 0.01)
+		y_offset = round(cos(dir_angle), 0.01)
+/* IN FUTURE FOR FROZING PROJECTILES
+		if(projectile_batch_move_hitscan(!recursivity) == PROJECTILE_FROZEN || (projectile_status_flags & PROJECTILE_FROZEN))
+			var/atom/movable/hitscan_projectile_effect/laser_effect = new /atom/movable/hitscan_projectile_effect(PROJ_ABS_PIXEL_TO_TURF(apx, apy, z), dir_angle, apx % 32 - 16, apy % 32 - 16, 1.01, effect_icon, ammo.bullet_color)
+			RegisterSignal(loc, COMSIG_TURF_RESUME_PROJECTILE_MOVE, PROC_REF(resume_move))
+			laser_effect.RegisterSignal(loc, COMSIG_TURF_RESUME_PROJECTILE_MOVE, TYPE_PROC_REF(/atom/movable/hitscan_projectile_effect, remove_effect))
+			laser_effect.RegisterSignal(src, COMSIG_QDELETING, TYPE_PROC_REF(/atom/movable/hitscan_projectile_effect, remove_effect))
+			return
+*/
+		qdel(src)
+		return
+
 	var/proj_dir
 	switch(dir_angle) //The projectile starts at the edge of the firer's tile (still inside it).
 		if(0, 360)
@@ -395,34 +448,38 @@
 	apx += pixel_x //Update the absolute pixels with the offset.
 	apy += pixel_y
 
-	var/ammo_flags = ammo.flags_ammo_behavior | projectile_override_flags
-	if(SSticker.mode.round_statistics && ammo_flags & AMMO_BALLISTIC)
-		SSticker.mode.round_statistics.total_projectiles_fired++
-		if(ammo.bonus_projectiles_amount)
-			SSticker.mode.round_statistics.total_projectiles_fired += ammo.bonus_projectiles_amount
-	if(firer && ismob(firer) && weapon_cause_data)
-		var/mob/M = firer
-		M.track_shot(weapon_cause_data.cause_name)
-
-	//If we have the right kind of ammo, we can fire several projectiles at once.
-	if(ammo.bonus_projectiles_amount && ammo.bonus_projectiles_type)
-		ammo.fire_bonus_projectiles(src)
-
 	var/matrix/rotate = matrix() //Change the bullet angle.
 	rotate.Turn(dir_angle)
 	transform = rotate
 
-	if(shooter && !(projectile_flags & PROJECTILE_SHRAPNEL))
-		firer = shooter
-		permutated |= firer //Don't hit the shooter
-
 	var/first_move = min(1, 1)
 	var/first_moves = projectile_speed
-	if(first_moves && projectile_batch_move(first_move)) //Hit on first movement.
-		qdel(src)
-		return
+	switch(projectile_batch_move(first_move))
+		if(PROJECTILE_HIT) //Hit on first movement.
+			if(!(projectile_status_flags & PROJECTILE_FROZEN))
+				qdel(src)
+			return
+		if(PROJECTILE_ERROR)
+			qdel(src)
+			return
+		if(PROJECTILE_FROZEN)
+			return
 
 	first_moves -= first_move
+	switch(first_moves && projectile_batch_move(first_moves))
+		if(PROJECTILE_HIT) //First movement batch happens on the same tick.
+			if(!(projectile_status_flags & PROJECTILE_FROZEN))
+				qdel(src)
+			return
+		if(PROJECTILE_ERROR)
+			qdel(src)
+			return
+		if(PROJECTILE_FROZEN)
+			return
+
+	if(QDELETED(src))
+		return
+
 	set_light_on(TRUE)
 	SSprojectiles.queue_projectile(src)
 
@@ -434,9 +491,22 @@
 	if(!required_moves)
 		return //Slowpoke. Maybe next tick.
 
-	if(projectile_batch_move(required_moves))
-		qdel(src)
+	switch(projectile_batch_move(required_moves))
+		if(PROJECTILE_HIT) //Hit on first movement.
+			if(!(projectile_status_flags & PROJECTILE_FROZEN))
+				qdel(src)
+			return PROCESS_KILL
+		if(PROJECTILE_ERROR)
+			qdel(src)
+			return PROCESS_KILL
+		if(PROJECTILE_FROZEN)
+			return PROCESS_KILL
+
+	if(QDELETED(src))
 		return PROCESS_KILL
+
+	if(ammo.flags_ammo_behavior & AMMO_SPECIAL_PROCESS)
+		ammo.ammo_process(src)
 
 
 /obj/item/projectile/proc/required_moves_calc()
@@ -489,7 +559,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 		if(ISDIAGONALDIR(movement_dir)) //Diagonal case. We need to check the turf to cross to get there.
 			if(!x_offset || !y_offset) //Unless a coder screws up this won't happen. Buf if they do it will cause an infinite processing loop due to division by zero, so better safe than sorry.
 				stack_trace("projectile_batch_move called with diagonal movement_dir and offset-lacking. x_offset: [x_offset], y_offset: [y_offset].")
-				return TRUE
+				return PROJECTILE_ERROR
 			var/turf/turf_crossed_by
 			var/pixel_moves_until_crossing_x_border
 			var/pixel_moves_until_crossing_y_border
@@ -532,8 +602,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 					else
 						border_escaped_through = pick(NORTH, WEST)
 			turf_crossed_by = get_step(last_processed_turf, border_escaped_through)
-			for(var/j in uncross_scheduled)
-				var/atom/movable/thing_to_uncross = j
+			for(var/atom/movable/thing_to_uncross as anything in uncross_scheduled)
 				if(QDELETED(thing_to_uncross))
 					continue
 				thing_to_uncross.do_projectile_hit(src)
@@ -559,8 +628,10 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 				break
 			if(HAS_TRAIT(turf_crossed_by, TRAIT_TURF_BULLET_MANIPULATION))
 				SEND_SIGNAL(turf_crossed_by, COMSIG_TURF_PROJECTILE_MANIPULATED, src)
+//				if(HAS_TRAIT_FROM(turf_crossed_by, TRAIT_TURF_BULLET_MANIPULATION, PORTAL_TRAIT))
+//					return
 				RegisterSignal(turf_crossed_by, COMSIG_TURF_RESUME_PROJECTILE_MOVE, PROC_REF(resume_move))
-				return FALSE
+				return PROJECTILE_FROZEN
 			if(turf_crossed_by == original_target_turf && ammo.flags_ammo_behavior & AMMO_EXPLOSIVE)
 				last_processed_turf = turf_crossed_by
 				ammo.do_at_max_range(turf_crossed_by, src)
@@ -573,8 +644,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 				end_of_movement = i
 				break
 			movement_dir -= border_escaped_through //Next scan should come from the other component cardinal direction.
-			for(var/j in uncross_scheduled) //We are leaving turf_crossed_by now.
-				var/atom/movable/thing_to_uncross = j
+			for(var/atom/movable/thing_to_uncross as anything in uncross_scheduled) //We are leaving turf_crossed_by now.
 				if(QDELETED(thing_to_uncross))
 					continue
 				thing_to_uncross.do_projectile_hit(src)
@@ -594,8 +664,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 			if(ammo.flags_ammo_behavior & AMMO_LEAVE_TURF)
 				ammo.on_leave_turf(turf_crossed_by, firer, src)
 		if(length_char(uncross_scheduled)) //Time to exit the last turf entered, if the diagonal movement didn't handle it already.
-			for(var/j in uncross_scheduled)
-				var/atom/movable/thing_to_uncross = j
+			for(var/atom/movable/thing_to_uncross as anything in uncross_scheduled)
 				if(QDELETED(thing_to_uncross))
 					continue
 				thing_to_uncross.do_projectile_hit(src)
@@ -614,8 +683,10 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 		last_processed_turf = next_turf
 		if(HAS_TRAIT(next_turf, TRAIT_TURF_BULLET_MANIPULATION))
 			SEND_SIGNAL(next_turf, COMSIG_TURF_PROJECTILE_MANIPULATED, src)
+//			if(HAS_TRAIT_FROM(next_turf, TRAIT_TURF_BULLET_MANIPULATION, PORTAL_TRAIT))
+//				return
 			RegisterSignal(next_turf, COMSIG_TURF_RESUME_PROJECTILE_MOVE, PROC_REF(resume_move))
-			return FALSE
+			return PROJECTILE_FROZEN
 		if(next_turf == original_target_turf && ammo.flags_ammo_behavior & AMMO_EXPLOSIVE)
 			ammo.on_hit_turf(next_turf, src)
 			end_of_movement = i
@@ -627,7 +698,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 
 	if(end_of_movement && last_processed_turf == loc)
 		last_projectile_move = world.time
-		return TRUE
+		return PROJECTILE_HIT
 
 	apx += x_pixel_dist_travelled
 	apy += y_pixel_dist_travelled
@@ -650,8 +721,162 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 
 	last_projectile_move = world.time
 	if(end_of_movement) //We hit something ...probably!
-		return TRUE
+		return PROJECTILE_HIT
 	return FALSE //No hits ...yet!
+
+// HITSCAN
+/obj/item/projectile/proc/projectile_batch_move_hitscan(first_projectile = TRUE)
+	var/end_of_movement = FALSE //In batch moves this loop, only if the projectile stopped.
+	var/turf/last_processed_turf = loc
+	var/list/atom/movable/hitscan_projectile_effect/laser_effects = list()
+	while(!end_of_movement)
+		distance_travelled++
+		//Here we take the projectile's absolute pixel coordinate + the travelled distance and use PROJ_ABS_PIXEL_TO_TURF to first convert it into tile coordinates, and then use those to locate the turf.
+		var/turf/next_turf = PROJ_ABS_PIXEL_TO_TURF((apx + (32 * x_offset)), (apy + (32 * y_offset)), z)
+		if(!next_turf) //Map limit.
+			end_of_movement = TRUE
+			break
+		apx += 32 * x_offset
+		apy += 32 * y_offset
+
+		if(apx % 32 == 0) // This is god damn right awfull, but PROJ_ABS_PIXEL_TO_TURF panic when this happens
+			apx += 0.1
+		if(apy % 32 == 0)
+			apy += 0.1
+
+		if(next_turf == last_processed_turf)
+			laser_effects += new /atom/movable/hitscan_projectile_effect(PROJ_ABS_PIXEL_TO_TURF(apx, apy, z), dir_angle, apx % 32 - 16, apy % 32 - 16, 1.1, effect_icon, ammo.bullet_color)
+			continue //Pixel movement only, didn't manage to change turf.
+		var/movement_dir = get_dir(last_processed_turf, next_turf)
+
+		if(ISDIAGONALDIR(movement_dir)) //Diagonal case. We need to check the turf to cross to get there.
+			if(!x_offset || !y_offset) //Unless a coder screws up this won't happen. Buf if they do it will cause an infinite processing loop due to division by zero, so better safe than sorry.
+				stack_trace("projectile_batch_move called with diagonal movement_dir and offset-lacking. x_offset: [x_offset], y_offset: [y_offset].")
+				return PROJECTILE_ERROR
+			var/turf/turf_crossed_by
+			var/pixel_moves_until_crossing_x_border
+			var/pixel_moves_until_crossing_y_border
+			var/border_escaped_through
+			switch(movement_dir)
+				if(NORTHEAST)
+					pixel_moves_until_crossing_x_border = CEILING(((33 - ABS_PIXEL_TO_REL(apx)) / x_offset), 1)
+					pixel_moves_until_crossing_y_border = CEILING(((33 - ABS_PIXEL_TO_REL(apy)) / y_offset), 1)
+					if(pixel_moves_until_crossing_y_border < pixel_moves_until_crossing_x_border) //Escapes vertically.
+						border_escaped_through = NORTH
+					else if(pixel_moves_until_crossing_x_border < pixel_moves_until_crossing_y_border) //Escapes horizontally.
+						border_escaped_through = EAST
+					else //Escapes both borders at the same time, perfectly diagonal.
+						border_escaped_through = pick(NORTH, EAST) //So choose at random to preserve behavior of no purely diagonal movements allowed.
+				if(SOUTHEAST)
+					pixel_moves_until_crossing_x_border = CEILING(((33 - ABS_PIXEL_TO_REL(apx)) / x_offset), 1)
+					pixel_moves_until_crossing_y_border = CEILING(((0 - ABS_PIXEL_TO_REL(apy)) / y_offset), 1)
+					if(pixel_moves_until_crossing_y_border < pixel_moves_until_crossing_x_border)
+						border_escaped_through = SOUTH
+					else if(pixel_moves_until_crossing_x_border < pixel_moves_until_crossing_y_border)
+						border_escaped_through = EAST
+					else
+						border_escaped_through = pick(SOUTH, EAST)
+				if(SOUTHWEST)
+					pixel_moves_until_crossing_x_border = CEILING(((0 - ABS_PIXEL_TO_REL(apx)) / x_offset), 1)
+					pixel_moves_until_crossing_y_border = CEILING(((0 - ABS_PIXEL_TO_REL(apy)) / y_offset), 1)
+					if(pixel_moves_until_crossing_y_border < pixel_moves_until_crossing_x_border)
+						border_escaped_through = SOUTH
+					else if(pixel_moves_until_crossing_x_border < pixel_moves_until_crossing_y_border)
+						border_escaped_through = WEST
+					else
+						border_escaped_through = pick(SOUTH, WEST)
+				if(NORTHWEST)
+					pixel_moves_until_crossing_x_border = CEILING(((0 - ABS_PIXEL_TO_REL(apx)) / x_offset), 1)
+					pixel_moves_until_crossing_y_border = CEILING(((33 - ABS_PIXEL_TO_REL(apy)) / y_offset), 1)
+					if(pixel_moves_until_crossing_y_border < pixel_moves_until_crossing_x_border)
+						border_escaped_through = NORTH
+					else if(pixel_moves_until_crossing_x_border < pixel_moves_until_crossing_y_border)
+						border_escaped_through = WEST
+					else
+						border_escaped_through = pick(NORTH, WEST)
+			turf_crossed_by = get_step(last_processed_turf, border_escaped_through)
+			for(var/atom/movable/thing_to_uncross as anything in uncross_scheduled)
+				if(QDELETED(thing_to_uncross))
+					continue
+				thing_to_uncross.do_projectile_hit(src)
+				end_of_movement = TRUE
+				break
+			uncross_scheduled.Cut()
+			if(end_of_movement)
+				break
+			if(scan_a_turf(turf_crossed_by, border_escaped_through))
+				break
+			if(turf_crossed_by == original_target_turf && ammo.flags_ammo_behavior & AMMO_EXPLOSIVE)
+				last_processed_turf = turf_crossed_by
+				ammo.do_at_max_range(turf_crossed_by, src)
+				end_of_movement = TRUE
+				break
+			if(HAS_TRAIT(turf_crossed_by, TRAIT_TURF_BULLET_MANIPULATION))
+				SEND_SIGNAL(turf_crossed_by, COMSIG_TURF_PROJECTILE_MANIPULATED, src)
+				QDEL_LIST_IN(laser_effects, 2)
+//				if(HAS_TRAIT_FROM(turf_crossed_by, TRAIT_TURF_BULLET_MANIPULATION, PORTAL_TRAIT))
+//					return
+				forceMove(turf_crossed_by)
+				return PROJECTILE_FROZEN
+			for(var/atom/movable/thing_to_uncross as anything in uncross_scheduled) //We are leaving turf_crossed_by now.
+				if(QDELETED(thing_to_uncross))
+					continue
+				thing_to_uncross.do_projectile_hit(src)
+				end_of_movement = TRUE
+				break
+			uncross_scheduled.Cut()
+			if(end_of_movement)
+				break
+			if(ammo.flags_ammo_behavior & AMMO_LEAVE_TURF)
+				ammo.on_leave_turf(turf_crossed_by, firer, src)
+		if(length(uncross_scheduled)) //Time to exit the last turf entered, if the diagonal movement didn't handle it already.
+			for(var/atom/movable/thing_to_uncross as anything in uncross_scheduled)
+				if(QDELETED(thing_to_uncross))
+					continue
+				thing_to_uncross.do_projectile_hit(src)
+				end_of_movement = TRUE
+				break
+			uncross_scheduled.len = 0
+			if(end_of_movement)
+				break
+		if(ammo.flags_ammo_behavior & AMMO_LEAVE_TURF)
+			ammo.on_leave_turf(last_processed_turf, firer, src)
+		last_processed_turf = next_turf
+		if(scan_a_turf(next_turf, movement_dir))
+			end_of_movement = TRUE
+			break
+		if(next_turf == original_target_turf && ammo.flags_ammo_behavior & AMMO_EXPLOSIVE)
+			ammo.do_at_max_range(next_turf, src)
+			end_of_movement = TRUE
+			break
+		if(distance_travelled >= max_range)
+			ammo.do_at_max_range(next_turf, src)
+			end_of_movement = TRUE
+			break
+		if(HAS_TRAIT(next_turf, TRAIT_TURF_BULLET_MANIPULATION))
+			SEND_SIGNAL(next_turf, COMSIG_TURF_PROJECTILE_MANIPULATED, src)
+			QDEL_LIST_IN(laser_effects, 2)
+//			if(HAS_TRAIT_FROM(turf_crossed_by, TRAIT_TURF_BULLET_MANIPULATION, PORTAL_TRAIT))
+//				return
+			forceMove(next_turf)
+			return PROJECTILE_FROZEN
+		if(first_projectile)
+			laser_effects += new /atom/movable/hitscan_projectile_effect(PROJ_ABS_PIXEL_TO_TURF(apx, apy, z), dir_angle, apx % 32 - 16, apy % 32 - 16, 1.01, "muzzle_"+effect_icon, ammo.bullet_color)
+			first_projectile = FALSE
+		else
+			laser_effects += new /atom/movable/hitscan_projectile_effect(PROJ_ABS_PIXEL_TO_TURF(apx, apy, z), dir_angle, apx % 32 - 16, apy % 32 - 16, 1.01, effect_icon, ammo.bullet_color)
+	apx -= 8 * x_offset
+	apy -= 8 * y_offset
+
+	if(apx % 32 == 0)
+		apx += 0.1
+	if(apy % 32 == 0)
+		apy += 0.1
+	if(first_projectile)
+		laser_effects += new /atom/movable/hitscan_projectile_effect(PROJ_ABS_PIXEL_TO_TURF(apx, apy, z), dir_angle, apx % 32 - 16, apy % 32 - 16, 1.01, "muzzle_"+effect_icon, ammo.bullet_color)
+	laser_effects += new /atom/movable/hitscan_projectile_effect(PROJ_ABS_PIXEL_TO_TURF(apx, apy, z), dir_angle, apx % 32 - 16, apy % 32 - 16, 1.01, "impact_"+effect_icon, ammo.bullet_color)
+	QDEL_LIST_IN(laser_effects, 2)
+//
 
 #undef PROJ_ABS_PIXEL_TO_TURF
 #undef PROJ_ANIMATION_SPEED
@@ -659,9 +884,14 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 ///Tells the projectile to move again
 /obj/item/projectile/proc/resume_move(datum/source)
 	SIGNAL_HANDLER
-	if(source)
+	if(projectile_flags & PROJECTILE_HITSCAN)
 		UnregisterSignal(source, COMSIG_TURF_RESUME_PROJECTILE_MOVE)
-	SSprojectiles.queue_projectile(src)
+		projectile_batch_move(FALSE)
+		qdel(src)
+	else
+		if(source)
+			UnregisterSignal(source, COMSIG_TURF_RESUME_PROJECTILE_MOVE)
+		SSprojectiles.queue_projectile(src)
 
 /obj/item/projectile/proc/scan_a_turf(turf/turf_to_scan, proj_dir)
 	if(turf_to_scan && turf_to_scan.density) //Handle wall hit.
@@ -904,12 +1134,11 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 	#endif
 
 	var/effective_accuracy = accuracy //We want a temporary variable so accuracy doesn't change every time the bullet misses.
-	var/ammo_flags = ammo.flags_ammo_behavior | projectile_override_flags
 	if(distance_travelled <= ammo.accurate_range)
 		if(distance_travelled <= ammo.accurate_range_min) // If bullet stays within max accurate range + random variance
 			effective_accuracy -= (ammo.accurate_range_min - distance_travelled) * accuracy_range_falloff // Snipers have accuracy falloff at closer range before point blank
 	else
-		effective_accuracy -= (distance_travelled - ammo.accurate_range) * ((ammo_flags & AMMO_SNIPER) ? 1.5 : 10) // Snipers have a smaller falloff constant due to longer max range
+		effective_accuracy -= (distance_travelled - ammo.accurate_range) * (ammo.ammo_range_fallof + range_fallof)
 
 	effective_accuracy = max(5, effective_accuracy) //default hit chance is at least 5%.
 

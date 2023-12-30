@@ -410,8 +410,6 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 	var/mob/M
 	var/turf/T
 	var/play_anim = 1
-	var/ground_status = 0
-	var/override = 0
 	for(M in GLOB.player_list) //This only does something cool for the people about to die, but should prove pretty interesting.
 		if(!M || !M.loc) continue //In case something changes when we sleep().
 		if(M.stat == DEAD)
@@ -426,7 +424,7 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 					M.client.screen |= C //They may have disconnected in the mean time.
 
 			sleep(15) //Extra 1.5 seconds to look at the planet.
-			flick(override ? "intro_planet" : "intro_planet", C)
+			flick("intro_planet", C)
 		sleep(35)
 		for(M in L1)
 			if(M && M.loc) //Who knows, maybe they escaped, or don't exist anymore.
@@ -439,7 +437,7 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 					if(play_anim)
 						M.client.screen -= C //those who managed to escape the z level at last second shouldn't have their view obstructed.
 		if(play_anim)
-			flick(ground_status ? "planet_nuke" : "planet_nuke", C)
-			C.icon_state = ground_status ? "planet_end" : "planet_end"
+			flick("planet_nuke", C)
+			C.icon_state = "planet_end"
 
 	addtimer(VARSET_CALLBACK(src, planet_nuked, NUKE_COMPLETED), 1 SECONDS)

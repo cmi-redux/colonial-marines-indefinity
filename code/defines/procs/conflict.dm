@@ -105,7 +105,7 @@
 			var/dam_pass = damage_with_armor/(damage*c_config.non_null_damage_mult)
 			damage = damage * dam_pass
 
-	var/armor_punch = pen_armor_punch * penetration + damage_armor_punch * (dam_initial - damage)
+	var/armor_punch = pen_armor_punch * penetration + damage_armor_punch * (max(damage, 1) / dam_initial)
 
 	if(damage + penetration > armor * c_config.armor_full_destruction_mult * effective_deflection)
 		var/armor_punch_bonus = 1

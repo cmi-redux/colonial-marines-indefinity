@@ -23,7 +23,7 @@ SUBSYSTEM_DEF(shuttle)
 
 	var/obj/docking_port/mobile/vehicle_elevator/vehicle_elevator
 	var/obj/docking_port/mobile/crashmode/uss_heart_of_gold
-	var/obj/docking_port/mobile/sselevator/sky_scraper_elevator
+	var/list/obj/docking_port/mobile/sselevator/scraper_elevators = list()
 
 	var/list/hidden_shuttle_turfs = list() //all turfs hidden from navigation computers associated with a list containing the image hiding them and the type of the turf they are pretending to be
 	var/list/hidden_shuttle_turf_images = list() //only the images from the above list

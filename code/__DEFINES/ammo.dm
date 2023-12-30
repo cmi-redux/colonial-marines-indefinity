@@ -5,13 +5,14 @@
 #define HEADSHOT_OVERLAY_MEDIUM "medium_headshot"
 #define HEADSHOT_OVERLAY_HEAVY "heavy_headshot"
 
+// Special ammo flags
 #define AMMO_EXPLOSIVE 			(1<<0)
 #define AMMO_ACIDIC 			(1<<1)
 #define AMMO_XENO				(1<<2)
 #define AMMO_LASER				(1<<3)
 #define AMMO_ENERGY 			(1<<4)
 #define AMMO_ROCKET				(1<<5)
-#define AMMO_SNIPER				(1<<6)
+#define AMMO_SPECIAL_PROCESS	(1<<6)
 #define AMMO_ANTISTRUCT			(1<<7) // Primarily for railgun but can be implemented for other projectiles that are for antitank and antistructure (wall/machine)
 #define AMMO_SKIPS_ALIENS 		(1<<8)
 #define AMMO_IGNORE_ARMOR		(1<<9)
@@ -30,6 +31,16 @@
 #define AMMO_FLAME				(1<<22) // Handles sentry flamers glob
 #define AMMO_LEAVE_TURF			(1<<23) // If the projectile does something with on_leave_turf()
 
+// Special projectile flags
+#define PROJECTILE_SHRAPNEL		(1<<0) // Projectile is shrpanel which allow it to skip some collisions
+#define PROJECTILE_BULLSEYE		(1<<1) // Apply additional effects upon hitting clicked target
+#define PROJECTILE_HITSCAN		(1<<2) // No visual real time, just hitscan and then tracer
+//status
+
+#define PROJECTILE_FROZEN		(1<<0)
+#define PROJECTILE_ERROR		(1<<1)
+#define PROJECTILE_HIT			(1<<2)
+
 //Special flags for custom ammo
 #define CUSTOM_AMMO_EXPLOSION	(1<<0)
 #define CUSTOM_AMMO_PROXIMITY	(1<<1)
@@ -42,11 +53,6 @@
 #define CUSTOM_AMMO_PENETRATION	(1<<8)
 #define CUSTOM_AMMO_IFF			(1<<9)
 #define CUSTOM_AMMO_FLAK		(1<<10)
-
-/// Projectile is shrpanel which allow it to skip some collisions
-#define PROJECTILE_SHRAPNEL		(1<<0)
-/// Apply additional effects upon hitting clicked target
-#define PROJECTILE_BULLSEYE		(1<<1)
 
 //Ammo magazine defines, for flags_magazine
 #define AMMUNITION_REFILLABLE				(1<<0)

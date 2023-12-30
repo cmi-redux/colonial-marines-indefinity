@@ -111,3 +111,9 @@
 /datum/map_template/shuttle/sky_scraper_elevator
 	shuttle_id = MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR
 	name = "S95 v2 Elevator"
+
+/datum/map_template/shuttle/sky_scraper_elevator/one
+	shuttle_id = MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR_ONE
+
+/datum/map_template/shuttle/sky_scraper_elevator/two
+	shuttle_id = MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR_TWO

@@ -1345,12 +1345,13 @@ GLOBAL_REFERENCE_LIST_INDEXED_SORTED(gears_defcon, /datum/defcon_asset, name)
 /datum/ammo/bullet/sniper/railgun
 	name = "railgun bullet"
 	damage_falloff = 0
-	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SNIPER|AMMO_IGNORE_COVER
+	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_IGNORE_COVER
 	accurate_range_min = 4
 
 	accuracy = HIT_ACCURACY_TIER_8
 	accurate_range = 32
 	max_range = 32
+	ammo_range_fallof = 1.5
 	scatter = 0
 	damage = 3*100
 	penetration= ARMOR_PENETRATION_TIER_10

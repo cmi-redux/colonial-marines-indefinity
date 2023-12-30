@@ -257,7 +257,7 @@
 #define REWARD_COST_LUDICROUS 10
 #define REWARD_COST_MAX 12
 
-#define REWARD_POINT_GAIN_PER_LEVEL 3
+#define REWARD_POINT_GAIN_PER_LEVEL 2
 
 //=================================================
 

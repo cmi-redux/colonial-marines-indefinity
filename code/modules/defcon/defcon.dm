@@ -335,7 +335,7 @@ TODO: Redo fully system per faction objectives with custom spawns and objectives
 //5 DEFCON//
 /datum/objectives_reward/upp/support_kits
 	name = LANGUAGE_DEFCON_KITS
-	cost = REWARD_COST_MODERATE
+	cost = REWARD_COST_PRICEY
 	minimum_level = 5
 	unique = TRUE
 	announcement_message = "Специальные наборы для медиков и инженеров в наличии в SOGV."
@@ -348,7 +348,7 @@ TODO: Redo fully system per faction objectives with custom spawns and objectives
 //4 DEFCON//
 /datum/objectives_reward/upp/squad
 	name = LANGUAGE_DEFCON_UNITS
-	cost = REWARD_COST_PRICEY
+	cost = REWARD_COST_MODERATE
 	minimum_level = 4
 	announcement_message = "Дополнительные морпехи подняты из крио."
 
@@ -563,7 +563,7 @@ TODO: Redo fully system per faction objectives with custom spawns and objectives
 
 /datum/objectives_reward/marine/support_kits
 	name = LANGUAGE_DEFCON_KITS
-	cost = REWARD_COST_MODERATE
+	cost = REWARD_COST_PRICEY
 	minimum_level = 5
 	unique = TRUE
 	announcement_message = "Специальные наборы для медиков и инженеров в наличии в SOGV."
@@ -576,7 +576,7 @@ TODO: Redo fully system per faction objectives with custom spawns and objectives
 //4 DEFCON//
 /datum/objectives_reward/marine/cryo_squad
 	name = LANGUAGE_DEFCON_WAKE_UNITS
-	cost = REWARD_COST_PRICEY
+	cost = REWARD_COST_MODERATE
 	minimum_level = 4
 	announcement_message = "Дополнительные морпехи подняты из крио."
 
@@ -808,7 +808,7 @@ TODO: Redo fully system per faction objectives with custom spawns and objectives
 
 /datum/objectives_reward/marine/nuke
 	name = LANGUAGE_DEFCON_PLANETARY_NUKE
-	cost = REWARD_COST_LUDICROUS
+	cost = REWARD_COST_MAX
 	minimum_level = 2
 	unique = TRUE
 	announcement_message = "Ядерная боеголовка была загружена в карго лифт, не забудьте выполнить протокол перед использованием и все расходы USCM теперь на вашей ответсвенности, также требуется соблюсти 10 пунктов из операционных правил USCM по применению оружия."
@@ -824,7 +824,7 @@ TODO: Redo fully system per faction objectives with custom spawns and objectives
 //1 DEFCON//
 /datum/objectives_reward/marine/obnuke
 	name = LANGUAGE_DEFCON_OB_NUKE
-	cost = REWARD_COST_LUDICROUS
+	cost = REWARD_COST_MAX
 	minimum_level = 1
 	unique = TRUE
 	announcement_message = "Орбитальная ядерная боеголовка была загружена в карго лифт, не забудьте выполнить протокол перед использованием и все расходы USCM теперь на вашей ответсвенности, а также требуется соблюсти 93 пункта использования космического ядерного оружия вблизи планет и 10 пунктов из операционных правил USCM по применению оружия."

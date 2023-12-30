@@ -2155,6 +2155,7 @@
 #include "code\modules\projectiles\item_to_box_mapping.dm"
 #include "code\modules\projectiles\projectile.dm"
 #include "code\modules\projectiles\projectile_assemblering.dm"
+#include "code\modules\projectiles\tracer.dm"
 #include "code\modules\projectiles\ammo_boxes\ammo_boxes.dm"
 #include "code\modules\projectiles\ammo_boxes\box_structures.dm"
 #include "code\modules\projectiles\ammo_boxes\grenade_packets.dm"

@@ -109,7 +109,9 @@
 #define MOBILE_SHUTTLE_LIFEBOAT_PORT "lifeboat-port"
 #define MOBILE_SHUTTLE_LIFEBOAT_STARBOARD "lifeboat-starboard"
 #define MOBILE_SHUTTLE_VEHICLE_ELEVATOR "vehicle_elevator"
-#define MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR "sky_scraper_elevator"
+#define MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR "normal_elevator"
+#define MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR_ONE "sky_scraper_elevator_one"
+#define MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR_TWO "sky_scraper_elevator_two"
 
 #define DROPSHIP_HEART_OF_GOLD "uss_heart_of_gold"
 #define DROPSHIP_ALAMO "dropship_alamo"

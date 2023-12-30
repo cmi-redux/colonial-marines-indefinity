@@ -208,10 +208,17 @@
 	group = "Operations"
 	iteration_needed = null
 
+/datum/supply_packs/technuclearbomb
+	name = "Encrypted Operational Nuke"
+	cost = 0
+	containertype = /obj/structure/machinery/nuclearbomb/tech
+	buyable = 0
+	group = "Operations"
+	iteration_needed = null
+
 /datum/supply_packs/obnuclearbomb
 	name = "Operational OB Nuke"
 	contains = list(
-		/obj/structure/ob_ammo/ob_fuel,
 		/obj/structure/ob_ammo/ob_fuel,
 		/obj/structure/ob_ammo/ob_fuel,
 		/obj/structure/ob_ammo/ob_fuel,
@@ -222,14 +229,6 @@
 	cost = 0
 	containertype = /obj/structure/closet/crate/secure/ammo
 	containername = "Secured Special Weapons Crate"
-	buyable = 0
-	group = "Operations"
-	iteration_needed = null
-
-/datum/supply_packs/technuclearbomb
-	name = "Encrypted Operational Nuke"
-	cost = 0
-	containertype = /obj/structure/machinery/nuclearbomb/tech
 	buyable = 0
 	group = "Operations"
 	iteration_needed = null

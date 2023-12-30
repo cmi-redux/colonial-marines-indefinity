@@ -341,6 +341,7 @@
 	/// Direction in which to throw or space things. WEEEEE
 	var/throw_dir = SOUTH
 
+	var/elevator_id = "normal_elevator"
 	var/floor
 	var/obj/docking_port/mobile/sselevator/elevator
 
@@ -350,8 +351,8 @@
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/proc/connect_elevator()
 	set waitfor = FALSE
-	UNTIL(SSshuttle.sky_scraper_elevator)
-	elevator = SSshuttle.sky_scraper_elevator
+	UNTIL(SSshuttle.initialized)
+	elevator = SSshuttle.scraper_elevators[elevator_id]
 	if(floor != "control")
 		floor = src.z
 		elevator.doors["[floor]"] = src

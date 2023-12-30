@@ -580,6 +580,8 @@ var/list/ob_type_fuel_requirements
 	if(!.)
 		return
 
+	SSticker.mode.on_nuclear_explosion()
+
 	new /obj/effect/overlay/temp/blinking_laser (target)
 	sleep(10)
 	var/datum/cause_data/cause_data = create_cause_data(initial(name), source_mob)
