@@ -60,7 +60,7 @@ SUBSYSTEM_DEF(autobalancer)
 	for(var/faction_to_get in FACTION_LIST_ALL - faction.faction_name)
 		var/datum/faction/next_faction = GLOB.faction_datum[faction_to_get]
 		var/datum/autobalance_row_faction_info/autobalance_row = faction_balance[next_faction.faction_name]
-		if(autobalance_row && next_faction.spawning_enabled && length(next_faction.roles_list[SSticker.mode.name]) && next_faction.weight_act[SSticker.mode.name] && (autobalance_row.weight + round(length(GLOB.clients) / 4, 1)) < our_autobalance_row.weight)
+		if(autobalance_row && next_faction.spawning_enabled && length(next_faction.roles_list[SSticker.mode.name]) && next_faction.weight_act[SSticker.mode.name] && (autobalance_row.weight + round(length(GLOB.clients) / 4, 1)) * 1.5 < our_autobalance_row.weight)
 			return FALSE
 	return TRUE
 

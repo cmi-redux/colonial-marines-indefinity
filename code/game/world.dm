@@ -85,8 +85,8 @@ var/list/reboot_sfx = file2list("config/reboot_sfx.txt")
 	update_status()
 
 	//Scramble the coords obsfucator
-	obfs_x = rand(-2000, 2000) //A number between -2000 and 2000
-	obfs_y = rand(-2000, 2000) //A number between -2000 and 2000
+	obfs_x = rand(-500, 500) //A number between -2000 and 2000
+	obfs_y = rand(-500, 500) //A number between -2000 and 2000
 
 	spawn(3000) //so we aren't adding to the round-start lag
 		if(CONFIG_GET(flag/ToRban))
