@@ -164,7 +164,7 @@
 					target_floor = floor_calc
 
 // Reseting elevator if something messed up, because this system is not hard coded, so we can fuck up it easy
-/obj/docking_port/mobile/sselevator/proc/handle_initial_data(obj/docking_port/stationary/target_dock)
+/obj/docking_port/mobile/sselevator/proc/handle_initial_data(obj/docking_port/stationary/target_dock, force_opened = FALSE)
 	disabled_elevator = TRUE
 	moving = TRUE
 	cooldown = TRUE
@@ -190,14 +190,14 @@
 	called_floors.len = total_floors
 	var/randomed = prob(20)
 	for(var/i = 1 to total_floors)
-		disabled_floors[i] = !randomed
+		disabled_floors[i] = !randomed && !force_opened
 		called_floors[i] = FALSE
 
 	disabled_floors[target_floor] = FALSE
-	if(randomed)
-		move_delay = 7 SECONDS
-		max_move_delay = 20 SECONDS
-		min_move_delay = 3 SECONDS
+	if(randomed && !force_opened)
+		move_delay = rand(3, 7) SECONDS
+		max_move_delay = rand(10, 20) SECONDS
+		min_move_delay = rand(0.2, 3) SECONDS
 	else
 		move_delay = 3 SECONDS
 		max_move_delay = 10 SECONDS
