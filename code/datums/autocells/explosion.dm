@@ -277,7 +277,7 @@ as having entered the turf.
 	E.direction = direction
 	E.explosion_cause_data = explosion_cause_data
 
-	var/explosion_range = round(power / falloff)
+	var/explosion_range = max(round(power / falloff), 1)
 
 	// Make explosion effect
 	new /obj/effect/temp_visual/shockwave(epicenter, explosion_range)

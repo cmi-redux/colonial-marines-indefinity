@@ -183,7 +183,7 @@
 		new_xeno.client.mouse_pointer_icon = initial(new_xeno.client.mouse_pointer_icon)
 
 	if(new_xeno.mind && SSticker.mode.round_statistics)
-		SSticker.mode.round_statistics.track_new_participant(new_xeno.faction, -1) //so an evolved xeno doesn't count as two.
+		SSticker.mode.round_statistics.track_new_participant(new_xeno.faction?.name, -1) //so an evolved xeno doesn't count as two.
 	SSround_recording.recorder.track_player(new_xeno)
 
 /mob/living/carbon/xenomorph/proc/evolve_checks()
@@ -338,7 +338,7 @@
 	SPAN_XENODANGER("You regress into your previous form."))
 
 	if(SSticker.mode.round_statistics && !new_xeno.statistic_exempt)
-		SSticker.mode.round_statistics.track_new_participant(faction, -1) //so an evolved xeno doesn't count as two.
+		SSticker.mode.round_statistics.track_new_participant(faction?.name, -1) //so an evolved xeno doesn't count as two.
 	SSround_recording.recorder.track_player(new_xeno)
 
 	src.transfer_observers_to(new_xeno)

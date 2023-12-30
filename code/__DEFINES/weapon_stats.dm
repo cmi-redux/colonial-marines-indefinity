@@ -31,18 +31,18 @@ var/accuracy_mult //Attachments ADD an additional multiplier to the base config 
 var/accuracy_mult_unwielded
 */
 
-#define HIT_ACCURACY_TIER_0 0
-#define HIT_ACCURACY_TIER_1 5
-#define HIT_ACCURACY_TIER_2 10
-#define HIT_ACCURACY_TIER_3 15
-#define HIT_ACCURACY_TIER_4 20
-#define HIT_ACCURACY_TIER_5 25
-#define HIT_ACCURACY_TIER_6 30
-#define HIT_ACCURACY_TIER_7 35
-#define HIT_ACCURACY_TIER_8 40
-#define HIT_ACCURACY_TIER_9 45
-#define HIT_ACCURACY_TIER_10 50
-#define HIT_ACCURACY_TIER_MAX 100
+#define HIT_ACCURACY_TIER_0 10
+#define HIT_ACCURACY_TIER_1 15
+#define HIT_ACCURACY_TIER_2 20
+#define HIT_ACCURACY_TIER_3 25
+#define HIT_ACCURACY_TIER_4 30
+#define HIT_ACCURACY_TIER_5 35
+#define HIT_ACCURACY_TIER_6 40
+#define HIT_ACCURACY_TIER_7 45
+#define HIT_ACCURACY_TIER_8 50
+#define HIT_ACCURACY_TIER_9 55
+#define HIT_ACCURACY_TIER_10 60
+#define HIT_ACCURACY_TIER_MAX 65
 
 #define BASE_ACCURACY_MULT 1
 #define HIT_ACCURACY_MULT_TIER_1 0.05

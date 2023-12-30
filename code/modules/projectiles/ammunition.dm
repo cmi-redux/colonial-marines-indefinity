@@ -371,7 +371,7 @@ They're all essentially identical when it comes to getting the job done.
 		source = mob_standing_on_turf//we designate any mob standing on the turf as the "source" so that they don't simply get hit by every projectile
 
 
-	for(var/i=0;i<shrapnel_number;i++)
+	for(var/i = 0 to shrapnel_number)
 		var/obj/item/projectile/proj = transfer_bullet_out()
 		proj.bullet_ready_to_fire(initial(name), cause_data)
 		if(cause_data_new)
@@ -391,7 +391,8 @@ They're all essentially identical when it comes to getting the job done.
 			var/atom/target = get_angle_target_turf(epicenter, angle, 20)
 			proj.projectile_flags |= PROJECTILE_SHRAPNEL
 			proj.fire_at(target, source_mob, source, proj.ammo.max_range, proj.ammo.shell_speed)
-		sleep(time_to_shot)
+		if(ammo_position)
+			sleep(time_to_shot)
 
 /obj/item/ammo_magazine/bullet_act(obj/item/projectile/proj)
 	..()

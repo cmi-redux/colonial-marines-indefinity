@@ -173,7 +173,7 @@ DEFINE_BITFIELD(equipment_preset_flags, list(
 	load_traits(new_human, mob_client)
 
 	if(SSticker.mode.round_statistics && count_participant)
-		SSticker.mode.round_statistics.track_new_participant(new_human.faction)
+		SSticker.mode.round_statistics.track_new_participant(new_human.faction?.name)
 		SSautobalancer.balance_action(new_human, "add")
 
 	new_human.assigned_equipment_preset = src

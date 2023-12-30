@@ -115,30 +115,30 @@
 	if(!total_deaths[faction])
 		total_deaths[faction] = 0
 
-/datum/entity/statistic_round/proc/track_new_participant(datum/faction/faction, amount = 1)
+/datum/entity/statistic_round/proc/track_new_participant(faction, amount = 1)
 	if(!faction)
 		return
 
-	if(!participants[faction.name])
-		setup_faction(faction.name)
+	if(!participants[faction])
+		setup_faction(faction)
 
 	participants[faction.name]++
 
-/datum/entity/statistic_round/proc/track_final_participant(datum/faction/faction, amount = 1)
+/datum/entity/statistic_round/proc/track_final_participant(faction, amount = 1)
 	if(!faction)
 		return
 
-	if(!final_participants[faction.name])
-		setup_faction(faction.name)
+	if(!final_participants[faction])
+		setup_faction(faction)
 
-	final_participants[faction.name]++
+	final_participants[faction]++
 
 /datum/entity/statistic_round/proc/track_round_end()
 	real_time_end = time2text(world.realtime)
 	for(var/i in GLOB.alive_mob_list)
 		var/mob/M = i
 		if(M.mind && M.faction)
-			track_final_participant(M.faction.name)
+			track_final_participant(M.faction?.name)
 
 	if(current_map)
 		current_map.total_rounds++
@@ -161,7 +161,7 @@
 	for(var/i in GLOB.alive_mob_list)
 		var/mob/M = i
 		if(M.mind)
-			track_hijack_participant(M.faction.name)
+			track_hijack_participant(M.faction?.name)
 
 	round_hijack_time = duration2text(world.time)
 	save()

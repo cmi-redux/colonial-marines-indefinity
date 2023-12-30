@@ -503,7 +503,7 @@
 	link_minimap()
 
 	if(SSticker.mode.round_statistics && !statistic_exempt)
-		SSticker.mode.round_statistics.track_new_participant(faction, 1)
+		SSticker.mode.round_statistics.track_new_participant(faction?.name, 1)
 	generate_name()
 
 	// This can happen if a xenomorph gets made before the game starts

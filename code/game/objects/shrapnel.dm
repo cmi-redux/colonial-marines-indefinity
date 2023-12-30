@@ -28,7 +28,7 @@
 		source = mob_standing_on_turf//we designate any mob standing on the turf as the "source" so that they don't simply get hit by every projectile
 
 	var/mob/source_mob = cause_data?.resolve_mob()
-	for(var/i=0;i<shrapnel_number;i++)
+	for(var/i = 0 to shrapnel_number)
 		var/obj/item/projectile/projectile = new(epicenter)
 		projectile.weapon_cause_data = cause_data
 		projectile.firer = cause_data?.resolve_mob()
