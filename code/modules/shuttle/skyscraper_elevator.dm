@@ -13,7 +13,8 @@
 /obj/docking_port/stationary/sselevator/load_roundstart()
 	. = ..()
 	var/obj/docking_port/mobile/sselevator/elevator = get_docked()
-	elevator.handle_initial_data(src)
+	if(elevator)
+		elevator.handle_initial_data(src)
 
 
 /obj/docking_port/stationary/sselevator/one
@@ -58,7 +59,7 @@
 	var/cooldown = FALSE
 	var/move_delay = 3 SECONDS
 	var/max_move_delay = 10 SECONDS
-	var/min_move_delay = 0.2 SECONDS
+	var/min_move_delay = 1 SECONDS
 
 /obj/docking_port/mobile/sselevator/register()
 	. = ..()
@@ -190,15 +191,15 @@
 		disabled_floors[i] = !randomed && !force_opened
 		called_floors[i] = FALSE
 
-	disabled_floors[target_floor] = FALSE
+	disabled_floors[total_floors] = FALSE
 	if(randomed && !force_opened)
 		move_delay = rand(3, 7) SECONDS
 		max_move_delay = rand(10, 20) SECONDS
-		min_move_delay = rand(0.2, 3) SECONDS
+		min_move_delay = rand(1, 3) SECONDS
 	else
 		move_delay = 3 SECONDS
 		max_move_delay = 10 SECONDS
-		min_move_delay = 0.2 SECONDS
+		min_move_delay = 1 SECONDS
 
 	var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/blastdoor = doors["[z]"]
 	INVOKE_ASYNC(blastdoor, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator, unlock_and_open))
@@ -238,7 +239,7 @@
 
 /obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/proc/connect_elevator()
 	set waitfor = FALSE
-	UNTIL(SSshuttle.initialized)
+	UNTIL(!(elevator_id in SSshuttle.scraper_elevators))
 	elevator = SSshuttle.scraper_elevators[elevator_id]
 	if(floor != "control")
 		floor = z - elevator.floor_offset
@@ -364,7 +365,7 @@
 
 /obj/structure/machinery/computer/security_blocker/proc/connect_elevator()
 	set waitfor = FALSE
-	UNTIL(SSshuttle.initialized)
+	UNTIL(!(elevator_id in SSshuttle.scraper_elevators))
 	elevator = SSshuttle.scraper_elevators[elevator_id]
 	for(var/obj/structure/machinery/siren/S as anything in sirens)
 		S.siren_warning_start("ТРЕВОГА, КРИТИЧЕСКАЯ СИТУАЦИЯ, ЗАПУЩЕН ПРОТОКОЛ МАКСИМАЛЬНОЙ БЕЗОПАСНОСТИ, ЭТАЖ [z - elevator.floor_offset]")

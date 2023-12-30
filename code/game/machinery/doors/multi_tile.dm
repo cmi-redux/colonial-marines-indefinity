@@ -351,7 +351,7 @@
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator/proc/connect_elevator()
 	set waitfor = FALSE
-	UNTIL(SSshuttle.initialized)
+	UNTIL(!(elevator_id in SSshuttle.scraper_elevators))
 	elevator = SSshuttle.scraper_elevators[elevator_id]
 	if(floor != "control")
 		floor = src.z

@@ -4049,6 +4049,15 @@
 	},
 /turf/open/floor/kutjevo/colors/orange,
 /area/skyscraper/building/engineering/upper)
+"hW" = (
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator{
+	density = 0;
+	elevator_id = "sky_scraper_elevator_one"
+	},
+/turf/open/shuttle/elevator{
+	icon_state = "floor_w_g"
+	},
+/area/skyscraper/building)
 "hX" = (
 /obj/structure/machinery/door/airlock/almayer/engineering/reinforced{
 	dir = 2;
@@ -10734,6 +10743,12 @@
 	icon_state = "mono"
 	},
 /area/skyscraper/building/cargo_sector)
+"wL" = (
+/obj/docking_port/stationary/sselevator/one,
+/turf/open/floor/almayer{
+	icon_state = "mono"
+	},
+/area/skyscraper/building)
 "wM" = (
 /obj/effect/landmark/corpsespawner/engineer,
 /turf/open/floor/almayer{
@@ -10902,6 +10917,12 @@
 	icon_state = "mono"
 	},
 /area/skyscraper/building/cargo_sector)
+"xj" = (
+/obj/docking_port/stationary/sselevator/two,
+/turf/open/floor/almayer{
+	icon_state = "mono"
+	},
+/area/skyscraper/building)
 "xk" = (
 /obj/effect/landmark/static_comms/net_one,
 /turf/open/floor/almayer{
@@ -12839,7 +12860,9 @@
 /turf/open/space/basic,
 /area/skyscraper/building/morgue_sector)
 "BS" = (
-/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator,
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator{
+	elevator_id = "sky_scraper_elevator_two"
+	},
 /obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper{
 	lock_type = "elevator"
 	},
@@ -14323,6 +14346,17 @@
 	icon_state = "wy2"
 	},
 /area/skyscraper/building/science_sector)
+"Fn" = (
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/elevator{
+	elevator_id = "sky_scraper_elevator_one"
+	},
+/obj/structure/machinery/door/poddoor/shutters/almayer/containment/skyscraper{
+	lock_type = "elevator"
+	},
+/turf/open/shuttle/elevator{
+	icon_state = "floor_w_g"
+	},
+/area/skyscraper/building)
 "Fo" = (
 /obj/structure/machinery/door/airlock/prison_hatch/autoname{
 	dir = 1;
@@ -27417,13 +27451,13 @@ bD
 bD
 bD
 aP
-bN
-bN
-bN
-bN
-bN
-bN
-hj
+di
+di
+di
+di
+di
+di
+wL
 aP
 bD
 bD
@@ -27520,13 +27554,13 @@ bD
 bD
 bD
 aP
-bN
-bN
-bN
-bN
-bN
-bN
-bN
+di
+di
+di
+di
+di
+di
+di
 bR
 bD
 bD
@@ -27622,14 +27656,14 @@ bD
 bD
 bD
 bD
-BS
-bN
-bN
-bN
-bN
-bN
-bN
-bN
+Fn
+di
+di
+di
+di
+di
+di
+di
 bR
 bD
 bD
@@ -27726,13 +27760,13 @@ bD
 bD
 bD
 BU
-bN
-bN
-bN
-bN
-bN
-bN
-bN
+di
+di
+di
+di
+di
+di
+di
 bR
 bD
 bD
@@ -27829,13 +27863,13 @@ bD
 bD
 bD
 BU
-bN
-bN
-bN
-bN
-bN
-bN
-bN
+di
+di
+di
+di
+di
+di
+di
 bR
 bD
 bD
@@ -27932,13 +27966,13 @@ bD
 bD
 bD
 aP
-bN
-bN
-bN
-bN
-bN
-bN
-bN
+di
+di
+di
+di
+di
+di
+di
 bR
 bD
 bD
@@ -28035,13 +28069,13 @@ bD
 bD
 bD
 aP
-bN
-bN
-bN
-bN
-bN
-bN
-bN
+di
+di
+di
+di
+di
+di
+di
 aP
 bD
 bD
@@ -28241,13 +28275,13 @@ bD
 bD
 bD
 aP
-bN
-bN
-bN
-bN
-bN
-bN
-WK
+di
+di
+di
+di
+di
+di
+xj
 aP
 bD
 bD
@@ -28344,13 +28378,13 @@ bD
 bD
 bD
 aP
-bN
-bN
-bN
-bN
-bN
-bN
-bN
+di
+di
+di
+di
+di
+di
+di
 bR
 bD
 bD
@@ -28447,13 +28481,13 @@ bD
 bD
 bD
 BS
-bN
-bN
-bN
-bN
-bN
-bN
-bN
+di
+di
+di
+di
+di
+di
+di
 bR
 bD
 bD
@@ -28550,13 +28584,13 @@ bD
 bD
 bD
 BU
-bN
-bN
-bN
-bN
-bN
-bN
-bN
+di
+di
+di
+di
+di
+di
+di
 bR
 bD
 bD
@@ -28653,13 +28687,13 @@ bD
 bD
 bD
 BU
-bN
-bN
-bN
-bN
-bN
-bN
-bN
+di
+di
+di
+di
+di
+di
+di
 bR
 bD
 bD
@@ -28756,13 +28790,13 @@ bD
 bD
 bD
 aP
-bN
-bN
-bN
-bN
-bN
-bN
-bN
+di
+di
+di
+di
+di
+di
+di
 bR
 bD
 bD
@@ -28859,13 +28893,13 @@ bD
 bD
 bD
 aP
-bN
-bN
-bN
-bN
-bN
-bN
-bN
+di
+di
+di
+di
+di
+di
+di
 aP
 bD
 bD
@@ -38026,7 +38060,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -48430,7 +48464,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -58834,7 +58868,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -69238,7 +69272,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -79642,7 +79676,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -90046,7 +90080,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -100450,7 +100484,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -110854,7 +110888,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -121258,7 +121292,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -131662,7 +131696,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -142066,7 +142100,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -152470,7 +152504,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -162874,7 +162908,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -173278,7 +173312,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -183682,7 +183716,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -194086,7 +194120,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -204490,7 +204524,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -214894,7 +214928,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -225298,7 +225332,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -235702,7 +235736,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -246106,7 +246140,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -256510,7 +256544,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -266914,7 +266948,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -277318,7 +277352,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -287722,7 +287756,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -298126,7 +298160,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -308530,7 +308564,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -318934,7 +318968,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -329338,7 +329372,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -339742,7 +339776,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -350146,7 +350180,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -360550,7 +360584,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -370954,7 +370988,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -381358,7 +381392,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -391762,7 +391796,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -402166,7 +402200,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -412570,7 +412604,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -422974,7 +423008,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -433378,7 +433412,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -443782,7 +443816,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -454186,7 +454220,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -464590,7 +464624,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -474994,7 +475028,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -485398,7 +485432,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -495802,7 +495836,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -506206,7 +506240,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -516610,7 +516644,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -527014,7 +527048,7 @@ BY
 oH
 oH
 oH
-BS
+Fn
 bN
 bN
 bN
@@ -537418,7 +537452,7 @@ Kr
 Kr
 Kr
 Kr
-BS
+Fn
 bN
 bN
 bN
@@ -547822,7 +547856,7 @@ zv
 tf
 tf
 tf
-BS
+Fn
 bN
 bN
 bN
@@ -558226,7 +558260,7 @@ pb
 qP
 Qj
 Qj
-BS
+Fn
 bN
 bN
 bN
@@ -568630,7 +568664,7 @@ pb
 qP
 Qj
 Qj
-BS
+Fn
 bN
 bN
 bN
@@ -579034,7 +579068,7 @@ pb
 qP
 Qj
 Qj
-BS
+Fn
 bN
 bN
 bN
@@ -589438,7 +589472,7 @@ zv
 zv
 AR
 AR
-BS
+Fn
 bN
 bN
 bN
@@ -599842,7 +599876,7 @@ pb
 qP
 Qj
 Qj
-BS
+Fn
 bN
 bN
 bN
@@ -610246,7 +610280,7 @@ pb
 qP
 Qj
 Qj
-BS
+Fn
 bN
 bN
 bN
@@ -620650,7 +620684,7 @@ pb
 qP
 Qj
 Qj
-BS
+Fn
 bN
 bN
 bN
@@ -631054,7 +631088,7 @@ pb
 qP
 Qj
 Qj
-BS
+Fn
 bN
 bN
 bN
@@ -641458,7 +641492,7 @@ qt
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -651862,7 +651896,7 @@ ai
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -662266,7 +662300,7 @@ qt
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -672670,7 +672704,7 @@ ai
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -683074,7 +683108,7 @@ qt
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -693478,7 +693512,7 @@ ai
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -703882,7 +703916,7 @@ qt
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -714286,7 +714320,7 @@ ai
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -724690,7 +724724,7 @@ qt
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -735094,7 +735128,7 @@ ai
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -745498,7 +745532,7 @@ qt
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -755902,7 +755936,7 @@ ai
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -766306,7 +766340,7 @@ qt
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -776710,7 +776744,7 @@ ai
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -787114,7 +787148,7 @@ qt
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -797518,7 +797552,7 @@ Vr
 Db
 IW
 JP
-BS
+Fn
 bN
 bN
 bN
@@ -807922,7 +807956,7 @@ zv
 zv
 zv
 zv
-BS
+Fn
 bN
 bN
 bN
@@ -818326,7 +818360,7 @@ pb
 qP
 Qj
 Qj
-BS
+Fn
 bN
 bN
 bN
@@ -828730,7 +828764,7 @@ qt
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -839134,7 +839168,7 @@ ai
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -849538,7 +849572,7 @@ Vr
 Db
 IW
 JP
-BS
+Fn
 bN
 bN
 bN
@@ -859942,7 +859976,7 @@ qt
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -870346,7 +870380,7 @@ qt
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -880750,7 +880784,7 @@ ai
 qt
 SD
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -891154,7 +891188,7 @@ qt
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -901558,7 +901592,7 @@ Vr
 Db
 IW
 JP
-BS
+Fn
 bN
 bN
 bN
@@ -911962,7 +911996,7 @@ qt
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -922366,7 +922400,7 @@ zv
 zv
 zv
 zv
-BS
+Fn
 bN
 bN
 bN
@@ -932770,7 +932804,7 @@ pb
 qP
 Qj
 Qj
-BS
+Fn
 bN
 bN
 bN
@@ -943174,7 +943208,7 @@ Hn
 Hn
 Hn
 Hn
-BS
+Fn
 bN
 bN
 bN
@@ -953578,7 +953612,7 @@ Vr
 Db
 IW
 JP
-BS
+Fn
 bN
 bN
 bN
@@ -963982,7 +964016,7 @@ aS
 hF
 KL
 aS
-BS
+Fn
 bN
 bN
 bN
@@ -974386,7 +974420,7 @@ ev
 dl
 oU
 oU
-BS
+Fn
 bN
 bN
 bN
@@ -984790,7 +984824,7 @@ ai
 qt
 GX
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -995194,7 +995228,7 @@ qt
 qt
 qt
 qt
-BS
+Fn
 bN
 bN
 bN
@@ -1005598,7 +1005632,7 @@ Vr
 Db
 IW
 JP
-BS
+Fn
 bN
 bN
 bN
@@ -1016002,7 +1016036,7 @@ ob
 cU
 ol
 oz
-BS
+Fn
 bN
 bN
 bN
@@ -1026406,7 +1026440,7 @@ qG
 qG
 BH
 qG
-BS
+Fn
 bN
 bN
 bN
@@ -1036810,7 +1036844,7 @@ DT
 DT
 DT
 DT
-BS
+Fn
 bN
 bN
 bN
@@ -1047214,7 +1047248,7 @@ PV
 PY
 PY
 lG
-BS
+Fn
 bN
 bN
 bN
@@ -1057618,7 +1057652,7 @@ Zf
 ZR
 Xp
 Vi
-lL
+hW
 bN
 bN
 bN
