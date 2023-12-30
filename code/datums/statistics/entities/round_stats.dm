@@ -122,7 +122,7 @@
 	if(!participants[faction])
 		setup_faction(faction)
 
-	participants[faction.name]++
+	participants[faction]++
 
 /datum/entity/statistic_round/proc/track_final_participant(faction, amount = 1)
 	if(!faction)
