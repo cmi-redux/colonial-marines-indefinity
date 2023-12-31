@@ -992,7 +992,7 @@ User can be passed as null, (a gun reloading itself for instance), so we need to
 	if(user)
 		if(magazine.transfer_delay > 1)
 			to_chat(user, SPAN_NOTICE("Вы начали перезаряжать [src]. Надо ждать..."))
-			if(!do_after(user, magazine.transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE, BUSY_ICON_FRIENDLY))
+			if(!do_after(user, magazine.transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE_WITH_MOVING, BUSY_ICON_FRIENDLY))
 				to_chat(user, SPAN_WARNING("Ваша перезарядка [src] была прервана!"))
 				return
 		replace_magazine(user, magazine)
@@ -1062,10 +1062,10 @@ User can be passed as null, (a gun reloading itself for instance), so we need to
 			chambered.update_icon()
 			break
 	if(!found_handful)
-		chambered.forceMove(get_turf(src))
-		chambered.update_icon()
+		var/obj/item/ammo_magazine/handful/new_handful = chambered.bullet_make_handful()
+		new_handful.forceMove(get_turf(src))
 
-	QDEL_NULL(in_chamber)
+	in_chamber = null
 
 //Manually cock the gun
 //This only works on weapons NOT marked with UNUSUAL_DESIGN or INTERNAL_MAG

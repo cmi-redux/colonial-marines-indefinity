@@ -46,10 +46,10 @@
 
 /obj/structure/inflatable/bullet_act(obj/item/projectile/proj)
 	health -= proj.damage
-	..()
+	. = ..()
 	if(health <= 0 && !deflated)
 		deflate(1)
-	return 1
+	return TRUE
 
 
 /obj/structure/inflatable/ex_act(severity)

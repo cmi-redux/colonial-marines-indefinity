@@ -304,12 +304,13 @@
 	if(source)
 		shot_from = source
 
-	if(!(projectile_flags & PROJECTILE_SHRAPNEL) && shooter)
-		forceMove(get_turf(shooter))
-	else if(source)
-		forceMove(get_turf(source))
-	else
-		forceMove(get_turf(src))
+	if(!istype(loc, /turf))
+		if(!(projectile_flags & PROJECTILE_SHRAPNEL) && shooter)
+			forceMove(get_turf(shooter))
+		else if(source)
+			forceMove(get_turf(source))
+		else
+			forceMove(get_turf(src))
 
 	starting_turf = loc
 
@@ -1457,7 +1458,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 //----------------------------------------------------------
 
 /atom/proc/bullet_act(obj/item/projectile/proj)
-	if(SEND_SIGNAL(src, COMSIG_ATOM_BULLET_ACT, proj) & COMPONENT_BULLET_ACT_OVERRIDE)
+	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
 		return FALSE
 	return FALSE
 
@@ -1775,7 +1776,19 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 		deconstruct()
 	return TRUE
 
-/obj/structure/machinery/door/airlock/bullet_act(obj/item/projectile/proj)
+/obj/structure/machinery/disposal/bullet_act(obj/item/projectile/proj)
+	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
+		return FALSE
+	bullet_ping(proj)
+	return FALSE
+
+/obj/structure/machinery/cm_vending/bullet_act(obj/item/projectile/proj)
+	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
+		return FALSE
+	bullet_ping(proj)
+	return FALSE
+
+/obj/structure/machinery/door/bullet_act(obj/item/projectile/proj)
 	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
 		return FALSE
 	bullet_ping(proj)

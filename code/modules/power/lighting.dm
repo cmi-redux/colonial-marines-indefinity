@@ -640,13 +640,15 @@
 		broken()
 
 /obj/structure/machinery/light/bullet_act(obj/item/projectile/proj)
+	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
+		return FALSE
 	bullet_ping(proj)
 	if(proj.ammo.damage_type == BRUTE)
 		if(proj.damage > 10)
 			broken()
 		else
 			playsound(src.loc, 'sound/effects/Glasshit.ogg', 25, 1)
-	return 1
+	return TRUE
 
 // explode the light
 

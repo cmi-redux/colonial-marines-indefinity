@@ -145,6 +145,15 @@
 /obj/docking_port/stationary/escape_pod
 	name = "Escape Pod Dock"
 
+/obj/docking_port/stationary/escape_pod/Initialize(mapload)
+	. = ..()
+	GLOB.escape_almayer_docks += src
+
+/obj/docking_port/stationary/escape_pod/Destroy(force)
+	if(force)
+		GLOB.escape_almayer_docks -= src
+	return ..()
+
 /obj/docking_port/stationary/escape_pod/west
 	id = ESCAPE_SHUTTLE_WEST_PREFIX
 	roundstart_template = /datum/map_template/shuttle/escape_pod_w

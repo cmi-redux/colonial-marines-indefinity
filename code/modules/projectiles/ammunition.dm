@@ -393,7 +393,7 @@ They're all essentially identical when it comes to getting the job done.
 			sleep(time_to_shot)
 
 /obj/item/ammo_magazine/bullet_act(obj/item/projectile/proj)
-	..()
+	. = ..()
 
 	var/ammo_flags = proj.ammo.traits_to_give | proj.projectile_override_flags
 	if(ammo_flags && ammo_flags & (/datum/element/bullet_trait_incendiary) || proj.ammo.flags_ammo_behavior & AMMO_XENO)
@@ -490,6 +490,7 @@ bullets/shells. ~N
 	default_ammo = list(new_ammo)
 	caliber = new_caliber
 	max_rounds = new_max_rounds
+	generate_ammo(TRUE)
 	if(new_gun_type)
 		gun_type = new_gun_type
 	handful_state = A.handful_state

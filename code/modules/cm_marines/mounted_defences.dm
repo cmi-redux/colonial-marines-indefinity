@@ -200,10 +200,12 @@
 	return ..()
 
 /obj/structure/machinery/mounted_defence/bullet_act(obj/item/projectile/proj) //Nope.
+	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
+		return FALSE
 	bullet_ping(proj)
 	visible_message(SPAN_WARNING("В [src] попал [proj.name]!"))
 	update_health(round(proj.damage / 10)) //Universal low damage to what amounts to a post with a gun.
-	return 1
+	return TRUE
 
 /obj/structure/machinery/mounted_defence/update_health(damage)
 	health -= damage

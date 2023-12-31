@@ -1039,9 +1039,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(SSticker.mode?.force_end_at)
 		var/time_left = SSticker.mode.force_end_at - world.time
 		if(time_left >= 0)
-			. += "Overtime Time Left: [DisplayTimeText(time_left, 1)]"
+			. += "Осталось Времени Овертайма: [DisplayTimeText(time_left, 1)]"
 		else
-			. += "Overtime Over"
+			. += "Овертайм Закончился"
 
 /proc/message_ghosts(message)
 	for(var/mob/dead/observer/O as anything in GLOB.observer_list)

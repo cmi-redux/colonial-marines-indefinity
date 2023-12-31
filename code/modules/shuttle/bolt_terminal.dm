@@ -81,24 +81,24 @@ DEFINE_BITFIELD(bt_shoot_flags, list(
 /obj/structure/machinery/bolt_control/target/proc/targeting_overlay()	//target overlay animation
 	overlays.Cut()
 
-	var/image/I = image('icons/effects/Targeted.dmi',"locking_movement")
+	var/image/I = image('icons/effects/Targeted.dmi', "locking_movement")
 	I.pixel_x = 1
 
 	overlays += I
 	aim_status |= BOLT_TERMINAL_AIMING
-	playsound(src,'sound/weapons/TargetOn.ogg', 35)
+	playsound(src, 'sound/weapons/TargetOn.ogg', 35)
 
 /obj/structure/machinery/bolt_control/target/proc/remove_target_overlay()
 	overlays.Cut()
 
 	aim_status &= ~BOLT_TERMINAL_AIMING
 	aim_status &= ~BOLT_TERMINAL_AIMED
-	playsound(src,'sound/weapons/TargetOff.ogg', 35)
+	playsound(src, 'sound/weapons/TargetOff.ogg', 35)
 
 /obj/structure/machinery/bolt_control/target/proc/targeted_overlay()	//Final "locked in" overlay
 	overlays.Cut()
 
-	var/image/I = image('icons/effects/Targeted.dmi',"locked_wide")
+	var/image/I = image('icons/effects/Targeted.dmi', "locked_wide")
 	I.pixel_x = 1
 
 	overlays += I

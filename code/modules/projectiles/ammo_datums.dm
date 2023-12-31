@@ -454,6 +454,8 @@ CUSTOM_AMMO_PENETRATION
 	penetration = ARMOR_PENETRATION_TIER_8
 	shrapnel_chance = SHRAPNEL_CHANCE_TIER_2
 
+	pen_armor_punch = 1
+
 /datum/ammo/bullet/pistol/ap/penetrating
 	name = "wall-penetrating pistol bullet"
 	hud_state = "pistol_wp"
@@ -461,6 +463,8 @@ CUSTOM_AMMO_PENETRATION
 
 	damage = 30
 	penetration = ARMOR_PENETRATION_TIER_10
+
+	damage_armor_punch = 1
 
 /datum/ammo/bullet/pistol/ap/penetrating/set_bullet_traits()
 	. = ..()
@@ -558,6 +562,8 @@ CUSTOM_AMMO_PENETRATION
 	name = ".50 high-impact armor piercing pistol bullet"
 	penetration = ARMOR_PENETRATION_TIER_10
 	damage = 45
+
+	damage_armor_punch = 1.5
 
 /datum/ammo/bullet/pistol/heavy/super/highimpact/upp
 	name = "high-impact pistol bullet"
@@ -889,6 +895,8 @@ CUSTOM_AMMO_PENETRATION
 	penetration = ARMOR_PENETRATION_TIER_10
 	damage = 45
 
+	damage_armor_punch = 1.5
+
 /datum/ammo/bullet/revolver/mateba/highimpact/New()
 	..()
 	RegisterSignal(src, COMSIG_AMMO_POINT_BLANK, PROC_REF(handle_battlefield_execution))
@@ -961,6 +969,8 @@ CUSTOM_AMMO_PENETRATION
 	damage = 24
 	penetration = ARMOR_PENETRATION_TIER_6
 	shell_speed = AMMO_SPEED_TIER_4
+
+	pen_armor_punch = 1.5
 
 /datum/ammo/bullet/smg/heap
 	name = "high-explosive armor-piercing submachinegun bullet"
@@ -1075,6 +1085,8 @@ CUSTOM_AMMO_PENETRATION
 
 	damage = 30
 	penetration = ARMOR_PENETRATION_TIER_10
+
+	damage_armor_punch = 1.5
 
 /datum/ammo/bullet/smg/ap/penetrating/set_bullet_traits()
 	. = ..()
@@ -1208,6 +1220,9 @@ CUSTOM_AMMO_PENETRATION
 	damage = 30
 	penetration = ARMOR_PENETRATION_TIER_8
 
+	pen_armor_punch = 1.5
+	damage_armor_punch = 1
+
 // Basically AP but better. Focused at taking out armour temporarily
 /datum/ammo/bullet/rifle/ap/toxin
 	name = "toxic rifle bullet"
@@ -1237,6 +1252,9 @@ CUSTOM_AMMO_PENETRATION
 
 	damage = 35
 	penetration = ARMOR_PENETRATION_TIER_10
+
+	pen_armor_punch = 2
+	damage_armor_punch = 1.5
 
 /datum/ammo/bullet/rifle/ap/penetrating/set_bullet_traits()
 	. = ..()
@@ -1381,6 +1399,9 @@ CUSTOM_AMMO_PENETRATION
 
 	damage = 40
 	penetration = ARMOR_PENETRATION_TIER_10
+
+	pen_armor_punch = 2
+	damage_armor_punch = 1.5
 
 /datum/ammo/bullet/rifle/type71/heap
 	name = "heavy high-explosive armor-piercing rifle bullet"
@@ -2258,7 +2279,9 @@ CUSTOM_AMMO_PENETRATION
 	accuracy = HIT_ACCURACY_TIER_2
 	damage = 20
 	penetration = ARMOR_PENETRATION_TIER_8
-	damage_armor_punch = 1
+
+	damage_armor_punch = 2
+	pen_armor_punch = 2
 
 /datum/ammo/bullet/smartgun/m56_fpw
 	name = "\improper M56 FPW bullet"

@@ -53,8 +53,6 @@ GLOBAL_LIST_INIT(airlock_wire_descriptions, list(
 	var/no_panel = 0 //the airlock has no panel that can be screwdrivered open
 	var/not_weldable = 0 // stops people welding the door if true
 
-	var/damage = 0
-	var/damage_cap = HEALTH_DOOR // Airlock gets destroyed
 	var/autoname = FALSE
 
 	var/list/obj/item/device/assembly/signaller/attached_signallers = list()
@@ -111,39 +109,6 @@ GLOBAL_LIST_INIT(airlock_wire_descriptions, list(
 		. += SPAN_WARNING("It looks slightly damaged.")
 	if(masterkey_resist)
 		. += SPAN_INFO("It has been reinforced against breaching attempts.")
-
-/obj/structure/machinery/door/airlock/proc/take_damage(dam, mob/M)
-	if(!dam || unacidable)
-		return FALSE
-
-	damage = max(0, damage + dam)
-
-	if(damage >= damage_cap)
-		if(M && istype(M))
-			M.count_statistic_stat(STATISTICS_DESTRUCTION_DOORS, 1)
-			SEND_SIGNAL(M, COMSIG_MOB_DESTROY_AIRLOCK, src)
-		to_chat(loc, SPAN_DANGER("[src] blows apart!"))
-		deconstruct(FALSE)
-		playsound(src, 'sound/effects/metal_crash.ogg', 25, 1)
-		return TRUE
-
-	return FALSE
-
-// no, i don't know why this provides stuff if you shoot it apart vs disassembling
-/obj/structure/machinery/door/airlock/deconstruct(disassembled = TRUE)
-	if(!disassembled)
-		if(width == 1)
-			new /obj/item/stack/rods(loc)
-			new /obj/item/stack/cable_coil/cut(loc)
-			new /obj/effect/spawner/gibspawner/robot(loc)
-			new /obj/effect/decal/cleanable/blood/oil(loc)
-		else // big airlock, big debris
-			for(var/turf/DT in locs) // locs = covered by airlock bounding box
-				new /obj/item/stack/rods(DT)
-				new /obj/item/stack/cable_coil/cut(DT)
-				new /obj/effect/spawner/gibspawner/robot(DT)
-				new /obj/effect/decal/cleanable/blood/oil(DT)
-	return ..()
 
 /obj/structure/machinery/door/airlock/ex_act(severity, explosion_direction, datum/cause_data/cause_data)
 	var/exp_damage = severity * EXPLOSION_DAMAGE_MULTIPLIER_DOOR

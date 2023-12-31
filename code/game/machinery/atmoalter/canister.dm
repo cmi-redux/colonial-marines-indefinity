@@ -93,8 +93,8 @@ update_flag
 /obj/structure/machinery/portable_atmospherics/canister/bullet_act(obj/item/projectile/proj)
 	if(proj.ammo.damage)
 		update_health(round(proj.ammo.damage / 2))
-	..()
-	return 1
+	. = ..()
+	return TRUE
 
 /obj/structure/machinery/portable_atmospherics/canister/attackby(obj/item/W as obj, mob/user as mob)
 	if(!HAS_TRAIT(W, TRAIT_TOOL_WRENCH) && !istype(W, /obj/item/tank) && !istype(W, /obj/item/device/analyzer))

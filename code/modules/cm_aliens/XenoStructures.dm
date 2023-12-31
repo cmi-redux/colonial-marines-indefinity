@@ -71,9 +71,9 @@
 
 /obj/effect/alien/resin/bullet_act(obj/item/projectile/proj)
 	health -= proj.damage
-	..()
+	. = ..()
 	healthcheck()
-	return 1
+	return TRUE
 
 /obj/effect/alien/resin/ex_act(severity)
 	health -= (severity * RESIN_EXPLOSIVE_MULTIPLIER)
@@ -357,9 +357,9 @@
 
 /obj/structure/mineral_door/resin/bullet_act(obj/item/projectile/proj)
 	health -= proj.damage
-	..()
+	. = ..()
 	healthcheck()
-	return 1
+	return TRUE
 
 /obj/structure/mineral_door/resin/attackby(obj/item/W, mob/living/user)
 	if(W.pry_capable == IS_PRY_CAPABLE_FORCE && user.a_intent != INTENT_HARM)

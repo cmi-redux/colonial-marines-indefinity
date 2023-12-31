@@ -254,7 +254,7 @@
 		hit_barricade(item)
 
 /obj/structure/barricade/bullet_act(obj/item/projectile/proj)
-	bullet_ping(proj)
+	. = ..()
 
 	if(proj.ammo.damage_type == BURN)
 		proj.damage = proj.damage * burn_multiplier

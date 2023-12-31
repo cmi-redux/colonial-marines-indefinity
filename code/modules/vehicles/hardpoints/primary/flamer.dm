@@ -43,17 +43,17 @@
 
 	return TRUE
 
-/obj/item/hardpoint/primary/flamer/fire_projectile(mob/user, atom/A)
+/obj/item/hardpoint/primary/flamer/fire_projectile(mob/user, atom/target_atom)
 	set waitfor = FALSE
 
 	var/turf/origin_turf = get_turf(src)
 	origin_turf = locate(origin_turf.x + origins[1], origin_turf.y + origins[2], origin_turf.z)
 
-	var/range = get_dist(origin_turf, A) + 1
+	var/range = get_dist(origin_turf, target_atom) + 1
 
 	var/obj/item/projectile/projectile = generate_bullet(user, origin_turf)
 	SEND_SIGNAL(projectile, COMSIG_BULLET_USER_EFFECTS, owner.seats[VEHICLE_GUNNER])
-	projectile.fire_at(A, owner.seats[VEHICLE_GUNNER], src, range < projectile.ammo.max_range ? range : projectile.ammo.max_range, projectile.ammo.shell_speed)
+	projectile.fire_at(target_atom, owner.seats[VEHICLE_GUNNER], src, range < projectile.ammo.max_range ? range : projectile.ammo.max_range, projectile.ammo.shell_speed)
 
 	if(use_muzzle_flash)
-		muzzle_flash(Get_Angle(owner, A))
+		muzzle_flash(Get_Angle(owner, target_atom))

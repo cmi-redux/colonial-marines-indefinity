@@ -8,7 +8,6 @@
 	id = 1
 	dir = NORTH
 	unslashable = TRUE
-	health = 0
 	layer = PODDOOR_CLOSED_LAYER
 	open_layer = PODDOOR_OPEN_LAYER
 	closed_layer = PODDOOR_CLOSED_LAYER
@@ -51,6 +50,9 @@
 	if((stat & NOPOWER) && density && !operating && !unacidable)
 		INVOKE_ASYNC(src, PROC_REF(pry_open), X)
 		return XENO_ATTACK_ACTION
+
+/obj/structure/machinery/door/poddoor/take_damage(dam, mob/M)
+	return FALSE
 
 /obj/structure/machinery/door/poddoor/proc/pry_open(mob/living/carbon/xenomorph/X, time = 4 SECONDS)
 	X.visible_message(SPAN_DANGER("[X] begins prying [src] open."),\

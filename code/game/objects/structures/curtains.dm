@@ -11,10 +11,11 @@
 	toggle()
 
 /obj/structure/curtain/bullet_act(obj/item/projectile/proj, def_zone)
+	. = ..()
 	if(proj.damage)
 		visible_message(SPAN_WARNING("[proj] tears [src] down!"))
 		qdel(src)
-	return 0
+	return FALSE
 
 /obj/structure/curtain/attack_hand(mob/user)
 	playsound(get_turf(loc), "rustle", 15, 1, 6)

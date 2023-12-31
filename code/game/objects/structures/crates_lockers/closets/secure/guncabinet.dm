@@ -58,7 +58,10 @@
 
 //immune to bullets
 /obj/structure/closet/secure_closet/guncabinet/bullet_act(obj/item/projectile/proj)
-	return 1
+	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
+		return FALSE
+	bullet_ping(proj)
+	return TRUE
 
 /obj/structure/closet/secure_closet/guncabinet/ex_act(severity)
 	if(severity > EXPLOSION_THRESHOLD_MEDIUM)

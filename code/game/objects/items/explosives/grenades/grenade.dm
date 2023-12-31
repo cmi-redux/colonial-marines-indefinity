@@ -162,7 +162,7 @@
 	return FALSE
 
 /obj/item/explosive/grenade/bullet_act(obj/item/projectile/proj)
-	..()
+	. = ..()
 
 	if(!explosing_check())
 		return

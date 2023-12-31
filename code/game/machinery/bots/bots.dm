@@ -95,9 +95,9 @@
 
 /obj/structure/machinery/bot/bullet_act(obj/item/projectile/proj)
 	health -= proj.ammo.damage
-	..()
+	. = ..()
 	healthcheck()
-	return 1
+	return TRUE
 
 /obj/structure/machinery/bot/ex_act(severity)
 	switch(severity)

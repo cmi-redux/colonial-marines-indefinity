@@ -184,8 +184,8 @@
 			wires &= ~index
 		else
 			wires |= index
-	..()
-	return 1
+	. = ..()
+	return TRUE
 
 
 /obj/structure/machinery/bot/mulebot/attack_remote(mob/user)

@@ -11,7 +11,7 @@
 	var/list/datum/cm_objective/objectives = list()
 	var/list/datum/cm_objective/processing_objectives = list()
 
-	var/list/datum/objective_spawn_handler/objective_spawns = list()
+	var/list/objective_spawns = list()
 
 	var/list/purchased_rewards = list()
 	var/remaining_reward_points = REWARD_POINT_GAIN_PER_LEVEL
@@ -44,15 +44,17 @@
 
 /datum/objectives_datum/proc/add_objective_spawn(objective_spawn_name, objective_spawn_weight, objective_spawn_location)
 	var/found = FALSE
-	for(var/datum/objective_spawn_handler/objective_handler in objective_spawns[objective_spawn_name])
-		if(objective_handler.weight != objective_spawn_weight)
+	for(var/datum/objective_spawn_handler/objectives_handler in objective_spawns[objective_spawn_name])
+		if(objectives_handler.weight != objective_spawn_weight)
 			continue
-		objective_handler.linked_spawns += objective_spawn_location
+		objectives_handler.linked_spawns += objective_spawn_location
 		found = TRUE
 		break
 
 	if(!found)
-		objective_spawns[objective_spawn_name] += new(objective_spawn_name, objective_spawn_weight, objective_spawn_location)
+		if(!objective_spawns[objective_spawn_name])
+			objective_spawns[objective_spawn_name] = list()
+		objective_spawns[objective_spawn_name] += new /datum/objective_spawn_handler(objective_spawn_name, objective_spawn_weight, objective_spawn_location)
 
 /datum/objectives_datum/proc/generate_objectives()
 	var/datum/faction/faction = GLOB.faction_datum[associated_faction]
@@ -68,13 +70,13 @@
 		for(var/i = 1 to ammount)
 			var/list/potential_spawns = list()
 			objective_type = pick(GLOB.objectives_links[subtyope])
-			for(var/datum/objective_spawn_handler/objective_handler in objective_spawns[subtyope])
-				var/atom/new_potential_spawn = SAFEPICK(objective_handler.linked_spawns)
+			for(var/datum/objective_spawn_handler/objectives_handler in objective_spawns[subtyope])
+				var/atom/new_potential_spawn = SAFEPICK(objectives_handler.linked_spawns)
 				if(!new_potential_spawn)
 					continue
 				//TODO: Make multi use spawning objection points (something like machines)
-				objective_handler.linked_spawns -= new_potential_spawn
-				potential_spawns += list(new_potential_spawn = objective_handler.weight)
+				objectives_handler.linked_spawns -= new_potential_spawn
+				potential_spawns += list(new_potential_spawn = objectives_handler.weight)
 
 			if(!length(potential_spawns))
 				return

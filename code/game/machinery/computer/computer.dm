@@ -63,8 +63,8 @@
 	else
 		if(prob(round(proj.ammo.damage /2)))
 			set_broken()
-		..()
-		return 1
+		. = ..()
+		return TRUE
 
 /obj/structure/machinery/computer/update_icon()
 	..()

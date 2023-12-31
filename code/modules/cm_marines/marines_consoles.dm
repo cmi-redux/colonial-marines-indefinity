@@ -408,7 +408,7 @@
 	return attack_hand(user)
 
 /obj/structure/machinery/computer/card/bullet_act()
-	return 0
+	return FALSE
 
 /obj/structure/machinery/computer/card/verb/eject_id()
 	set category = "Object"
@@ -627,7 +627,7 @@
 	return attack_hand(user)
 
 /obj/structure/machinery/computer/squad_changer/bullet_act()
-	return 0
+	return FALSE
 
 /obj/structure/machinery/computer/squad_changer/attack_hand(mob/user as mob)
 	if(..())

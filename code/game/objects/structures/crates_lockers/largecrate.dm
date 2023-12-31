@@ -77,6 +77,7 @@
 		unpack()
 
 /obj/structure/largecrate/bullet_act(obj/item/projectile/proj)
+	. = ..()
 	take_damage(proj.calculate_damage(proj.damage))
 	return TRUE
 

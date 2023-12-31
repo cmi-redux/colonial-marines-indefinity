@@ -131,7 +131,9 @@
 
 	if(!not_damageable) //Impossible to destroy
 		health -= proj.damage
-	..()
+
+	. = ..()
+
 	if(health > 0)
 		healthcheck(FALSE, TRUE, user = proj.firer, AM = proj)
 

@@ -60,6 +60,7 @@ FIRE ALARM
 	return attack_hand(user)
 
 /obj/structure/machinery/firealarm/bullet_act(BLAH)
+	. = ..()
 	return alarm()
 
 /obj/structure/machinery/firealarm/emp_act(severity)

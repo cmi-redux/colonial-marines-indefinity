@@ -93,5 +93,6 @@
 	return TRUE
 
 /obj/ovipositor/bullet_act(obj/item/projectile/proj)
+	. = ..()
 	health -= proj.damage
-	return 1
+	return TRUE

@@ -11,6 +11,10 @@
 	plane = WALL_PLANE
 	layer = DOOR_OPEN_LAYER
 	minimap_color = MINIMAP_DOOR
+
+	var/damage = 0
+	var/damage_cap = HEALTH_DOOR // Airlock gets destroyed
+
 	var/open_layer = DOOR_OPEN_LAYER
 	var/closed_layer = DOOR_CLOSED_LAYER
 	var/id = ""
@@ -125,6 +129,39 @@
 /obj/structure/machinery/door/attack_hand(mob/user)
 	return try_to_activate_door(user)
 
+/obj/structure/machinery/door/proc/take_damage(dam, mob/M)
+	if(!dam || unacidable)
+		return FALSE
+
+	damage = max(0, damage + dam)
+
+	if(damage >= damage_cap)
+		if(M && istype(M))
+			M.count_statistic_stat(STATISTICS_DESTRUCTION_DOORS, 1)
+			SEND_SIGNAL(M, COMSIG_MOB_DESTROY_AIRLOCK, src)
+		to_chat(loc, SPAN_DANGER("[src] blows apart!"))
+		deconstruct(FALSE)
+		playsound(src, 'sound/effects/metal_crash.ogg', 25, 1)
+		return TRUE
+
+	return FALSE
+
+// no, i don't know why this provides stuff if you shoot it apart vs disassembling
+/obj/structure/machinery/door/deconstruct(disassembled = TRUE)
+	if(!disassembled)
+		if(width == 1)
+			new /obj/item/stack/rods(loc)
+			new /obj/item/stack/cable_coil/cut(loc)
+			new /obj/effect/spawner/gibspawner/robot(loc)
+			new /obj/effect/decal/cleanable/blood/oil(loc)
+		else // big airlock, big debris
+			for(var/turf/DT in locs) // locs = covered by airlock bounding box
+				new /obj/item/stack/rods(DT)
+				new /obj/item/stack/cable_coil/cut(DT)
+				new /obj/effect/spawner/gibspawner/robot(DT)
+				new /obj/effect/decal/cleanable/blood/oil(DT)
+	return ..()
+
 /obj/structure/machinery/door/proc/try_to_activate_door(mob/user)
 	add_fingerprint(user)
 	if(operating)
@@ -160,7 +197,8 @@
 
 
 /obj/structure/machinery/door/ex_act(severity)
-	if(unacidable) return
+	if(unacidable)
+		return
 
 	if(density)
 		switch(severity)

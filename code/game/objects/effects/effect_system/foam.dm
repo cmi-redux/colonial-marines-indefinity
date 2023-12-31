@@ -192,6 +192,8 @@
 	if(proj.ammo.damage_type == HALLOSS || proj.ammo.damage_type == TOX || proj.ammo.damage_type == CLONE || proj.damage == 0)
 		return
 
+	. = ..()
+
 	bullet_ping(proj)
 	take_damage(proj.ammo.damage * FOAMED_METAL_BULLET_DMG)
 

@@ -324,6 +324,7 @@
 	//Tasers and the like should not damage girders.
 	if(proj.ammo.damage_type == HALLOSS || proj.ammo.damage_type == TOX || proj.ammo.damage_type == CLONE || proj.damage == 0)
 		return FALSE
+
 	var/dmg = 0
 	if(proj.ammo.damage_type == BURN)
 		dmg = proj.damage
@@ -332,7 +333,7 @@
 	if(dmg)
 		health -= dmg
 		take_damage(dmg)
-		bullet_ping(proj)
+		. = ..()
 	if(health <= 0)
 		update_state()
 	return TRUE

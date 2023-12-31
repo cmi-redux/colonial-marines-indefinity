@@ -69,6 +69,7 @@
 		deconstruct(FALSE)
 
 /obj/structure/reagent_dispensers/bullet_act(obj/item/projectile/proj)
+	. = ..()
 	health -= proj.damage
 	if(proj.firer)
 		msg_admin_niche("[key_name_admin(proj.firer)] fired a projectile at [name] in [loc.loc.name] ([loc.x],[loc.y],[loc.z]) [ADMIN_JMP(loc)].")
@@ -297,7 +298,11 @@
 
 
 /obj/structure/reagent_dispensers/fueltank/bullet_act(obj/item/projectile/proj)
-	if(exploding) return 0
+	if(exploding)
+		return FALSE
+
+	. = ..()
+
 	if(ismob(proj.firer))
 		source_mob = WEAKREF(proj.firer)
 

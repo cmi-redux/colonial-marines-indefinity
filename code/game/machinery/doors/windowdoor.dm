@@ -6,7 +6,7 @@
 	plane = GAME_PLANE
 	layer = WINDOW_LAYER
 	var/base_state = "left"
-	health = 150 //If you change this, consiter changing ../door/window/brigdoor/ health at the bottom of this .dm file
+	damage_cap = 150 //If you change this, consiter changing ../door/window/brigdoor/ damage_cap at the bottom of this .dm file
 	visible = 0
 	use_power = USE_POWER_NONE
 	flags_atom = ON_BORDER
@@ -99,33 +99,27 @@
 /obj/structure/machinery/door/window/finish_close()
 	operating = FALSE
 
-/obj/structure/machinery/door/window/proc/take_damage(damage)
-	src.health = max(0, src.health - damage)
-	if(src.health <= 0)
-		new /obj/item/shard(src.loc)
-		var/obj/item/stack/cable_coil/CC = new /obj/item/stack/cable_coil(src.loc)
-		CC.amount = 2
+/obj/structure/machinery/door/window/deconstruct(disassembled = TRUE)
+	if(!disassembled)
+		new /obj/item/shard(loc)
 		var/obj/item/circuitboard/airlock/ae
 		if(!electronics)
-			ae = new/obj/item/circuitboard/airlock( src.loc )
-			if(!src.req_access)
-				src.check_access()
-			if(src.req_access.len)
-				ae.conf_access = src.req_access
-			else if(src.req_one_access && src.req_one_access.len)
-				ae.conf_access = src.req_one_access
+			ae = new/obj/item/circuitboard/airlock(loc)
+			if(!req_access)
+				check_access()
+			if(req_access.len)
+				ae.conf_access = req_access
+			else if(req_one_access && req_one_access.len)
+				ae.conf_access = req_one_access
 				ae.one_access = 1
 		else
 			ae = electronics
 			electronics = null
-			ae.forceMove(src.loc)
+			ae.forceMove(loc)
 		if(operating == -1)
 			ae.fried = TRUE
 			ae.update_icon()
-			operating = 0
-		src.density = FALSE
-		qdel(src)
-		return
+	return ..()
 
 //When an object is thrown at the window
 /obj/structure/machinery/door/window/hitby(atom/movable/AM)
@@ -216,7 +210,7 @@
 	name = "Secure glass door"
 	desc = "A thick chunk of tempered glass on metal track. Probably more robust than you."
 	req_access = list(ACCESS_MARINE_BRIG)
-	health = 300 //Stronger doors for prison (regular window door health is 150)
+	damage_cap = 300 //Stronger doors for prison (regular window door damage_cap is 150)
 
 
 /obj/structure/machinery/door/window/northleft

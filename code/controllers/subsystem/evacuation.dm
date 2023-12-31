@@ -37,8 +37,8 @@ SUBSYSTEM_DEF(evacuation)
 			SSticker.mode.round_finished = "Marine Minor Victory"
 			SSticker.mode.faction_won = GLOB.faction_datum[FACTION_MARINE]
 			ship_operation_stage_status = OPERATION_DEBRIEFING
-			ship_evac_time = null
 			ship_evacuating = FALSE
+			ship_evac_time = null
 			for(var/shuttle_id in shuttles_to_check)
 				var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttle_id)
 				var/obj/structure/machinery/computer/shuttle/dropship/flight/console = shuttle.getControlConsole()
@@ -51,7 +51,7 @@ SUBSYSTEM_DEF(evacuation)
 
 	if(dest_master && dest_master.loc && dest_master.active_state == SELF_DESTRUCT_MACHINE_ARMED && dest_status == NUKE_EXPLOSION_ACTIVE && dest_index <= dest_rods.len)
 		var/obj/structure/machinery/self_destruct/rod/rod = dest_rods[dest_index]
-		if(dest_master.activated_by_evac && (world.time >= dest_cooldown/4 + rod.activate_time))
+		if(world.time >= dest_cooldown/4 + rod.activate_time)
 			rod.lock_or_unlock() //Unlock it.
 			if(++dest_index <= dest_rods.len)
 				rod = dest_rods[dest_index]//Start the next sequence.
@@ -63,7 +63,6 @@ SUBSYSTEM_DEF(evacuation)
 				rod.activate_time = world.time
 
 /datum/controller/subsystem/evacuation/proc/prepare()
-	dest_master = locate()
 	if(!dest_master)
 		log_debug("ERROR CODE SD1: could not find master self-destruct console")
 		to_world(SPAN_DEBUG("ERROR CODE SD1: could not find master self-destruct console"))
@@ -97,8 +96,8 @@ SUBSYSTEM_DEF(evacuation)
 
 /datum/controller/subsystem/evacuation/proc/initiate_ship_evacuation(force = FALSE) //Begins the evacuation procedure.
 	if((force || !ship_evac_blocked()) && !ship_evacuating)
-		ship_evacuating = TRUE
 		ship_evac_time = world.time
+		ship_evacuating = TRUE
 		ship_operation_stage_status = OPERATION_LEAVING_OPERATION_PLACE
 		enter_allowed = FALSE
 		ai_announcement("Внимание. Чрезвычайная ситуация. Всему персоналу и морпехам немедленно вернуться на корабль, в связи с критической ситуацией начинается немедленный процесс отбытия с зоны операции, посадочные шатлы станут недоступны через [duration2text_hour_min_sec(SHIP_ESCAPE_ESTIMATE_DEPARTURE, "hh:mm:ss")]!", 'sound/AI/evacuate.ogg', logging = ARES_LOG_SECURITY)
@@ -232,6 +231,7 @@ SUBSYSTEM_DEF(evacuation)
 		return TRUE
 
 /datum/controller/subsystem/evacuation/proc/process_evacuation() //Process the timer.
+	set waitfor = FALSE
 	set background = TRUE
 
 	spawn while(evac_status == EVACUATION_STATUS_INITIATING) //If it's not departing, no need to process.
@@ -285,8 +285,6 @@ SUBSYSTEM_DEF(evacuation)
 
 /datum/controller/subsystem/evacuation/proc/enable_self_destruct(force = FALSE, evac = FALSE)
 	if(force || ((dest_status == NUKE_EXPLOSION_INACTIVE && !(flags_scuttle & FLAGS_SELF_DESTRUCT_DENY)) && ship_operation_stage_status < OPERATION_ENDING))
-		if(evac)
-			dest_master.activated_by_evac = TRUE
 		dest_status = NUKE_EXPLOSION_ACTIVE
 		dest_master.lock_or_unlock()
 		dest_started_at = world.time
@@ -307,7 +305,7 @@ SUBSYSTEM_DEF(evacuation)
 				return FALSE
 
 		dest_status = NUKE_EXPLOSION_INACTIVE
-		dest_master.in_progress = 1
+		dest_master.in_progress = 0
 		dest_started_at = 0
 		for(rod in dest_rods)
 			if(rod.active_state == SELF_DESTRUCT_MACHINE_ACTIVE || (rod.active_state == SELF_DESTRUCT_MACHINE_ARMED && override))
@@ -326,7 +324,7 @@ SUBSYSTEM_DEF(evacuation)
 			if(rod.active_state != SELF_DESTRUCT_MACHINE_ARMED && !override)
 				dest_master.state(SPAN_WARNING("ПРЕДУПРЕЖДЕНИЕ: Невозможно запустить детонацию. Пожалуйста, активируйте все управляющие стержни."))
 				return FALSE
-		dest_master.in_progress = !dest_master.in_progress
+		dest_master.in_progress = 1
 		for(rod in SSevacuation.dest_rods)
 			rod.in_progress = 1
 		ai_announcement("ОПАСНОСТЬ. ОПАСНОСТЬ. Система самоуничтожения активирована. ОПАСНОСТЬ. ОПАСНОСТЬ. Самоуничтожение выполняется. ОПАСНОСТЬ. ОПАСНОСТЬ.", logging = ARES_LOG_SECURITY)
@@ -411,7 +409,6 @@ SUBSYSTEM_DEF(evacuation)
 	mouse_opacity = FALSE //No need to click or interact with this initially.
 	var/in_progress = 0 //Cannot interact with while it's doing something, like an animation.
 	var/active_state = SELF_DESTRUCT_MACHINE_INACTIVE //What step of the process it's on.
-	var/activated_by_evac = FALSE
 
 /obj/structure/machinery/self_destruct/Initialize(mapload, ...)
 	. = ..()
@@ -420,6 +417,7 @@ SUBSYSTEM_DEF(evacuation)
 
 /obj/structure/machinery/self_destruct/LateInitialize()
 	. = ..()
+	SSevacuation.dest_master = src
 	SSevacuation.prepare()
 
 /obj/structure/machinery/self_destruct/ex_act()

@@ -409,7 +409,7 @@ var/list/robot_verbs_default = list(
 	return FALSE
 
 /mob/living/silicon/robot/bullet_act(obj/item/projectile/proj)
-	..(proj)
+	. = ..()
 	if(prob(75) && proj.damage > 0) spark_system.start()
 	return 2
 

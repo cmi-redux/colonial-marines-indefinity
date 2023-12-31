@@ -23,9 +23,9 @@
 /obj/structure/showcase/bullet_act(obj/item/projectile/proj)
 	var/damage = proj.damage
 	health -= damage
-	..()
+	. = ..()
 	healthcheck()
-	return 1
+	return TRUE
 
 /obj/structure/showcase/proc/explode()
 	src.visible_message(SPAN_DANGER("<B>[src] blows apart!</B>"), null, null, 1)

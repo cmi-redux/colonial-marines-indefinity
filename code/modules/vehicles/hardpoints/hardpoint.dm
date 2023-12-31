@@ -130,14 +130,7 @@
 		deconstruct(TRUE)
 
 /// Populate traits_to_give in this proc
-/obj/item/hardpoint/proc/set_bullet_traits()
-	return
-
-/obj/item/hardpoint/proc/generate_bullet(mob/user, turf/origin_turf)
-	var/obj/item/projectile/projectile = ammo.transfer_bullet_out()
-	projectile.cause_data = create_cause_data(initial(name), user)
-	projectile.bullet_ready_to_fire(initial(name), weapon_source_mob = user)
-	projectile.forceMove(origin_turf)
+/obj/item/hardpoint/proc/set_bullet_traits(obj/item/projectile/proj)
 	// Apply bullet traits from gun
 	for(var/entry in traits_to_give)
 		var/list/L
@@ -147,8 +140,18 @@
 		else
 			// Prepend the bullet trait to the list
 			L = list(entry) + traits_to_give[entry]
-		projectile.apply_bullet_trait(L)
-	return projectile
+		proj.apply_bullet_trait(L)
+	return proj
+
+/obj/item/hardpoint/proc/generate_bullet(mob/user, turf/origin_turf)
+	var/obj/item/projectile/proj = ammo.transfer_bullet_out()
+	proj.forceMove(origin_turf)
+	proj.bullet_ready_to_fire(initial(name), weapon_source_mob = user)
+	var/datum/cause_data/cause_data = create_cause_data(initial(name), user, src)
+	proj.weapon_cause_data = cause_data
+	proj.firer = user
+	set_bullet_traits(proj)
+	return proj
 
 /obj/item/hardpoint/proc/can_take_damage()
 	if(!damage_multiplier)
@@ -546,18 +549,18 @@
 	to_chat(user, SPAN_WARNING("[name] Ammo: <b>[SPAN_HELPFUL(ammo ? ammo.ammo_position : 0)]/[SPAN_HELPFUL(ammo ? ammo.max_rounds : 0)]</b> | Mags: <b>[SPAN_HELPFUL(length(backup_clips))]/[SPAN_HELPFUL(max_clips)]</b>"))
 
 //finally firing the gun
-/obj/item/hardpoint/proc/fire_projectile(mob/user, atom/A)
+/obj/item/hardpoint/proc/fire_projectile(mob/user, atom/target_atom)
 	set waitfor = FALSE
 
 	var/turf/origin_turf = get_turf(src)
 	origin_turf = locate(origin_turf.x + origins[1], origin_turf.y + origins[2], origin_turf.z)
 
-	var/obj/item/projectile/projectile = generate_bullet(user, origin_turf)
-	SEND_SIGNAL(projectile, COMSIG_BULLET_USER_EFFECTS, user)
-	projectile.fire_at(A, user, src, projectile.ammo.max_range, projectile.ammo.shell_speed)
+	var/obj/item/projectile/proj = generate_bullet(user, origin_turf)
+	SEND_SIGNAL(proj, COMSIG_BULLET_USER_EFFECTS, user)
+	proj.fire_at(target_atom, user, src, proj.ammo.max_range, proj.ammo.shell_speed, null)
 
 	if(use_muzzle_flash)
-		muzzle_flash(Get_Angle(origin_turf, A))
+		muzzle_flash(Get_Angle(origin_turf, target_atom))
 
 //-----------------------------
 //------ICON PROCS----------
@@ -626,7 +629,7 @@
 	if(!angle_muzzleflash)
 		angle = dir2angle(dir)
 
-	var/image/I = image('icons/obj/items/weapons/projectiles.dmi',src,muzzleflash_icon_state,image_layer)
+	var/image/I = image('icons/obj/items/weapons/projectiles.dmi', src, muzzleflash_icon_state,image_layer)
 	var/matrix/rotate = matrix() //Change the flash angle.
 	rotate.Turn(angle)
 	rotate.Translate(muzzle_flash_x, muzzle_flash_y)

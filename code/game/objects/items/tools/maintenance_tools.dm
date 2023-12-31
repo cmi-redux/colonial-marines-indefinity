@@ -732,7 +732,7 @@ Welding backpack
 /obj/item/tool/weldpack/bullet_act(obj/item/projectile/proj)
 	var/damage = proj.damage
 	health -= damage
-	..()
+	. = ..()
 	healthcheck()
 	return 1
 

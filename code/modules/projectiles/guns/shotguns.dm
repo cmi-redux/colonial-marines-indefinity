@@ -46,7 +46,7 @@ can cause issues with ammo types getting mixed up during the burst.
 		return
 	if(current_mag.ammo_position <= 0)
 		if(in_chamber)
-			if(!do_after(user, current_mag.transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE, BUSY_ICON_FRIENDLY))
+			if(!do_after(user, current_mag.transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE_WITH_MOVING, BUSY_ICON_FRIENDLY))
 				return FALSE
 			in_chamber.forceMove(get_turf(user))
 			user.put_in_hands(in_chamber)

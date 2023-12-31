@@ -149,7 +149,7 @@
 		child.go_idle()
 
 /obj/effect/alien/egg/bullet_act(obj/item/projectile/proj)
-	..()
+	. = ..()
 	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags
 	if(ammo_flags & (AMMO_XENO))
 		return

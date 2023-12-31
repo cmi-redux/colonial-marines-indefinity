@@ -119,7 +119,7 @@
 			addtimer(CALLBACK(src, PROC_REF(prime), explosion_cause_data), 1)
 
 /obj/structure/ship_ammo/bullet_act(obj/item/projectile/proj)
-	..()
+	. = ..()
 
 	var/ammo_flags = proj.ammo.traits_to_give | proj.projectile_override_flags
 	if(ammo_flags && ammo_flags & (/datum/element/bullet_trait_incendiary) || proj.ammo.flags_ammo_behavior & AMMO_XENO)

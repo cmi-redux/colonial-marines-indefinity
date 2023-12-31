@@ -430,6 +430,8 @@
 	update_health(severity)
 
 /obj/structure/machinery/defenses/bullet_act(obj/item/projectile/proj)
+	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
+		return FALSE
 	bullet_ping(proj)
 	visible_message(SPAN_WARNING("[src] is hit by the [proj]!"))
 	var/ammo_flags = proj.ammo.flags_ammo_behavior | proj.projectile_override_flags

@@ -32,9 +32,9 @@
 
 /obj/structure/displaycase/bullet_act(obj/item/projectile/proj)
 	health -= proj.ammo.damage
-	..()
+	. = ..()
 	healthcheck()
-	return 1
+	return TRUE
 
 /obj/structure/displaycase/proc/healthcheck()
 	if(health <= 0)

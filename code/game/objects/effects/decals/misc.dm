@@ -79,9 +79,6 @@
 		deconstruct(FALSE)
 	return
 
-/obj/effect/decal/mecha_wreckage/bullet_act(obj/item/projectile/proj)
-	return 1
-
 /obj/effect/decal/mecha_wreckage/attack_alien(mob/living/carbon/xenomorph/M)
 	playsound(src, 'sound/effects/metal_crash.ogg', 50, 1)
 	M.animation_attack_on(src)

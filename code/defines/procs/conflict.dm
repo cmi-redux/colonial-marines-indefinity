@@ -23,31 +23,35 @@
 
 	armor_integrity = max(armor_integrity, 0)
 	damage = damage * c_config.damage_initial_multiplier
-	var/ap_calculation_damage
-	if(penetration < ARMOR_PENETRATION_TIER_3)
-		ap_calculation_damage = max(damage-armor*(armor_integrity/100),damage/2)*0.5
-	else
-		ap_calculation_damage = max(penetration+min(armor*(armor_integrity/100)-penetration*2, 0)-max(armor*(armor_integrity/100)-penetration, 0),damage/2)*0.5
-	penetration = penetration > 0 && armor > 0 ? penetration : 0
 	var/is_crit_hit = prob(c_config.critical_chance)
 	var/minimal_efficiency = c_config.armor_effective_health*c_config.armor_minimal_efficiency //lets not repeat ourselves
 	var/armor_effect = c_config.armor_effective_health
 	if(c_config.armor_ignore_integrity || armor_integrity < 100)
 		armor_effect = minimal_efficiency + (armor_integrity/100)*((1-c_config.armor_minimal_efficiency)*c_config.armor_effective_health)
+
 	if(is_crit_hit)
 		armor_effect = minimal_efficiency
+
+	var/ap_calculation_damage = 0
+	if(armor) // TODO: Improve that AP govnokod, I don't know math
+		var/penetration_difference = (penetration-armor*(armor_integrity/100))/armor/2
+		if(penetration_difference > 0)
+			if(penetration_difference <= 1) // Don't do additional damage if penetration too high
+				penetration_difference = (100 - ((penetration_difference*100) % 100))/100
+				ap_calculation_damage = (armor/2 * (damage ** penetration_difference+damage ** penetration_difference)) * (penetration * 0.01)
+		else
+			ap_calculation_damage = penetration_difference*armor + damage*(1-(armor_integrity/100))
+
 	var/armor_deflection_total = 1
 	var/effective_deflection = 1
-
-	if(armor>0)
-		armor = armor * rand(100-c_config.armor_random_range,100) / 100
+	armor = max(armor-penetration, 0)
+	if(armor > 0)
+		armor = armor * rand(100-c_config.armor_random_range, 100) / 100
 		armor_deflection_total = (1+armor_effect) ** (armor/c_config.armor_steps) //basically a concept of "Effective Health"
-		effective_deflection = c_config.armor_ignore_integrity? 1 : armor_integrity/100
+		effective_deflection = c_config.armor_ignore_integrity ? 1 : armor_integrity/100
 
 
 	damage /= armor_deflection_total
-	damage += ap_calculation_damage
-
 	if(damage < armor * c_config.armor_full_deflection_mult * effective_deflection)
 		var/damage_with_armor = damage*c_config.non_null_damage_mult - armor * effective_deflection
 		if(damage_with_armor <= 0) //PING
@@ -55,6 +59,8 @@
 		else
 			var/dam_pass = damage_with_armor/(damage*c_config.non_null_damage_mult)
 			damage = damage * dam_pass
+
+	damage += ap_calculation_damage
 
 	if(damage < 0)
 		damage = 0

@@ -110,11 +110,13 @@
 
 	//Tasers and the like should not damage grilles.
 	if(proj.ammo.damage_type == HALLOSS)
-		return 0
+		return FALSE
+
+	. = ..()
 
 	src.health -= round(proj.damage*0.3)
 	healthcheck()
-	return 1
+	return TRUE
 
 /obj/structure/grille/attackby(obj/item/W as obj, mob/user as mob)
 	if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS))

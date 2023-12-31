@@ -165,13 +165,13 @@
 
 /mob/living/simple_animal/hostile/smartdisc/bullet_act(obj/item/projectile/proj)
 	if(prob(60 - proj.damage))
-		return 0
+		return FALSE
 
 	if(!proj || proj.damage <= 0)
-		return 0
+		return FALSE
 
 	apply_damage(proj.damage, BRUTE)
-	return 1
+	return TRUE
 
 /mob/living/simple_animal/hostile/smartdisc/death()
 	visible_message("\The [src] stops whirring and spins out onto the floor.")
