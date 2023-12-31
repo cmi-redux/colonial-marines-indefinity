@@ -23,8 +23,8 @@
 	var/bonus_projectiles_type					// Type path of the extra projectiles
 	var/bonus_projectiles_amount	= 0			// How many extra projectiles it shoots out. Works kind of like firing on burst, but all of the projectiles travel together
 	var/debilitate[]				= null		// Stun,knockdown,knockout,irradiate,stutter,eyeblur,drowsy,agony
-	var/pen_armor_punch				= 0.5		// how much armor breaking will be done per point of penetration. This is for weapons that penetrate with their shape (like needle bullets)
-	var/damage_armor_punch			= 0.5		// how much armor breaking is done by sheer weapon force. This is for big blunt weapons
+	var/pen_armor_punch				= 0.25		// how much armor breaking will be done per point of penetration. This is for weapons that penetrate with their shape (like needle bullets)
+	var/damage_armor_punch			= 0.25		// how much armor breaking is done by sheer weapon force. This is for big blunt weapons
 	var/sound_override				= null		// if we should play a special sound when firing.
 	var/flags_ammo_behavior			= NO_FLAGS
 
@@ -454,7 +454,7 @@ CUSTOM_AMMO_PENETRATION
 	penetration = ARMOR_PENETRATION_TIER_8
 	shrapnel_chance = SHRAPNEL_CHANCE_TIER_2
 
-	pen_armor_punch = 1
+	pen_armor_punch = 0.5
 
 /datum/ammo/bullet/pistol/ap/penetrating
 	name = "wall-penetrating pistol bullet"
@@ -464,7 +464,7 @@ CUSTOM_AMMO_PENETRATION
 	damage = 30
 	penetration = ARMOR_PENETRATION_TIER_10
 
-	damage_armor_punch = 1
+	damage_armor_punch = 0.5
 
 /datum/ammo/bullet/pistol/ap/penetrating/set_bullet_traits()
 	. = ..()
@@ -563,7 +563,7 @@ CUSTOM_AMMO_PENETRATION
 	penetration = ARMOR_PENETRATION_TIER_10
 	damage = 45
 
-	damage_armor_punch = 1.5
+	damage_armor_punch = 1
 
 /datum/ammo/bullet/pistol/heavy/super/highimpact/upp
 	name = "high-impact pistol bullet"
@@ -970,7 +970,7 @@ CUSTOM_AMMO_PENETRATION
 	penetration = ARMOR_PENETRATION_TIER_6
 	shell_speed = AMMO_SPEED_TIER_4
 
-	pen_armor_punch = 1.5
+	pen_armor_punch = 0.75
 
 /datum/ammo/bullet/smg/heap
 	name = "high-explosive armor-piercing submachinegun bullet"
@@ -1086,7 +1086,7 @@ CUSTOM_AMMO_PENETRATION
 	damage = 30
 	penetration = ARMOR_PENETRATION_TIER_10
 
-	damage_armor_punch = 1.5
+	damage_armor_punch = 0.75
 
 /datum/ammo/bullet/smg/ap/penetrating/set_bullet_traits()
 	. = ..()
@@ -1179,6 +1179,9 @@ CUSTOM_AMMO_PENETRATION
 	damage_falloff = DAMAGE_FALLOFF_TIER_7
 	max_range = 24 //So S8 users don't have their bullets magically disappaer at 22 tiles (S8 can see 24 tiles)
 
+	pen_armor_punch = 0.5
+	damage_armor_punch = 0.5
+
 /datum/ammo/bullet/rifle/holo_target
 	name = "holo-targeting rifle bullet"
 	damage = 30
@@ -1220,8 +1223,8 @@ CUSTOM_AMMO_PENETRATION
 	damage = 30
 	penetration = ARMOR_PENETRATION_TIER_8
 
-	pen_armor_punch = 1.5
-	damage_armor_punch = 1
+	pen_armor_punch = 1
+	damage_armor_punch = 0.75
 
 // Basically AP but better. Focused at taking out armour temporarily
 /datum/ammo/bullet/rifle/ap/toxin
@@ -1253,8 +1256,8 @@ CUSTOM_AMMO_PENETRATION
 	damage = 35
 	penetration = ARMOR_PENETRATION_TIER_10
 
-	pen_armor_punch = 2
-	damage_armor_punch = 1.5
+	pen_armor_punch = 1.25
+	damage_armor_punch = 1
 
 /datum/ammo/bullet/rifle/ap/penetrating/set_bullet_traits()
 	. = ..()
@@ -1400,8 +1403,8 @@ CUSTOM_AMMO_PENETRATION
 	damage = 40
 	penetration = ARMOR_PENETRATION_TIER_10
 
-	pen_armor_punch = 2
-	damage_armor_punch = 1.5
+	pen_armor_punch = 1
+	damage_armor_punch = 0.75
 
 /datum/ammo/bullet/rifle/type71/heap
 	name = "heavy high-explosive armor-piercing rifle bullet"
@@ -1886,6 +1889,9 @@ CUSTOM_AMMO_PENETRATION
 	shell_speed = AMMO_SPEED_TIER_6
 	damage_falloff = 0
 
+	pen_armor_punch = 1.5
+	damage_armor_punch = 1.5
+
 /datum/ammo/bullet/sniper/on_hit_mob(mob/hit, obj/item/projectile/proj)
 	if((proj.projectile_flags & PROJECTILE_BULLSEYE) && hit == proj.original_target)
 		var/mob/living/living = hit
@@ -2280,8 +2286,8 @@ CUSTOM_AMMO_PENETRATION
 	damage = 20
 	penetration = ARMOR_PENETRATION_TIER_8
 
-	damage_armor_punch = 2
-	pen_armor_punch = 2
+	pen_armor_punch = 1
+	damage_armor_punch = 1
 
 /datum/ammo/bullet/smartgun/m56_fpw
 	name = "\improper M56 FPW bullet"
