@@ -678,7 +678,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 // facing verbs
 /mob/proc/canface()
-	if(!canmove || client.moving || stat >= UNCONSCIOUS || anchored || monkeyizing || is_mob_restrained())
+	if(!canmove || client.moving || stat || anchored || monkeyizing || is_mob_restrained())
 		return FALSE
 	return TRUE
 
@@ -698,9 +698,6 @@ note dizziness decrements automatically in the mob's Life() proc.
 			flags_atom &= ~DIRLOCK
 		else
 			lying = FALSE
-	else
-		if(laid_down && !lying)
-			fall(laid_down)
 
 	canmove = !(stunned || frozen || laid_down)
 	if((!can_crawl || buckled) && lying)
@@ -713,11 +710,14 @@ note dizziness decrements automatically in the mob's Life() proc.
 			density = FALSE
 			add_temp_pass_flags(PASS_MOB_THRU)
 			SEND_SIGNAL(src, COMSIG_MOB_KNOCKED_DOWN)
+			if(!can_action && !buckled)
+				fall(!can_action)
 		else
 			density = TRUE
 			SEND_SIGNAL(src, COMSIG_MOB_GETTING_UP)
 			remove_temp_pass_flags(PASS_MOB_THRU)
 		update_transform()
+		lying_prev = lying
 
 	if(lying)
 		//so mob lying always appear behind standing mobs, but dead ones appear behind living ones

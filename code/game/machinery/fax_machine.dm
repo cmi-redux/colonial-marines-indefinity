@@ -1,11 +1,12 @@
-var/list/obj/structure/machinery/faxmachine/allfaxes = list()
-var/list/alldepartments = list()
+GLOBAL_LIST_INIT_TYPED(allfaxes, /obj/structure/machinery/faxmachine, list())
+GLOBAL_LIST_EMPTY(alldepartments)
 
 #define DEPARTMENT_WY "Weyland-Yutani"
 #define DEPARTMENT_HC "USCM High Command"
 #define DEPARTMENT_CMB "CMB Incident Command Center, Local Operations"
 #define DEPARTMENT_PROVOST "USCM Provost Office"
 #define DEPARTMENT_PRESS "Various Press Organizations"
+#define HIGHCOM_DEPARTMENTS list(DEPARTMENT_WY, DEPARTMENT_HC, DEPARTMENT_CMB, DEPARTMENT_PROVOST, DEPARTMENT_PRESS)
 
 /obj/structure/machinery/faxmachine // why not fax_machine?
 	name = "General Purpose Fax Machine"
@@ -44,11 +45,11 @@ var/list/alldepartments = list()
 
 /obj/structure/machinery/faxmachine/Initialize(mapload, ...)
 	. = ..()
-	allfaxes += src
+	GLOB.allfaxes += src
 	update_departments()
 
 /obj/structure/machinery/faxmachine/Destroy()
-	allfaxes -= src
+	GLOB.allfaxes -= src
 	. = ..()
 
 /obj/structure/machinery/faxmachine/initialize_pass_flags(datum/pass_flags_container/PF)
@@ -64,7 +65,6 @@ var/list/alldepartments = list()
 	tgui_interact(user)
 
 /obj/structure/machinery/faxmachine/attackby(obj/item/O as obj, mob/user as mob)
-
 	if(istype(O, /obj/item/paper) || istype(O, /obj/item/paper_bundle) || istype(O, /obj/item/photo))
 		if(original_fax)
 			to_chat(user, SPAN_NOTICE("There is already something in \the [src]."))
@@ -109,8 +109,7 @@ var/list/alldepartments = list()
 	set category = "Object"
 	set name = "Eject ID Card"
 	set src in view(1)
-
-	if(!usr || usr.stat || usr.lying)
+	if(usr.is_mob_incapacitated())
 		return
 
 	if(ishuman(usr) && scan)
@@ -126,18 +125,18 @@ var/list/alldepartments = list()
 	return
 
 /obj/structure/machinery/faxmachine/proc/update_departments()
-	if( !("[department]" in alldepartments) ) //Initialize departments. This will work with multiple fax machines.
-		alldepartments += department
-	if(!(DEPARTMENT_WY in alldepartments))
-		alldepartments += DEPARTMENT_WY
-	if(!(DEPARTMENT_HC in alldepartments))
-		alldepartments += DEPARTMENT_HC
-	if(!(DEPARTMENT_PROVOST in alldepartments))
-		alldepartments += DEPARTMENT_PROVOST
-	if(!(DEPARTMENT_CMB in alldepartments))
-		alldepartments += DEPARTMENT_CMB
-	if(!(DEPARTMENT_PRESS in alldepartments))
-		alldepartments += DEPARTMENT_PRESS
+	if( !("[department]" in GLOB.alldepartments) ) //Initialize departments. This will work with multiple fax machines.
+		GLOB.alldepartments += department
+	if(!(DEPARTMENT_WY in GLOB.alldepartments))
+		GLOB.alldepartments += DEPARTMENT_WY
+	if(!(DEPARTMENT_HC in GLOB.alldepartments))
+		GLOB.alldepartments += DEPARTMENT_HC
+	if(!(DEPARTMENT_PROVOST in GLOB.alldepartments))
+		GLOB.alldepartments += DEPARTMENT_PROVOST
+	if(!(DEPARTMENT_CMB in GLOB.alldepartments))
+		GLOB.alldepartments += DEPARTMENT_CMB
+	if(!(DEPARTMENT_PRESS in GLOB.alldepartments))
+		GLOB.alldepartments += DEPARTMENT_PRESS
 // TGUI SHIT \\
 
 /obj/structure/machinery/faxmachine/tgui_interact(mob/user, datum/tgui/ui)
@@ -213,7 +212,7 @@ var/list/alldepartments = list()
 			outgoing_fax_message(ui.user)
 
 			COOLDOWN_START(src, send_cooldown, fax_cooldown)
-			to_chat(usr, "Message transmitted successfully.")
+			to_chat(ui.user, "Message transmitted successfully.")
 			. = TRUE
 
 		if("ejectpaper")
@@ -268,13 +267,13 @@ var/list/alldepartments = list()
 
 		if("select")
 			var/last_target_department = target_department
-			target_department = tgui_input_list(ui.user, "Which department?", "Choose a department", alldepartments)
+			target_department = tgui_input_list(ui.user, "Which department?", "Choose a department", GLOB.alldepartments)
 			if(!target_department)
 				target_department = last_target_department
 			. = TRUE
 
 		if("auth")
-			if( (!( authenticated ) && (scan)) )
+			if((!(authenticated) && (scan)))
 				if(check_access(scan))
 					authenticated = TRUE
 					playsound(src, 'sound/machines/terminal_on.ogg', 20, FALSE)
@@ -296,7 +295,6 @@ var/list/alldepartments = list()
 
 // converting whatever type the fax is into a single paper with all the information on it.
 /obj/structure/machinery/faxmachine/proc/copy_fax_paper(mob/living/user)
-
 	if(fax_paper_copy)
 		return
 
@@ -329,32 +327,35 @@ var/list/alldepartments = list()
 			fax_paper_copy.info  += "<img src='tmp_photo[content].png' width='192'/>"
 
 /obj/structure/machinery/faxmachine/proc/outgoing_fax_message(mob/user)
-
 	var/datum/fax/faxcontents = new(fax_paper_copy.info, photo_list)
 
 	GLOB.fax_contents += faxcontents
 
+	var/scan_department = target_department
+	if(department in HIGHCOM_DEPARTMENTS)
+		scan_department = department
+
 	var/msg_admin = SPAN_STAFF_IC("<b><font color='#006100'>[target_department]: </font>[key_name(user, 1)] ")
 	msg_admin += "[CC_MARK(user)] [ADMIN_PP(user)] [ADMIN_VV(user)] [ADMIN_SM(user)] [ADMIN_JMP_USER(user)] "
 
-	switch(target_department)
+	switch(scan_department)
 		if(DEPARTMENT_HC)
-			GLOB.USCMFaxes.Add("<a href='?FaxView=\ref[faxcontents]'>\[view message at [world.timeofday]\]</a> <a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];USCMFaxReply=\ref[user];originfax=\ref[src]'>REPLY</a>")
+			GLOB.USCMFaxes.Add("<a href='?FaxView=\ref[faxcontents]'>\['[original_fax.name]' from [key_name(usr)], [scan] at [time2text(world.timeofday, "hh:mm:ss")]\]</a> <a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];USCMFaxReply=\ref[user];originfax=\ref[src]'>REPLY</a>")
 			msg_admin += "(<a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];USCMFaxReply=\ref[user];originfax=\ref[src]'>RPLY</a>)</b>: "
 		if(DEPARTMENT_PROVOST)
-			GLOB.ProvostFaxes.Add("<a href='?FaxView=\ref[faxcontents]'>\[view message at [world.timeofday]\]</a> <a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];USCMFaxReply=\ref[user];originfax=\ref[src]'>REPLY</a>")
+			GLOB.ProvostFaxes.Add("<a href='?FaxView=\ref[faxcontents]'>\['[original_fax.name]' from [key_name(usr)], [scan] at [time2text(world.timeofday, "hh:mm:ss")]\]</a> <a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];USCMFaxReply=\ref[user];originfax=\ref[src]'>REPLY</a>")
 			msg_admin += "(<a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];USCMFaxReply=\ref[user];originfax=\ref[src]'>RPLY</a>)</b>: "
 		if(DEPARTMENT_CMB)
-			GLOB.CMBFaxes.Add("<a href='?FaxView=\ref[faxcontents]'>\[view message at [world.timeofday]\]</a> <a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];CMBFaxReply=\ref[user];originfax=\ref[src]'>REPLY</a>")
+			GLOB.CMBFaxes.Add("<a href='?FaxView=\ref[faxcontents]'>\['[original_fax.name]' from [key_name(usr)], [scan] at [time2text(world.timeofday, "hh:mm:ss")]\]</a> <a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];CMBFaxReply=\ref[user];originfax=\ref[src]'>REPLY</a>")
 			msg_admin += "(<a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];CMBFaxReply=\ref[user];originfax=\ref[src]'>RPLY</a>)</b>: "
 		if(DEPARTMENT_WY)
-			GLOB.WYFaxes.Add("<a href='?FaxView=\ref[faxcontents]'>\[view message at [world.timeofday]\]</a> <a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];CLFaxReply=\ref[user];originfax=\ref[src]'>REPLY</a>")
+			GLOB.WYFaxes.Add("<a href='?FaxView=\ref[faxcontents]'>\['[original_fax.name]' from [key_name(usr)], [scan] at [time2text(world.timeofday, "hh:mm:ss")]\]</a> <a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];CLFaxReply=\ref[user];originfax=\ref[src]'>REPLY</a>")
 			msg_admin += "(<a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];CLFaxReply=\ref[user];originfax=\ref[src]'>RPLY</a>)</b>: "
 		if(DEPARTMENT_PRESS)
-			GLOB.PressFaxes.Add("<a href='?FaxView=\ref[faxcontents]'>\[view message at [world.timeofday]\]</a> <a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];PressFaxReply=\ref[user];originfax=\ref[src]'>REPLY</a>")
+			GLOB.PressFaxes.Add("<a href='?FaxView=\ref[faxcontents]'>\['[original_fax.name]' from [key_name(usr)], [scan] at [time2text(world.timeofday, "hh:mm:ss")]\]</a> <a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];PressFaxReply=\ref[user];originfax=\ref[src]'>REPLY</a>")
 			msg_admin += "(<a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];PressFaxReply=\ref[user];originfax=\ref[src]'>RPLY</a>)</b>: "
 		else
-			GLOB.GeneralFaxes.Add("<a href='?FaxView=\ref[faxcontents]'>\[view message at [world.timeofday]\]</a> <a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];CLFaxReply=\ref[user];originfax=\ref[src]'>REPLY</a>")
+			GLOB.GeneralFaxes.Add("<a href='?FaxView=\ref[faxcontents]'>\['[original_fax.name]' from [key_name(usr)], [scan] at [time2text(world.timeofday, "hh:mm:ss")]\]</a> <a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];CLFaxReply=\ref[user];originfax=\ref[src]'>REPLY</a>")
 			msg_admin += "(<a href='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];USCMFaxReply=\ref[user];originfax=\ref[src]'>RPLY</a>)</b>: "
 
 	msg_admin += SPAN_STAFF_IC("Receiving fax via secure connection ... <a href='?FaxView=\ref[faxcontents]'>view message</a>")
@@ -389,11 +390,11 @@ var/list/alldepartments = list()
 
 
 /obj/structure/machinery/faxmachine/proc/send_fax(datum/fax/faxcontents)
-	for(var/obj/structure/machinery/faxmachine/F in allfaxes)
+	for(var/obj/structure/machinery/faxmachine/F in GLOB.allfaxes)
 		if(F != src && F.department == target_department)
 			if(!faxcontents)
 				return
-			if(!F.inoperable())
+			if(!(F.inoperable()))
 
 				flick("faxreceive", F)
 

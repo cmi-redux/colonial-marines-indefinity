@@ -305,7 +305,7 @@ SUBSYSTEM_DEF(evacuation)
 				return FALSE
 
 		dest_status = NUKE_EXPLOSION_INACTIVE
-		dest_master.in_progress = 0
+		dest_master.in_progress = 1
 		dest_started_at = 0
 		for(rod in dest_rods)
 			if(rod.active_state == SELF_DESTRUCT_MACHINE_ACTIVE || (rod.active_state == SELF_DESTRUCT_MACHINE_ARMED && override))
@@ -324,7 +324,7 @@ SUBSYSTEM_DEF(evacuation)
 			if(rod.active_state != SELF_DESTRUCT_MACHINE_ARMED && !override)
 				dest_master.state(SPAN_WARNING("ПРЕДУПРЕЖДЕНИЕ: Невозможно запустить детонацию. Пожалуйста, активируйте все управляющие стержни."))
 				return FALSE
-		dest_master.in_progress = 1
+		dest_master.in_progress = 0
 		for(rod in SSevacuation.dest_rods)
 			rod.in_progress = 1
 		ai_announcement("ОПАСНОСТЬ. ОПАСНОСТЬ. Система самоуничтожения активирована. ОПАСНОСТЬ. ОПАСНОСТЬ. Самоуничтожение выполняется. ОПАСНОСТЬ. ОПАСНОСТЬ.", logging = ARES_LOG_SECURITY)
@@ -410,49 +410,65 @@ SUBSYSTEM_DEF(evacuation)
 	var/in_progress = 0 //Cannot interact with while it's doing something, like an animation.
 	var/active_state = SELF_DESTRUCT_MACHINE_INACTIVE //What step of the process it's on.
 
-/obj/structure/machinery/self_destruct/Initialize(mapload, ...)
+/obj/structure/machinery/self_destruct/Initialize(mapload)
 	. = ..()
 	icon_state += "_1"
-	return INITIALIZE_HINT_LATELOAD
-
-/obj/structure/machinery/self_destruct/LateInitialize()
-	. = ..()
-	SSevacuation.dest_master = src
-	SSevacuation.prepare()
 
 /obj/structure/machinery/self_destruct/ex_act()
 	return
 
+/obj/structure/machinery/self_destruct/attack_hand()
+	if(..() || in_progress)
+		return FALSE //This check is backward, ugh.
+	return TRUE
+
 /obj/structure/machinery/self_destruct/proc/lock_or_unlock(lock)
-	playsound(src, 'sound/machines/hydraulics_1.ogg', 25, 1)
+	set waitfor = 0
+	in_progress = 1
+	flick(initial(icon_state) + (lock? "_5" : "_2"), src)
+	sleep(9)
+	mouse_opacity = !mouse_opacity
+	icon_state = initial(icon_state) + (lock? "_1" : "_3")
+	in_progress = 0
+	active_state = active_state > SELF_DESTRUCT_MACHINE_INACTIVE ? SELF_DESTRUCT_MACHINE_INACTIVE : SELF_DESTRUCT_MACHINE_ACTIVE
 
-//TODO: Add sounds.
-/obj/structure/machinery/self_destruct/attack_hand(mob/user)
-	if(inoperable())
-		return
+/obj/structure/machinery/self_destruct/console
+	name = "self destruct control panel"
+	icon_state = "console"
 
-	tgui_interact(user)
+/obj/structure/machinery/self_destruct/console/Initialize(mapload)
+	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/structure/machinery/self_destruct/console/LateInitialize()
+	. = ..()
+	SSevacuation.dest_master = src
+	SSevacuation.prepare()
+
+/obj/structure/machinery/self_destruct/console/Destroy()
+	. = ..()
+	SSevacuation.dest_master = null
+	SSevacuation.dest_rods = null
+
+/obj/structure/machinery/self_destruct/console/attack_hand(mob/user)
+	. = ..()
+	if(.)
+		ui_interact(user)
 
 /obj/structure/machinery/self_destruct/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "SelfDestructConsole", name)
+		ui = new(user, src, "SelfDestructConsole", "OMICRON6 PAYLOAD")
 		ui.open()
 
-/obj/structure/machinery/sleep_console/ui_status(mob/user, datum/ui_state/state)
-	. = ..()
-	if(inoperable())
-		return UI_CLOSE
-
-
-/obj/structure/machinery/self_destruct/ui_data(mob/user)
+/obj/structure/machinery/self_destruct/console/ui_data(mob/user)
 	var/list/data = list()
 
 	data["dest_status"] = active_state
 
 	return data
 
-/obj/structure/machinery/self_destruct/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/obj/structure/machinery/self_destruct/console/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return
@@ -480,6 +496,11 @@ SUBSYSTEM_DEF(evacuation)
 			SSevacuation.cancel_self_destruct()
 			. = TRUE
 
+/obj/structure/machinery/sleep_console/console/ui_status(mob/user, datum/ui_state/state)
+	. = ..()
+	if(inoperable())
+		return UI_CLOSE
+
 /obj/structure/machinery/self_destruct/rod
 	name = "self-destruct control rod"
 	desc = "It is part of a complicated self-destruct sequence, but relatively simple to operate. Twist to arm or disarm."
@@ -497,7 +518,7 @@ SUBSYSTEM_DEF(evacuation)
 
 /obj/structure/machinery/self_destruct/rod/lock_or_unlock(lock)
 	playsound(src, 'sound/machines/hydraulics_2.ogg', 25, 1)
-	..()
+	. = ..()
 	if(lock)
 		activate_time = null
 		density = FALSE

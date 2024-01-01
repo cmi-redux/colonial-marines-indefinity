@@ -542,7 +542,7 @@
 	for(var/obj/effect/decal/cleanable/trail_holder/TH in start)
 		if((!(newdir in TH.existing_dirs) || trail_type == "trails_1" || trail_type == "trails_2") && TH.existing_dirs.len <= 16) //maximum amount of overlays is 16 (all light & heavy directions filled)
 			TH.existing_dirs += newdir
-			TH.add_overlay(image('icons/effects/new_blood.dmi', trail_type, dir = newdir)) //MOJAVE SUN EDIT - Blood Sprites
+			TH.add_overlay(image('icons/effects/new_blood.dmi', trail_type, dir = newdir))
 
 /mob/living/carbon/human/makeTrail(turf/T)
 	if(!is_bleeding())
@@ -561,7 +561,7 @@
 	return bleed_amount
 
 /mob/living/proc/getTrail()
-	if(getBruteLoss() < 100) //MOJAVE SUN EDIT - Blood Sprites
+	if(getBruteLoss() < 100)
 		return pick("ltrails_1", "ltrails_2")
 	else
 		return pick("trails_1", "trails_2")

@@ -93,7 +93,6 @@ There are several things that need to be remembered:
 /mob/living/carbon/human/update_transform(force = FALSE)
 	if(lying == lying_prev && !force)
 		return
-	lying_prev = lying
 	var/matrix/new_matrix = matrix()
 	if(lying)
 		if(pulledby && pulledby.grab_level >= GRAB_CARRY)

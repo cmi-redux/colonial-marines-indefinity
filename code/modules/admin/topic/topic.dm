@@ -14,7 +14,7 @@
 /datum/admins/Topic(href, href_list)
 	..()
 	var/choice
-	if(usr.client != src.owner || !check_rights(0))
+	if(usr.client != owner || !check_rights(0))
 		message_admins("[usr.key] has attempted to override the admin panel!")
 		return
 
@@ -1166,7 +1166,7 @@
 		if(alert("Are you sure you want to cancel this OB?", , usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 			return
 		orbital_cannon_cancellation["[cancel_token]"] = null
-		message_admins("[src.owner] has cancelled the orbital strike.")
+		message_admins("[owner] has cancelled the orbital strike.")
 
 	else if(href_list["admincancelpredsd"])
 		if(!check_rights(R_MOD))
@@ -1178,7 +1178,7 @@
 		if(alert("Are you sure you want to cancel this pred SD?", , usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 			return
 		bracer.exploding = FALSE
-		message_admins("[src.owner] has cancelled the predator self-destruct sequence [victim ? "of [victim] ([victim.key])":""].")
+		message_admins("[owner] has cancelled the predator self-destruct sequence [victim ? "of [victim] ([victim.key])":""].")
 
 	else if(href_list["adminspawncookie"])
 		if(!check_rights(R_MOD))
@@ -1222,7 +1222,7 @@
 		if(!snack)
 			error("Give Cookie code crumbled!")
 		H.put_in_hands(snack)
-		message_admins("[key_name(H)] got their [cookie_type], spawned by [key_name(src.owner)]")
+		message_admins("[key_name(H)] got their [cookie_type], spawned by [key_name(owner)]")
 		to_chat(H, SPAN_NOTICE(" Your prayers have been answered!! You received the <b>best cookie</b>!"))
 
 	else if(href_list["adminalert"])
@@ -1245,15 +1245,15 @@
 			to_chat(usr, "The person you are trying to contact is not wearing a headset")
 			return
 
-		var/input = input(src.owner, "Please enter a message to reply to [key_name(H)] via their headset.","Outgoing message from USCM", "")
+		var/input = input(owner, "Please enter a message to reply to [key_name(H)] via their headset.","Outgoing message from USCM", "")
 		if(!input)
 			return
 
-		to_chat(src.owner, "You sent [input] to [H] via a secure channel.")
-		log_admin("[src.owner] replied to [key_name(H)]'s USCM message with the message [input].")
+		to_chat(owner, "You sent [input] to [H] via a secure channel.")
+		log_admin("[owner] replied to [key_name(H)]'s USCM message with the message [input].")
 		for(var/client/X in GLOB.admins)
 			if((R_ADMIN|R_MOD) & X.admin_holder.rights)
-				to_chat(X, SPAN_STAFF_IC("<b>ADMINS/MODS: \red [src.owner] replied to [key_name(H)]'s USCM message with: \blue \")[input]\"</b>"))
+				to_chat(X, SPAN_STAFF_IC("<b>ADMINS/MODS: \red [owner] replied to [key_name(H)]'s USCM message with: \blue \")[input]\"</b>"))
 		to_chat(H, SPAN_DANGER("You hear something crackle in your headset before a voice speaks, please stand by for a message from USCM:\" \blue <b>\"[input]\"</b>"))
 
 	else if(href_list["SyndicateReply"])
@@ -1265,12 +1265,12 @@
 			to_chat(usr, "The person you are trying to contact is not wearing a headset")
 			return
 
-		var/input = input(src.owner, "Please enter a message to reply to [key_name(H)] via their headset.","Outgoing message from The Syndicate", "")
+		var/input = input(owner, "Please enter a message to reply to [key_name(H)] via their headset.","Outgoing message from The Syndicate", "")
 		if(!input)
 			return
 
-		to_chat(src.owner, "You sent [input] to [H] via a secure channel.")
-		log_admin("[src.owner] replied to [key_name(H)]'s Syndicate message with the message [input].")
+		to_chat(owner, "You sent [input] to [H] via a secure channel.")
+		log_admin("[owner] replied to [key_name(H)]'s Syndicate message with the message [input].")
 		to_chat(H, "You hear something crackle in your headset for a moment before a voice speaks.  \"Please stand by for a message from your benefactor.  Message as follows, agent. <b>\"[input]\"</b>  Message ends.\"")
 
 	else if(href_list["UpdateFax"])
@@ -1287,12 +1287,12 @@
 		var/organization_type = ""
 		switch(template_choice)
 			if("Custom")
-				var/input = input(src.owner, "Please enter a message to reply to [key_name(H)] via secure connection. NOTE: BBCode does not work, but HTML tags do! Use <br> for line breaks.", "Outgoing message from Press", "") as message|null
+				var/input = input(owner, "Please enter a message to reply to [key_name(H)] via secure connection. NOTE: BBCode does not work, but HTML tags do! Use <br> for line breaks.", "Outgoing message from Press", "") as message|null
 				if(!input)
 					return
 				fax_message = new(input)
 			if("Template")
-				var/subject = input(src.owner, "Enter subject line", "Outgoing message from Press", "") as message|null
+				var/subject = input(owner, "Enter subject line", "Outgoing message from Press", "") as message|null
 				if(!subject)
 					return
 				var/addressed_to = ""
@@ -1300,18 +1300,18 @@
 				if(address_option == "Sender")
 					addressed_to = "[H.real_name]"
 				else if(address_option == "Custom")
-					addressed_to = input(src.owner, "Enter Addressee Line", "Outgoing message from Press", "") as message|null
+					addressed_to = input(owner, "Enter Addressee Line", "Outgoing message from Press", "") as message|null
 					if(!addressed_to)
 						return
 				else
 					return
-				var/message_body = input(src.owner, "Enter Message Body, use <p></p> for paragraphs", "Outgoing message from Press", "") as message|null
+				var/message_body = input(owner, "Enter Message Body, use <p></p> for paragraphs", "Outgoing message from Press", "") as message|null
 				if(!message_body)
 					return
-				var/sent_by = input(src.owner, "Enter the name and rank you are sending from.", "Outgoing message from Press", "") as message|null
+				var/sent_by = input(owner, "Enter the name and rank you are sending from.", "Outgoing message from Press", "") as message|null
 				if(!sent_by)
 					return
-				organization_type = input(src.owner, "Enter the organization you are sending from.", "Outgoing message from Press", "") as message|null
+				organization_type = input(owner, "Enter the organization you are sending from.", "Outgoing message from Press", "") as message|null
 				if(!organization_type)
 					return
 
@@ -1321,17 +1321,16 @@
 		if(send_choice != "Send")
 			return
 		GLOB.fax_contents += fax_message // save a copy
+		var/customname = input(owner, "Pick a title for the report", "Title") as text|null
 
-		GLOB.USCMFaxes.Add("<a href='?FaxView=\ref[fax_message]'>\[view reply at [world.timeofday]\]</a>")
-
-		var/customname = input(src.owner, "Pick a title for the report", "Title") as text|null
+		GLOB.USCMFaxes.Add("<a href='?FaxView=\ref[fax_message]'>\[view '[customname]' from [key_name(usr)] at [time2text(world.timeofday, "hh:mm:ss")]\]</a>")
 
 		var/msg_ghost = SPAN_NOTICE("<b><font color='#1F66A0'>PRESS REPLY: </font></b> ")
 		msg_ghost += "Transmitting '[customname]' via secure connection ... "
 		msg_ghost += "<a href='?FaxView=\ref[fax_message]'>view message</a>"
 		announce_fax(msg_ghost = msg_ghost)
 
-		for(var/obj/structure/machinery/faxmachine/F in machines)
+		for(var/obj/structure/machinery/faxmachine/F in GLOB.machines)
 			if(F == fax)
 				if(!(F.inoperable()))
 
@@ -1356,10 +1355,11 @@
 						P.overlays += stampoverlay
 						P.stamps += "<HR><i>This paper has been stamped by the Free Press Quantum Relay.</i>"
 
-				to_chat(src.owner, "Message reply to transmitted successfully.")
-				message_admins(SPAN_STAFF_IC("[key_name_admin(src.owner)] replied to a fax message from [key_name_admin(H)]"), 1)
+				to_chat(owner, "Message reply to transmitted successfully.")
+				message_admins(SPAN_STAFF_IC("[key_name_admin(owner)] replied to a fax message from [key_name_admin(H)]"), 1)
 				return
-		to_chat(src.owner, "/red Unable to locate fax!")
+		to_chat(owner, "/red Unable to locate fax!")
+
 	else if(href_list["USCMFaxReply"])
 		var/mob/living/carbon/human/H = locate(href_list["USCMFaxReply"])
 		var/obj/structure/machinery/faxmachine/fax = locate(href_list["originfax"])
@@ -1369,12 +1369,12 @@
 		var/datum/fax/fax_message
 		switch(template_choice)
 			if("Custom")
-				var/input = input(src.owner, "Please enter a message to reply to [key_name(H)] via secure connection. NOTE: BBCode does not work, but HTML tags do! Use <br> for line breaks.", "Outgoing message from USCM", "") as message|null
+				var/input = input(owner, "Please enter a message to reply to [key_name(H)] via secure connection. NOTE: BBCode does not work, but HTML tags do! Use <br> for line breaks.", "Outgoing message from USCM", "") as message|null
 				if(!input)
 					return
 				fax_message = new(input)
 			if("USCM High Command", "USCM Provost General")
-				var/subject = input(src.owner, "Enter subject line", "Outgoing message from USCM", "") as message|null
+				var/subject = input(owner, "Enter subject line", "Outgoing message from USCM", "") as message|null
 				if(!subject)
 					return
 				var/addressed_to = ""
@@ -1382,15 +1382,15 @@
 				if(address_option == "Sender")
 					addressed_to = "[H.real_name]"
 				else if(address_option == "Custom")
-					addressed_to = input(src.owner, "Enter Addressee Line", "Outgoing message from USCM", "") as message|null
+					addressed_to = input(owner, "Enter Addressee Line", "Outgoing message from USCM", "") as message|null
 					if(!addressed_to)
 						return
 				else
 					return
-				var/message_body = input(src.owner, "Enter Message Body, use <p></p> for paragraphs", "Outgoing message from Weyland USCM", "") as message|null
+				var/message_body = input(owner, "Enter Message Body, use <p></p> for paragraphs", "Outgoing message from Weyland USCM", "") as message|null
 				if(!message_body)
 					return
-				var/sent_by = input(src.owner, "Enter the name and rank you are sending from.", "Outgoing message from USCM", "") as message|null
+				var/sent_by = input(owner, "Enter the name and rank you are sending from.", "Outgoing message from USCM", "") as message|null
 				if(!sent_by)
 					return
 				var/sent_title = "Office of the Provost General"
@@ -1404,43 +1404,44 @@
 			return
 		GLOB.fax_contents += fax_message // save a copy
 
-		GLOB.USCMFaxes.Add("<a href='?FaxView=\ref[fax_message]'>\[view reply at [world.timeofday]\]</a>")
+		var/customname = input(owner, "Pick a title for the report", "Title") as text|null
 
-		var/customname = input(src.owner, "Pick a title for the report", "Title") as text|null
+		GLOB.USCMFaxes.Add("<a href='?FaxView=\ref[fax_message]'>\[view '[customname]' from [key_name(usr)] at [time2text(world.timeofday, "hh:mm:ss")]\]</a>")
 
 		var/msg_ghost = SPAN_NOTICE("<b><font color='#1F66A0'>USCM FAX REPLY: </font></b> ")
-		msg_ghost += "Отправлен '[customname]' по защищенному соединению ... "
-		msg_ghost += "<a href='?FaxView=\ref[fax_message]'>Просмотреть сообщение</a>"
-		announce_fax(msg_ghost = msg_ghost)
-		spawn(GLOB.ship_hc_delay)
-			for(var/obj/structure/machinery/faxmachine/F in machines)
-				if(F != fax || F.inoperable())
-					to_chat(owner, "/red Unable to locate fax!")
-					continue
+		msg_ghost += "Transmitting '[customname]' via secure connection ... "
+		msg_ghost += "<a href='?FaxView=\ref[fax_message]'>view message</a>"
+		announce_fax(, msg_ghost)
 
-				// animate! it's alive!
-				flick("faxreceive", F)
+		for(var/obj/structure/machinery/faxmachine/F in GLOB.machines)
+			if(F == fax)
+				if(!(F.inoperable()))
 
-				// give the sprite some time to flick
-				spawn(20)
-					var/obj/item/paper/P = new /obj/item/paper(F.loc)
-					P.name = "USCM High Command - [customname]"
-					P.info = fax_message
-					P.update_icon()
+					// animate! it's alive!
+					flick("faxreceive", F)
 
-					playsound(F.loc, "sound/machines/fax.ogg", 15)
+					// give the sprite some time to flick
+					spawn(20)
+						var/obj/item/paper/P = new /obj/item/paper(F.loc)
+						P.name = "USCM High Command - [customname]"
+						P.info = fax_message.data
+						P.update_icon()
 
-					// Stamps
-					var/image/stampoverlay = image('icons/obj/items/paper.dmi')
-					stampoverlay.icon_state = "paper_stamp-uscm"
-					if(!P.stamped)
-						P.stamped = new
-					P.stamped += /obj/item/tool/stamp
-					P.overlays += stampoverlay
-					P.stamps += "<HR><i>This paper has been stamped by the USCM High Command Quantum Relay.</i>"
+						playsound(F.loc, "sound/machines/fax.ogg", 15)
 
-			to_chat(owner, "Message reply to transmitted successfully.")
-			message_admins(SPAN_STAFF_IC("[key_name_admin(owner)] replied to a fax message from [key_name_admin(H)]"), 1)
+						// Stamps
+						var/image/stampoverlay = image('icons/obj/items/paper.dmi')
+						stampoverlay.icon_state = "paper_stamp-uscm"
+						if(!P.stamped)
+							P.stamped = new
+						P.stamped += /obj/item/tool/stamp
+						P.overlays += stampoverlay
+						P.stamps += "<HR><i>This paper has been stamped by the USCM High Command Quantum Relay.</i>"
+
+				to_chat(owner, "Message reply to transmitted successfully.")
+				message_admins(SPAN_STAFF_IC("[key_name_admin(owner)] replied to a fax message from [key_name_admin(H)]"), 1)
+				return
+		to_chat(owner, "/red Unable to locate fax!")
 
 	else if(href_list["CLFaxReply"])
 		var/mob/living/carbon/human/H = locate(href_list["CLFaxReply"])
@@ -1451,12 +1452,12 @@
 		var/datum/fax/fax_message
 		switch(template_choice)
 			if("Custom")
-				var/input = input(src.owner, "Please enter a message to reply to [key_name(H)] via secure connection. NOTE: BBCode does not work, but HTML tags do! Use <br> for line breaks.", "Outgoing message from Weyland-Yutani", "") as message|null
+				var/input = input(owner, "Please enter a message to reply to [key_name(H)] via secure connection. NOTE: BBCode does not work, but HTML tags do! Use <br> for line breaks.", "Outgoing message from Weyland-Yutani", "") as message|null
 				if(!input)
 					return
 				fax_message = new(input)
 			if("Template")
-				var/subject = input(src.owner, "Enter subject line", "Outgoing message from Weyland-Yutani", "") as message|null
+				var/subject = input(owner, "Enter subject line", "Outgoing message from Weyland-Yutani", "") as message|null
 				if(!subject)
 					return
 				var/addressed_to = ""
@@ -1464,15 +1465,15 @@
 				if(address_option == "Sender")
 					addressed_to = "[H.real_name]"
 				else if(address_option == "Custom")
-					addressed_to = input(src.owner, "Enter Addressee Line", "Outgoing message from Weyland-Yutani", "") as message|null
+					addressed_to = input(owner, "Enter Addressee Line", "Outgoing message from Weyland-Yutani", "") as message|null
 					if(!addressed_to)
 						return
 				else
 					return
-				var/message_body = input(src.owner, "Enter Message Body, use <p></p> for paragraphs", "Outgoing message from Weyland-Yutani", "") as message|null
+				var/message_body = input(owner, "Enter Message Body, use <p></p> for paragraphs", "Outgoing message from Weyland-Yutani", "") as message|null
 				if(!message_body)
 					return
-				var/sent_by = input(src.owner, "Enter JUST the name you are sending this from", "Outgoing message from Weyland-Yutani", "") as message|null
+				var/sent_by = input(owner, "Enter JUST the name you are sending this from", "Outgoing message from Weyland-Yutani", "") as message|null
 				if(!sent_by)
 					return
 				fax_message = new(generate_templated_fax(1, "WEYLAND-YUTANI CORPORATE AFFAIRS - [MAIN_SHIP_NAME]", subject, addressed_to, message_body, sent_by, "Corporate Affairs Director", "Weyland-Yutani"))
@@ -1482,42 +1483,42 @@
 			return
 		GLOB.fax_contents += fax_message // save a copy
 
-		GLOB.WYFaxes.Add("<a href='?FaxView=\ref[fax_message]'>\[view reply at [world.timeofday]\]</a>") //Add replies so that mods know what the hell is goin on with the RP
-
-		var/customname = input(src.owner, "Pick a title for the report", "Title") as text|null
+		var/customname = input(owner, "Pick a title for the report", "Title") as text|null
 		if(!customname)
 			return
 
+		GLOB.WYFaxes.Add("<a href='?FaxView=\ref[fax_message]'>\[view '[customname]' from [key_name(usr)] at [time2text(world.timeofday, "hh:mm:ss")]\]</a>") //Add replies so that mods know what the hell is goin on with the RP
+
 		var/msg_ghost = SPAN_NOTICE("<b><font color='#1F66A0'>WEYLAND-YUTANI FAX REPLY: </font></b> ")
-		msg_ghost += "Отправлен '[customname]' по защищенному соединению ... "
-		msg_ghost += "<a href='?FaxView=\ref[fax_message]'>Просмотреть сообщение</a>"
-		announce_fax(msg_ghost = msg_ghost)
-		spawn(GLOB.ship_hc_delay)
-			for(var/obj/structure/machinery/faxmachine/F in machines)
-				if(F != fax || F.inoperable())
-					to_chat(owner, "/red Unable to locate fax!")
-					continue
+		msg_ghost += "Transmitting '[customname]' via secure connection ... "
+		msg_ghost += "<a href='?FaxView=\ref[fax_message]'>view message</a>"
+		announce_fax(, msg_ghost)
 
-				// animate! it's alive!
-				flick("faxreceive", F)
 
-				// give the sprite some time to flick
-				spawn(20)
-					var/obj/item/paper/P = new /obj/item/paper(F.loc)
-					P.name = "Weyland-Yutani - [customname]"
-					P.info = fax_message
-					P.update_icon()
+		for(var/obj/structure/machinery/faxmachine/F in GLOB.machines)
+			if(F == fax)
+				if(!(F.inoperable()))
 
-					playsound(F.loc, "sound/machines/fax.ogg", 15)
+					// animate! it's alive!
+					flick("faxreceive", F)
 
-					// Stamps
-					var/image/stampoverlay = image('icons/obj/items/paper.dmi')
-					stampoverlay.icon_state = "paper_stamp-cent"
-					if(!P.stamped)
-						P.stamped = new
-					P.stamped += /obj/item/tool/stamp
-					P.overlays += stampoverlay
-					P.stamps += "<HR><i>This paper has been stamped and encrypted by the Weyland-Yutani Quantum Relay (tm).</i>"
+					// give the sprite some time to flick
+					spawn(20)
+						var/obj/item/paper/P = new /obj/item/paper( F.loc )
+						P.name = "Weyland-Yutani - [customname]"
+						P.info = fax_message.data
+						P.update_icon()
+
+						playsound(F.loc, "sound/machines/fax.ogg", 15)
+
+						// Stamps
+						var/image/stampoverlay = image('icons/obj/items/paper.dmi')
+						stampoverlay.icon_state = "paper_stamp-weyyu"
+						if(!P.stamped)
+							P.stamped = new
+						P.stamped += /obj/item/tool/stamp
+						P.overlays += stampoverlay
+						P.stamps += "<HR><i>This paper has been stamped and encrypted by the Weyland-Yutani Quantum Relay (tm).</i>"
 
 				to_chat(owner, "Message reply to transmitted successfully.")
 				message_admins(SPAN_STAFF_IC("[key_name_admin(owner)] replied to a fax message from [key_name_admin(H)]"), 1)
@@ -1533,12 +1534,12 @@
 		var/datum/fax/fax_message
 		switch(template_choice)
 			if("Custom")
-				var/input = input(src.owner, "Please enter a message to reply to [key_name(H)] via secure connection. NOTE: BBCode does not work, but HTML tags do! Use <br> for line breaks.", "Outgoing message from The Colonial Marshal Bureau", "") as message|null
+				var/input = input(owner, "Please enter a message to reply to [key_name(H)] via secure connection. NOTE: BBCode does not work, but HTML tags do! Use <br> for line breaks.", "Outgoing message from The Colonial Marshal Bureau", "") as message|null
 				if(!input)
 					return
 				fax_message = new(input)
 			if("Anchorpoint")
-				var/subject = input(src.owner, "Enter subject line", "Outgoing message from The Colonial Marshal Bureau, Anchorpoint Station", "") as message|null
+				var/subject = input(owner, "Enter subject line", "Outgoing message from The Colonial Marshal Bureau, Anchorpoint Station", "") as message|null
 				if(!subject)
 					return
 				var/addressed_to = ""
@@ -1546,15 +1547,15 @@
 				if(address_option == "Sender")
 					addressed_to = "[H.real_name]"
 				else if(address_option == "Custom")
-					addressed_to = input(src.owner, "Enter Addressee Line", "Outgoing message from The Colonial Marshal Bureau", "") as message|null
+					addressed_to = input(owner, "Enter Addressee Line", "Outgoing message from The Colonial Marshal Bureau", "") as message|null
 					if(!addressed_to)
 						return
 				else
 					return
-				var/message_body = input(src.owner, "Enter Message Body, use <p></p> for paragraphs", "Outgoing message from The Colonial Marshal Bureau", "") as message|null
+				var/message_body = input(owner, "Enter Message Body, use <p></p> for paragraphs", "Outgoing message from The Colonial Marshal Bureau", "") as message|null
 				if(!message_body)
 					return
-				var/sent_by = input(src.owner, "Enter JUST the name you are sending this from", "Outgoing message from The Colonial Marshal Bureau", "") as message|null
+				var/sent_by = input(owner, "Enter JUST the name you are sending this from", "Outgoing message from The Colonial Marshal Bureau", "") as message|null
 				if(!sent_by)
 					return
 				fax_message = new(generate_templated_fax(0, "COLONIAL MARSHAL BUREAU INCIDENT COMMAND CENTER - ANCHORPOINT STATION", subject, addressed_to, message_body, sent_by, "Supervisory Deputy Marshal", "Colonial Marshal Bureau"))
@@ -1564,19 +1565,19 @@
 			return
 		GLOB.fax_contents += fax_message // save a copy
 
-		GLOB.CMBFaxes.Add("<a href='?FaxView=\ref[fax_message]'>\[view reply at [world.timeofday]\]</a>") //Add replies so that mods know what the hell is goin on with the RP
-
-		var/customname = input(src.owner, "Pick a title for the report", "Title") as text|null
+		var/customname = input(owner, "Pick a title for the report", "Title") as text|null
 		if(!customname)
 			return
+
+		GLOB.CMBFaxes.Add("<a href='?FaxView=\ref[fax_message]'>\[view '[customname]' from [key_name(usr)] at [time2text(world.timeofday, "hh:mm:ss")]\]</a>") //Add replies so that mods know what the hell is goin on with the RP
 
 		var/msg_ghost = SPAN_NOTICE("<b><font color='#1b748c'>COLONIAL MARSHAL BUREAU FAX REPLY: </font></b> ")
 		msg_ghost += "Transmitting '[customname]' via secure connection ... "
 		msg_ghost += "<a href='?FaxView=\ref[fax_message]'>view message</a>"
-		announce_fax(msg_ghost = msg_ghost)
+		announce_fax(, msg_ghost)
 
 
-		for(var/obj/structure/machinery/faxmachine/F in machines)
+		for(var/obj/structure/machinery/faxmachine/F in GLOB.machines)
 			if(F == fax)
 				if(!(F.inoperable()))
 
@@ -1601,10 +1602,10 @@
 						P.overlays += stampoverlay
 						P.stamps += "<HR><i>This paper has been stamped by The Office of Colonial Marshals.</i>"
 
-				to_chat(src.owner, "Message reply to transmitted successfully.")
-				message_admins(SPAN_STAFF_IC("[key_name_admin(src.owner)] replied to a fax message from [key_name_admin(H)]"), 1)
+				to_chat(owner, "Message reply to transmitted successfully.")
+				message_admins(SPAN_STAFF_IC("[key_name_admin(owner)] replied to a fax message from [key_name_admin(H)]"), 1)
 				return
-		to_chat(src.owner, "/red Unable to locate fax!")
+		to_chat(owner, "/red Unable to locate fax!")
 
 	else if(href_list["customise_paper"])
 		if(!check_rights(R_MOD))
@@ -2066,15 +2067,15 @@
 			to_chat(usr, "ARES Interface offline.")
 			return FALSE
 
-		var/input = input(src.owner, "Please enter a message from ARES to reply to [key_name(speaker)].","Outgoing message from ARES", "")
+		var/input = input(owner, "Please enter a message from ARES to reply to [key_name(speaker)].","Outgoing message from ARES", "")
 		if(!input)
 			return FALSE
 
-		to_chat(src.owner, "You sent [input] to [speaker] via ARES Interface.")
-		log_admin("[src.owner] replied to [key_name(speaker)]'s ARES message with the message [input].")
+		to_chat(owner, "You sent [input] to [speaker] via ARES Interface.")
+		log_admin("[owner] replied to [key_name(speaker)]'s ARES message with the message [input].")
 		for(var/client/staff in GLOB.admins)
 			if((R_ADMIN|R_MOD) & staff.admin_holder.rights)
-				to_chat(staff, SPAN_STAFF_IC("<b>ADMINS/MODS: [SPAN_RED("[src.owner] replied to [key_name(speaker)]'s ARES message")] with: [SPAN_BLUE(input)] </b>"))
+				to_chat(staff, SPAN_STAFF_IC("<b>ADMINS/MODS: [SPAN_RED("[owner] replied to [key_name(speaker)]'s ARES message")] with: [SPAN_BLUE(input)] </b>"))
 		GLOB.ares_link.interface.response_from_ares(input, href_list["AresRef"])
 
 	if(href_list["AresMark"])
@@ -2088,11 +2089,11 @@
 			to_chat(usr, "ARES Interface offline.")
 			return FALSE
 
-		to_chat(src.owner, "You marked [speaker]'s ARES message for response.")
-		log_admin("[src.owner] marked [key_name(speaker)]'s ARES message. [src.owner] will be responding.")
+		to_chat(owner, "You marked [speaker]'s ARES message for response.")
+		log_admin("[owner] marked [key_name(speaker)]'s ARES message. [owner] will be responding.")
 		for(var/client/staff in GLOB.admins)
 			if((R_ADMIN|R_MOD) & staff.admin_holder.rights)
-				to_chat(staff, SPAN_STAFF_IC("<b>ADMINS/MODS: [SPAN_RED("[src.owner] marked [key_name(speaker)]'s ARES message for response.")]</b>"))
+				to_chat(staff, SPAN_STAFF_IC("<b>ADMINS/MODS: [SPAN_RED("[owner] marked [key_name(speaker)]'s ARES message for response.")]</b>"))
 
 	return
 

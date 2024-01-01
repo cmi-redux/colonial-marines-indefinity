@@ -296,7 +296,8 @@
 	playsound(loc, 'sound/weapons/thudswoosh.ogg', 25, 1, 5)
 
 /mob/living/carbon/fall(forced)
-    loc.handle_fall(src, forced)//it's loc so it doesn't call the mob's handle_fall which does nothing
+	. = ..()
+	loc.handle_fall(src, forced)
 
 //Throwing stuff
 

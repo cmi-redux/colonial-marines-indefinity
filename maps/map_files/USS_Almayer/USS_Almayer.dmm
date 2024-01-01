@@ -45791,7 +45791,7 @@
 	},
 /area/almayer/hull/lower_hull/l_f_p)
 "iew" = (
-/obj/structure/machinery/self_destruct,
+/obj/structure/machinery/self_destruct/console,
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "plating";

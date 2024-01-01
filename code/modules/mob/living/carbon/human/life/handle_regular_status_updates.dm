@@ -70,10 +70,16 @@
 					addtimer(CALLBACK(src, PROC_REF(emote), "snore"))
 			blinded = TRUE
 			set_stat(UNCONSCIOUS)
+		else if(health <= HEALTH_THRESHOLD_CRIT)
+			blinded = TRUE
+			set_stat(UNCONSCIOUS)
+			if(regular_update)
+				apply_damage(1, OXY)
 		else
 			set_stat(CONSCIOUS)
 
-		if(in_stasis == STASIS_IN_CRYO_CELL) blinded = TRUE //Always blinded while in stasisTUBES
+		if(in_stasis == STASIS_IN_CRYO_CELL)
+			blinded = TRUE //Always blinded while in stasisTUBES
 
 		if(!regular_update)
 			return
