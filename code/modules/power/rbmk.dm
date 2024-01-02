@@ -224,6 +224,7 @@ DEFINE_BITFIELD(reactor_flags, list(
 	visible_message(SPAN_USERDANGER("You hear a horrible metallic hissing."))
 	cell_explosion(src, 600, 20, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
 	explode()
+	to_chat_spaced(world, html = SPAN_ANNOUNCEMENT_HEADER_BLUE("Вы видите как на орбите рядом взрывается USS Almayer, его осколки охватывают всю орбиту"))
 
 /obj/structure/machinery/power/rbmk/proc/explode(list/z_levels = SSmapping.levels_by_trait(ZTRAIT_MARINE_MAIN_SHIP))
 	var/L1[] = new //Everyone who will be destroyed on the zlevel(s).
@@ -258,9 +259,7 @@ DEFINE_BITFIELD(reactor_flags, list(
 		flick("ship_spared", C)
 		C.icon_state = "summary_spared"
 	sleep(5)
-	if(SSticker.mode)
-		SSticker.mode.check_win()
-		return
+	enter_allowed = FALSE
 
 /obj/structure/machinery/power/rbmk/update_icon()
 	icon_state = "reactor_off"
