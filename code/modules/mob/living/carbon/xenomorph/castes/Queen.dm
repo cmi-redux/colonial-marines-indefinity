@@ -388,7 +388,7 @@
 /mob/living/carbon/xenomorph/queen/combat_ready
 	queen_aged = TRUE
 
-/mob/living/carbon/xenomorph/queen/Initialize()
+/mob/living/carbon/xenomorph/queen/Initialize(mapload, mob/living/carbon/xenomorph/old_xeno, datum/faction/hive_to_set)
 	. = ..()
 	if(!is_admin_level(z))//so admins can safely spawn Queens in Thunderdome for tests.
 		xeno_message(SPAN_XENOANNOUNCE("A new Queen has risen to lead the Hive! Rejoice!"), 3, faction)
