@@ -25,8 +25,8 @@
 			average_pop[balance_row.active]++
 			last_pop[balance_row.active]++
 
-	for(var/i = 1; i <= length(round_start_pop); i++)
-		new_esteminated_power += (last_pop[i] - average_pop[i] / average_fires - round_start_pop[i]) * 100
+//	for(var/i = 1; i <= length(round_start_pop); i++)
+//		new_esteminated_power += (last_pop[i] - average_pop[i] / average_fires - round_start_pop[i]) * 100
 
 	esteminated_power = new_esteminated_power
 	weight = new_weight
