@@ -17,7 +17,6 @@
 	var/datum/shape/rectangle/range_bounds
 
 	appearance_flags = KEEP_TOGETHER
-	layer = FACEHUGGER_LAYER
 
 /obj/effect/alien/resin/special/eggmorph/Initialize(mapload, hive_ref)
 	. = ..()

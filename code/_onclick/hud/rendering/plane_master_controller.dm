@@ -86,6 +86,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/plane_master_controller)
 		FLOOR_PLANE,
 		OVER_TILE_PLANE,
 		WALL_PLANE,
+		MOB_REVERSE_OVERLAY_PLANE,
 		GAME_PLANE,
 		GAME_PLANE_FOV_HIDDEN,
 		GAME_PLANE_UPPER,
@@ -95,7 +96,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/plane_master_controller)
 		FRILL_PLANE,
 		OVER_FRILL_PLANE,
 		GHOST_PLANE,
-		LIGHTING_PLANE
+		LIGHTING_PLANE,
+		S_LIGHTING_VISUAL_PLANE
 	)
 
 /// Exists for convienience when referencing all non-master render plates.

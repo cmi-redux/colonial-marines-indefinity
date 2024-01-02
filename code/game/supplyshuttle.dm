@@ -306,7 +306,8 @@ var/datum/controller/supply/supply_controller = new()
 		return
 
 	var/turf/real_target = target.get_real_roof()
-	if(real_target != target)
+	var/turf/roof = real_target.get_real_roof()
+	if(real_target != roof.air_strike(5, real_target))
 		to_chat(usr, "[icon2html(src, usr)] [SPAN_WARNING("The landing zone is underground. The supply drop cannot reach here.")]")
 		return
 

@@ -18,15 +18,18 @@
 	msg = process_chat_markup(msg, list("*"))
 
 	for(var/mob/living/carbon/M in GLOB.alive_mob_list)
-		if(M?.faction.faction_tag == SIDE_FACTION_XENOMORPH && (!M.client.admin_holder || !(M.client.admin_holder.rights & R_MOD)))
+		if(M.faction?.faction_tag == SIDE_FACTION_XENOMORPH)
 			to_chat(M, SPAN_XOOC("XOOC: [key]([admin_holder.rank]): [msg]"))
 
 	for(var/mob/dead/observer/M in GLOB.observer_list)
-		if(M.client && !M.client.admin_holder) // Send to observers who are non-staff
+		if(M.client) // Send to observers who are non-staff
 			to_chat(M, SPAN_XOOC("XOOC: [key]([admin_holder.rank]): [msg]"))
 
 	for(var/client/C in GLOB.admins) // Send to staff
 		if(!(C.admin_holder.rights & R_MOD))
+			continue
+
+		if(istype(C.mob, /mob/dead/observer) || C.mob?.faction?.faction_tag == SIDE_FACTION_XENOMORPH)
 			continue
 
 		to_chat_spaced(C, margin_top = 0.5, margin_bottom = 0.5, html = SPAN_XOOC("XOOC: [key]([admin_holder.rank]): [msg]"))

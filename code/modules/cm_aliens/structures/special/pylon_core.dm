@@ -27,8 +27,6 @@
 	/// The maximum amount of lesser drone spawns this pylon can hold
 	var/lesser_drone_spawn_limit = 5
 
-	plane = FLOOR_PLANE
-
 	light_on = TRUE
 	light_range = 3
 	light_power = 0.2
