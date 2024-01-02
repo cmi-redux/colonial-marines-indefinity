@@ -18,8 +18,8 @@
 	last_pop = new(3)
 	for(var/potantial_row in SSautobalancer.balance_rows)
 		var/datum/autobalance_row_info/balance_row = SSautobalancer.balance_rows[potantial_row]
-		if(balance_row.faction_to_set() == faction)
-			var/role_coeff = faction.get_role_coeff(balance_row.client.mob.job)
+		if(balance_row.faction_to_set() == faction && balance_row.player_entity.player.owning_client?.mob)
+			var/role_coeff = faction.get_role_coeff(balance_row.player_entity.player.owning_client.mob.job)
 			new_esteminated_power += balance_row.get_player_rating() * role_coeff
 			new_weight += role_coeff
 			average_pop[balance_row.active]++
@@ -280,27 +280,29 @@
 /datum/autobalance_row_info
 	var/rating = 0
 	var/active = 3
-	var/client/client
-	var/datum/player_entity/player
+	var/datum/player_entity/player_entity = null
+	var/datum/entity/player/player = null
 
-/datum/autobalance_row_info/New(client/client_to_set, datum/player_entity/entity_to_set)
+/datum/autobalance_row_info/New(datum/player_entity/entity_to_set)
 	..()
-	client = client_to_set
-	player = entity_to_set
+	player_entity = entity_to_set
 
 /datum/autobalance_row_info/proc/get_player_rating()
 	rating = 0
-	var/datum/job/player_job = GET_MAPPED_ROLE(client.mob.job)
-	for(var/balance_formula in player_job.balance_formulas + client.mob.balance_formulas)
-		var/datum/autobalance_formula_row/formula = GLOB.balance_formulas[balance_formula]
-		var/additional_rating = formula.calculate(client.mob, player)
-		if(additional_rating)
-			rating += additional_rating / length(player_job.balance_formulas + client.mob.balance_formulas)
+	var/mob/living = player_entity.player.owning_client?.mob
+	if(istype(living))
+		var/datum/job/player_job = GET_MAPPED_ROLE(living.job)
+		for(var/balance_formula in player_job.balance_formulas + living.balance_formulas)
+			var/datum/autobalance_formula_row/formula = GLOB.balance_formulas[balance_formula]
+			var/additional_rating = formula.calculate(living, player_entity)
+			if(additional_rating)
+				rating += additional_rating / length(player_job.balance_formulas + living.balance_formulas)
 	return rating
 
 /datum/autobalance_row_info/proc/faction_to_set()
-	if(client && client.mob)
-		return client.mob.faction
+	var/mob/living = player_entity.player.owning_client?.mob
+	if(living)
+		return living.faction
 	return FALSE
 
 /datum/autobalance_row_info/proc/status_change(action)
@@ -312,7 +314,7 @@
 		if("death")
 			active = 1
 		if("revive")
-			if(client.mob?.client)
+			if(player_entity.player.owning_client?.mob?.client)
 				active = 3
 			else
 				active = 2

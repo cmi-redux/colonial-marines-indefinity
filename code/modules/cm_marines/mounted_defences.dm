@@ -287,8 +287,7 @@
 
 	operator = user
 	user.unfreeze()
-	if(MD.flags_gun_features & GUN_AMMO_COUNTER)
-		MD.display_ammo(user)
+	MD.display_ammo(user)
 
 /obj/structure/machinery/mounted_defence/on_unset_interaction(mob/living/user)
 	flags_atom &= ~RELAY_CLICK
@@ -308,7 +307,7 @@
 			user.client.change_view(world_view_size, src)
 			animate(user.client, 8, pixel_x = 0, pixel_y = 0)
 	if(operator == user)
-		user.hud_used.update_ammo_hud(MD)
+		MD.un_display_ammo(user)
 		operator = null
 
 /obj/structure/machinery/mounted_defence/check_eye(mob/user)

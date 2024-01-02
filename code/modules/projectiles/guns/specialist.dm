@@ -1116,7 +1116,7 @@
 			else
 				current_mag.forceMove(get_turf(src))
 			current_mag = null
-			user?.hud_used.update_ammo_hud(src, get_ammo_list(), get_display_ammo_count())
+			display_ammo(user)
 
 /obj/item/weapon/gun/launcher/rocket/load_into_chamber(mob/user)
 	return ready_in_chamber()
@@ -1153,7 +1153,7 @@
 				playsound(user, reload_sound, 25, 1)
 			else
 				playsound(user,'sound/machines/click.ogg', 25, 1)
-			user?.hud_used.update_ammo_hud(src, get_ammo_list(), get_display_ammo_count())
+			display_ammo(user)
 		else
 			to_chat(user, SPAN_WARNING("Your reload was interrupted!"))
 			return
@@ -1186,7 +1186,7 @@
 		else
 			current_mag.forceMove(get_turf(src))
 		current_mag = null
-		user?.hud_used.update_ammo_hud(src, get_ammo_list(), get_display_ammo_count())
+		display_ammo(user)
 
 //Adding in the rocket backblast. The tile behind the specialist gets blasted hard enough to down and slightly wound anyone
 /obj/item/weapon/gun/launcher/rocket/apply_bullet_effects(obj/item/projectile/projectile_to_fire, mob/user, i = 1, reflex = 0)

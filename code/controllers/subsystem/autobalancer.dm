@@ -70,7 +70,11 @@ SUBSYSTEM_DEF(autobalancer)
 
 	switch(action)
 		if("add")
-			balance_rows[player_mob.ckey] = new /datum/autobalance_row_info(player_mob.client, player_mob.client.player_data.player_entity)
+			var/datum/autobalance_row_info/information = balance_rows[player_mob.ckey]
+			if(!information)
+				information = new /datum/autobalance_row_info(player_mob.client.player_data.player_entity)
+				balance_rows[player_mob.ckey] = information
+			information.status_change(action)
 		if("remove")
 			QDEL_NULL(balance_rows[player_mob.ckey])
 		else
@@ -79,7 +83,7 @@ SUBSYSTEM_DEF(autobalancer)
 
 			var/datum/autobalance_row_info/information = balance_rows[player_mob.ckey]
 			if(!information)
-				information = new /datum/autobalance_row_info(player_mob.client, player_mob.client.player_data.player_entity)
+				information = new /datum/autobalance_row_info(player_mob.client.player_data.player_entity)
 				balance_rows[player_mob.ckey] = information
 			information.status_change(action)
 

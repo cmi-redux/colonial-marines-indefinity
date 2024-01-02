@@ -98,7 +98,7 @@
 	///Assoc. list - incision depths, by aim zone. Set by initialize_incision_depths().
 	var/list/incision_depths = DEFENSE_ZONES_LIVING
 
-	var/current_weather_effect_type
+	var/datum/particle_weather/current_weather_effect_type
 
 	var/atom/movable/icon_cutter
 

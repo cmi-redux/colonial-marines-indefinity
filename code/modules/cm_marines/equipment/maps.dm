@@ -8,10 +8,12 @@
 	w_class = SIZE_TINY
 	// color = ... (Colors can be names - "red, green, grey, cyan" or a HEX color code "#FF0000")
 	var/dat // Page content
-	var/html_link = ""
-	var/window_size = "1280x720"
 	var/minimap_name = "Target Map"
 	var/datum/ui_minimap/minimap
+
+/obj/item/map/Initialize(mapload, ...)
+	. = ..()
+	link_minimap()
 
 /obj/item/map/attack_self(mob/user) //Open the map
 	..()

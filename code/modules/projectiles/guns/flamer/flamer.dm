@@ -144,7 +144,7 @@
 	else
 		user.track_shot(initial(name))
 		unleash_flame(target, user)
-		user?.hud_used.update_ammo_hud(src, get_ammo_list(), get_display_ammo_count())
+		display_ammo(user)
 		return AUTOFIRE_CONTINUE
 	return NONE
 

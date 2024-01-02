@@ -100,8 +100,7 @@
 /datum/effects/acid/proc/handle_weather()
 	SIGNAL_HANDLER
 
-	var/turf/turf = get_turf(src)
-
+	var/turf/turf = get_turf(affected_atom)
 	if(SSparticle_weather.running_weather && turf.turf_flags & TURF_WEATHER)
 		duration = duration - (duration * (SSparticle_weather.running_weather.fire_smothering_strength * 0.1))
 		damage_in_total_human = damage_in_total_human - (damage_in_total_human * (SSparticle_weather.running_weather.fire_smothering_strength * 0.1))

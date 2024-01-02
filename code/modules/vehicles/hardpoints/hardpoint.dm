@@ -552,6 +552,9 @@
 /obj/item/hardpoint/proc/fire_projectile(mob/user, atom/target_atom)
 	set waitfor = FALSE
 
+	if(!ammo || !ammo.ammo_position)
+		return
+
 	var/turf/origin_turf = get_turf(src)
 	origin_turf = locate(origin_turf.x + origins[1], origin_turf.y + origins[2], origin_turf.z)
 

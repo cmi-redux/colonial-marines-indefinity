@@ -554,14 +554,12 @@
 
 /obj/item/weapon/gun/pickup(mob/user)
 	RegisterSignal(user, COMSIG_ATOM_OFF_LIGHT, TYPE_PROC_REF(/atom, turn_light), FALSE, override = TRUE)
-	if(flags_gun_features & GUN_AMMO_COUNTER && user.client)
-		display_ammo(user)
+	display_ammo(user)
 	..()
 
 /obj/item/weapon/gun/dropped(mob/user)
 	UnregisterSignal(user, COMSIG_ATOM_OFF_LIGHT)
-	if(flags_gun_features & GUN_AMMO_COUNTER && user.client)
-		user.hud_used.update_ammo_hud(src)
+	un_display_ammo(user)
 	..()
 
 /obj/item/weapon/gun/proc/handle_damage(force = FALSE) //handle chance do break gan or damage
@@ -643,11 +641,10 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 		force_light(on = FALSE)
 		ADD_TRAIT(src, TRAIT_GUN_LIGHT_DEACTIVATED, user)
 
-	if(flags_gun_features & GUN_AMMO_COUNTER && user.client)
-		if(slot == WEAR_L_HAND || slot == WEAR_R_HAND)
-			display_ammo(user)
-		else
-			user.hud_used.update_ammo_hud(src)
+	if(slot == WEAR_L_HAND || slot == WEAR_R_HAND)
+		display_ammo(user)
+	else
+		un_display_ammo(user)
 
 	return ..()
 
@@ -1482,7 +1479,7 @@ and you're good to go.
 		return TRUE
 
 	//>>POST PROCESSING AND CLEANUP BEGIN HERE.<<
-	var/angle = round(Get_Angle(user, target)) //Let's do a muzzle flash.
+	var/angle = round(Get_Angle(user, targloc)) //Let's do a muzzle flash.
 	if(user == loc)
 		muzzle_flash(angle, user)
 	else
@@ -1873,8 +1870,15 @@ not all weapons use normal magazines etc. load_into_chamber() itself is designed
 	if(!user)
 		user = gun_user
 
-	if(flags_gun_features & GUN_AMMO_COUNTER && user.client)
-		user?.hud_used.update_ammo_hud(src, get_ammo_list(), get_display_ammo_count())
+	if(flags_gun_features & GUN_AMMO_COUNTER && user?.client)
+		user.hud_used?.update_ammo_hud(src, get_ammo_list(), get_display_ammo_count())
+
+/obj/item/weapon/gun/proc/un_display_ammo(mob/user)
+	if(!user)
+		user = gun_user
+
+	if(flags_gun_features & GUN_AMMO_COUNTER && user?.client)
+		user.hud_used?.update_ammo_hud(src)
 
 //This proc applies some bonus effects to the shot/makes the message when a bullet is actually fired.
 /obj/item/weapon/gun/proc/apply_bullet_effects(obj/item/projectile/projectile_to_fire, mob/user, reflex = 0, dual_wield = 0)

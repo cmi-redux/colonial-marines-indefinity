@@ -8,6 +8,8 @@
 	exproof = TRUE
 	needs_power = FALSE
 
+	faction_to_get = FACTION_MARINE
+
 	// True if we are doing a flyby
 	var/is_set_flyby = FALSE
 

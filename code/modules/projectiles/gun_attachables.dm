@@ -2729,7 +2729,7 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/attached_gun/Detach(mob/user, obj/item/weapon/gun/detaching_gub)
 	. = ..()
-	user.hud_used.update_ammo_hud(src)
+	un_display_ammo(user)
 
 /obj/item/attachable/attached_gun/activate_attachment(obj/item/weapon/gun/gun, mob/living/user, turn_off)
 	if(gun.active_attachable == src)
@@ -2738,7 +2738,7 @@ Defined in conflicts.dm of the #defines folder.
 		if(user)
 			to_chat(user, SPAN_NOTICE("You are no longer using [src]."))
 			playsound(user, gun_deactivate_sound, 30, 1)
-			user.hud_used.update_ammo_hud(src)
+			un_display_ammo(user)
 
 	else if(!turn_off)
 		gun.active_attachable = src
@@ -2757,8 +2757,21 @@ Defined in conflicts.dm of the #defines folder.
 		action.update_button_icon()
 	return TRUE
 
-/obj/item/attachable/attached_gun/proc/display_ammo(mob/living/user)
-	user?.hud_used.update_ammo_hud(src, get_attachment_ammo_type(), get_attachment_ammo_count())
+/obj/item/attachable/attached_gun/proc/display_ammo(mob/user)
+	var/obj/item/weapon/gun/gun = loc
+	if(!user)
+		user = gun.get_gun_user()
+
+	if(gun.flags_gun_features & GUN_AMMO_COUNTER && user?.client)
+		user.hud_used?.update_ammo_hud(src, get_attachment_ammo_type(), get_attachment_ammo_count())
+
+/obj/item/attachable/attached_gun/proc/un_display_ammo(mob/user)
+	var/obj/item/weapon/gun/gun = loc
+	if(!user)
+		user = gun.get_gun_user()
+
+	if(gun.flags_gun_features & GUN_AMMO_COUNTER && user?.client)
+		user.hud_used?.update_ammo_hud(src)
 
 /obj/item/attachable/attached_gun/proc/get_attachment_ammo_type()
 	return null

@@ -25,7 +25,7 @@ GLOBAL_LIST_EMPTY(cleanable_decal_cache)
 	. = ..()
 	if(random_icon_states && length(src.random_icon_states) > 0)
 		src.icon_state = pick(src.random_icon_states)
-	var/turf/T = loc
+	var/turf/T = get_turf(src)
 
 	if(!T)
 		return INITIALIZE_HINT_QDEL

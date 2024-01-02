@@ -194,7 +194,7 @@
 	if(fire_stacks > 0)
 		adjust_fire_stacks(-0.5, min_stacks = 0) //the fire is consumed slowly
 	if(current_weather_effect_type)
-		adjust_fire_stacks(-SSparticle_weather.running_weather.fire_smothering_strength, min_stacks = 0)
+		adjust_fire_stacks(-current_weather_effect_type.fire_smothering_strength, min_stacks = 0)
 
 /mob/living/fire_act()
 	TryIgniteMob(2)

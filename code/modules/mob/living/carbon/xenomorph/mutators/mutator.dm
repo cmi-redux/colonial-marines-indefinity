@@ -513,7 +513,8 @@
 		return
 
 	xeno.AddComponent(/datum/component/shield_slash, max_shield, shield_per_slash, stat_name)
-	to_chat(xeno, SPAN_XENODANGER(xeno.client.auto_lang(LANGUAGE_MUTATION_SHIELD_SLASH_MSG)))
+	if(xeno.client)
+		to_chat(xeno, SPAN_XENODANGER(xeno.client.auto_lang(LANGUAGE_MUTATION_SHIELD_SLASH_MSG)))
 
 //ENDURANCE
 /datum/xeno_mutation/mutator/endurance
