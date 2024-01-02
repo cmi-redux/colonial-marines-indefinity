@@ -90,7 +90,6 @@
 /area/lv624/lazarus/research)
 "aq" = (
 /obj/structure/surface/table,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -201,7 +200,6 @@
 	pixel_y = 12
 	},
 /obj/structure/machinery/light,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -294,7 +292,6 @@
 	pixel_y = 5
 	},
 /obj/item/storage/fancy/vials/random,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "white"
 	},
@@ -329,7 +326,6 @@
 /obj/structure/surface/table,
 /obj/structure/machinery/cell_charger,
 /obj/item/tool/crowbar,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -360,14 +356,12 @@
 /area/lv624/lazarus/research)
 "bb" = (
 /obj/item/clothing/glasses/regular,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "white"
 	},
 /area/lv624/lazarus/research)
 "bm" = (
 /obj/structure/surface/table,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "freezerfloor"
 	},
@@ -375,7 +369,6 @@
 "bn" = (
 /obj/structure/surface/table,
 /obj/item/paper/research_notes,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -420,7 +413,6 @@
 /turf/closed/wall/strata_ice/jungle,
 /area/lv624/ground/jungle/central_jungle)
 "ky" = (
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "freezerfloor"
 	},
@@ -462,7 +454,6 @@
 "Mu" = (
 /obj/structure/surface/table,
 /obj/item/storage/fancy/vials/random,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"

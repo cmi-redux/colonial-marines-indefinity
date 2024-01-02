@@ -1271,13 +1271,6 @@ var/global/image/action_purple_power_up
 					for(var/mob/M in T)
 						if(!istype(M,/mob) || istype(M, /mob/aiEye)) continue // If we need to check for more mobs, I'll add a variable
 						M.forceMove(X)
-
-//					var/area/AR = X.loc
-
-// if(AR.lighting_use_dynamic) //TODO: rewrite this code so it's not messed by lighting ~Carn
-// X.opacity = !X.opacity
-// X.set_opacity(!X.opacity)
-
 					toupdate += X
 
 					if(turftoleave)

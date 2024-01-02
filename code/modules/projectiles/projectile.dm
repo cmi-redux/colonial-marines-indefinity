@@ -276,6 +276,15 @@
 		return max(0, damage - round((distance_travelled - effective_range_max) * damage_falloff))
 	return damage
 
+/*
+CEILING() is used on some contexts:
+1) For absolute pixel locations to tile conversions, as the coordinates are read from left-to-right (from low to high numbers) and each tile occupies 32 pixels.
+So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we are on the 33th (to 64th) we are then on the second tile.
+2) For number of pixel moves, as it is counting number of full (pixel) moves required.
+*/
+#define PROJ_ABS_PIXEL_TO_TURF(abspx, abspy, zlevel) (locate(CEILING((abspx / 32), 1), CEILING((abspy / 32), 1), zlevel))
+#define PROJ_ANIMATION_SPEED ((end_of_movement/projectile_speed) || (required_moves/projectile_speed)) //Movements made times deciseconds per movement.
+
 // Target, firer, shot from (i.e. the gun), projectile range, projectile speed, original target (who was aimed at, not where projectile is going towards)
 /obj/item/projectile/proc/fire_at(atom/target, atom/shooter, atom/source, range, speed, atom/original_override, angle)
 	if(!isnull(speed))
@@ -364,16 +373,13 @@
 			qdel(src)
 			return
 
-		x_offset = round(sin(dir_angle), 0.01)
-		y_offset = round(cos(dir_angle), 0.01)
-/* IN FUTURE FOR FROZING PROJECTILES
-		if(projectile_batch_move_hitscan(!recursivity) == PROJECTILE_FROZEN || (projectile_status_flags & PROJECTILE_FROZEN))
+		if(projectile_batch_move_hitscan() == PROJECTILE_FROZEN || (projectile_status_flags & PROJECTILE_FROZEN))
 			var/atom/movable/hitscan_projectile_effect/laser_effect = new /atom/movable/hitscan_projectile_effect(PROJ_ABS_PIXEL_TO_TURF(apx, apy, z), dir_angle, apx % 32 - 16, apy % 32 - 16, 1.01, effect_icon, ammo.bullet_color)
 			RegisterSignal(loc, COMSIG_TURF_RESUME_PROJECTILE_MOVE, PROC_REF(resume_move))
 			laser_effect.RegisterSignal(loc, COMSIG_TURF_RESUME_PROJECTILE_MOVE, TYPE_PROC_REF(/atom/movable/hitscan_projectile_effect, remove_effect))
-			laser_effect.RegisterSignal(src, COMSIG_QDELETING, TYPE_PROC_REF(/atom/movable/hitscan_projectile_effect, remove_effect))
+			laser_effect.RegisterSignal(src, COMSIG_PARENT_QDELETING, TYPE_PROC_REF(/atom/movable/hitscan_projectile_effect, remove_effect))
 			return
-*/
+
 		qdel(src)
 		return
 
@@ -526,15 +532,6 @@
 		required_moves = SSprojectiles.global_max_tick_moves
 
 	return required_moves
-
-/*
-CEILING() is used on some contexts:
-1) For absolute pixel locations to tile conversions, as the coordinates are read from left-to-right (from low to high numbers) and each tile occupies 32 pixels.
-So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we are on the 33th (to 64th) we are then on the second tile.
-2) For number of pixel moves, as it is counting number of full (pixel) moves required.
-*/
-#define PROJ_ABS_PIXEL_TO_TURF(abspx, abspy, zlevel) (locate(CEILING((abspx / 32), 1), CEILING((abspy / 32), 1), zlevel))
-#define PROJ_ANIMATION_SPEED ((end_of_movement/projectile_speed) || (required_moves/projectile_speed)) //Movements made times deciseconds per movement.
 
 /obj/item/projectile/proc/projectile_batch_move(required_moves)
 	var/end_of_movement = 0 //In batch moves this loop, only if the projectile stopped.

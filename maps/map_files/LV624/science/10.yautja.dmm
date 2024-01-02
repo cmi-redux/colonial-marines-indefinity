@@ -85,7 +85,6 @@
 "ap" = (
 /obj/structure/surface/table,
 /obj/item/reagent_container/hypospray/autoinjector/yautja,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -98,7 +97,6 @@
 /obj/item/tool/surgery/hemostat/predatorhemostat,
 /obj/item/tool/surgery/retractor/predatorretractor,
 /obj/item/tool/surgery/scalpel/predatorscalpel,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -110,7 +108,6 @@
 "as" = (
 /obj/structure/surface/table,
 /obj/item/storage/fancy/vials/random,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -250,7 +247,6 @@
 	name = "????";
 	stat = 2
 	},
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "white"
 	},
@@ -286,7 +282,6 @@
 /obj/structure/surface/table,
 /obj/structure/machinery/cell_charger,
 /obj/item/tool/crowbar,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -326,7 +321,6 @@
 /area/lv624/lazarus/research)
 "aQ" = (
 /obj/item/clothing/glasses/regular,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "white"
 	},
@@ -354,7 +348,6 @@
 /area/lv624/lazarus/research)
 "aW" = (
 /obj/structure/surface/table,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "freezerfloor"
 	},
@@ -394,7 +387,6 @@
 "bb" = (
 /obj/structure/surface/table,
 /obj/item/weapon/yautja/scythe,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -437,7 +429,6 @@
 "bi" = (
 /obj/structure/surface/table,
 /obj/item/weapon/yautja/knife,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -456,7 +447,6 @@
 /obj/structure/surface/table,
 /obj/item/explosive/grenade/spawnergrenade/smartdisc,
 /obj/item/explosive/grenade/spawnergrenade/smartdisc,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -493,7 +483,6 @@
 	},
 /area/lv624/lazarus/research)
 "vn" = (
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "freezerfloor"
 	},
@@ -528,7 +517,6 @@
 "LE" = (
 /obj/structure/surface/table,
 /obj/effect/landmark/crap_item,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"

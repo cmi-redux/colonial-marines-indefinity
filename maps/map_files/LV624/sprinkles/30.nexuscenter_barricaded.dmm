@@ -492,7 +492,6 @@
 "bB" = (
 /obj/effect/decal/cleanable/blood/splatter,
 /obj/item/limb/foot/l_foot,
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor{
 	icon_state = "floorscorched1"
 	},

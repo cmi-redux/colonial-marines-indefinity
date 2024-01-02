@@ -34,8 +34,6 @@ GLOBAL_LIST_EMPTY_TYPED(hologram_list, /mob/hologram)
 	RegisterSignal(M, COMSIG_MOB_RESET_VIEW, PROC_REF(handle_view))
 	RegisterSignal(M, list(
 		COMSIG_MOB_TAKE_DAMAGE,
-		COMSIG_HUMAN_TAKE_DAMAGE,
-		COMSIG_XENO_TAKE_DAMAGE
 	), PROC_REF(take_damage))
 	RegisterSignal(M, list(
 		COMSIG_BINOCULAR_ATTACK_SELF,

@@ -56,7 +56,6 @@
 /area/desert_dam/exterior/valley/bar_valley_dam)
 "be" = (
 /obj/structure/closet/secure_closet/bar,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/interior/wood,
 /area/desert_dam/building/bar/backroom)
 "bf" = (
@@ -768,7 +767,6 @@
 	density = 0;
 	pixel_y = 32
 	},
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/plating,
 /area/desert_dam/building/bar/bar)
 "oo" = (
@@ -1115,7 +1113,6 @@
 /area/desert_dam/building/bar/bar_restroom)
 "vq" = (
 /obj/structure/sink,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	dir = 8;
 	icon_state = "sterile_white"
@@ -2696,7 +2693,6 @@
 	density = 0;
 	pixel_y = 32
 	},
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor{
 	icon_state = "grimy"
 	},

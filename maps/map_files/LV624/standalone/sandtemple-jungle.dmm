@@ -12,7 +12,6 @@
 /turf/open/gm/dirtgrassborder/grassdirt_corner/north_west,
 /area/lv624/ground/jungle/south_west_jungle)
 "fv" = (
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/south_west_jungle)
 "gb" = (

@@ -86,7 +86,7 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 	if(static_comms_amount)
 		spawn_static_comms()
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MODE_PRESETUP)
-	return 1
+	return TRUE
 
 ///Triggered partway through the first drop, based on DROPSHIP_DROP_MSG_DELAY. Marines are underway but haven't yet landed.
 /datum/game_mode/proc/ds_first_drop(obj/docking_port/mobile/marine_dropship)

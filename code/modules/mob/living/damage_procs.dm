@@ -20,7 +20,8 @@
 		return FALSE
 
 	var/list/damagedata = list("damage" = damage)
-	if(SEND_SIGNAL(src, COMSIG_MOB_TAKE_DAMAGE, damagedata, damagetype) & COMPONENT_BLOCK_DAMAGE) return
+	if(SEND_SIGNAL(src, COMSIG_MOB_TAKE_DAMAGE, damagedata, damagetype) & COMPONENT_BLOCK_DAMAGE)
+		return
 	damage = damagedata["damage"]
 
 	switch(damagetype)

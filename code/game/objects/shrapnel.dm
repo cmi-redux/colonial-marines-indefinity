@@ -42,6 +42,5 @@
 			projectile.handle_mob(mob_lying_on_turf)
 		else
 			var/angle = initial_angle + i*angle_increment + rand(-angle_randomization,angle_randomization)
-			var/atom/target = get_angle_target_turf(epicenter, angle, 20)
 			projectile.projectile_flags |= PROJECTILE_SHRAPNEL
-			projectile.fire_at(target, source_mob, source, projectile.ammo.max_range, projectile.ammo.shell_speed, null)
+			projectile.fire_at(null, source_mob, source, projectile.ammo.max_range, projectile.ammo.shell_speed, null, angle)

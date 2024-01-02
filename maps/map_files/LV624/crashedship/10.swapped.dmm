@@ -111,7 +111,6 @@
 	},
 /area/lv624/lazarus/crashed_ship_containers)
 "qS" = (
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/gm/dirt,
 /area/lv624/lazarus/crashed_ship_containers)
 "sq" = (
@@ -147,7 +146,6 @@
 /obj/structure/bed/chair{
 	dir = 4
 	},
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/gm/dirt,
 /area/lv624/lazarus/crashed_ship_containers)
 "zh" = (
@@ -221,7 +219,6 @@
 /turf/open/gm/dirt,
 /area/lv624/lazarus/crashed_ship_containers)
 "Io" = (
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/shuttle{
 	icon_state = "floor4"
 	},

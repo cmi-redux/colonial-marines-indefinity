@@ -22,7 +22,6 @@
 /turf/closed/wall/prison,
 /area/template_noop)
 "g" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},

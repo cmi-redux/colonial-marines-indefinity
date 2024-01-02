@@ -26,8 +26,9 @@
 	GLOB.faction_datum[controller].objectives_controller.add_objective(src)
 
 /datum/cm_objective/Destroy()
-	GLOB.faction_datum[controller].objectives_controller.stop_processing_objective(src)
-	GLOB.faction_datum[controller].objectives_controller.remove_objective(src)
+	if(controller)
+		GLOB.faction_datum[controller].objectives_controller.stop_processing_objective(src)
+		GLOB.faction_datum[controller].objectives_controller.remove_objective(src)
 	for(var/datum/cm_objective/R as anything in required_objectives)
 		R.enables_objectives -= src
 	for(var/datum/cm_objective/E as anything in enables_objectives)

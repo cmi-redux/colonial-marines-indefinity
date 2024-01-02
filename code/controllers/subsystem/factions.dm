@@ -69,7 +69,8 @@ SUBSYSTEM_DEF(factions)
 		active_objectives_controllers = list()
 		total_objectives = 0
 		total_active_objectives = 0
-		for(var/datum/objectives_datum/objectives_controller in GLOB.objective_controller)
+		for(var/faction_to_get in GLOB.objective_controller)
+			var/datum/objectives_datum/objectives_controller = GLOB.objective_controller[faction_to_get]
 			total_objectives += length(objectives_controller.objectives)
 			if(!objectives_controller.check_status())
 				total_objectives += length(objectives_controller.processing_objectives)
@@ -188,7 +189,8 @@ SUBSYSTEM_DEF(factions)
 	SHOULD_NOT_SLEEP(TRUE)
 	var/datum/map_config/ground_map = SSmapping.configs[GROUND_MAP]
 	var/total_percent = length(GLOB.clients) / 100
-	for(var/datum/objectives_datum/objectives_controller in GLOB.objective_controller)
+	for(var/faction_to_get in GLOB.objective_controller)
+		var/datum/objectives_datum/objectives_controller = GLOB.objective_controller[faction_to_get]
 		objectives_controller.generate_objectives()
 		connect_objectives(objectives_controller)
 		var/faction_mobs = length(GLOB.faction_datum[objectives_controller.associated_faction].totalMobs)
@@ -198,13 +200,15 @@ SUBSYSTEM_DEF(factions)
 /datum/controller/subsystem/factions/proc/pre_round_start()
 	SIGNAL_HANDLER
 	initialize_objectives()
-	for(var/datum/objectives_datum/objectives_controller in GLOB.objective_controller)
+	for(var/faction_to_get in GLOB.objective_controller)
+		var/datum/objectives_datum/objectives_controller = GLOB.objective_controller[faction_to_get]
 		for(var/datum/cm_objective/objective in objectives_controller.objectives)
 			objective.pre_round_start()
 
 /datum/controller/subsystem/factions/proc/post_round_start()
 	SIGNAL_HANDLER
-	for(var/datum/objectives_datum/objectives_controller in GLOB.objective_controller)
+	for(var/faction_to_get in GLOB.objective_controller)
+		var/datum/objectives_datum/objectives_controller = GLOB.objective_controller[faction_to_get]
 		for(var/datum/cm_objective/objective in objectives_controller.objectives)
 			objective.post_round_start()
 

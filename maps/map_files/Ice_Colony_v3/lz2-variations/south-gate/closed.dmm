@@ -79,7 +79,6 @@
 	},
 /area/shiva/exterior/lz2_fortress)
 "y" = (
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/shiva{
 	dir = 1
 	},

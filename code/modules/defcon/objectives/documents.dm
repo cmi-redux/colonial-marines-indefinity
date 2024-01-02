@@ -124,11 +124,13 @@
 	var/label // label on the document
 	var/renamed = FALSE //Once someone reads a document the item gets renamed based on the objective they are linked to)
 
-/obj/item/document_objective/Initialize(mapload, ...)
+/obj/item/document_objective/Initialize(mapload, _faction_to_get)
+	faction_to_get = _faction_to_get
 	. = ..()
 	label = "[pick(alphabet_uppercase)][rand(100,999)]"
-	objective = new objective_type(src)
-	retrieve_objective = new /datum/cm_objective/retrieve_item/document(src)
+	faction = GLOB.faction_datum[faction_to_get]
+	objective = new objective_type(faction_to_get, src)
+	retrieve_objective = new /datum/cm_objective/retrieve_item/document(faction_to_get, src)
 	LAZYADD(objective.enables_objectives, retrieve_objective)
 	pixel_y = rand(-8, 8)
 	pixel_x = rand(-9, 9)

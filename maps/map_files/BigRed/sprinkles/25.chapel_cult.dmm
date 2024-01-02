@@ -322,7 +322,6 @@
 /area/bigredv2/outside/building/chapel)
 "aR" = (
 /obj/item/organ/heart,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	icon_state = "cult"
 	},

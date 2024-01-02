@@ -232,7 +232,6 @@
 "aK" = (
 /obj/structure/surface/table,
 /obj/item/device/radio/marine,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	tag = "icon-carpet15-15 (WEST)";
 	icon_state = "carpet15-15";

@@ -133,7 +133,6 @@
 /turf/open/gm/dirt,
 /area/lv624/lazarus/crashed_ship_containers)
 "vA" = (
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/shuttle{
 	icon_state = "floor4"
 	},
@@ -161,7 +160,6 @@
 /turf/open/gm/dirt,
 /area/lv624/lazarus/crashed_ship_containers)
 "yj" = (
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/shuttle{
 	icon_state = "floor4"
 	},
@@ -189,7 +187,6 @@
 	},
 /area/lv624/lazarus/crashed_ship_containers)
 "Cn" = (
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/gm/dirt,
 /area/lv624/lazarus/crashed_ship_containers)
 "Dw" = (
@@ -251,7 +248,6 @@
 /area/lv624/lazarus/crashed_ship_containers)
 "Kz" = (
 /obj/item/tool/crowbar,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/shuttle{
 	icon_state = "floor4"
 	},

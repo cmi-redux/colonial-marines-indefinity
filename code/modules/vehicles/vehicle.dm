@@ -114,9 +114,9 @@
 /obj/vehicle/bullet_act(obj/item/projectile/proj)
 	var/damage = proj.damage
 	health -= damage
-	..()
 	healthcheck()
-	return 1
+	. = ..()
+	return TRUE
 
 /obj/vehicle/ex_act(severity)
 	health -= severity*0.05*fire_dam_coeff
@@ -127,7 +127,7 @@
 /obj/vehicle/emp_act(severity)
 	var/was_on = on
 	stat |= EMPED
-	new /obj/effect/overlay/temp/emp_sparks (loc)
+	new /obj/effect/overlay/temp/emp_sparks(loc)
 	if(on)
 		turn_off()
 	spawn(severity*300)
@@ -189,14 +189,15 @@
 	src.visible_message(SPAN_DANGER("<B>[src] blows apart!</B>"), null, null, 1)
 	var/turf/Tsec = get_turf(src)
 
-	new /obj/item/stack/rods(Tsec)
-	new /obj/item/stack/rods(Tsec)
-	new /obj/item/stack/cable_coil/cut(Tsec)
+	if(Tsec)
+		new /obj/item/stack/rods(Tsec)
+		new /obj/item/stack/rods(Tsec)
+		new /obj/item/stack/cable_coil/cut(Tsec)
 
-	if(cell)
-		cell.forceMove(Tsec)
-		cell.update_icon()
-		cell = null
+		if(cell)
+			cell.forceMove(Tsec)
+			cell.update_icon()
+			cell = null
 
 	if(buckled_mob)
 		buckled_mob.apply_effect(5, STUN)

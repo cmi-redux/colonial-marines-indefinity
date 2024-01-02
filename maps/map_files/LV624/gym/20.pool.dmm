@@ -20,7 +20,6 @@
 	pixel_x = -1;
 	pixel_y = -8
 	},
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	dir = 4;
 	icon_state = "whitepurplecorner"
@@ -52,7 +51,6 @@
 /area/lv624/lazarus/fitness)
 "hX" = (
 /obj/structure/filingcabinet/medical,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor,
 /area/lv624/lazarus/fitness)
 "ic" = (
@@ -101,7 +99,6 @@
 /area/lv624/lazarus/fitness)
 "li" = (
 /obj/effect/decal/cleanable/blood/splatter,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	dir = 4;
 	icon_state = "whitepurplecorner"
@@ -130,7 +127,6 @@
 /area/lv624/lazarus/fitness)
 "re" = (
 /obj/structure/closet/crate/secure/hydrosec,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	dir = 4;
 	icon_state = "whitepurplecorner"
@@ -194,14 +190,12 @@
 	},
 /obj/structure/surface/table,
 /obj/item/storage/box/cups,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	dir = 4;
 	icon_state = "whitepurplecorner"
 	},
 /area/lv624/lazarus/fitness)
 "zq" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	dir = 8;
 	icon_state = "barber"
@@ -250,7 +244,6 @@
 "FO" = (
 /obj/structure/surface/rack,
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	dir = 4;
 	icon_state = "whitepurplecorner"
@@ -280,7 +273,6 @@
 	},
 /area/lv624/lazarus/fitness)
 "IA" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	dir = 4;
 	icon_state = "whitepurplecorner"
@@ -318,7 +310,6 @@
 /obj/structure/machinery/light{
 	dir = 4
 	},
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	dir = 4;
 	icon_state = "whitepurplecorner"
@@ -330,7 +321,6 @@
 /obj/item/clothing/mask/snorkel,
 /obj/item/clothing/mask/snorkel,
 /obj/item/clothing/mask/snorkel,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	dir = 4;
 	icon_state = "whitepurplecorner"
@@ -352,7 +342,6 @@
 /obj/structure/machinery/light{
 	dir = 8
 	},
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	dir = 4;
 	icon_state = "whitepurplecorner"

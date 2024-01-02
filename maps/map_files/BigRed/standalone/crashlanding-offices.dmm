@@ -1435,7 +1435,6 @@
 "ej" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/trash/syndi_cakes,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	icon_state = "dark"
 	},
@@ -1529,7 +1528,6 @@
 	},
 /area/bigredv2/outside/building/office_complex)
 "Vg" = (
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/shuttle/dropship{
 	icon_state = "floor8";
 	tag = "icon-rasputin7"

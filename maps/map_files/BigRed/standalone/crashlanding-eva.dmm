@@ -1239,7 +1239,6 @@
 	},
 /area/bigredv2/outside/building/general_offices)
 "oB" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	icon_state = "dark";
 	tag = "icon-dark"
@@ -1264,7 +1263,6 @@
 	},
 /area/bigredv2/outside/building/general_offices)
 "Kf" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},

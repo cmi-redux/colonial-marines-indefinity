@@ -176,7 +176,8 @@
 	var/display_color = "white"
 	var/disk_color = "White"
 
-/obj/item/disk/objective/Initialize(mapload, ...)
+/obj/item/disk/objective/Initialize(mapload, _faction_to_get)
+	faction_to_get = _faction_to_get
 	. = ..()
 	var/diskvar = rand(1,15)
 	icon_state = "disk_[diskvar]"
@@ -206,8 +207,8 @@
 
 	label = "[pick(greek_letters)]-[rand(100,999)]"
 	name = "[disk_color] computer disk [label]"
-	objective = new /datum/cm_objective/retrieve_data/disk(src)
-	retrieve_objective = new /datum/cm_objective/retrieve_item/document(src)
+	objective = new /datum/cm_objective/retrieve_data/disk(faction_to_get, src)
+	retrieve_objective = new /datum/cm_objective/retrieve_item/document(faction_to_get, src)
 	pixel_y = rand(-8, 8)
 	pixel_x = rand(-9, 9)
 	w_class = SIZE_TINY

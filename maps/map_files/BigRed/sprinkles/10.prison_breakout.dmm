@@ -68,7 +68,6 @@
 /area/bigredv2/outside/n)
 "ak" = (
 /obj/structure/pipes/vents/pump,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	icon_state = "white";
 	tag = "icon-white"
@@ -670,7 +669,6 @@
 /area/bigredv2/outside/building/marshal_office)
 "bO" = (
 /obj/structure/surface/table,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	icon_state = "darkish";
 	tag = "icon-darkish"
@@ -708,7 +706,6 @@
 "bT" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "dark"
 	},
@@ -1201,33 +1198,28 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor,
 /area/bigredv2/outside/building/marshal_office)
 "gJ" = (
 /obj/structure/closet/secure_closet/brig,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	icon_state = "dark"
 	},
 /area/bigredv2/outside/building/marshal_office)
 "ix" = (
 /obj/structure/closet/secure_closet/brig,
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor{
 	icon_state = "dark"
 	},
 /area/bigredv2/outside/building/marshal_office)
 "qm" = (
 /obj/structure/bed,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	icon_state = "dark"
 	},
 /area/bigredv2/outside/building/marshal_office)
 "zX" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	icon_state = "dark"
 	},

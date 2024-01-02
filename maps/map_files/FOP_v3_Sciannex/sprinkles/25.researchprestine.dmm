@@ -267,7 +267,6 @@
 	dir = 8;
 	pixel_x = -12
 	},
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "whitepurple"
@@ -427,7 +426,6 @@
 	dir = 4;
 	pixel_x = 12
 	},
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	dir = 6;
 	icon_state = "whitepurple"
@@ -716,7 +714,6 @@
 	},
 /area/template_noop)
 "Qc" = (
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	dir = 9;
 	icon_state = "whitepurple"
@@ -786,7 +783,6 @@
 	dir = 8;
 	pixel_y = 8
 	},
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	dir = 5;
 	icon_state = "whitepurple"

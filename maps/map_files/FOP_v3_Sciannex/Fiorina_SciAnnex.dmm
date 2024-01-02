@@ -265,7 +265,6 @@
 	},
 /area/fiorina/station/chapel)
 "ahm" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison,
 /area/fiorina/station/flight_deck)
 "aic" = (
@@ -445,7 +444,6 @@
 /obj/item/pamphlet/engineer,
 /obj/structure/closet,
 /obj/item/handcuffs,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "darkredfull2"
 	},
@@ -603,7 +601,6 @@
 	},
 /area/fiorina/station/civres_blue)
 "arl" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/plating/prison,
 /area/fiorina/station/lowsec)
 "arn" = (
@@ -884,7 +881,6 @@
 	icon_state = "abed"
 	},
 /obj/item/explosive/grenade/incendiary/molotov,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "yellow"
@@ -1701,7 +1697,6 @@
 	pixel_x = -8;
 	pixel_y = 4
 	},
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -2428,7 +2423,6 @@
 /area/fiorina/station/medbay)
 "bxV" = (
 /obj/item/clothing/head/cmcap,
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/wood,
 /area/fiorina/station/chapel)
 "bya" = (
@@ -2516,7 +2510,6 @@
 /obj/item/tool/shovel/snow,
 /obj/item/device/flashlight,
 /obj/structure/surface/rack,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "sterile_white"
@@ -2675,7 +2668,6 @@
 /obj/item/reagent_container/food/snacks/meat/human,
 /obj/item/reagent_container/food/snacks/meat/human,
 /obj/structure/machinery/light/double/blue,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "kitchen"
@@ -2793,7 +2785,6 @@
 /obj/structure/bed{
 	icon_state = "abed"
 	},
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "yellow"
@@ -2801,7 +2792,6 @@
 /area/fiorina/station/lowsec)
 "bIR" = (
 /obj/structure/closet/secure_closet/security,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "darkredfull2"
 	},
@@ -2857,7 +2847,6 @@
 "bLA" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/device/flashlight,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/plating/prison,
 /area/fiorina/station/security/wardens)
 "bLE" = (
@@ -3087,7 +3076,6 @@
 "bQW" = (
 /obj/item/frame/rack,
 /obj/item/stack/medical/bruise_pack,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "redfull"
 	},
@@ -3208,7 +3196,6 @@
 	},
 /area/fiorina/lz/near_lzI)
 "bTr" = (
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	dir = 9;
 	icon_state = "whitepurple"
@@ -3597,7 +3584,6 @@
 	pixel_x = 6;
 	pixel_y = 12
 	},
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -3759,7 +3745,6 @@
 	health = 80
 	},
 /obj/structure/filingcabinet,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "whitegreenfull"
@@ -3884,7 +3869,6 @@
 /obj/structure/bed/chair/comfy{
 	dir = 4
 	},
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	dir = 6;
 	icon_state = "blue"
@@ -4271,7 +4255,6 @@
 	},
 /area/fiorina/tumor/ice_lab)
 "cGR" = (
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/wood,
 /area/fiorina/station/park)
 "cGS" = (
@@ -4443,7 +4426,6 @@
 "cKH" = (
 /obj/structure/closet/bodybag,
 /obj/effect/decal/cleanable/blood/gibs/up,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison,
 /area/fiorina/station/lowsec)
 "cKJ" = (
@@ -4498,7 +4480,6 @@
 	},
 /area/fiorina/station/security)
 "cLS" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "floor_plate"
@@ -4637,7 +4618,6 @@
 "cRl" = (
 /obj/structure/closet/secure_closet/security_empty,
 /obj/item/book/manual/security_space_law,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "darkredfull2"
 	},
@@ -4690,7 +4670,6 @@
 /area/fiorina/lz/near_lzII)
 "cSh" = (
 /obj/structure/closet/secure_closet/hydroponics,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 9;
 	icon_state = "greenfull"
@@ -4825,7 +4804,6 @@
 /obj/structure/closet/crate/trashcart,
 /obj/item/storage/pill_bottle/dexalin/skillless,
 /obj/effect/spawner/random/gun/special/midchance,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/plating/prison,
 /area/fiorina/maintenance)
 "cYS" = (
@@ -5041,7 +5019,6 @@
 	pixel_x = 10;
 	pixel_y = 13
 	},
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	dir = 4;
 	icon_state = "darkbrown2"
@@ -5423,7 +5400,6 @@
 	},
 /area/fiorina/station/flight_deck)
 "drk" = (
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -6288,7 +6264,6 @@
 	},
 /area/fiorina/station/medbay)
 "dVR" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -6314,7 +6289,6 @@
 /turf/open/floor/plating/prison,
 /area/fiorina/station/civres_blue)
 "dXi" = (
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	dir = 4;
 	icon_state = "darkpurple2"
@@ -6418,7 +6392,6 @@
 /area/fiorina/tumor/aux_engi)
 "dZo" = (
 /obj/structure/closet/secure_closet/engineering_materials,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -6426,7 +6399,6 @@
 "dZu" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/card/id/guest,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "redfull"
 	},
@@ -6561,7 +6533,6 @@
 /area/fiorina/oob)
 "efk" = (
 /obj/effect/decal/cleanable/blood/drip,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/plating/prison,
 /area/fiorina/station/chapel)
 "efl" = (
@@ -6730,7 +6701,6 @@
 /area/fiorina/station/telecomm/lz1_tram)
 "eki" = (
 /obj/structure/filingcabinet,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/wood,
 /area/fiorina/station/security/wardens)
 "ekx" = (
@@ -6956,7 +6926,6 @@
 /turf/open/floor/plating/prison,
 /area/fiorina/tumor/servers)
 "erw" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -7411,7 +7380,6 @@
 /area/fiorina/lz/near_lzI)
 "eET" = (
 /obj/structure/closet/secure_closet/freezer/fridge/full,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "kitchen"
 	},
@@ -7596,7 +7564,6 @@
 	},
 /area/fiorina/station/lowsec)
 "eJK" = (
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -8248,7 +8215,6 @@
 /obj/structure/closet,
 /obj/item/stack/cable_coil,
 /obj/item/storage/pill_bottle/peridaxon/skillless,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/plating/prison,
 /area/fiorina/maintenance)
 "fdu" = (
@@ -8457,7 +8423,6 @@
 /turf/open/floor/plating/prison,
 /area/fiorina/tumor/aux_engi)
 "fmE" = (
-/obj/effect/landmark/objective_landmark/medium,
 /obj/structure/closet/secure_closet/engineering_personal,
 /turf/open/floor/prison{
 	dir = 1;
@@ -8494,12 +8459,10 @@
 	dir = 4
 	},
 /obj/structure/filingcabinet,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison,
 /area/fiorina/station/power_ring)
 "fop" = (
 /obj/structure/surface/rack,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "whitegreenfull"
@@ -8973,7 +8936,6 @@
 "fCZ" = (
 /obj/structure/closet/crate/medical,
 /obj/item/clothing/mask/cigarette/pipe,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/plating/prison,
 /area/fiorina/station/power_ring)
 "fDb" = (
@@ -9355,7 +9317,6 @@
 	dir = 8;
 	pixel_y = 8
 	},
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -9591,7 +9552,6 @@
 /turf/closed/wall/mineral/bone_resin,
 /area/fiorina/tumor/servers)
 "fXW" = (
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	dir = 8;
 	icon_state = "bluecorner"
@@ -9888,7 +9848,6 @@
 /area/fiorina/oob)
 "ghw" = (
 /obj/structure/bed/chair/dropship/pilot,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -10025,7 +9984,6 @@
 "gmN" = (
 /obj/structure/closet/secure_closet/engineering_materials,
 /obj/effect/spawner/random/gun/smg,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	icon_state = "darkbrownfull2"
 	},
@@ -10158,7 +10116,6 @@
 /area/fiorina/maintenance)
 "gsU" = (
 /obj/structure/closet/secure_closet/engineering_welding,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "darkbrownfull2"
 	},
@@ -10264,7 +10221,6 @@
 /area/fiorina/tumor/civres)
 "gve" = (
 /obj/structure/filingcabinet,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	dir = 4;
 	icon_state = "greenfull"
@@ -10874,7 +10830,6 @@
 	req_access_txt = "100"
 	},
 /obj/effect/spawner/random/pills,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
@@ -11089,7 +11044,6 @@
 	dir = 1;
 	pixel_y = 21
 	},
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison,
 /area/fiorina/station/disco)
 "gVs" = (
@@ -11141,7 +11095,6 @@
 /area/fiorina/station/chapel)
 "gXu" = (
 /obj/structure/surface/rack,
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/plating/prison,
 /area/fiorina/station/telecomm/lz2_maint)
 "gXF" = (
@@ -11196,7 +11149,6 @@
 /area/fiorina/station/medbay)
 "gZg" = (
 /obj/structure/surface/table/reinforced/prison,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "bluefull"
 	},
@@ -11257,7 +11209,6 @@
 	},
 /area/fiorina/tumor/servers)
 "haQ" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "darkredfull2"
 	},
@@ -11568,7 +11519,6 @@
 /area/fiorina/station/security)
 "hjM" = (
 /obj/structure/filingcabinet,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -12275,7 +12225,6 @@
 /area/fiorina/station/research_cells)
 "hDb" = (
 /obj/structure/closet/secure_closet/freezer/fridge,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "kitchen"
@@ -12409,7 +12358,6 @@
 	pixel_y = 13
 	},
 /obj/effect/decal/cleanable/cobweb,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison/chapel_carpet{
 	dir = 1;
 	icon_state = "doubleside"
@@ -12417,7 +12365,6 @@
 /area/fiorina/station/chapel)
 "hHq" = (
 /obj/structure/closet/cabinet,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/wood,
 /area/fiorina/station/civres_blue)
 "hHr" = (
@@ -12453,7 +12400,6 @@
 	dir = 4;
 	pixel_y = 8
 	},
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	dir = 9;
 	icon_state = "yellow"
@@ -13285,7 +13231,6 @@
 	dir = 1;
 	pixel_y = 21
 	},
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison,
 /area/fiorina/station/medbay)
 "ihv" = (
@@ -13296,7 +13241,6 @@
 	},
 /area/fiorina/tumor/servers)
 "ihz" = (
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/plating/plating_catwalk,
 /area/fiorina/tumor/ship)
 "ihB" = (
@@ -13623,7 +13567,6 @@
 /turf/closed/wall/r_wall/prison_unmeltable,
 /area/fiorina/station/park)
 "itW" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/organic/grass{
 	desc = "It'll get in your shoes no matter what you do.";
 	name = "astroturf"
@@ -13960,7 +13903,6 @@
 /area/fiorina/station/botany)
 "iDO" = (
 /obj/structure/surface/table/reinforced/prison,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -14275,7 +14217,6 @@
 /area/fiorina/lz/near_lzI)
 "iON" = (
 /obj/structure/closet/bombcloset,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	icon_state = "darkbrownfull2"
 	},
@@ -14426,7 +14367,6 @@
 "iTr" = (
 /obj/structure/closet/basketball,
 /obj/item/storage/pill_bottle/tramadol/skillless,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	icon_state = "darkpurplefull2"
 	},
@@ -14834,7 +14774,6 @@
 /area/fiorina/station/botany)
 "jhl" = (
 /obj/structure/closet/emcloset,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -16706,7 +16645,6 @@
 /obj/structure/closet/wardrobe/orange,
 /obj/item/explosive/mine/pmc,
 /obj/effect/spawner/random/gun/smg,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "yellowfull"
 	},
@@ -17826,7 +17764,6 @@
 /area/fiorina/station/medbay)
 "kYz" = (
 /obj/structure/closet/crate/medical,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -18002,7 +17939,6 @@
 "ldd" = (
 /obj/structure/surface/table/woodentable/fancy,
 /obj/item/stack/rods,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 4;
 	icon_state = "greenfull"
@@ -18531,7 +18467,6 @@
 /area/fiorina/station/park)
 "ltz" = (
 /obj/structure/surface/table/reinforced/prison,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 1;
 	icon_state = "blue_plate"
@@ -18980,7 +18915,6 @@
 /area/fiorina/tumor/aux_engi)
 "lFM" = (
 /obj/structure/surface/table/reinforced/prison,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 4;
 	icon_state = "darkyellowfull2"
@@ -19298,7 +19232,6 @@
 /area/fiorina/station/transit_hub)
 "lQJ" = (
 /obj/structure/closet/emcloset,
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "darkbrown2"
@@ -19640,7 +19573,6 @@
 	pixel_y = 6
 	},
 /obj/item/card/id/guest,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "redfull"
 	},
@@ -19842,7 +19774,6 @@
 /obj/item/tool/soap/syndie,
 /obj/structure/closet/crate/trashcart,
 /obj/effect/spawner/random/gun/special,
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "kitchen"
@@ -19915,7 +19846,6 @@
 	dir = 8;
 	pixel_x = -12
 	},
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "whitepurple"
@@ -20067,7 +19997,6 @@
 /area/fiorina/station/park)
 "msF" = (
 /obj/structure/closet/secure_closet/engineering_materials,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -20169,7 +20098,6 @@
 "mvY" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/effect/spawner/random/tool,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	icon_state = "darkbrownfull2"
 	},
@@ -20249,7 +20177,6 @@
 /area/fiorina/station/chapel)
 "myf" = (
 /obj/structure/filingcabinet,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison,
 /area/fiorina/lz/near_lzI)
 "myi" = (
@@ -20282,7 +20209,6 @@
 "myJ" = (
 /obj/structure/closet/bombcloset,
 /obj/effect/spawner/random/gun/rifle/midchance,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	dir = 6;
 	icon_state = "darkyellow2"
@@ -20376,7 +20302,6 @@
 /area/fiorina/station/power_ring)
 "mAS" = (
 /obj/structure/surface/table/reinforced/prison,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "sterile_white"
@@ -20612,7 +20537,6 @@
 "mJg" = (
 /obj/structure/closet/secure_closet/engineering_personal,
 /obj/item/storage/pill_bottle/inaprovaline/skillless,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "darkbrownfull2"
 	},
@@ -20652,7 +20576,6 @@
 /area/fiorina/station/lowsec)
 "mKo" = (
 /obj/structure/closet/secure_closet/engineering_personal,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 1;
 	icon_state = "darkbrown2"
@@ -20797,7 +20720,6 @@
 	},
 /area/fiorina/station/power_ring)
 "mOI" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -21293,7 +21215,6 @@
 /area/fiorina/oob)
 "nfZ" = (
 /obj/structure/closet/firecloset,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison,
 /area/fiorina/station/medbay)
 "nga" = (
@@ -21696,7 +21617,6 @@
 "ntf" = (
 /obj/item/implanter/compressed,
 /obj/structure/safe,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	icon_state = "redfull"
 	},
@@ -21823,7 +21743,6 @@
 /area/fiorina/station/botany)
 "nvK" = (
 /obj/structure/surface/rack,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison,
 /area/fiorina/tumor/aux_engi)
 "nvX" = (
@@ -22694,7 +22613,6 @@
 	pixel_x = -10;
 	pixel_y = 13
 	},
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "darkbrown2"
@@ -23035,7 +22953,6 @@
 	dir = 1;
 	pixel_y = 21
 	},
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	dir = 4;
 	icon_state = "greenfull"
@@ -23498,7 +23415,6 @@
 "otz" = (
 /obj/structure/closet/crate/medical,
 /obj/item/storage/fancy/vials/random,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "whitegreenfull"
@@ -23798,7 +23714,6 @@
 /obj/item/stack/sheet/metal/medium_stack,
 /obj/item/fuelCell,
 /obj/item/stack/sheet/plasteel,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "bluefull"
 	},
@@ -24090,7 +24005,6 @@
 	},
 /area/fiorina/station/research_cells)
 "oKq" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/plating/prison,
 /area/fiorina/tumor/civres)
 "oKV" = (
@@ -24100,7 +24014,6 @@
 	},
 /area/fiorina/station/civres_blue)
 "oLF" = (
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	icon_state = "darkbrown2"
 	},
@@ -24552,7 +24465,6 @@
 	pixel_x = 7;
 	pixel_y = 14
 	},
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/plating/prison,
 /area/fiorina/station/medbay)
 "oZS" = (
@@ -24673,7 +24585,6 @@
 "pcK" = (
 /obj/structure/surface/rack,
 /obj/item/reagent_container/food/drinks/cans/aspen,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/plating/prison,
 /area/fiorina/station/chapel)
 "pcN" = (
@@ -24825,7 +24736,6 @@
 /obj/structure/filingcabinet/filingcabinet{
 	pixel_x = -8
 	},
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "sterile_white"
@@ -24850,7 +24760,6 @@
 /area/fiorina/station/security)
 "pjT" = (
 /obj/structure/surface/table/reinforced/prison,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/plating/prison,
 /area/fiorina/station/power_ring)
 "pjW" = (
@@ -25602,7 +25511,6 @@
 	opened = 1
 	},
 /obj/item/organ/eyes,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison,
 /area/fiorina/station/medbay)
 "pNI" = (
@@ -25645,7 +25553,6 @@
 /area/fiorina/tumor/servers)
 "pQc" = (
 /obj/structure/closet/basketball,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "sterile_white"
@@ -25798,7 +25705,6 @@
 /obj/item/storage/bible/hefa{
 	pixel_y = 3
 	},
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/wood,
 /area/fiorina/station/chapel)
 "pVY" = (
@@ -26070,7 +25976,6 @@
 	},
 /area/fiorina/station/telecomm/lz1_tram)
 "qet" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -26130,7 +26035,6 @@
 /area/fiorina/station/civres_blue)
 "qfi" = (
 /obj/structure/closet/secure_closet/personal,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	icon_state = "darkpurplefull2"
 	},
@@ -26668,7 +26572,6 @@
 	pixel_y = 18
 	},
 /obj/item/clothing/gloves/combat,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	dir = 1;
 	icon_state = "whitepurple"
@@ -26680,7 +26583,6 @@
 	dir = 1;
 	pixel_y = 21
 	},
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -26785,7 +26687,6 @@
 /area/fiorina/station/park)
 "qBI" = (
 /obj/structure/surface/table/reinforced/prison,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	icon_state = "darkredfull2"
 	},
@@ -26802,7 +26703,6 @@
 	dir = 4;
 	pixel_x = 12
 	},
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	dir = 6;
 	icon_state = "whitepurple"
@@ -27343,7 +27243,6 @@
 /area/fiorina/lz/near_lzII)
 "qQj" = (
 /obj/structure/surface/rack,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/plating/prison,
 /area/fiorina/station/telecomm/lz2_maint)
 "qQl" = (
@@ -27351,7 +27250,6 @@
 /area/fiorina/station/telecomm/lz1_tram)
 "qQt" = (
 /obj/structure/surface/rack,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/plating/prison,
 /area/fiorina/maintenance)
 "qQy" = (
@@ -27515,7 +27413,6 @@
 	},
 /area/fiorina/station/disco)
 "qVW" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison,
 /area/fiorina/station/park)
 "qXj" = (
@@ -27794,7 +27691,6 @@
 /turf/closed/wall/prison,
 /area/fiorina/station/civres_blue)
 "rjy" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "kitchen"
@@ -28035,7 +27931,6 @@
 /area/fiorina/station/civres_blue)
 "rqY" = (
 /obj/structure/filingcabinet/disk,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	icon_state = "darkpurplefull2"
 	},
@@ -28257,7 +28152,6 @@
 /area/fiorina/station/lowsec)
 "rAm" = (
 /obj/structure/surface/rack,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/plating/prison,
 /area/fiorina/station/telecomm/lz2_maint)
 "rAw" = (
@@ -28566,7 +28460,6 @@
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/fiorina/station/chapel)
 "rMo" = (
-/obj/effect/landmark/objective_landmark/far,
 /obj/structure/closet/secure_closet/engineering_personal,
 /turf/open/floor/prison{
 	dir = 1;
@@ -28575,7 +28468,6 @@
 /area/fiorina/maintenance)
 "rMq" = (
 /obj/structure/closet/secure_closet/medical3,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "whitegreenfull"
@@ -28656,7 +28548,6 @@
 "rPd" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/stack/sheet/metal/medium_stack,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -28724,7 +28615,6 @@
 "rQd" = (
 /obj/structure/closet,
 /obj/item/stack/cable_coil,
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/plating/prison,
 /area/fiorina/maintenance)
 "rQu" = (
@@ -28841,7 +28731,6 @@
 	},
 /area/fiorina/tumor/servers)
 "rUA" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/plating/prison,
 /area/fiorina/tumor/fiberbush)
 "rUQ" = (
@@ -28872,7 +28761,6 @@
 /area/fiorina/station/flight_deck)
 "rVp" = (
 /obj/structure/closet/secure_closet/engineering_welding,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 6;
 	icon_state = "darkbrown2"
@@ -28981,7 +28869,6 @@
 /area/fiorina/station/power_ring)
 "rZI" = (
 /obj/structure/surface/rack,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "whitegreenfull"
@@ -29284,7 +29171,6 @@
 	pixel_y = 3
 	},
 /obj/structure/surface/table/woodentable,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/carpet,
 /area/fiorina/station/civres_blue)
 "shh" = (
@@ -29301,7 +29187,6 @@
 /turf/open/floor/prison,
 /area/fiorina/station/central_ring)
 "sia" = (
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -29539,7 +29424,6 @@
 /area/fiorina/station/civres_blue)
 "spb" = (
 /obj/structure/closet/secure_closet/hydroponics,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	dir = 9;
 	icon_state = "greenfull"
@@ -29825,7 +29709,6 @@
 	},
 /area/fiorina/station/lowsec)
 "sxk" = (
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison,
 /area/fiorina/tumor/servers)
 "sxE" = (
@@ -30124,7 +30007,6 @@
 	},
 /area/fiorina/station/research_cells)
 "sHL" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 4;
 	icon_state = "greenfull"
@@ -30595,7 +30477,6 @@
 	},
 /area/fiorina/station/chapel)
 "sUt" = (
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/prison,
 /area/fiorina/station/park)
 "sUV" = (
@@ -31188,7 +31069,6 @@
 	pixel_x = -8;
 	pixel_y = 4
 	},
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -31353,7 +31233,6 @@
 "tpt" = (
 /obj/structure/closet/wardrobe/chaplain_black,
 /obj/effect/spawner/random/goggles,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison/chapel_carpet,
 /area/fiorina/station/chapel)
 "tpw" = (
@@ -31623,7 +31502,6 @@
 	dir = 1;
 	pixel_y = 24
 	},
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	dir = 8;
 	icon_state = "darkbrown2"
@@ -31882,7 +31760,6 @@
 /area/fiorina/station/medbay)
 "tHJ" = (
 /obj/structure/closet/firecloset,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	dir = 9;
 	icon_state = "darkbrown2"
@@ -32265,7 +32142,6 @@
 "tUG" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/storage/toolbox/mechanical/green,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "darkbrownfull2"
 	},
@@ -32686,7 +32562,6 @@
 	pixel_x = 1;
 	pixel_y = 3
 	},
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison,
 /area/fiorina/station/power_ring)
 "ugT" = (
@@ -33189,7 +33064,6 @@
 /area/fiorina/station/security)
 "uyp" = (
 /obj/structure/filingcabinet,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison,
 /area/fiorina/lz/near_lzI)
 "uyw" = (
@@ -33939,7 +33813,6 @@
 	pixel_x = 10;
 	pixel_y = -3
 	},
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	dir = 4;
 	icon_state = "greenfull"
@@ -34358,7 +34231,6 @@
 "vjl" = (
 /obj/structure/closet/crate/trashcart,
 /obj/effect/spawner/random/tool,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/plating/prison,
 /area/fiorina/station/power_ring)
 "vjq" = (
@@ -34383,7 +34255,6 @@
 /obj/effect/spawner/random/gun/special/midchance,
 /obj/item/clothing/suit/armor/det_suit,
 /obj/item/attachable/magnetic_harness,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/wood,
 /area/fiorina/station/civres_blue)
 "vki" = (
@@ -34806,7 +34677,6 @@
 	},
 /area/fiorina/station/civres_blue)
 "vwt" = (
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/plating/prison,
 /area/fiorina/tumor/civres)
 "vwx" = (
@@ -34860,7 +34730,6 @@
 	},
 /area/fiorina/tumor/ship)
 "vxu" = (
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	dir = 1;
 	icon_state = "darkbrown2"
@@ -35119,7 +34988,6 @@
 /area/fiorina/tumor/aux_engi)
 "vFn" = (
 /obj/structure/reagent_dispensers/fueltank,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/plating/prison,
 /area/fiorina/station/power_ring)
 "vFr" = (
@@ -35169,7 +35037,6 @@
 	pixel_y = 22
 	},
 /obj/item/reagent_container/food/snacks/eat_bar,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 4;
 	icon_state = "darkyellowfull2"
@@ -35265,7 +35132,6 @@
 /area/fiorina/station/security/wardens)
 "vLe" = (
 /obj/structure/closet/toolcloset,
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/prison{
 	dir = 4;
 	icon_state = "darkbrown2"
@@ -35400,7 +35266,6 @@
 "vQC" = (
 /obj/structure/closet/crate/trashcart,
 /obj/item/storage/pill_bottle/kelotane/skillless,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison,
 /area/fiorina/station/park)
 "vQJ" = (
@@ -35754,7 +35619,6 @@
 "wcC" = (
 /obj/structure/closet/basketball,
 /obj/item/storage/pill_bottle/bicaridine/skillless,
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	icon_state = "darkpurplefull2"
 	},
@@ -36134,7 +35998,6 @@
 "wow" = (
 /obj/structure/closet/crate/medical,
 /obj/effect/spawner/random/toolbox,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},
@@ -36325,7 +36188,6 @@
 	},
 /area/fiorina/station/disco)
 "wvH" = (
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison/chapel_carpet{
 	icon_state = "doubleside"
 	},
@@ -36499,7 +36361,6 @@
 /area/fiorina/station/transit_hub)
 "wAt" = (
 /obj/structure/surface/table/reinforced/prison,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "darkredfull2"
 	},
@@ -36811,7 +36672,6 @@
 /obj/item/clothing/head/helmet/marine/veteran/ua_riot,
 /obj/item/clothing/under/marine/ua_riot,
 /obj/item/clothing/suit/storage/marine/veteran/ua_riot,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/plating/prison,
 /area/fiorina/maintenance)
 "wKb" = (
@@ -37107,7 +36967,6 @@
 	pixel_x = -6;
 	pixel_y = 4
 	},
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	icon_state = "darkredfull2"
 	},
@@ -37344,7 +37203,6 @@
 	dir = 1;
 	pixel_y = 21
 	},
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	icon_state = "floor_plate"
 	},

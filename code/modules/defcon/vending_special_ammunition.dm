@@ -1080,8 +1080,6 @@ GLOBAL_REFERENCE_LIST_INDEXED_SORTED(gears_defcon, /datum/defcon_asset, name)
 	. = ..()
 	RegisterSignal(M, list(
 		COMSIG_MOB_TAKE_DAMAGE,
-		COMSIG_HUMAN_TAKE_DAMAGE,
-		COMSIG_XENO_TAKE_DAMAGE
 	), PROC_REF(check_revive))
 
 /obj/item/device/internal_implant/rejuv/proc/check_revive(mob/living/M, list/damagedata, damagetype)
@@ -1089,8 +1087,6 @@ GLOBAL_REFERENCE_LIST_INDEXED_SORTED(gears_defcon, /datum/defcon_asset, name)
 	if((M.health - damagedata["damage"]) <= HEALTH_THRESHOLD_CRIT)
 		UnregisterSignal(M, list(
 			COMSIG_MOB_TAKE_DAMAGE,
-			COMSIG_HUMAN_TAKE_DAMAGE,
-			COMSIG_XENO_TAKE_DAMAGE
 		))
 
 		INVOKE_ASYNC(src, PROC_REF(revive), M)
@@ -1161,8 +1157,6 @@ GLOBAL_REFERENCE_LIST_INDEXED_SORTED(gears_defcon, /datum/defcon_asset, name)
 	. = ..()
 	RegisterSignal(M, list(
 		COMSIG_MOB_TAKE_DAMAGE,
-		COMSIG_HUMAN_TAKE_DAMAGE,
-		COMSIG_XENO_TAKE_DAMAGE
 	), PROC_REF(handle_damage))
 	RegisterSignal(M, COMSIG_HUMAN_BONEBREAK_PROBABILITY, PROC_REF(handle_bonebreak))
 

@@ -293,7 +293,6 @@
 	},
 /area/lv624/lazarus/hydroponics)
 "DN" = (
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/plating,
 /area/lv624/lazarus/hydroponics)
 "Ed" = (
@@ -447,14 +446,12 @@
 /area/lv624/lazarus/hydroponics)
 "OK" = (
 /obj/structure/closet/crate/hydroponics/prespawned,
-/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	icon_state = "platingdmg1"
 	},
 /area/lv624/lazarus/hydroponics)
 "OO" = (
 /obj/item/ammo_magazine/rifle/nsg23/extended,
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},

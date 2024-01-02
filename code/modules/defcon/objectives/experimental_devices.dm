@@ -32,9 +32,10 @@
 	indestructible = TRUE
 	is_objective = TRUE
 
-/obj/item/device/mass_spectrometer/adv/objective/Initialize()
+/obj/item/device/mass_spectrometer/adv/objective/Initialize(mapload, _faction_to_get)
+	faction_to_get = _faction_to_get
 	. = ..()
-	objective = new /datum/cm_objective/retrieve_item/device(src)
+	objective = new /datum/cm_objective/retrieve_item/device(faction_to_get, src)
 	name += " #[serial_number]"
 
 /obj/item/device/mass_spectrometer/adv/objective/Destroy()
@@ -49,9 +50,10 @@
 	indestructible = TRUE
 	is_objective = TRUE
 
-/obj/item/device/reagent_scanner/adv/objective/Initialize(mapload, ...)
+/obj/item/device/reagent_scanner/adv/objective/Initialize(mapload, _faction_to_get)
+	faction_to_get = _faction_to_get
 	. = ..()
-	objective = new /datum/cm_objective/retrieve_item/device(src)
+	objective = new /datum/cm_objective/retrieve_item/device(faction_to_get, src)
 	name += " #[serial_number]"
 
 /obj/item/device/reagent_scanner/adv/objective/Destroy()
@@ -66,9 +68,10 @@
 	indestructible = TRUE
 	is_objective = TRUE
 
-/obj/item/device/healthanalyzer/objective/Initialize(mapload, ...)
+/obj/item/device/healthanalyzer/objective/Initialize(mapload, _faction_to_get)
+	faction_to_get = _faction_to_get
 	. = ..()
-	objective = new /datum/cm_objective/retrieve_item/device(src)
+	objective = new /datum/cm_objective/retrieve_item/device(faction_to_get, src)
 	name += " #[serial_number]"
 
 /obj/item/device/healthanalyzer/objective/Destroy()
@@ -83,9 +86,10 @@
 	indestructible = TRUE
 	is_objective = TRUE
 
-/obj/item/device/autopsy_scanner/objective/Initialize(mapload, ...)
+/obj/item/device/autopsy_scanner/objective/Initialize(mapload, _faction_to_get)
+	faction_to_get = _faction_to_get
 	. = ..()
-	objective = new /datum/cm_objective/retrieve_item/device(src)
+	objective = new /datum/cm_objective/retrieve_item/device(faction_to_get, src)
 	name += " #[serial_number]"
 
 /obj/item/device/autopsy_scanner/objective/Destroy()

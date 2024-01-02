@@ -88,13 +88,13 @@
 					var/obj/structure/closet/closet = chosen_spawn
 					if(closet.opened)
 						continue //container is open, don't put stuff into it
-				var/obj/item/new_item = new objective_type(chosen_spawn)
+				var/obj/item/new_item = new objective_type(chosen_spawn, associated_faction)
 				chosen_spawn.contents += new_item
 				generated = TRUE
 				break
 
 			if(!generated)
-				new objective_type(chosen_spawn)
+				new objective_type(chosen_spawn, associated_faction)
 
 //TODO: Through this is datum make spawns and custom objectives, not only items (like terminals, safes and etc)
 /datum/objective_spawn_handler

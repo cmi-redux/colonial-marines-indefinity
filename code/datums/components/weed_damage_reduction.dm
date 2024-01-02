@@ -4,8 +4,6 @@
 	var/damage_mult = 1
 	var/static/list/signal_damage_types = list(
 		COMSIG_MOB_TAKE_DAMAGE,
-		COMSIG_HUMAN_TAKE_DAMAGE,
-		COMSIG_XENO_TAKE_DAMAGE
 	)
 	var/glow_color = "#ff14ff"
 	var/base_alpha = 110
