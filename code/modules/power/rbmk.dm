@@ -260,6 +260,10 @@ DEFINE_BITFIELD(reactor_flags, list(
 		C.icon_state = "summary_spared"
 	sleep(5)
 	enter_allowed = FALSE
+	for(var/shuttle_id in list(DROPSHIP_ALAMO, DROPSHIP_NORMANDY))
+		var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttle_id)
+		var/obj/structure/machinery/computer/shuttle/dropship/flight/console = shuttle.getControlConsole()
+		console.disable()
 
 /obj/structure/machinery/power/rbmk/update_icon()
 	icon_state = "reactor_off"

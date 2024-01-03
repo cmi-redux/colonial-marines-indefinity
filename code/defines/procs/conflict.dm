@@ -38,7 +38,7 @@
 		if(penetration_difference > 0)
 			if(penetration_difference <= 1) // Don't do additional damage if penetration too high
 				penetration_difference = (100 - ((penetration_difference*100) % 100))/100
-				ap_calculation_damage = (armor/2 * (damage ** penetration_difference+damage ** penetration_difference)) * (penetration * 0.01)
+				ap_calculation_damage = (armor/2 * (damage ** penetration_difference+damage ** penetration_difference)) * (penetration * 0.005)
 		else
 			ap_calculation_damage = penetration_difference*armor + damage*(1-(armor_integrity/100))
 
@@ -127,4 +127,4 @@
 	var/armor_damage = c_config.armor_integrity_damage_mult * armor_punch
 	if(armor_damage < 0)
 		armor_damage = 0
-	return armor_damage
+	return armor_damage/2

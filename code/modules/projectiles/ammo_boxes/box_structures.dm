@@ -7,6 +7,7 @@
 	var/obj/item/ammo_box/magazine/item_box
 	var/limit_per_tile = 1 //this is inherited from the item when deployed
 	layer = LOWER_ITEM_LAYER	//to not hide other items
+
 	var/can_explode = TRUE
 	var/cause_data = "взрыв ящика боеприпасов"
 	var/burning = FALSE
@@ -44,7 +45,7 @@
 	else
 		var/obj/item/ammo_magazine/AM = locate(/obj/item/ammo_magazine) in item_box.contents
 		if(item_box.overlay_ammo_type)
-			overlays += image(icon, icon_state = "base_type[item_box.overlay_ammo_type]")
+			overlays += image(text_markings_icon, icon_state = "base_type[item_box.overlay_ammo_type]")
 		if(AM.ammo_position == item_box.num_of_magazines)
 			overlays += image(icon, icon_state = "[item_box.handful][item_box.overlay_content]")
 		else if(AM.ammo_position > (item_box.num_of_magazines/2))

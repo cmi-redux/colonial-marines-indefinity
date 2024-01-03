@@ -8,6 +8,7 @@
 	var/empty = FALSE
 	var/limit_per_tile = 1	//how many you can deploy per tile
 	layer = LOWER_ITEM_LAYER	//to not hide other items
+
 	var/cause_data = "взрыва ящика боеприпасов"
 	var/shrapnel_type = /datum/ammo/bullet/shrapnel/medium
 	var/burning = FALSE

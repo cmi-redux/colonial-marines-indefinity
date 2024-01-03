@@ -42,7 +42,7 @@ SUBSYSTEM_DEF(evacuation)
 			for(var/shuttle_id in shuttles_to_check)
 				var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttle_id)
 				var/obj/structure/machinery/computer/shuttle/dropship/flight/console = shuttle.getControlConsole()
-				console.disabled = FALSE
+				console.escape_locked = FALSE
 
 		var/shuttles_report = shuttels_onboard()
 		if(shuttles_report)
