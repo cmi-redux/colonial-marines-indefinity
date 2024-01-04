@@ -34,13 +34,12 @@
 		projectile.firer = cause_data?.resolve_mob()
 		projectile.ammo = GLOB.ammo_list[shrapnel_type]
 		projectile.bullet_ready_to_fire(source_mob, weapon_source_mob = source_mob)
-		if(!(ignore_source_mob && mob_standing_on_turf == source_mob) && mob_standing_on_turf && prob(100*on_hit_coefficient)) //if a non-prone mob is on the same turf as the shrapnel explosion, some of the shrapnel hits him
-			projectile.ammo.on_hit_mob(mob_standing_on_turf, projectile)
-			projectile.handle_mob(mob_standing_on_turf)
-		else if (!(ignore_source_mob && mob_lying_on_turf == source_mob) && mob_lying_on_turf && prob(100*on_hit_coefficient))
-			projectile.ammo.on_hit_mob(mob_lying_on_turf, projectile)
-			projectile.handle_mob(mob_lying_on_turf)
-		else
-			var/angle = initial_angle + i*angle_increment + rand(-angle_randomization,angle_randomization)
-			projectile.projectile_flags |= PROJECTILE_SHRAPNEL
-			projectile.fire_at(null, source_mob, source, projectile.ammo.max_range, projectile.ammo.shell_speed, null, angle)
+		if(ignore_source_mob)
+			if(mob_standing_on_turf == source_mob)
+				projectile.permutated |= mob_standing_on_turf
+			else if(mob_lying_on_turf == source_mob)
+				projectile.permutated |= mob_lying_on_turf
+
+		var/angle = initial_angle + i*angle_increment + rand(-angle_randomization,angle_randomization)
+		projectile.projectile_flags |= PROJECTILE_SHRAPNEL
+		projectile.fire_at(null, source_mob, source, projectile.ammo.max_range, projectile.ammo.shell_speed, null, angle)

@@ -180,7 +180,7 @@
 		cause_data = proj.weapon_cause_data
 		prime()
 
-/obj/item/explosive/grenade/ex_act(severity, explosion_direction, datum/cause_data/cause_data)
+/obj/item/explosive/grenade/ex_act(severity, explosion_direction, datum/cause_data/explosion_cause_data)
 	if(!explosing_check())
 		return
 	switch(severity)
@@ -188,7 +188,7 @@
 			explosing = TRUE
 			playsound(src, 'sound/effects/explosion_psss.ogg', 5, 1)
 			force = TRUE
-			cause_data = cause_data
+			cause_data = explosion_cause_data
 			prime()
 
 /obj/item/explosive/grenade/flamer_fire_act(damage, datum/cause_data/flame_cause_data)

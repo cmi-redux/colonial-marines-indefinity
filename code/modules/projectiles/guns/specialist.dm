@@ -823,20 +823,15 @@
 			msg_admin_niche("[key_name(user)] attempted to prime \a [G.name] in [get_area(src)] [ADMIN_JMP(src.loc)]")
 			return FALSE
 
-
-/obj/item/weapon/gun/launcher/grenade/afterattack(atom/target, mob/user, flag, atom/operator) //Not actually after the attack. After click, more like.
-	if(able_to_fire(user))
-		if(get_dist(target,user) <= 2)
-			var/obj/item/explosive/grenade/nade = cylinder.contents[1]
-			if(nade.dangerous)
-				to_chat(user, SPAN_WARNING("The grenade launcher beeps a warning noise. You are too close!"))
-				return
-		fire_grenade(target,user)
-		display_ammo(user)
-
-/obj/item/weapon/gun/launcher/grenade/proc/fire_grenade(atom/target, mob/user, atom/operator)
+/obj/item/weapon/gun/launcher/grenade/Fire(atom/target, mob/living/user, params, atom/operator, reflex = FALSE, dual_wield)
 	set waitfor = FALSE
 	last_fired = world.time
+
+	if(get_dist(target,user) <= 2)
+		var/obj/item/explosive/grenade/nade = cylinder.contents[1]
+		if(nade.dangerous)
+			to_chat(user, SPAN_WARNING("The grenade launcher beeps a warning noise. You are too close!"))
+			return
 
 	var/to_firer = "You fire the [name]!"
 	if(internal_slots > 1)
@@ -867,6 +862,7 @@
 	fired.activate(user, FALSE)
 	fired.forceMove(get_turf(src))
 	fired.throw_atom(target, 20, SPEED_VERY_FAST, user, null, NORMAL_LAUNCH, pass_flags)
+	display_ammo(user)
 
 /obj/item/weapon/gun/launcher/grenade/get_ammo_list()
 	if(length(cylinder.contents) == 0)

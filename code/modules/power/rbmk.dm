@@ -204,7 +204,7 @@ DEFINE_BITFIELD(reactor_flags, list(
 			return
 		if(world.time < next_warning)
 			return
-		shipwide_ai_announcement("[MAIN_AI_SYSTEM]",  "Warning, reactor overheating, required actions", 'sound/effects/rbmk/alarm.ogg')
+		shipwide_ai_announcement("Warning, reactor overheating, required actions", "[MAIN_AI_SYSTEM]", 'sound/effects/rbmk/alarm.ogg')
 		next_warning = world.time + 30 SECONDS //To avoid engis pissing people off when reaaaally trying to stop the meltdown or whatever.
 		warning = TRUE //Start warning the crew of the imminent danger.
 		playsound(src, 'sound/effects/rbmk/alarm.ogg', 25, 1, 7)

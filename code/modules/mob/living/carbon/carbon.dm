@@ -73,7 +73,7 @@
 			if(prob(max(4*(100*getBruteLoss()/maxHealth - 75),0))) //4% at 24% health, 80% at 5% health
 				last_damage_data = create_cause_data("грудолома", user)
 				gib(last_damage_data)
-	else if(!chestburst && (status_flags & XENO_HOST) && islarva(user))
+	else if((status_flags & XENO_HOST) && islarva(user))
 		var/mob/living/carbon/xenomorph/larva/L = user
 		L.chest_burst(src)
 

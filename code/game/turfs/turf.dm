@@ -67,7 +67,7 @@
 	///Blending
 	var/list/wall_connections = list("0", "0", "0", "0")
 	var/neighbors_list = 0
-	var/special_icon = 1
+	var/special_icon = TRUE
 	var/list/blend_turfs = list(/turf/closed/wall)
 	var/list/noblend_turfs = list(/turf/closed/wall/mineral, /turf/closed/wall/almayer/research/containment) //Turfs to avoid blending with
 	var/list/blend_objects = list(/obj/structure/machinery/door, /obj/structure/window_frame, /obj/structure/window/framed) // Objects which to blend with
@@ -119,7 +119,7 @@
 	if(A?.lighting_effect)
 		overlays += A.lighting_effect
 
-	update_connections(TRUE)
+	update_connections(FALSE)
 	update_icon()
 
 	return INITIALIZE_HINT_NORMAL

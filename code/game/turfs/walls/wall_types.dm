@@ -92,7 +92,7 @@
 	icon = 'icons/turf/almayer.dmi'
 	tiles_with = null
 	walltype = null
-	special_icon = 1
+	special_icon = TRUE
 
 /turf/closed/wall/almayer/research/containment/wall/ex_act(severity, explosion_direction)
 	if(severity <= EXPLOSION_THRESHOLD_MEDIUM) // Wall is resistant to explosives (and also crusher charge)
@@ -247,7 +247,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 	icon = 'icons/lobby/title_loading.dmi'
 	icon_state = "title"
 	layer = FLY_LAYER
-	special_icon = 1
+	special_icon = TRUE
 
 /turf/closed/wall/indestructible/splashscreen/Initialize()
 	. = ..()

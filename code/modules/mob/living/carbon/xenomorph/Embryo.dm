@@ -287,7 +287,7 @@
 
 /mob/living/carbon/xenomorph/larva/proc/chest_burst(mob/living/carbon/victim)
 	set waitfor = FALSE
-	if(victim.chestburst || loc != victim)
+	if(loc != victim)
 		return
 	victim.chestburst = TRUE
 	to_chat(src, SPAN_DANGER("You start bursting out of [victim]'s chest!"))
@@ -300,14 +300,12 @@
 	if(!victim || !victim.loc)
 		return//host could've been deleted, or we could've been removed from host.
 	if(loc != victim)
-		victim.chestburst = 0
 		return
 	victim.update_burst()
 	sleep(6) //Sprite delay
 	if(!victim || !victim.loc)
 		return
 	if(loc != victim)
-		victim.chestburst = 0 //if a doc removes the larva during the sleep(6), we must remove the 'bursting' overlay on the human
 		victim.update_burst()
 		return
 

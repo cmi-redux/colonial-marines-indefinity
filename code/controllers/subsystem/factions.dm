@@ -57,8 +57,10 @@ SUBSYSTEM_DEF(factions)
 /datum/controller/subsystem/factions/fire()
 	if(!current_active_run)
 		active_factions = list()
+		processing_tasks = 0
 
-		for(var/datum/faction/faction in GLOB.faction_datum)
+		for(var/faction_to_get in FACTION_LIST_ALL)
+			var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
 			if(!length(faction.totalMobs))
 				continue
 			processing_tasks += length(faction.active_tasks)

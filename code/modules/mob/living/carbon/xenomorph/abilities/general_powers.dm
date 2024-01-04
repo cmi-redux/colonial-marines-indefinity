@@ -14,7 +14,7 @@
 
 	var/turf/target_turf = xeno.loc
 
-	if(!istype(target_turf))
+	if(!istype(target_turf) || !target_turf.weather_affectable)
 		to_chat(xeno, SPAN_WARNING("You can't do that here."))
 		return
 

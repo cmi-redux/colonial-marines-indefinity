@@ -238,8 +238,8 @@
 		area_type = place?.type // We might be created in nullspace
 
 //	if(mapload)
-//		for(turf/T in return_turfs())
-//			T.flags_atom |= NO_RUINS_1
+//		for(var/turf/T in return_turfs())
+//			T.flags_1 |= NO_RUINS_1
 
 	#ifdef DOCKING_PORT_HIGHLIGHT
 	highlight("#f00")
@@ -268,9 +268,7 @@
 		if(!roundstart_template)
 			CRASH("json_key:[json_key] value \[[sid]\] resulted in a null shuttle template for [src]")
 	else if(roundstart_template) // passed a PATH
-		var/sid = "[initial(roundstart_template.shuttle_id)]"
-
-		roundstart_template = SSmapping.shuttle_templates[sid]
+		roundstart_template = SSmapping.all_shuttle_templates[roundstart_template]
 		if(!roundstart_template)
 			CRASH("Invalid path ([roundstart_template]) passed to docking port.")
 
@@ -345,6 +343,9 @@
 	var/rechargeTime = 0 //time spent after arrival before being able to launch again
 	var/prearrivalTime = 0 //delay after call time finishes for sound effects, explosions, etc.
 
+	var/playing_launch_announcement_alarm = FALSE // FALSE = off ; TRUE = on
+	var/datum/looping_sound/looping_launch_announcement_alarm/alarm_sound_loop
+
 	var/landing_sound = 'sound/effects/engine_landing.ogg'
 	var/ignition_sound = 'sound/effects/engine_startup.ogg'
 	/// Default shuttle audio ambience while flying
@@ -387,6 +388,7 @@
 
 /obj/docking_port/mobile/Destroy(force)
 	if(force)
+		QDEL_NULL(alarm_sound_loop)
 		SSshuttle.mobile -= src
 		destination = null
 		previous = null
@@ -414,6 +416,14 @@
 	initial_engines = count_engines()
 	current_engines = initial_engines
 
+	//Launch Announcement Alarm variables setup
+	alarm_sound_loop = new(src)
+	alarm_sound_loop.mid_length = 20
+	alarm_sound_loop.extra_range = 30
+	alarm_sound_loop.volume = 100
+	alarm_sound_loop.is_sound_projecting = TRUE
+	alarm_sound_loop.falloff_distance = 7
+
 	#ifdef DOCKING_PORT_HIGHLIGHT
 	highlight("#0f0")
 	#endif
@@ -435,7 +445,7 @@
 // Called after the shuttle is loaded from template
 /obj/docking_port/mobile/proc/linkup(datum/map_template/shuttle/template, obj/docking_port/stationary/dock)
 	var/list/static/shuttle_id = list()
-	var/idnum = ++shuttle_id[template]
+	var/idnum = ++shuttle_id[id]
 	if(idnum > 1)
 		if(id == initial(id))
 			id = "[id][idnum]"
@@ -614,7 +624,7 @@
 		var/turf/oldT = old_turfs[i]
 		if(!oldT || !istype(oldT.loc, area_type))
 			continue
-//		var/area/old_area = oldT.loc
+		// var/area/old_area = oldT.loc
 		underlying_area.contents += oldT
 		//oldT.change_area(old_area, underlying_area) //lighting
 		oldT.empty(FALSE)
@@ -626,7 +636,7 @@
 				oldT.ScrapeAway(baseturf_cache.len - k + 1)
 				break
 
-	qdel(src, force = TRUE)
+	qdel(src, force=TRUE)
 
 /obj/docking_port/mobile/proc/intoTheSunset()
 	// Loop over mobs
@@ -835,7 +845,7 @@
 		return "recharging, [timeLeft()] seconds remaining"
 
 	if(istype(dockedAt, /obj/docking_port/stationary/transit))
-		if(timeLeft() > 1 HOURS)
+		if (timeLeft() > 1 HOURS)
 			return "hyperspace"
 		else
 			var/obj/docking_port/stationary/dst
@@ -905,9 +915,9 @@
 
 /obj/docking_port/mobile/proc/count_engines()
 	. = 0
-// for(thing in shuttle_areas)
+// for(var/thing in shuttle_areas)
 // var/area/shuttle/areaInstance = thing
-// for(obj/structure/shuttle/engine/E in areaInstance.contents)
+// for(var/obj/structure/shuttle/engine/E in areaInstance.contents)
 // if(!QDELETED(E))
 // . += E.engine_power
 
@@ -939,9 +949,9 @@
 
 /obj/docking_port/mobile/proc/in_flight()
 	switch(mode)
-		if(SHUTTLE_CALL,SHUTTLE_RECALL)
+		if(SHUTTLE_CALL, SHUTTLE_RECALL)
 			return TRUE
-		if(SHUTTLE_IDLE,SHUTTLE_IGNITING)
+		if(SHUTTLE_IDLE, SHUTTLE_IGNITING)
 			return FALSE
 		else
 			return FALSE // hmm
@@ -995,6 +1005,3 @@
 		to_chat(user, SPAN_WARNING("Shuttle already in transit."))
 		return FALSE
 	return TRUE
-
-/obj/docking_port/mobile/proc/auto_launch()
-	return

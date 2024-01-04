@@ -39,7 +39,7 @@
 	var/obj/effect/acid_hole/acided_hole //the acid hole inside the wall
 	var/acided_hole_dir = SOUTH
 
-	special_icon = 0
+	special_icon = FALSE
 
 /turf/closed/wall/add_debris_element()
 	AddElement(/datum/element/debris, DEBRIS_SPARKS, -15, 8, 1)
@@ -49,18 +49,6 @@
 	// Defer updating based on neighbors while we're still loading map
 	if(mapload && . != INITIALIZE_HINT_QDEL)
 		return INITIALIZE_HINT_LATELOAD
-	// Otherwise do it now, but defer icon update to late if it's going to happen
-	update_connections(TRUE)
-	if(. != INITIALIZE_HINT_LATELOAD)
-		update_icon()
-
-/turf/closed/wall/LateInitialize()
-	. = ..()
-	// By default this assumes being used for map late init
-	// We update without cascading changes as each wall will be updated individually
-	update_connections(FALSE)
-	update_icon()
-
 
 /turf/closed/wall/setDir(newDir)
 	..()

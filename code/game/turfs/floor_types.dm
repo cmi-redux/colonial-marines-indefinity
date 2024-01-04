@@ -323,7 +323,7 @@
 	base_icon = "roof"
 	name = "roof"
 
-	special_icon = 0
+	special_icon = FALSE
 
 /turf/open/floor/roof/ship_hull
 	icon = 'icons/turf/roofs/roof_ship.dmi'

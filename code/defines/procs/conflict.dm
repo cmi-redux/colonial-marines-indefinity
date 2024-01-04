@@ -39,8 +39,6 @@
 			if(penetration_difference <= 1) // Don't do additional damage if penetration too high
 				penetration_difference = (100 - ((penetration_difference*100) % 100))/100
 				ap_calculation_damage = (armor/2 * (damage ** penetration_difference+damage ** penetration_difference)) * (penetration * 0.005)
-		else
-			ap_calculation_damage = penetration_difference*armor + damage*(1-(armor_integrity/100))
 
 	var/armor_deflection_total = 1
 	var/effective_deflection = 1

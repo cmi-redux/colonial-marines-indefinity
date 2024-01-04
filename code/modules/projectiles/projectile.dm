@@ -54,7 +54,7 @@
 	var/list/atom/movable/uncross_scheduled = list() // List of border movable atoms to check for when exiting a turf.
 
 	var/damage = 0
-	var/accuracy = 50 //Base projectile accuracy. Can maybe be later taken from the mob if desired.
+	var/accuracy = 70 //Base projectile accuracy. Can maybe be later taken from the mob if desired.
 	var/max_range = 0
 
 	var/damage_falloff = 0 //how much effectiveness in damage the projectile loses per tiles travelled beyond the effective range
