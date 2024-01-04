@@ -160,10 +160,10 @@
 				user.apply_damage(15, BURN, "r_hand")
 
 		user.count_statistic_stat(STATISTICS_SURGERY_LARVA)
-		for(var/obj/item/alien_embryo/A in target)
-			A.forceMove(get_turf(target))
-		for(var/mob/living/carbon/xenomorph/larva/L in target)
-			L.forceMove(get_turf(target))
+		for(var/obj/item/alien_embryo/embryo in target)
+			embryo.forceMove(get_turf(target))
+		for(var/mob/living/carbon/xenomorph/larva/larva in target)
+			larva.forceMove(get_turf(target))
 		target.status_flags &= ~XENO_HOST
 
 		log_interact(user, target, "[key_name(user)] removed an embryo from [key_name(target)]'s ribcage with [tool ? "\the [tool]" : "their hands"], ending [surgery].")
