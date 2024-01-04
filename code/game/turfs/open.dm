@@ -26,7 +26,12 @@
 	update_icon()
 
 /turf/open/update_icon()
+	if(QDELETED(src))
+		return
+
 	overlays.Cut()
+
+	..()
 
 	add_cleanable_overlays()
 

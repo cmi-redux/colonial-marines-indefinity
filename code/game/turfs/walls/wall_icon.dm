@@ -3,7 +3,6 @@
 #define cur_increment(v) round((v-1)/8)+1
 
 /turf/closed/wall/update_icon()
-	..()
 	if(QDELETED(src))
 		return
 
@@ -29,9 +28,7 @@
 			overlays += I
 			return
 
-		for(var/i = 1 to 4)
-			I = image(icon, "[walltype][wall_connections[i]]", dir = 1<<(i-1))
-			overlays += I
+	..()
 
 	if(damage)
 		var/current_dmg_overlay = round(damage / damage_cap * damage_overlays.len) + 1
