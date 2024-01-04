@@ -113,12 +113,11 @@ All ShuttleMove procs go here
 	if(newT.z != oldT.z)
 		onTransitZ(oldT.z, newT.z)
 
-	for(var/datum/dynamic_light_source/light as anything in hybrid_light_sources)
-		light.source_atom.update_light()
-		if(!isturf(loc))
-			light.find_containing_atom()
-	for(var/datum/static_light_source/L as anything in static_light_sources) // Cycle through the light sources on this atom and tell them to update.
-		L.source_atom.static_update_light()
+	if(light_on)
+		if(light_system == STATIC_LIGHT)
+			static_update_light()
+		else
+			update_light()
 
 	if(rotation)
 		shuttleRotate(rotation)
