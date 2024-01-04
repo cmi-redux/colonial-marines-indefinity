@@ -5,6 +5,7 @@
 	plane = FLOOR_PLANE
 	turf_flags = TURF_MULTIZ
 	minimap_color = MINIMAP_AREA_COLONY
+	var/floortype
 	var/breakable_tile = FALSE
 	var/is_groundmap_turf = FALSE //whether this a turf used as main turf type for the 'outside' of a map.
 	var/allow_construction = TRUE //whether you can build things like barricades on this turf.

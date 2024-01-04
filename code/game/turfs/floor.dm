@@ -6,8 +6,6 @@
 	icon_state = "floor"
 	turf_flags = TURF_MULTIZ
 	baseturfs = /turf/open/floor/plating
-	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_OPEN_FLOOR)
-	canSmoothWith = list(SMOOTH_GROUP_OPEN_FLOOR, SMOOTH_GROUP_TURF_OPEN)
 	var/broken = FALSE
 	var/burnt = FALSE
 	var/mineral = "metal"

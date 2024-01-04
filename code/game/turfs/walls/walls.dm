@@ -31,8 +31,6 @@
 
 	var/current_bulletholes = null
 	var/image/bullet_overlay = null
-	var/list/wall_connections = list("0", "0", "0", "0")
-	var/neighbors_list = 0
 	var/max_temperature = 1800 //K, walls will take damage if they're next to a fire hotter than this
 	var/repair_materials = list("wood"= 0.075, "metal" = 0.15, "plasteel" = 0.3) //Max health % recovered on a nailgun repair
 
@@ -41,11 +39,7 @@
 	var/obj/effect/acid_hole/acided_hole //the acid hole inside the wall
 	var/acided_hole_dir = SOUTH
 
-	var/special_icon = 0
-	var/list/blend_turfs = list(/turf/closed/wall)
-	var/list/noblend_turfs = list(/turf/closed/wall/mineral, /turf/closed/wall/almayer/research/containment) //Turfs to avoid blending with
-	var/list/blend_objects = list(/obj/structure/machinery/door, /obj/structure/window_frame, /obj/structure/window/framed) // Objects which to blend with
-	var/list/noblend_objects = list(/obj/structure/machinery/door/window) //Objects to avoid blending with (such as children of listed blend objects.
+	special_icon = 0
 
 /turf/closed/wall/add_debris_element()
 	AddElement(/datum/element/debris, DEBRIS_SPARKS, -15, 8, 1)

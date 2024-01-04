@@ -64,6 +64,15 @@
 	///Lazylist of movable atoms providing opacity sources.
 	var/list/atom/movable/opacity_sources
 
+	///Blending
+	var/list/wall_connections = list("0", "0", "0", "0")
+	var/neighbors_list = 0
+	var/special_icon = 1
+	var/list/blend_turfs = list(/turf/closed/wall)
+	var/list/noblend_turfs = list(/turf/closed/wall/mineral, /turf/closed/wall/almayer/research/containment) //Turfs to avoid blending with
+	var/list/blend_objects = list(/obj/structure/machinery/door, /obj/structure/window_frame, /obj/structure/window/framed) // Objects which to blend with
+	var/list/noblend_objects = list(/obj/structure/machinery/door/window) //Objects to avoid blending with (such as children of listed blend objects.
+
 /turf/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE) // this doesn't parent call for optimisation reasons
 	if(flags_atom & INITIALIZED)
@@ -74,17 +83,6 @@
 	vis_contents.Cut()
 
 	turfs += src
-
-	if(length(smoothing_groups))
-		sortTim(smoothing_groups) //In case it's not properly ordered, let's avoid duplicate entries with the same values.
-		SET_BITFLAG_LIST(smoothing_groups)
-	if(length(canSmoothWith))
-		sortTim(canSmoothWith)
-		if(canSmoothWith[length(canSmoothWith)] > MAX_S_TURF) //If the last element is higher than the maximum turf-only value, then it must scan turf contents for smoothing targets.
-			smoothing_flags |= SMOOTH_OBJ
-		SET_BITFLAG_LIST(canSmoothWith)
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-		QUEUE_SMOOTH(src)
 
 	assemble_baseturfs()
 
@@ -121,7 +119,14 @@
 	if(A?.lighting_effect)
 		overlays += A.lighting_effect
 
+	update_connections(TRUE)
+	update_icon()
+
 	return INITIALIZE_HINT_NORMAL
+
+/turf/LateInitialize()
+	update_connections(FALSE)
+	update_icon()
 
 /turf/Destroy(force)
 	. = QDEL_HINT_IWILLGC
@@ -163,9 +168,6 @@
 
 /turf/ex_act(severity)
 	return 0
-
-/turf/proc/update_icon() //Base parent. - Abby
-	return
 
 /turf/proc/multiz_turf_del(turf/T, dir)
 	SEND_SIGNAL(src, COMSIG_TURF_MULTIZ_DEL, T, dir)

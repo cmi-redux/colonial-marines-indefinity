@@ -319,22 +319,19 @@
 
 /turf/open/floor/roof
 	icon = 'icons/turf/roofs/roof_asphalt.dmi'
-	icon_state = "roof-0"
+	icon_state = "roof"
 	base_icon = "roof"
 	name = "roof"
-	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_ROOF_NORMAL)
-	canSmoothWith = list(SMOOTH_GROUP_ROOF_NORMAL)
+
+	special_icon = 0
 
 /turf/open/floor/roof/ship_hull
 	icon = 'icons/turf/roofs/roof_ship.dmi'
 	name = "hull"
 	hull_floor = TRUE
-	smoothing_flags = NO_FLAGS
 
 /turf/open/floor/roof/ship_hull/lab
-	icon = 'icons/turf/roofs/roof_lab.dmi'
-	icon_state = "ship"
+	icon = 'icons/turf/roofs/roof_lab_ship.dmi'
 	name = "ship lab roof"
 
 /turf/open/floor/roof/lab
@@ -355,6 +352,8 @@
 
 /turf/open/floor/roof/sheet/noborder
 	icon = 'icons/turf/roofs/roof_sheet_noborder.dmi'
+
+	special_icon = TRUE
 
 /turf/open/floor/roof/asphalt
 	icon = 'icons/turf/roofs/roof_asphalt.dmi'

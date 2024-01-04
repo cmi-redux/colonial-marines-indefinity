@@ -21,7 +21,7 @@ GLOBAL_LIST_EMPTY(frill_objects)
 	id_arg_index = 2
 	var/icon_path
 
-
+/*
 /datum/element/frill/Attach(datum/target, icon_path)
 	if(!isturf(target) && !ismovable(target)) // Turfs and movables have vis_contents. Atoms don't. Pain.
 		return ELEMENT_INCOMPATIBLE
@@ -53,3 +53,4 @@ GLOBAL_LIST_EMPTY(frill_objects)
 		turf_or_movable.add_overlay(get_frill_object(icon_path, new_junction, pixel_y = 32))
 	else
 		turf_or_movable.add_overlay(get_frill_object(icon_path, new_junction, plane = WALL_PLANE, pixel_y = 32))
+*/
