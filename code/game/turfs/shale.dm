@@ -14,10 +14,6 @@
 	. = ..()
 	setDir(pick(GLOB.alldirs))
 
-/turf/open/shale/Initialize(mapload, ...)
-	. = ..()
-	update_icon()
-
 /turf/open/shale/underlayer
 	icon_state = "shale_1_alt"
 

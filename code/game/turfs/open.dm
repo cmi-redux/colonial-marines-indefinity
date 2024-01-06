@@ -20,23 +20,12 @@
 	var/mediumxenofootstep = FOOTSTEP_HARD
 	var/heavyxenofootstep = FOOTSTEP_GENERIC_HEAVY
 
-/turf/open/Initialize(mapload, ...)
+/turf/open/update_overlays()
 	. = ..()
-
-	update_icon()
-
-/turf/open/update_icon()
-	if(QDELETED(src))
+	if(!.)
 		return
 
-	overlays.Cut()
-
-	..()
-
 	add_cleanable_overlays()
-
-	if(turf_flags & TURF_WEATHER)
-		overlays += SSsunlighting.get_weather_overlay()
 
 	var/list/turf/open/auto_turf/auto_turf_dirs = list()
 	for(var/direction in GLOB.alldirs)
@@ -553,21 +542,14 @@
 
 	layer = UNDER_TURF_LAYER -0.03
 
-/turf/open/gm/river/Initialize(mapload, ...)
-	. = ..()
-	update_icon()
-
-/turf/open/gm/river/update_icon()
-	..()
-	update_overlays()
-
 /turf/open/gm/river/update_overlays()
 	. = ..()
-	overlays.Cut()
-	if(turf_flags & TURF_WEATHER)
-		overlays += SSsunlighting.get_weather_overlay()
+	if(!.)
+		return
+
 	if(no_overlay)
 		return
+
 	if(covered)
 		name = covered_name
 		overlays += image("icon"=src.cover_icon,"icon_state"=cover_icon_state,"layer"=CATWALK_LAYER,"dir" = dir)

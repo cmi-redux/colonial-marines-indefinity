@@ -10,9 +10,11 @@
 
 /turf/open/floor/light/update_icon()
 	. = ..()
+
 	if(broken)
 		icon_state = "light_broken" //It's the same sprite as light off, my artistic skill stops at stickmans anyone feel free to make a better one!
 		set_light_on(FALSE)
+
 	set_light_on(!light_on)
 	if(light_on) //manages color, I feel like this switch is a sin.
 		switch(state)

@@ -168,6 +168,15 @@
 		return FALSE
 	. = ..()
 
+/turf/update_overlays()
+	if(QDELETED(src))
+		return
+
+	. = ..()
+
+	if(turf_flags & TURF_WEATHER)
+		overlays += SSsunlighting.get_weather_overlay()
+
 /turf/ex_act(severity)
 	return 0
 

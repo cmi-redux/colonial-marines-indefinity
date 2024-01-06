@@ -45,7 +45,7 @@
 	. = ..()
 	new /obj/structure/snow(src, bleed_layer)
 	bleed_layer = 0
-	update_icon(1,1)
+	update_icon()
 
 /turf/open/snow/Entered(atom/movable/arrived, old_loc)
 	if(bleed_layer > 0)
@@ -65,9 +65,11 @@
 			C.next_move_slowdown = new_slowdown
 	..()
 
+/turf/open/gm/river/update_overlays()
+	. = ..()
+	if(!.)
+		return
 
-//Update icon
-/turf/open/snow/update_icon(update_full, skip_sides)
 	icon_state = "snow_[bleed_layer]"
 	setDir(pick(GLOB.alldirs))
 	switch(bleed_layer)
@@ -80,51 +82,42 @@
 		if(3)
 			name = "very deep [initial(name)]"
 
-	//Update the side overlays
-	if(update_full)
-		var/turf/open/T
-		if(!skip_sides)
-			for(var/dirn in GLOB.alldirs)
-				var/turf/open/snow/D = get_step(src,dirn)
-				if(istype(D))
-					//Update turfs that are near us, but only once
-					D.update_icon(1,1)
 
-		overlays.Cut()
+	for(var/dirn in GLOB.alldirs)
+		var/turf/open/snow/D = get_step(src,dirn)
+		if(istype(D))
+			//Update turfs that are near us, but only once
+			D.update_icon(1,1)
 
-		if(turf_flags & TURF_WEATHER)
-			overlays += SSsunlighting.get_weather_overlay()
-
-		for(var/dirn in GLOB.alldirs)
-			T = get_step(src, dirn)
-			if(istype(T))
-				if(bleed_layer > T.bleed_layer && T.bleed_layer < 1)
-					var/image/I = new('icons/turf/floors/snow2.dmi', "snow_[(dirn & (dirn-1)) ? "outercorner" : pick("innercorner", "outercorner")]", dir = dirn)
-					switch(dirn)
-						if(NORTH)
-							I.pixel_y = 32
-						if(SOUTH)
-							I.pixel_y = -32
-						if(EAST)
-							I.pixel_x = 32
-						if(WEST)
-							I.pixel_x = -32
-						if(NORTHEAST)
-							I.pixel_x = 32
-							I.pixel_y = 32
-						if(SOUTHEAST)
-							I.pixel_x = 32
-							I.pixel_y = -32
-						if(NORTHWEST)
-							I.pixel_x = -32
-							I.pixel_y = 32
-						if(SOUTHWEST)
-							I.pixel_x = -32
-							I.pixel_y = -32
-
-					I.layer = layer + 0.001 + bleed_layer * 0.0001
-					overlays += I
-
+	var/turf/open/T
+	for(var/dirn in GLOB.alldirs)
+		T = get_step(src, dirn)
+		if(istype(T))
+			if(bleed_layer > T.bleed_layer && T.bleed_layer < 1)
+				var/image/I = new('icons/turf/floors/snow2.dmi', "snow_[(dirn & (dirn-1)) ? "outercorner" : pick("innercorner", "outercorner")]", dir = dirn)
+				switch(dirn)
+					if(NORTH)
+						I.pixel_y = 32
+					if(SOUTH)
+						I.pixel_y = -32
+					if(EAST)
+						I.pixel_x = 32
+					if(WEST)
+						I.pixel_x = -32
+					if(NORTHEAST)
+						I.pixel_x = 32
+						I.pixel_y = 32
+					if(SOUTHEAST)
+						I.pixel_x = 32
+						I.pixel_y = -32
+					if(NORTHWEST)
+						I.pixel_x = -32
+						I.pixel_y = 32
+					if(SOUTHWEST)
+						I.pixel_x = -32
+						I.pixel_y = -32
+				I.layer = layer + 0.001 + bleed_layer * 0.0001
+				overlays += I
 
 //Explosion act
 /turf/open/snow/ex_act(severity)
@@ -132,15 +125,15 @@
 		if(0 to EXPLOSION_THRESHOLD_LOW)
 			if(prob(20) && bleed_layer)
 				bleed_layer--
-				update_icon(1, 0)
+				update_icon()
 		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
 			if(prob(60) && bleed_layer)
 				bleed_layer = max(bleed_layer - 2, 0)
-				update_icon(1, 0)
+				update_icon()
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
 			if(bleed_layer)
 				bleed_layer = 0
-				update_icon(1, 0)
+				update_icon()
 
 //SNOW LAYERS-----------------------------------//
 /turf/open/snow/layer0

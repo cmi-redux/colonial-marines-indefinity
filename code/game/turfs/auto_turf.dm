@@ -20,7 +20,11 @@
 	return TRUE //xenos can tunnel
 
 //Update icon
-/turf/open/auto_turf/update_icon()
+/turf/open/auto_turf/update_overlays()
+	. = ..()
+	if(!.)
+		return
+
 	if(variant && (bleed_layer == initial(bleed_layer)))
 		icon_state = "[icon_prefix]_[bleed_layer]_[variant]"
 	else
@@ -44,8 +48,6 @@
 		name = variant_prefix_name + " " + name_to_set
 	else
 		name = name_to_set
-
-	..()
 
 /turf/open/auto_turf/proc/changing_layer(new_layer)
 	if(isnull(new_layer) || new_layer == bleed_layer)
@@ -154,6 +156,7 @@
 
 /turf/open/auto_turf/snow/Initialize()
 	. = ..()
+
 	if(bleed_layer)
 		new /obj/structure/snow(src, bleed_layer)
 		bleed_layer = 0

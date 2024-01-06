@@ -140,8 +140,11 @@
 	icon_state = base_state
 	update_icon()
 
-/turf/open/floor/plating/plating_catwalk/update_icon()
+/turf/open/floor/plating/plating_catwalk/update_overlays()
 	. = ..()
+	if(!.)
+		return
+
 	if(covered)
 		overlays += image(icon, src, "catwalk", CATWALK_LAYER)
 
@@ -506,6 +509,7 @@
 
 /turf/open/floor/grass/update_icon()
 	. = ..()
+
 	if(!broken && !burnt)
 		if(!(icon_state in list("grass1", "grass2", "grass3", "grass4")))
 			icon_state = "grass[pick("1", "2", "3", "4")]"

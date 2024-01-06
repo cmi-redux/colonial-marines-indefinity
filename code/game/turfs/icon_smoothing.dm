@@ -1,8 +1,8 @@
 /turf/proc/update_icon() //Base parent. - Abby
 	if(QDELETED(src))
-		return
+		return FALSE
 
-	overlays.Cut()
+	update_overlays()
 
 	//smooth wall stuff
 	if(!special_icon)

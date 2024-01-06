@@ -135,6 +135,9 @@
 	for(var/obj/effect/decal/cleanable/decal in target_turf)
 		qdel(decal)
 
+	if(target_turf.snow && prob(probability * 0.25))
+		snow.damage_act(1)
+
 /datum/weather_effect/snow
 	name = "snow effect"
 	probability = 40

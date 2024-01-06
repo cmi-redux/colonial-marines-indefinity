@@ -28,10 +28,14 @@
 		/obj/structure/machinery/cm_vending/sorted/cargo_guns/blend,
 	)
 
-/turf/closed/wall/almayer/update_icon()
-	..()
+/turf/closed/wall/almayer/update_overlays()
+	. = ..()
+	if(!.)
+		return
+
 	if(special_icon)
 		return
+
 	if(neighbors_list in list(EAST|WEST))
 		var/r1 = rand(0, 10) //Make a random chance for this to happen
 		var/r2 = rand(0, 3) // Which wall if we do choose it
@@ -459,10 +463,14 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 /turf/closed/wall/wood/add_debris_element()
 	AddElement(/datum/element/debris, DEBRIS_WOOD, -10, 5)
 
-/turf/closed/wall/wood/update_icon()
-	..()
+/turf/closed/wall/wood/update_overlays()
+	. = ..()
+	if(!.)
+		return
+
 	if(special_icon)
 		return
+
 	if(neighbors_list in list(EAST|WEST))
 		var/r1 = rand(0,10) //Make a random chance for this to happen
 		if(r1 >= 9)

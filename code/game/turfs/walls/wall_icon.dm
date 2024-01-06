@@ -2,19 +2,15 @@
 //Formulas. These don't need to be defines, but helpful green. Should likely reuse these for a base 8 icon system.
 #define cur_increment(v) round((v-1)/8)+1
 
-/turf/closed/wall/update_icon()
-	if(QDELETED(src))
+/turf/closed/wall/update_overlays()
+	. = ..()
+	if(!.)
 		return
-
-	overlays.Cut()
 
 	if(!damage_overlays[1]) //list hasn't been populated
 		generate_damage_overlays()
 
 	add_cleanable_overlays()
-
-	if(turf_flags & TURF_WEATHER)
-		overlays += SSsunlighting.get_weather_overlay()
 
 	//smooth wall stuff
 	if(!special_icon)
@@ -27,8 +23,6 @@
 			I = image(icon, "[walltype]fwall_open")
 			overlays += I
 			return
-
-	..()
 
 	if(damage)
 		var/current_dmg_overlay = round(damage / damage_cap * damage_overlays.len) + 1
