@@ -2,9 +2,6 @@
 
 // ===
 
-///define used to mute an area base_muffle = AREA_MUTED
-#define AREA_MUTED -10000
-
 /area
 	var/atmosalm = 0
 	var/poweralm = 1
@@ -56,9 +53,6 @@
 	var/list/soundscape_playlist = list() //Clients in this area will hear one of the sounds in this list from time to time
 	var/background_planet_sounds = FALSE
 	var/soundscape_interval = INITIAL_SOUNDSCAPE_COOLDOWN //The base interval between each soundscape.
-	var/ceiling_muffle = TRUE //If true, this area's ceiling type will alter the muffling of the ambience sound
-	var/base_muffle = 0 //Ambience will always be muffled by this ammount at minimum
-						//NOTE: Values from 0 to -10000 ONLY. The rest won't work
 	/// Default sound to play as ambience for clients entering the area
 	VAR_PROTECTED/ambience_exterior
 	/// Default sound environment to use for the area, as list or int BYOND preset: http://www.byond.com/docs/ref/#/sound/var/environment

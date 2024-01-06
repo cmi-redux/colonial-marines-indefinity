@@ -3,7 +3,6 @@
 	requires_power = TRUE
 	always_unpowered = FALSE
 	icon_state = "shuttle"
-	ceiling_muffle = TRUE
 	flags_atom = AREA_NOTUNNEL
 	power_light = TRUE
 
@@ -37,7 +36,6 @@
 	name = "Hyperspace"
 	desc = "Weeeeee"
 	ambience_exterior = 'sound/ambience/shuttle_fly_loop.ogg'
-	base_lighting_alpha = 255
 
 /area/shuttle/uss_heart_of_gold
 	name = "USS Heart Of Gold"

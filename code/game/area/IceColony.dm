@@ -484,7 +484,6 @@
 	icon_state = "explored"
 	ceiling = CEILING_DEEP_UNDERGROUND_METAL
 	ambience_exterior = AMBIENCE_ALMAYER
-	ceiling_muffle = FALSE
 	sound_environment = SOUND_ENVIRONMENT_ROOM
 	minimap_color = MINIMAP_AREA_CAVES
 
@@ -599,7 +598,6 @@
 	name = "\improper Underground Maintenance"
 	icon_state = "maintcentral"
 	sound_environment = SOUND_ENVIRONMENT_AUDITORIUM
-	base_muffle = MUFFLE_MEDIUM
 
 /area/ice_colony/underground/maintenance/central
 	name = "\improper Underground Central Maintenance"

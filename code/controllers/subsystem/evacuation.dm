@@ -28,21 +28,16 @@ SUBSYSTEM_DEF(evacuation)
 	var/flags_scuttle = NO_FLAGS
 
 /datum/controller/subsystem/evacuation/stat_entry(msg)
-	msg = "E:[evac_time ? "I (T:[duration2text_hour_min_sec(EVACUATION_ESTIMATE_DEPARTURE)])":"S"]|D:[dest_started_at ? "I":"S"] R:[dest_index]/[length(dest_rods)]|SE:[ship_evac_time ? "I (T:[duration2text_hour_min_sec(SHIP_ESCAPE_ESTIMATE_DEPARTURE)])":"S"]"
+	msg = "E:[evac_time ? "I (T:[duration2text_hour_min_sec(EVACUATION_ESTIMATE_DEPARTURE)])":"S"]|D:[dest_started_at ? "I":"S"] R:[dest_index]/[length(dest_rods)]|SE:[ship_evacuating ? "I (T:[duration2text_hour_min_sec(SHIP_ESCAPE_ESTIMATE_DEPARTURE)])":"S"]"
 	return ..()
 
 /datum/controller/subsystem/evacuation/fire()
 	if(ship_evacuating)
-		if(SHIP_ESCAPE_ESTIMATE_DEPARTURE >= 0)
+		if(SHIP_ESCAPE_ESTIMATE_DEPARTURE >= 0 && ship_operation_stage_status == OPERATION_LEAVING_OPERATION_PLACE)
 			SSticker.mode.round_finished = "Marine Minor Victory"
 			SSticker.mode.faction_won = GLOB.faction_datum[FACTION_MARINE]
 			ship_operation_stage_status = OPERATION_DEBRIEFING
 			ship_evacuating = FALSE
-			ship_evac_time = null
-			for(var/shuttle_id in shuttles_to_check)
-				var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttle_id)
-				var/obj/structure/machinery/computer/shuttle/dropship/flight/console = shuttle.getControlConsole()
-				console.escape_locked = FALSE
 
 		var/shuttles_report = shuttels_onboard()
 		if(shuttles_report)
@@ -109,7 +104,7 @@ SUBSYSTEM_DEF(evacuation)
 		for(var/shuttle_id in shuttles_to_check)
 			var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttle_id)
 			var/obj/structure/machinery/computer/shuttle/dropship/flight/console = shuttle.getControlConsole()
-			console.escape_locked = FALSE
+			console.escape_locked = TRUE
 		return TRUE
 
 /datum/controller/subsystem/evacuation/proc/critical_marine_loses()
@@ -119,10 +114,9 @@ SUBSYSTEM_DEF(evacuation)
 
 /datum/controller/subsystem/evacuation/proc/cancel_ship_evacuation(reason) //Cancels the evac procedure. Useful if admins do not want the marines leaving.
 	if(ship_operation_stage_status == OPERATION_LEAVING_OPERATION_PLACE)
+		ship_operation_stage_status = OPERATION_ENDING
 		ship_evacuating = FALSE
 		enter_allowed = TRUE
-		ship_evac_time = null
-		ship_operation_stage_status = OPERATION_ENDING
 		ai_announcement(reason, 'sound/AI/evacuate_cancelled.ogg', logging = ARES_LOG_SECURITY)
 
 		for(var/shuttle_id in shuttles_to_check)

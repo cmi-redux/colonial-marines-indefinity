@@ -16,7 +16,7 @@
 	RegisterSignal(safe, COMSIG_PARENT_QDELETING, PROC_REF(on_safe_open))
 	. = ..()
 
-/datum/cm_objective/crack_safe/pre_round_start()
+/datum/cm_objective/crack_safe/post_round_start()
 	SSfactions.statistics["miscellaneous_total_instances"]++
 
 /datum/cm_objective/crack_safe/Destroy()

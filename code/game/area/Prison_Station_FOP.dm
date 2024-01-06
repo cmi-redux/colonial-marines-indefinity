@@ -2,7 +2,6 @@
 /area/prison
 	name = "Fiorina Orbital Penitentiary - Main Cellblock"
 	ambience_exterior = AMBIENCE_ALMAYER
-	ceiling_muffle = FALSE
 	minimap_color = MINIMAP_AREA_COLONY
 
 //SECURITY

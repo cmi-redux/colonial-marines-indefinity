@@ -126,6 +126,13 @@
 	icon_state = "25,3"
 	},
 /area/shuttle/lifeboat)
+"rd" = (
+/obj/structure/machinery/light{
+	pixel_x = 16;
+	req_light_switch = 0
+	},
+/turf/open/shuttle/lifeboat,
+/area/shuttle/lifeboat)
 "rp" = (
 /turf/closed/shuttle/lifeboat{
 	icon_state = "24,1"
@@ -179,6 +186,13 @@
 /turf/closed/shuttle/lifeboat{
 	icon_state = "6,0"
 	},
+/area/shuttle/lifeboat)
+"wO" = (
+/obj/structure/machinery/light{
+	pixel_x = 0;
+	req_light_switch = 0
+	},
+/turf/open/shuttle/lifeboat,
 /area/shuttle/lifeboat)
 "wX" = (
 /turf/closed/shuttle/lifeboat{
@@ -515,7 +529,7 @@ Rs
 Id
 jX
 nn
-Ro
+rd
 iR
 vZ
 "}
@@ -560,7 +574,7 @@ Rs
 Id
 Ro
 nn
-Ro
+rd
 iR
 Sy
 "}
@@ -614,7 +628,7 @@ Ob
 HI
 FZ
 nn
-Ro
+wO
 vz
 Mk
 "}

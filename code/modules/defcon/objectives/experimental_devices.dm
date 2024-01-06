@@ -5,7 +5,7 @@
 /datum/cm_objective/retrieve_item/device
 	value = OBJECTIVE_EXTREME_VALUE
 
-/datum/cm_objective/retrieve_item/pre_round_start()
+/datum/cm_objective/retrieve_item/post_round_start()
 	SSfactions.statistics["item_retrieval_total_instances"]++
 
 /datum/cm_objective/retrieve_item/device/complete()

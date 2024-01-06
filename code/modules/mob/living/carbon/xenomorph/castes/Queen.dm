@@ -524,8 +524,8 @@
 	var/xeno_leader_num = faction?.queen_leader_limit - faction?.open_xeno_leader_positions.len
 	. += "Pooled Larvae: [faction.stored_larva]"
 	. += "Leaders: [xeno_leader_num] / [faction?.queen_leader_limit]"
-	if(queen_age_timer_id != TIMER_ID_NULL)
-		var/time_left = time2text(timeleft(queen_age_timer_id) + 1 MINUTES, "mm") // We add a minute so that it basically ceilings the value.
+	if(queen_age_timer_id != TIMER_ID_NULL && timeleft(queen_age_timer_id))
+		var/time_left = time2text(timeleft(queen_age_timer_id), "mm")
 		. += "Maturity: [time_left == 1? "[time_left] minute" : "[time_left] minutes"] remaining"
 
 //Custom bump for crushers. This overwrites normal bumpcode from carbon.dm

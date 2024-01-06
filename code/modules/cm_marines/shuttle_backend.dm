@@ -139,10 +139,7 @@ var/global/list/s_info = null
 	//var/list/turfsToUpdate = list()
 
 	if(shuttle.sound_misc) playsound(source[shuttle.sound_target], shuttle.sound_misc, 75, 1)
-
-	var/area/departure_area = get_area(source[shuttle.sound_target])
 	var/area/landing_area
-	departure_area.base_muffle = 0
 	if(deg)
 		source = rotate_shuttle_turfs(source, deg)
 
@@ -153,10 +150,6 @@ var/global/list/s_info = null
 	for (var/turf/T in source)
 		C = source[T]
 		var/turf/target = locate(reference.x + C.x_pos, reference.y + C.y_pos, reference.z)
-		landing_area = target.loc
-		if(istype(landing_area, /area/shuttle) && landing_area.base_muffle == 0)
-			landing_area.base_muffle = shuttle.ambience_muffle
-
 		// Delete objects and gib living things in the destination
 		for (var/atom/A in target)
 			if(isobj(A) && A.loc == target)

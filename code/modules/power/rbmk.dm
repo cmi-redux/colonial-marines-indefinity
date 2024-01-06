@@ -231,6 +231,7 @@ DEFINE_BITFIELD(reactor_flags, list(
 	var/L2[] = new //Everyone who only needs to see the cinematic.
 	var/mob/M
 	var/turf/T
+	var/atom/movable/screen/cinematic/explosion/C
 	world << sound('sound/effects/explosionfar.ogg')
 	for(M in GLOB.player_list) //This only does something cool for the people about to die, but should prove pretty interesting.
 		if(!M || !M.loc) continue //In case something changes when we sleep().
@@ -239,7 +240,7 @@ DEFINE_BITFIELD(reactor_flags, list(
 		else if(M.z in z_levels)
 			L1 |= M
 			shake_camera(M, 110, 2)
-		var/atom/movable/screen/cinematic/explosion/C = new
+		C = new
 		for(M in L1 + L2)
 			if(M && M.loc && M.client)
 				M.client.screen |= C //They may have disconnected in the mean time.
@@ -258,12 +259,13 @@ DEFINE_BITFIELD(reactor_flags, list(
 					M.client.screen -= C //those who managed to escape the z level at last second shouldn't have their view obstructed.
 		flick("ship_spared", C)
 		C.icon_state = "summary_spared"
-	sleep(5)
 	enter_allowed = FALSE
 	for(var/shuttle_id in list(DROPSHIP_ALAMO, DROPSHIP_NORMANDY))
 		var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttle_id)
 		var/obj/structure/machinery/computer/shuttle/dropship/flight/console = shuttle.getControlConsole()
 		console.disable()
+	sleep(2 SECONDS)
+	qdel(C)
 
 /obj/structure/machinery/power/rbmk/update_icon()
 	icon_state = "reactor_off"

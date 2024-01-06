@@ -329,7 +329,7 @@
 /obj/effect/landmark/ert_spawns/distress_pmc,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
-	dir = 8;
+	dir = 4;
 	req_light_switch = 0
 	},
 /turf/open/shuttle/dropship{

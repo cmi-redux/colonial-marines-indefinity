@@ -290,7 +290,7 @@
 /datum/autobalance_row_info/proc/get_player_rating()
 	rating = 0
 	var/mob/living = player_entity.player.owning_client?.mob
-	if(istype(living))
+	if(istype(living) && istype(living.job, /datum/job))
 		var/datum/job/player_job = GET_MAPPED_ROLE(living.job)
 		for(var/balance_formula in player_job.balance_formulas + living.balance_formulas)
 			var/datum/autobalance_formula_row/formula = GLOB.balance_formulas[balance_formula]

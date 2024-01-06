@@ -245,10 +245,10 @@
 		muffle = 0
 	else if(istype(target_turf, /turf/open/floor/roof/metal) || istype(target_turf, /turf/open/floor/roof/sheet) || istype(target_turf, /turf/open/floor/roof/ship_hull))
 		muffle = MUFFLE_HIGH
-	else if(istype(target_turf, /turf/open) || istype(target_turf, /turf/closed))
+	else if(istype(target_turf, /turf/closed))
 		muffle = MUFFLE_MEDIUM
-	if(target_area)
-		muffle += target_area.base_muffle
+	else
+		muffle = MUFFLE_LOW
 	return muffle
 
 // The pick() proc has a built-in chance that can be added to any option by adding ,X; to the end of an option, where X is the % chance it will play.

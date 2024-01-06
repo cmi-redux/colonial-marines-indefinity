@@ -96,7 +96,7 @@
 	value = OBJECTIVE_LOW_VALUE
 	objective_flags = OBJECTIVE_DO_NOT_TREE | OBJECTIVE_START_PROCESSING_ON_DISCOVERY
 
-/datum/cm_objective/retrieve_item/document/pre_round_start()
+/datum/cm_objective/retrieve_item/document/post_round_start()
 	SSfactions.statistics["item_retrieval_total_instances"]++
 
 /datum/cm_objective/retrieve_item/document/complete()

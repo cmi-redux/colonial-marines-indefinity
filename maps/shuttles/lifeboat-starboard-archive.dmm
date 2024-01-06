@@ -9,6 +9,13 @@
 	icon_state = "17,6"
 	},
 /area/shuttle/lifeboat)
+"dG" = (
+/obj/structure/machinery/light{
+	pixel_x = 0;
+	req_light_switch = 0
+	},
+/turf/open/shuttle/lifeboat,
+/area/shuttle/lifeboat)
 "ej" = (
 /obj/structure/prop/invuln/dropship_parts/lifeboat{
 	icon_state = "0,4"
@@ -93,6 +100,13 @@
 /area/shuttle/lifeboat)
 "kE" = (
 /obj/structure/bed/chair/dropship/passenger/shuttle_chair,
+/turf/open/shuttle/lifeboat,
+/area/shuttle/lifeboat)
+"li" = (
+/obj/structure/machinery/light{
+	pixel_x = 16;
+	req_light_switch = 0
+	},
 /turf/open/shuttle/lifeboat,
 /area/shuttle/lifeboat)
 "lK" = (
@@ -505,7 +519,7 @@ em
 kC
 ix
 XV
-OO
+li
 zK
 Ow
 "}
@@ -550,7 +564,7 @@ em
 kC
 OO
 XV
-OO
+li
 zK
 ZR
 "}
@@ -604,7 +618,7 @@ ci
 ce
 hD
 XV
-OO
+dG
 VF
 jA
 "}

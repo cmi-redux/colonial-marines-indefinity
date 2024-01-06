@@ -3269,6 +3269,7 @@ CUSTOM_AMMO_PENETRATION
 
 	if(PAS == null)
 		PAS = new /datum/effects/prae_acid_stacks(H)
+		PAS.cause_data = proj.weapon_cause_data
 	else
 		PAS.increment_stack_count()
 

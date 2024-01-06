@@ -14,7 +14,7 @@
 	document = D
 	initial_area = get_area(document)
 
-/datum/cm_objective/document/pre_round_start()
+/datum/cm_objective/document/post_round_start()
 	SSfactions.statistics["documents_total_instances"]++
 
 /datum/cm_objective/document/Destroy()

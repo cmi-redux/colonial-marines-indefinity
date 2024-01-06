@@ -14,7 +14,7 @@
 	power_objects = null
 	..()
 
-/datum/cm_objective/power/pre_round_start()
+/datum/cm_objective/power/post_round_start()
 	if(uses_smes)
 		for(var/obj/structure/machinery/power/smes/colony_smes in machines)
 			if(!is_ground_level(colony_smes.loc.z))

@@ -40,9 +40,6 @@
 // initial setup after the map has loaded
 /datum/cm_objective/proc/Initialize()
 
-// called by game mode just before the round starts
-/datum/cm_objective/proc/pre_round_start()
-
 // called by game mode on a short delay after round starts
 /datum/cm_objective/proc/post_round_start()
 

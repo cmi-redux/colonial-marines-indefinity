@@ -3,7 +3,6 @@
 	ceiling = CEILING_METAL
 	requires_power = 0
 	ambience_exterior = AMBIENCE_ALMAYER
-	ceiling_muffle = FALSE
 
 
 //Drop Pods
@@ -23,7 +22,6 @@
 /area/shuttle/drop1/sulaco
 	name = "\improper Dropship Alamo"
 	icon_state = "shuttlered"
-	base_muffle = MUFFLE_HIGH
 
 /area/shuttle/drop1/LV624
 	name = "\improper Dropship Alamo"
@@ -75,7 +73,6 @@
 /area/shuttle/drop2/sulaco
 	name = "\improper Dropship Normandy"
 	icon_state = "shuttle"
-	base_muffle = MUFFLE_HIGH
 
 /area/shuttle/drop2/LV624
 	name = "\improper Dropship Normandy"

@@ -15,7 +15,7 @@
 	. = ..()
 	decryption_password = "[pick(alphabet_uppercase)][rand(100,999)][pick(alphabet_uppercase)][rand(10,99)]"
 
-/datum/cm_objective/retrieve_data/pre_round_start()
+/datum/cm_objective/retrieve_data/post_round_start()
 	SSfactions.statistics["data_retrieval_total_instances"]++
 
 /datum/cm_objective/retrieve_data/Destroy()

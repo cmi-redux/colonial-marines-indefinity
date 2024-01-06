@@ -86,7 +86,8 @@
 		break
 
 	if(PAS == null)
-		new /datum/effects/prae_acid_stacks(H)
+		PAS = new /datum/effects/prae_acid_stacks(H)
+		PAS.cause_data = create_cause_data(initial(bound_xeno.caste_type), bound_xeno)
 		return
 	else
 		PAS.increment_stack_count()

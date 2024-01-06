@@ -33,7 +33,6 @@
 
 	var/require_link = FALSE
 	var/linked = FALSE
-	var/ambience_muffle = MUFFLE_HIGH
 
 /datum/shuttle/proc/short_jump(area/origin, area/destination)
 	if(moving_status != SHUTTLE_IDLE) return

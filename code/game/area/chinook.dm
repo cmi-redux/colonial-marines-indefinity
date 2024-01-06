@@ -14,7 +14,6 @@
 	ceiling = CEILING_METAL
 	ambience_exterior = AMBIENCE_ALMAYER
 	soundscape_interval = 30
-	ceiling_muffle = FALSE
 
 /area/adminlevel/chinook/offices
 	name = "Chinook 91 GSO Station - Office Sector"

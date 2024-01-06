@@ -9,6 +9,19 @@
 	icon_state = "twe25"
 	},
 /area/shuttle/ert)
+"d" = (
+/obj/structure/bed/chair/dropship/passenger{
+	dir = 8
+	},
+/obj/effect/landmark/ert_spawns/distress_twe,
+/obj/structure/machinery/light{
+	dir = 4;
+	req_light_switch = 0
+	},
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15"
+	},
+/area/shuttle/ert)
 "e" = (
 /obj/effect/landmark/ert_spawns/distress_twe,
 /turf/open/shuttle/dropship{
@@ -53,6 +66,19 @@
 /turf/closed/shuttle/ert{
 	icon_state = "leftengine_2";
 	opacity = 0
+	},
+/area/shuttle/ert)
+"m" = (
+/obj/structure/bed/chair/dropship/passenger{
+	dir = 4
+	},
+/obj/effect/landmark/ert_spawns/distress_twe,
+/obj/structure/machinery/light{
+	dir = 8;
+	req_light_switch = 0
+	},
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15"
 	},
 /area/shuttle/ert)
 "o" = (
@@ -187,6 +213,15 @@
 	icon_state = "rasputin15"
 	},
 /area/shuttle/ert)
+"S" = (
+/obj/structure/machinery/light{
+	pixel_x = 0;
+	req_light_switch = 0
+	},
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin3"
+	},
+/area/shuttle/ert)
 "T" = (
 /turf/closed/shuttle/ert{
 	icon_state = "leftengine_3";
@@ -248,7 +283,7 @@ A
 Y
 a
 W
-W
+m
 W
 a
 t
@@ -284,7 +319,7 @@ P
 h
 f
 f
-f
+S
 G
 "}
 (5,1,1) = {"
@@ -308,7 +343,7 @@ A
 g
 a
 H
-H
+d
 H
 a
 t

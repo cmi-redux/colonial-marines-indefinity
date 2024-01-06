@@ -490,9 +490,11 @@
 // true if area has power and lightswitch is on
 /obj/structure/machinery/light/proc/has_power()
 	var/area/A = loc.loc
+	if(!req_light_switch)
+		return TRUE
 	if(!needs_power)
-		return (A.master.lightswitch || !req_light_switch)
-	return ((A.master.lightswitch && A.master.power_light) || !req_light_switch)
+		return (A.master.lightswitch)
+	return (A.master.lightswitch && A.master.power_light)
 
 // ai attack - make lights flicker, because why not
 
@@ -627,11 +629,14 @@
 /obj/structure/machinery/light/power_change()
 	spawn(10)
 		if(loc)
+			if(!req_light_switch)
+				seton(TRUE)
+				return
 			var/area/A = get_area(src)
 			if(!needs_power || A.unlimited_power)
-				seton(A.lightswitch || !req_light_switch)
+				seton(A.lightswitch)
 				return
-			seton((A.lightswitch && A.power_light) || !req_light_switch)
+			seton(A.lightswitch && A.power_light)
 
 // called when on fire
 

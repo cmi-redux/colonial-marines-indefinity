@@ -709,6 +709,9 @@
 	to_chat(src, SPAN_INFO("shift click the compass to watch the mark, alt click to stop tracking"))
 
 /mob/living/carbon/xenomorph/proc/stop_tracking_resin_mark(destroyed, silent = FALSE) //tracked_marker shouldnt be nulled outside this PROC!! >:C
+	if(!hud_used)
+		return
+
 	var/atom/movable/screen/mark_locator/ML = hud_used.locate_marker
 	ML.overlays.Cut()
 

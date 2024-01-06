@@ -45,7 +45,6 @@ SUBSYSTEM_DEF(factions)
 /datum/controller/subsystem/factions/Initialize(start_timeofday)
 	. = ..()
 
-	RegisterSignal(SSdcs, COMSIG_GLOB_MODE_PRESETUP, PROC_REF(pre_round_start))
 	RegisterSignal(SSdcs, COMSIG_GLOB_MODE_POSTSETUP, PROC_REF(post_round_start))
 
 	return SS_INIT_SUCCESS
@@ -188,7 +187,6 @@ SUBSYSTEM_DEF(factions)
 
 /// Allows to perform objective initialization later on in case of map changes
 /datum/controller/subsystem/factions/proc/initialize_objectives()
-	SHOULD_NOT_SLEEP(TRUE)
 	var/datum/map_config/ground_map = SSmapping.configs[GROUND_MAP]
 	var/total_percent = length(GLOB.clients) / 100
 	for(var/faction_to_get in GLOB.objective_controller)
@@ -199,16 +197,10 @@ SUBSYSTEM_DEF(factions)
 		if(faction_mobs)
 			objectives_controller.corpsewar.generate_corpses(round(ground_map.total_corpses * faction_mobs / total_percent))
 
-/datum/controller/subsystem/factions/proc/pre_round_start()
-	SIGNAL_HANDLER
-	initialize_objectives()
-	for(var/faction_to_get in GLOB.objective_controller)
-		var/datum/objectives_datum/objectives_controller = GLOB.objective_controller[faction_to_get]
-		for(var/datum/cm_objective/objective in objectives_controller.objectives)
-			objective.pre_round_start()
-
 /datum/controller/subsystem/factions/proc/post_round_start()
-	SIGNAL_HANDLER
+	set waitfor = FALSE
+
+	initialize_objectives()
 	for(var/faction_to_get in GLOB.objective_controller)
 		var/datum/objectives_datum/objectives_controller = GLOB.objective_controller[faction_to_get]
 		for(var/datum/cm_objective/objective in objectives_controller.objectives)
@@ -250,8 +242,10 @@ SUBSYSTEM_DEF(factions)
 
 	// Medium
 	for(var/datum/cm_objective/objective in medium_value)
-		while(length(objective.required_objectives) < objective.number_of_clues_to_generate && length(low_value))
-			var/datum/cm_objective/req = pick(low_value)
+		var/list/low_value_list = low_value.Copy()
+		while(length(objective.required_objectives) < objective.number_of_clues_to_generate && length(low_value_list))
+			var/datum/cm_objective/req = pick(low_value_list)
+			low_value_list -= req
 			if(req in objective.required_objectives || (req.objective_flags & OBJECTIVE_DEAD_END))
 				continue //don't want to pick the same thing twice OR use a dead-end objective.
 			link_objectives(req, objective)
@@ -263,8 +257,10 @@ SUBSYSTEM_DEF(factions)
 
 	// High
 	for(var/datum/cm_objective/objective in high_value)
-		while(length(objective.required_objectives) < objective.number_of_clues_to_generate && length(medium_value))
-			var/datum/cm_objective/req = pick(medium_value)
+		var/list/medium_value_list = medium_value.Copy()
+		while(length(objective.required_objectives) < objective.number_of_clues_to_generate && length(medium_value_list))
+			var/datum/cm_objective/req = pick(medium_value_list)
+			medium_value_list -= req
 			if(req in objective.required_objectives || (req.objective_flags & OBJECTIVE_DEAD_END))
 				continue //don't want to pick the same thing twice OR use a dead-end objective.
 			link_objectives(req, objective)
@@ -276,8 +272,10 @@ SUBSYSTEM_DEF(factions)
 
 	// Extreme
 	for(var/datum/cm_objective/objective in extreme_value)
-		while(length(objective.required_objectives) < objective.number_of_clues_to_generate && length(high_value))
-			var/datum/cm_objective/req = pick(high_value)
+		var/list/high_value_list = high_value.Copy()
+		while(length(objective.required_objectives) < objective.number_of_clues_to_generate && length(high_value_list))
+			var/datum/cm_objective/req = pick(high_value_list)
+			high_value_list -= req
 			if(req in objective.required_objectives || (req.objective_flags & OBJECTIVE_DEAD_END))
 				continue //don't want to pick the same thing twice OR use a dead-end objective.
 			link_objectives(req, objective)
@@ -289,8 +287,10 @@ SUBSYSTEM_DEF(factions)
 
 	// Absolute
 	for(var/datum/cm_objective/objective in absolute_value)
-		while(length(objective.required_objectives) < objective.number_of_clues_to_generate && length(extreme_value))
-			var/datum/cm_objective/req = pick(extreme_value)
+		var/list/extreme_value_list = extreme_value.Copy()
+		while(length(objective.required_objectives) < objective.number_of_clues_to_generate && length(extreme_value_list))
+			var/datum/cm_objective/req = pick(extreme_value_list)
+			extreme_value_list -= req
 			if(req in objective.required_objectives || (req.objective_flags & OBJECTIVE_DEAD_END))
 				continue //don't want to pick the same thing twice OR use a dead-end objective.
 			link_objectives(req, objective)

@@ -258,6 +258,7 @@
 
 		if(!PAS)
 			PAS = new /datum/effects/prae_acid_stacks(H)
+			PAS.cause_data = cause_data
 			PAS.increment_stack_count()
 		else
 			PAS.increment_stack_count(2)

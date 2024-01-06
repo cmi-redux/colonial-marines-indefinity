@@ -750,8 +750,6 @@
 	name = "\improper Trijent Dam Communications Relay"
 	icon_state = "ass_line"
 	is_resin_allowed = FALSE
-	ceiling_muffle = FALSE
-	base_muffle = MUFFLE_LOW
 	always_unpowered = 0
 
 /area/desert_dam/exterior/telecomm/lz2_containers

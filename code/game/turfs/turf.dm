@@ -119,13 +119,15 @@
 	if(A?.lighting_effect)
 		overlays += A.lighting_effect
 
-	update_connections(FALSE)
+	if(!special_icon)
+		update_connections(TRUE)
 	update_icon()
 
 	return INITIALIZE_HINT_NORMAL
 
 /turf/LateInitialize()
-	update_connections(FALSE)
+	if(!special_icon)
+		update_connections(FALSE)
 	update_icon()
 
 /turf/Destroy(force)

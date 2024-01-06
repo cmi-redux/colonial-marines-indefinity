@@ -187,8 +187,6 @@
 	icon_state = "ass_line"
 	ceiling = CEILING_UNDERGROUND_METAL_ALLOW_CAS
 	is_resin_allowed = FALSE
-	ceiling_muffle = FALSE
-	base_muffle = MUFFLE_LOW
 	always_unpowered = FALSE
 
 /area/lv624/ground/colony/telecomm/cargo

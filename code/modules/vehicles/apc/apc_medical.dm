@@ -100,33 +100,19 @@
 /*
 ** PRESETS SPAWNERS
 */
-/obj/effect/vehicle_spawner/apc_med
+/obj/effect/vehicle_spawner/apc/med
 	name = "APC MED Spawner"
-	icon = 'icons/obj/vehicles/apc.dmi'
 	icon_state = "apc_base_med"
-	pixel_x = -48
-	pixel_y = -48
 
-/obj/effect/vehicle_spawner/apc_med/Initialize()
-	. = ..()
-	spawn_vehicle()
-	qdel(src)
-
-//PRESET: no hardpoints
-/obj/effect/vehicle_spawner/apc_med/spawn_vehicle()
-	var/obj/vehicle/multitile/apc/medical/APC = new(loc)
-
-	load_misc(APC)
-	load_hardpoints(APC)
-	handle_direction(APC)
-	APC.update_icon()
+/obj/effect/vehicle_spawner/apc/med/load_fpw(obj/vehicle/multitile/apc/V)
+	return
 
 //PRESET: only wheels installed
-/obj/effect/vehicle_spawner/apc_med/plain/load_hardpoints(obj/vehicle/multitile/apc/medical/V)
+/obj/effect/vehicle_spawner/apc/med/plain/load_hardpoints(obj/vehicle/multitile/apc/medical/V)
 	V.add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
 
 //PRESET: default hardpoints, destroyed
-/obj/effect/vehicle_spawner/apc_med/decrepit/spawn_vehicle()
+/obj/effect/vehicle_spawner/apc/med/decrepit/spawn_vehicle()
 	var/obj/vehicle/multitile/apc/medical/APC = new(loc)
 
 	load_misc(APC)
@@ -135,14 +121,14 @@
 	load_damage(APC)
 	APC.update_icon()
 
-/obj/effect/vehicle_spawner/apc_med/decrepit/load_hardpoints(obj/vehicle/multitile/apc/medical/V)
+/obj/effect/vehicle_spawner/apc/med/decrepit/load_hardpoints(obj/vehicle/multitile/apc/medical/V)
 	V.add_hardpoint(new /obj/item/hardpoint/primary/dualcannon)
 	V.add_hardpoint(new /obj/item/hardpoint/secondary/frontalcannon)
 	V.add_hardpoint(new /obj/item/hardpoint/support/flare_launcher)
 	V.add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
 
 //PRESET: default hardpoints
-/obj/effect/vehicle_spawner/apc_med/fixed/load_hardpoints(obj/vehicle/multitile/apc/medical/V)
+/obj/effect/vehicle_spawner/apc/med/fixed/load_hardpoints(obj/vehicle/multitile/apc/medical/V)
 	V.add_hardpoint(new /obj/item/hardpoint/primary/dualcannon)
 	V.add_hardpoint(new /obj/item/hardpoint/secondary/frontalcannon)
 	V.add_hardpoint(new /obj/item/hardpoint/support/flare_launcher)

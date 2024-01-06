@@ -61,9 +61,10 @@
 	if(!faction.objectives_active && length(faction.objectives))
 		return
 
+	var/faction_pop_scale = length(faction.totalMobs) * 0.05
 	//TODO: Combine objectives and faction tasks, plus make more "specialized" objectives and change system in per faction special faction objectives handler.
 	for(var/subtyope in faction.objectives)
-		var/ammount = faction.objectives[subtyope]
+		var/ammount = faction.objectives[subtyope] * faction_pop_scale
 		var/objective_type
 		if(!length(objective_spawns[subtyope]))
 			continue
@@ -76,25 +77,21 @@
 					continue
 				//TODO: Make multi use spawning objection points (something like machines)
 				objectives_handler.linked_spawns -= new_potential_spawn
-				potential_spawns += list(new_potential_spawn = objectives_handler.weight)
+				potential_spawns += new_potential_spawn
 
 			if(!length(potential_spawns))
 				return
 
-			var/atom/chosen_spawn = pickweight(potential_spawns)
+			var/atom/chosen_spawn = pick(potential_spawns)
 			var/generated = FALSE
-			if(istype(chosen_spawn, /obj/structure/closet) || istype(chosen_spawn, /obj/structure/safe) || istype(chosen_spawn, /obj/structure/filingcabinet))
-				if(istype(chosen_spawn, /obj/structure/closet))
-					var/obj/structure/closet/closet = chosen_spawn
-					if(closet.opened)
-						continue //container is open, don't put stuff into it
+			if(!istype(chosen_spawn, /turf))
 				var/obj/item/new_item = new objective_type(chosen_spawn, associated_faction)
 				chosen_spawn.contents += new_item
 				generated = TRUE
 				break
 
 			if(!generated)
-				new objective_type(chosen_spawn, associated_faction)
+				new objective_type(get_turf(chosen_spawn), associated_faction)
 
 //TODO: Through this is datum make spawns and custom objectives, not only items (like terminals, safes and etc)
 /datum/objective_spawn_handler

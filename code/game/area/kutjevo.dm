@@ -121,8 +121,6 @@
 	name = "Kutjevo - Communications Relay"
 	icon_state = "ass_line"
 	is_resin_allowed = FALSE
-	ceiling_muffle = FALSE
-	base_muffle = MUFFLE_LOW
 
 /area/kutjevo/exterior/telecomm/lz1_north
 	name = "Kutjevo - North LZ1 Communications Relay"

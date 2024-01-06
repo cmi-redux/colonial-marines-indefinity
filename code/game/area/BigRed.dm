@@ -375,11 +375,9 @@
 	name = "\improper Unknown Area"
 	icon_state = "bluenew"
 	sound_environment = SOUND_ENVIRONMENT_AUDITORIUM
-	ceiling_muffle = FALSE
 	ambience_exterior = AMBIENCE_CAVE
 	soundscape_playlist = SCAPE_PL_CAVE
 	soundscape_interval = 25
-	base_muffle = MUFFLE_HIGH
 	minimap_color = MINIMAP_AREA_CAVES
 
 /area/bigredv2/caves/mining
@@ -388,7 +386,6 @@
 	color = "purple"
 
 /area/bigredv2/caves/eta
-	ceiling_muffle = FALSE
 	ambience_exterior = AMBIENCE_ALMAYER
 	sound_environment = SOUND_ENVIRONMENT_ROOM
 	soundscape_playlist = list()
@@ -417,7 +414,6 @@
 /area/bigredv2/outside/building/eta
 	name = "\improper Eta Labs Compound"
 	icon_state = "yellow"
-	base_muffle = MUFFLE_MEDIUM
 
 /area/bigredv2/outside/building/cargo
 	name = "\improper Cargo"
@@ -451,8 +447,6 @@
 /area/bigredv2/outside/building/virology
 	name = "\improper Virology Lab"
 	icon_state = "LP"
-	ceiling_muffle = FALSE
-	base_muffle = MUFFLE_MEDIUM
 	minimap_color = MINIMAP_AREA_MEDBAY
 
 /area/bigredv2/outside/building/dorms
@@ -498,8 +492,6 @@
 	name = "\improper LZ1 Communications Relay"
 	icon_state = "ass_line"
 	is_resin_allowed = FALSE
-	ceiling_muffle = FALSE
-	base_muffle = MUFFLE_LOW
 
 /area/bigredv2/outside/building/telecomm/lz2_cave
 	name = "\improper Central Grounds Communications Relay"
@@ -543,7 +535,6 @@
 	icon_state = "storage"
 
 /area/bigredv2/caves/lambda
-	ceiling_muffle = FALSE
 	ambience_exterior = AMBIENCE_ALMAYER
 	sound_environment = SOUND_ENVIRONMENT_ROOM
 	soundscape_playlist = list()
@@ -568,65 +559,51 @@
 	name = "\improper Virology Caves"
 	icon_state = "caves_virology"
 	sound_environment = SOUND_ENVIRONMENT_AUDITORIUM
-	ceiling_muffle = FALSE
 	ambience_exterior = AMBIENCE_CAVE
 	soundscape_playlist = SCAPE_PL_CAVE
-	base_muffle = MUFFLE_HIGH
 
 /area/bigredv2/caves_sw
 	name = "\improper Southwestern Caves"
 	icon_state = "caves_sw"
 	sound_environment = SOUND_ENVIRONMENT_AUDITORIUM
-	ceiling_muffle = FALSE
 	ambience_exterior = AMBIENCE_CAVE
 	soundscape_playlist = SCAPE_PL_CAVE
-	base_muffle = MUFFLE_HIGH
 
 /area/bigredv2/caves_research
 	name = "\improper Wey-Yu Research Lab Caves"
 	icon_state = "caves_research"
 	sound_environment = SOUND_ENVIRONMENT_AUDITORIUM
-	ceiling_muffle = FALSE
 	ambience_exterior = AMBIENCE_CAVE
 	soundscape_playlist = SCAPE_PL_CAVE
-	base_muffle = MUFFLE_HIGH
 	minimap_color = MINIMAP_AREA_RESEARCH_CAVE
 
 /area/bigredv2/caves_se
 	name = "\improper Southeastern Caves"
 	icon_state = "caves_se"
 	sound_environment = SOUND_ENVIRONMENT_AUDITORIUM
-	ceiling_muffle = FALSE
 	ambience_exterior = AMBIENCE_CAVE
 	soundscape_playlist = SCAPE_PL_CAVE
-	base_muffle = MUFFLE_HIGH
 
 /area/bigredv2/caves_east
 	name = "\improper Eastern Caves"
 	icon_state = "caves_east"
 	sound_environment = SOUND_ENVIRONMENT_AUDITORIUM
-	ceiling_muffle = FALSE
 	ambience_exterior = AMBIENCE_CAVE
 	soundscape_playlist = SCAPE_PL_CAVE
-	base_muffle = MUFFLE_HIGH
 
 /area/bigredv2/caves_lambda
 	name = "\improper Lambda Lab Caves"
 	icon_state = "caves_lambda"
 	sound_environment = SOUND_ENVIRONMENT_AUDITORIUM
-	ceiling_muffle = FALSE
 	ambience_exterior = AMBIENCE_CAVE
 	soundscape_playlist = SCAPE_PL_CAVE
-	base_muffle = MUFFLE_HIGH
 
 /area/bigredv2/caves_north
 	name = "\improper Northern Caves"
 	icon_state = "caves_north"
 	sound_environment = SOUND_ENVIRONMENT_AUDITORIUM
-	ceiling_muffle = FALSE
 	ambience_exterior = AMBIENCE_CAVE
 	soundscape_playlist = SCAPE_PL_CAVE
-	base_muffle = MUFFLE_HIGH
 
 /area/bigredv2/landing
 	minimap_color = MINIMAP_AREA_LZ
