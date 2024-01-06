@@ -149,7 +149,7 @@ SUBSYSTEM_DEF(sunlighting)
 		set_time_of_day()
 		return TRUE
 
-	if(game_time_length * game_time_offseted() > next_step_datum.start_at)
+	if(game_time_offseted() > next_step_datum.start_at * game_time_length)
 		if(next_day)
 			return FALSE
 		set_time_of_day()
@@ -159,11 +159,10 @@ SUBSYSTEM_DEF(sunlighting)
 	return FALSE
 
 /datum/controller/subsystem/sunlighting/proc/set_time_of_day()
-	var/time = game_time_length * game_time_offseted()
 	var/datum/time_of_day/new_step = null
 
 	for(var/i = 1 to length(steps))
-		if(time >= steps["[i]"].start_at)
+		if(game_time_offseted() >= steps["[i]"].start_at * game_time_length)
 			new_step = steps["[i]"]
 			next_step_datum = i == length(steps) ? steps["1"] : steps["[i + 1]"]
 
@@ -178,12 +177,11 @@ SUBSYSTEM_DEF(sunlighting)
 
 /datum/controller/subsystem/sunlighting/proc/update_color()
 	if(!weather_light_affecting_event)
-		var/time = game_time_offseted() / game_time_length
-		var/time_to_animate = daytimeDiff(time, next_step_datum.start_at) * game_time_length
-		var/blend_amount = (time - current_step_datum.start_at) / (next_step_datum.start_at - current_step_datum.start_at)
+		var/time_to_animate = daytimeDiff(game_time_offseted(), next_step_datum.start_at * game_time_length)
+		var/blend_amount = (game_time_offseted() - current_step_datum.start_at * game_time_length) / (next_step_datum.start_at * game_time_length - current_step_datum.start_at * game_time_length)
 		current_color = BlendRGB(current_step_datum.color, next_step_datum.color, blend_amount)
 		if(weather_datum && weather_datum.weather_color_offset)
-			var/weather_blend_amount = (time - weather_datum.weather_start_time) / (weather_datum.weather_start_time + (weather_datum.weather_duration / 12) - weather_datum.weather_start_time)
+			var/weather_blend_amount = (game_time_offseted() - weather_datum.weather_start_time) / (weather_datum.weather_start_time + (weather_datum.weather_duration / 12) - weather_datum.weather_start_time)
 			current_color = BlendRGB(current_color, weather_datum.weather_color_offset, min(weather_blend_amount, weather_blend_ammount))
 		animate(sun_color, color = current_color, time = time_to_animate)
 
