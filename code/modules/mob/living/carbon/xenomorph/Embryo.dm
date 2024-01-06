@@ -344,7 +344,7 @@
 			larva_embryo.faction.faction_ui.update_burrowed_larva()
 			qdel(larva_embryo)
 
-		if(!victim.first_xeno)
+		if(!victim.first_xeno && larva_embryo.faction)
 			to_chat(larva_embryo, SPAN_XENOHIGHDANGER("The Queen's will overwhelms your instincts..."))
 			to_chat(larva_embryo, SPAN_XENOHIGHDANGER("\"[larva_embryo.faction.orders]\""))
 			log_attack("[key_name(victim)] chestbursted in [get_area_name(larva_embryo)] at X[victim.x], Y[victim.y], Z[victim.z]. The larva was [key_name(larva_embryo)].") //this is so that admins are not spammed with los logs

@@ -196,7 +196,8 @@
 	preview_dummy.update_body()
 	preview_dummy.update_hair()
 
-	arm_equipment(preview_dummy, J, FALSE, FALSE, owner, show_job_gear)
+	if(J)
+		arm_equipment(preview_dummy, J, FALSE, FALSE, owner, show_job_gear)
 
 	if(isnull(preview_front))
 		preview_front = new()
