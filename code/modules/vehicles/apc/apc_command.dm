@@ -112,43 +112,26 @@
 	name = "APC CMD Spawner"
 	icon_state = "apc_base_com"
 
-/obj/effect/vehicle_spawner/apc/cmd/load_fpw(obj/vehicle/multitile/apc/V)
+/obj/effect/vehicle_spawner/apc/cmd/load_additional_hardpoints(obj/vehicle/multitile/multitile)
 	return
 
-//PRESET: default hardpoints, destroyed (this one spawns on VASRS elevatorfor VCs)
-/obj/effect/vehicle_spawner/apc/cmd/decrepit/spawn_vehicle()
-	var/obj/vehicle/multitile/apc/APC = new(loc)
-
-	load_misc(APC)
-	load_fpw(APC)
-	load_hardpoints(APC)
-	load_damage(APC)
-	handle_direction(APC)
-	APC.update_icon()
-
 //PRESET: only wheels installed
-/obj/effect/vehicle_spawner/apc/cmd/plain/load_hardpoints(obj/vehicle/multitile/apc/command/V)
-	V.add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
+/obj/effect/vehicle_spawner/apc/cmd/plain/load_hardpoints(obj/vehicle/multitile/multitile)
+	multitile.add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
 
 //PRESET: default hardpoints, destroyed
-/obj/effect/vehicle_spawner/apc/cmd/decrepit/spawn_vehicle()
-	var/obj/vehicle/multitile/apc/command/APC = new(loc)
+/obj/effect/vehicle_spawner/apc/cmd/decrepit
+	damaged = TRUE
 
-	load_misc(APC)
-	load_hardpoints(APC)
-	load_damage(APC)
-	handle_direction(APC)
-	APC.update_icon()
-
-/obj/effect/vehicle_spawner/apc/cmd/decrepit/load_hardpoints(obj/vehicle/multitile/apc/command/V)
-	V.add_hardpoint(new /obj/item/hardpoint/primary/dualcannon)
-	V.add_hardpoint(new /obj/item/hardpoint/secondary/frontalcannon)
-	V.add_hardpoint(new /obj/item/hardpoint/support/flare_launcher)
-	V.add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
+/obj/effect/vehicle_spawner/apc/cmd/decrepit/load_hardpoints(obj/vehicle/multitile/multitile)
+	multitile.add_hardpoint(new /obj/item/hardpoint/primary/dualcannon)
+	multitile.add_hardpoint(new /obj/item/hardpoint/secondary/frontalcannon)
+	multitile.add_hardpoint(new /obj/item/hardpoint/support/flare_launcher)
+	multitile.add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
 
 //PRESET: default hardpoints
-/obj/effect/vehicle_spawner/apc/cmd/fixed/load_hardpoints(obj/vehicle/multitile/apc/command/V)
-	V.add_hardpoint(new /obj/item/hardpoint/primary/dualcannon)
-	V.add_hardpoint(new /obj/item/hardpoint/secondary/frontalcannon)
-	V.add_hardpoint(new /obj/item/hardpoint/support/flare_launcher)
-	V.add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
+/obj/effect/vehicle_spawner/apc/cmd/fixed/load_hardpoints(obj/vehicle/multitile/multitile)
+	multitile.add_hardpoint(new /obj/item/hardpoint/primary/dualcannon)
+	multitile.add_hardpoint(new /obj/item/hardpoint/secondary/frontalcannon)
+	multitile.add_hardpoint(new /obj/item/hardpoint/support/flare_launcher)
+	multitile.add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)

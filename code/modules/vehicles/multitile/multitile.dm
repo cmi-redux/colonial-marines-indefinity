@@ -381,43 +381,69 @@
 
 /obj/effect/vehicle_spawner
 	name = "Vehicle Spawner"
+	var/type_for_spawn = null
+	var/damaged = FALSE
+
+/obj/effect/vehicle_spawner/Initialize(mapload, _faction_to_get, no_insta_spawn = FALSE)
+	. = ..()
+	faction_to_get = _faction_to_get
+	if(!no_insta_spawn && type_for_spawn)
+		spawn_vehicle()
 
 //Main proc which handles spawning and adding hardpoints/damaging the vehicle
 /obj/effect/vehicle_spawner/proc/spawn_vehicle()
+	. = new type_for_spawn(get_turf(loc), faction_to_get)
+	load_misc(.)
+	handle_direction(.)
+	load_hardpoints(.)
+	load_additional_hardpoints(.)
+	if(damaged)
+		load_damage(.)
+	final_load(.)
+	qdel(src)
+	return .
+
+//Installation of additional modules kit
+/obj/effect/vehicle_spawner/proc/load_additional_hardpoints(obj/vehicle/multitile/multitile)
 	return
 
 //Installation of modules kit
-/obj/effect/vehicle_spawner/proc/load_hardpoints(obj/vehicle/multitile/V)
+/obj/effect/vehicle_spawner/proc/load_hardpoints(obj/vehicle/multitile/multitile)
 	return
 
 //Miscellaneous additions
-/obj/effect/vehicle_spawner/proc/load_misc(obj/vehicle/multitile/V)
-
-	V.load_role_reserved_slots()
-	V.initialize_cameras()
+/obj/effect/vehicle_spawner/proc/load_misc(obj/vehicle/multitile/multitile)
+	multitile.load_role_reserved_slots()
+	multitile.initialize_cameras()
 	//transfer mapped in edits
 	if(color)
-		V.color = color
+		multitile.color = color
+
 	if(name != initial(name))
-		V.name = name
+		multitile.name = name
+
 	if(desc)
-		V.desc = desc
+		multitile.desc = desc
 
 //Dealing enough damage to destroy the vehicle
-/obj/effect/vehicle_spawner/proc/load_damage(obj/vehicle/multitile/V)
-	V.take_damage_type(1e8, "abstract")
-	V.take_damage_type(1e8, "abstract")
-	V.healthcheck()
+/obj/effect/vehicle_spawner/proc/load_damage(obj/vehicle/multitile/multitile)
+	multitile.take_damage_type(1e8, "abstract")
+	multitile.take_damage_type(1e8, "abstract")
+	multitile.healthcheck()
 
-/obj/effect/vehicle_spawner/proc/handle_direction(obj/vehicle/multitile/M)
+//Dealing enough damage to destroy the vehicle
+/obj/effect/vehicle_spawner/proc/final_load(obj/vehicle/multitile/multitile)
+	multitile.update_icon()
+
+/obj/effect/vehicle_spawner/proc/handle_direction(obj/vehicle/multitile/multitile)
 	switch(dir)
 		if(EAST)
-			M.try_rotate(90)
+			multitile.try_rotate(90)
 		if(WEST)
-			M.try_rotate(-90)
+			multitile.try_rotate(-90)
 		if(NORTH)
-			M.try_rotate(90)
-			M.try_rotate(90)
+			multitile.try_rotate(90)
+			multitile.try_rotate(90)
 
 /obj/vehicle/multitile/get_applying_acid_time()
 	return 3 SECONDS

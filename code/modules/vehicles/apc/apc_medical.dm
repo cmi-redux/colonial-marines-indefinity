@@ -104,32 +104,26 @@
 	name = "APC MED Spawner"
 	icon_state = "apc_base_med"
 
-/obj/effect/vehicle_spawner/apc/med/load_fpw(obj/vehicle/multitile/apc/V)
+/obj/effect/vehicle_spawner/apc/med/load_additional_hardpoints(obj/vehicle/multitile/multitile)
 	return
 
 //PRESET: only wheels installed
-/obj/effect/vehicle_spawner/apc/med/plain/load_hardpoints(obj/vehicle/multitile/apc/medical/V)
-	V.add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
+/obj/effect/vehicle_spawner/apc/med/plain/load_hardpoints(obj/vehicle/multitile/multitile)
+	multitile.add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
 
 //PRESET: default hardpoints, destroyed
-/obj/effect/vehicle_spawner/apc/med/decrepit/spawn_vehicle()
-	var/obj/vehicle/multitile/apc/medical/APC = new(loc)
+/obj/effect/vehicle_spawner/apc/med/decrepit
+	damaged = TRUE
 
-	load_misc(APC)
-	load_hardpoints(APC)
-	handle_direction(APC)
-	load_damage(APC)
-	APC.update_icon()
-
-/obj/effect/vehicle_spawner/apc/med/decrepit/load_hardpoints(obj/vehicle/multitile/apc/medical/V)
-	V.add_hardpoint(new /obj/item/hardpoint/primary/dualcannon)
-	V.add_hardpoint(new /obj/item/hardpoint/secondary/frontalcannon)
-	V.add_hardpoint(new /obj/item/hardpoint/support/flare_launcher)
-	V.add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
+/obj/effect/vehicle_spawner/apc/med/decrepit/load_hardpoints(obj/vehicle/multitile/multitile)
+	multitile.add_hardpoint(new /obj/item/hardpoint/primary/dualcannon)
+	multitile.add_hardpoint(new /obj/item/hardpoint/secondary/frontalcannon)
+	multitile.add_hardpoint(new /obj/item/hardpoint/support/flare_launcher)
+	multitile.add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
 
 //PRESET: default hardpoints
-/obj/effect/vehicle_spawner/apc/med/fixed/load_hardpoints(obj/vehicle/multitile/apc/medical/V)
-	V.add_hardpoint(new /obj/item/hardpoint/primary/dualcannon)
-	V.add_hardpoint(new /obj/item/hardpoint/secondary/frontalcannon)
-	V.add_hardpoint(new /obj/item/hardpoint/support/flare_launcher)
-	V.add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
+/obj/effect/vehicle_spawner/apc/med/fixed/load_hardpoints(obj/vehicle/multitile/multitile)
+	multitile.add_hardpoint(new /obj/item/hardpoint/primary/dualcannon)
+	multitile.add_hardpoint(new /obj/item/hardpoint/secondary/frontalcannon)
+	multitile.add_hardpoint(new /obj/item/hardpoint/support/flare_launcher)
+	multitile.add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)

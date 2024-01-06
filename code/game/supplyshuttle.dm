@@ -1422,7 +1422,6 @@ var/datum/controller/supply/supply_controller = new()
 			return
 
 		var/turf/middle_turf = get_turf(SSshuttle.vehicle_elevator)
-		var/obj/vehicle/multitile/ordered_vehicle
 		var/datum/vehicle_order/VO = locate(href_list["get_vehicle"])
 		if(!VO)
 			return
@@ -1431,7 +1430,8 @@ var/datum/controller/supply/supply_controller = new()
 			return
 
 		spent = TRUE
-		ordered_vehicle = new VO.ordered_vehicle(middle_turf, faction_to_get)
+		var/obj/effect/vehicle_spawner/vehicle_spawner = new VO.ordered_vehicle(middle_turf, faction_to_get, TRUE)
+		var/obj/vehicle/multitile/ordered_vehicle = vehicle_spawner.spawn_vehicle()
 		SSshuttle.vehicle_elevator.request(SSshuttle.getDock("almayer vehicle"))
 
 		VO.on_created(ordered_vehicle)

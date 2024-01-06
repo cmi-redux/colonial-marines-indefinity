@@ -253,41 +253,13 @@
 	icon_state = "van_base"
 	pixel_x = -16
 	pixel_y = -16
+	type_for_spawn = /obj/vehicle/multitile/van
 
-/obj/effect/vehicle_spawner/van/Initialize()
-	. = ..()
-	spawn_vehicle()
-	qdel(src)
+/obj/effect/vehicle_spawner/van/decrepit
+	damaged = TRUE
 
-//PRESET: no hardpoints
-/obj/effect/vehicle_spawner/van/spawn_vehicle()
-	var/obj/vehicle/multitile/van/VAN = new(loc)
+/obj/effect/vehicle_spawner/van/decrepit/load_hardpoints(obj/vehicle/multitile/multitile)
+	multitile.add_hardpoint(new /obj/item/hardpoint/locomotion/van_wheels)
 
-	load_misc(VAN)
-	handle_direction(VAN)
-	VAN.update_icon()
-
-//PRESET: wheels installed, destroyed
-/obj/effect/vehicle_spawner/van/decrepit/spawn_vehicle()
-	var/obj/vehicle/multitile/van/VAN = new(loc)
-
-	load_misc(VAN)
-	load_hardpoints(VAN)
-	handle_direction(VAN)
-	load_damage(VAN)
-	VAN.update_icon()
-
-/obj/effect/vehicle_spawner/van/decrepit/load_hardpoints(obj/vehicle/multitile/van/V)
-	V.add_hardpoint(new /obj/item/hardpoint/locomotion/van_wheels)
-
-//PRESET: wheels installed
-/obj/effect/vehicle_spawner/van/fixed/spawn_vehicle()
-	var/obj/vehicle/multitile/van/VAN = new(loc)
-
-	load_misc(VAN)
-	load_hardpoints(VAN)
-	handle_direction(VAN)
-	VAN.update_icon()
-
-/obj/effect/vehicle_spawner/van/fixed/load_hardpoints(obj/vehicle/multitile/van/V)
-	V.add_hardpoint(new /obj/item/hardpoint/locomotion/van_wheels)
+/obj/effect/vehicle_spawner/van/fixed/load_hardpoints(obj/vehicle/multitile/multitile)
+	multitile.add_hardpoint(new /obj/item/hardpoint/locomotion/van_wheels)

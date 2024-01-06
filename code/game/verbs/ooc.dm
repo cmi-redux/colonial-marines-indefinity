@@ -41,18 +41,20 @@
 	var/display_colour = GLOB.ooc_color_override
 	if(!display_colour)
 		display_colour = CONFIG_GET(string/ooc_color_normal)
+
 	if(admin_holder && !admin_holder.fakekey)
 		display_colour = CONFIG_GET(string/ooc_color_other)
-		if(admin_holder.rights & R_DEBUG)
-			display_colour = CONFIG_GET(string/ooc_color_debug)
-		if(admin_holder.rights & R_MOD)
-			display_colour = CONFIG_GET(string/ooc_color_mods)
-		if(admin_holder.rights & R_ADMIN)
-			display_colour = CONFIG_GET(string/ooc_color_admin)
-		if(admin_holder.rights & R_COLOR)
+		if(check_rights(R_COLOR))
 			display_colour = prefs.ooccolor
+		else if(check_rights(R_DEBUG))
+			display_colour = CONFIG_GET(string/ooc_color_debug)
+		else if(check_rights(R_ADMIN))
+			display_colour = CONFIG_GET(string/ooc_color_admin)
+		else if(check_rights(R_MOD))
+			display_colour = CONFIG_GET(string/ooc_color_mods)
 	else if(player_data.donator_info.patreon_function_available("ooc_color"))
 		display_colour = prefs.ooccolor
+
 	if(!display_colour) // if invalid R_COLOR choice
 		display_colour = CONFIG_GET(string/ooc_color_default)
 
