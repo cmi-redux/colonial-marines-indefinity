@@ -65,7 +65,7 @@
 			C.next_move_slowdown = new_slowdown
 	..()
 
-/turf/open/gm/river/update_overlays()
+/turf/open/snow/update_overlays()
 	. = ..()
 	if(!.)
 		return

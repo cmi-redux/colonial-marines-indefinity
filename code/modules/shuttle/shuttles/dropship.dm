@@ -165,6 +165,8 @@
 	dwidth = 5
 	dheight = 10
 
+	faction_to_get = FACTION_MARINE
+
 	var/list/landing_lights = list()
 	var/auto_open = FALSE
 	var/landing_lights_on = FALSE

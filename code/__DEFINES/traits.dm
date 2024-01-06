@@ -229,6 +229,7 @@
 
 // TURF TRAITS
 #define TRAIT_TURF_BULLET_MANIPULATION "bullet_manipulation" //This tile is doing something to projectile
+#define TRAIT_FISHING "t_fishing"
 
 // Miscellaneous item traits.
 // Do NOT bloat this category, if needed make a new category (like shoe traits, xeno item traits...)
@@ -334,6 +335,7 @@ GLOBAL_LIST_INIT(traits_by_type, list(
 	),
 	/turf = list(
 		"TRAIT_TURF_BULLET_MANIPULATION" = TRAIT_TURF_BULLET_MANIPULATION,
+		"TRAIT_FISHING" = TRAIT_FISHING,
 	),
 ))
 

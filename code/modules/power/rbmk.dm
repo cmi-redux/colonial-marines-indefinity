@@ -215,7 +215,8 @@ DEFINE_BITFIELD(reactor_flags, list(
 //Failure condition 1: Meltdown. Achieved by having heat go over tolerances. This is less devastating because it's easier to achieve.
 //Results: Engineering becomes unusable and your engine irreparable
 /obj/structure/machinery/power/rbmk/proc/meltdown()
-	set waitfor = FALSE
+	if(flags_reactor & REACTOR_SLAGGED)
+		return
 	flags_reactor |= REACTOR_SLAGGED
 	update_icon()
 	stop_processing()

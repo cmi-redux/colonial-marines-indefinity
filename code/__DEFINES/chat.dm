@@ -910,7 +910,7 @@ GLOBAL_LIST_INIT(client_language_ru, list(
 //	MUTATORS|STRAINS
 	LANGUAGE_MUTATION_COMPLETED = "Мутация выполнена!",
 	LANGUAGE_MUTATION_FAILED = "Мутация провалена!",
-	LANGUAGE_MUTATION_NO_MORE = "Вы не можее взять другие мутации.",
+	LANGUAGE_MUTATION_NO_MORE = "Вы не можете взять другие мутации.",
 	LANGUAGE_MUTATION_CHOICE = "Какой мутатор вы желаете купить?",
 	LANGUAGE_MUTATION_PURCHASE = "Купить Мутатор?",
 	LANGUAGE_MUTATION_CONFIRM = "Подтвердить Мутацию",

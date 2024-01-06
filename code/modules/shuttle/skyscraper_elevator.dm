@@ -239,7 +239,7 @@
 
 /obj/structure/machinery/computer/shuttle/shuttle_control/sselevator/proc/connect_elevator()
 	set waitfor = FALSE
-	UNTIL(!(elevator_id in SSshuttle.scraper_elevators))
+	UNTIL(elevator_id in SSshuttle.scraper_elevators)
 	elevator = SSshuttle.scraper_elevators[elevator_id]
 	if(floor != "control")
 		floor = z - elevator.floor_offset
@@ -365,7 +365,7 @@
 
 /obj/structure/machinery/computer/security_blocker/proc/connect_elevator()
 	set waitfor = FALSE
-	UNTIL(!(elevator_id in SSshuttle.scraper_elevators))
+	UNTIL(elevator_id in SSshuttle.scraper_elevators)
 	elevator = SSshuttle.scraper_elevators[elevator_id]
 	for(var/obj/structure/machinery/siren/S as anything in sirens)
 		S.siren_warning_start("ТРЕВОГА, КРИТИЧЕСКАЯ СИТУАЦИЯ, ЗАПУЩЕН ПРОТОКОЛ МАКСИМАЛЬНОЙ БЕЗОПАСНОСТИ, ЭТАЖ [z - elevator.floor_offset]")

@@ -35,13 +35,13 @@
 /turf/open/floor/plating/plating_catwalk,
 /area/shuttle/vehicle_elevator)
 "g" = (
+/obj/docking_port/mobile/vehicle_elevator,
 /turf/open/floor/plating/plating_catwalk,
 /area/shuttle/vehicle_elevator)
 "h" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "NE-out"
 	},
-/obj/docking_port/mobile/vehicle_elevator,
 /turf/open/floor/plating/plating_catwalk,
 /area/shuttle/vehicle_elevator)
 "i" = (

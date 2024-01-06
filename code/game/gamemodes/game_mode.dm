@@ -250,7 +250,7 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 			if(mob.client)
 				mobs += mob
 				give_action(mob, /datum/action/show_round_statistics, null, icon_states[faction_to_get])
-				sound_to(mob, musical_tracks[faction_to_get][1])
+				sound_to(mob, musical_tracks[faction.name][1])
 				if(length(musical_tracks[faction_to_get]) > 1)
 					spawn(20 SECONDS)
 						sound_to(mob, musical_tracks[faction_to_get][2])

@@ -2,6 +2,8 @@
 	name = "vehicle elevator"
 	width = 5
 	height = 5
+	dwidth = 3
+	dheight = 3
 
 	id = MOBILE_SHUTTLE_VEHICLE_ELEVATOR
 
@@ -50,6 +52,8 @@
 	id = "root vehicle"
 	width = 5
 	height = 5
+	dwidth = 3
+	dheight = 3
 
 /obj/docking_port/stationary/vehicle_elevator/almayer
 	name = "Almayer Vehicle Elevator Dock"

@@ -32,13 +32,13 @@
 	var/turf/forward = get_step(user.loc, user.dir)
 	if(!forward)
 		return
-	if(!forward.supports_fishing)
+	if(!HAS_TRAIT(forward, TRAIT_FISHING))
 		to_chat(user, SPAN_WARNING("There are no fish in the area one unit in front of you!"))
 		return
 	var/turf/fishing_turf = get_step(forward, user.dir)
 	if(!fishing_turf)
 		return
-	if(!fishing_turf.supports_fishing)
+	if(!HAS_TRAIT(fishing_turf, TRAIT_FISHING))
 		to_chat(user, SPAN_WARNING("There are no fish in the area two units in front of you!"))
 		return
 

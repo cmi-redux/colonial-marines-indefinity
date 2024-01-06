@@ -43,6 +43,7 @@
 			nest.buckled_mob = new_human
 			nest.afterbuckle(new_human)
 	new_human.spawned_corpse = TRUE
+	new_human.Life()
 	new_human.updatehealth()
 	new_human.pulse = PULSE_NONE
 
