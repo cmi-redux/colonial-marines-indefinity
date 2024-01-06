@@ -136,7 +136,7 @@
 		qdel(decal)
 
 	if(target_turf.snow && prob(probability * 0.25))
-		snow.damage_act(1)
+		target_turf.snow.damage_act(1)
 
 /datum/weather_effect/snow
 	name = "snow effect"
