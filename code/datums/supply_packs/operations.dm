@@ -3,7 +3,7 @@
 /datum/supply_packs/faction_tags
 	name = "Faction IFF Tag Case (x7 tags)"
 	contains = list(
-		/obj/item/storage/tag_case/uscm/marine/full
+		/obj/item/storage/tag_case/uscm/marine/full,
 	)
 	cost = 100
 	containertype = /obj/structure/closet/crate/secure/weyland
@@ -106,7 +106,7 @@
 		/obj/item/engi_upgrade_kit,
 		/obj/item/engi_upgrade_kit,
 		/obj/item/engi_upgrade_kit,
-		/obj/item/engi_upgrade_kit
+		/obj/item/engi_upgrade_kit,
 	)
 	cost = 0
 	buyable = FALSE
@@ -120,28 +120,13 @@
 		/obj/item/storage/box/czsp/medic_upgraded_kits,
 		/obj/item/storage/box/czsp/medic_upgraded_kits,
 		/obj/item/storage/box/czsp/medic_upgraded_kits,
-		/obj/item/storage/box/czsp/medic_upgraded_kits
+		/obj/item/storage/box/czsp/medic_upgraded_kits,
 	)
 	cost = 0
 	buyable = FALSE
 	containertype = /obj/structure/closet/crate/medical
 	containername = "Upgraded Medical Equipment Crate"
 	group = "Operations"
-
-/datum/supply_packs/spec_kits
-	name = "Specialist Kits"
-	contains = list(
-		/obj/item/spec_kit/asrs,
-		/obj/item/spec_kit/asrs,
-		/obj/item/spec_kit/asrs,
-		/obj/item/spec_kit/asrs
-	)
-	cost = 0
-	containertype = /obj/structure/closet/crate/supply
-	containername = "Specialist Kits Crate"
-	buyable = 0
-	group = "Operations"
-	iteration_needed = null
 
 /datum/supply_packs/spec_kits
 	name = "Weapons Specialist Kits"
@@ -168,7 +153,7 @@
 		/obj/item/ammo_kit/toxin,
 		/obj/item/ammo_kit/toxin,
 		/obj/item/ammo_kit/penetrating,
-		/obj/item/ammo_kit/penetrating
+		/obj/item/ammo_kit/penetrating,
 	)
 	cost = 0
 	containertype = /obj/structure/closet/crate/supply
@@ -186,7 +171,7 @@
 		/obj/item/advanced_weapon_kit/railgun,
 		/obj/item/advanced_weapon_kit/railgun,
 		/obj/item/advanced_weapon_kit/railgun,
-		/obj/item/advanced_weapon_kit/railgun
+		/obj/item/advanced_weapon_kit/railgun,
 	)
 	cost = 0
 	containertype = /obj/structure/closet/crate/supply
@@ -197,8 +182,31 @@
 /datum/supply_packs/operational_special_assets
 	name = "Operational Special Assets"
 	contains = list(
-		/obj/item/defenses/handheld/sentry/heavy,
-		/obj/item/defenses/handheld/sentry/heavy,
+		/obj/effect/essentials_set/experemental_defenses,
+		/obj/effect/essentials_set/experemental_defenses,
+		/obj/effect/essentials_set/experemental_medic_kit,
+		/obj/effect/essentials_set/experemental_medic_kit,
+		/obj/item/clothing/suit/auto_cpr,
+		/obj/item/clothing/suit/auto_cpr,
+		/obj/item/tool/portadialysis,
+		/obj/item/tool/portadialysis,
+		/obj/effect/essentials_set/cnailgun,
+		/obj/effect/essentials_set/cnailgun,
+		/obj/item/stack/sheet/metal/large_stack,
+		/obj/item/stack/sheet/metal/large_stack,
+		/obj/item/stack/sheet/metal/large_stack,
+		/obj/item/stack/sheet/metal/large_stack,
+		/obj/item/stack/sheet/metal/large_stack,
+		/obj/item/stack/sheet/metal/large_stack,
+		/obj/item/stack/sheet/metal/large_stack,
+		/obj/item/stack/sheet/metal/large_stack,
+		/obj/item/stack/sheet/metal/large_stack,
+		/obj/item/stack/sheet/metal/large_stack,
+		/obj/item/stack/sheet/plasteel/large_stack,
+		/obj/item/stack/sheet/plasteel/large_stack,
+		/obj/item/stack/sheet/plasteel/large_stack,
+		/obj/item/stack/sheet/plasteel/large_stack,
+		/obj/item/stack/sheet/plasteel/large_stack,
 //TODO: Add here more funny assets
 	)
 	cost = 0

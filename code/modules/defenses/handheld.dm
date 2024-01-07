@@ -2,7 +2,7 @@
 	name = "Don't see this."
 	desc = "A compact version of the USCM defenses. Designed for quick deployment of the associated type in the field."
 	icon = 'icons/obj/structures/machinery/defenses/sentry.dmi'
-	icon_state = "DMR uac_sentry_handheld"
+	icon_state = "DMR sentry_handheld"
 
 	faction_to_get = null
 
@@ -112,16 +112,16 @@
 /obj/item/defenses/handheld/sentry
 	name = "handheld UA 571-C sentry gun"
 	icon = 'icons/obj/structures/machinery/defenses/sentry.dmi'
-	icon_state = "Normal uac_sentry_handheld"
+	icon_state = "Normal sentry_handheld"
 	defense_type = /obj/structure/machinery/defenses/sentry
 
 /obj/item/defenses/handheld/sentry/get_upgrade_list()
 	. = list()
 	if(!MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_SNIPER_SENTRY))
-		. += list("DMR Upgrade" = image(icon = 'icons/obj/structures/machinery/defenses/sentry.dmi', icon_state = "DMR uac_sentry_handheld"))
+		. += list("DMR Upgrade" = image(icon = 'icons/obj/structures/machinery/defenses/sentry.dmi', icon_state = "DMR sentry_handheld"))
 	. += list(
-		"Shotgun Upgrade" = image(icon = 'icons/obj/structures/machinery/defenses/sentry.dmi', icon_state = "Shotgun uac_sentry_handheld"),
-		"Mini-Sentry Upgrade" = image(icon = 'icons/obj/structures/machinery/defenses/sentry.dmi', icon_state = "Mini uac_sentry_handheld")
+		"Shotgun Upgrade" = image(icon = 'icons/obj/structures/machinery/defenses/sentry.dmi', icon_state = "Shotgun sentry_handheld"),
+		"Mini-Sentry Upgrade" = image(icon = 'icons/obj/structures/machinery/defenses/sentry.dmi', icon_state = "Mini sentry_handheld")
 	)
 
 /obj/item/defenses/handheld/sentry/upgrade_string_to_type(upgrade_string)
@@ -135,18 +135,18 @@
 
 /obj/item/defenses/handheld/sentry/dmr
 	name = "handheld UA 725-D sniper sentry"
-	icon_state = "DMR uac_sentry_handheld"
+	icon_state = "DMR sentry_handheld"
 	deployment_time = 2 SECONDS
 	defense_type = /obj/structure/machinery/defenses/sentry/dmr
 
 /obj/item/defenses/handheld/sentry/shotgun
 	name = "handheld UA 12-G shotgun sentry"
-	icon_state = "Shotgun uac_sentry_handheld"
+	icon_state = "Shotgun sentry_handheld"
 	defense_type = /obj/structure/machinery/defenses/sentry/shotgun
 
 /obj/item/defenses/handheld/sentry/mini
 	name = "handheld UA 512-M mini sentry"
-	icon_state = "Mini uac_sentry_handheld"
+	icon_state = "Mini sentry_handheld"
 	defense_type = /obj/structure/machinery/defenses/sentry/mini
 	deployment_time = 0.75 SECONDS
 
@@ -161,16 +161,16 @@
 /obj/item/defenses/handheld/sentry/flamer
 	name = "handheld UA 42-F sentry flamer"
 	icon = 'icons/obj/structures/machinery/defenses/flamer.dmi'
-	icon_state = "Normal uac_flamer_handheld"
+	icon_state = "Normal flamer_handheld"
 	defense_type = /obj/structure/machinery/defenses/sentry/flamer
 	var/ammo_convert
 
 /obj/item/defenses/handheld/sentry/flamer/get_upgrade_list()
 	. = list()
 	if(!MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_SNIPER_SENTRY))
-		. += list("Long-Range Plasma Upgrade" = image(icon = 'icons/obj/structures/machinery/defenses/flamer.dmi', icon_state = "Plasma uac_flamer_handheld"))
+		. += list("Long-Range Plasma Upgrade" = image(icon = 'icons/obj/structures/machinery/defenses/flamer.dmi', icon_state = "Plasma flamer_handheld"))
 	. += list(
-		"Mini-Flamer Upgrade" = image(icon = 'icons/obj/structures/machinery/defenses/flamer.dmi', icon_state = "Mini uac_flamer_handheld")
+		"Mini-Flamer Upgrade" = image(icon = 'icons/obj/structures/machinery/defenses/flamer.dmi', icon_state = "Mini flamer_handheld")
 	)
 
 /obj/item/defenses/handheld/sentry/flamer/upgrade_string_to_type(upgrade_string)
@@ -203,14 +203,14 @@
 
 /obj/item/defenses/handheld/sentry/flamer/mini
 	name = "handheld UA 45-FM mini sentry"
-	icon_state = "Mini uac_flamer_handheld"
+	icon_state = "Mini flamer_handheld"
 	defense_type = /obj/structure/machinery/defenses/sentry/flamer/mini
 	deployment_time = 0.75 SECONDS
 	ammo_convert = /obj/item/ammo_magazine/sentry_flamer/mini
 
 /obj/item/defenses/handheld/sentry/flamer/plasma
 	name = "handheld UA 60-FP plasma sentry"
-	icon_state = "Plasma uac_flamer_handheld"
+	icon_state = "Plasma flamer_handheld"
 	deployment_time = 2 SECONDS
 	defense_type = /obj/structure/machinery/defenses/sentry/flamer/plasma
 	ammo_convert = /obj/item/ammo_magazine/sentry_flamer/glob

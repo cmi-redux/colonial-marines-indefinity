@@ -338,7 +338,7 @@
 	announcement_message = "Наборы специалистов были загружены в карго лифт."
 
 	accessing_type = DEFCON_ASSET_DELIVERY|DEFCON_ASSET_DELIVERY_CARGO
-	reward_name = "Specialist Kits"
+	reward_name = "Weapons Specialist Kits"
 
 
 
@@ -585,7 +585,7 @@
 	announcement_message = "Наборы специалистов были загружены в карго лифт."
 
 	accessing_type = DEFCON_ASSET_DELIVERY|DEFCON_ASSET_DELIVERY_CARGO
-	reward_name = "Specialist Kits"
+	reward_name = "Weapons Specialist Kits"
 
 
 

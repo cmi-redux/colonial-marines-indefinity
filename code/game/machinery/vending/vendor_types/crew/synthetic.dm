@@ -309,7 +309,7 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth_snowflake, list(
 /obj/structure/machinery/cm_vending/own_points/experimental_tools/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/coin/marine/synth))
 		if(user.drop_inv_item_to_loc(W, src))
-			available_points = 30
+			available_points = 60
 			available_points_to_display = available_points
 			to_chat(user, SPAN_NOTICE("You insert \the [W] into \the [src]."))
 			return
@@ -324,14 +324,16 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth_snowflake, list(
 		list("Experemental Medic Essentials", 30, /obj/effect/essentials_set/experemental_medic_kit, null, VENDOR_ITEM_REGULAR),
 
 		list("ENGINEERING", 0, null, null, null),
-		list("Breaching Hammer", 15, /obj/item/weapon/twohanded/breacher, null, VENDOR_ITEM_REGULAR),
+		list("D2 Breaching Hammer", 15, /obj/item/weapon/twohanded/breacher, null, VENDOR_ITEM_REGULAR),
 		list("Compact Nailgun kit", 15, /obj/effect/essentials_set/cnailgun, null, VENDOR_ITEM_REGULAR),
 		list("Maintenance Jack", 15, /obj/item/maintenance_jack, null, VENDOR_ITEM_REGULAR),
 		list("Backpack Firefighting Watertank", 15, /obj/item/reagent_container/glass/watertank/atmos, null, VENDOR_ITEM_REGULAR),
 		list("Experimental Meson Goggles", 15, /obj/item/clothing/glasses/night/experimental_mesons, null, VENDOR_ITEM_REGULAR),
 
 		list("DEFENSIVE", 0, null, null, null),
+		list("Heavy Turret Defenses", 30, /obj/effect/essentials_set/experemental_defenses, null, VENDOR_ITEM_REGULAR),
 		list("Telescopic Baton", 15, /obj/item/weapon/telebaton, null, VENDOR_ITEM_REGULAR),
+		list("B5 Breaching Hammer", 30, /obj/item/weapon/twohanded/breacher/synth, null, VENDOR_ITEM_REGULAR),
 	)
 
 //------------EXPERIMENTAL TOOL KITS---------------
@@ -353,4 +355,15 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth_snowflake, list(
 		/obj/item/stack/medical/splint/nano,
 		/obj/item/stack/medical/advanced/ointment/upgraded,
 		/obj/item/stack/medical/advanced/ointment/upgraded,
+	)
+
+/obj/effect/essentials_set/experemental_defenses
+	spawned_gear_list = list(
+		/obj/item/device/sentry_computer,
+		/obj/item/defenses/handheld/sentry/heavy,
+		/obj/item/defenses/handheld/tesla_coil,
+		/obj/item/defenses/handheld/planted_flag,
+		/obj/item/defenses/handheld/bell_tower,
+		/obj/item/defenses/handheld/sentry,
+		/obj/item/defenses/handheld/sentry/flamer,
 	)
