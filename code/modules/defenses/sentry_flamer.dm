@@ -5,6 +5,7 @@
 	fire_delay = 30
 	ammo = new /obj/item/ammo_magazine/sentry_flamer
 	defense_icon = "flamer"
+	sentry_icon = 'icons/obj/structures/machinery/defenses/flamer.dmi'
 	handheld_type = /obj/item/defenses/handheld/sentry/flamer
 	health = 200
 	health_max = 200
