@@ -135,8 +135,15 @@
 	. = ..()
 
 	if(health > 0)
-		healthcheck(FALSE, TRUE, user = proj.firer, AM = proj)
+		healthcheck(FALSE, TRUE, TRUE, proj.firer, proj)
+		return TRUE
 
+	if(istype(proj.firer, /mob))
+		var/mob/user = proj.firer
+		user.count_statistic_stat(STATISTICS_DESTRUCTION_WINDOWS, 1)
+		SEND_SIGNAL(user, COMSIG_MOB_DESTROY_WINDOW, src)
+
+	playsound(src, "windowshatter", 50, 1)
 	handle_debris(proj.damage, proj.dir)
 	deconstruct(disassembled = FALSE)
 	return TRUE
@@ -147,31 +154,30 @@
 
 	health -= severity * EXPLOSION_DAMAGE_MULTIPLIER_WINDOW
 
-	var/mob/M = cause_data?.resolve_mob()
+	var/mob/mob = cause_data?.resolve_mob()
 	if(health > 0)
-		healthcheck(FALSE, TRUE, user = M)
-		return
+		healthcheck(FALSE, TRUE, user = mob)
+		return TRUE
 
-	if(health >= -2000)
-		var/location = get_turf(src)
-		playsound(src, "windowshatter", 50, 1)
-		create_shrapnel(location, rand(1,5), explosion_direction, shrapnel_type = /datum/ammo/bullet/shrapnel/light/glass, cause_data = cause_data)
+	playsound(src, "windowshatter", 50, 1)
+	create_shrapnel(get_turf(src), rand(1,5), explosion_direction, shrapnel_type = /datum/ammo/bullet/shrapnel/light/glass, cause_data = cause_data)
 
-	if(M)
-		M.count_statistic_stat(STATISTICS_DESTRUCTION_WINDOWS, 1)
-		SEND_SIGNAL(M, COMSIG_MOB_WINDOW_EXPLODED, src)
+	if(mob)
+		mob.count_statistic_stat(STATISTICS_DESTRUCTION_WINDOWS, 1)
+		SEND_SIGNAL(mob, COMSIG_MOB_WINDOW_EXPLODED, src)
 
+	playsound(src, "windowshatter", 50, 1)
 	handle_debris(severity, explosion_direction)
 	deconstruct(disassembled = FALSE)
-	return
+	return TRUE
 
 /obj/structure/window/get_explosion_resistance(direction)
 	if(not_damageable)
 		return 1000000
 
 	if(flags_atom & ON_BORDER)
-		if( direction == turn(dir, 90) || direction == turn(dir, -90) )
-			return 0
+		if(direction == turn(dir, 90) || direction == turn(dir, -90))
+			return FALSE
 
 	return health/EXPLOSION_DAMAGE_MULTIPLIER_WINDOW
 

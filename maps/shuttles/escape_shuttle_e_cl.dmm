@@ -1,7 +1,6 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "a" = (
 /obj/docking_port/mobile/crashable/escape_shuttle/cl,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/escapepod{
 	icon_state = "wall9"
 	},
@@ -11,25 +10,21 @@
 	dir = 4;
 	req_light_switch = 0
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/escapepod{
 	icon_state = "floor1"
 	},
 /area/shuttle/escape_pod)
 "c" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/escapepod{
 	icon_state = "wall11"
 	},
 /area/shuttle/escape_pod)
 "g" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/escapepod{
 	icon_state = "wall3"
 	},
 /area/shuttle/escape_pod)
 "h" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/escapepod{
 	icon_state = "wall13"
 	},
@@ -39,25 +34,21 @@
 /obj/structure/sign/safety/cryo{
 	pixel_x = -18
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/escapepod,
 /area/shuttle/escape_pod)
 "s" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/escapepod{
 	icon_state = "wall2"
 	},
 /area/shuttle/escape_pod)
 "u" = (
 /obj/structure/machinery/cryopod/evacuation,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/escapepod,
 /area/shuttle/escape_pod)
 "v" = (
 /obj/structure/machinery/computer/shuttle/escape_pod_panel{
 	pixel_y = 30
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/escapepod{
 	icon_state = "floor0"
 	},
@@ -66,49 +57,41 @@
 /obj/structure/machinery/door/airlock/evacuation{
 	name = "\improper Evacuation Airlock CL-1"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4"
 	},
 /area/shuttle/escape_pod)
 "E" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/escapepod{
 	icon_state = "wall7"
 	},
 /area/shuttle/escape_pod)
 "I" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/escapepod{
 	icon_state = "wall6"
 	},
 /area/shuttle/escape_pod)
 "K" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/escapepod{
 	icon_state = "floor10"
 	},
 /area/shuttle/escape_pod)
 "O" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/escapepod{
 	icon_state = "wall4"
 	},
 /area/shuttle/escape_pod)
 "Q" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/escapepod{
 	icon_state = "wall1"
 	},
 /area/shuttle/escape_pod)
 "S" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/escapepod{
 	icon_state = "wall12"
 	},
 /area/shuttle/escape_pod)
 "X" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/escapepod{
 	icon_state = "wall10"
 	},

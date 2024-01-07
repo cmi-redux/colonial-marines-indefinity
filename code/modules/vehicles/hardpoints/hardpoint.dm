@@ -130,7 +130,11 @@
 		deconstruct(TRUE)
 
 /// Populate traits_to_give in this proc
-/obj/item/hardpoint/proc/set_bullet_traits(obj/item/projectile/proj)
+/obj/item/hardpoint/proc/set_bullet_traits()
+	return
+
+/// Populate traits_to_give in this proc
+/obj/item/hardpoint/proc/apply_traits(obj/item/projectile/proj)
 	// Apply bullet traits from gun
 	for(var/entry in traits_to_give)
 		var/list/L

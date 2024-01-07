@@ -19,17 +19,6 @@
 			accuracy_mult = 0.1
 			fire_delay = 0.5
 
-/obj/structure/machinery/defenses/sentry/flamer/actual_fire(atom/A)
-	var/obj/item/projectile/proj = ammo.transfer_bullet_out()
-	proj.forceMove(src)
-	apply_traits(proj)
-	proj.bullet_ready_to_fire(initial(name), weapon_source_mob = owner_mob)
-	proj.fire_at(A, src, owner_mob, proj.ammo.max_range, proj.ammo.shell_speed, null)
-	track_shot()
-	if(ammo.ammo_position == 0)
-		visible_message("[icon2html(src, viewers(src))] [SPAN_WARNING("The [name] beeps steadily and its ammo light blinks red.")]")
-		playsound(loc, 'sound/weapons/smg_empty_alarm.ogg', 25, 1)
-
 /obj/structure/machinery/defenses/sentry/flamer/destroyed_action()
 	visible_message("[icon2html(src, viewers(src))] [SPAN_WARNING("The [name] starts spitting out sparks and smoke!")]")
 	playsound(loc, 'sound/mecha/critdestrsyndi.ogg', 25, 1)

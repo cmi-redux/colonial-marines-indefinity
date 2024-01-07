@@ -59,6 +59,12 @@ PLANT_CUT_MACHETE = 3 = Needs at least a machete to be cut down
 	else
 		. = ..()
 
+/obj/structure/flora/get_projectile_hit_boolean(obj/item/projectile/projectile)
+	return FALSE
+
+/obj/structure/flora/bullet_act(obj/item/projectile/proj)
+	return FALSE
+
 /obj/structure/flora/ex_act(power)
 	if(power >= EXPLOSION_THRESHOLD_VLOW)
 		deconstruct(FALSE)
@@ -364,13 +370,13 @@ ICEY GRASS. IT LOOKS LIKE IT'S MADE OF ICE.
 		if(T && !T.contents.Find(/obj/structure/flora/grass/tall_grass))
 			T.cut_overlay(TallGrassEdgeCache[2**i])
 	T = get_step(src, NORTHWEST)
-	if(!T.contents.Find(/obj/structure/flora/grass/tall_grass))
+	if(T && !T.contents.Find(/obj/structure/flora/grass/tall_grass))
 		T.cut_overlay(TallGrassEdgeCache[NORTHWEST])
 	T = get_step(src, SOUTHEAST)
-	if(!T.contents.Find(/obj/structure/flora/grass/tall_grass))
+	if(T && !T.contents.Find(/obj/structure/flora/grass/tall_grass))
 		T.cut_overlay(TallGrassEdgeCache[SOUTHEAST])
 	T = get_step(src, SOUTHWEST)
-	if(!T.contents.Find(/obj/structure/flora/grass/tall_grass))
+	if(T && !T.contents.Find(/obj/structure/flora/grass/tall_grass))
 		T.cut_overlay(TallGrassEdgeCache[SOUTHWEST])
 
 /obj/structure/flora/grass/short_grass/Crossed(atom/movable/arrived)
@@ -388,13 +394,13 @@ ICEY GRASS. IT LOOKS LIKE IT'S MADE OF ICE.
 		if(T && !T.contents.Find(/obj/structure/flora/grass/tall_grass))
 			T.add_overlay(TallGrassEdgeCache[2**i])
 	T = get_step(src, NORTHWEST)
-	if(!T.contents.Find(/obj/structure/flora/grass/tall_grass))
+	if(T && !T.contents.Find(/obj/structure/flora/grass/tall_grass))
 		T.add_overlay(TallGrassEdgeCache[NORTHWEST])
 	T = get_step(src, SOUTHEAST)
-	if(!T.contents.Find(/obj/structure/flora/grass/tall_grass))
+	if(T && !T.contents.Find(/obj/structure/flora/grass/tall_grass))
 		T.add_overlay(TallGrassEdgeCache[SOUTHEAST])
 	T = get_step(src, SOUTHWEST)
-	if(!T.contents.Find(/obj/structure/flora/grass/tall_grass))
+	if(T && !T.contents.Find(/obj/structure/flora/grass/tall_grass))
 		T.add_overlay(TallGrassEdgeCache[SOUTHWEST])
 
 /obj/structure/flora/grass/tall_grass

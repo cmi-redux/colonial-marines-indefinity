@@ -31,7 +31,7 @@
 	underlayer_north_muzzleflash = TRUE
 
 /obj/item/hardpoint/special/firing_port_weapon/set_bullet_traits()
-	..()
+	. = ..()
 	LAZYADD(traits_to_give, list(
 		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_iff)
 	))

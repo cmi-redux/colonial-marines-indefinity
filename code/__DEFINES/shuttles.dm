@@ -106,8 +106,8 @@
 #define STAT_TRIJENT_ENGI "trigent_engineering"
 #define STAT_TRIJENT_OMEGA "trigent_omega"
 
-#define MOBILE_SHUTTLE_LIFEBOAT_PORT "lifeboat-port"
-#define MOBILE_SHUTTLE_LIFEBOAT_STARBOARD "lifeboat-starboard"
+#define MOBILE_SHUTTLE_LIFEBOAT_PORT "lifeboat_port"
+#define MOBILE_SHUTTLE_LIFEBOAT_STARBOARD "lifeboat_starboard"
 #define MOBILE_SHUTTLE_VEHICLE_ELEVATOR "vehicle_elevator"
 #define MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR "normal_elevator"
 #define MOBILE_SHUTTLE_SKY_SCRAPER_ELEVATOR_ONE "sky_scraper_elevator_one"

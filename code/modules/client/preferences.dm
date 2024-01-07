@@ -631,7 +631,7 @@ var/const/MAX_SAVE_SLOTS = 10
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_MC_SH)]: \
 					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_MIDDLE_MOUSE_SWAP_HANDS]'><b>[toggle_prefs & TOGGLE_MIDDLE_MOUSE_SWAP_HANDS ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_VVTH)]: \
-					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_VEND_ITEM_TO_HAND]'><b>[toggle_prefs & TOGGLE_VEND_ITEM_TO_HAND ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]]</b></a><br>"
+					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_VEND_ITEM_TO_HAND]'><b>[toggle_prefs & TOGGLE_VEND_ITEM_TO_HAND ? user.client.auto_lang(LANGUAGE_ENABLED) : user.client.auto_lang(LANGUAGE_DISABLED)]</b></a><br>"
 			dat += "<a href='?src=\ref[src];action=proccall;procpath=/client/proc/switch_item_animations'>[user.client.auto_lang(LANGUAGE_PREF_DETAIL_LVL)]</a><br>"
 			dat += "</div>"
 		if(MENU_SPECIAL)

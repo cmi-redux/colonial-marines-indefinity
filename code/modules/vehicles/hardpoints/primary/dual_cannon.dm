@@ -34,7 +34,7 @@
 	)
 
 /obj/item/hardpoint/primary/dualcannon/set_bullet_traits()
-	..()
+	. = ..()
 	LAZYADD(traits_to_give, list(
 		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_iff)
 	))

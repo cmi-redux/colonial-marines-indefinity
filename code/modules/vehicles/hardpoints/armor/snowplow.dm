@@ -45,6 +45,8 @@
 			next_wall.take_damage(250)
 		else if(istype(T, /turf/open))
 			for(var/atom/movable/atom in T.contents)
+				if(atom.anchored)
+					continue
 				atom.throw_atom(get_step(T, turn(move_dir, 90)), 4, SPEED_SLOW, src, TRUE, HIGH_LAUNCH)
 		else
 			continue

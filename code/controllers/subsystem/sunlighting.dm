@@ -16,7 +16,7 @@
 /datum/time_of_day/midnight
 	name = "Midnight"
 	color = "#000000"
-	start_at = 1		//12:00:00
+	start_at = 0		//12:00:00
 	position_number = 1
 
 /datum/time_of_day/night
@@ -126,7 +126,6 @@ SUBSYSTEM_DEF(sunlighting)
 	sun_color.vis_flags = VIS_INHERIT_PLANE|VIS_INHERIT_LAYER
 	sun_color.blend_mode = BLEND_ADD
 	sun_color.filters += filter(type = "layer", render_source = S_LIGHTING_VISUAL_RENDER_TARGET)
-	initialized = TRUE
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/sunlighting/proc/set_game_time_length(new_value)
@@ -150,30 +149,22 @@ SUBSYSTEM_DEF(sunlighting)
 		return TRUE
 
 	if(game_time_offseted() > next_step_datum.start_at * game_time_length)
-		if(next_day)
-			return FALSE
 		set_time_of_day()
 		return TRUE
-	else if(next_day) // It is now the next morning, reset our next day
-		next_day = FALSE
 	return FALSE
 
 /datum/controller/subsystem/sunlighting/proc/set_time_of_day()
-	var/datum/time_of_day/new_step = null
-
+	current_step_datum = next_step_datum
 	for(var/i = 1 to length(steps))
 		if(game_time_offseted() >= steps["[i]"].start_at * game_time_length)
-			new_step = steps["[i]"]
 			next_step_datum = i == length(steps) ? steps["1"] : steps["[i + 1]"]
 
-	if(!new_step)
-		new_step = steps["[length(steps)]"]
-		next_step_datum = steps["1"]
-
-	current_step_datum = new_step
-
-	if(next_step_datum.start_at <= current_step_datum.start_at)
-		next_day = TRUE
+	if(!current_step_datum)
+		if(next_step_datum)
+			set_time_of_day()
+		else
+			current_step_datum = steps["1"]
+			next_step_datum = steps["2"]
 
 /datum/controller/subsystem/sunlighting/proc/update_color()
 	if(!weather_light_affecting_event)

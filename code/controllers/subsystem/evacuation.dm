@@ -447,7 +447,7 @@ SUBSYSTEM_DEF(evacuation)
 /obj/structure/machinery/self_destruct/console/attack_hand(mob/user)
 	. = ..()
 	if(.)
-		ui_interact(user)
+		tgui_interact(user)
 
 /obj/structure/machinery/self_destruct/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)

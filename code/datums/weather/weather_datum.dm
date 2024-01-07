@@ -232,6 +232,12 @@
 		changing_layer(min(bleed_layer - round(damage / bleed_layer * 8, 1), MAX_LAYER_SNOW_LEVELS))
 		pts = 0
 
+/obj/structure/snow/get_projectile_hit_boolean(obj/item/projectile/projectile)
+	return FALSE
+
+/obj/structure/snow/bullet_act(obj/item/projectile/proj)
+	return FALSE
+
 /obj/structure/snow/flamer_fire_act(damage)
 	damage_act(damage)
 

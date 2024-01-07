@@ -5,7 +5,6 @@
 	pixel_x = -5;
 	pixel_y = -5
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -19,7 +18,6 @@
 	icon_state = "S";
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "cx" = (
@@ -33,7 +31,6 @@
 /obj/item/ammo_magazine/pistol/mod88{
 	pixel_x = 5
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	pixel_x = 0;
 	req_light_switch = 0
@@ -46,14 +43,12 @@
 /obj/structure/surface/table/almayer,
 /obj/item/storage/box/donkpockets,
 /obj/item/storage/box/donkpockets,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer,
 /area/shuttle/ert)
 "dQ" = (
 /obj/structure/bed/chair/dropship/passenger{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	dir = 8;
 	req_light_switch = 0
@@ -66,7 +61,6 @@
 /obj/structure/bed/chair/dropship/passenger{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	dir = 4;
 	req_light_switch = 0
@@ -87,7 +81,6 @@
 /obj/item/tool/pen,
 /obj/item/tool/pen,
 /obj/item/tool/pen,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -98,21 +91,18 @@
 	pixel_x = 1;
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "fJ" = (
 /obj/structure/bed/chair/office/light{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "gN" = (
 /obj/structure/bed/chair/office/light{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood,
 /area/shuttle/ert)
 "hr" = (
@@ -125,7 +115,6 @@
 /obj/item/handcuffs,
 /obj/item/handcuffs,
 /obj/item/handcuffs,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -134,7 +123,6 @@
 /obj/structure/bed/chair/office/light{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "hQ" = (
@@ -147,7 +135,6 @@
 	},
 /obj/item/weapon/gun/shotgun/combat,
 /obj/item/weapon/gun/shotgun/combat,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -157,7 +144,6 @@
 	icon_state = "N";
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "ig" = (
@@ -168,14 +154,12 @@
 /obj/item/clothing/accessory/storage/webbing,
 /obj/item/cell/infinite,
 /obj/item/cell/infinite,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
 /area/shuttle/ert)
 "iu" = (
 /obj/structure/surface/table/almayer,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	pixel_x = 0;
 	req_light_switch = 0;
@@ -191,7 +175,6 @@
 	name = "Operating Theatre";
 	req_one_access = null
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -201,12 +184,10 @@
 	name = "Bridge";
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "ja" = (
 /obj/structure/largecrate/random/barrel/blue,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -216,7 +197,6 @@
 	desc = "You could probably get thrown out an airlock just by looking at this...";
 	name = "captain's secure box"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	pixel_x = 0;
 	req_light_switch = 0;
@@ -229,7 +209,6 @@
 "jZ" = (
 /obj/structure/bed,
 /obj/item/bedsheet/rd,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	pixel_x = 0;
 	req_light_switch = 0;
@@ -239,7 +218,6 @@
 /area/shuttle/ert)
 "ke" = (
 /obj/structure/machinery/cryopod/right,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -249,7 +227,6 @@
 /obj/structure/machinery/computer/secure_data{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -263,7 +240,6 @@
 	icon_state = "S";
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "ls" = (
@@ -272,7 +248,6 @@
 	pixel_x = 2;
 	pixel_y = -5
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	pixel_x = 0;
 	req_light_switch = 0
@@ -294,7 +269,6 @@
 	icon_state = "E";
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "nG" = (
@@ -304,7 +278,6 @@
 /obj/structure/mirror{
 	pixel_x = 28
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -319,7 +292,6 @@
 /obj/item/tool/crowbar,
 /obj/item/tool/hand_labeler,
 /obj/item/tool/hand_labeler,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -328,7 +300,6 @@
 /obj/structure/bed/chair/dropship/passenger{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -337,13 +308,11 @@
 /obj/structure/surface/rack,
 /obj/item/storage/toolbox/mechanical,
 /obj/item/device/radio,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
 /area/shuttle/ert)
 "qh" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	pixel_x = 0;
 	req_light_switch = 0
@@ -357,7 +326,6 @@
 /obj/structure/machinery/computer/communications{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	pixel_x = 0;
 	req_light_switch = 0
@@ -378,11 +346,9 @@
 	pixel_x = -1;
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "rv" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "ry" = (
@@ -390,14 +356,12 @@
 	dir = 4
 	},
 /obj/item/tool/soap,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
 /area/shuttle/ert)
 "rz" = (
 /obj/structure/closet,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	dir = 4;
 	req_light_switch = 0
@@ -411,13 +375,11 @@
 	dir = 1;
 	name = "Restroom"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "rN" = (
 /obj/structure/surface/table/almayer,
 /obj/item/storage/surgical_tray,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	dir = 8;
 	req_light_switch = 0
@@ -430,12 +392,10 @@
 /obj/structure/machinery/door/airlock/almayer/generic{
 	name = "Secure Storage"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "sW" = (
 /obj/structure/largecrate/random/case/double,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	pixel_x = 0;
 	req_light_switch = 0
@@ -447,7 +407,6 @@
 "tf" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/computer/card,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -472,22 +431,18 @@
 	pixel_x = -1;
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "tG" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood,
 /area/shuttle/ert)
 "ue" = (
 /obj/structure/bed,
 /obj/item/bedsheet/brown,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer,
 /area/shuttle/ert)
 "up" = (
 /obj/structure/largecrate/random/barrel/red,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -497,18 +452,15 @@
 	dir = 1;
 	id = "starboard_door"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "vj" = (
 /obj/structure/surface/table/almayer,
 /obj/item/paper_bin,
 /obj/item/tool/pen,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood,
 /area/shuttle/ert)
 "vk" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "tcomms"
 	},
@@ -520,7 +472,6 @@
 	name = "General Listening Channel";
 	pixel_x = -28
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	pixel_x = 0;
 	req_light_switch = 0;
@@ -534,23 +485,19 @@
 /obj/structure/bed/chair/office/light{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "wc" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer,
 /area/shuttle/ert)
 "wK" = (
 /obj/structure/machinery/computer/crew,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
 /area/shuttle/ert)
 "xK" = (
 /obj/structure/window/framed/almayer/white,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating,
 /area/shuttle/ert)
 "yG" = (
@@ -558,7 +505,6 @@
 	dir = 8;
 	pixel_x = -11
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -572,13 +518,11 @@
 	icon_state = "N";
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "zd" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/computer/communications,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -591,25 +535,21 @@
 /obj/item/clothing/accessory/storage/webbing,
 /obj/item/clothing/glasses/welding,
 /obj/item/clothing/glasses/welding,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
 /area/shuttle/ert)
 "zZ" = (
 /obj/structure/window/framed/almayer/white/hull,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating,
 /area/shuttle/ert)
 "Ad" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/microwave,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer,
 /area/shuttle/ert)
 "AE" = (
 /obj/structure/largecrate/random/case/small,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	pixel_x = 0;
 	req_light_switch = 0;
@@ -620,7 +560,6 @@
 	},
 /area/shuttle/ert)
 "AL" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	dir = 8;
 	req_light_switch = 0
@@ -640,13 +579,11 @@
 	icon_state = "E";
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "AZ" = (
 /obj/structure/surface/table/almayer,
 /obj/item/device/flashlight/lamp/green,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	dir = 8;
 	icon_state = "carpet10-8"
@@ -667,7 +604,6 @@
 	pixel_x = 1;
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "Cw" = (
@@ -679,7 +615,6 @@
 	icon_state = "S";
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "CX" = (
@@ -695,14 +630,12 @@
 /obj/item/storage/box/m94,
 /obj/item/storage/box/m94,
 /obj/item/storage/box/zipcuffs,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
 /area/shuttle/ert)
 "DC" = (
 /obj/structure/closet/secure_closet/personal,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -710,7 +643,6 @@
 "DO" = (
 /obj/structure/surface/table/almayer,
 /obj/item/device/flashlight/lamp,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -723,7 +655,6 @@
 	icon_state = "S";
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "Gg" = (
@@ -731,14 +662,12 @@
 	name = "Operating Theatre";
 	req_one_access = null
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
 /area/shuttle/ert)
 "Ik" = (
 /obj/structure/closet,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -758,14 +687,12 @@
 	pixel_x = -1;
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "Ke" = (
 /obj/structure/bed/chair/dropship/passenger{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -774,14 +701,12 @@
 /obj/structure/machinery/door/airlock/almayer/generic{
 	name = "Crew Lockers"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "Kt" = (
 /obj/structure/flora/pottedplant{
 	icon_state = "pottedplant_21"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood,
 /area/shuttle/ert)
 "KF" = (
@@ -798,19 +723,16 @@
 	pixel_x = 1;
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "KS" = (
 /obj/structure/surface/rack,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
 /area/shuttle/ert)
 "Lk" = (
 /obj/structure/reagent_dispensers/fueltank,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	pixel_x = 0;
 	req_light_switch = 0;
@@ -822,13 +744,11 @@
 /area/shuttle/ert)
 "LB" = (
 /obj/structure/largecrate/random/barrel/white,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
 /area/shuttle/ert)
 "Ml" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/white,
 /area/shuttle/ert)
 "Mx" = (
@@ -836,7 +756,6 @@
 /obj/structure/machinery/computer/med_data/laptop{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -845,13 +764,11 @@
 /obj/structure/machinery/optable,
 /obj/item/tank/anesthetic,
 /obj/item/clothing/mask/breath/medical,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
 /area/shuttle/ert)
 "MU" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	dir = 4;
 	req_light_switch = 0
@@ -863,7 +780,6 @@
 /obj/item/ammo_magazine/smg/m39,
 /obj/item/ammo_magazine/smg/m39,
 /obj/item/weapon/gun/smg/m39/elite,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -873,14 +789,12 @@
 	name = "Aft Storage";
 	dir = 2
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "NL" = (
 /obj/structure/machinery/door/airlock/almayer/command{
 	name = "Captain's Storage"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "Oj" = (
@@ -889,7 +803,6 @@
 /obj/item/tool/pen,
 /obj/item/tool/pen,
 /obj/item/tool/pen,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -897,7 +810,6 @@
 "OF" = (
 /obj/structure/surface/table/almayer,
 /obj/item/clothing/suit/armor/bulletproof,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -906,20 +818,16 @@
 /obj/structure/machinery/door/airlock/almayer/generic{
 	name = "Crew Bunks"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "PE" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/white/hull,
 /area/shuttle/ert)
 "Qb" = (
 /obj/docking_port/mobile/emergency_response/big,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/white/hull,
 /area/shuttle/ert)
 "Qr" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -928,14 +836,12 @@
 /obj/structure/machinery/door/airlock/almayer/command{
 	name = "Captain's Quarters"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "QK" = (
 /obj/structure/surface/rack,
 /obj/item/storage/firstaid/regular,
 /obj/item/storage/belt/medical/lifesaver/full,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -972,7 +878,6 @@
 	},
 /obj/item/stack/cable_coil,
 /obj/item/stack/cable_coil,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -981,7 +886,6 @@
 /obj/structure/machinery/bioprinter{
 	stored_metal = 1000
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	dir = 8;
 	req_light_switch = 0
@@ -995,7 +899,6 @@
 	dir = 1;
 	id = "port_door"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "RG" = (
@@ -1011,17 +914,14 @@
 	icon_state = "W";
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "RN" = (
 /obj/structure/closet/secure_closet/personal/cabinet,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood,
 /area/shuttle/ert)
 "So" = (
 /obj/structure/closet/crate,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -1041,7 +941,6 @@
 /obj/item/device/radio,
 /obj/item/device/radio,
 /obj/item/device/radio,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -1055,13 +954,11 @@
 	icon_state = "E";
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "Tj" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/computer/shuttle/ert/big,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -1071,7 +968,6 @@
 /area/template_noop)
 "Tq" = (
 /obj/structure/bed/chair/dropship/passenger,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -1080,7 +976,6 @@
 /obj/structure/bed/chair/office/light{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	dir = 8;
 	icon_state = "carpet6-2"
@@ -1098,7 +993,6 @@
 	desc = "Someone has crossed out the Space from Space Cleaner and written in Surgery. 'Do not remove under punishment of death!!!' is scrawled on the back.";
 	name = "Surgery Cleaner"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -1117,7 +1011,6 @@
 	pixel_x = -1;
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "TO" = (
@@ -1125,12 +1018,10 @@
 	icon_state = "S";
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "Uq" = (
 /obj/structure/machinery/cm_vending/sorted/medical/no_access,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -1141,7 +1032,6 @@
 /obj/item/clothing/mask/gas,
 /obj/item/tool/extinguisher,
 /obj/item/tool/extinguisher,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -1155,7 +1045,6 @@
 /obj/item/map/current_map{
 	pixel_y = -5
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	dir = 8;
 	icon_state = "carpet5-1"
@@ -1167,7 +1056,6 @@
 	network = list("Military","Almayer");
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
@@ -1176,7 +1064,6 @@
 /obj/structure/toilet{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	dir = 4;
 	req_light_switch = 0
@@ -1192,7 +1079,6 @@
 /obj/structure/mirror{
 	pixel_y = 30
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor{
 	icon_state = "freezerfloor"
 	},
@@ -1207,14 +1093,12 @@
 	icon_state = "NW-out";
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/shuttle/ert)
 "YN" = (
 /obj/structure/machinery/power/apc/almayer{
 	cell_type = /obj/item/cell/hyper
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "tcomms"
 	},
@@ -1223,14 +1107,12 @@
 /obj/structure/bed/chair/dropship/passenger{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},
 /area/shuttle/ert)
 "Zr" = (
 /obj/structure/surface/rack,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	pixel_x = 0;
 	req_light_switch = 0
@@ -1241,7 +1123,6 @@
 /area/shuttle/ert)
 "Zy" = (
 /obj/structure/machinery/autolathe,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate"
 	},

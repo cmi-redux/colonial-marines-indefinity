@@ -27,7 +27,7 @@
 	use_muzzle_flash = FALSE
 
 /obj/item/hardpoint/primary/flamer/set_bullet_traits()
-	..()
+	. = ..()
 	LAZYADD(traits_to_give, list(
 		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_iff)
 	))

@@ -716,7 +716,7 @@
 		spawn(8)
 			for(var/i = 1 to size)
 				new /obj/item/stack/sheet/metal(pick(turfs))
-				new /obj/item/ore(pick(turfs))
+				new /obj/item/stack/sheet/metal(pick(turfs))
 
 	var/obj/effect/abstract/particle_holder/falling_debris = new(src, /particles/falling_debris)
 	addtimer(VARSET_CALLBACK(falling_debris.particles, count, 0), 5)
@@ -855,7 +855,7 @@
 			var/obj/effect/alien/resin/special/pylon/P = pylon
 			protection_level += P.protection_level
 		else
-			LAZYREMOVE(linked_pylons, pylon)
+			linked_pylons -= pylon
 
 	return protection_level
 
@@ -865,7 +865,7 @@
 			if(istype(sector, /obj/structure/prop/sector_center))
 				return TRUE
 		else
-			LAZYREMOVE(linked_sectors, sector)
+			linked_sectors -= sector
 	return FALSE
 
 GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(

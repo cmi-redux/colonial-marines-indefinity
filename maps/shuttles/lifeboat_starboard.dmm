@@ -1,68 +1,59 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "ce" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "17,5"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "ci" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "17,6"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "ej" = (
 /obj/structure/prop/invuln/dropship_parts/lifeboat{
 	icon_state = "0,4"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/template_noop,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "em" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "6,6"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "ep" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "1,2"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "ex" = (
 /obj/structure/prop/invuln/dropship_parts/lifeboat{
 	icon_state = "0,2"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/template_noop,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "gp" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat/transparent{
 	icon_state = "25,4"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "gS" = (
 /obj/structure/prop/invuln/dropship_parts/lifeboat{
 	icon_state = "26,5"
 	},
 /turf/template_noop,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "hb" = (
 /obj/structure/surface/table/reinforced/almayer_B,
 /obj/structure/machinery/computer/shuttle/lifeboat{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/lifeboat,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "ho" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "7,0"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "hD" = (
 /obj/structure/machinery/cm_vending/sorted/medical/wall_med/lifeboat{
 	pixel_x = -5;
@@ -72,124 +63,108 @@
 	pixel_x = 10;
 	pixel_y = 27
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/lifeboat,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "hQ" = (
 /obj/structure/prop/invuln/dropship_parts/lifeboat{
 	icon_state = "0,3"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/template_noop,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "ix" = (
 /obj/structure/extinguisher_cabinet/lifeboat{
 	pixel_x = 8;
 	pixel_y = 27
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/lifeboat,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "iP" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat/transparent,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "jA" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "17,0"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "kC" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "6,5"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "kE" = (
 /obj/structure/bed/chair/dropship/passenger/shuttle_chair,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/lifeboat,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "lK" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "22,0"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "lS" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat{
 	throw_dir = 2
 	},
 /turf/open/shuttle/lifeboat,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "mt" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat/transparent{
 	icon_state = "24,2"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "mA" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "1,3"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "pr" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat/transparent{
 	icon_state = "26,4"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "qV" = (
 /obj/structure/prop/invuln/dropship_parts/lifeboat{
 	icon_state = "0,6"
 	},
 /turf/template_noop,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "rM" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "24,6"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "sc" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	pixel_x = 16;
 	req_light_switch = 0
 	},
 /turf/open/shuttle/lifeboat,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "su" = (
 /obj/structure/prop/invuln/dropship_parts/lifeboat{
 	icon_state = "0,5"
 	},
 /turf/template_noop,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "sO" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "tB" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "23,1"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "uJ" = (
 /obj/structure/prop/invuln/dropship_parts/lifeboat{
 	icon_state = "25,6"
 	},
 /turf/template_noop,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "uN" = (
 /obj/structure/prop/invuln/dropship_parts/lifeboat{
 	icon_state = "26,1"
 	},
 /turf/template_noop,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "uX" = (
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat{
 	id = "Boat2-D2";
@@ -198,23 +173,22 @@
 /turf/open/shuttle/lifeboat{
 	icon_state = "test_floor4"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "vG" = (
 /obj/docking_port/mobile/crashable/lifeboat/starboard,
 /obj/structure/prop/invuln/dropship_parts/lifeboat{
 	icon_state = "0,0"
 	},
 /turf/template_noop,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "wA" = (
 /turf/template_noop,
 /area/template_noop)
 "xI" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat/transparent{
 	icon_state = "25,3"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "ya" = (
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat{
 	id = "Boat2-D1";
@@ -223,336 +197,289 @@
 /turf/open/shuttle/lifeboat{
 	icon_state = "test_floor4"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "zv" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "2,6"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "zz" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "1,5"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "zK" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "6,1"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Ak" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /obj/structure/machinery/light{
 	pixel_x = 0;
 	req_light_switch = 0
 	},
 /turf/open/shuttle/lifeboat,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Ax" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "2,2"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "AF" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/lifeboat{
 	icon_state = "plating_striped"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Bf" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat/transparent{
 	icon_state = "window2"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "BC" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "23,0"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "BP" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "18,0"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Cq" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "2,5"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "CS" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat/transparent{
 	icon_state = "25,2"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Dj" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "1,1"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Dn" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "3,0"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "EI" = (
 /obj/structure/surface/table/reinforced/almayer_B,
 /obj/structure/machinery/computer/communications{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/lifeboat,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "EP" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "16,0"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "FI" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat/transparent{
 	icon_state = "24,3"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "FS" = (
 /obj/structure/prop/invuln/dropship_parts/lifeboat{
 	icon_state = "25,0"
 	},
 /turf/template_noop,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "GA" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "7,6"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "GD" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "3,1"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "GQ" = (
 /obj/structure/machinery/cm_vending/sorted/supplies/lifeboat{
 	pixel_x = -12;
 	pixel_y = 27
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/lifeboat,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "HW" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "2,1"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Io" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "1,4"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "KZ" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat/transparent{
 	icon_state = "26,3"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Lk" = (
 /obj/structure/surface/table/reinforced/almayer_B,
 /obj/structure/machinery/computer/cameras/almayer/vehicle{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/lifeboat,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Mu" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "24,5"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "NE" = (
 /obj/structure/bed/chair/dropship/passenger/shuttle_chair{
 	dir = 4;
 	name = "pilot seat"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/lifeboat,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "NF" = (
 /obj/structure/prop/invuln/dropship_parts/lifeboat{
 	icon_state = "1,0"
 	},
 /turf/template_noop,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "NK" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "2,4"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "NO" = (
 /obj/structure/extinguisher_cabinet/lifeboat{
 	pixel_x = 15;
 	pixel_y = 27
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/lifeboat,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Od" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "3,6"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Ow" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "6,0"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "OO" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/lifeboat,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "PJ" = (
 /obj/structure/bed/chair/dropship/passenger/shuttle_chair{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/lifeboat,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Qa" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "12,0"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Qj" = (
 /turf/open/shuttle/lifeboat{
 	icon_state = "test_floor4"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Rk" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "25,5"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "RH" = (
 /obj/structure/prop/invuln/dropship_parts/lifeboat{
 	icon_state = "0,1"
 	},
 /turf/template_noop,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "RR" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "23,6"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "SA" = (
 /turf/open/shuttle/lifeboat{
 	dir = 1;
 	icon_state = "plating_striped"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Td" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "3,5"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Tn" = (
 /obj/structure/bed/chair/dropship/passenger/shuttle_chair{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/lifeboat,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "TM" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat/transparent{
 	icon_state = "24,4"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "TU" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "2,3"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Up" = (
 /obj/structure/prop/invuln/dropship_parts/lifeboat{
 	icon_state = "1,6"
 	},
 /turf/template_noop,
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "UG" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "23,5"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Vj" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "25,1"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "VF" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "17,1"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "VZ" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/escapepod{
 	icon_state = "floor8"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Xj" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "24,1"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "XV" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/lifeboat{
 	icon_state = "plate"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "Zl" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "24,0"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "ZP" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat/transparent{
 	icon_state = "26,2"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 "ZR" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/shuttle/lifeboat{
 	icon_state = "11,0"
 	},
-/area/shuttle/lifeboat)
+/area/shuttle/lifeboat/starboard)
 
 (1,1,1) = {"
 qV

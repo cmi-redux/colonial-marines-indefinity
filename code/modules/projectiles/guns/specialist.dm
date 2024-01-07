@@ -825,6 +825,10 @@
 
 /obj/item/weapon/gun/launcher/grenade/Fire(atom/target, mob/living/user, params, atom/operator, reflex = FALSE, dual_wield)
 	set waitfor = FALSE
+
+	if(!able_to_fire(user) || !target || !get_turf(user) || !get_turf(target))
+		return NONE
+
 	last_fired = world.time
 
 	if(get_dist(target,user) <= 2)

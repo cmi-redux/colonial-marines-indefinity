@@ -247,6 +247,14 @@
 /obj/docking_port/stationary/marine_dropship/lz2,
 /turf/open/floor/plating,
 /area/admin_test)
+"CC" = (
+/obj/structure/machinery/landinglight/ds1/delayone{
+	dir = 4;
+	tag = "icon-landingstripe (EAST)"
+	},
+/obj/structure/machinery/computer/shuttle/dropship/flight/lz1,
+/turf/open/asphalt/cement,
+/area/admin_test)
 "Dn" = (
 /turf/open/gm/coast{
 	dir = 1;
@@ -301,6 +309,14 @@
 "KW" = (
 /obj/effect/landmark/observer_start,
 /turf/open/gm/grass,
+/area/admin_test)
+"Lu" = (
+/obj/structure/machinery/landinglight/ds2/delayone{
+	dir = 8;
+	tag = "icon-landingstripe (WEST)"
+	},
+/obj/structure/machinery/computer/shuttle/dropship/flight/lz2,
+/turf/open/asphalt/cement,
 /area/admin_test)
 "LR" = (
 /obj/structure/machinery/landinglight/ds1{
@@ -8863,7 +8879,7 @@ jp
 cz
 AK
 ZO
-jp
+Lu
 cz
 AK
 ZO
@@ -9067,7 +9083,7 @@ kt
 Yw
 FC
 gE
-kt
+CC
 Yw
 FC
 gE

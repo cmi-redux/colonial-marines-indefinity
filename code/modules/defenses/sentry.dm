@@ -58,9 +58,7 @@
 	spark_system = new /datum/effect_system/spark_spread
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
-	LAZYADD(traits_to_give, list(
-		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_iff)
-	))
+	set_bullet_traits()
 	. = ..()
 
 /obj/structure/machinery/defenses/sentry/Destroy() //Clear these for safety's sake.
@@ -93,6 +91,26 @@
 
 	get_target(actual_target)
 	return TRUE
+
+/// Populate traits_to_give in this proc
+/obj/structure/machinery/defenses/sentry/proc/set_bullet_traits()
+	LAZYADD(traits_to_give, list(
+		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_iff)
+	))
+
+/// Populate traits_to_give in this proc
+/obj/structure/machinery/defenses/sentry/proc/apply_traits(obj/item/projectile/proj)
+	// Apply bullet traits from gun
+	for(var/entry in traits_to_give)
+		var/list/L
+		// Check if this is an ID'd bullet trait
+		if(istext(entry))
+			L = traits_to_give[entry].Copy()
+		else
+			// Prepend the bullet trait to the list
+			L = list(entry) + traits_to_give[entry]
+		proj.apply_bullet_trait(L)
+	return proj
 
 /obj/structure/machinery/defenses/sentry/proc/set_range()
 	if(omni_directional)
@@ -342,13 +360,13 @@
 /obj/structure/machinery/defenses/sentry/proc/actual_fire(atom/target)
 	var/obj/item/projectile/proj = ammo.transfer_bullet_out()
 	proj.forceMove(src)
-	apply_traits(proj)
 	proj.bullet_ready_to_fire(initial(name), weapon_source_mob = owner_mob)
 	var/datum/cause_data/cause_data = create_cause_data(initial(name), owner_mob, src)
 	proj.weapon_cause_data = cause_data
 	proj.firer = cause_data?.resolve_mob()
 	proj.damage *= damage_mult
 	proj.accuracy *= accuracy_mult
+	apply_traits(proj)
 	proj.fire_at(target, src, owner_mob, proj.ammo.max_range, proj.ammo.shell_speed, null)
 	muzzle_flash(Get_Angle(get_turf(src), target))
 	track_shot()
@@ -356,18 +374,6 @@
 		handle_empty()
 		return FALSE
 	return TRUE
-
-/obj/structure/machinery/defenses/sentry/proc/apply_traits(obj/item/projectile/proj)
-	// Apply bullet traits from gun
-	for(var/entry in traits_to_give)
-		var/list/L
-		// Check if this is an ID'd bullet trait
-		if(istext(entry))
-			L = traits_to_give[entry].Copy()
-		else
-			// Prepend the bullet trait to the list
-			L = list(entry) + traits_to_give[entry]
-		proj.apply_bullet_trait(L)
 
 /obj/structure/machinery/defenses/sentry/proc/handle_empty()
 	visible_message("[icon2html(src, viewers(src))] [SPAN_WARNING("The [name] beeps steadily and its ammo light blinks red.")]")

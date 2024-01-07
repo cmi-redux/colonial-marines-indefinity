@@ -54,6 +54,7 @@
 	var/list/list/traits_to_give					// that will be given to a projectile with the current ammo datum An assoc list in the format list(/datum/element/bullet_trait_to_give = list(...args))
 
 	var/flamer_reagent_type			= /datum/reagent/napalm/ut
+	var/flame_range					= 0
 
 	var/hit_effect_color			= "#FF0000"	// The flicker that plays when a bullet hits a target. Usually red. Can be nulled so it doesn't show up at all.
 
@@ -207,7 +208,7 @@
 		return
 
 	var/datum/reagent/R = new flamer_reagent_type()
-	new /obj/flamer_fire(T, cause_data, R)
+	new /obj/flamer_fire(T, cause_data, R, flame_range)
 
 /datum/ammo/proc/ammo_process(obj/item/projectile/proj)
 	return
@@ -3844,6 +3845,7 @@ CUSTOM_AMMO_PENETRATION
 
 /datum/ammo/flamethrower/tank_flamer
 	flamer_reagent_type = /datum/reagent/napalm/blue
+	flame_range = 2
 
 /datum/ammo/flamethrower/sentry_flamer
 	flags_ammo_behavior = AMMO_IGNORE_ARMOR|AMMO_IGNORE_COVER|AMMO_FLAME
