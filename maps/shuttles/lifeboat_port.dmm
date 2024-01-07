@@ -200,10 +200,10 @@
 	},
 /area/shuttle/lifeboat)
 "vG" = (
-/obj/docking_port/mobile/crashable/lifeboat/starboard,
 /obj/structure/prop/invuln/dropship_parts/lifeboat{
 	icon_state = "0,0"
 	},
+/obj/docking_port/mobile/crashable/lifeboat/port,
 /turf/template_noop,
 /area/shuttle/lifeboat)
 "wA" = (
