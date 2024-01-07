@@ -47,13 +47,13 @@
 		if(item_box.overlay_ammo_type)
 			overlays += image(text_markings_icon, icon_state = "base_type[item_box.overlay_ammo_type]")
 		if(AM.ammo_position == item_box.num_of_magazines)
-			overlays += image(icon, icon_state = "[item_box.handful][item_box.overlay_content]")
+			overlays += image(handfuls_icon, icon_state = "[item_box.handful][item_box.overlay_content]")
 		else if(AM.ammo_position > (item_box.num_of_magazines/2))
-			overlays += image(icon, icon_state = "[item_box.handful][item_box.overlay_content]_3")
+			overlays += image(handfuls_icon, icon_state = "[item_box.handful][item_box.overlay_content]_3")
 		else if(AM.ammo_position > (item_box.num_of_magazines/4))
-			overlays += image(icon, icon_state = "[item_box.handful][item_box.overlay_content]_2")
+			overlays += image(handfuls_icon, icon_state = "[item_box.handful][item_box.overlay_content]_2")
 		else if(AM.ammo_position > 0)
-			overlays += image(icon, icon_state = "[item_box.handful][item_box.overlay_content]_1")
+			overlays += image(handfuls_icon, icon_state = "[item_box.handful][item_box.overlay_content]_1")
 
 //handles assigning offsets for stacked boxes
 /obj/structure/magazine_box/proc/assign_offsets(turf/T)

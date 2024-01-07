@@ -154,17 +154,14 @@ SUBSYSTEM_DEF(sunlighting)
 	return FALSE
 
 /datum/controller/subsystem/sunlighting/proc/set_time_of_day()
-	current_step_datum = next_step_datum
 	for(var/i = 1 to length(steps))
 		if(game_time_offseted() >= steps["[i]"].start_at * game_time_length)
+			current_step_datum = steps["[i]"]
 			next_step_datum = i == length(steps) ? steps["1"] : steps["[i + 1]"]
 
 	if(!current_step_datum)
-		if(next_step_datum)
-			set_time_of_day()
-		else
-			current_step_datum = steps["1"]
-			next_step_datum = steps["2"]
+		current_step_datum = steps["1"]
+		next_step_datum = steps["2"]
 
 /datum/controller/subsystem/sunlighting/proc/update_color()
 	if(!weather_light_affecting_event)

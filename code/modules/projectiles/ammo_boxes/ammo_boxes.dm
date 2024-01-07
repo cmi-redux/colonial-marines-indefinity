@@ -312,13 +312,13 @@
 	overlays += image(text_markings_icon, icon_state = "text[overlay_gun_type]") //adding base color stripes
 
 	if(ammo_position == max_rounds)
-		overlays += image(icon, icon_state = "rounds[overlay_content]")
+		overlays += image(handfuls_icon, icon_state = "rounds[overlay_content]")
 	else if(ammo_position > (max_rounds/2))
-		overlays += image(icon, icon_state = "rounds[overlay_content]_3")
+		overlays += image(handfuls_icon, icon_state = "rounds[overlay_content]_3")
 	else if(ammo_position > (max_rounds/4))
-		overlays += image(icon, icon_state = "rounds[overlay_content]_2")
+		overlays += image(handfuls_icon, icon_state = "rounds[overlay_content]_2")
 	else if(ammo_position > 0)
-		overlays += image(icon, icon_state = "rounds[overlay_content]_1")
+		overlays += image(handfuls_icon, icon_state = "rounds[overlay_content]_1")
 
 //---------------------INTERACTION PROCS
 
