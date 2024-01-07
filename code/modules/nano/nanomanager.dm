@@ -28,7 +28,7 @@
 * @return /nanoui Returns the found ui, for null if none exists
 */
 /datum/nanomanager/proc/try_update_ui(mob/user, src_object, ui_key, datum/nanoui/ui, data, force_open = 0)
-	if (isnull(ui)) // no ui has been passed, so we'll search for one
+	if(isnull(ui)) // no ui has been passed, so we'll search for one
 	{
 		ui = get_open_ui(user, src_object, ui_key)
 	}
@@ -60,7 +60,7 @@
 		//testing("nanomanager/get_open_ui mob [user.name] [src_object:name] [ui_key] - there are no uis open for this object")
 		return null
 
-	for (var/datum/nanoui/ui in open_uis[src_object_key][ui_key])
+	for(var/datum/nanoui/ui in open_uis[src_object_key][ui_key])
 		if(ui.user == user)
 			return ui
 
@@ -80,8 +80,8 @@
 		return 0
 
 	var/update_count = 0
-	for (var/ui_key in open_uis[src_object_key])
-		for (var/datum/nanoui/ui in open_uis[src_object_key][ui_key])
+	for(var/ui_key in open_uis[src_object_key])
+		for(var/datum/nanoui/ui in open_uis[src_object_key][ui_key])
 			if(ui && ui.src_object && ui.user)
 				ui.process(1)
 				update_count++
@@ -97,11 +97,11 @@
 * @return int The number of uis updated
 */
 /datum/nanomanager/proc/update_user_uis(mob/user, src_object = null, ui_key = null)
-	if (isnull(user.open_uis) || !istype(user.open_uis, /list) || open_uis.len == 0)
+	if(isnull(user.open_uis) || !istype(user.open_uis, /list) || open_uis.len == 0)
 		return 0 // has no open uis
 
 	var/update_count = 0
-	for (var/datum/nanoui/ui in user.open_uis)
+	for(var/datum/nanoui/ui in user.open_uis)
 		if((isnull(src_object) || ui.src_object == src_object) && (isnull(ui_key) || ui.ui_key == ui_key))
 			ui.process(1)
 			update_count++
@@ -118,12 +118,12 @@
 * @return int The number of uis closed
 */
 /datum/nanomanager/proc/close_user_uis(mob/user, src_object = null, ui_key = null)
-	if (isnull(user.open_uis) || !istype(user.open_uis, /list) || open_uis.len == 0)
+	if(isnull(user.open_uis) || !istype(user.open_uis, /list) || open_uis.len == 0)
 		//testing("nanomanager/close_user_uis mob [user.name] has no open uis")
 		return 0 // has no open uis
 
 	var/close_count = 0
-	for (var/datum/nanoui/ui in user.open_uis)
+	for(var/datum/nanoui/ui in user.open_uis)
 		if((isnull(src_object) || ui.src_object == src_object) && (isnull(ui_key) || ui.ui_key == ui_key))
 			ui.close()
 			close_count++
@@ -211,7 +211,7 @@
 	if(isnull(newMob.open_uis) || !istype(newMob.open_uis, /list))
 		newMob.open_uis = list()
 
-	for (var/datum/nanoui/ui in oldMob.open_uis)
+	for(var/datum/nanoui/ui in oldMob.open_uis)
 		ui.user = newMob
 		newMob.open_uis.Add(ui)
 

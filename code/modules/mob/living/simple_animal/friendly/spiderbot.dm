@@ -145,7 +145,7 @@
 	for(var/mob/M as anything in viewers(src, null))
 		if ((M.client && !( M.blinded )))
 			M.show_message(SPAN_DANGER("[src] makes an odd warbling noise, fizzles, and explodes."), SHOW_MESSAGE_VISIBLE)
-	explosion(get_turf(loc), -1, -1, 3, 5)
+	cell_explosion(get_turf(src), 300, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("взрыва паука", usr))
 	eject_brain()
 	death(cause)
 

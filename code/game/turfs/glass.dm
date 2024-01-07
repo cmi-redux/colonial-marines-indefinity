@@ -10,8 +10,6 @@
 	mediumxenofootstep = FOOTSTEP_HARD
 	heavyxenofootstep = FOOTSTEP_GENERIC_HEAVY
 
-	special_icon = FALSE
-
 /turf/open/floor/glass/Initialize(mapload)
 	icon_state = "" //Prevent the normal icon from appearing behind the smooth overlays
 	..()

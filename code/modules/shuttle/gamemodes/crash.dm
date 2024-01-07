@@ -34,10 +34,10 @@
 	var/turf/left = locate(C.x - leftright, C.y, C.z)
 	var/turf/right = locate(C.x + leftright, C.y, C.z)
 
-	explosion(front, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, , , ,create_cause_data("посадки USS Heart Of Gold"))//Clears out walls
-	explosion(rear, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, , , ,create_cause_data("посадки USS Heart Of Gold"))
-	explosion(left, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, , , ,create_cause_data("посадки USS Heart Of Gold"))
-	explosion(right, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, , , ,create_cause_data("посадки USS Heart Of Gold"))
+	cell_explosion(front, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("посадки USS Heart Of Gold"))//Clears out walls
+	cell_explosion(rear, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("посадки USS Heart Of Gold"))
+	cell_explosion(left, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("посадки USS Heart Of Gold"))
+	cell_explosion(right, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("посадки USS Heart Of Gold"))
 
 // -- Shuttles
 

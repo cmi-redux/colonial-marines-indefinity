@@ -41,6 +41,11 @@
 			air.indestructible = TRUE
 			air.unacidable = TRUE
 
+/obj/docking_port/mobile/crashable/escape_shuttle/overcap_launch_attempt()
+	. = ..()
+
+	cell_explosion(return_center_turf(), 100, 20, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("escape pod malfunction"))
+
 /obj/docking_port/mobile/crashable/escape_shuttle/open_doors()
 	. = ..()
 

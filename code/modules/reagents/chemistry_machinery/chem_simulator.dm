@@ -62,7 +62,7 @@
 	..()
 	if(inoperable())
 		icon_state = "modifier_off"
-	nanomanager.update_uis(src) // update all UIs attached to src
+	SSnano.nanomanager.update_uis(src) // update all UIs attached to src
 
 /obj/structure/machinery/chem_simulator/attackby(obj/item/B, mob/living/user)
 	if(!skillcheck(user, SKILL_RESEARCH, SKILL_RESEARCH_TRAINED))
@@ -93,7 +93,7 @@
 	to_chat(user, SPAN_NOTICE("You insert [B] into the [src]."))
 	flick("[icon_state]_reading",src)
 	update_costs()
-	nanomanager.update_uis(src) // update all UIs attached to src
+	SSnano.nanomanager.update_uis(src) // update all UIs attached to src
 
 /obj/structure/machinery/chem_simulator/attack_hand(mob/user as mob)
 	if(inoperable())
@@ -182,7 +182,7 @@
 	else
 		data["reference_info"] = ""
 
-	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnano.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "chem_simulator.tmpl", "Synthesis Simulator", 800, 550)
 		ui.set_initial_data(data)
@@ -350,7 +350,7 @@
 		calculate_creation_cost()
 	ready = check_ready()
 	playsound(loc, pick('sound/machines/computer_typing1.ogg','sound/machines/computer_typing2.ogg','sound/machines/computer_typing3.ogg'), 5, 1)
-	nanomanager.update_uis(src)
+	SSnano.nanomanager.update_uis(src)
 
 /obj/structure/machinery/chem_simulator/process()
 	if(inoperable())
@@ -398,7 +398,7 @@
 	else
 		ready = check_ready()
 		stop_processing()
-	nanomanager.update_uis(src)
+	SSnano.nanomanager.update_uis(src)
 
 /obj/structure/machinery/chem_simulator/proc/update_costs()
 	property_costs = list()

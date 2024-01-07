@@ -125,7 +125,7 @@ Implant Specifics:<BR>"}
 
 /obj/item/implant/dexplosive/activate(cause)
 	if((!cause) || (!src.imp_in)) return 0
-	explosion(src, -1, 0, 2, 3, 0)//This might be a bit much, dono will have to see.
+	cell_explosion(get_turf(src), 200, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data(cause, usr, src))
 	if(src.imp_in)
 		src.imp_in.gib()
 
@@ -186,21 +186,21 @@ Implant Specifics:<BR>"}
 						istype(part,/obj/limb/groin) || \
 						istype(part,/obj/limb/head))
 						part.createwound(BRUISE, 60) //mangle them instead
-						explosion(get_turf(imp_in), -1, -1, 2, 3)
+						cell_explosion(get_turf(imp_in), 200, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("explosive implant", T))
 						qdel(src)
 					else
-						explosion(get_turf(imp_in), -1, -1, 2, 3)
+						cell_explosion(get_turf(imp_in), 200, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("explosive implant", T))
 						part.droplimb(0, 0, "dismemberment")
 						qdel(src)
 			if (elevel == "Destroy Body")
-				explosion(get_turf(T), -1, 0, 1, 6)
+				cell_explosion(get_turf(T), 200, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("explosive implant", T))
 				T.gib()
 			if (elevel == "Full Explosion")
-				explosion(get_turf(T), 0, 1, 3, 6)
+				cell_explosion(get_turf(T), 400, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("explosive implant", T))
 				T.gib()
 
 		else
-			explosion(get_turf(imp_in), 0, 1, 3, 6)
+			cell_explosion(get_turf(imp_in), 400, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("explosive implant", T))
 
 	if(need_gib)
 		imp_in.gib()
@@ -253,7 +253,7 @@ Implant Specifics:<BR>"}
 					part.createwound(BRUISE, 60) //mangle them instead
 				else
 					part.droplimb(0, 0, "dismemberment")
-			explosion(get_turf(imp_in), -1, -1, 2, 3)
+			cell_explosion(get_turf(imp_in), 200, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("implant explosion", usr))
 			qdel(src)
 
 /obj/item/implant/chem

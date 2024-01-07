@@ -8,8 +8,6 @@
 	width = 27
 	height = 7
 	rechargeTime = 20 MINUTES
-	preferred_direction = NORTH
-	port_direction = NORTH
 
 	fires_on_crash = TRUE
 	max_capacity = 25
@@ -96,15 +94,11 @@
 /obj/docking_port/mobile/crashable/lifeboat/port
 	name = "port-aft lifeboat"
 	id = MOBILE_SHUTTLE_LIFEBOAT_PORT
-	preferred_direction = WEST
-	port_direction = WEST
 
 /// Starboard Aft Lifeboat (top-right, doors its right side)
 /obj/docking_port/mobile/crashable/lifeboat/starboard
 	name = "starboard-aft lifeboat"
 	id = MOBILE_SHUTTLE_LIFEBOAT_STARBOARD
-	preferred_direction = EAST
-	port_direction = EAST
 
 /obj/docking_port/mobile/crashable/lifeboat/crash_check()
 	. = ..()
@@ -131,15 +125,14 @@
 
 	status = LIFEBOAT_LOCKED
 	ai_announcement("ATTENTION: [id] critical failure, unable to launch.")
-	sleep(40)
-	explosion(return_center_turf(), -1, -1, 3, 4, , , , create_cause_data("escape lifeboat malfunction"))
+	cell_explosion(return_center_turf(), 700, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("escape lifeboat malfunction"))
 
 // === STATIONARIES
 
 /// Generic lifeboat dock
 /obj/docking_port/stationary/lifeboat_dock
-	name   = "Lifeboat docking port"
-	width  = 27
+	name = "Lifeboat docking port"
+	width = 27
 	height = 7
 
 /obj/docking_port/stationary/lifeboat_dock/on_dock_ignition(departing_shuttle)
@@ -179,14 +172,12 @@
 /// Port Aft Lifeboat default dock
 /obj/docking_port/stationary/lifeboat_dock/port
 	name = "Almayer Port Lifeboat Docking Port"
-	dir = NORTH
 	id = "almayer-lifeboat1"
 	roundstart_template = /datum/map_template/shuttle/lifeboat_port
 
 /// Port Aft Lifeboat default dock
 /obj/docking_port/stationary/lifeboat_dock/starboard
 	name = "Almayer Starboard Lifeboat Docking Port"
-	dir = NORTH
 	id = "almayer-lifeboat2"
 	roundstart_template = /datum/map_template/shuttle/lifeboat_starboard
 
@@ -195,7 +186,7 @@
 	GLOB.lifeboat_almayer_docks += src
 
 /obj/docking_port/stationary/lifeboat_dock/Destroy(force)
-	if (force)
+	if(force)
 		GLOB.lifeboat_almayer_docks -= src
 	return ..()
 

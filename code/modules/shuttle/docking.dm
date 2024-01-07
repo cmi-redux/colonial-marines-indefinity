@@ -186,7 +186,7 @@
 			qdel(old_turf.outdoor_effect, TRUE)
 
 		if(new_ceiling)
-			if(!new_ceiling.baseturfs || istype(/turf/open/openspace, pick(new_ceiling.baseturfs)))
+			if(!new_ceiling.baseturfs || !new_ceiling.weatherproof)
 				new_ceiling.ChangeTurf(custom_ceiling)
 			else
 				if(length(new_ceiling.baseturfs) > 1)

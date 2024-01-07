@@ -11,7 +11,7 @@
 	remove_ai_verbs(src)
 
 	if(explosive)
-		addtimer(CALLBACK(src, PROC_REF(explosion), src.loc, 3, 6, 12, 15), 10)
+		addtimer(CALLBACK(src, PROC_REF(cell_explosion), get_turf(src), 700, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("взрыва ИИ", usr)), 10)
 
 	for(var/obj/structure/machinery/ai_status_display/O in machines)
 		spawn( 0 )

@@ -94,9 +94,6 @@ var/datum/moduletypes/mods = new()
 var/join_motd = null
 var/current_tms
 
-// nanomanager, the manager for Nano UIs
-var/datum/nanomanager/nanomanager = new()
-
 var/list/BorgWireColorToFlag = RandomBorgWires()
 var/list/BorgIndexToFlag
 var/list/BorgIndexToWireColor

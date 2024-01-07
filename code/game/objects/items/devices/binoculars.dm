@@ -622,13 +622,13 @@
 		sleep(50) //AWW YEAH
 		var/datum/cause_data/cause_data = create_cause_data("артилериским огнем", user)
 		flame_radius(cause_data, 3, target, , , , , )
-		explosion(target,  -1, 2, 3, 5, , , , cause_data)
+		cell_explosion(target, 400, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
 		flame_radius(cause_data, 3, target_2, , , , , )
-		explosion(target_2,  -1, 2, 3, 5, , , , cause_data)
+		cell_explosion(target_2, 400, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
 		flame_radius(cause_data, 3, target_3, , , , , )
-		explosion(target_3,  -1, 2, 3, 5, , , , cause_data)
+		cell_explosion(target_3, 400, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
 		flame_radius(cause_data, 3, target_4, , , , , )
-		explosion(target_4,  -1, 2, 3, 5, , , , cause_data)
+		cell_explosion(target_4, 400, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
 		sleep(1)
 		qdel(lasertarget)
 		lasing = FALSE
@@ -646,25 +646,22 @@
 			las_b = 0
 			return 0
 		lasertarget.icon_state = "laslock_b"
-		var/HE_power = 0
-		var/con_power = 0
+		var/strike_power = 400
+		var/strike_fallof = 100
 		if(!plane_toggle)
-			con_power = 5
-			HE_power = 1
-		else
-			con_power = 3
-			HE_power = 3
+			strike_power = 200
+			strike_fallof = 20
 		var/turf/target = locate(target_turf.x + rand(-2,2),target_turf.y + rand(-2,2),target_turf.z)
 		var/turf/target_2 = locate(target_turf.x + rand(-2,2),target_turf.y + rand(-2,2),target_turf.z)
 		var/turf/target_3 = locate(target_turf.x + rand(-2,2),target_turf.y + rand(-2,2),target_turf.z)
 		if(target && istype(target))
 			qdel(lasertarget)
 			var/datum/cause_data/cause_data = create_cause_data("артилериским огнем", user)
-			explosion(target, -1, HE_power, con_power, con_power, , , , cause_data) //Kaboom!
-			sleep(rand(15,30)) //This is all better done in a for loop, but I am mad lazy
-			explosion(target_2, -1, HE_power, con_power, con_power, , , , cause_data)
+			cell_explosion(target, strike_power, strike_fallof, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
 			sleep(rand(15,30))
-			explosion(target_3, -1, HE_power, con_power, con_power, , , , cause_data)
+			cell_explosion(target_2, strike_power, strike_fallof, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
+			sleep(rand(15,30))
+			cell_explosion(target_3, strike_power, strike_fallof, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
 			lasing = FALSE
 			las_b = 1
 			addtimer(VARSET_CALLBACK(src, las_b, FALSE), 5 MINUTES)

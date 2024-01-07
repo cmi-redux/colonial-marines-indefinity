@@ -2,7 +2,7 @@
 	if(QDELETED(src))
 		return FALSE
 
-	update_overlays()
+	overlays.Cut()
 
 	//smooth wall stuff
 	if(!special_icon)
@@ -14,6 +14,9 @@
 		for(var/i = 1 to 4)
 			I = image(icon, "[get_base_icon()][wall_connections[i]]", dir = 1<<(i-1))
 			overlays += I
+
+	update_overlays()
+
 	return
 
 /turf/proc/update_connections(propagate = 0)

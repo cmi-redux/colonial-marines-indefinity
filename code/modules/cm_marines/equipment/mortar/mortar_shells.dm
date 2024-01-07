@@ -66,7 +66,7 @@
 	icon_state = "mortar_ammo_he"
 
 /obj/item/mortar_shell/he/detonate(turf/T)
-	explosion(T, 0, 3, 5, 7, explosion_cause_data = cause_data)
+	cell_explosion(T, 600, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
 
 /obj/item/mortar_shell/frag
 	name = "\improper 80mm fragmentation mortar shell"
@@ -89,7 +89,7 @@
 	var/fire_type = FIRE_VARIANT_TYPE_B //Armor Shredding Greenfire
 
 /obj/item/mortar_shell/incendiary/detonate(turf/T)
-	explosion(T, 0, 2, 4, 7, explosion_cause_data = cause_data)
+	cell_explosion(T, 300, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
 	flame_radius(cause_data, radius, T, flame_level, burn_level, flameshape, null, fire_type)
 	playsound(T, 'sound/weapons/gun_flamethrower2.ogg', 35, 1, 4)
 

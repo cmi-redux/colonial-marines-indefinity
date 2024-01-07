@@ -369,7 +369,7 @@
 			smoke.set_up(1, 0, src.loc)
 			smoke.attach(src)
 			smoke.start()
-			explosion(src.loc, -1, 0, 1, 3, 1, 0)
+			cell_explosion(get_turf(src), 300, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("взрыва смеса", usr))
 			qdel(src)
 			return
 		if(prob(15)) //Power drain

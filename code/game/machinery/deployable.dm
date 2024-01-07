@@ -81,7 +81,7 @@
 	s.start()
 
 	deconstruct(FALSE)
-	explosion(src.loc,-1,-1,0)
+	cell_explosion(get_turf(src), 100, 25, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("взрыв барьера", usr, src))
 
 /obj/structure/machinery/deployable/barrier/deconstruct(disassembled = TRUE)
 	if(!disassembled)

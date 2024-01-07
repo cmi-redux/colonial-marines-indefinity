@@ -195,7 +195,7 @@
 					empulse(src.loc, 1, 3, 0)
 			if(overcharge_percent >= 150)
 				if(prob(1))
-					explosion(src.loc, 0, 0, 1, 3)
+					cell_explosion(get_turf(src), 100, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("взрыва смеса", usr))
 		if((3.6e6+1) to INFINITY)
 			if(overcharge_percent >= 115)
 				if(prob(8))
@@ -207,7 +207,7 @@
 					empulse(src.loc, 4, 10, 1)
 			if(overcharge_percent >= 140)
 				if(prob(1))
-					explosion(src.loc, 0, 1, 2, 4)
+					cell_explosion(get_turf(src), 200, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("взрыва смеса", usr))
 		else //how the hell was this proc called for negative charge
 			charge = 0
 

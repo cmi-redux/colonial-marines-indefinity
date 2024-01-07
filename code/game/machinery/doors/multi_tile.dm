@@ -420,6 +420,11 @@
 	lock(TRUE)
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/proc/unlock_and_open()
+	for(var/direction in GLOB.cardinals) //Check for space, don't open door right to the space
+		var/turf/T = get_step(src, direction)
+		if(istype(T, /turf/open/space))
+			return
+
 	unlock()
 	open()
 	lock(TRUE)

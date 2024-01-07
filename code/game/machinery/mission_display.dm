@@ -1,4 +1,14 @@
-// TODO: Redo that fully copypasted shit from closed PR on upstream, cool idea but fucking shit
+
+/obj/structure/machinery/mission_display
+	icon = 'icons/obj/structures/machinery/mission_display.dmi'
+	icon_state = "default"
+	name = "mission display"
+	desc = "A monitor showing details about various mission assets."
+	anchored = 1
+	density = 0
+	use_power = TRUE
+
+/* TODO: Redo that fully copypasted shit from closed PR on upstream, cool idea but fucking shit
 
 //MODE DEFINES
 #define MISSION_DISPLAY_OFF 0
@@ -573,7 +583,7 @@
 	state[STATE20][X_COORDINATE] = APC_STATE6_X
 	state[STATE20][Y_COORDINATE] = APC_STATE6_Y
 
-	UNTIL(shuttle_controller)
+	UNTIL(SSshuttle.initialized)
 	shuttle1 = SSshuttle.getShuttle(DROPSHIP_ALAMO)
 	shuttle2 = SSshuttle.getShuttle(DROPSHIP_NORMANDY)
 
@@ -606,3 +616,4 @@
 		if("Merc")
 			return UI_DISPLAY_MERC
 
+*/

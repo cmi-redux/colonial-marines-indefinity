@@ -658,11 +658,11 @@
 // explode the light
 
 /obj/structure/machinery/light/proc/explode()
-	var/turf/T = get_turf(src.loc)
+	var/turf/T = get_turf(src)
 	spawn(0)
 		broken() // break it first to give a warning
 		sleep(2)
-		explosion(T, 0, 0, 2, 2)
+		cell_explosion(T, 100, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("взрыва лампочки", usr))
 		sleep(1)
 		qdel(src)
 

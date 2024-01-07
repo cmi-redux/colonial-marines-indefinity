@@ -2672,19 +2672,19 @@ CUSTOM_AMMO_PENETRATION
 
 /datum/ammo/rocket/wp/quad/on_hit_mob(mob/hit, obj/item/projectile/proj)
 	drop_flame(get_turf(hit), proj.weapon_cause_data)
-	explosion(proj.loc,  -1, 2, 4, 5, , , ,proj.weapon_cause_data)
+	cell_explosion(get_turf(hit), 500, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
 
 /datum/ammo/rocket/wp/quad/on_hit_obj(obj/O, obj/item/projectile/proj)
 	drop_flame(get_turf(O), proj.weapon_cause_data)
-	explosion(proj.loc,  -1, 2, 4, 5, , , ,proj.weapon_cause_data)
+	cell_explosion(get_turf(O), 500, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
 
 /datum/ammo/rocket/wp/quad/on_hit_turf(turf/T, obj/item/projectile/proj)
 	drop_flame(T, proj.weapon_cause_data)
-	explosion(proj.loc,  -1, 2, 4, 5, , , ,proj.weapon_cause_data)
+	cell_explosion(T, 500, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
 
 /datum/ammo/rocket/wp/quad/do_at_max_range(turf/T, obj/item/projectile/proj)
 	drop_flame(get_turf(proj), proj.weapon_cause_data)
-	explosion(proj.loc,  -1, 2, 4, 5, , , ,proj.weapon_cause_data)
+	cell_explosion(get_turf(proj), 500, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, proj.weapon_cause_data)
 
 /datum/ammo/rocket/custom
 	name = "custom rocket"
@@ -2694,7 +2694,7 @@ CUSTOM_AMMO_PENETRATION
 	var/obj/item/ammo_magazine/rocket/custom/rocket = launcher.current_mag
 	if(rocket.locked && rocket.warhead && rocket.warhead.detonator)
 		if(rocket.fuel && rocket.fuel.reagents.get_reagent_amount(rocket.fuel_type) >= rocket.fuel_requirement)
-			rocket.forceMove(proj.loc)
+			rocket.forceMove(get_turf(proj))
 		rocket.warhead.cause_data = proj.weapon_cause_data
 		rocket.warhead.prime()
 		qdel(rocket)
