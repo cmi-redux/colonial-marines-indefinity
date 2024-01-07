@@ -87,10 +87,8 @@
 
 	visibilityChanged()
 
-	multiz_turfs()
-
 	pass_flags = pass_flags_cache[type]
-	if (isnull(pass_flags))
+	if(isnull(pass_flags))
 		pass_flags = new()
 		initialize_pass_flags(pass_flags)
 		pass_flags_cache[type] = pass_flags
@@ -116,16 +114,21 @@
 	if(A?.lighting_effect)
 		overlays += A.lighting_effect
 
-	if(!special_icon)
-		update_connections(TRUE)
-	update_icon()
-
-	return INITIALIZE_HINT_NORMAL
+	if(mapload)
+		return INITIALIZE_HINT_LATELOAD
+	else
+		multiz_turfs()
+		if(!special_icon)
+			update_connections(FALSE)
+		update_icon()
+		add_debris_element()
 
 /turf/LateInitialize()
+	multiz_turfs()
 	if(!special_icon)
 		update_connections(FALSE)
 	update_icon()
+	add_debris_element()
 
 /turf/Destroy(force)
 	. = QDEL_HINT_IWILLGC

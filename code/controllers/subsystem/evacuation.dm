@@ -194,7 +194,7 @@ SUBSYSTEM_DEF(evacuation)
 
 			for(var/obj/docking_port/stationary/lifeboat_dock/lifeboat_dock in GLOB.lifeboat_almayer_docks) //evacuation confirmed, time to open lifeboats
 				var/obj/docking_port/mobile/crashable/lifeboat/lifeboat = lifeboat_dock.get_docked()
-				if(lifeboat && lifeboat.available)
+				if(lifeboat && !lifeboat.launched)
 					lifeboat_dock.open_dock()
 
 			enable_self_destruct(FALSE, TRUE)
@@ -208,7 +208,7 @@ SUBSYSTEM_DEF(evacuation)
 
 			var/obj/docking_port/mobile/crashable/lifeboat/L1 = SSshuttle.getShuttle(MOBILE_SHUTTLE_LIFEBOAT_PORT)
 			var/obj/docking_port/mobile/crashable/lifeboat/L2 = SSshuttle.getShuttle(MOBILE_SHUTTLE_LIFEBOAT_STARBOARD)
-			while(L1.available || L2.available)
+			while(!L1.launched || !L2.launched)
 				sleep(5 SECONDS) //Sleep 5 more seconds to make sure everyone had a chance to leave. And wait for lifeboats
 
 			lifesigns += L1.survivors + L2.survivors

@@ -113,8 +113,8 @@ SUBSYSTEM_DEF(garbage)
 	//the fact that this resets its processing each fire (rather then resume where it left off) is intentional.
 	var/queue = GC_QUEUE_FILTER
 
-	while (state == SS_RUNNING)
-		switch (queue)
+	while(state == SS_RUNNING)
+		switch(queue)
 			if(GC_QUEUE_FILTER)
 				HandleQueue(GC_QUEUE_FILTER)
 				queue = GC_QUEUE_FILTER+1
@@ -162,7 +162,7 @@ SUBSYSTEM_DEF(garbage)
 
 	lastlevel = level
 
-	//We do this rather then for(refID in queue) because that sort of for loop copies the whole list.
+	//We do this rather then for(var/refID in queue) because that sort of for loop copies the whole list.
 	//Normally this isn't expensive, but the gc queue can grow to 40k items, and that gets costly/causes overrun.
 	for(var/i in 1 to length(queue))
 		var/list/L = queue[i]
@@ -205,7 +205,7 @@ SUBSYSTEM_DEF(garbage)
 		var/ref_searching = FALSE
 		#endif
 
-		switch (level)
+		switch(level)
 			if(GC_QUEUE_CHECK)
 				#ifdef REFERENCE_TRACKING
 				if(reference_find_on_fail[text_ref(D)])
@@ -279,7 +279,7 @@ SUBSYSTEM_DEF(garbage)
 
 	var/static/uid = 0
 	uid = WRAP(uid+1, 1, SHORT_REAL_LIMIT - 1)
-	if (D.gc_destroyed <= 0)
+	if(D.gc_destroyed <= 0)
 		D.gc_destroyed = uid
 
 	var/list/queue = queues[level]
@@ -312,7 +312,7 @@ SUBSYSTEM_DEF(garbage)
 	if(time > 0.1 SECONDS)
 		postpone(time)
 	var/threshold = CONFIG_GET(number/hard_deletes_overrun_threshold)
-	if(threshold && (time > threshold SECONDS))
+	if(threshold &&(time > threshold SECONDS))
 		if(!(I.qdel_flags & QDEL_ITEM_ADMINS_WARNED))
 			log_game("Error: [type]([refID]) took longer than [threshold] seconds to delete (took [round(time/10, 0.1)] seconds to delete)")
 			message_admins("Error: [type]([refID]) took longer than [threshold] seconds to delete (took [round(time/10, 0.1)] seconds to delete).")
@@ -351,9 +351,6 @@ SUBSYSTEM_DEF(garbage)
 ///
 /// Datums passed to this will be given a chance to clean up references to allow the GC to collect them.
 /proc/qdel(datum/D, force=FALSE, ...)
-	if(!D)
-		return
-
 	if(!istype(D))
 		del(D)
 		return

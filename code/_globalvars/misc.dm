@@ -23,5 +23,5 @@ GLOBAL_VAR_INIT(ship_hc_delay, setup_hc_delay())
 GLOBAL_DATUM_INIT(item_to_box_mapping, /datum/item_to_box_mapping, init_item_to_box_mapping())
 
 /proc/setup_hc_delay()
-	var/value = rand(3000, 36000)
+	var/value = rand(3000, 15000)
 	return value

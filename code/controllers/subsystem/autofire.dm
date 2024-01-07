@@ -40,13 +40,13 @@ SUBSYSTEM_DEF(automatedfire)
 /datum/controller/subsystem/automatedfire/fire(resumed = FALSE)
 	// Check for when we need to loop the buckets, this occurs when
 	// the head_offset is approaching AUTOFIRE_BUCKET_LEN ticks in the past
-	if (practical_offset > AUTOFIRE_BUCKET_LEN)
+	if(practical_offset > AUTOFIRE_BUCKET_LEN)
 		head_offset += TICKS2DS(AUTOFIRE_BUCKET_LEN)
 		practical_offset = 1
 		resumed = FALSE
 
 	// Check for when we have to reset buckets, typically from auto-reset
-	if ((length(bucket_list) != AUTOFIRE_BUCKET_LEN) || (world.tick_lag != bucket_resolution))
+	if((length(bucket_list) != AUTOFIRE_BUCKET_LEN) || (world.tick_lag != bucket_resolution))
 		reset_buckets()
 		bucket_list = src.bucket_list
 		resumed = FALSE
@@ -54,22 +54,22 @@ SUBSYSTEM_DEF(automatedfire)
 	// Store a reference to the 'working' shooter so that we can resume if the MC
 	// has us stop mid-way through processing
 	var/static/datum/component/automatedfire/shooter
-	if (!resumed)
+	if(!resumed)
 		shooter = null
 
 	// Iterate through each bucket starting from the practical offset
-	while (practical_offset <= AUTOFIRE_BUCKET_LEN && head_offset + ((practical_offset - 1) * world.tick_lag) <= world.time)
+	while(practical_offset <= AUTOFIRE_BUCKET_LEN && head_offset + ((practical_offset - 1) * world.tick_lag) <= world.time)
 		if(!shooter)
 			shooter = bucket_list[practical_offset]
 			bucket_list[practical_offset] = null
 
-		while (shooter)
+		while(shooter)
 			next_shooter = shooter.next
 			INVOKE_ASYNC(shooter, TYPE_PROC_REF(/datum/component/automatedfire, process_shot))
 
 			SSautomatedfire.shooter_count--
 			shooter = next_shooter
-			if (MC_TICK_CHECK)
+			if(MC_TICK_CHECK)
 				return
 
 		// Move to the next bucket

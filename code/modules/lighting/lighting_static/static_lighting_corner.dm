@@ -152,7 +152,7 @@
 
 
 /datum/static_lighting_corner/Destroy(force)
-	if (!force)
+	if(!force)
 		return QDEL_HINT_LETMELIVE
 
 	for(var/datum/static_light_source/light_source as anything in affecting)
@@ -173,4 +173,5 @@
 		master_NW.lighting_corners_initialised = FALSE
 	if(needs_update)
 		SSlighting.corners_queue -= src
+
 	return ..()

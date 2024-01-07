@@ -31,7 +31,7 @@
 
 /obj/item/device/paddles/Destroy()
 	remove_attached()
-	return ..()
+	. = ..()
 
 /obj/item/device/paddles/proc/attach_to(obj/item/device/defibrillator/to_attach)
 	if(!istype(to_attach))
@@ -43,6 +43,7 @@
 	icon_state = "[icon_state]_[attached_to.icon_state_for_paddles]"
 
 /obj/item/device/paddles/proc/remove_attached()
+	attached_to?.paddles_type = null
 	attached_to = null
 	reset_tether()
 

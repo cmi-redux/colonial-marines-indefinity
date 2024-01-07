@@ -5,6 +5,17 @@
 	var/crash_land = FALSE
 	/// Whether fires occur aboard the shuttle when crashing
 	var/fires_on_crash = FALSE
+	/// The % chance of the escape pod crashing into the groundmap before lifeboats leaving
+	var/early_crash_land_chance = 75
+	/// The % chance of the escape pod crashing into the groundmap
+	var/crash_land_chance = 25
+	/// How many people can be in the escape pod before it crashes
+	var/max_capacity = 0
+	/// How many people survived
+	var/survivors = 0
+
+	var/launched = FALSE
+	var/evac_set = FALSE
 
 /obj/docking_port/mobile/crashable/enterTransit()
 	. = ..()
@@ -12,7 +23,7 @@
 	if(!crash_land)
 		return
 
-	notify_ghosts(header = "Crashing shuttle!", message = "<b>[name]</b> has catastrophically failed and is crashing at <b>[get_area(destination)]</b>.", source = src)
+	notify_ghosts(header = "Crashing shuttle!", message = "<b>[name]</b> has catastrophically failed and is crashing at <b>[get_area(destination)]</b>.", source = destination)
 
 	for(var/area/shuttle_area as anything in shuttle_areas)
 		shuttle_area.flags_alarm_state |= ALARM_WARNING_FIRE
@@ -51,13 +62,48 @@
 
 /// Called when the shuttle is launched and checks for crash and creates a crash point
 /obj/docking_port/mobile/crashable/proc/evac_launch()
-	if(!crash_check())
-		return
+	if(mode == SHUTTLE_CRASHED)
+		return FALSE
 
-	create_crash_point()
+	if(launched)
+		return FALSE
+
+	if(crash_check())
+		create_crash_point()
+
+	close_doors()
+	var/occupant_count = 0
+	var/list/cryos = list()
+	for(var/area/interior_area in shuttle_areas)
+		for(var/mob/living/occupant in interior_area)
+			occupant_count++
+		for(var/obj/structure/machinery/cryopod/evacuation/cryotube in interior_area)
+			cryos += list(cryotube)
+
+	launched = TRUE
+	if(occupant_count > max_capacity)
+		playsound(src,'sound/effects/escape_pod_warmup.ogg', 50, 1)
+		sleep(31)
+		var/turf/sploded = return_center_turf()
+		cell_explosion(sploded, 100, 20, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("escape pod malfunction")) //Clears out walls
+		sleep(25)
+		mode = SHUTTLE_CRASHED
+		for(var/obj/structure/machinery/cryopod/evacuation/cryotube in cryos)
+			cryotube.go_out()
+		overcap_launch_attempt()
+		return FALSE
+
+	set_mode(SHUTTLE_IGNITING)
+	on_ignition()
+	setTimer(ignitionTime)
+
+/obj/docking_port/mobile/crashable/proc/overcap_launch_attempt()
+	open_doors()
 
 /// Returns whether or not the shuttle will crash after being sent
 /obj/docking_port/mobile/crashable/proc/crash_check()
+	if(prob((SSevacuation.evac_status >= EVACUATION_STATUS_IN_PROGRESS ? crash_land_chance : early_crash_land_chance)))
+		return TRUE
 	return FALSE
 
 /// Sets up a valid crash point, fails after 10 tries
@@ -160,6 +206,9 @@
 
 /// Handles opening the doors for the specific shuttle type upon arriving at the crash point
 /obj/docking_port/mobile/crashable/proc/open_doors()
+	return
+
+/obj/docking_port/mobile/crashable/proc/close_doors()
 	return
 
 /obj/docking_port/stationary/crashable

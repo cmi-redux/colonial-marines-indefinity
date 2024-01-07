@@ -409,35 +409,40 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 	var/L2[] = new //Everyone who only needs to see the cinematic.
 	var/mob/M
 	var/turf/T
-	var/play_anim = 1
+	var/datum/cause_data/cause_data = create_cause_data("взрыв ядерного оружия", src)
+	var/atom/movable/screen/cinematic/ground/C = new
 	for(M in GLOB.player_list) //This only does something cool for the people about to die, but should prove pretty interesting.
-		if(!M || !M.loc) continue //In case something changes when we sleep().
+		if(!M || !M.loc)
+			continue //In case something changes when we sleep().
 		if(M.stat == DEAD)
 			L2 |= M
 		else if(M.z in z_levels)
 			L1 |= M
 			shake_camera(M, 110, 2)
-		var/atom/movable/screen/cinematic/ground/C = new
-		if(play_anim)
-			for(M in L1 + L2)
-				if(M && M.client)
-					M.client.screen |= C //They may have disconnected in the mean time.
 
-			sleep(15) //Extra 1.5 seconds to look at the planet.
-			flick("intro_planet", C)
-		sleep(35)
-		for(M in L1)
-			if(M && M.loc) //Who knows, maybe they escaped, or don't exist anymore.
-				T = get_turf(M)
-				if(T.z in z_levels)
-					if(istype(M.loc, /obj/structure/closet/secure_closet/freezer/fridge))
-						continue
-					M.death("Nuclear Explosion")
-				else
-					if(play_anim)
-						M.client.screen -= C //those who managed to escape the z level at last second shouldn't have their view obstructed.
-		if(play_anim)
-			flick("planet_nuke", C)
-			C.icon_state = "planet_end"
+	for(M in L1 + L2)
+		if(M && M.client)
+			M.client.screen |= C //They may have disconnected in the mean time.
+
+	sleep(15) //Extra 1.5 seconds to look at the planet.
+	flick("intro_planet", C)
+	sleep(35)
+	for(M in L1)
+		if(M && M.loc) //Who knows, maybe they escaped, or don't exist anymore.
+			T = get_turf(M)
+			if(T.z in z_levels)
+				M.death(cause_data)
+			else
+				M.client.screen -= C //those who managed to escape the z level at last second shouldn't have their view obstructed.
+
+	flick("planet_nuke", C)
+	C.icon_state = "planet_end"
+
+	for(var/shuttle_id in list(DROPSHIP_ALAMO, DROPSHIP_NORMANDY))
+		var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttle_id)
+		var/obj/structure/machinery/computer/shuttle/dropship/flight/console = shuttle.getControlConsole()
+		console.disable()
 
 	addtimer(VARSET_CALLBACK(src, planet_nuked, NUKE_COMPLETED), 1 SECONDS)
+	sleep(2 SECONDS)
+	qdel(C)

@@ -80,6 +80,7 @@
 /obj/item/device/defibrillator/Destroy()
 	QDEL_NULL(dcell)
 	QDEL_NULL(sparks)
+	QDEL_NULL(paddles_type)
 	return ..()
 
 /obj/item/device/defibrillator/update_icon()

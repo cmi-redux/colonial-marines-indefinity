@@ -843,10 +843,12 @@
 		if(islarva(spawn_candidate) || isxeno_builder(mob)) //next to xenos that should be in a safe spot
 			spawning_area = spawn_candidate
 	if(!spawning_area)
-		spawning_area = pick(totalMobs) // FUCK IT JUST GO ANYWHERE
+		return FALSE
+
 	var/list/turf_list
 	for(var/turf/open/open_turf in orange(3, spawning_area))
 		LAZYADD(turf_list, open_turf)
+
 	var/turf/open/spawning_turf = pick(turf_list)
 
 	var/mob/living/carbon/xenomorph/larva/new_xenomorph = new(spawning_turf, null, src)

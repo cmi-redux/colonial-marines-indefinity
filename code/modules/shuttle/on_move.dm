@@ -20,17 +20,14 @@ All ShuttleMove procs go here
 	if(!(. & (MOVE_TURF|MOVE_CONTENTS)))
 		return
 
-// var/shuttle_dir = shuttle.dir
 	for(var/i in contents)
 		var/atom/movable/thing = i
 		SEND_SIGNAL(thing, COMSIG_MOVABLE_SHUTTLE_CRUSH, shuttle)
 		if(ismob(thing))
 			if(isliving(thing))
 				var/mob/living/M = thing
-// if(M.status_flags & INCORPOREAL)
-// continue // Ghost things don't splat
 				if(M.buckled)
-					M.buckled.unbuckle()//M, TRUE)
+					M.buckled.unbuckle()
 				if(M.pulledby)
 					M.pulledby.stop_pulling()
 				M.stop_pulling()
@@ -40,9 +37,11 @@ All ShuttleMove procs go here
 		else //non-living mobs shouldn't be affected by shuttles, which is why this is an else
 			if(thing.anchored)
 				// Ordered by most likely:
-				if(istype(thing, /obj/structure/machinery/landinglight))
+				if(istype(thing, /atom/movable/outdoor_effect))
 					continue
 				if(istype(thing, /obj/docking_port))
+					continue
+				if(istype(thing, /obj/structure/machinery/landinglight))
 					continue
 				if(istype(thing, /obj/structure/machinery/camera))
 					continue
@@ -50,7 +49,7 @@ All ShuttleMove procs go here
 					continue
 
 				// SSshuttle also removes these in remove_ripples, but its timing is weird
-				if(!istype(thing, /obj/effect))
+				if(!istype(thing, /obj/effect) && !istype(thing, /obj/item/projectile))
 					log_debug("[shuttle] deleted an anchored [thing]")
 
 			qdel(thing)

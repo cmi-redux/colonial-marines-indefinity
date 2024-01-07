@@ -7,11 +7,10 @@
 	/// Icon path. Smoothing objects larger than 32x32 require a visual object to represent the excess part, in order not to increase its hitbox. We call that a frill.
 	var/frill_icon
 
-/turf/closed/Initialize(mapload)
+/turf/closed/Initialize(mapload, ...)
 	. = ..()
 	if(frill_icon)
 		AddElement(/datum/element/frill, frill_icon)
-	add_debris_element()
 
 /turf/closed/insert_self_into_baseturfs()
 	return

@@ -93,7 +93,7 @@ of predators), but can be added to include variant game modes (like humans vs. h
 			if(!xeno_mob || !xeno_mob.loc)
 				xeno_mob = xeno_mind.original
 			if(xeno_mob && xeno_mob.loc && isqueen(xeno_mob) && xeno_mob.stat != DEAD) // Dead queens handled separately
-				dat += "<br>[xeno_mob.ckey] was [xeno_mob] [SPAN_BOLDNOTICE("(SURVIVED)")]"
+				dat += "<br>[xeno_mob.full_designation] was [xeno_mob] [SPAN_BOLDNOTICE("(SURVIVED)")]"
 
 		to_world("[dat]")
 

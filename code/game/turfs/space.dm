@@ -35,11 +35,20 @@
 	else
 		initialize_pass_flags()
 
+	return INITIALIZE_HINT_LATELOAD
+
+/turf/open/space/LateInitialize()
+	if(!istype(src, /turf/open/space/transit))
+		icon_state = "[((x + y) ^ ~(x * y) + z) % 25]"
+
+	var/turf/T = SSmapping.get_turf_above(src)
+	if(T)
+		T.multiz_turf_new(src, DOWN)
+	T = SSmapping.get_turf_below(src)
+	if(T)
+		T.multiz_turf_new(src, UP)
+
 	multiz_turfs()
-	if(mapload)
-		return INITIALIZE_HINT_ROUNDSTART
-	else
-		return INITIALIZE_HINT_LATELOAD
 
 /turf/open/space/zPassIn(atom/movable/A, direction, turf/source)
 	if(direction == DOWN)
@@ -78,19 +87,6 @@
 	for(var/obj/O in src)
 		if(O.level == 1)
 			O.hide(FALSE)
-
-/turf/open/space/Initialize(mapload, ...)
-	. = ..()
-	if(!istype(src, /turf/open/space/transit))
-		icon_state = "[((x + y) ^ ~(x * y) + z) % 25]"
-
-	if(!mapload)
-		var/turf/T = SSmapping.get_turf_above(src)
-		if(T)
-			T.multiz_turf_new(src, DOWN)
-		T = SSmapping.get_turf_below(src)
-		if(T)
-			T.multiz_turf_new(src, UP)
 
 /turf/open/space/attack_hand(mob/user)
 	if((user.is_mob_restrained() || !( user.pulling )))

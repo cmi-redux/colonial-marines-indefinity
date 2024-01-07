@@ -37,7 +37,6 @@ DEFINE_BITFIELD(bt_shoot_flags, list(
 	..()
 	return INITIALIZE_HINT_LATELOAD
 
-
 /obj/structure/machinery/bolt_control/target
 	name = "Manual Launch - Target"
 	icon = 'icons/obj/structures/machinery/bolt_target.dmi'
@@ -163,7 +162,7 @@ DEFINE_BITFIELD(bt_shoot_flags, list(
 	if(!istype(lifeboat))
 		return
 
-	if(lifeboat.mode == SHUTTLE_IDLE && lifeboat.available)
+	if(lifeboat.mode == SHUTTLE_IDLE && !lifeboat.launched)
 		log_game("[key_name(usr)] has sent the shuttle [lifeboat] to infinite transit")
 		visible_message(SPAN_NOTICE("<b>\The [src]</b> beeps, \"Shuttle departing. Please stand away from the doors.\""))
 		lifeboat.evac_launch()
@@ -192,9 +191,7 @@ DEFINE_BITFIELD(bt_shoot_flags, list(
 	flick("opening_raising", sis_panel)
 	update_icon()
 	sis_panel.update_icon()
-	spawn(2.5 MINUTES)
-		detonate()
-
+	addtimer(CALLBACK(src, PROC_REF(detonate), 5 MINUTES))
 
 /obj/structure/machinery/bolt_control/panel
 	name = "Manual Launch - Terminal"

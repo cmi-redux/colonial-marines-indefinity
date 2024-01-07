@@ -7,24 +7,90 @@
 	ignitionTime = 10 SECONDS
 	width = 27
 	height = 7
-	var/available = TRUE // can be used for evac? false if queenlocked or if in transit already
-	var/status = LIFEBOAT_INACTIVE // -1 queen locked, 0 locked til evac, 1 working
-	var/list/doors = list()
-	var/survivors = 0
+	rechargeTime = 20 MINUTES
+	preferred_direction = NORTH
+	port_direction = NORTH
 
 	fires_on_crash = TRUE
+	max_capacity = 25
+
+	/// -1 queen locked, 0 locked til evac, 1 working
+	var/status = LIFEBOAT_INACTIVE
+
+	var/list/doors = list()
+	var/list/status_displays = list()
+	var/status_arrow = 0
+	var/obj/structure/machinery/bolt_control/target/terminal
+
+/obj/docking_port/mobile/crashable/lifeboat/Initialize(mapload)
+	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/docking_port/mobile/crashable/lifeboat/LateInitialize()
+	. = ..()
+	for(var/obj/structure/machinery/status_display/lifeboat/SD as anything in GLOB.lifeboat_displays)
+		if(SD.id == id)
+			status_displays += SD
+	for(var/obj/structure/machinery/bolt_control/target/T in machines)
+		if(T.id == id)
+			terminal = T
+			return
+
+/obj/docking_port/mobile/crashable/lifeboat/process()
+	var/time = getTimerStr()
+	for(var/obj/structure/machinery/status_display/lifeboat/SD as anything in status_displays)
+		if(status_arrow < 2 || timeLeft() <= 10 || SSevacuation.evac_status < EVACUATION_STATUS_IN_PROGRESS)
+			SD.set_and_update_lifeboat(time, "Lifeboat is refueling. Please wait.")
+		else
+			SD.set_lifeboat_overlay_arrow()
+	status_arrow++
+	if(status_arrow > 3)
+		status_arrow = 0
+
+/obj/docking_port/mobile/crashable/lifeboat/set_mode(new_mode)
+	. = ..()
+	INVOKE_ASYNC(src, PROC_REF(manage_displays), mode)
+	if(terminal && mode == SHUTTLE_IDLE && status == LIFEBOAT_ACTIVE)
+		terminal.unlock()
+	else if(mode == SHUTTLE_CALL)
+		addtimer(CALLBACK(src, PROC_REF(check_for_survivors), 3 SECONDS))
+
+/obj/docking_port/mobile/crashable/lifeboat/proc/manage_displays(mode)
+	SHOULD_NOT_SLEEP(TRUE)
+
+	if(mode == SHUTTLE_RECHARGING)
+		START_PROCESSING(SSobj, src)
+	else if(mode == SHUTTLE_IDLE)
+		STOP_PROCESSING(SSobj, src)
+		if(status == LIFEBOAT_ACTIVE)
+			set_displays("lifeboat_overlay_ready")
+		else if(status == LIFEBOAT_LOCKED)
+			set_displays("lifeboat_overlay_error")
+	else if(mode == SHUTTLE_IGNITING)
+		set_displays("lifeboat_overlay_departing")
+	else if(mode == SHUTTLE_CALL)
+		set_displays("lifeboat_overlay_departed")
+
+/obj/docking_port/mobile/crashable/lifeboat/proc/set_displays(mode)
+	for(var/obj/structure/machinery/status_display/lifeboat/SD as anything in status_displays)
+		SD.set_lifeboat_overlay(mode)
 
 /obj/docking_port/mobile/crashable/lifeboat/proc/check_for_survivors()
 	for(var/mob/living/carbon/human/survived_human as anything in GLOB.alive_human_list) //check for lifeboats survivors
 		var/area/area = get_area(survived_human)
 		if(!survived_human)
 			continue
+
 		if(survived_human.stat != DEAD && (area in shuttle_areas))
 			var/turf/turf = get_turf(survived_human)
 			if(!turf || is_mainship_level(turf.z))
 				continue
+
 			survivors++
 			to_chat(survived_human, "<br><br>[SPAN_CENTERBOLD("<big>You have successfully left the [MAIN_SHIP_NAME]. You may now ghost and observe the rest of the round.</big>")]<br>")
+			survived_human.count_statistic_stat(STATISTICS_ESCAPE)
+
+	SSevacuation.lifesigns += survivors
 
 /// Port Aft Lifeboat (bottom-right, doors on its left side)
 /obj/docking_port/mobile/crashable/lifeboat/port
@@ -40,19 +106,10 @@
 	preferred_direction = EAST
 	port_direction = EAST
 
-/obj/docking_port/mobile/crashable/lifeboat/evac_launch()
-	. = ..()
-
-	available = FALSE
-	set_mode(SHUTTLE_IGNITING)
-	on_ignition()
-	setTimer(ignitionTime)
-
 /obj/docking_port/mobile/crashable/lifeboat/crash_check()
 	. = ..()
-
-	if(SSevacuation.evac_status >= EVACUATION_STATUS_IN_PROGRESS)
-		return FALSE
+	if(.)
+		return .
 
 	if(prob(abs(((world.time - SSevacuation.evac_time) / EVACUATION_AUTOMATIC_DEPARTURE) - 1) * 100))
 		return TRUE
@@ -63,6 +120,20 @@
 	for(var/obj/structure/machinery/door/airlock/multi_tile/door in doors)
 		INVOKE_ASYNC(door, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat, unlock_and_open))
 
+/obj/docking_port/mobile/crashable/lifeboat/close_doors()
+	. = ..()
+
+	for(var/obj/structure/machinery/door/airlock/multi_tile/door in doors)
+		INVOKE_ASYNC(door, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat, close_and_lock))
+
+/obj/docking_port/mobile/crashable/lifeboat/overcap_launch_attempt()
+	. = ..()
+
+	status = LIFEBOAT_LOCKED
+	ai_announcement("ATTENTION: [id] critical failure, unable to launch.")
+	sleep(40)
+	explosion(return_center_turf(), -1, -1, 3, 4, , , , create_cause_data("escape lifeboat malfunction"))
+
 // === STATIONARIES
 
 /// Generic lifeboat dock
@@ -72,10 +143,9 @@
 	height = 7
 
 /obj/docking_port/stationary/lifeboat_dock/on_dock_ignition(departing_shuttle)
-	var/obj/docking_port/mobile/crashable/lifeboat/lifeboat = departing_shuttle
-	if(istype(lifeboat))
-		for(var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/door in lifeboat.doors)
-			INVOKE_ASYNC(door, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat, close_and_lock))
+	var/obj/docking_port/mobile/crashable/lifeboat/docked_shuttle = departing_shuttle
+	if(docked_shuttle)
+		docked_shuttle.close_doors()
 
 	for(var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/blastdoor/blastdoor as anything in GLOB.lifeboat_doors)
 		if(blastdoor.linked_dock == id)
@@ -91,8 +161,7 @@
 /obj/docking_port/stationary/lifeboat_dock/proc/open_dock()
 	var/obj/docking_port/mobile/crashable/lifeboat/docked_shuttle = get_docked()
 	if(docked_shuttle)
-		for(var/obj/structure/machinery/door/airlock/multi_tile/door in docked_shuttle.doors)
-			INVOKE_ASYNC(door, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat, unlock_and_open))
+		docked_shuttle.open_doors()
 
 	for(var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/blastdoor/blastdoor as anything in GLOB.lifeboat_doors)
 		if(blastdoor.linked_dock == id)
@@ -101,13 +170,11 @@
 /obj/docking_port/stationary/lifeboat_dock/proc/close_dock()
 	var/obj/docking_port/mobile/crashable/lifeboat/docked_shuttle = get_docked()
 	if(docked_shuttle)
-		for(var/obj/structure/machinery/door/airlock/multi_tile/door in docked_shuttle.doors)
-			INVOKE_ASYNC(door, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat, close_and_lock))
+		docked_shuttle.close_doors()
 
 	for(var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/blastdoor/blastdoor as anything in GLOB.lifeboat_doors)
 		if(blastdoor.linked_dock == id)
 			addtimer(CALLBACK(blastdoor, TYPE_PROC_REF(/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat, close_and_lock)), 10)
-
 
 /// Port Aft Lifeboat default dock
 /obj/docking_port/stationary/lifeboat_dock/port

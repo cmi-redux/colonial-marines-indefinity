@@ -8,16 +8,10 @@
 	rechargeTime = SHUTTLE_RECHARGE
 	ignitionTime = 8 SECONDS
 	ignition_sound = 'sound/effects/escape_pod_warmup.ogg'
-	/// The % chance of the escape pod crashing into the groundmap before lifeboats leaving
-	var/early_crash_land_chance = 75
-	/// The % chance of the escape pod crashing into the groundmap
-	var/crash_land_chance = 25
-	/// How many people can be in the escape pod before it crashes
-	var/max_capacity = 3
+
+	max_capacity = 3
 
 	var/datum/door_controller/single/door_handler = new()
-	var/launched = FALSE
-	var/evac_set = FALSE
 
 /obj/docking_port/mobile/crashable/escape_shuttle/Initialize(mapload)
 	. = ..(mapload)
@@ -28,6 +22,38 @@
 			air.indestructible = TRUE
 			air.unacidable = TRUE
 			air.linked_shuttle = src
+
+/obj/docking_port/mobile/crashable/escape_shuttle/evac_launch()
+	var/obj/structure/machinery/computer/shuttle/escape_pod_panel/panel = getControlConsole()
+	if(panel.pod_state == STATE_DELAYED)
+		return
+
+	. = ..()
+	if(!.)
+		return
+
+	if(!crash_land) // so doors won't break in space
+		for(var/obj/structure/machinery/door/air in door_handler.doors)
+			for(var/obj/effect/xenomorph/acid/acid in air.loc)
+				if(acid.acid_t == air)
+					qdel(acid)
+			air.breakable = FALSE
+			air.indestructible = TRUE
+			air.unacidable = TRUE
+
+/obj/docking_port/mobile/crashable/escape_shuttle/open_doors()
+	. = ..()
+
+	door_handler.control_doors("force-unlock")
+
+/obj/docking_port/mobile/crashable/escape_shuttle/close_doors()
+	. = ..()
+
+	door_handler.control_doors("force-lock-launch")
+
+/obj/docking_port/mobile/crashable/escape_shuttle/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
+	. = ..()
+	playsound(src,'sound/effects/escape_pod_launch.ogg', 50, 1)
 
 /obj/docking_port/mobile/crashable/escape_shuttle/proc/cancel_evac()
 	door_handler.control_doors("force-unlock")
@@ -52,68 +78,6 @@
 		air.indestructible = FALSE
 		air.unslashable = FALSE
 		air.unacidable = FALSE
-
-/obj/docking_port/mobile/crashable/escape_shuttle/evac_launch()
-	. = ..()
-
-	if(mode == SHUTTLE_CRASHED)
-		return
-
-	if(launched)
-		return
-
-	var/obj/structure/machinery/computer/shuttle/escape_pod_panel/panel = getControlConsole()
-	if(panel.pod_state == STATE_DELAYED)
-		return
-
-	door_handler.control_doors("force-lock-launch")
-	var/occupant_count = 0
-	var/list/cryos = list()
-	for(var/area/interior_area in shuttle_areas)
-		for(var/mob/living/occupant in interior_area)
-			occupant_count++
-		for(var/obj/structure/machinery/cryopod/evacuation/cryotube in interior_area)
-			cryos += list(cryotube)
-	if (occupant_count > max_capacity)
-		playsound(src,'sound/effects/escape_pod_warmup.ogg', 50, 1)
-		sleep(31)
-		var/turf/sploded = return_center_turf()
-		cell_explosion(sploded, 100, 20, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("escape pod malfunction")) //Clears out walls
-		sleep(25)
-		mode = SHUTTLE_CRASHED
-		for(var/obj/structure/machinery/cryopod/evacuation/cryotube in cryos)
-			cryotube.go_out()
-		door_handler.control_doors("force-unlock")
-		return
-
-	set_mode(SHUTTLE_IGNITING)
-	on_ignition()
-	setTimer(ignitionTime)
-	launched = TRUE
-
-	if(!crash_land) // so doors won't break in space
-		for(var/obj/structure/machinery/door/air in door_handler.doors)
-			for(var/obj/effect/xenomorph/acid/acid in air.loc)
-				if(acid.acid_t == air)
-					qdel(acid)
-			air.breakable = FALSE
-			air.indestructible = TRUE
-			air.unacidable = TRUE
-
-/obj/docking_port/mobile/crashable/escape_shuttle/crash_check()
-	. = ..()
-
-	if(prob((SSevacuation.evac_status >= EVACUATION_STATUS_IN_PROGRESS ? crash_land_chance : early_crash_land_chance)))
-		return TRUE
-
-/obj/docking_port/mobile/crashable/escape_shuttle/open_doors()
-	. = ..()
-
-	door_handler.control_doors("force-unlock")
-
-/obj/docking_port/mobile/crashable/escape_shuttle/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
-	. = ..()
-	playsound(src,'sound/effects/escape_pod_launch.ogg', 50, 1)
 
 /obj/docking_port/mobile/crashable/escape_shuttle/e
 	id = ESCAPE_SHUTTLE_EAST
@@ -148,6 +112,9 @@
 /obj/docking_port/stationary/escape_pod/Initialize(mapload)
 	. = ..()
 	GLOB.escape_almayer_docks += src
+	var/obj/docking_port/mobile/crashable/escape_shuttle/escape_shuttle = get_docked()
+	if(escape_shuttle)
+		escape_shuttle.name = "[initial(escape_shuttle.name)] [length(GLOB.escape_almayer_docks)]"
 
 /obj/docking_port/stationary/escape_pod/Destroy(force)
 	if(force)

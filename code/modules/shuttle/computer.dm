@@ -326,7 +326,7 @@
 		if(do_after(usr, 5 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
 			if(lifeboat.status != LIFEBOAT_LOCKED)
 				lifeboat.status = LIFEBOAT_LOCKED
-				lifeboat.available = FALSE
+				lifeboat.launched = TRUE
 				lifeboat.set_mode(SHUTTLE_IDLE)
 				xeno_message(SPAN_XENOANNOUNCE("We have wrested away control of the metal bird! They shall not escape!"), 3, xeno.faction)
 		return XENO_NO_DELAY_ACTION

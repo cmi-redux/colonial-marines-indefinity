@@ -44,12 +44,6 @@
 /turf/closed/wall/add_debris_element()
 	AddElement(/datum/element/debris, DEBRIS_SPARKS, -15, 8, 1)
 
-/turf/closed/wall/Initialize(mapload, ...)
-	. = ..()
-	// Defer updating based on neighbors while we're still loading map
-	if(mapload && . != INITIALIZE_HINT_QDEL)
-		return INITIALIZE_HINT_LATELOAD
-
 /turf/closed/wall/setDir(newDir)
 	..()
 	update_connections(FALSE)

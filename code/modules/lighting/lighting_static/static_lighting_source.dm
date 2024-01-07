@@ -62,20 +62,21 @@
 
 /datum/static_light_source/Destroy(force)
 	remove_lum()
-	if (source_atom)
+	if(source_atom)
 		LAZYREMOVE(source_atom.static_light_sources, src)
 
-	if (top_atom)
+	if(top_atom)
 		LAZYREMOVE(top_atom.static_light_sources, src)
 
-	if (needs_update)
+	if(needs_update)
 		SSlighting.static_sources_queue -= src
+
 	return ..()
 
 #define EFFECT_UPDATE(level) \
-	if (needs_update == LIGHTING_NO_UPDATE) \
+	if(needs_update == LIGHTING_NO_UPDATE) \
 		SSlighting.static_sources_queue += src; \
-	if (needs_update < level) \
+	if(needs_update < level) \
 		needs_update = level; \
 
 
