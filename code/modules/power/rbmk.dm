@@ -224,51 +224,13 @@ DEFINE_BITFIELD(reactor_flags, list(
 	playsound('sound/effects/rbmk/meltdown.ogg', 25, 1, 7)
 	visible_message(SPAN_USERDANGER("You hear a horrible metallic hissing."))
 	cell_explosion(src, 600, 20, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
-	explode()
-	to_chat_spaced(world, html = SPAN_ANNOUNCEMENT_HEADER_BLUE("Вы видите как на орбите рядом взрывается USS Almayer, его осколки охватывают всю орбиту"))
-
-/obj/structure/machinery/power/rbmk/proc/explode(list/z_levels = SSmapping.levels_by_trait(ZTRAIT_MARINE_MAIN_SHIP))
-	var/L1[] = new //Everyone who will be destroyed on the zlevel(s).
-	var/L2[] = new //Everyone who only needs to see the cinematic.
-	var/mob/M
-	var/turf/T
-	var/atom/movable/screen/cinematic/explosion/C = new
-	world << sound('sound/effects/explosionfar.ogg')
-	for(M in GLOB.player_list) //This only does something cool for the people about to die, but should prove pretty interesting.
-		if(!M || !M.loc)
-			continue //In case something changes when we sleep().
-		if(M.stat == DEAD)
-			L2 |= M
-		else if(M.z in z_levels)
-			L1 |= M
-			shake_camera(M, 110, 2)
-
-	for(M in L1 + L2)
-		if(M && M.client)
-			M.client.screen |= C //They may have disconnected in the mean time.
-
-	sleep(15) //Extra 1.5 seconds to look at the ship.
-	flick("intro_nuke", C)
-	sleep(35)
-	for(M in L1)
-		if(M && M.loc) //Who knows, maybe they escaped, or don't exist anymore.
-			T = get_turf(M)
-			if(T.z in z_levels)
-				M.death(cause_data)
-			else
-				M.client.screen -= C //those who managed to escape the z level at last second shouldn't have their view obstructed.
-
-	flick("ship_spared", C)
-	C.icon_state = "summary_spared"
-
 	enter_allowed = FALSE
+	SSticker.mode.play_cinematic(cause_data = create_cause_data("взрыв реактора", src))
 	for(var/shuttle_id in list(DROPSHIP_ALAMO, DROPSHIP_NORMANDY))
 		var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttle_id)
 		var/obj/structure/machinery/computer/shuttle/dropship/flight/console = shuttle.getControlConsole()
 		console.disable()
-
-	sleep(2 SECONDS)
-	qdel(C)
+	to_chat_spaced(world, html = SPAN_ANNOUNCEMENT_HEADER_BLUE("Вы видите как на орбите рядом взрывается USS Almayer, его осколки охватывают всю орбиту"))
 
 /obj/structure/machinery/power/rbmk/update_icon()
 	icon_state = "reactor_off"

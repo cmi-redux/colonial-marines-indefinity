@@ -33,13 +33,12 @@
 	if(last_direction != direction_rand && prob(10))
 		last_direction = direction_rand
 
-	new_wind = Clamp(wind * severity_mod * last_direction, 1, 100)
-	spawn()
-		while(staged_animate_severity())
-			sleep(1 SECONDS)
+	new_wind = Clamp(wind * (severity_mod * 0.25) * last_direction, 1, 50)
+	START_PROCESSING(SSeffects, src)
 
-/particles/weather/proc/staged_animate_severity()
+/particles/weather/process()
 	if(last_wind == new_wind)
+		STOP_PROCESSING(SSeffects, src)
 		return FALSE
 	last_wind = last_wind + Clamp((new_wind - last_wind) * 0.05, 0.1, 10)
 	if(new_wind < last_wind + 5 && new_wind > last_wind - 5)
@@ -64,7 +63,7 @@
 	drift					= list(0, 0, 0)
 	spin					= 0
 
-/particles/weather/rain/staged_animate_severity()
+/particles/weather/rain/process()
 	. = ..()
 	if(!.)
 		return
@@ -103,7 +102,7 @@
 	min_spawning			= 20
 	wind					= 2
 
-/particles/weather/snow/staged_animate_severity()
+/particles/weather/snow/process()
 	. = ..()
 	if(!.)
 		return
@@ -137,7 +136,7 @@
 	min_spawning			= 20
 	wind					= 10
 
-/particles/weather/dust/staged_animate_severity()
+/particles/weather/dust/process()
 	. = ..()
 	if(!.)
 		return

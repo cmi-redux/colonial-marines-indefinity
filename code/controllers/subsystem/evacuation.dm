@@ -321,75 +321,19 @@ SUBSYSTEM_DEF(evacuation)
 		dest_master.in_progress = 0
 		for(rod in SSevacuation.dest_rods)
 			rod.in_progress = 1
-		ai_announcement("ОПАСНОСТЬ. ОПАСНОСТЬ. Система самоуничтожения активирована. ОПАСНОСТЬ. ОПАСНОСТЬ. Самоуничтожение выполняется. ОПАСНОСТЬ. ОПАСНОСТЬ.", logging = ARES_LOG_SECURITY)
-		trigger_self_destruct(,,override)
+		trigger_self_destruct(override)
 		return TRUE
 
-/datum/controller/subsystem/evacuation/proc/trigger_self_destruct(list/z_levels = SSmapping.levels_by_trait(ZTRAIT_MARINE_MAIN_SHIP), origin = dest_master, override = FALSE, end_type = NUKE_EXPLOSION_FINISHED, play_anim = TRUE, end_round = TRUE)
-	set waitfor = FALSE
-	if(dest_status < NUKE_EXPLOSION_IN_PROGRESS) //One more check for good measure, in case it's triggered through a bomb instead of the destruct mechanism/admin panel.
-		dest_status = NUKE_EXPLOSION_IN_PROGRESS
-		playsound(origin, 'sound/machines/Alarm.ogg', 75, 0, 30)
-		world << pick('sound/music/round_end/nuclear_detonation1.ogg','sound/music/round_end/nuclear_detonation2.ogg')
-
-		var/ship_status = 1
-		for(var/i in z_levels)
-			if(is_mainship_level(i))
-				ship_status = 0 //Destroyed.
-			break
-
-		var/L1[] = new //Everyone who will be destroyed on the zlevel(s).
-		var/L2[] = new //Everyone who only needs to see the cinematic.
-		var/mob/M
-		var/turf/T
-		for(M in GLOB.player_list) //This only does something cool for the people about to die, but should prove pretty interesting.
-			if(!M || !M.loc) continue //In case something changes when we sleep().
-			if(M.stat == DEAD)
-				L2 |= M
-			else if(M.z in z_levels)
-				L1 |= M
-				shake_camera(M, 110, 4)
-
-
-		sleep(100)
-		/*Hardcoded for now, since this was never really used for anything else.
-		Would ideally use a better system for showing cutscenes.*/
-		var/atom/movable/screen/cinematic/explosion/C = new
-
-		if(play_anim)
-			for(M in L1 + L2)
-				if(M && M.loc && M.client)
-					M.client.screen |= C //They may have disconnected in the mean time.
-
-			sleep(15) //Extra 1.5 seconds to look at the ship.
-			flick(override ? "intro_override" : "intro_nuke", C)
-		sleep(35)
-		for(M in L1)
-			if(M && M.loc) //Who knows, maybe they escaped, or don't exist anymore.
-				T = get_turf(M)
-				if(T.z in z_levels)
-					M.death(create_cause_data("самоуничтожения корабля"))
-				else
-					if(play_anim)
-						M.client.screen -= C //those who managed to escape the z level at last second shouldn't have their view obstructed.
-		if(play_anim)
-			flick(ship_status ? "ship_spared" : "ship_destroyed", C)
-			C.icon_state = ship_status ? "summary_spared" : "summary_destroyed"
-		world << sound('sound/effects/explosionfar.ogg')
-
-		if(end_round)
-			dest_status = end_type
-
-			sleep(5)
-			if(SSticker.mode)
-				SSticker.mode.check_win()
-
-			if(!SSticker.mode) //Just a safety, just in case a mode isn't running, somehow.
-				to_world(SPAN_ROUNDBODY("Рестарт через 30 секунд!"))
-				sleep(300)
-				log_game("Рестарт из-за самоуничтожения корабля.")
-				world.Reboot(GLOB.href_token, SSticker.graceful)
-			return TRUE
+/datum/controller/subsystem/evacuation/proc/trigger_self_destruct(override)
+	ai_announcement("ОПАСНОСТЬ. ОПАСНОСТЬ. Система самоуничтожения активирована. ОПАСНОСТЬ. ОПАСНОСТЬ. Самоуничтожение выполняется. ОПАСНОСТЬ. ОПАСНОСТЬ.", logging = ARES_LOG_SECURITY)
+	playsound(dest_master, 'sound/machines/Alarm.ogg', 75, 0, 30)
+	enter_allowed = FALSE
+	SSticker.mode.play_cinematic(cinematic_icons = override ? list("intro_ship", "intro_override", "ship_spared", "summary_spared") : list("intro_ship", "intro_nuke", "ship_destroyed", "summary_destroyed"),cause_data = create_cause_data("самоуничтожения корабля", src), explosion_sound = list('sound/music/round_end/nuclear_detonation1.ogg', 'sound/music/round_end/nuclear_detonation2.ogg'))
+	for(var/shuttle_id in list(DROPSHIP_ALAMO, DROPSHIP_NORMANDY))
+		var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttle_id)
+		var/obj/structure/machinery/computer/shuttle/dropship/flight/console = shuttle.getControlConsole()
+		console.disable()
+	to_chat_spaced(world, html = SPAN_ANNOUNCEMENT_HEADER_BLUE("Вы видите как на орбите рядом взрывается USS Almayer, его осколки охватывают всю орбиту"))
 
 //Generic parent base for the self_destruct items.
 /obj/structure/machinery/self_destruct

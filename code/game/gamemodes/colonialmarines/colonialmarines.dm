@@ -320,23 +320,29 @@
 
 	if(force_end_at && world.time > force_end_at)
 		round_finished = MODE_INFESTATION_X_MINOR
-	if(SSevacuation.dest_status == NUKE_EXPLOSION_FINISHED)
-		round_finished = MODE_GENERIC_DRAW_NUKE //Nuke went off, ending the round.
-	if(SSevacuation.dest_status == NUKE_EXPLOSION_GROUND_FINISHED)
-		round_finished = MODE_INFESTATION_M_MINOR //Nuke went off, ending the round.
-	if(SSevacuation.dest_status < NUKE_EXPLOSION_IN_PROGRESS) //If the nuke ISN'T in progress. We do not want to end the round before it detonates.
-		if(!num_humans && num_xenos) //No humans remain alive.
-			round_finished = MODE_INFESTATION_X_MAJOR //Evacuation did not take place. Everyone died.
-		else if(num_humans && !num_xenos)
-			if(SSticker.mode && SSticker.mode.is_in_endgame)
-				round_finished = MODE_INFESTATION_X_MINOR //Evacuation successfully took place.
-			else
-//				SSticker.roundend_check_paused = TRUE
-				round_finished = MODE_INFESTATION_M_MAJOR //Humans destroyed the xenomorphs.
-				ares_conclude()
-//				addtimer(VARSET_CALLBACK(SSticker, roundend_check_paused, FALSE), MARINE_MAJOR_ROUND_END_DELAY)
-		else if(!num_humans && !num_xenos)
-			round_finished = MODE_INFESTATION_DRAW_DEATH //Both were somehow destroyed.
+		return
+
+	if(!num_humans && !num_xenos)
+		if(SSevacuation.dest_status == NUKE_EXPLOSION_FINISHED || SSevacuation.dest_status == NUKE_EXPLOSION_GROUND_FINISHED)
+			round_finished = MODE_GENERIC_DRAW_NUKE
+			return
+		round_finished = MODE_INFESTATION_DRAW_DEATH
+
+	else if(!num_humans)
+		if(SSevacuation.dest_status == NUKE_EXPLOSION_FINISHED || SSevacuation.dest_status == NUKE_EXPLOSION_GROUND_FINISHED)
+			round_finished = MODE_INFESTATION_X_MINOR
+		if(SSticker.mode && SSticker.mode.is_in_endgame)
+			round_finished = MODE_INFESTATION_X_MAJOR
+		else
+			round_finished = MODE_INFESTATION_X_MAJOR
+
+	else if(!num_xenos)
+		if(SSevacuation.dest_status == NUKE_EXPLOSION_FINISHED || SSevacuation.dest_status == NUKE_EXPLOSION_GROUND_FINISHED)
+			round_finished = MODE_INFESTATION_M_MINOR
+		if(SSticker.mode && SSticker.mode.is_in_endgame)
+			round_finished = MODE_INFESTATION_M_MINOR
+		else
+			round_finished = MODE_INFESTATION_M_MAJOR
 
 /datum/game_mode/colonialmarines/check_queen_status(datum/faction/faction)
 	set waitfor = FALSE

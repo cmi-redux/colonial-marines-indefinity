@@ -59,6 +59,8 @@ SUBSYSTEM_DEF(particle_weather)
 			if(!length(turfs_to_process))
 				turfs_to_process = weathered_turfs.Copy()
 			for(var/turf/turf in turfs_to_process)
+				if(QDELETED(weather_special_effect))
+					break
 				turfs_to_process -= turf
 				if(prob(weather_special_effect.probability))
 					turf.apply_weather_effect(weather_special_effect)
