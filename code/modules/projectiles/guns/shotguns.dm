@@ -52,15 +52,14 @@ can cause issues with ammo types getting mixed up during the burst.
 			user.put_in_hands(in_chamber)
 			playsound(user, reload_sound, 25, TRUE)
 			in_chamber = null
-			if(flags_gun_features & GUN_AMMO_COUNTER && user)
-				var/chambered = in_chamber ? TRUE : FALSE //useless, but for consistency
-				to_chat(user, SPAN_DANGER("[current_mag.ammo_position][chambered ? "+1" : ""] / [current_mag.max_rounds] ROUNDS REMAINING"))
+			display_ammo()
 		else
 			if(user)
 				to_chat(user, SPAN_WARNING("[src] is already empty."))
 		return
 
 	unload_shell(user)
+	display_ammo()
 	if(!current_mag.ammo_position && !in_chamber)
 		update_icon()
 
@@ -96,9 +95,7 @@ can cause issues with ammo types getting mixed up during the burst.
 		update_icon()	//This is not needed for now. Maybe we'll have loaded sprites at some point, but I doubt it. Also doesn't play well with double barrel.
 		ready_in_chamber()
 		cock_gun(user)
-	if(flags_gun_features & GUN_AMMO_COUNTER)
-		var/chambered = in_chamber ? TRUE : FALSE
-		to_chat(user, SPAN_DANGER("[current_mag.ammo_position][chambered ? "+1" : ""] / [current_mag.max_rounds] ROUNDS REMAINING"))
+	display_ammo()
 	return TRUE
 
 /obj/item/weapon/gun/shotgun/unload(mob/user)

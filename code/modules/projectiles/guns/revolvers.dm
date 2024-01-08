@@ -51,12 +51,6 @@
 		var/message = "[current_mag.chamber_closed? "It's closed.": "It's open with [current_mag.ammo_position] round\s loaded."]"
 		. += message
 
-/obj/item/weapon/gun/revolver/display_ammo(mob/user) // revolvers don't *really* have a chamber, at least in a way that matters for ammo displaying
-	if(flags_gun_features & GUN_AMMO_COUNTER)
-		if(current_mag && !(flags_gun_features & GUN_BURST_FIRING))
-			to_chat(user, SPAN_DANGER("[current_mag.ammo_position] / [current_mag.max_rounds] ROUNDS REMAINING"))
-		..()
-
 /obj/item/weapon/gun/revolver/proc/rotate_cylinder(mob/user) //Cylinder moves backward.
 	if(current_mag)
 		pin_locked_on = pin_locked_on == 1 ? current_mag.max_rounds : pin_locked_on - 1
