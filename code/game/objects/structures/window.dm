@@ -110,7 +110,7 @@
 		return
 	if(health <= 0)
 		if(user && istype(user))
-			user.count_statistic_stat(STATISTICS_DESTRUCTION_WINDOWS, 1)
+			user.count_statistic_stat(STATISTICS_DESTRUCTION_WINDOWS)
 			SEND_SIGNAL(user, COMSIG_MOB_DESTROY_WINDOW, src)
 			if(!istype(AM, /obj/item/projectile))
 				user.visible_message(SPAN_DANGER("[user] smashes through [src][AM ? " with [AM]":""]!"))
@@ -140,7 +140,7 @@
 
 	if(istype(proj.firer, /mob))
 		var/mob/user = proj.firer
-		user.count_statistic_stat(STATISTICS_DESTRUCTION_WINDOWS, 1)
+		user.count_statistic_stat(STATISTICS_DESTRUCTION_WINDOWS)
 		SEND_SIGNAL(user, COMSIG_MOB_DESTROY_WINDOW, src)
 
 	playsound(src, "windowshatter", 50, 1)
@@ -163,7 +163,7 @@
 	create_shrapnel(get_turf(src), rand(1,5), explosion_direction, shrapnel_type = /datum/ammo/bullet/shrapnel/light/glass, cause_data = cause_data)
 
 	if(mob)
-		mob.count_statistic_stat(STATISTICS_DESTRUCTION_WINDOWS, 1)
+		mob.count_statistic_stat(STATISTICS_DESTRUCTION_WINDOWS)
 		SEND_SIGNAL(mob, COMSIG_MOB_WINDOW_EXPLODED, src)
 
 	playsound(src, "windowshatter", 50, 1)
@@ -561,7 +561,7 @@
 		return
 
 	if(M)
-		M.count_statistic_stat(STATISTICS_DESTRUCTION_WINDOWS, 1)
+		M.count_statistic_stat(STATISTICS_DESTRUCTION_WINDOWS)
 		SEND_SIGNAL(M, COMSIG_MOB_EXPLODE_W_FRAME, src)
 
 	if(health >= -3000)

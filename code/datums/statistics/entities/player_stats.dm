@@ -1,3 +1,4 @@
+// TODO: Some day do custom count effect on stats updated, so don't copy this is procs and also do it flexible like right now (I don't wanna change it, because on next merge upstream in this is rep it will fuck up all calls on that and fixing more flexible shit will be harder)
 
 /////////////////////////////////////////////////////////////////////////////////////
 //Mob
@@ -221,8 +222,9 @@
 		track_statistic_earned(faction.faction_name, STATISTIC_TYPE_WEAPON, weapon, statistic_name, amount, client.player_data.id)
 
 /mob/living/carbon/xenomorph/track_steps_walked(amount = 1, statistic_name = STATISTICS_STEPS_WALKED)
-	if(statistic_exempt || !client || !client.player_data)
-		return
+	. = ..()
+	if(!.)
+		return FALSE
 
 	track_statistic_earned(faction.faction_name, STATISTIC_TYPE_CASTE, caste_type, statistic_name, amount, client.player_data.id)
 

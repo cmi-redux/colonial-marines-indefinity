@@ -35,8 +35,7 @@
 		CALLBACK(GLOBAL_PROC, PROC_REF(track_statistic_earned_callback), faction, statistic_type, general_name, statistic_name, value, player_id))
 
 /proc/track_statistic_earned_callback(faction, statistic_type, general_name, statistic_name, value, player_id, list/datum/entity/statistic/statistics)
-	var/length = length(statistics)
-	if(!length)
+	if(!length(statistics))
 		var/datum/entity/statistic/statistic = DB_ENTITY(/datum/entity/statistic)
 		statistic.faction = faction
 		statistic.statistic_type = statistic_type
@@ -46,11 +45,11 @@
 		statistic.player_id = player_id
 		statistic.save()
 	else
-		if(length > 1)
-			while(length > 1)
-				var/datum/entity/statistic/statistic = statistics[2]
+		if(statistics.len > 1)
+			while(statistics.len > 1)
+				var/datum/entity/statistic/statistic = statistics[statistics.len]
+				statistics.len--
 				statistic.delete()
-				length--
 
 		var/datum/entity/statistic/statistic = statistics[1]
 		statistic.value += value
