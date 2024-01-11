@@ -86,7 +86,7 @@
 		L.visible_message(SPAN_DANGER("You hear an explosion from the insides of [L]!"))
 		L.apply_armoured_damage(old_dmg_cont * 0.3, ARMOR_BOMB, BRUTE)
 		var/datum/cause_data/cause_data = create_cause_data("кластерного взрыва", proj.firer)
-		INVOKE_ASYNC(GLOBAL_PROC, TYPE_PROC_REF(/atom, cell_explosion), get_turf(L), 50, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, proj.dir, cause_data)
+		INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), get_turf(L), 50, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, proj.dir, cause_data)
 
 
 #undef COLOR_CLUSTER

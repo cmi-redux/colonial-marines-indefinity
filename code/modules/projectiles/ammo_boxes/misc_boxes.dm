@@ -72,7 +72,7 @@
 	var/flare_amount
 	for(var/obj/item/storage/box/m94/flare_box in contents)
 		flare_amount += flare_box.contents.len
-	addtimer(CALLBACK(GLOBAL_PROC, PROC_REF(qdel), (host_box ? host_box : src)), 7 SECONDS)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(qdel), (host_box ? host_box : src)), 7 SECONDS)
 	if(flare_amount > 0)
 		handle_side_effects(host_box, TRUE)
 		playsound(src, 'sound/effects/explosion_psss.ogg', 2, 1)

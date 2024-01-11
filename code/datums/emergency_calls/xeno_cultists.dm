@@ -35,4 +35,4 @@
 		arm_equipment(mob, /datum/equipment_preset/other/xeno_cultist, TRUE, TRUE)
 	print_backstory(mob)
 
-	addtimer(CALLBACK(GLOBAL_PROC, PROC_REF(to_chat), mob, SPAN_BOLD("Objectives: [objectives]")), 1 SECONDS)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), mob, SPAN_BOLD("Objectives: [objectives]")), 1 SECONDS)

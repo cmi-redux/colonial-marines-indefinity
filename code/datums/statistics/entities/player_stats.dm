@@ -1,4 +1,5 @@
 // TODO: Some day do custom count effect on stats updated, so don't copy this is procs and also do it flexible like right now (I don't wanna change it, because on next merge upstream in this is rep it will fuck up all calls on that and fixing more flexible shit will be harder)
+// Also, make it wait and count like every +-30 minutes, so our DB not fuck up in INF!, funny...
 
 /////////////////////////////////////////////////////////////////////////////////////
 //Mob

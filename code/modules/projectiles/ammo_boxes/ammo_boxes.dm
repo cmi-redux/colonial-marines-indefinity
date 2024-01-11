@@ -238,7 +238,7 @@
 		handle_side_effects(host_box, time_until_explode < 20)
 		addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/item/ammo_box, explode), flame_cause_data), time_until_explode)
 	else
-		addtimer(CALLBACK(GLOBAL_PROC, PROC_REF(qdel), (host_box ? host_box : src)), 4 SECONDS)
+		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(qdel), (host_box ? host_box : src)), 4 SECONDS)
 
 /obj/item/ammo_box/magazine/handle_side_effects(obj/structure/magazine_box/host_box, will_explode = FALSE)
 	var/shown_message = "\The [src] catches on fire!"
@@ -428,7 +428,7 @@
 		handle_side_effects(time_until_explode < 20)
 		addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/item/ammo_box, explode), flame_cause_data), time_until_explode)
 	else
-		addtimer(CALLBACK(GLOBAL_PROC, PROC_REF(qdel), (src)), 6 SECONDS)
+		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(qdel), (src)), 6 SECONDS)
 
 /obj/item/ammo_box/rounds/handle_side_effects(will_explode = FALSE)
 	if(will_explode)

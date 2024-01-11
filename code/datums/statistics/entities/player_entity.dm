@@ -32,7 +32,7 @@
 		DB_COMP("statistic_type", DB_EQUALS, statistic_type),
 		DB_COMP("general_name", DB_EQUALS, general_name),
 		DB_COMP("statistic_name", DB_EQUALS, statistic_name)),
-		CALLBACK(GLOBAL_PROC, PROC_REF(track_statistic_earned_callback), faction, statistic_type, general_name, statistic_name, value, player_id))
+		CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(track_statistic_earned_callback), faction, statistic_type, general_name, statistic_name, value, player_id))
 
 /proc/track_statistic_earned_callback(faction, statistic_type, general_name, statistic_name, value, player_id, list/datum/entity/statistic/statistics)
 	if(!length(statistics))

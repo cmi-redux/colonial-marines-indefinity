@@ -142,7 +142,7 @@
 		do_after(user, 3 SECONDS, INTERRUPT_NONE, BUSY_ICON_HOSTILE, src, INTERRUPT_NONE, BUSY_ICON_HOSTILE)
 		src.visible_message(SPAN_HIGHDANGER("[src] explodes!"))
 		var/datum/cause_data/cause_data = create_cause_data("взрыв ховерпака", user)
-		INVOKE_ASYNC(GLOBAL_PROC, TYPE_PROC_REF(/atom, cell_explosion), get_turf(src), 90, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, user.dir, cause_data)
+		INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), get_turf(src), 90, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, user.dir, cause_data)
 		color = initial(color)
 		addtimer(CALLBACK(src, PROC_REF(end_cooldown), user), hover_cooldown)
 		return
