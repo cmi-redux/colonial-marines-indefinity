@@ -109,3 +109,38 @@
 
 /area/shuttle/evacuation_pod
 	name = "Evacuation Pod"
+
+//Drop Pods
+/area/shuttle/drop1
+	//soundscape_playlist = list('sound/soundscape/drum1.ogg')
+	ambience_exterior = AMBIENCE_ALMAYER
+	soundscape_interval = 30 //seconds
+	is_resin_allowed = FALSE
+	flags_area = AREA_NOTUNNEL
+	is_landing_zone = TRUE
+
+/area/shuttle/drop1/sulaco
+	name = "\improper Dropship Alamo"
+	icon_state = "shuttlered"
+
+/area/shuttle/drop1/transit
+	ambience_exterior = 'sound/ambience/dropship_ambience_loop.ogg'
+	name = "\improper Dropship Alamo Transit"
+	icon_state = "shuttle2"
+
+/area/shuttle/drop2
+	//soundscape_playlist = list('sound/soundscape/drum1.ogg')
+	soundscape_interval = 30 //seconds
+	is_resin_allowed = FALSE
+	flags_area = AREA_NOTUNNEL
+	is_landing_zone = TRUE
+	ceiling = CEILING_REINFORCED_METAL
+
+/area/shuttle/drop2/sulaco
+	name = "\improper Dropship Normandy"
+	icon_state = "shuttle"
+
+/area/shuttle/drop2/transit
+	ambience_exterior = 'sound/ambience/dropship_ambience_loop.ogg'
+	name = "\improper Dropship Normandy Transit"
+	icon_state = "shuttlered"

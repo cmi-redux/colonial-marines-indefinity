@@ -246,11 +246,12 @@
 		var/obj/item/ammo_magazine/handful/new_handful = new ammo.handful_type(src, TRUE, TRUE)
 		new_handful.generate_handful(ammo, caliber, 5)
 		new_handful.generate_ammo(TRUE)
-		user.temp_drop_inv_item(src)
-		user.temp_drop_inv_item(proj)
-		proj.forceMove(new_handful)
-		if(!user.put_in_hands(new_handful))
-			new_handful.forceMove(user.loc)
+		if(user)
+			user.temp_drop_inv_item(src)
+			user.temp_drop_inv_item(proj)
+			proj.forceMove(new_handful)
+			if(!user.put_in_hands(new_handful))
+				new_handful.forceMove(user.loc)
 		forceMove(new_handful)
 		new_handful.ammo_position++
 		new_handful.current_rounds[new_handful.ammo_position] = proj
@@ -262,7 +263,8 @@
 		var/obj/item/ammo_magazine/handful/new_handful = new ammo.handful_type(src, TRUE, TRUE)
 		new_handful.generate_handful(ammo, caliber, 5)
 		new_handful.generate_ammo(TRUE)
-		user.temp_drop_inv_item(src)
+		if(user)
+			user.temp_drop_inv_item(src)
 		forceMove(new_handful)
 		new_handful.ammo_position++
 		new_handful.current_rounds[new_handful.ammo_position] = src

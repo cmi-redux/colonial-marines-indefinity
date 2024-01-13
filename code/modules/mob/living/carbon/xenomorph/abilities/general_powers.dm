@@ -528,8 +528,7 @@
 	if(!istype(target_turf))
 		to_chat(xeno, SPAN_XENOWARNING("You can't do that here."))
 		return
-	var/area/AR = get_area(target_turf)
-	if(istype(AR,/area/shuttle/drop1/lz1) || istype(AR,/area/shuttle/drop2/lz2) || SSinterior.in_interior(owner))
+	if(SSinterior.in_interior(owner))
 		to_chat(xeno, SPAN_WARNING("You sense this is not a suitable area for creating a resin hole."))
 		return
 	var/obj/effect/alien/weeds/alien_weeds = target_turf.check_xeno_trap_placement(xeno)

@@ -493,8 +493,8 @@
 	if(!req_light_switch)
 		return TRUE
 	if(!needs_power)
-		return (A.master.lightswitch)
-	return (A.master.lightswitch && A.master.power_light)
+		return (A.master?.lightswitch)
+	return (A.master?.lightswitch && A.master.power_light)
 
 // ai attack - make lights flicker, because why not
 

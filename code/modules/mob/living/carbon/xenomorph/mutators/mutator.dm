@@ -826,7 +826,8 @@
 
 	for(var/mob/living/carbon/xenomorph/xeno in faction.totalMobs)
 		xeno.recalculate_everything()
-		to_chat(xeno, SPAN_XENOANNOUNCE(usr.client.auto_lang(LANGUAGE_MUTATION_QUEEN_DEATH)))
+		if(xeno.client)
+			to_chat(xeno, SPAN_XENOANNOUNCE(xeno.client.auto_lang(LANGUAGE_MUTATION_QUEEN_DEATH)))
 		playsound(xeno.loc, "alien_help", 25)
 		xeno.xeno_jitter(15)
 

@@ -119,7 +119,7 @@
 	else
 		multiz_turfs()
 		if(!special_icon)
-			update_connections(FALSE)
+			update_connections(TRUE)
 		update_icon()
 		add_debris_element()
 

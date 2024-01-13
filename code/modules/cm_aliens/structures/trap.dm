@@ -296,7 +296,7 @@
 	for(var/turf/T in orange(1,loc))
 		if(T.density)
 			continue
-		var/obj/effect/hole_tripwire/HT = new /obj/effect/hole_tripwire(T)
+		var/obj/effect/hole_tripwire/HT = new /obj/effect/hole_tripwire(T, faction)
 		HT.linked_trap = src
 		tripwires += HT
 

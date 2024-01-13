@@ -18,7 +18,7 @@
 	current_underlay = mutable_appearance(LIGHTING_ICON, "transparent", source.z, LIGHTING_PLANE, 255, RESET_COLOR | RESET_ALPHA | RESET_TRANSFORM)
 
 	affected_turf = source
-	if (affected_turf.static_lighting_object)
+	if(affected_turf.static_lighting_object)
 		qdel(affected_turf.static_lighting_object, force = TRUE)
 		stack_trace("a lighting object was assigned to a turf that already had a lighting object!")
 
@@ -33,7 +33,7 @@
 		return QDEL_HINT_LETMELIVE
 
 	SSlighting.objects_queue -= src
-	if (isturf(affected_turf))
+	if(isturf(affected_turf))
 		affected_turf.static_lighting_object = null
 		affected_turf.luminosity = 1
 		affected_turf.underlays -= current_underlay

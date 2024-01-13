@@ -57,7 +57,7 @@ All ShuttleMove procs go here
 // Called on the old turf to move the turf data
 /turf/proc/onShuttleMove(turf/newT, list/movement_force, move_dir)
 	if(newT == src) // In case of in place shuttle rotation shenanigans.
-		return
+		return FALSE
 	//Destination turf changes
 	//Baseturfs is definitely a list or this proc wouldnt be called
 	var/shuttle_boundary = baseturfs.Find(/turf/baseturf_skipover/shuttle)
@@ -80,6 +80,9 @@ All ShuttleMove procs go here
 	if(rotation)
 		shuttleRotate(rotation) //see shuttle_rotate.dm
 
+	if(!static_lighting_object)
+		static_lighting_build_overlay()
+
 	return TRUE
 
 /turf/proc/lateShuttleMove(turf/oldT)
@@ -97,10 +100,10 @@ All ShuttleMove procs go here
 // Called on atoms to move the atom to the new location
 /atom/movable/proc/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
 	if(newT == oldT) // In case of in place shuttle rotation shenanigans.
-		return
+		return FALSE
 
 	if(loc != oldT) // This is for multi tile objects
-		return
+		return FALSE
 
 	loc = newT
 
@@ -113,10 +116,9 @@ All ShuttleMove procs go here
 		onTransitZ(oldT.z, newT.z)
 
 	if(light_on)
-		if(light_system == STATIC_LIGHT)
-			static_update_light()
-		else
-			update_light()
+		if(light_system == STATIC_LIGHT && static_light)
+			static_light.source_turf = null
+		update_light()
 
 	if(rotation)
 		shuttleRotate(rotation)
@@ -148,7 +150,7 @@ All ShuttleMove procs go here
 // Called on areas to move their turf between areas
 /area/proc/onShuttleMove(turf/oldT, turf/newT, area/underlying_old_area)
 	if(newT == oldT) // In case of in place shuttle rotation shenanigans.
-		return TRUE
+		return FALSE
 
 	contents -= oldT
 	underlying_old_area.contents += oldT
@@ -207,7 +209,7 @@ All ShuttleMove procs go here
 
 /mob/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
 	if(!move_on_shuttle)
-		return
+		return FALSE
 	. = ..()
 
 /mob/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
@@ -278,7 +280,7 @@ All ShuttleMove procs go here
 
 /* ***********************************Misc move procs************************************/
 
-/atom/movable/lighting_object/onShuttleMove()
+/atom/movable/outdoor_effect/onShuttleMove()
 	return FALSE
 
 /obj/docking_port/mobile/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)

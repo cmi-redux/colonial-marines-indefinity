@@ -368,7 +368,7 @@ GLOBAL_LIST_EMPTY(all_static_telecomms_towers)
 
 	if(prev_turf)
 		UnregisterSignal(prev_turf, COMSIG_WEEDNODE_GROWTH)
-	RegisterSignal(get_turf(src), COMSIG_WEEDNODE_GROWTH, PROC_REF(handle_xeno_acquisition))
+	RegisterSignal(get_turf(src), COMSIG_WEEDNODE_GROWTH, PROC_REF(handle_xeno_acquisition), override = TRUE)
 
 /obj/structure/machinery/telecomms/relay/preset/telecomms
 	id = "Telecomms Relay"

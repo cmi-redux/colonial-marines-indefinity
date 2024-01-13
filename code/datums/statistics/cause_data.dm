@@ -28,5 +28,5 @@
 		if(cause_mob.mind)
 			new_data.ckey = cause_mob.mind.ckey
 		new_data.role = cause_mob.get_role_name()
-		new_data.faction = cause_mob.faction.name
+		new_data.faction = cause_mob.faction?.name
 	return new_data

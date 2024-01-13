@@ -201,6 +201,8 @@ SUBSYSTEM_DEF(evacuation)
 
 			for(var/obj/docking_port/stationary/escape_pod/escape_pod in GLOB.escape_almayer_docks)
 				var/obj/docking_port/mobile/crashable/escape_shuttle/escape_shuttle = escape_pod.get_docked()
+				if(!escape_shuttle)
+					continue
 				var/obj/structure/machinery/computer/shuttle/escape_pod_panel/evacuation_program = escape_shuttle.getControlConsole()
 				if(escape_shuttle && evacuation_program.pod_state != ESCAPE_STATE_BROKEN)
 					escape_shuttle.evac_launch() //May or may not launch, will do everything on its own.

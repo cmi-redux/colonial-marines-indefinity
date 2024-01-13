@@ -43,10 +43,12 @@ can cause issues with ammo types getting mixed up during the burst.
 
 /obj/item/weapon/gun/shotgun/proc/empty_chamber(mob/user)
 	if(!current_mag)
-		return
+		return FALSE
 	if(current_mag.ammo_position <= 0)
 		if(in_chamber)
 			if(!do_after(user, current_mag.transfer_delay * user.get_skill_duration_multiplier(SKILL_FIREARMS), INTERRUPT_ALL_OUT_OF_RANGE_WITH_MOVING, BUSY_ICON_FRIENDLY))
+				return FALSE
+			if(!in_chamber)
 				return FALSE
 			in_chamber.forceMove(get_turf(user))
 			user.put_in_hands(in_chamber)
@@ -56,7 +58,7 @@ can cause issues with ammo types getting mixed up during the burst.
 		else
 			if(user)
 				to_chat(user, SPAN_WARNING("[src] is already empty."))
-		return
+		return TRUE
 
 	unload_shell(user)
 	display_ammo()

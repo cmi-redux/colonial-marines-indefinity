@@ -555,7 +555,7 @@
 
 //Find the turf which should contain the next pipe
 /obj/structure/disposalholder/proc/nextloc()
-	return get_step(loc, dir)
+	return get_step(get_turf(src), dir)
 
 //Find a matching pipe on a turf
 /obj/structure/disposalholder/proc/findpipe(turf/T)
@@ -1052,6 +1052,8 @@
 
 		H.forceMove(P)
 	else //If wasn't a pipe, then set loc to turf
+		if(!T)
+			T = get_turf(src)
 		H.forceMove(T)
 		return null
 	return P

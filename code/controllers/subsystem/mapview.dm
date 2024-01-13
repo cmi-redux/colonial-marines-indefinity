@@ -29,6 +29,8 @@ SUBSYSTEM_DEF(mapview)
 	for(var/trait in TCMP_MAPS_TRAITS)
 		var/datum/tacmap/minimap/map_datum = new(trait)
 		minimaps_by_trait["[trait]"] = map_datum
+		for(var/level in map_datum.map_zlevels)
+			map_datum.generate_minimap(level)
 	COOLDOWN_START(src, generate_minimaps, generating_coldown)
 	INIT_ANNOUNCE("Генерация миникарт выполнена за [(REALTIMEOFDAY - start_time)/10] секунд!")
 	return SS_INIT_SUCCESS
@@ -54,9 +56,9 @@ SUBSYSTEM_DEF(mapview)
 
 	message_admins("started updating minimaps")
 	for(var/trait in TCMP_MAPS_TRAITS)
-		var/datum/tacmap/minimap/minimap = minimaps_by_trait["[trait]"]
-		for(var/level in minimap.map_zlevels)
-			minimap.generate_minimap(level)
+		var/datum/tacmap/minimap/map_datum = minimaps_by_trait["[trait]"]
+		for(var/level in map_datum.map_zlevels)
+			map_datum.generate_minimap(level)
 
 	message_admins("finished updating minimaps")
 

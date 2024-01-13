@@ -46,7 +46,7 @@
 	source_atom = owner // Set our new owner.
 	LAZYADD(source_atom.static_light_sources, src)
 	top_atom = top
-	if (top_atom != source_atom)
+	if(top_atom != source_atom)
 		LAZYADD(top_atom.static_light_sources, src)
 
 	source_turf = top_atom
@@ -83,13 +83,13 @@
 /// This proc will cause the light source to update the top atom, and add itself to the update queue.
 /datum/static_light_source/proc/update(atom/new_top_atom)
 	// This top atom is different.
-	if (new_top_atom && new_top_atom != top_atom)
+	if(new_top_atom && new_top_atom != top_atom)
 		if(top_atom != source_atom && top_atom.static_light_sources) // Remove ourselves from the light sources of that top atom.
 			LAZYREMOVE(top_atom.static_light_sources, src)
 
 		top_atom = new_top_atom
 
-		if (top_atom != source_atom)
+		if(top_atom != source_atom)
 			LAZYADD(top_atom.static_light_sources, src) // Add ourselves to the light sources of our new top atom.
 
 	EFFECT_UPDATE(LIGHTING_CHECK_UPDATE)
@@ -152,7 +152,7 @@
 
 /datum/static_light_source/proc/recalc_corner(datum/static_lighting_corner/corner)
 	LAZYINITLIST(effect_str)
-	if (effect_str[corner]) // Already have one.
+	if(effect_str[corner]) // Already have one.
 		REMOVE_CORNER(corner)
 		effect_str[corner] = 0
 
@@ -163,71 +163,71 @@
 	var/update = FALSE
 	var/atom/source_atom = src.source_atom
 
-	if (QDELETED(source_atom))
+	if(QDELETED(source_atom))
 		qdel(src)
 		return
 
-	if (source_atom.light_power != light_power)
+	if(source_atom.light_power != light_power)
 		light_power = source_atom.light_power
 		update = TRUE
 
-	if (source_atom.light_range != light_range)
+	if(source_atom.light_range != light_range)
 		light_range = source_atom.light_range
 		update = TRUE
 
-	if (!top_atom)
+	if(!top_atom)
 		top_atom = source_atom
 		update = TRUE
 
-	if (!light_range || !light_power)
+	if(!light_range || !light_power)
 		qdel(src)
 		return
 
-	if (isturf(top_atom))
-		if (source_turf != top_atom)
+	if(isturf(top_atom))
+		if(source_turf != top_atom)
 			source_turf = top_atom
 			UPDATE_APPROXIMATE_PIXEL_TURF
 			update = TRUE
-	else if (top_atom.loc != source_turf)
+	else if(top_atom.loc != source_turf)
 		source_turf = top_atom.loc
 		UPDATE_APPROXIMATE_PIXEL_TURF
 		update = TRUE
 	else
 		var/pixel_loc = get_turf_pixel(top_atom)
-		if (pixel_loc != pixel_turf)
+		if(pixel_loc != pixel_turf)
 			pixel_turf = pixel_loc
 			update = TRUE
 
-	if (!isturf(source_turf))
-		if (applied)
+	if(!isturf(source_turf))
+		if(applied)
 			remove_lum()
 		return
 
-	if (light_range && light_power && !applied)
+	if(light_range && light_power && !applied)
 		update = TRUE
 
-	if (source_atom.light_color != light_color)
+	if(source_atom.light_color != light_color)
 		light_color = source_atom.light_color
 		PARSE_LIGHT_COLOR(src)
 		update = TRUE
 
-	else if (applied_lum_r != lum_r || applied_lum_g != lum_g || applied_lum_b != lum_b)
+	else if(applied_lum_r != lum_r || applied_lum_g != lum_g || applied_lum_b != lum_b)
 		update = TRUE
 
-	if (update)
+	if(update)
 		needs_update = LIGHTING_CHECK_UPDATE
 		applied = TRUE
-	else if (needs_update == LIGHTING_CHECK_UPDATE)
+	else if(needs_update == LIGHTING_CHECK_UPDATE)
 		return //nothing's changed
 
 	var/list/datum/static_lighting_corner/corners = list()
 	var/list/turf/turfs = list()
-	if (source_turf)
+	if(source_turf)
 		var/oldlum = source_turf.luminosity
 		source_turf.luminosity = CEILING(light_range, 1)
 		for(var/turf/T in view(CEILING(light_range, 1), source_turf))
 			if(!IS_OPAQUE_TURF(T))
-				if (!T.lighting_corners_initialised)
+				if(!T.lighting_corners_initialised)
 					T.static_generate_missing_corners()
 				corners[T.lighting_corner_NE] = 0
 				corners[T.lighting_corner_SE] = 0
@@ -238,29 +238,29 @@
 
 	var/list/datum/static_lighting_corner/new_corners = (corners - effect_str)
 	LAZYINITLIST(effect_str)
-	if (needs_update == LIGHTING_VIS_UPDATE)
-		for (var/datum/static_lighting_corner/corner as anything in new_corners)
+	if(needs_update == LIGHTING_VIS_UPDATE)
+		for(var/datum/static_lighting_corner/corner as anything in new_corners)
 			APPLY_CORNER(corner)
-			if (. != 0)
+			if(. != 0)
 				LAZYADD(corner.affecting, src)
 				effect_str[corner] = .
 	else
-		for (var/datum/static_lighting_corner/corner as anything in new_corners)
+		for(var/datum/static_lighting_corner/corner as anything in new_corners)
 			APPLY_CORNER(corner)
-			if (. != 0)
+			if(. != 0)
 				LAZYADD(corner.affecting, src)
 				effect_str[corner] = .
 
-		for (var/datum/static_lighting_corner/corner as anything in corners - new_corners) // Existing corners
+		for(var/datum/static_lighting_corner/corner as anything in corners - new_corners) // Existing corners
 			APPLY_CORNER(corner)
-			if (. != 0)
+			if(. != 0)
 				effect_str[corner] = .
 			else
 				LAZYREMOVE(corner.affecting, src)
 				effect_str -= corner
 
 	var/list/datum/static_lighting_corner/gone_corners = effect_str - corners
-	for (var/datum/static_lighting_corner/corner as anything in gone_corners)
+	for(var/datum/static_lighting_corner/corner as anything in gone_corners)
 		REMOVE_CORNER(corner)
 		LAZYREMOVE(corner.affecting, src)
 	effect_str -= gone_corners

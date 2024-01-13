@@ -709,7 +709,6 @@
 #include "code\game\area\skyscraper.dm"
 #include "code\game\area\space_station_13_areas.dm"
 #include "code\game\area\strata.dm"
-#include "code\game\area\Sulaco.dm"
 #include "code\game\area\varadero.dm"
 #include "code\game\area\WhiskeyOutpost.dm"
 #include "code\game\cas_manager\datums\cas_fire_envelope.dm"

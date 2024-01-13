@@ -266,6 +266,7 @@
 	name = "MAR magazine (7.62x39mm)"
 	desc = "A 7.62x39mm magazine for the MAR series of firearms."
 	caliber = CALIBER_7_62X39MM
+	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/colony.dmi'
 	icon_state = "mar40"
 	ammo_preset = list(/datum/ammo/bullet/rifle/mar40)
 	max_rounds = 40

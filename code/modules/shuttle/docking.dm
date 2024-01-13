@@ -149,8 +149,8 @@
 				var/atom/movable/moving_atom = k
 				if(moving_atom.loc != old_turf) //fix for multi-tile objects
 					continue
-				moving_atom.onShuttleMove(new_turf, old_turf, movement_force, movement_direction, old_dock, src) //atoms
-				moved_atoms[moving_atom] = old_turf
+				if(moving_atom.onShuttleMove(new_turf, old_turf, movement_force, movement_direction, old_dock, src)) //atoms
+					moved_atoms[moving_atom] = old_turf
 
 		if(move_mode & MOVE_TURF)
 			old_turf.onShuttleMove(new_turf, movement_force, movement_direction, src) //turfs
@@ -175,6 +175,8 @@
 	for(var/i in 1 to old_turfs.len)
 		CHECK_TICK
 		if(!(old_turfs[old_turfs[i]] & MOVE_TURF))
+			GLOB.SUNLIGHT_QUEUE_WORK += old_turfs[i]
+			GLOB.SUNLIGHT_QUEUE_WORK += new_turfs[i]
 			continue
 
 		var/turf/old_turf = old_turfs[i]

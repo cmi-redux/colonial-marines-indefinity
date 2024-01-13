@@ -491,7 +491,7 @@
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat/blastdoor/proc/bolt_explosion()
 	var/turf/T = get_step(src, throw_dir|dir)
-	cell_explosion(T, 150, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, "lifeboat explosive bolt")
+	cell_explosion(T, 150, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("взрывной болт эвакуационных шлюпок"))
 
 // Elevator door
 /obj/structure/machinery/door/airlock/multi_tile/elevator

@@ -2767,6 +2767,9 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/attached_gun/proc/un_display_ammo(mob/user)
 	var/obj/item/weapon/gun/gun = loc
+	if(!istype(gun))
+		return
+
 	if(!user)
 		user = gun.get_gun_user()
 

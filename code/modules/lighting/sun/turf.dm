@@ -53,6 +53,9 @@ Sunlight System
 		source_turf.outdoor_effect = null //No qdel_null force
 	source_turf.outdoor_effect = src
 
+/atom/movable/outdoor_effect/proc/extinguish()
+	return
+
 /atom/movable/outdoor_effect/proc/disable_sunlight()
 	var/turf/T = list()
 	for(var/datum/static_lighting_corner/C in affecting_corners)
