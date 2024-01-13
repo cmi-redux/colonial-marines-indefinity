@@ -2,7 +2,6 @@
 	name = "skyscraper"
 	icon = 'icons/turf/area_sky_scraper.dmi'
 	can_build_special = FALSE //T-Comms structure
-	ceiling = CEILING_NONE
 	flags_area = AREA_NOTUNNEL
 	soundscape_playlist = list('sound/effects/wind/wind_2_1.ogg', 'sound/effects/wind/wind_2_2.ogg', 'sound/effects/wind/wind_3_1.ogg', 'sound/effects/wind/wind_4_1.ogg',  'sound/effects/wind/wind_4_2.ogg', 'sound/effects/wind/wind_5_1.ogg')
 	sound_environment = SOUND_ENVIRONMENT_CITY
@@ -11,19 +10,16 @@
 /area/skyscraper/out
 	name = "Planet"
 	icon_state = "oob"
-	ceiling = CEILING_MAX
 	static_lighting = FALSE
 
 /area/skyscraper/building
 	name = "W-Y 'Almea'"
 	icon_state = "sky_scraper"
 	temperature = 308.7 //kelvin, 35c, 95f
-	ceiling = CEILING_METAL
 
 /area/skyscraper/building/landing_zone
 	name = "W-Y 'Almea' Landing Zone"
 	icon_state = "lz_pad"
-	ceiling = CEILING_NONE
 	can_build_special = TRUE
 	is_resin_allowed = FALSE
 	is_landing_zone = TRUE

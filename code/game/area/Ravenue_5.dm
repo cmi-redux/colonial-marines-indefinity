@@ -89,7 +89,6 @@
 	soundscape_playlist = SCAPE_PL_CAVE
 	soundscape_interval = 25
 	background_planet_sounds = FALSE
-	ceiling = CEILING_UNDERGROUND_BLOCK_CAS
 	sound_environment = SOUND_ENVIRONMENT_AUDITORIUM
 
 /area/ravenue_5/caves/west_caves
@@ -132,7 +131,6 @@
 /area/ravenue_5/upp
 	name = "\improper UPP Military Base"
 	icon_state = "green"
-	ceiling = CEILING_METAL
 	background_planet_sounds = TRUE
 
 /area/ravenue_5/upp/briefing
@@ -193,7 +191,6 @@
 /area/ravenue_5/cm
 	name = "\improper USCM Military Base"
 	icon_state = "green"
-	ceiling = CEILING_METAL
 	background_planet_sounds = TRUE
 
 /area/ravenue_5/cm/briefing

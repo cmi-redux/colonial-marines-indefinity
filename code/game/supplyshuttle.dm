@@ -13,7 +13,6 @@ GLOBAL_LIST_EMPTY_TYPED(asrs_empty_space_tiles_list, /turf/open/floor/almayer/em
 var/datum/controller/supply/supply_controller = new()
 
 /area/supply
-	ceiling = CEILING_METAL
 
 /area/supply/station //DO NOT TURN THE lighting_use_dynamic STUFF ON FOR SHUTTLES. IT BREAKS THINGS.
 	name = "Supply Shuttle"

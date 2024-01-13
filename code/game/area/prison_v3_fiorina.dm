@@ -8,19 +8,16 @@
 	icon_state = "fiorina"
 	can_build_special = TRUE //T-Comms structure
 	temperature = T20C
-	ceiling = CEILING_GLASS
 	minimap_color = MINIMAP_AREA_COLONY
 
 /area/fiorina/oob
 	name = "Fiorina - Out Of Bounds"
 	icon_state = "oob"
-	ceiling = CEILING_MAX
 	is_resin_allowed = FALSE
 	flags_area = AREA_NOTUNNEL
 
 /area/fiorina/maintenance
 	name = "Fiorina - Maintenance"
-	ceiling = CEILING_METAL
 	icon_state = "maints"
 
 //tumor / hive areas aka the place that is CAS immune
@@ -28,7 +25,6 @@
 	name = "Fiorina - Resin Tumor"
 	icon_state = "tumor0"
 	temperature = 309.15 //its uh, gettin' kinda warm in here SL...
-	ceiling = CEILING_UNDERGROUND_METAL_BLOCK_CAS
 /area/fiorina/tumor/deep
 	icon_state = "tumor0-deep"
 
@@ -66,7 +62,6 @@
 //LZ CODE
 /area/fiorina/lz
 	icon_state = "lz"
-	ceiling = CEILING_GLASS
 	name = "Fiorina - LZ"
 	is_landing_zone = TRUE
 	minimap_color = MINIMAP_AREA_LZ
@@ -102,7 +97,6 @@
 /area/fiorina/station
 	name = "Fiorina - Station Interior"
 	icon_state = "station0"
-	ceiling = CEILING_GLASS
 
 /area/fiorina/station/lowsec
 	name = "Fiorina - Low Security Cells"

@@ -134,7 +134,6 @@
 	is_resin_allowed = FALSE
 	flags_area = AREA_NOTUNNEL
 	is_landing_zone = TRUE
-	ceiling = CEILING_REINFORCED_METAL
 
 /area/shuttle/drop2/sulaco
 	name = "\improper Dropship Normandy"

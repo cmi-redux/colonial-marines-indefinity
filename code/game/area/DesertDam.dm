@@ -10,7 +10,6 @@
 //INTERIOR
 // areas under rock
 /area/desert_dam/interior
-	ceiling = CEILING_UNDERGROUND_METAL_ALLOW_CAS
 //NorthEastern Lab Section
 /area/desert_dam/interior/lab_northeast
 	name = "Northeastern Lab"
@@ -171,7 +170,6 @@
 	icon_state = "green"
 /area/desert_dam/interior/caves
 	name = "Caves"
-	ceiling = CEILING_DEEP_UNDERGROUND
 	icon_state = "red"
 	ambience_exterior = AMBIENCE_CAVE
 	soundscape_playlist = SCAPE_PL_CAVE
@@ -204,9 +202,7 @@
 
 //BUILDING
 //areas not under rock
-// ceiling = CEILING_METAL
 /area/desert_dam/building
-	ceiling = CEILING_METAL
 //Substations
 /area/desert_dam/building/substation
 	name = "Substation"

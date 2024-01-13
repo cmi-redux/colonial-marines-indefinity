@@ -2,7 +2,6 @@
 	name = "\improper Whiskey Outpost"
 	icon = 'icons/turf/area_whiskey.dmi'
 	icon_state = "outside"
-	ceiling = CEILING_METAL
 	powernet_name = "ground"
 
 /*
@@ -11,7 +10,6 @@
 
 /area/whiskey_outpost/inside
 	name = "Interior Whiskey Outpost"
-	ceiling = CEILING_UNDERGROUND_ALLOW_CAS
 	minimap_color = MINIMAP_AREA_CAVES
 
 /area/whiskey_outpost/inside/hospital
@@ -32,7 +30,6 @@
 	icon_state = "bunker"
 
 /area/whiskey_outpost/inside/bunker/pillbox
-	ceiling = CEILING_METAL
 
 /area/whiskey_outpost/inside/bunker/pillbox/one
 	name = "Pillbox Bourbon"
@@ -75,7 +72,6 @@
 /area/whiskey_outpost/outside
 	name = "\improper Unused"
 	icon_state = "outside"
-	ceiling = CEILING_NONE
 	//ambience = list('sound/ambience/jungle_amb1.ogg')
 	requires_power = 1
 	always_unpowered = 1
@@ -176,7 +172,6 @@
 	name = "\improper Rock"
 	icon_state = "rock"
 	//ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen12.ogg','sound/ambience/ambisin4.ogg')
-	ceiling = CEILING_UNDERGROUND_ALLOW_CAS
 	requires_power = 1
 	always_unpowered = 1
 	power_light = FALSE

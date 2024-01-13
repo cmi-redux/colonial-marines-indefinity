@@ -1,5 +1,4 @@
 /area/vehicle
-	ceiling = CEILING_METAL
 	requires_power = 0
 	unlimited_power = 1
 	icon = 'icons/turf/areas_interiors.dmi'

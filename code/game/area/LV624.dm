@@ -31,16 +31,10 @@
 	icon_state = "southwest"
 	//ambience = list('sound/ambience/jungle_amb1.ogg')
 
-/area/lv624/ground/jungle/south_west_jungle/ceiling
-	ceiling = CEILING_GLASS
-
 /area/lv624/ground/jungle/west_jungle
 	name ="\improper Western Jungle"
 	icon_state = "west"
 	//ambience = list('sound/ambience/jungle_amb1.ogg')
-
-/area/lv624/ground/jungle/west_jungle/ceiling
-	ceiling = CEILING_GLASS
 
 /area/lv624/ground/jungle/east_jungle
 	name ="\improper Eastern Jungle"
@@ -89,16 +83,10 @@
 	icon_state = "west"
 	//ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
 
-/area/lv624/ground/barrens/west_barrens/ceiling
-	ceiling = CEILING_GLASS
-
 /area/lv624/ground/barrens/east_barrens
 	name = "\improper Eastern Barrens"
 	icon_state = "east"
 	//ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
-
-/area/lv624/ground/barrens/east_barrens/ceiling
-	ceiling = CEILING_GLASS
 
 /area/lv624/ground/barrens/containers
 	name = "\improper Containers"
@@ -109,9 +97,6 @@
 	name = "\improper North Eastern Barrens"
 	icon_state = "northeast"
 	//ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
-
-/area/lv624/ground/barrens/north_east_barrens/ceiling
-	ceiling = CEILING_GLASS
 
 /area/lv624/ground/barrens/south_west_barrens
 	name = "\improper South Western Barrens"
@@ -185,7 +170,6 @@
 /area/lv624/ground/colony/telecomm
 	name = "\improper LZ1 Communications Relay"
 	icon_state = "ass_line"
-	ceiling = CEILING_UNDERGROUND_METAL_ALLOW_CAS
 	is_resin_allowed = FALSE
 	always_unpowered = FALSE
 
@@ -195,18 +179,15 @@
 
 /area/lv624/ground/colony/telecomm/sw_lz1
 	name = "\improper South-West LZ1 Communications Relay"
-	ceiling = CEILING_NONE
 
 /area/lv624/ground/colony/telecomm/tcommdome
 	name = "\improper Telecomms Dome Communications Relay"
 
 /area/lv624/ground/colony/telecomm/tcommdome/south
 	name = "\improper South Telecomms Dome Communications Relay"
-	ceiling = CEILING_NONE
 
 /area/lv624/ground/colony/telecomm/sw_lz2
 	name = "\improper South-West LZ2 Communications Relay"
-	ceiling = CEILING_NONE
 
 // ambience = list('sound/ambience/jungle_amb1.ogg')
 
@@ -219,7 +200,6 @@
 	ambience_exterior = AMBIENCE_CAVE
 	soundscape_playlist = SCAPE_PL_CAVE
 	soundscape_interval = 25
-	ceiling = CEILING_UNDERGROUND_BLOCK_CAS
 	sound_environment = SOUND_ENVIRONMENT_AUDITORIUM
 	minimap_color = MINIMAP_AREA_CAVES
 
@@ -272,10 +252,8 @@
 /area/lv624/lazarus
 	name = "\improper Lazarus"
 	icon_state = "green"
-	ceiling = CEILING_METAL
 
 /area/lv624/lazarus/landing_zones
-	ceiling = CEILING_NONE
 	is_resin_allowed = FALSE
 	is_landing_zone = TRUE
 
@@ -288,7 +266,6 @@
 /area/lv624/lazarus
 	name = "\improper Lazarus"
 	icon_state = "green"
-	ceiling = CEILING_METAL
 
 /area/lv624/lazarus/corporate_dome
 	name = "\improper Corporate Dome"
@@ -297,7 +274,6 @@
 /area/lv624/lazarus/yggdrasil
 	name = "\improper Yggdrasil Tree"
 	icon_state = "atmos"
-	ceiling = CEILING_GLASS
 
 /area/lv624/lazarus/medbay
 	name = "\improper Medbay"
@@ -374,7 +350,6 @@
 /area/lv624/lazarus/quartstorage/outdoors
 	name = "\improper Cargo Bay Area"
 	icon_state = "purple"
-	ceiling = CEILING_NONE
 	is_resin_allowed = FALSE
 	always_unpowered = TRUE
 
@@ -407,7 +382,6 @@
 /area/lv624/lazarus/hydroponics
 	name = "\improper Hydroponics"
 	icon_state = "hydro"
-	ceiling = CEILING_GLASS
 
 /area/lv624/landing/console
 	name = "\improper LZ1 'Nexus'"

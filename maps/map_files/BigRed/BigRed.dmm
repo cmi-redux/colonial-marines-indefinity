@@ -4939,7 +4939,7 @@
 /area/bigredv2/caves/lambda/xenobiology)
 "anp" = (
 /turf/closed/wall/solaris/reinforced,
-/area/bigredv2/outside/nw/ceiling)
+/area/bigredv2/outside/nw)
 "anq" = (
 /obj/structure/machinery/light{
 	dir = 8
@@ -8131,7 +8131,7 @@
 /turf/open/floor{
 	icon_state = "delivery"
 	},
-/area/bigredv2/outside/nw/ceiling)
+/area/bigredv2/outside/nw)
 "avu" = (
 /obj/structure/machinery/door/airlock/almayer/medical/glass{
 	dir = 1;
@@ -8319,18 +8319,18 @@
 /area/bigredv2/outside/building/office_complex)
 "avT" = (
 /turf/open/floor/plating,
-/area/bigredv2/outside/nw/ceiling)
+/area/bigredv2/outside/nw)
 "avU" = (
 /obj/structure/machinery/light{
 	dir = 1;
 	tag = "icon-tube1 (NORTH)"
 	},
 /turf/open/floor/plating,
-/area/bigredv2/outside/nw/ceiling)
+/area/bigredv2/outside/nw)
 "avV" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/plating,
-/area/bigredv2/outside/nw/ceiling)
+/area/bigredv2/outside/nw)
 "avW" = (
 /obj/structure/surface/table,
 /obj/item/trash/burger,
@@ -8893,7 +8893,7 @@
 /turf/open/floor{
 	icon_state = "delivery"
 	},
-/area/bigredv2/outside/nw/ceiling)
+/area/bigredv2/outside/nw)
 "axw" = (
 /obj/structure/surface/table,
 /obj/item/storage/firstaid/adv,
@@ -9099,24 +9099,24 @@
 /turf/open/floor{
 	icon_state = "delivery"
 	},
-/area/bigredv2/outside/nw/ceiling)
+/area/bigredv2/outside/nw)
 "axZ" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
 /turf/open/floor/plating,
-/area/bigredv2/outside/nw/ceiling)
+/area/bigredv2/outside/nw)
 "aya" = (
 /obj/effect/landmark/hunter_primary,
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
 /turf/open/floor/plating,
-/area/bigredv2/outside/nw/ceiling)
+/area/bigredv2/outside/nw)
 "ayb" = (
 /obj/structure/pipes/standard/manifold/hidden/green,
 /turf/open/floor/plating,
-/area/bigredv2/outside/nw/ceiling)
+/area/bigredv2/outside/nw)
 "ayc" = (
 /obj/structure/window/framed/solaris/reinforced/hull,
 /turf/open/floor/plating,
@@ -9611,11 +9611,11 @@
 	dir = 8
 	},
 /turf/open/floor/plating,
-/area/bigredv2/outside/nw/ceiling)
+/area/bigredv2/outside/nw)
 "azo" = (
 /obj/structure/cargo_container/horizontal/blue/top,
 /turf/open/floor/plating,
-/area/bigredv2/outside/nw/ceiling)
+/area/bigredv2/outside/nw)
 "azp" = (
 /obj/structure/bed/roller,
 /obj/effect/decal/cleanable/blood,
@@ -9996,7 +9996,7 @@
 "aAq" = (
 /obj/structure/cargo_container/horizontal/blue/middle,
 /turf/open/floor/plating,
-/area/bigredv2/outside/nw/ceiling)
+/area/bigredv2/outside/nw)
 "aAr" = (
 /obj/structure/machinery/door/airlock/almayer/medical/glass/colony{
 	dir = 2;
@@ -10271,11 +10271,11 @@
 "aAZ" = (
 /obj/structure/cargo_container/horizontal/blue/bottom,
 /turf/open/floor/plating,
-/area/bigredv2/outside/nw/ceiling)
+/area/bigredv2/outside/nw)
 "aBa" = (
 /obj/structure/machinery/light,
 /turf/open/floor/plating,
-/area/bigredv2/outside/nw/ceiling)
+/area/bigredv2/outside/nw)
 "aBb" = (
 /obj/structure/bed/chair,
 /turf/open/floor{
@@ -29208,7 +29208,7 @@
 	tag = "icon-chair (EAST)"
 	},
 /turf/open/floor/plating,
-/area/bigredv2/outside/nw/ceiling)
+/area/bigredv2/outside/nw)
 "bZL" = (
 /obj/effect/landmark/monkey_spawn,
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
@@ -36269,7 +36269,7 @@
 "qaR" = (
 /obj/vehicle/powerloader/ft,
 /turf/open/floor/plating,
-/area/bigredv2/outside/nw/ceiling)
+/area/bigredv2/outside/nw)
 "qeK" = (
 /obj/structure/surface/table,
 /obj/effect/spawner/random/tool,

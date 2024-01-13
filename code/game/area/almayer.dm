@@ -5,7 +5,6 @@
 	icon = 'icons/turf/area_almayer.dmi'
 	//ambience = list('sound/ambience/shipambience.ogg')
 	icon_state = "almayer"
-	ceiling = CEILING_METAL
 	powernet_name = "almayer"
 	faction_to_get = FACTION_MARINE
 	flags_area = AREA_RECOVER_FULTON_ITEMS

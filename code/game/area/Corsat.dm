@@ -2,7 +2,6 @@
 
 /area/corsat
 	icon = 'icons/turf/area_corsat.dmi'
-	ceiling = CEILING_GLASS
 	powernet_name = "ground"
 	can_build_special = TRUE
 
@@ -19,7 +18,6 @@
 /area/corsat/emergency_access
 	name = "\improper Unknown Area"
 	icon_state = "corsat_hull"
-	ceiling = CEILING_REINFORCED_METAL
 
 //SIGMA SECTOR
 
@@ -49,12 +47,10 @@
 /area/corsat/sigma/hangar/monorail/railcart
 	name = "\improper CORSAT Monorail"
 	icon_state = "railcart"
-	ceiling = CEILING_REINFORCED_METAL
 
 /area/corsat/sigma/hangar/monorail/railcart_transit
 	name = "\improper CORSAT Monorail transit"
 	icon_state = "railcart"
-	ceiling = CEILING_REINFORCED_METAL
 	flags_area = AREA_NOTUNNEL
 
 /area/corsat/sigma/hangar/cargo
@@ -136,17 +132,14 @@
 /area/corsat/sigma/southeast/generator
 	name = "\improper CORSAT Secondary Generators"
 	icon_state = "secondary_core"
-	ceiling = CEILING_METAL
 
 /area/corsat/sigma/southeast/telecomm
 	name = "\improper CORSAT Telecommunications"
 	icon_state = "corsat_telecomms"
-	ceiling = CEILING_METAL
 
 /area/corsat/sigma/southeast/datalab
 	name = "\improper Sigma Data Laboratory"
 	icon_state = "sigma_data_lab"
-	ceiling = CEILING_METAL
 
 /area/corsat/sigma/southeast/dataoffice
 	name = "\improper Sigma Data Office"
@@ -168,7 +161,6 @@
 	name = "\improper Sigma Teleporter"
 	icon = 'icons/turf/areas.dmi'
 	icon_state = "shuttle"
-	ceiling = CEILING_METAL
 
 /area/corsat/sigma/south/robotics
 	name = "\improper Sigma Robotics Laboratory"
@@ -231,7 +223,6 @@
 	name = "\improper CORSAT Railcart"
 	icon_state = "railcart"
 	requires_power = 0
-	ceiling = CEILING_REINFORCED_METAL
 
 /area/corsat/gamma/hangar/cargo
 	name = "\improper Gamma Hangar Cargo Checkpoint"
@@ -413,12 +404,10 @@
 	name = "\improper Sigma Remote Teleporter"
 	icon = 'icons/turf/areas.dmi'
 	icon_state = "shuttle"
-	ceiling = CEILING_METAL
 
 /area/corsat/gamma/airlock/north
 	name = "\improper Gamma Dome North Airlock"
 	icon_state = "gamma_airlock_north"
-	ceiling = CEILING_GLASS
 
 /area/corsat/gamma/airlock/north/id
 	name = "\improper Gamma North ID Checkpoint"
@@ -435,14 +424,12 @@
 /area/corsat/gamma/airlock/control
 	name = "\improper Gamma Dome Control Module"
 	icon_state = "gamma_control"
-	ceiling = CEILING_GLASS
 
 /area/corsat/gamma/biodome
 	name = "\improper Biodome Gamma"
 	icon_state = "gamma_biodome"
 	temperature = ICE_COLONY_TEMPERATURE
 	always_unpowered = 1
-	ceiling = CEILING_GLASS
 
 /area/corsat/gamma/biodome/complex
 	name = "\improper Gamma Research Complex"
@@ -467,7 +454,6 @@
 /area/corsat/theta
 	name = "\improper Theta Sector"
 	icon_state = "corsat_hull"
-	ceiling = CEILING_GLASS
 
 /area/corsat/theta/biodome
 	name = "\improper Biodome Theta"
@@ -514,7 +500,6 @@
 /area/corsat/omega
 	name = "\improper Sector Omega"
 	icon_state = "corsat_hull"
-	ceiling = CEILING_REINFORCED_METAL
 
 /area/corsat/omega/biodome
 	name = "\improper Biodome Omega"
@@ -582,5 +567,4 @@
 /area/corsat/inaccessible
 	name = "\improper Unknown Location"
 	icon_state = "corsat_hull"
-	ceiling = CEILING_REINFORCED_METAL
 	flags_area = AREA_NOTUNNEL

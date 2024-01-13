@@ -22,6 +22,16 @@ endmap
 map prison_station_fop
 endmap
 
+map kutjevo
+endmap
+
+map skyscraper
+endmap
+
+map khami_barrens
+	disabled
+endmap
+
 map fiorina_sciannex
 	disabled
 endmap
@@ -42,9 +52,6 @@ map shivas_snowball
 	disabled
 endmap
 
-map kutjevo
-endmap
-
 map sorokyne_strata
 	disabled
 endmap
@@ -57,13 +64,12 @@ map new_varadero
 	disabled
 endmap
 
-map skyscraper
+Special maps (not in rotation)
+
+map whiskey_outpost_v2
+	minplayers 60
 endmap
 
 map ravenue_5
 	disabled
-endmap
-
-map whiskey_outpost_v2
-	minplayers 60
 endmap

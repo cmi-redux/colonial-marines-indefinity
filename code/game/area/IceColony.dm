@@ -114,7 +114,6 @@
 /area/ice_colony/exterior/surface/valley/south/excavation
 	name = "\improper Southern Valleys - Excavation Site"
 	icon_state = "valley_south_excv"
-	ceiling = CEILING_UNDERGROUND_ALLOW_CAS
 
 /area/ice_colony/exterior/surface/valley/southeast
 	name = "\improper Eastern Valleys"
@@ -152,7 +151,6 @@
 /area/ice_colony/exterior/underground
 	name = "\improper Ice Colony - Exterior Underground"
 	icon_state = "cave"
-	ceiling = CEILING_DEEP_UNDERGROUND
 	ambience_exterior = null
 //
 // Caves
@@ -175,7 +173,6 @@
 
 /area/ice_colony/exterior/underground/caves/dig
 	icon_state = "mining_living"
-	ceiling = CEILING_DEEP_UNDERGROUND_METAL
 
 
 /*
@@ -187,7 +184,6 @@
 /area/ice_colony/surface
 	name = "\improper Ice Colony - Built Surface"
 	icon_state = "clear"
-	ceiling = CEILING_METAL
 
 /*
  * Surface - Bar
@@ -379,7 +375,6 @@
 /area/ice_colony/surface/hydroponics
 	name = "\improper Ice Colony Hydroponics"
 	icon_state = "hydro"
-	ceiling = CEILING_GLASS
 	minimap_color = MINIMAP_AREA_RESEARCH
 
 /area/ice_colony/surface/hydroponics/lobby
@@ -482,7 +477,6 @@
 /area/ice_colony/underground
 	name = "\improper Ice Colony - Built Underground"
 	icon_state = "explored"
-	ceiling = CEILING_DEEP_UNDERGROUND_METAL
 	ambience_exterior = AMBIENCE_ALMAYER
 	sound_environment = SOUND_ENVIRONMENT_ROOM
 	minimap_color = MINIMAP_AREA_CAVES
@@ -770,7 +764,6 @@
 /area/ice_colony/underground/hangar
 	name = "\improper Underground Hangar"
 	icon_state = "hangar"
-	ceiling = CEILING_NONE
 	is_resin_allowed = FALSE
 
 /*

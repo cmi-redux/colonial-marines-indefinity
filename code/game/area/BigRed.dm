@@ -332,9 +332,6 @@
 	is_resin_allowed = FALSE
 	soundscape_playlist = SCAPE_PL_DESERT_STORM
 
-/area/bigredv2/outside/nw/ceiling
-	ceiling = CEILING_GLASS
-
 /area/bigredv2/outside/c
 	name = "\improper Central Colony Grounds"
 	icon_state = "purple"

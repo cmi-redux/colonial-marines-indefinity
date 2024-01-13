@@ -734,28 +734,21 @@
 		else
 			return "The ceiling above is made of thick resin. Nothing is getting through that."
 
-	var/area/A = get_area(src)
-	switch(A.ceiling)
-		if(CEILING_GLASS)
-			return "The ceiling above is glass. That's not going to stop anything."
-		if(CEILING_METAL)
-			return "The ceiling above is metal. You can't see through it with a camera from above, but that's not going to stop anything."
-		if(CEILING_UNDERGROUND_ALLOW_CAS)
-			return "It is underground. A thin cavern roof lies above. Doesn't look like it's going to stop much."
-		if(CEILING_UNDERGROUND_BLOCK_CAS)
-			return "It is underground. The cavern roof lies above. Can probably stop most ordnance."
-		if(CEILING_UNDERGROUND_METAL_ALLOW_CAS)
-			return "It is underground. The ceiling above is made of thin metal. Doesn't look like it's going to stop much."
-		if(CEILING_UNDERGROUND_METAL_BLOCK_CAS)
-			return "It is underground. The ceiling above is made of metal.  Can probably stop most ordnance."
-		if(CEILING_DEEP_UNDERGROUND)
-			return "It is deep underground. The cavern roof lies above. Nothing is getting through that."
-		if(CEILING_DEEP_UNDERGROUND_METAL)
-			return "It is deep underground. The ceiling above is made of thick metal. Nothing is getting through that."
-		if(CEILING_REINFORCED_METAL)
-			return "The ceiling above is heavy reinforced metal. Nothing is getting through that."
-		else
-			return "It is in the open."
+	var/turf/ceiling = get_step_multiz(src, UP)
+	if(istype(ceiling, /turf/open/openspace) || istype(ceiling, /turf/open/space/openspace))
+		return "It is in the open."
+	else if(istransparentturf(ceiling))
+		return "The ceiling above is glass. That's not going to stop anything."
+	else if(ceiling.antipierce < 3)
+		return "The ceiling above is metal. You can't see through it with a camera from above, but that's not going to stop anything."
+	else if(ceiling.antipierce < 4)
+		return "The roof lies above. Doesn't look like it's going to stop much."
+	else if(ceiling.antipierce < 6)
+		return "The thin roof lies above. Can probably stop most ordnance."
+	else if(ceiling.antipierce < 11)
+		return "The very thin roof lies above. Nothing is getting through that."
+	else if(ceiling.antipierce < 16)
+		return "The ceiling above is made of thick material. Nothing is getting through that."
 
 /turf/proc/wet_floor()
 	return

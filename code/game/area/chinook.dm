@@ -11,7 +11,6 @@
 	flags_area = AREA_NOTUNNEL
 	sound_environment = SOUND_ENVIRONMENT_ROOM
 	unlimited_power = TRUE
-	ceiling = CEILING_METAL
 	ambience_exterior = AMBIENCE_ALMAYER
 	soundscape_interval = 30
 

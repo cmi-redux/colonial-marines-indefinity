@@ -35,6 +35,7 @@ block( \
 #define MAP_SOROKYNE_STRATA "Sorokyne Strata"
 #define MAP_CORSAT "CORSAT" // Highpop only
 #define MAP_KUTJEVO "Kutjevo Refinery"
+#define MAP_KHAMI_BARRENS "Khami Barrens"
 #define MAP_ICE_COLONY_V3 "Shivas Snowball" //Ice Rework, low pop enabled.
 #define MAP_SKY_SCRAPER "Sky Scraper"
 #define MAP_RUNTIME "USS Runtime"
@@ -243,39 +244,6 @@ block( \
 
 /// Frequency stuff only works with 45kbps oggs.
 #define GET_RANDOM_FREQ rand(32000, 55000)
-
-
-// Ceilings
-// Ceiling types
-// CEILING_PROTECTION_TIER_X are thresholds for blocking shit, everything else is
-// for handling ceiling behaviors (eg debris)
-
-/// Do not block any ordnance
-#define CEILING_NO_PROTECTION 0
-#define CEILING_NONE 0.1
-#define CEILING_GLASS 0.2
-
-/// Blocks mortar placement, lasing, and medevac
-#define CEILING_PROTECTION_TIER_1 1
-#define CEILING_METAL 1.1
-
-/// Blocks CAS signals, supply drops, fultoning, and mortar fire
-#define CEILING_PROTECTION_TIER_2 2
-#define CEILING_UNDERGROUND_ALLOW_CAS 2.1
-#define CEILING_UNDERGROUND_METAL_ALLOW_CAS 2.2
-
-/// Blocks CAS fire
-#define CEILING_PROTECTION_TIER_3 3
-#define CEILING_UNDERGROUND_BLOCK_CAS 3.1
-#define CEILING_UNDERGROUND_METAL_BLOCK_CAS 3.2
-
-/// Blocks OB fire
-#define CEILING_PROTECTION_TIER_4 4
-#define CEILING_DEEP_UNDERGROUND 4.1
-#define CEILING_DEEP_UNDERGROUND_METAL 4.2
-#define CEILING_REINFORCED_METAL 4.3
-#define CEILING_RESIN 4.4
-#define CEILING_MAX 4.5
 
 // Default font settings
 #define FONT_SIZE "5pt"

@@ -1580,19 +1580,19 @@
 "ahx" = (
 /obj/structure/inflatable,
 /turf/open/gm/dirt,
-/area/lv624/ground/barrens/west_barrens/ceiling)
+/area/lv624/ground/barrens/west_barrens)
 "ahy" = (
 /obj/structure/inflatable,
 /turf/open/floor{
 	icon_state = "redyellowfull"
 	},
-/area/lv624/ground/barrens/west_barrens/ceiling)
+/area/lv624/ground/barrens/west_barrens)
 "ahz" = (
 /obj/structure/inflatable/door,
 /turf/open/floor{
 	icon_state = "redyellowfull"
 	},
-/area/lv624/ground/barrens/west_barrens/ceiling)
+/area/lv624/ground/barrens/west_barrens)
 "ahB" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/sandstone/runed,
@@ -1609,18 +1609,18 @@
 /turf/open/floor{
 	icon_state = "redyellowfull"
 	},
-/area/lv624/ground/barrens/west_barrens/ceiling)
+/area/lv624/ground/barrens/west_barrens)
 "ahK" = (
 /obj/item/device/analyzer,
 /turf/open/floor{
 	icon_state = "redyellowfull"
 	},
-/area/lv624/ground/barrens/west_barrens/ceiling)
+/area/lv624/ground/barrens/west_barrens)
 "ahL" = (
 /turf/open/floor{
 	icon_state = "redyellowfull"
 	},
-/area/lv624/ground/barrens/west_barrens/ceiling)
+/area/lv624/ground/barrens/west_barrens)
 "ahM" = (
 /obj/structure/machinery/floodlight,
 /turf/open/floor/plating{
@@ -1671,19 +1671,19 @@
 /turf/open/floor{
 	icon_state = "redyellowfull"
 	},
-/area/lv624/ground/barrens/west_barrens/ceiling)
+/area/lv624/ground/barrens/west_barrens)
 "aie" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor{
 	icon_state = "redyellowfull"
 	},
-/area/lv624/ground/barrens/west_barrens/ceiling)
+/area/lv624/ground/barrens/west_barrens)
 "aif" = (
 /obj/effect/landmark/crap_item,
 /turf/open/floor{
 	icon_state = "redyellowfull"
 	},
-/area/lv624/ground/barrens/west_barrens/ceiling)
+/area/lv624/ground/barrens/west_barrens)
 "aih" = (
 /obj/structure/platform/mineral/sandstone/runed,
 /turf/open/gm/dirt,
@@ -1751,7 +1751,7 @@
 /turf/open/floor{
 	icon_state = "redyellowfull"
 	},
-/area/lv624/ground/barrens/west_barrens/ceiling)
+/area/lv624/ground/barrens/west_barrens)
 "aiv" = (
 /obj/structure/flora/bush/ausbushes/ppflowers,
 /turf/open/gm/coast/east,
@@ -6931,7 +6931,7 @@
 /area/lv624/lazarus/sleep_male)
 "aFm" = (
 /turf/closed/wall/wood,
-/area/lv624/ground/jungle/west_jungle/ceiling)
+/area/lv624/ground/jungle/west_jungle)
 "aFn" = (
 /obj/structure/bed,
 /obj/item/device/radio/intercom{
@@ -7098,7 +7098,7 @@
 "aFQ" = (
 /obj/structure/window_frame/wood,
 /turf/open/floor/plating,
-/area/lv624/ground/jungle/west_jungle/ceiling)
+/area/lv624/ground/jungle/west_jungle)
 "aFR" = (
 /obj/structure/closet,
 /obj/item/storage/fancy/cigarettes/wypacket,
@@ -14885,7 +14885,7 @@
 /turf/open/floor{
 	icon_state = "redyellowfull"
 	},
-/area/lv624/ground/barrens/west_barrens/ceiling)
+/area/lv624/ground/barrens/west_barrens)
 "iab" = (
 /turf/open/gm/dirtgrassborder/grassdirt_corner/south_east,
 /area/lv624/ground/jungle/east_jungle)
@@ -18502,7 +18502,7 @@
 /turf/open/floor{
 	icon_state = "redyellowfull"
 	},
-/area/lv624/ground/barrens/west_barrens/ceiling)
+/area/lv624/ground/barrens/west_barrens)
 "rdS" = (
 /obj/structure/machinery/power/apc{
 	dir = 1;
