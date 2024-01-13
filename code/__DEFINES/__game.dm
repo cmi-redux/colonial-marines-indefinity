@@ -6,7 +6,7 @@ block( \
 
 //Admin perms are in global.dm.
 
-/// To make it even more clear that something is a bitfield.
+//To make it even more clear that something is a bitfield.
 #define NO_FLAGS 0
 
 #define GLOBAL_PROC "magic BS"
@@ -14,7 +14,7 @@ block( \
 //Game defining directives.
 #define MAIN_AI_SYSTEM "ARES v3.2"
 
-// Maploader bounds indices
+//Maploader bounds indices
 #define MAP_MINX 1
 #define MAP_MINY 2
 #define MAP_MINZ 3
@@ -24,29 +24,25 @@ block( \
 
 #define MAP_MAXSIZE 300
 
-
-#define MAP_ICE_COLONY "Ice Colony" // Highpop only
+//Maps
+#define MAP_ICE_COLONY "Ice Colony"
 #define MAP_LV_624 "LV-624"
 #define MAP_BIG_RED "Solaris Ridge"
 #define MAP_PRISON_STATION "Fiorina Cellblocks"
 #define MAP_PRISON_STATION_V3 "Fiorina Science Annex"
-#define MAP_WHISKEY_OUTPOST "Whiskey Outpost" // Unused
-#define MAP_DESERT_DAM "Trijent Dam"  // Highpop only
+#define MAP_WHISKEY_OUTPOST "Whiskey Outpost"
+#define MAP_DESERT_DAM "Trijent Dam"
 #define MAP_SOROKYNE_STRATA "Sorokyne Strata"
-#define MAP_CORSAT "CORSAT" // Highpop only
+#define MAP_CORSAT "CORSAT"
 #define MAP_KUTJEVO "Kutjevo Refinery"
 #define MAP_KHAMI_BARRENS "Khami Barrens"
-#define MAP_ICE_COLONY_V3 "Shivas Snowball" //Ice Rework, low pop enabled.
+#define MAP_ICE_COLONY_V3 "Shivas Snowball"
 #define MAP_SKY_SCRAPER "Sky Scraper"
 #define MAP_RUNTIME "USS Runtime"
-#define MAP_LV522_CHANCES_CLAIM "LV-522 Chance's Claim" // Highpop Only
-#define MAP_NEW_VARADERO "New Varadero"//ice colony underground but as its own map
+#define MAP_LV522_CHANCES_CLAIM "LV-522 Chance's Claim"
+#define MAP_NEW_VARADERO "New Varadero"
 #define MAP_RAVENUE_5 "Ravenue 5"
-#define MAP_CHINOOK "Chinook 91 GSO" //admin level
-
-#define PLAYERCOUNT_LOWPOP_MAP_LIMIT 60 // number of players before we switch to lowpop maps only (LV, BR, Prison)
-
-#define PREROUND_TIME 300 // time before the round starts
+#define MAP_CHINOOK "Chinook 91 GSO"
 
 //A set of constants used to determine which type of mute an admin wishes to apply:
 //Please read and understand the muting/automuting stuff before changing these. MUTE_IC_AUTO etc = (MUTE_IC << 1)
