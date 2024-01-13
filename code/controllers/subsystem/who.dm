@@ -34,7 +34,7 @@ SUBSYSTEM_DEF(who)
 	)
 	new_list_data["additional_info"] = list()
 
-	for(var/client/client in GLOB.clients)
+	for(var/client/client in sort_list(GLOB.clients))
 		new_list_data["all_clients"]++
 		var/list/client_payload = list()
 		client_payload["ckey"] = "[client.key]"
