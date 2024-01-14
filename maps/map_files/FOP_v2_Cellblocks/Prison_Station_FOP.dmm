@@ -51902,7 +51902,6 @@
 	dir = 4;
 	tag = "icon-landingstripe (EAST)"
 	},
-/obj/effect/landmark/rocket_launcher_camera_pos,
 /turf/open/floor/plating,
 /area/prison/hanger/main)
 "sMm" = (
@@ -52204,7 +52203,6 @@
 	},
 /area/prison/residential/south)
 "tAI" = (
-/obj/effect/landmark/rocket_launcher_camera_pos,
 /turf/open/floor/plating,
 /area/prison/hanger/main)
 "tCH" = (

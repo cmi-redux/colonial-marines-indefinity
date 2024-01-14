@@ -3,9 +3,9 @@
 	var/esteminated_power = 0
 	var/weight = 0
 	var/average_fires = 0
-	var/list/round_start_pop = new(3)
-	var/list/average_pop = new(3)
-	var/list/last_pop = new(3)
+	var/list/round_start_pop = list(0, 0, 0)
+	var/list/average_pop = list(0, 0, 0)
+	var/list/last_pop = list(0, 0, 0)
 
 /datum/autobalance_row_faction_info/New(datum/faction/faction_to_set)
 	..()
@@ -15,7 +15,7 @@
 	var/new_esteminated_power = 0
 	var/new_weight = 0
 	average_fires++
-	last_pop = new(3)
+	last_pop = list(0, 0, 0)
 	for(var/potantial_row in SSautobalancer.balance_rows)
 		var/datum/autobalance_row_info/balance_row = SSautobalancer.balance_rows[potantial_row]
 		if(balance_row.faction_to_set() == faction && balance_row.player_entity.player.owning_client?.mob)

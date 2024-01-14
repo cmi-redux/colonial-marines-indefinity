@@ -14928,7 +14928,6 @@
 /turf/open/floor,
 /area/bigredv2/outside/building/engineering)
 "aMC" = (
-/obj/effect/landmark/rocket_launcher_camera_pos,
 /turf/open/floor/plating,
 /area/bigredv2/outside/building/space_port)
 "aME" = (
@@ -34669,7 +34668,6 @@
 	dir = 8;
 	tag = "icon-landingstripe (WEST)"
 	},
-/obj/effect/landmark/rocket_launcher_camera_pos,
 /turf/open/floor{
 	dir = 8;
 	icon_state = "asteroidwarning";

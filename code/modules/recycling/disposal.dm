@@ -676,6 +676,8 @@
 
 		H.forceMove(P)
 	else //If wasn't a pipe, then set loc to turf
+		if(!T)
+			T = get_turf(src)
 		H.forceMove(T)
 		return null
 	return P

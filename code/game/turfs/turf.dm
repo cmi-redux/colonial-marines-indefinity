@@ -684,7 +684,7 @@
 		return
 
 	var/spread = round(sqrt(size)*1.5)
-	var/list/turfs = list()
+	var/list/turfs = list(below_turf)
 	for(var/turf/open/floor/F in range(below_turf, spread))
 		turfs += F
 
@@ -735,7 +735,7 @@
 			return "The ceiling above is made of thick resin. Nothing is getting through that."
 
 	var/turf/ceiling = get_step_multiz(src, UP)
-	if(istype(ceiling, /turf/open/openspace) || istype(ceiling, /turf/open/space/openspace))
+	if(!ceiling || istype(ceiling, /turf/open/openspace) || istype(ceiling, /turf/open/space/openspace))
 		return "It is in the open."
 	else if(istransparentturf(ceiling))
 		return "The ceiling above is glass. That's not going to stop anything."

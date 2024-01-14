@@ -78,9 +78,10 @@
 
 	if(!range_bounds)
 		set_range()
+
 	targets = SSquadtree.players_in_range(range_bounds, z, QTREE_SCAN_MOBS | QTREE_EXCLUDE_OBSERVER)
 	for(var/atom/atom in GLOB.special_turrets_targets)
-		if(atom in range(sentry_range, src))
+		if(get_dist(src, atom) <= sentry_range)
 			other_targets += atom
 
 	if(!targets && !other_targets)
@@ -397,7 +398,7 @@
 	var/image_layer = layer + 0.1
 	var/offset = 13
 
-	var/image/flash = image('icons/obj/items/weapons/projectiles.dmi',src,"muzzle_flash",image_layer)
+	var/image/flash = image('icons/obj/items/weapons/projectiles.dmi', src, "muzzle_flash", image_layer)
 	var/matrix/rotate = matrix() //Change the flash angle.
 	rotate.Translate(0, offset)
 	rotate.Turn(angle)

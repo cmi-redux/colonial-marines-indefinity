@@ -5,6 +5,8 @@
 		computer_id = client.computer_id
 
 /mob/Login()
+	set waitfor = FALSE
+
 	if(!client)
 		return
 

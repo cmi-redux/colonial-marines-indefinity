@@ -315,7 +315,7 @@
 
 				var/turf/signal_loc = get_turf(LT.signal_loc)
 				var/turf/roof = signal_loc.get_real_roof()
-				var/turf/target_turf = roof.air_strike(10, signal_loc, TRUE)
+				var/turf/target_turf = roof.air_strike(14, signal_loc, TRUE)
 				if(!target_turf)
 					to_chat(usr, SPAN_WARNING("INVALID TARGET: target must be visible from high altitude."))
 					return

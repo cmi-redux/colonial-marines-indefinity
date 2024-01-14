@@ -166,7 +166,7 @@
 
 //this one is delivered via ASRS as a reward for DEFCON/techwebs/whatever else we will have
 /obj/item/spec_kit/asrs
-	allowed_roles_list = JOB_SQUAD_NORMAL_LIST
+	allowed_roles_list = null
 
 /obj/item/spec_kit/cryo
 	squad_assignment_update = FALSE
@@ -202,15 +202,16 @@
 	return
 
 /obj/item/spec_kit/proc/can_use(mob/living/carbon/human/user)
+	if(!skillcheckexplicit(user, SKILL_SPEC_WEAPONS, SKILL_SPEC_TRAINED) && !skillcheckexplicit(user, SKILL_SPEC_WEAPONS, SKILL_SPEC_ALL))
+		to_chat(user, SPAN_WARNING("You already have specialization, give this kit to someone else!"))
+		return FALSE
+
 	if(!length(allowed_roles_list))
 		return TRUE
 
-	for(var/allowed_role in allowed_roles_list)
-		if(user.job == allowed_role)
-			if(!skillcheckexplicit(user, SKILL_SPEC_WEAPONS, SKILL_SPEC_TRAINED) && !skillcheckexplicit(user, SKILL_SPEC_WEAPONS, SKILL_SPEC_ALL))
-				to_chat(user, SPAN_WARNING("You already have specialization, give this kit to someone else!"))
-				return FALSE
-			return TRUE
+	if(user.job in allowed_roles_list)
+		return TRUE
+	return FALSE
 
 /obj/item/spec_kit/proc/select_and_spawn(mob/living/carbon/human/user)
 	var/selection = tgui_input_list(user, "Pick your specialist equipment type.", "Specialist Kit Selection", available_specialist_kit_boxes)

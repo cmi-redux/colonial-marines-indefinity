@@ -338,7 +338,7 @@
 	announcement_message = "Наборы специалистов были загружены в карго лифт."
 
 	accessing_type = DEFCON_ASSET_DELIVERY|DEFCON_ASSET_DELIVERY_CARGO
-	reward_name = "Weapons Specialist Kits"
+	reward_name = "UPP Weapons Specialist Kits"
 
 
 

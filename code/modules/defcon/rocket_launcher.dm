@@ -19,16 +19,6 @@ GLOBAL_DATUM(rocket_launcher_eye_location, /datum/coords)
 
 	return INITIALIZE_HINT_QDEL
 
-/obj/effect/landmark/rocket_launcher_camera_pos
-	name = "Rocket launcher camera position landmark"
-
-/obj/effect/landmark/rocket_launcher_camera_pos/Initialize(mapload, ...)
-	. = ..()
-
-	GLOB.rocket_launcher_eye_location = new(loc)
-
-	return INITIALIZE_HINT_QDEL
-
 /obj/structure/machinery/computer/rocket_launcher
 	name = "rocket launcher computer"
 
@@ -52,10 +42,7 @@ GLOBAL_DATUM(rocket_launcher_eye_location, /datum/coords)
 /obj/structure/machinery/computer/rocket_launcher/Initialize()
 	. = ..()
 	if(!GLOB.rocket_launcher_eye_location)
-		stack_trace("Rocket Launcher eye location is not initialised! There is no landmark for it on [SSmapping.configs[GROUND_MAP].map_name]")
-		return INITIALIZE_HINT_QDEL
-
-	target_z = GLOB.rocket_launcher_eye_location.z_pos
+		GLOB.rocket_launcher_eye_location = new(get_turf(SSticker.mode.active_lz))
 
 /obj/structure/machinery/computer/rocket_launcher/attackby(obj/I as obj, mob/user as mob)  //Can't break or disassemble.
 	return
@@ -76,6 +63,7 @@ GLOBAL_DATUM(rocket_launcher_eye_location, /datum/coords)
 	if(!last_location)
 		if(GLOB.rocket_launcher_eye_location)
 			last_location = GLOB.rocket_launcher_eye_location.get_turf_from_coord()
+			target_z = GLOB.rocket_launcher_eye_location.z_pos
 		else
 			last_location = locate(1, 1, target_z)
 
@@ -238,7 +226,7 @@ GLOBAL_DATUM(rocket_launcher_eye_location, /datum/coords)
 	SIGNAL_HANDLER
 
 	var/turf/roof = to_enter.get_real_roof()
-	if(!roof.air_strike(5, to_enter, TRUE))
+	if(!roof.air_strike(14, to_enter, TRUE))
 		to_chat(linked_mob, SPAN_WARNING("[icon2html(src)] This area is too reinforced to enter."))
 		return COMPONENT_TURF_DENY_MOVEMENT
 

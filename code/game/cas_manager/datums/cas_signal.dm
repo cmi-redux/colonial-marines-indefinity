@@ -30,7 +30,7 @@
 /datum/cas_signal/proc/obstructed_signal()
 	var/turf/laser_turf = get_turf(signal_loc)
 	var/turf/roof = laser_turf.get_real_roof()
-	return roof.air_strike(10, laser_turf, TRUE)
+	return roof.air_strike(14, laser_turf, TRUE)
 
 /proc/z_descend(loc)
 	var/sloc = loc

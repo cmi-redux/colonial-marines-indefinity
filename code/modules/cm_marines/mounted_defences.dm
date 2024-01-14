@@ -364,7 +364,7 @@
 		to_chat(usr, SPAN_WARNING("Это оружие не имеет режима стрельбы очередями!"))
 		return
 
-	if(MD.gun_firemode & GUN_FIREMODE_BURSTFIRE)//can't toggle mid burst
+	if(MD.flags_gun_features & GUN_BURST_FIRING)//can't toggle mid burst
 		return
 
 	playsound(usr, 'sound/weapons/handling/gun_burst_toggle.ogg', 15, 1)

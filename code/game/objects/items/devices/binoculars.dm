@@ -303,7 +303,7 @@
 	if(!istype(target_turf))
 		return
 	var/turf/roof = target_turf.get_real_roof()
-	if(!roof.air_strike(10, target_turf, TRUE) && !range_mode)
+	if(!roof.air_strike(14, target_turf, TRUE) && !range_mode)
 		to_chat(user, SPAN_WARNING("НЕПРАВИЛЬНАЯ ЦЕЛЬ: цель должна быть видна с большой дистанции."))
 		return
 	if(user.action_busy)
