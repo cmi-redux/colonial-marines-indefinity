@@ -717,11 +717,11 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 	if(!(flags_gun_features & (GUN_INTERNAL_MAG|GUN_UNUSUAL_DESIGN))) //Internal mags and unusual guns have their own stuff set.
 		if(current_mag && current_mag.ammo_position > 0)
 			if(flags_gun_features & GUN_AMMO_COUNTER)
-				. += "Счетчик патронов показывает [current_mag.ammo_position] патронов осталось.<br>"
+				. += "Счетчик патронов показывает что осталось [current_mag.ammo_position] патронов.<br>"
 			else
-				. += "Заряжено[in_chamber?" and has a round chambered":""].<br>"
+				. += "Заряжено[in_chamber?" и имеет патрон в патроннике":""].<br>"
 		else
-			. += "Разряжено[in_chamber?" but has a round chambered":""].<br>"
+			. += "Разряжено[in_chamber?", но имеет патрон в патроннике":""].<br>"
 	if(!(flags_gun_features & GUN_UNUSUAL_DESIGN))
 		. += "[icon2html(src)] <a href='?src=\ref[src];list_stats=1'>\[[user.client.auto_lang(LANGUAGE_LOBBY_STATISTIC)]]</a><br>"
 

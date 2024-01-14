@@ -216,7 +216,10 @@
 	new /obj/item/stack/medical/ointment(src)
 	new /obj/item/stack/medical/bruise_pack(src)
 
-/obj/item/storage/pouch/firstaid/full/pills/fill_preset_inventory()
+/obj/item/storage/pouch/firstaid/pills
+	desc = "Contains a packets of x4 bicardine, x4 kelotane, x8 tramadol pills."
+
+/obj/item/storage/pouch/firstaid/pills/full/fill_preset_inventory()
 	new /obj/item/storage/pill_bottle/packet/bicaridine(src)
 	new /obj/item/storage/pill_bottle/packet/kelotane(src)
 	new /obj/item/storage/pill_bottle/packet/tramadol(src)

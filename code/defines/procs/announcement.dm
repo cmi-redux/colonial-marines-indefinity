@@ -1,36 +1,26 @@
 //xenomorph hive announcement
 /proc/xeno_announcement(message, datum/faction/faction_to_display = GLOB.faction_datum[FACTION_XENOMORPH_NORMAL], title = QUEEN_ANNOUNCE)
-	var/list/targets = GLOB.dead_mob_list
+	var/list/targets = GLOB.dead_mob_list.Copy()
 	if(faction_to_display == "Everyone")
 		for(var/faction_to_get in FACTION_LIST_XENOMORPH)
 			var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
 			for(var/mob/mob as anything in faction.totalMobs)
+				if(mob.stat != CONSCIOUS)
+					continue
 				targets.Add(mob)
-
-		announcement_helper(message, title, targets, sound(get_sfx("queen"),wait = 0,volume = 50))
 	else
 		for(var/mob/mob as anything in faction_to_display.totalMobs)
+			if(mob.stat != CONSCIOUS)
+				continue
 			targets.Add(mob)
 
-		announcement_helper(message, title, targets, sound(get_sfx("queen"),wait = 0,volume = 50))
+	announcement_helper(message, title, targets, sound(get_sfx("queen"), wait = 0, volume = 50))
 
 
 //general faction announcement
 /proc/faction_announcement(message, title = COMMAND_ANNOUNCE, sound_to_play = sound('sound/misc/notice2.ogg'), datum/faction/faction_to_display = GLOB.faction_datum[FACTION_MARINE], signature, logging = ARES_LOG_MAIN)
-	var/list/targets = GLOB.human_mob_list + GLOB.dead_mob_list
+	var/list/targets = GLOB.dead_mob_list.Copy()
 	if(faction_to_display == GLOB.faction_datum[FACTION_MARINE])
-		for(var/mob/M in targets)
-			if(isobserver(M)) //observers see everything
-				continue
-			var/mob/living/carbon/human/H = M
-			if(!istype(H) || H.stat != CONSCIOUS || isyautja(H)) //base human checks
-				targets.Remove(H)
-				continue
-			if(is_mainship_level(H.z)) // People on ship see everything
-				continue
-			if(H.faction != faction_to_display)
-				targets.Remove(H)
-
 		var/datum/ares_link/link = GLOB.ares_link
 		if(ares_can_log())
 			switch(logging)
@@ -39,45 +29,28 @@
 				if(ARES_LOG_SECURITY)
 					link.log_ares_security(title, message)
 
-	else if(faction_to_display == "Everyone (-Yautja)")
-		for(var/mob/M in targets)
-			if(isobserver(M)) //observers see everything
-				continue
-			var/mob/living/carbon/human/H = M
-			if(!istype(H) || H.stat != CONSCIOUS || isyautja(H))
-				targets.Remove(H)
+	if(faction_to_display == "Everyone (-Yautja)")
+		for(var/faction_to_get in FACTION_LIST_HUMANOID - FACTION_YAUTJA)
+			var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
+			for(var/mob/mob as anything in faction.totalMobs)
+				if(mob.stat != CONSCIOUS)
+					continue
+				targets.Add(mob)
 
 	else
-		for(var/mob/M in targets)
-			if(isobserver(M)) //observers see everything
+		for(var/mob/mob as anything in faction_to_display.totalMobs)
+			if(mob.stat != CONSCIOUS)
 				continue
-			var/mob/living/carbon/human/H = M
-			if(!istype(H) || H.stat != CONSCIOUS || isyautja(H))
-				targets.Remove(H)
-				continue
-			if(H.faction != faction_to_display)
-				targets.Remove(H)
+			targets.Add(mob)
 
 	if(!isnull(signature))
 		message += "<br><br><i> Signed by, <br> [signature]</i>"
 
 	announcement_helper(message, title, targets, sound_to_play)
 
-//yautja ship AI announcement
-/proc/yautja_announcement(message, title = YAUTJA_ANNOUNCE, sound_to_play = sound('sound/misc/notice1.ogg'))
-	var/list/targets = GLOB.human_mob_list + GLOB.dead_mob_list
-	for(var/mob/M in targets)
-		if(isobserver(M)) //observers see everything
-			continue
-		var/mob/living/carbon/human/H = M
-		if(!isyautja(H) || H.stat != CONSCIOUS)
-			targets.Remove(H)
-
-	announcement_helper(message, title, targets, sound_to_play)
-
 //AI announcement that uses talking into comms
 /proc/ai_announcement(message, sound_to_play = sound('sound/misc/interference.ogg'), logging = ARES_LOG_MAIN)
-	for(var/mob/M in (GLOB.human_mob_list + GLOB.dead_mob_list))
+	for(var/mob/M as anything in (GLOB.human_mob_list + GLOB.dead_mob_list))
 		if(isobserver(M) || ishuman(M) && is_mainship_level(M.z))
 			playsound_client(M.client, sound_to_play, M, vol = 45)
 

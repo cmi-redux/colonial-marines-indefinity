@@ -336,7 +336,7 @@ var/bomb_set = FALSE
 		announcement_helper("WARNING.\n\nDETONATION IN [round(timeleft/10)] SECONDS.", "HQ Intel Division", humans_other, 'sound/misc/notice1.ogg')
 		//preds part
 		var/t_left = duration2text_sec(round(rand(timeleft - timeleft / 10, timeleft + timeleft / 10)))
-		yautja_announcement(SPAN_YAUTJABOLDBIG("WARNING!\n\nYou have approximately [t_left] seconds to abandon the hunting grounds before activation of human Purification Device."))
+		faction_announcement(SPAN_YAUTJABOLDBIG("WARNING!\n\nYou have approximately [t_left] seconds to abandon the hunting grounds before activation of human Purification Device."), YAUTJA_ANNOUNCE, sound('sound/misc/notice1.ogg'), GLOB.faction_datum[FACTION_YAUTJA])
 		//xenos part
 		var/warning
 		if(timer_warning & NUKE_SHOW_TIMER_HALF)
@@ -356,7 +356,7 @@ var/bomb_set = FALSE
 		announcement_helper("ALERT.\n\nNUCLEAR EXPLOSIVE ORDNANCE ACTIVATED.\n\nDETONATION IN [round(timeleft/10)] SECONDS.", "[MAIN_AI_SYSTEM] Nuclear Tracker", humans_uscm, 'sound/misc/notice1.ogg')
 		announcement_helper("ALERT.\n\nNUCLEAR EXPLOSIVE ORDNANCE ACTIVATED.\n\nDETONATION IN [round(timeleft/10)] SECONDS.", "HQ Nuclear Tracker", humans_other, 'sound/misc/notice1.ogg')
 		var/t_left = duration2text_sec(round(rand(timeleft - timeleft / 10, timeleft + timeleft / 10)))
-		yautja_announcement(SPAN_YAUTJABOLDBIG("WARNING!<br>A human Purification Device has been detected. You have approximately [t_left] to abandon the hunting grounds before it activates."))
+		faction_announcement(SPAN_YAUTJABOLDBIG("WARNING!<br>A human Purification Device has been detected. You have approximately [t_left] to abandon the hunting grounds before it activates."), YAUTJA_ANNOUNCE, sound('sound/misc/notice1.ogg'), GLOB.faction_datum[FACTION_YAUTJA])
 		for(var/faction_to_get in FACTION_LIST_XENOMORPH)
 			var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
 			if(!length(faction.totalMobs))
@@ -365,7 +365,7 @@ var/bomb_set = FALSE
 	else
 		announcement_helper("ALERT.\n\nNUCLEAR EXPLOSIVE ORDNANCE DEACTIVATED.", "[MAIN_AI_SYSTEM] Nuclear Tracker", humans_uscm, 'sound/misc/notice1.ogg')
 		announcement_helper("ALERT.\n\nNUCLEAR EXPLOSIVE ORDNANCE DEACTIVATED.", "HQ Intel Division", humans_other, 'sound/misc/notice1.ogg')
-		yautja_announcement(SPAN_YAUTJABOLDBIG("WARNING!<br>The human Purification Device's signature has disappeared."))
+		faction_announcement(SPAN_YAUTJABOLDBIG("WARNING!<br>The human Purification Device's signature has disappeared."), YAUTJA_ANNOUNCE, sound('sound/misc/notice1.ogg'), GLOB.faction_datum[FACTION_YAUTJA])
 		for(var/faction_to_get in FACTION_LIST_XENOMORPH)
 			var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
 			if(!length(faction.totalMobs))
@@ -575,7 +575,7 @@ var/bomb_set = FALSE
 			announcement_helper("DECRYPTION COMPLETE", "[MAIN_AI_SYSTEM] Nuclear Tracker", humans_uscm, 'sound/misc/notice1.ogg')
 			announcement_helper("DECRYPTION COMPLETE", "HQ Intel Division", humans_other, 'sound/misc/notice1.ogg')
 
-			yautja_announcement(SPAN_YAUTJABOLDBIG("WARNING!\n\nThe human Purification Device is able to be activated."))
+			faction_announcement(SPAN_YAUTJABOLDBIG("WARNING!\n\nThe human Purification Device is able to be activated."), YAUTJA_ANNOUNCE, sound('sound/misc/notice1.ogg'), GLOB.faction_datum[FACTION_YAUTJA])
 			for(var/faction_to_get in FACTION_LIST_XENOMORPH)
 				var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
 				if(!length(faction.totalMobs))
@@ -588,7 +588,7 @@ var/bomb_set = FALSE
 
 		//preds part
 		var/time_left = duration2text_sec(round(rand(decryption_time - decryption_time / 10, decryption_time + decryption_time / 10)))
-		yautja_announcement(SPAN_YAUTJABOLDBIG("WARNING!\n\nYou have approximately [time_left] seconds to abandon the hunting grounds before human Purification Device is able to be activated."))
+		faction_announcement(SPAN_YAUTJABOLDBIG("WARNING!\n\nYou have approximately [time_left] seconds to abandon the hunting grounds before human Purification Device is able to be activated."), YAUTJA_ANNOUNCE, sound('sound/misc/notice1.ogg'), GLOB.faction_datum[FACTION_YAUTJA])
 
 		//xenos part
 		var/warning = "Hive killer is almost prepared to be activated!"
@@ -606,7 +606,7 @@ var/bomb_set = FALSE
 		announcement_helper("ALERT.\n\nNUCLEAR EXPLOSIVE ORDNANCE DECRYPTION STARTED.\n\nDECRYPTION IN [round(decryption_time/10)] SECONDS.", "[MAIN_AI_SYSTEM] Nuclear Tracker", humans_uscm, 'sound/misc/notice1.ogg')
 		announcement_helper("ALERT.\n\nNUCLEAR EXPLOSIVE ORDNANCE DECRYPTION STARTED.\n\nDECRYPTION IN [round(decryption_time/10)] SECONDS.", "HQ Nuclear Tracker", humans_other, 'sound/misc/notice1.ogg')
 		var/time_left = duration2text_sec(round(rand(decryption_time - decryption_time / 10, decryption_time + decryption_time / 10)))
-		yautja_announcement(SPAN_YAUTJABOLDBIG("WARNING!<br>A human Purification Device has been detected. You have approximately [time_left] before it finishes its initial phase."))
+		faction_announcement(SPAN_YAUTJABOLDBIG("WARNING!<br>A human Purification Device has been detected. You have approximately [time_left] before it finishes its initial phase."), YAUTJA_ANNOUNCE, sound('sound/misc/notice1.ogg'), GLOB.faction_datum[FACTION_YAUTJA])
 		for(var/faction_to_get in FACTION_LIST_XENOMORPH)
 			var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
 			if(!length(faction.totalMobs))
@@ -616,7 +616,7 @@ var/bomb_set = FALSE
 
 	announcement_helper("ALERT.\n\nNUCLEAR EXPLOSIVE DECRYPTION HALTED.", "[MAIN_AI_SYSTEM] Nuclear Tracker", humans_uscm, 'sound/misc/notice1.ogg')
 	announcement_helper("ALERT.\n\nNUCLEAR EXPLOSIVE DECRYPTION HALTED.", "HQ Intel Division", humans_other, 'sound/misc/notice1.ogg')
-	yautja_announcement(SPAN_YAUTJABOLDBIG("WARNING!<br>The human Purification Device's signature has disappeared."))
+	faction_announcement(SPAN_YAUTJABOLDBIG("WARNING!<br>The human Purification Device's signature has disappeared."), YAUTJA_ANNOUNCE, sound('sound/misc/notice1.ogg'), GLOB.faction_datum[FACTION_YAUTJA])
 	for(var/faction_to_get in FACTION_LIST_XENOMORPH)
 		var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
 		if(!length(faction.totalMobs))

@@ -33,7 +33,7 @@ SUBSYSTEM_DEF(evacuation)
 
 /datum/controller/subsystem/evacuation/fire()
 	if(ship_evacuating)
-		if(SHIP_ESCAPE_ESTIMATE_DEPARTURE >= 0 && ship_operation_stage_status == OPERATION_LEAVING_OPERATION_PLACE)
+		if(SHIP_ESCAPE_ESTIMATE_DEPARTURE <= 0 && ship_operation_stage_status == OPERATION_LEAVING_OPERATION_PLACE)
 			SSticker.mode.round_finished = "Marine Minor Victory"
 			SSticker.mode.faction_won = GLOB.faction_datum[FACTION_MARINE]
 			ship_operation_stage_status = OPERATION_DEBRIEFING

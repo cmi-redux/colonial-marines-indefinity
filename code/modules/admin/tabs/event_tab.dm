@@ -216,8 +216,8 @@
 		return
 
 	var/is_announcing = TRUE
-	var/selected = alert(src, "Would you like to announce the distress beacon to the server population? This will reveal the distress beacon to all players.", usr.client.auto_lang(LANGUAGE_DISTRESS_ANNOUNCE), usr.client.auto_lang(LANGUAGE_YES))
-	if(!selected)
+	var/selected = alert(src, "Would you like to announce the distress beacon to the server population? This will reveal the distress beacon to all players.", usr.client.auto_lang(LANGUAGE_DISTRESS_ANNOUNCE), list(usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO), usr.client.auto_lang(LANGUAGE_CANCEL)))
+	if(!selected || selected == usr.client.auto_lang(LANGUAGE_CANCEL))
 		qdel(chosen_ert)
 		return
 	else if(selected == usr.client.auto_lang(LANGUAGE_NO))
@@ -226,8 +226,8 @@
 		is_announcing = TRUE
 
 	var/turf/override_spawn_loc
-	var/prompt = alert(usr, "Spawn at their assigned spawnpoints, or at your location?", usr.client.auto_lang(LANGUAGE_DISTRESS_SPAWNPOINT), usr.client.auto_lang(LANGUAGE_DISTRESS_LOC_CURRENT), usr.client.auto_lang(LANGUAGE_DISTRESS_LOC_ASSIGNED))
-	if(!prompt)
+	var/prompt = alert(usr, "Spawn at their assigned spawnpoints, or at your location?", usr.client.auto_lang(LANGUAGE_DISTRESS_SPAWNPOINT), usr.client.auto_lang(LANGUAGE_DISTRESS_LOC_CURRENT), usr.client.auto_lang(LANGUAGE_DISTRESS_LOC_ASSIGNED), usr.client.auto_lang(LANGUAGE_CANCEL))
+	if(!prompt || prompt == usr.client.auto_lang(LANGUAGE_CANCEL))
 		qdel(chosen_ert)
 		return
 	else if(prompt == usr.client.auto_lang(LANGUAGE_DISTRESS_LOC_CURRENT))
@@ -627,7 +627,7 @@
 	var/input = input(usr, "This is a message from the predator ship's AI. Check with online staff before you send this.", "What?", "") as message|null
 	if(!input)
 		return FALSE
-	yautja_announcement(SPAN_YAUTJABOLDBIG(input))
+	faction_announcement(SPAN_YAUTJABOLDBIG(input), YAUTJA_ANNOUNCE, sound('sound/misc/notice1.ogg'), GLOB.faction_datum[FACTION_YAUTJA])
 	message_admins("[key_name_admin(src)] has created a predator ship AI report")
 	log_admin("[key_name_admin(src)] predator ship AI report: [input]")
 

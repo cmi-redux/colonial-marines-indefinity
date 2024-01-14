@@ -33,8 +33,8 @@ SUBSYSTEM_DEF(who)
 		"uscm_marines" = 0,
 	)
 	new_list_data["additional_info"] = list()
-
-	for(var/client/client in sort_list(GLOB.clients))
+	for(var/client/client in sortTim(GLOB.clients, GLOBAL_PROC_REF(cmp_ckey_asc)))
+		CHECK_TICK
 		new_list_data["all_clients"]++
 		var/list/client_payload = list()
 		client_payload["ckey"] = "[client.key]"
@@ -164,6 +164,7 @@ SUBSYSTEM_DEF(who)
 			"color" = faction.color,
 			"text" = "[faction.desc]",
 		))
+
 	for(var/faction_to_get in FACTION_LIST_XENOMORPH)
 		var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
 		if(!length(faction.totalMobs))
