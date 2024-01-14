@@ -54,9 +54,8 @@
 				real_stat.delete()
 				real_stat = clone
 
-		var/datum/entity/statistic/statistic = statistics[1]
-		statistic.value += value
-		statistic.save()
+		real_stat.value += value
+		real_stat.save()
 
 /////////////////////////////////////////////////////////////////////////////////////
 //Statistic groups
