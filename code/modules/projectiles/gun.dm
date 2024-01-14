@@ -1358,7 +1358,7 @@ and you're good to go.
 	var/turf/targloc = get_turf(target)
 	var/atom/original_target = target //This is for burst mode, in case the target changes per scatter chance in between fired bullets.
 
-	if(loc != user && !(flags_mounted_gun_features & GUN_MOUNTING) || (flags_gun_features & GUN_WIELDED_FIRING_ONLY && !(flags_item & WIELDED)))
+	if((loc != user || (flags_gun_features & GUN_WIELDED_FIRING_ONLY && !(flags_item & WIELDED))) && !(flags_mounted_gun_features & GUN_MOUNTED))
 		return TRUE
 
 	//The gun should return the bullet that it already loaded from the end cycle of the last Fire().
