@@ -284,6 +284,10 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	//CONNECT//
 	///////////
 /client/New(TopicData)
+	set waitfor = FALSE
+
+	testing("[client.ckey] started login in at [time2text(world.realtime, "hh:mm:ss")] ([world.time])")
+
 	soundOutput = new /datum/soundOutput(src)
 	TopicData = null //Prevent calls to client.Topic from connect
 
@@ -421,6 +425,8 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	view = world_view_size
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CLIENT_LOGIN, src)
+
+	testing("[client.ckey] ended login in at [time2text(world.realtime, "hh:mm:ss")] ([world.time])")
 
 	//////////////
 	//DISCONNECT//
