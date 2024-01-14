@@ -45,11 +45,14 @@
 		statistic.player_id = player_id
 		statistic.save()
 	else
-		if(statistics.len > 1)
-			while(statistics.len > 1)
-				var/datum/entity/statistic/statistic = statistics[statistics.len]
-				statistics.len--
-				statistic.delete()
+		var/datum/entity/statistic/real_stat = statistics[statistics.len]
+		statistics.len--
+		for(var/datum/entity/statistic/clone as anything in statistics)
+			if(clone.value < real_stat.value)
+				clone.delete()
+			else
+				real_stat.delete()
+				real_stat = clone
 
 		var/datum/entity/statistic/statistic = statistics[1]
 		statistic.value += value

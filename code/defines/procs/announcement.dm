@@ -4,7 +4,7 @@
 	if(faction_to_display == "Everyone")
 		for(var/faction_to_get in FACTION_LIST_XENOMORPH)
 			var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
-			for(var/mob/mob as anything in faction_to_display.totalMobs)
+			for(var/mob/mob as anything in faction.totalMobs)
 				targets.Add(mob)
 
 		announcement_helper(message, title, targets, sound(get_sfx("queen"),wait = 0,volume = 50))
