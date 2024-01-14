@@ -188,8 +188,8 @@
 	var/list/xeno_keys
 	var/list/xeno_info
 	var/faction_location
-	var/pooled_larva
-	var/evilution_level
+	var/burrowed_larva
+	var/evolution_level
 
 	var/data_initialized = FALSE
 
@@ -269,11 +269,11 @@
 
 // Updates how many buried larva there are
 /datum/hive_status_ui/proc/update_burrowed_larva(send_update = TRUE)
-	pooled_larva = assoc_hive.stored_larva
+	burrowed_larva = assoc_hive.stored_larva
 	if(SSxevolution)
-		evilution_level = SSxevolution.get_evolution_boost_power(assoc_hive)
+		evolution_level = SSxevolution.get_evolution_boost_power(assoc_hive)
 	else
-		evilution_level = 1
+		evolution_level = 1
 
 	if(send_update)
 		SStgui.update_uis(src)
@@ -313,8 +313,8 @@
 	.["xeno_vitals"] = xeno_vitals
 	.["queen_location"] = get_area_name(assoc_hive.living_xeno_queen)
 	.["faction_location"] = faction_location
-	.["pooled_larva"] = pooled_larva
-	.["evilution_level"] = evilution_level
+	.["burrowed_larva"] = burrowed_larva
+	.["evolution_level"] = evolution_level
 
 	var/mob/living/carbon/xenomorph/queen/Q = user
 	.["is_in_ovi"] = istype(Q) && Q.ovipositor

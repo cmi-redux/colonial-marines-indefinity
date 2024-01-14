@@ -112,7 +112,7 @@ const GeneralInformation = (props, context) => {
     faction_location,
     total_xenos,
     burrowed_larva,
-    evilution_level,
+    evolution_level,
   } = data;
 
   return (
@@ -134,7 +134,7 @@ const GeneralInformation = (props, context) => {
         <i>Burrowed larvae: {burrowed_larva}</i>
       </Flex.Item>
       <Flex.Item>
-        <i>Evilution: {evilution_level}</i>
+        <i>Evolution: {evolution_level}</i>
       </Flex.Item>
     </Flex>
   );

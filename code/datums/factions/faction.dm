@@ -809,10 +809,10 @@
 	return TRUE
 
 /datum/faction/proc/free_respawn(client/xeno_client)
-	stored_larva++
 	if(!faction_location || !faction_location.spawn_burrowed_larva(xeno_client.mob))
 		stored_larva--
 	else
+		stored_larva++
 		faction_ui.update_burrowed_larva()
 
 /datum/faction/proc/respawn_on_turf(client/xeno_client, turf/spawning_turf)

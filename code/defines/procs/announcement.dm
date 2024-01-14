@@ -2,14 +2,15 @@
 /proc/xeno_announcement(message, datum/faction/faction_to_display = GLOB.faction_datum[FACTION_XENOMORPH_NORMAL], title = QUEEN_ANNOUNCE)
 	var/list/targets = GLOB.dead_mob_list
 	if(faction_to_display == "Everyone")
-		for(var/mob/living/carbon/xenomorph/X in GLOB.living_xeno_list)
-			if(istype(X))	//filter out any potential non-xenomorphs/observers mobs
-				targets.Add(X)
+		for(var/faction_to_get in FACTION_LIST_XENOMORPH)
+			var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
+			for(var/mob/mob as anything in faction_to_display.totalMobs)
+				targets.Add(mob)
 
 		announcement_helper(message, title, targets, sound(get_sfx("queen"),wait = 0,volume = 50))
 	else
-		for(var/mob/living/carbon/xenomorph/X in faction_to_display.totalMobs)
-			targets.Add(X)
+		for(var/mob/mob as anything in faction_to_display.totalMobs)
+			targets.Add(mob)
 
 		announcement_helper(message, title, targets, sound(get_sfx("queen"),wait = 0,volume = 50))
 

@@ -129,10 +129,12 @@
 	if(proj.ammo.damage_type == HALLOSS || proj.damage <= 0 || ammo_flags == AMMO_ENERGY)
 		return FALSE
 
+	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
+		return FALSE
+	bullet_ping(proj)
+
 	if(!not_damageable) //Impossible to destroy
 		health -= proj.damage
-
-	. = ..()
 
 	if(health > 0)
 		healthcheck(FALSE, TRUE, TRUE, proj.firer, proj)
@@ -573,7 +575,6 @@
 	else
 		qdel(src)
 	return
-
 
 /obj/structure/window/framed/deconstruct(disassembled = TRUE)
 	if(window_frame)

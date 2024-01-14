@@ -60,6 +60,12 @@
 
 	return ..()
 
+/obj/structure/platform/bullet_act(obj/item/projectile/proj)
+	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
+		return FALSE
+	bullet_ping(proj)
+	return FALSE
+
 /obj/structure/platform/ex_act()
 	return
 
@@ -109,6 +115,12 @@
 	..()
 	if(PF)
 		PF.flags_can_pass_all = PASS_OVER
+
+/obj/structure/platform_decoration/bullet_act(obj/item/projectile/proj)
+	if(SEND_SIGNAL(proj, COMSIG_ATOM_BULLET_ACT, src) & COMPONENT_BULLET_ACT_OVERRIDE)
+		return FALSE
+	bullet_ping(proj)
+	return FALSE
 
 /obj/structure/platform_decoration/ex_act()
 	return
@@ -177,6 +189,7 @@
 
 /obj/structure/platform/mineral
 	icon_state = "stone"
+
 /obj/structure/platform_decoration/mineral
 	icon_state = "stone_deco"
 

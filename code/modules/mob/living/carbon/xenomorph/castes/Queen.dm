@@ -522,7 +522,6 @@
 	. = ..()
 
 	var/xeno_leader_num = faction?.queen_leader_limit - faction?.open_xeno_leader_positions.len
-	. += "Pooled Larvae: [faction.stored_larva]"
 	. += "Leaders: [xeno_leader_num] / [faction?.queen_leader_limit]"
 	if(queen_age_timer_id != TIMER_ID_NULL && timeleft(queen_age_timer_id))
 		var/time_left = time2text(timeleft(queen_age_timer_id), "mm")
@@ -573,12 +572,15 @@
 	set category = "Alien"
 	set name = "Word of the Queen (50)"
 	set desc = "Send a message to all aliens in the hive that is big and visible"
+
 	if(client.prefs.muted & MUTE_IC)
 		to_chat(src, SPAN_DANGER("You cannot send Announcements (muted)."))
 		return
+
 	if(health <= 0)
 		to_chat(src, SPAN_WARNING("You can't do that while unconcious."))
 		return FALSE
+
 	if(!check_plasma(50))
 		return FALSE
 

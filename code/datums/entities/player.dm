@@ -432,7 +432,7 @@
 		loading_player = get_player_from_key(ckey)
 		if(loading_player)
 			load_player_data_info(loading_player)
-		stoplag()
+		CHECK_TICK
 
 /client/proc/load_player_data_info(datum/entity/player/player)
 	if(ckey != player.ckey)

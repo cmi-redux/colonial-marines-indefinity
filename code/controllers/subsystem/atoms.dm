@@ -64,8 +64,8 @@ SUBSYSTEM_DEF(atoms)
 		//I hate that we need this
 		if(QDELETED(A))
 			continue
-		A.LateInitialize()
 		CHECK_TICK
+		A.LateInitialize()
 
 	#ifdef TESTING
 	testing("Late initialized [late_loaders.len] atoms")
@@ -97,11 +97,11 @@ SUBSYSTEM_DEF(atoms)
 
 		for(var/atom/A as anything in world)
 			if(!(A.flags_atom & INITIALIZED))
+				CHECK_TICK
 				InitAtom(A, FALSE, mapload_arg)
 				#ifdef TESTING
 				++count
 				#endif
-				CHECK_TICK
 
 	#ifdef TESTING
 	testing("Initialized [count] atoms")
@@ -164,6 +164,7 @@ SUBSYSTEM_DEF(atoms)
 
 /datum/controller/subsystem/atoms/proc/lateinit_roundstart_atoms()
 	for(var/atom/A as anything in roundstart_loaders)
+		CHECK_TICK
 		A.LateInitialize()
 	roundstart_loaders.Cut()
 
@@ -174,9 +175,11 @@ SUBSYSTEM_DEF(atoms)
 	if(atoms)
 		for(var/atom/movable/A in atoms)
 			A.loc = A.loc
+			CHECK_TICK
 	else
 		for(var/atom/movable/A in world)
 			A.loc = A.loc
+			CHECK_TICK
 
 /datum/controller/subsystem/atoms/proc/map_loader_begin()
 	set_tracked_initalized(INITIALIZATION_INSSATOMS)

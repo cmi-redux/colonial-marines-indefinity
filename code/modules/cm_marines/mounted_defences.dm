@@ -288,6 +288,7 @@
 	operator = user
 	user.unfreeze()
 	MD.display_ammo(user)
+	MD.set_gun_user(user)
 
 /obj/structure/machinery/mounted_defence/on_unset_interaction(mob/living/user)
 	flags_atom &= ~RELAY_CLICK
@@ -308,7 +309,7 @@
 			animate(user.client, 8, pixel_x = 0, pixel_y = 0)
 	if(operator == user)
 		MD.un_display_ammo(user)
-		operator = null
+		MD.set_gun_user(null)
 
 /obj/structure/machinery/mounted_defence/check_eye(mob/user)
 	if(user.lying || get_dist(user,src) > 1 || user.is_mob_incapacitated() || !user.client || user.dir != dir)
@@ -342,45 +343,6 @@
 		. += "Оно должно быть <B>прикручено</b>.<br>"
 	else
 		. += "Ничего не установлено.<br>"
-
-/obj/structure/machinery/mounted_defence/handle_click(mob/living/user, atom/target, list/mods)
-	if(!operator)
-		return HANDLE_CLICK_UNHANDLED
-	if(operator != user)
-		return HANDLE_CLICK_UNHANDLED
-	if(istype(target,/atom/movable/screen))
-		return HANDLE_CLICK_UNHANDLED
-	if(user.lying || get_dist(user,src) > 1 || user.is_mob_incapacitated() || !user.client || user.dir != dir)
-		user.unset_interaction()
-		return HANDLE_CLICK_UNHANDLED
-	if(user.get_active_hand())
-		to_chat(usr, SPAN_WARNING("Вам нужна свободная рука, чтобы стрелять с [src]."))
-		return HANDLE_CLICK_UNHANDLED
-
-	if(!istype(target))
-		return HANDLE_CLICK_UNHANDLED
-
-	if(target.z != src.z || target.z == 0 || src.z == 0 || isnull(operator.loc) || isnull(src.loc))
-		return HANDLE_CLICK_UNHANDLED
-
-	if(get_dist(target,src.loc) > 15)
-		return HANDLE_CLICK_UNHANDLED
-
-	if(mods["middle"] || mods["shift"] || mods["alt"] || mods["ctrl"])
-		return HANDLE_CLICK_PASS_THRU
-
-	var/angle = get_dir(src, target)
-	//we can only fire in a 90 degree cone
-	if(target.loc != src.loc && target.loc != operator.loc)
-		if(dir & angle)
-			MD.afterattack(target,user,0,mods,operator)
-			MD.display_ammo(user)
-			if(!MD.ammo)
-				update_icon()
-			return HANDLE_CLICK_HANDLED
-		else if(handle_outside_cone(user))
-			return HANDLE_CLICK_HANDLED
-	return HANDLE_CLICK_UNHANDLED
 
 /obj/structure/machinery/mounted_defence/proc/handle_outside_cone(mob/living/carbon/human/user)
 	return FALSE

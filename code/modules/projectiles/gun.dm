@@ -1502,7 +1502,6 @@ and you're good to go.
 		active_attachable.fire_attachment(target, src, user)
 		return TRUE
 
-
 /obj/item/weapon/gun/attack(mob/living/attacked_mob, mob/living/user, dual_wield)
 	if(active_attachable && (active_attachable.flags_attach_features & ATTACH_MELEE)) //this is expected to do something in melee.
 		active_attachable.last_fired = world.time
@@ -2194,7 +2193,7 @@ not all weapons use normal magazines etc. load_into_chamber() itself is designed
 		return
 
 	if(!bypass_checks)
-		if(gun_user.hand && !isgun(gun_user.l_hand) || !gun_user.hand && !isgun(gun_user.r_hand)) // If the object in our active hand is not a gun, abort
+		if((gun_user.hand && !isgun(gun_user.l_hand) || !gun_user.hand && !isgun(gun_user.r_hand)) && !(flags_mounted_gun_features & GUN_MOUNTED)) // If the object in our active hand is not a gun, abort
 			return
 
 		if(gun_user.throw_mode)
