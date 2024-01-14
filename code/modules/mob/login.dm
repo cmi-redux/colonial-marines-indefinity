@@ -10,6 +10,8 @@
 	if(!client)
 		return
 
+	stack_trace("[client.ckey] started login in at [world.time]")
+
 	logging_ckey = client.ckey
 	persistent_ckey = client.ckey
 
@@ -67,3 +69,5 @@
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MOB_LOGIN, src)
 	SEND_SIGNAL(client, COMSIG_CLIENT_MOB_LOGIN, src)
 	SEND_SIGNAL(src, COMSIG_MOB_LOGIN)
+
+	stack_trace("[client.ckey] ended login in at [world.time]")
