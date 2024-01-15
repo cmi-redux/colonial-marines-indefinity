@@ -441,16 +441,16 @@
 	faction.late_join_landmarks[squad] -= src
 	return ..()
 
-/proc/get_latejoin_spawn(mob/living/carbon/human/human, assigned_squad = "other")
+/proc/get_latejoin_spawn(mob/living/carbon/human/human, datum/faction/faction_assigned_spawn, assigned_squad = "other")
 	var/turf/selected_turf
-	if(human && human.faction && assigned_squad)
-		if(length(human.faction.late_join_landmarks[assigned_squad]))
-			selected_turf = get_turf(pick(human.faction.late_join_landmarks[assigned_squad]))
+	if(human && faction_assigned_spawn && assigned_squad)
+		if(length(faction_assigned_spawn.late_join_landmarks[assigned_squad]))
+			selected_turf = get_turf(pick(faction_assigned_spawn.late_join_landmarks[assigned_squad]))
 		if(!selected_turf)
-			for(var/squad in human.faction.late_join_landmarks)
-				if(!length(human.faction.late_join_landmarks[assigned_squad]))
+			for(var/squad in faction_assigned_spawn.late_join_landmarks)
+				if(!length(faction_assigned_spawn.late_join_landmarks[assigned_squad]))
 					continue
-				selected_turf = get_turf(pick(human.faction.late_join_landmarks[assigned_squad]))
+				selected_turf = get_turf(pick(faction_assigned_spawn.late_join_landmarks[assigned_squad]))
 	return selected_turf
 
 //****************************************** DEFCON ASSETS ************************************************//

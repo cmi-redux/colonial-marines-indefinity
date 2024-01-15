@@ -982,7 +982,7 @@ Additional game mode variables.
 		return
 
 	var/mob/living/carbon/human/synthetic/new_joe = new()
-	new_joe.forceMove(get_latejoin_spawn(new_joe, JOB_WORKING_JOE))
+	new_joe.forceMove(get_latejoin_spawn(new_joe, new_joe.faction, JOB_WORKING_JOE))
 	joe_candidate.mind.transfer_to(new_joe, TRUE)
 	var/datum/job/joe_job = SSticker.role_authority.roles_by_name[JOB_WORKING_JOE]
 

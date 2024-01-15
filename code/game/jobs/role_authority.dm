@@ -521,7 +521,7 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 	if(isturf(late_join))
 		human.forceMove(late_join)
 	else if(late_join)
-		human.forceMove(get_latejoin_spawn(human, human.job != JOB_WORKING_JOE ? assigned_squad : human.job))
+		human.forceMove(job.get_latejoin_turf(human))
 	else
 		var/turf/join_turf
 		if(!late_join)
@@ -531,7 +531,7 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 				join_turf = get_turf(pick(GLOB.spawns_by_job[job.type]))
 
 		if(!join_turf)
-			join_turf = get_latejoin_spawn(human, human.job != JOB_WORKING_JOE ? assigned_squad : human.job)
+			join_turf = job.get_latejoin_turf(human)
 
 		human.forceMove(join_turf)
 

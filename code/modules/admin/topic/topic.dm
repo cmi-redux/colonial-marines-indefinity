@@ -1329,36 +1329,27 @@
 		msg_ghost += "Transmitting '[customname]' via secure connection ... "
 		msg_ghost += "<a href='?FaxView=\ref[fax_message]'>view message</a>"
 		announce_fax(msg_ghost = msg_ghost)
+		if(!(fax.inoperable()))
+			// animate! it's alive!
+			flick("faxreceive", fax)
+			// give the sprite some time to flick
+			spawn(20)
+				var/obj/item/paper/P = new /obj/item/paper(fax.loc)
+				P.name = "[organization_type] - [customname]"
+				P.info = fax_message.data
+				P.update_icon()
+				playsound(fax.loc, "sound/machines/fax.ogg", 15)
+				// Stamps
+				var/image/stampoverlay = image('icons/obj/items/paper.dmi')
+				stampoverlay.icon_state = "paper_stamp-uscm"
+				if(!P.stamped)
+					P.stamped = new
+				P.stamped += /obj/item/tool/stamp
+				P.overlays += stampoverlay
+				P.stamps += "<HR><i>This paper has been stamped by the Free Press Quantum Relay.</i>"
 
-		for(var/obj/structure/machinery/faxmachine/F in GLOB.machines)
-			if(F == fax)
-				if(!(F.inoperable()))
-
-					// animate! it's alive!
-					flick("faxreceive", F)
-
-					// give the sprite some time to flick
-					spawn(20)
-						var/obj/item/paper/P = new /obj/item/paper( F.loc )
-						P.name = "[organization_type] - [customname]"
-						P.info = fax_message.data
-						P.update_icon()
-
-						playsound(F.loc, "sound/machines/fax.ogg", 15)
-
-						// Stamps
-						var/image/stampoverlay = image('icons/obj/items/paper.dmi')
-						stampoverlay.icon_state = "paper_stamp-uscm"
-						if(!P.stamped)
-							P.stamped = new
-						P.stamped += /obj/item/tool/stamp
-						P.overlays += stampoverlay
-						P.stamps += "<HR><i>This paper has been stamped by the Free Press Quantum Relay.</i>"
-
-				to_chat(owner, "Message reply to transmitted successfully.")
-				message_admins(SPAN_STAFF_IC("[key_name_admin(owner)] replied to a fax message from [key_name_admin(H)]"), 1)
-				return
-		to_chat(owner, "/red Unable to locate fax!")
+		to_chat(owner, "Message reply to transmitted successfully.")
+		message_admins(SPAN_STAFF_IC("[key_name_admin(owner)] replied to a fax message from [key_name_admin(H)]"), 1)
 
 	else if(href_list["USCMFaxReply"])
 		var/mob/living/carbon/human/H = locate(href_list["USCMFaxReply"])
@@ -1412,36 +1403,27 @@
 		msg_ghost += "Transmitting '[customname]' via secure connection ... "
 		msg_ghost += "<a href='?FaxView=\ref[fax_message]'>view message</a>"
 		announce_fax(, msg_ghost)
+		if(!(fax.inoperable()))
+			// animate! it's alive!
+			flick("faxreceive", fax)
+			// give the sprite some time to flick
+			spawn(20)
+				var/obj/item/paper/P = new /obj/item/paper(fax.loc)
+				P.name = "USCM High Command - [customname]"
+				P.info = fax_message.data
+				P.update_icon()
+				playsound(fax.loc, "sound/machines/fax.ogg", 15)
+				// Stamps
+				var/image/stampoverlay = image('icons/obj/items/paper.dmi')
+				stampoverlay.icon_state = "paper_stamp-uscm"
+				if(!P.stamped)
+					P.stamped = new
+				P.stamped += /obj/item/tool/stamp
+				P.overlays += stampoverlay
+				P.stamps += "<HR><i>This paper has been stamped by the USCM High Command Quantum Relay.</i>"
 
-		for(var/obj/structure/machinery/faxmachine/F in GLOB.machines)
-			if(F == fax)
-				if(!(F.inoperable()))
-
-					// animate! it's alive!
-					flick("faxreceive", F)
-
-					// give the sprite some time to flick
-					spawn(20)
-						var/obj/item/paper/P = new /obj/item/paper(F.loc)
-						P.name = "USCM High Command - [customname]"
-						P.info = fax_message.data
-						P.update_icon()
-
-						playsound(F.loc, "sound/machines/fax.ogg", 15)
-
-						// Stamps
-						var/image/stampoverlay = image('icons/obj/items/paper.dmi')
-						stampoverlay.icon_state = "paper_stamp-uscm"
-						if(!P.stamped)
-							P.stamped = new
-						P.stamped += /obj/item/tool/stamp
-						P.overlays += stampoverlay
-						P.stamps += "<HR><i>This paper has been stamped by the USCM High Command Quantum Relay.</i>"
-
-				to_chat(owner, "Message reply to transmitted successfully.")
-				message_admins(SPAN_STAFF_IC("[key_name_admin(owner)] replied to a fax message from [key_name_admin(H)]"), 1)
-				return
-		to_chat(owner, "/red Unable to locate fax!")
+		to_chat(owner, "Message reply to transmitted successfully.")
+		message_admins(SPAN_STAFF_IC("[key_name_admin(owner)] replied to a fax message from [key_name_admin(H)]"), 1)
 
 	else if(href_list["CLFaxReply"])
 		var/mob/living/carbon/human/H = locate(href_list["CLFaxReply"])
@@ -1493,37 +1475,26 @@
 		msg_ghost += "Transmitting '[customname]' via secure connection ... "
 		msg_ghost += "<a href='?FaxView=\ref[fax_message]'>view message</a>"
 		announce_fax(, msg_ghost)
-
-
-		for(var/obj/structure/machinery/faxmachine/F in GLOB.machines)
-			if(F == fax)
-				if(!(F.inoperable()))
-
-					// animate! it's alive!
-					flick("faxreceive", F)
-
-					// give the sprite some time to flick
-					spawn(20)
-						var/obj/item/paper/P = new /obj/item/paper( F.loc )
-						P.name = "Weyland-Yutani - [customname]"
-						P.info = fax_message.data
-						P.update_icon()
-
-						playsound(F.loc, "sound/machines/fax.ogg", 15)
-
-						// Stamps
-						var/image/stampoverlay = image('icons/obj/items/paper.dmi')
-						stampoverlay.icon_state = "paper_stamp-weyyu"
-						if(!P.stamped)
-							P.stamped = new
-						P.stamped += /obj/item/tool/stamp
-						P.overlays += stampoverlay
-						P.stamps += "<HR><i>This paper has been stamped and encrypted by the Weyland-Yutani Quantum Relay (tm).</i>"
-
-				to_chat(owner, "Message reply to transmitted successfully.")
-				message_admins(SPAN_STAFF_IC("[key_name_admin(owner)] replied to a fax message from [key_name_admin(H)]"), 1)
-				return
-		to_chat(owner, "/red Unable to locate fax!")
+		if(!(fax.inoperable()))
+			// animate! it's alive!
+			flick("faxreceive", fax)
+			// give the sprite some time to flick
+			spawn(20)
+				var/obj/item/paper/P = new /obj/item/paper(fax.loc)
+				P.name = "Weyland-Yutani - [customname]"
+				P.info = fax_message.data
+				P.update_icon()
+				playsound(fax.loc, "sound/machines/fax.ogg", 15)
+				// Stamps
+				var/image/stampoverlay = image('icons/obj/items/paper.dmi')
+				stampoverlay.icon_state = "paper_stamp-weyyu"
+				if(!P.stamped)
+					P.stamped = new
+				P.stamped += /obj/item/tool/stamp
+				P.overlays += stampoverlay
+				P.stamps += "<HR><i>This paper has been stamped and encrypted by the Weyland-Yutani Quantum Relay (tm).</i>"
+		to_chat(owner, "Message reply to transmitted successfully.")
+		message_admins(SPAN_STAFF_IC("[key_name_admin(owner)] replied to a fax message from [key_name_admin(H)]"), 1)
 
 	else if(href_list["CMBFaxReply"])
 		var/mob/living/carbon/human/H = locate(href_list["CMBFaxReply"])
@@ -1575,37 +1546,26 @@
 		msg_ghost += "Transmitting '[customname]' via secure connection ... "
 		msg_ghost += "<a href='?FaxView=\ref[fax_message]'>view message</a>"
 		announce_fax(, msg_ghost)
-
-
-		for(var/obj/structure/machinery/faxmachine/F in GLOB.machines)
-			if(F == fax)
-				if(!(F.inoperable()))
-
-					// animate! it's alive!
-					flick("faxreceive", F)
-
-					// give the sprite some time to flick
-					spawn(20)
-						var/obj/item/paper/P = new /obj/item/paper( F.loc )
-						P.name = "Colonial Marshal Bureau - [customname]"
-						P.info = fax_message.data
-						P.update_icon()
-
-						playsound(F.loc, "sound/machines/fax.ogg", 15)
-
-						// Stamps
-						var/image/stampoverlay = image('icons/obj/items/paper.dmi')
-						stampoverlay.icon_state = "paper_stamp-cmb"
-						if(!P.stamped)
-							P.stamped = new
-						P.stamped += /obj/item/tool/stamp
-						P.overlays += stampoverlay
-						P.stamps += "<HR><i>This paper has been stamped by The Office of Colonial Marshals.</i>"
-
-				to_chat(owner, "Message reply to transmitted successfully.")
-				message_admins(SPAN_STAFF_IC("[key_name_admin(owner)] replied to a fax message from [key_name_admin(H)]"), 1)
-				return
-		to_chat(owner, "/red Unable to locate fax!")
+		if(!(fax.inoperable()))
+			// animate! it's alive!
+			flick("faxreceive", fax)
+			// give the sprite some time to flick
+			spawn(20)
+				var/obj/item/paper/P = new /obj/item/paper(fax.loc)
+				P.name = "Colonial Marshal Bureau - [customname]"
+				P.info = fax_message.data
+				P.update_icon()
+				playsound(fax.loc, "sound/machines/fax.ogg", 15)
+				// Stamps
+				var/image/stampoverlay = image('icons/obj/items/paper.dmi')
+				stampoverlay.icon_state = "paper_stamp-cmb"
+				if(!P.stamped)
+					P.stamped = new
+				P.stamped += /obj/item/tool/stamp
+				P.overlays += stampoverlay
+				P.stamps += "<HR><i>This paper has been stamped by The Office of Colonial Marshals.</i>"
+		to_chat(owner, "Message reply to transmitted successfully.")
+		message_admins(SPAN_STAFF_IC("[key_name_admin(owner)] replied to a fax message from [key_name_admin(H)]"), 1)
 
 	else if(href_list["customise_paper"])
 		if(!check_rights(R_MOD))

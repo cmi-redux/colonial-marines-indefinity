@@ -307,7 +307,7 @@
 			join_turf = get_turf(pick(GLOB.spawns_by_job[type]))
 
 		if(!join_turf)
-			join_turf = get_latejoin_spawn(human, human.job != JOB_WORKING_JOE ? assigned_squad : human.job)
+			join_turf = get_latejoin_turf(human)
 
 		human.forceMove(join_turf)
 
@@ -331,3 +331,6 @@
 /// Intended to be overwritten to handle any requirements for specific job variations that can be selected
 /datum/job/proc/filter_job_option(mob/job_applicant)
 	return job_options
+
+/datum/job/proc/get_latejoin_turf(mob/living/carbon/human/H)
+	return get_latejoin_spawn(H, H.faction, H.assigned_squad?.name)

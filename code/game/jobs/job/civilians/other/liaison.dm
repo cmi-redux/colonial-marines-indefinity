@@ -17,6 +17,9 @@
 	SIGNAL_HANDLER
 	active_liaison = null
 
+/datum/job/civilian/liaison/get_latejoin_turf(mob/living/carbon/human/H)
+	return get_turf(pick(GLOB.spawns_by_job[type]))
+
 /obj/effect/landmark/start/liaison
 	name = JOB_CORPORATE_LIAISON
 	icon_state = "cl_spawn"

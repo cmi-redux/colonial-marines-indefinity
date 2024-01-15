@@ -51,6 +51,9 @@
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(ares_apollo_talk), "[H.real_name] has been activated."), 1.5 SECONDS)
 	return ..()
 
+/datum/job/civilian/working_joe/get_latejoin_turf(mob/living/carbon/human/H)
+	return get_latejoin_spawn(H, H.faction, H.job)
+
 /obj/effect/landmark/start/working_joe
 	name = JOB_WORKING_JOE
 	icon_state = "wj_spawn"
