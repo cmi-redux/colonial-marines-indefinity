@@ -9,7 +9,7 @@ Verbs related to getting fucking jacked, bro
 	set category = "IC"
 
 	var/list/choices = list()
-	for(var/mob/living/carbon/human in range(2, get_turf(src)))
+	for(var/mob/living/carbon/human/human in range(1, get_turf(src)))
 		if(human.faction == faction)
 			continue
 		choices += human
@@ -18,9 +18,9 @@ Verbs related to getting fucking jacked, bro
 		to_chat(src, SPAN_WARNING("There no potential targets"))
 		return
 
-	var/choice = tgui_input_list(src, "Choose human:", "Converting", choices)
+	var/mob/living/carbon/human/choice = tgui_input_list(src, "Choose human:", "Converting", choices)
 	if(choice)
-		handle_faction_convert(choice)
+		choice.handle_faction_convert(src)
 
 /mob/living/carbon/human/verb/pushup()
 	set name = "Do Pushup"
@@ -135,6 +135,7 @@ Verbs related to getting fucking jacked, bro
 			stamina_loss -= 2.5
 		if(SKILL_ENDURANCE_EXPERT)
 			stamina_loss -= 4.9
+	stamina_loss = rand(stamina_loss*0.5, stamina_loss*1.5)
 	if(wear_suit)
 		stamina_loss *= 1.2
 	if(back)

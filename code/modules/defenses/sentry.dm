@@ -93,6 +93,8 @@
 	get_target(actual_target)
 	return TRUE
 
+/obj/structure/machinery/defenses/sentry/destroyed_action()
+
 /// Populate traits_to_give in this proc
 /obj/structure/machinery/defenses/sentry/proc/set_bullet_traits()
 	LAZYADD(traits_to_give, list(
@@ -770,3 +772,6 @@
 	sentry_icon_resize_y = -4
 	inherent_rounds = 18
 	max_inherent_rounds = 18
+
+	health = 600
+	health_max = 600

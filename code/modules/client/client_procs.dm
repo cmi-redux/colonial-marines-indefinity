@@ -284,15 +284,35 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	//CONNECT//
 	///////////
 /client/New(TopicData)
-	set waitfor = FALSE
+	// Version check below if we ever need to start checking against BYOND versions again.
 
-	testing("[ckey] started login in at [time2text(world.realtime, "hh:mm:ss")] ([world.time])")
+	/*if((byond_version < world.byond_version) || ((byond_version == world.byond_version) && (byond_build < world.byond_build)))
+		src << "<span class='warning'>Your version of Byond (v[byond_version].[byond_build]) differs from the server (v[world.byond_version].[world.byond_build]). You may experience graphical glitches, crashes, or other errors. You will be disconnected until your version matches or exceeds the server version.<br> \
+		Direct Download (Windows Installer): http://www.byond.com/download/build/[world.byond_version]/[world.byond_version].[world.byond_build]_byond.exe <br> \
+		Other versions (search for [world.byond_build] or higher): http://www.byond.com/download/build/[world.byond_version]</span>"
+		qdel(src)
+		return null*/
+	//hardcode for now
+
+	if(num2text(byond_build) in GLOB.blacklisted_builds)
+		log_access("Failed login: [key] - blacklisted byond build ([byond_version].[byond_build])")
+		to_chat(src, SPAN_WARNING(FONT_SIZE_HUGE("Your version of byond is blacklisted.")), immediate = TRUE)
+		to_chat(src, SPAN_WARNING(FONT_SIZE_LARGE("Byond build [byond_build] ([byond_version].[byond_build]) has been blacklisted for the following reason: [GLOB.blacklisted_builds[num2text(byond_build)]].")), immediate = TRUE)
+		to_chat(src, SPAN_WARNING(FONT_SIZE_LARGE("Please download a new version of byond. If [byond_build] is the latest (which it shouldn't be), you can go to <a href=\"https://secure.byond.com/download/build\">BYOND's website</a> to download other versions.")), immediate = TRUE)
+		to_chat(src, SPAN_NOTICE(FONT_SIZE_LARGE("You will now be automatically disconnected. Have a CM day.")), immediate = TRUE)
+		qdel(src)
+		return null
+
+	if(!(connection in list("seeker", "web"))) //Invalid connection type.
+		qdel(src)
+		return null
+
+	//do this check after the blacklist check to avoid confusion
+	if((byond_version < GOOD_BYOND_MAJOR) || ((byond_version == GOOD_BYOND_MAJOR) && (byond_build < GOOD_BYOND_MINOR)))
+		to_chat(src, FONT_SIZE_HUGE(SPAN_BOLDNOTICE("YOUR BYOND VERSION IS NOT WELL SUITED FOR THIS SERVER. Download latest BETA build or you may suffer random crashes or disconnects.")))
 
 	soundOutput = new /datum/soundOutput(src)
 	TopicData = null //Prevent calls to client.Topic from connect
-
-	if(!(connection in list("seeker", "web"))) //Invalid connection type.
-		return null
 
 	GLOB.clients += src
 	GLOB.directory[ckey] = src
@@ -313,13 +333,6 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	if(length(external_rsc_urls))
 		next_external_rsc = WRAP(next_external_rsc+1, 1, external_rsc_urls.len+1)
 		preload_rsc = external_rsc_urls[next_external_rsc]
-
-	if(!CONFIG_GET(flag/no_localhost_rank))
-		var/static/list/localhost_addresses = list("127.0.0.1", "::1")
-		if(isnull(address) || (address in localhost_addresses))
-			var/datum/admins/admin = new("!localhost!", RL_HOST, ckey)
-			admin.associate(src)
-			SSticker.role_authority.roles_whitelist[ckey] = WHITELIST_EVERYTHING
 
 	//Admin Authorisation
 	admin_holder = admin_datums[ckey]
@@ -360,32 +373,13 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 
 	view = world_view_size
 	. = ..() //calls mob.Login()
+	client_init()
+
+/client/proc/client_init()
+	set waitfor = FALSE
 
 	if(SSinput.initialized)
 		INVOKE_ASYNC(src, /client/proc/set_macros)
-
-	// Version check below if we ever need to start checking against BYOND versions again.
-
-	/*if((byond_version < world.byond_version) || ((byond_version == world.byond_version) && (byond_build < world.byond_build)))
-		src << "<span class='warning'>Your version of Byond (v[byond_version].[byond_build]) differs from the server (v[world.byond_version].[world.byond_build]). You may experience graphical glitches, crashes, or other errors. You will be disconnected until your version matches or exceeds the server version.<br> \
-		Direct Download (Windows Installer): http://www.byond.com/download/build/[world.byond_version]/[world.byond_version].[world.byond_build]_byond.exe <br> \
-		Other versions (search for [world.byond_build] or higher): http://www.byond.com/download/build/[world.byond_version]</span>"
-		qdel(src)
-		return*/
-	//hardcode for now
-
-	if(num2text(byond_build) in GLOB.blacklisted_builds)
-		log_access("Failed login: [key] - blacklisted byond build ([byond_version].[byond_build])")
-		to_chat(src, SPAN_WARNING(FONT_SIZE_HUGE("Your version of byond is blacklisted.")), immediate = TRUE)
-		to_chat(src, SPAN_WARNING(FONT_SIZE_LARGE("Byond build [byond_build] ([byond_version].[byond_build]) has been blacklisted for the following reason: [GLOB.blacklisted_builds[num2text(byond_build)]].")), immediate = TRUE)
-		to_chat(src, SPAN_WARNING(FONT_SIZE_LARGE("Please download a new version of byond. If [byond_build] is the latest (which it shouldn't be), you can go to <a href=\"https://secure.byond.com/download/build\">BYOND's website</a> to download other versions.")), immediate = TRUE)
-		to_chat(src, SPAN_NOTICE(FONT_SIZE_LARGE("You will now be automatically disconnected. Have a CM day.")), immediate = TRUE)
-		qdel(src)
-		return
-
-	//do this check after the blacklist check to avoid confusion
-	if((byond_version < GOOD_BYOND_MAJOR) || ((byond_version == GOOD_BYOND_MAJOR) && (byond_build < GOOD_BYOND_MINOR)))
-		to_chat(src, FONT_SIZE_HUGE(SPAN_BOLDNOTICE("YOUR BYOND VERSION IS NOT WELL SUITED FOR THIS SERVER. Download latest BETA build or you may suffer random crashes or disconnects.")))
 
 	// Initialize tgui panel
 	stat_panel.initialize(
@@ -425,8 +419,6 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	view = world_view_size
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CLIENT_LOGIN, src)
-
-	testing("[ckey] ended login in at [time2text(world.realtime, "hh:mm:ss")] ([world.time])")
 
 	//////////////
 	//DISCONNECT//

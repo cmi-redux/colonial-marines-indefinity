@@ -43,6 +43,7 @@ GLOBAL_PROTECT(href_token)
 	return FALSE
 
 /datum/admins/proc/associate(client/C)
+	set waitfor = FALSE
 	if(istype(C))
 		owner = C
 		owner.admin_holder = src

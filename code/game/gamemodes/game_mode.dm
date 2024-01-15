@@ -191,7 +191,7 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 		round_statistics.round_result = round_finished
 		if(!length(round_statistics.current_map.victories))
 			round_statistics.current_map.victories = list()
-		round_statistics.current_map.victories[round_finished] +=  1
+		round_statistics.current_map.victories[round_finished]++
 		round_statistics.end_round_player_population = length(GLOB.clients)
 
 		round_statistics.log_round_statistics()

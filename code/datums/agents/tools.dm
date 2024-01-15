@@ -5,7 +5,6 @@
 	w_class = SIZE_MEDIUM
 
 	req_access = list()
-	req_role = null
 	listed_products = list(
 		list("WEAPONS", 0, null, null, null),
 		list("Configured Stunbaton", 25, /obj/item/weapon/baton/antag, "white", "A stun baton with more charge, tuned to work only for agents."),

@@ -221,5 +221,4 @@
 		if(statistic in medals)
 			continue
 
-		statistic.sync()
 		medals += statistic

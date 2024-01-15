@@ -56,16 +56,8 @@
  * optional inline_js string - Custom JS to inject.
  * optional inline_css string - Custom CSS to inject.
  */
-/datum/tgui_window/proc/initialize(
-		strict_mode = FALSE,
-		fancy = FALSE,
-		assets = list(),
-		inline_html = "",
-		inline_js = "",
-		inline_css = "")
-	log_tgui(client,
-		context = "[id]/initialize",
-		window = src)
+/datum/tgui_window/proc/initialize(strict_mode = FALSE, fancy = FALSE, assets = list(), inline_html = "", inline_js = "", inline_css = "")
+	log_tgui(client, context = "[id]/initialize", window = src)
 	if(!client)
 		return
 	src.initial_fancy = fancy

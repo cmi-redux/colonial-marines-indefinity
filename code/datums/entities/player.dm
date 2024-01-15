@@ -364,8 +364,6 @@
 		GLOB.donaters |= owning_client
 		add_verb(owning_client, /client/proc/set_ooc_color_self)
 
-	owning_client.clan_info = GET_CLAN_PLAYER(id)
-
 /datum/entity/player/proc/load_rels()
 	DB_FILTER(/datum/entity/player_note, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, on_read_notes)))
 	DB_FILTER(/datum/entity/player_job_ban, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, on_read_job_bans)))

@@ -15,7 +15,7 @@
 	w_class = SIZE_LARGE
 
 	/// to be compared with assigned_role to only allow those to use that machine.
-	var/req_role = ""
+	var/req_role = null
 	var/points = 40
 	var/max_points = 50
 	var/use_points = TRUE

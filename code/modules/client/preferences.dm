@@ -1313,7 +1313,7 @@ var/const/MAX_SAVE_SLOTS = 10
 					predator_caster_material = new_pred_caster_mat
 				if("pred_cape_type")
 					var/datum/job/job = GET_MAPPED_ROLE(JOB_PREDATOR)
-					var/whitelist_status = clan_ranks_ordered[job.get_whitelist_status(SSticker.role_authority.roles_whitelist, owner)]
+					var/whitelist_status = GLOB.clan_ranks_ordered[job.get_whitelist_status(SSticker.role_authority.roles_whitelist, owner)]
 
 					var/list/options = list("None" = "None")
 					for(var/cape_name in GLOB.all_yautja_capes)

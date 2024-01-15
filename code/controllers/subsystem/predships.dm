@@ -133,7 +133,7 @@ SUBSYSTEM_DEF(predships)
 		.["clan_keys"] += list(list(
 			player_id = CP.player_id,
 			name = CP.ckey,
-			rank = clan_ranks[CP.clan_rank], // rank_to_give not used here, because we need to get their visual rank, not their position
+			rank = GLOB.clan_ranks[CP.clan_rank], // rank_to_give not used here, because we need to get their visual rank, not their position
 			rank_pos = rank_to_give,
 			honor = CP.honor
 		))
@@ -240,8 +240,8 @@ SUBSYSTEM_DEF(predships)
 				pl.sync()
 
 				pl.clan_id = null
-				pl.permissions = clan_ranks[CLAN_RANK_UNBLOODED].permissions
-				pl.clan_rank = clan_ranks_ordered[CLAN_RANK_UNBLOODED]
+				pl.permissions = GLOB.clan_ranks[CLAN_RANK_UNBLOODED].permissions
+				pl.clan_rank = GLOB.clan_ranks_ordered[CLAN_RANK_UNBLOODED]
 
 				pl.save()
 
@@ -324,16 +324,16 @@ SUBSYSTEM_DEF(predships)
 
 			if(input == "Remove from clan" && target.clan_id)
 				target.clan_id = null
-				target.clan_rank = clan_ranks_ordered[CLAN_RANK_YOUNG]
+				target.clan_rank = GLOB.clan_ranks_ordered[CLAN_RANK_YOUNG]
 				to_chat(src, SPAN_NOTICE("Removed [player_name] from their clan."))
 				log_and_message_admins("[key_name_admin(src)] has removed [player_name] from their current clan.")
 			else if(input == "Remove from Ancient")
-				target.clan_rank = clan_ranks_ordered[CLAN_RANK_YOUNG]
-				target.permissions = clan_ranks[CLAN_RANK_YOUNG].permissions
+				target.clan_rank = GLOB.clan_ranks_ordered[CLAN_RANK_YOUNG]
+				target.permissions = GLOB.clan_ranks[CLAN_RANK_YOUNG].permissions
 				to_chat(src, SPAN_NOTICE("Removed [player_name] from ancient."))
 				log_and_message_admins("[key_name_admin(src)] has removed [player_name] from ancient.")
 			else if(input == "Make Ancient" && is_clan_manager)
-				target.clan_rank = clan_ranks_ordered[CLAN_RANK_ADMIN]
+				target.clan_rank = GLOB.clan_ranks_ordered[CLAN_RANK_ADMIN]
 				target.permissions = CLAN_PERMISSION_ADMIN_ANCIENT
 				to_chat(src, SPAN_NOTICE("Made [player_name] an ancient."))
 				log_and_message_admins("[key_name_admin(src)] has made [player_name] an ancient.")
@@ -344,8 +344,8 @@ SUBSYSTEM_DEF(predships)
 				target.clan_id = clans[input]
 
 				if(!(target.permissions & CLAN_PERMISSION_ADMIN_ANCIENT))
-					target.permissions = clan_ranks[CLAN_RANK_BLOODED].permissions
-					target.clan_rank = clan_ranks_ordered[CLAN_RANK_BLOODED]
+					target.permissions = GLOB.clan_ranks[CLAN_RANK_BLOODED].permissions
+					target.clan_rank = GLOB.clan_ranks_ordered[CLAN_RANK_BLOODED]
 
 			target.save()
 			target.sync()
@@ -372,7 +372,7 @@ SUBSYSTEM_DEF(predships)
 				to_chat(src, SPAN_WARNING("This player doesn't belong to a clan!"))
 				return
 
-			var/list/datum/yautja_rank/ranks = clan_ranks.Copy()
+			var/list/datum/yautja_rank/ranks = GLOB.clan_ranks.Copy()
 			ranks -= CLAN_RANK_ADMIN // Admin rank should not and cannot be obtained from here
 
 			var/datum/yautja_rank/chosen_rank
@@ -396,7 +396,7 @@ SUBSYSTEM_DEF(predships)
 				chosen_rank = ranks[input]
 
 				if(chosen_rank.limit_type)
-					var/list/datum/view_record/clan_playerbase_view/CPV = DB_VIEW(/datum/view_record/clan_playerbase_view/, DB_AND(DB_COMP("clan_id", DB_EQUALS, target.clan_id), DB_COMP("rank", DB_EQUALS, clan_ranks_ordered[input])))
+					var/list/datum/view_record/clan_playerbase_view/CPV = DB_VIEW(/datum/view_record/clan_playerbase_view/, DB_AND(DB_COMP("clan_id", DB_EQUALS, target.clan_id), DB_COMP("rank", DB_EQUALS, GLOB.clan_ranks_ordered[input])))
 					var/players_in_rank = CPV.len
 
 					switch(chosen_rank.limit_type)
@@ -419,7 +419,7 @@ SUBSYSTEM_DEF(predships)
 			if(!user.client.has_clan_permission(chosen_rank.permission_required)) // Double check
 				return
 
-			target.clan_rank = clan_ranks_ordered[chosen_rank.name]
+			target.clan_rank = GLOB.clan_ranks_ordered[chosen_rank.name]
 			target.permissions = chosen_rank.permissions
 			target.save()
 			target.sync()

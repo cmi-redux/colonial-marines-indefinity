@@ -92,12 +92,10 @@
 		var/datum/entity/statistic_map/new_map = DB_EKEY(/datum/entity/statistic_map, round_statistics.map_name)
 		round_statistics.current_map = new_map
 		round_statistics.current_map.save()
-		round_statistics.current_map.sync()
 		round_statistics.round_id = SSperf_logging.round?.id
 		round_statistics.game_mode = name
 		round_statistics.real_time_start = time2text(world.realtime)
 		round_statistics.save()
-		round_statistics.sync()
 
 /datum/entity/statistic_round/proc/setup_faction(faction)
 	if(!faction)
@@ -143,10 +141,8 @@
 	if(current_map)
 		current_map.total_rounds++
 		current_map.save()
-		current_map.detach()
 
 	save()
-	detach()
 
 /datum/entity/statistic_round/proc/track_hijack_participant(faction, amount = 1)
 	if(!faction)

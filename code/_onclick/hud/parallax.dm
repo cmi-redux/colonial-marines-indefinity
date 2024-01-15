@@ -8,7 +8,7 @@
 		C.parallax_layers_cached = list()
 		C.parallax_layers_cached += new /atom/movable/screen/fullscreen/parallax_layer/layer_1(null, screenmob)
 		C.parallax_layers_cached += new /atom/movable/screen/fullscreen/parallax_layer/layer_2(null, screenmob)
-		C.parallax_layers_cached += new /atom/movable/screen/fullscreen/parallax_layer/planet(null, screenmob)
+//		C.parallax_layers_cached += new /atom/movable/screen/fullscreen/parallax_layer/planet(null, screenmob)
 		if(SSparallax.random_layer)
 			C.parallax_layers_cached += new SSparallax.random_layer(null, screenmob)
 		C.parallax_layers_cached += new /atom/movable/screen/fullscreen/parallax_layer/layer_3(null, screenmob)
@@ -362,7 +362,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/fullscreen/parallax_layer)
 	var/turf/posobj = get_turf(tracked?.eye)
 	if(!posobj)
 		return
-	invisibility = is_mainship_level(posobj.z) ? 0 : INVISIBILITY_ABSTRACT
+//	invisibility = is_mainship_level(posobj.z) ? 0 : INVISIBILITY_ABSTRACT
+	invisibility = INVISIBILITY_ABSTRACT
 
 /atom/movable/screen/fullscreen/parallax_layer/planet/update_o()
 	return //Shit won't move
