@@ -18,11 +18,32 @@ GLOBAL_LIST_INIT(cm_vending_gear_intelligence_officer, list(
 		list("Medical Helmet Optic", 5, /obj/item/device/helmet_visor/medical, null, VENDOR_ITEM_REGULAR),
 		list("Welding Goggles", 5, /obj/item/clothing/glasses/welding, null, VENDOR_ITEM_REGULAR),
 
-		list("POUCHES", 0, null, null, null),
-		list("Large Magazine Pouch", 10, /obj/item/storage/pouch/magazine/large, null, VENDOR_ITEM_REGULAR),
-		list("Large Shotgun Shell Pouch", 10, /obj/item/storage/pouch/shotgun/large, null, VENDOR_ITEM_REGULAR),
+		list("ARMORS", 0, null, null, null),
+		list("M3 B12 Pattern Marine Armor", 20, /obj/item/clothing/suit/storage/marine/leader, null, VENDOR_ITEM_REGULAR),
+		list("M4 Pattern Armor", 20, /obj/item/clothing/suit/storage/marine/rto, null, VENDOR_ITEM_REGULAR),
+
+		list("CLOTHING ITEMS", 0, null, null, null),
+		list("USCM logistics IMP backpack", 20, /obj/item/storage/backpack/marine/satchel/big, null, VENDOR_ITEM_REGULAR),
+		list("Machete Scabbard (Full)", 6, /obj/item/storage/large_holster/machete/full, null, VENDOR_ITEM_REGULAR),
+		list("Machete Pouch (Full)", 8, /obj/item/storage/pouch/machete/full, null, VENDOR_ITEM_REGULAR),
+		list("USCM Radio Telephone Pack", 15, /obj/item/storage/backpack/marine/satchel/rto, null, VENDOR_ITEM_REGULAR),
+		list("Fuel Tank Strap Pouch", 4, /obj/item/storage/pouch/flamertank, null, VENDOR_ITEM_REGULAR),
+		list("Welding Goggles", 3, /obj/item/clothing/glasses/welding, null, VENDOR_ITEM_REGULAR),
+		list("Sling Pouch", 6, /obj/item/storage/pouch/sling, null, VENDOR_ITEM_REGULAR),
+		list("Large General Pouch", 6, /obj/item/storage/pouch/general/large, null, VENDOR_ITEM_REGULAR),
+		list("Large Magazine Pouch", 6, /obj/item/storage/pouch/magazine/large, null, VENDOR_ITEM_REGULAR),
+		list("Large Shotgun Shell Pouch", 6, /obj/item/storage/pouch/shotgun/large, null, VENDOR_ITEM_REGULAR),
 		list("Autoinjector Pouch (Full)", 15, /obj/item/storage/pouch/autoinjector/full, null, VENDOR_ITEM_RECOMMENDED),
-		list("Machete Pouch (Full)", 10, /obj/item/storage/pouch/machete/full, null, VENDOR_ITEM_REGULAR)
+		list("M276 Pattern Combat Toolbelt Rig", 15, /obj/item/storage/belt/gun/utility, null, VENDOR_ITEM_REGULAR),
+		list("M2 Night Vision Goggles", 30, /obj/item/prop/helmetgarb/helmet_nvg, null, VENDOR_ITEM_RECOMMENDED),
+
+		list("EXTRA UTILITIES", 0, null, null, null),
+		list("Armor Plate", 15, /obj/item/clothing/accessory/health/metal_plate, null, VENDOR_ITEM_MANDATORY),
+		list("Armor Ceramic Plate", 15, /obj/item/clothing/accessory/health/ceramic_plate, null, VENDOR_ITEM_REGULAR),
+
+		list("HELMET OPTICS", 0, null, null, null),
+		list("Medical Helmet Optic", 15, /obj/item/device/helmet_visor/medical, null, VENDOR_ITEM_REGULAR),
+		list("Welding Visor", 5, /obj/item/device/helmet_visor/welding_visor, null, VENDOR_ITEM_REGULAR),
 	))
 
 /obj/structure/machinery/cm_vending/gear/intelligence_officer
@@ -72,7 +93,6 @@ GLOBAL_LIST_INIT(cm_vending_clothing_intelligence_officer, list(
 		list("First-Aid Pouch (Splints, Gauze, Ointment)", 0, /obj/item/storage/pouch/firstaid/full/alternate, VENDOR_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 		list("First-Aid Pouch (Pills)", 0, /obj/item/storage/pouch/firstaid/pills/full, VENDOR_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 		list("Flare Pouch (Full)", 0, /obj/item/storage/pouch/flare/full, VENDOR_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
-		list("Fuel Tank Strap Pouch", 0, /obj/item/storage/pouch/flamertank, VENDOR_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 		list("Large General Pouch", 0, /obj/item/storage/pouch/general/large, VENDOR_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 		list("Large Pistol Magazine Pouch", 0, /obj/item/storage/pouch/magazine/pistol/large, VENDOR_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 		list("Magazine Pouch", 0, /obj/item/storage/pouch/magazine, VENDOR_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
@@ -81,7 +101,6 @@ GLOBAL_LIST_INIT(cm_vending_clothing_intelligence_officer, list(
 		list("Shotgun Shell Pouch", 0, /obj/item/storage/pouch/shotgun, VENDOR_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 		list("Sidearm Pouch", 0, /obj/item/storage/pouch/pistol, VENDOR_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 		list("Tools Pouch (Full)", 0, /obj/item/storage/pouch/tools/full, VENDOR_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
-		list("Sling Pouch", 0, /obj/item/storage/pouch/sling, VENDOR_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
 
 		list("ACCESSORIES (CHOOSE 1)", 0, null, null, null),
 		list("Black Webbing Vest", 0, /obj/item/clothing/accessory/storage/black_vest, VENDOR_CAN_BUY_ACCESSORY, VENDOR_ITEM_REGULAR),

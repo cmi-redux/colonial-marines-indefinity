@@ -70,6 +70,7 @@
 
 		list("BACKPACKS", -1, null, null),
 		list("Lightweight IMP Backpack", round(scale * 15), /obj/item/storage/backpack/marine, VENDOR_ITEM_REGULAR),
+		list("USCM logistics IMP backpack", round(scale * 2), /obj/item/storage/backpack/marine/satchel/big, VENDOR_ITEM_REGULAR),
 		list("Shotgun Scabbard", round(scale * 10), /obj/item/storage/large_holster/m37, VENDOR_ITEM_REGULAR),
 		list("Pyrotechnician G4-1 Fueltank", round(scale * 2), /obj/item/storage/backpack/marine/engineerpack/flamethrower/kit, VENDOR_ITEM_REGULAR),
 		list("Technician Welderpack", round(scale * 2), /obj/item/storage/backpack/marine/engineerpack, VENDOR_ITEM_REGULAR),

@@ -65,6 +65,7 @@ GLOBAL_LIST_INIT(cm_vending_clothing_marine, list(
 		list("M4 Pattern Armor", 30, /obj/item/clothing/suit/storage/marine/rto, null, VENDOR_ITEM_REGULAR),
 
 		list("CLOTHING ITEMS", 0, null, null, null),
+		list("USCM logistics IMP backpack", 30, /obj/item/storage/backpack/marine/satchel/big, null, VENDOR_ITEM_REGULAR),
 		list("Webbing", 10, /obj/item/clothing/accessory/storage/webbing, null, VENDOR_ITEM_REGULAR),
 		list("Brown Webbing Vest", 15, /obj/item/clothing/accessory/storage/black_vest/brown_vest, null, VENDOR_ITEM_REGULAR),
 		list("Black Webbing Vest", 15, /obj/item/clothing/accessory/storage/black_vest, null, VENDOR_ITEM_REGULAR),
@@ -77,6 +78,12 @@ GLOBAL_LIST_INIT(cm_vending_clothing_marine, list(
 		list("Welding Goggles", 5, /obj/item/clothing/glasses/welding, null, VENDOR_ITEM_REGULAR),
 		list("Sling Pouch", 15, /obj/item/storage/pouch/sling, null, VENDOR_ITEM_REGULAR),
 		list("Large General Pouch", 15, /obj/item/storage/pouch/general/large, null, VENDOR_ITEM_REGULAR),
+		list("Large Magazine Pouch", 15, /obj/item/storage/pouch/magazine/large, null, VENDOR_ITEM_REGULAR),
+		list("Large Shotgun Shell Pouch", 15, /obj/item/storage/pouch/shotgun/large, null, VENDOR_ITEM_REGULAR),
+		list("Large Pistol Magazine Pouch", 15, /obj/item/storage/pouch/magazine/pistol/large, null, VENDOR_ITEM_RECOMMENDED),
+		list("Autoinjector Pouch (Full)", 15, /obj/item/storage/pouch/autoinjector/full, null, VENDOR_ITEM_RECOMMENDED),
+		list("M276 Pattern Combat Toolbelt Rig", 15, /obj/item/storage/belt/gun/utility, null, VENDOR_ITEM_REGULAR),
+		list("M2 Night Vision Goggles", 30, /obj/item/prop/helmetgarb/helmet_nvg, null, VENDOR_ITEM_RECOMMENDED),
 
 		list("UTILITIES", 0, null, null, null),
 		list("E-Tool", 5, /obj/item/tool/shovel/etool/folded, null, VENDOR_ITEM_REGULAR),
@@ -89,6 +96,10 @@ GLOBAL_LIST_INIT(cm_vending_clothing_marine, list(
 		list("Motion Detector", 15, /obj/item/device/motiondetector, null, VENDOR_ITEM_REGULAR),
 		list("Data Detector", 15, /obj/item/device/motiondetector/intel, null, VENDOR_ITEM_REGULAR),
 		list("Whistle", 5, /obj/item/device/whistle, null, VENDOR_ITEM_REGULAR),
+
+		list("EXTRA UTILITIES", 0, null, null, null),
+		list("Armor Plate", 15, /obj/item/clothing/accessory/health/metal_plate, null, VENDOR_ITEM_MANDATORY),
+		list("Armor Ceramic Plate", 15, /obj/item/clothing/accessory/health/ceramic_plate, null, VENDOR_ITEM_REGULAR),
 
 		list("HELMET OPTICS", 0, null, null, null),
 		list("Medical Helmet Optic", 15, /obj/item/device/helmet_visor/medical, null, VENDOR_ITEM_REGULAR),
