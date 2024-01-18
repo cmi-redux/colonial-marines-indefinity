@@ -16,6 +16,8 @@ cfg/
 !cfg/.keep
 tmp/
 dmdoc/
+secret/*
+secret/ultimative_thing.dm
 tools/Runtime Condenser/Input.txt
 tools/Runtime Condenser/Output.txt
 sound/music/*.ogg
@@ -31,4 +33,3 @@ test_environment.txt
 # byond-tracy backend, not shipped with the codebase so it shouldn't be maintained
 prof.dll
 libprof.so
-secret/*
