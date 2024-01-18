@@ -17,7 +17,6 @@ cfg/
 tmp/
 dmdoc/
 secret/*
-secret/ultimative_thing.dm
 tools/Runtime Condenser/Input.txt
 tools/Runtime Condenser/Output.txt
 sound/music/*.ogg
