@@ -58,7 +58,7 @@ SUBSYSTEM_DEF(who)
 
 				var/mob/dead/observer/observer = client_mob
 				if(observer.started_as_observer)
-					client_payload["color"] += "#808080"
+					client_payload["color"] += "#ce89cd"
 					client_payload["text"] += " - Spectating"
 				else
 					client_payload["color"] += "#A000D0"

@@ -15,4 +15,6 @@ SUBSYSTEM_DEF(stats_collector)
 	stat_ticks++
 
 /datum/controller/subsystem/stats_collector/proc/get_avg_players()
+	if(!players_counter || !stat_ticks)
+		return 0
 	return players_counter / stat_ticks

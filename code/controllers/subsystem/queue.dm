@@ -25,7 +25,7 @@ SUBSYSTEM_DEF(queue)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/queue/stat_entry(msg)
-	msg = "CR:[length(queued)]|Q:[length(GLOB.que_clients)]|QA:[length(GLOB.que_admins)]|QD:[length(GLOB.que_donaters)]|PCP:[(length(GLOB.clients)/max(hard_popcap, 1))*100]%"
+	msg = "RС:[length(REAL_CLIENTS)]|QC:[length(GLOB.que_clients)]|QA:[length(GLOB.que_admins)]|QD:[length(GLOB.que_donaters)]|PCP:[(length(GLOB.clients)/max(hard_popcap, 1))*100]%"
 	return ..()
 
 /datum/controller/subsystem/queue/fire(resumed = FALSE)
@@ -80,10 +80,10 @@ SUBSYSTEM_DEF(queue)
 	var/datum/queued_tier/priority
 	for(var/i = 1 to priority)
 		priority = SSqueue.prioritized[i]
-		if(priority.priority != priority)
+		if(priority.priority < priority)
 			potential_position += length(priority.queued_players)
-			continue
-		potential_position += priority.queued_players.Find(src)
+		else if(priority.priority == priority)
+			potential_position += priority.queued_players.Find(src)
 	position = potential_position
 	new_player.queue_player_panel(TRUE)
 	if(REAL_CLIENTS < SSqueue.hard_popcap && position == 1)

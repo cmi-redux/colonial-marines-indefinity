@@ -1,15 +1,15 @@
-/proc/emoji_parse(client/C, text) //turns :ai: into an emoji in text.
+/proc/emoji_parse(client/user, text) //turns :ai: into an emoji in text.
 	. = text
 	if(!CONFIG_GET(flag/emojis))
 		return
-	if(!check_rights(0, FALSE, C) || !C.player_data.donator_info.patreon_function_available("emoji"))
+	if(!check_client_rights(user, R_ADMIN, FALSE) && !user.player_data.donator_info.patreon_function_available("emoji"))
 		return
 	var/static/list/emojis = icon_states(icon(EMOJI_SET))
 	var/parsed = ""
 	var/pos = 1
 	var/search = 0
 	var/emoji = ""
-	while(1)
+	while(TRUE)
 		search = findtext(text, ":", pos)
 		parsed += copytext(text, pos, search)
 		if(search)
@@ -40,7 +40,7 @@
 	var/final = "" //only tags are added to this
 	var/pos = 1
 	var/search = 0
-	while(1)
+	while(TRUE)
 		search = findtext(text, ":", pos)
 		if(search)
 			pos = search

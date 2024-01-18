@@ -160,7 +160,6 @@ var/world_topic_spam_protect_time = world.timeofday
 /world/Topic(T, addr, master, key)
 	TGS_TOPIC
 
-
 	var/list/response = list()
 
 	if(length(T) > CONFIG_GET(number/topic_max_size))
@@ -180,7 +179,7 @@ var/world_topic_spam_protect_time = world.timeofday
 			log_topic("(NON-JSON) \"[topic_decoded]\", from:[addr], master:[master], key:[key]")
 		// Fallback check for spacestation13.com requests
 		if(topic_decoded == "status")
-			return list2params(list("players" = length(GLOB.clients)))
+			return get_status_message()
 		response["statuscode"] = 400
 		response["response"] = "Bad Request - Invalid JSON format"
 		return json_encode(response)
