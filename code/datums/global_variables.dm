@@ -372,7 +372,7 @@
 			return .(global.vars[variable])
 
 		if("text")
-			var/var_new = input("Enter new text:","Text",global.vars[variable]) as null|text
+			var/var_new = input("Enter new text:","Text", global.vars[variable]) as null|text
 			if(var_new==null) return
 			global.vars[variable] = var_new
 
@@ -387,22 +387,22 @@
 			global.vars[variable] = var_new
 
 		if("reference")
-			var/var_new = input("Select reference:","Reference",global.vars[variable]) as null|mob|obj|turf|area in world
+			var/var_new = input("Select reference:","Reference", global.vars[variable]) as null|mob|obj|turf|area in world
 			if(var_new==null) return
 			global.vars[variable] = var_new
 
 		if("mob reference")
-			var/var_new = input("Select reference:","Reference",global.vars[variable]) as null|mob in GLOB.mob_list
+			var/var_new = input("Select reference:","Reference", global.vars[variable]) as null|mob in GLOB.mob_list
 			if(var_new==null) return
 			global.vars[variable] = var_new
 
 		if("file")
-			var/var_new = input("Pick file:","File",global.vars[variable]) as null|file
+			var/var_new = input("Pick file:","File", global.vars[variable]) as null|file
 			if(var_new==null) return
 			global.vars[variable] = var_new
 
 		if("icon")
-			var/var_new = input("Pick icon:","Icon",global.vars[variable]) as null|icon
+			var/var_new = input("Pick icon:","Icon", global.vars[variable]) as null|icon
 			if(var_new==null) return
 			global.vars[variable] = var_new
 

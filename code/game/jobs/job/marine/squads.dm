@@ -224,21 +224,25 @@
 	name = SQUAD_UPP_1
 	equipment_color = "#e61919"
 	chat_color = "#e67d7d"
+	minimap_color = MINIMAP_SQUAD_ALPHA
 
 /datum/squad/upp/sun_rise
 	name = SQUAD_UPP_2
 	equipment_color = "#ffc32d"
 	chat_color = "#ffe650"
+	minimap_color = MINIMAP_SQUAD_BRAVO
 
 /datum/squad/upp/veiled_threat
 	name = SQUAD_UPP_3
 	equipment_color = "#c864c8"
 	chat_color = "#ff96ff"
+	minimap_color = MINIMAP_SQUAD_CHARLIE
 
 /datum/squad/upp/death_seekers
 	name = SQUAD_UPP_4
 	equipment_color = "#4148c8"
 	chat_color = "#828cff"
+	minimap_color = MINIMAP_SQUAD_DELTA
 
 /datum/squad/upp/echo
 	name = SQUAD_UPP_5
@@ -248,6 +252,35 @@
 	active = FALSE
 	roundstart = FALSE
 	locked = TRUE
+
+/datum/squad/upp/cryo
+	name = SQUAD_UPP_6
+	equipment_color = "#c47a50"
+	chat_color = "#c47a50"
+	access = list(ACCESS_MARINE_ALPHA, ACCESS_MARINE_BRAVO, ACCESS_MARINE_CHARLIE, ACCESS_MARINE_DELTA)
+	minimap_color = MINIMAP_SQUAD_FOXTROT
+
+	omni_squad_vendor = TRUE
+
+	active = FALSE
+	roundstart = FALSE
+	locked = TRUE
+
+/datum/squad/upp/intel
+	name = SQUAD_UPP_7
+	use_stripe_overlay = FALSE
+	equipment_color = "#053818"
+	minimap_color = MINIMAP_SQUAD_INTEL
+
+	roundstart = FALSE
+	prepend_squad_name_to_assignment = FALSE
+
+	max_engineers = 0
+	max_medics = 0
+	max_specialists = 0
+	max_tl = 0
+	max_smartgun = 0
+	max_leaders = 0
 
 /datum/squad/upp/soz
 	name = SQUAD_UPP_SOZ
@@ -293,26 +326,59 @@
 	name = SQUAD_CLF_1
 	equipment_color = "#c47a50"
 	chat_color = "#c47a50"
+	minimap_color = MINIMAP_SQUAD_ALPHA
 
 /datum/squad/clf/viper
 	name = SQUAD_CLF_2
 	equipment_color = "#c864c8"
 	chat_color = "#ff96ff"
+	minimap_color = MINIMAP_SQUAD_BRAVO
 
 /datum/squad/clf/cobra
 	name = SQUAD_CLF_3
 	equipment_color = "#c47a50"
 	chat_color = "#c47a50"
+	minimap_color = MINIMAP_SQUAD_CHARLIE
 
 /datum/squad/clf/boa
 	name = SQUAD_CLF_4
 	equipment_color = "#ffc32d"
 	chat_color = "#ffe650"
+	minimap_color = MINIMAP_SQUAD_DELTA
 
 /datum/squad/clf/engagers
 	name = SQUAD_CLF_5
 	equipment_color = "#2d7aff"
 	chat_color = "#2d7aff"
+
+/datum/squad/clf/cryo
+	name = SQUAD_CLF_6
+	equipment_color = "#c47a50"
+	chat_color = "#c47a50"
+	access = list(ACCESS_MARINE_ALPHA, ACCESS_MARINE_BRAVO, ACCESS_MARINE_CHARLIE, ACCESS_MARINE_DELTA)
+	minimap_color = MINIMAP_SQUAD_FOXTROT
+
+	omni_squad_vendor = TRUE
+
+	active = FALSE
+	roundstart = FALSE
+	locked = TRUE
+
+/datum/squad/clf/intel
+	name = SQUAD_CLF_7
+	use_stripe_overlay = FALSE
+	equipment_color = "#053818"
+	minimap_color = MINIMAP_SQUAD_INTEL
+
+	roundstart = FALSE
+	prepend_squad_name_to_assignment = FALSE
+
+	max_engineers = 0
+	max_medics = 0
+	max_specialists = 0
+	max_tl = 0
+	max_smartgun = 0
+	max_leaders = 0
 
 //###############################
 /datum/squad/New()

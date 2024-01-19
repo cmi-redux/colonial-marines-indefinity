@@ -22,6 +22,8 @@
 #define SQUAD_UPP_3 "Veiled Threat"
 #define SQUAD_UPP_4 "Death Seekers"
 #define SQUAD_UPP_5 "Echo"
+#define SQUAD_UPP_6 "Foxtrot"
+#define SQUAD_UPP_7 "Intel"
 #define SQUAD_UPP_SOZ "SOZ"
 
 //------------CLF squad------------------//
@@ -30,12 +32,12 @@
 #define SQUAD_CLF_3 "Cobra"
 #define SQUAD_CLF_4 "Boa"
 #define SQUAD_CLF_5 "Engagers"
+#define SQUAD_CLF_6 "Foxtrot"
+#define SQUAD_CLF_7 "Intel"
 
 //------------WY squad-------------------//
 #define SQUAD_WY_6 "PMC"
 #define SQUAD_WY_7 "W-Y DS"
-
-#define SQUADS_SETUP list("First" = list(SQUAD_MARINE_1, SQUAD_UPP_1, SQUAD_CLF_1), "Second" = list(SQUAD_MARINE_2, SQUAD_UPP_2, SQUAD_CLF_2), "Third" = list(SQUAD_MARINE_3, SQUAD_UPP_3, SQUAD_CLF_3), "Fourth" = list(SQUAD_MARINE_4, SQUAD_UPP_4, SQUAD_CLF_4))
 
 ///////////////////////////////////////////
 //-----------JOB NAMES DEFINES-----------//
@@ -453,10 +455,10 @@
 #define JOB_SQUAD_MAIN_SUP_LIST list(JOB_SQUAD_SMARTGUN, JOB_WO_SQUAD_SMARTGUNNER)
 #define JOB_SQUAD_LEADER_LIST list(JOB_SQUAD_LEADER, JOB_WO_SQUAD_LEADER, JOB_MARINE_RAIDER_SL, JOB_UPP_LEADER)
 
-#define SQUAD_SELECTOR list("First" = 1, "Second" = 2, "Third" = 3, "Fourth" = 4)
+#define SQUAD_SELECTOR list("First" = 1, "Second" = 2, "Third" = 3, "Fourth" = 4, "Fifth" = 5, "Sixth" = 6, "Seventh" = 7)
 
 #define SQUAD_BY_FACTION list(\
-	FACTION_MARINE = list(/datum/squad/marine/alpha, /datum/squad/marine/bravo, /datum/squad/marine/charlie, /datum/squad/marine/delta, /datum/squad/marine/echo, /datum/squad/marine/cryo),\
-	FACTION_UPP = list(/datum/squad/upp/red_daragon, /datum/squad/upp/sun_rise, /datum/squad/upp/veiled_threat, /datum/squad/upp/death_seekers, /datum/squad/upp/echo),\
-	FACTION_CLF = list(/datum/squad/clf/python, /datum/squad/clf/viper, /datum/squad/clf/cobra, /datum/squad/clf/boa, /datum/squad/clf/engagers),\
+	FACTION_MARINE = list(/datum/squad/marine/alpha, /datum/squad/marine/bravo, /datum/squad/marine/charlie, /datum/squad/marine/delta, /datum/squad/marine/echo, /datum/squad/marine/cryo, /datum/squad/marine/intel),\
+	FACTION_UPP = list(/datum/squad/upp/red_daragon, /datum/squad/upp/sun_rise, /datum/squad/upp/veiled_threat, /datum/squad/upp/death_seekers, /datum/squad/upp/echo, /datum/squad/marine/cryo, /datum/squad/marine/intel),\
+	FACTION_CLF = list(/datum/squad/clf/python, /datum/squad/clf/viper, /datum/squad/clf/cobra, /datum/squad/clf/boa, /datum/squad/clf/engagers, /datum/squad/marine/cryo, /datum/squad/marine/intel),\
 )

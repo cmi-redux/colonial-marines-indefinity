@@ -547,56 +547,7 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 	SSround_recording.recorder.track_player(human)
 
 //Find which squad has the least population. If all 4 squads are equal it should just use a random one
-/datum/authority/branch/role/proc/get_lowest_squad(mob/living/carbon/human/human)
-	if(!squads.len) //Something went wrong, our squads aren't set up.
-		to_world("Warning, something messed up in get_lowest_squad(). No squads set up!")
-		return null
-
-
-	//we make a list of squad that is randomized so alpha isn't always lowest squad.
-	var/list/squads_copy = squads.Copy()
-	var/list/mixed_squads = list()
-
-	for(var/i= 1 to squads_copy.len)
-		var/datum/squad/squad = pick_n_take(squads_copy)
-		if(squad.roundstart && squad.usable && squad.faction == human.faction.faction_name && squad.name != "Root")
-			mixed_squads += squad
-
-	var/datum/squad/lowest = pick(mixed_squads)
-
-	var/datum/squad/preferred_squad
-	if(human && human.client && human.client.prefs.preferred_squad && human.client.prefs.preferred_squad != "None")
-		preferred_squad = SQUAD_BY_FACTION[human.faction.faction_name][SQUAD_SELECTOR[human.client.prefs.preferred_squad]]
-
-	for(var/datum/squad/lowest_squad in mixed_squads)
-		if(lowest_squad.usable)
-			if(preferred_squad)
-				lowest = lowest_squad
-				break
-
-	if(!lowest)
-		to_world("Warning! Bug in get_random_squad()!")
-		return null
-
-	var/lowest_count = lowest.count
-	var/current_count = 0
-
-	if(!preferred_squad)
-		//Loop through squads.
-		for(var/datum/squad/squad in mixed_squads)
-			if(!squad)
-				to_world("Warning: Null squad in get_lowest_squad. Call a coder!")
-				break //null squad somehow, let's just abort
-			current_count = squad.count //Grab our current squad's #
-			if(current_count >= (lowest_count - 2)) //Current squad count is not much lower than the chosen one. Skip it.
-				continue
-			lowest_count = current_count //We found a winner! This squad is much lower than our default. Make it the new default.
-			lowest = squad //'Select' this squad.
-
-	return lowest //Return whichever squad won the competition.
-
-//This proc is a bit of a misnomer, since there's no actual randomization going on.
-/datum/authority/branch/role/proc/randomize_squad(mob/living/carbon/human/human, skip_limit = FALSE)
+/datum/authority/branch/role/proc/randomize_squad(mob/living/carbon/human/human, skip_limit = FALSE, slot_check)
 	if(!human)
 		return
 
@@ -607,15 +558,6 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 	if(human.assigned_squad) //Wait, we already have a squad. Get outta here!
 		return
 
-	//we make a list of squad that is randomized so alpha isn't always lowest squad.
-	var/list/squads_copy = squads.Copy()
-	var/list/mixed_squads = list()
-	// The following code removes non useable squads from the lists of squads we assign marines too.
-	for(var/i= 1 to squads_copy.len)
-		var/datum/squad/squad = pick_n_take(squads_copy)
-		if(squad.roundstart && squad.usable && squad.faction == human.faction.faction_name && squad.name != "Root")
-			mixed_squads += squad
-
 	//Deal with IOs first
 	if(human.job == JOB_INTEL)
 		var/datum/squad/intel_squad = get_squad_by_name(SQUAD_MARINE_7)
@@ -625,115 +567,58 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 		intel_squad.put_marine_in_squad(human) //Found one, finish up
 		return
 
-	//Deal with non-standards first.
-	//Non-standards are distributed regardless of squad population.
-	//If the number of available positions for the job are more than max_whatever, it will break.
-	//Ie. 8 squad medic jobs should be available, and total medics in squads should be 8.
-	var/real_job = GET_DEFAULT_ROLE(human.job)
-	if(!(real_job in JOB_SQUAD_NORMAL_LIST) && human.job != "Reinforcements")
-		var/datum/squad/preferred_squad
-		if(human && human.client && human.client.prefs.preferred_squad && human.client.prefs.preferred_squad != "None")
-			preferred_squad = squads_by_type[SQUAD_BY_FACTION[human.faction.faction_name][SQUAD_SELECTOR[human.client.prefs.preferred_squad]]]
+	if(!(human.job in JOB_SQUAD_NORMAL_LIST) && human.job != "Reinforcements")
+		if(human.job in JOB_SQUAD_ENGI_LIST)
+			slot_check = "engineers"
+		else if(human.job in JOB_SQUAD_MEDIC_LIST)
+			slot_check = "medics"
+		else if(human.job in JOB_SQUAD_LEADER_LIST)
+			slot_check = "leaders"
+		else if(human.job in JOB_SQUAD_SPEC_LIST)
+			slot_check = "specialists"
+		else if(human.job in JOB_SQUAD_SUP_LIST)
+			slot_check = "tl"
+		else if(human.job in JOB_SQUAD_MAIN_SUP_LIST)
+			slot_check = "smartgun"
 
-		var/datum/squad/lowest
+	//we make a list of squad that is randomized so alpha isn't always lowest squad.
+	var/list/mixed_squads = list()
+	for(var/datum/squad/squad in squads)
+		if(squad.roundstart && squad.usable && squad.faction == human.faction.faction_name && squad.name != "Root")
+			mixed_squads += squad
 
-		if(real_job in JOB_SQUAD_ENGI_LIST)
-			for(var/datum/squad/squad in mixed_squads)
-				if(squad.usable && squad.roundstart)
-					if(!skip_limit && squad.num_engineers >= squad.max_engineers)
-						continue
-					if(squad == preferred_squad)
-						squad.put_marine_in_squad(human) //fav squad has a spot for us, no more searching needed.
-						return
-
-					if(!lowest)
-						lowest = squad
-					else if(squad.num_engineers < lowest.num_engineers)
-						lowest = squad
-
-		else if(real_job in JOB_SQUAD_MEDIC_LIST)
-			for(var/datum/squad/squad in mixed_squads)
-				if(squad.usable && squad.roundstart)
-					if(!skip_limit && squad.num_medics >= squad.max_medics)
-						continue
-					if(squad == preferred_squad)
-						squad.put_marine_in_squad(human) //fav squad has a spot for us.
-						return
-
-					if(!lowest)
-						lowest = squad
-					else if(squad.num_medics < lowest.num_medics)
-						lowest = squad
-
-		else if(real_job in JOB_SQUAD_LEADER_LIST)
-			for(var/datum/squad/squad in mixed_squads)
-				if(squad.usable && squad.roundstart)
-					if(!skip_limit && squad.num_leaders >= squad.max_leaders)
-						continue
-					if(squad == preferred_squad)
-						squad.put_marine_in_squad(human) //fav squad has a spot for us.
-						return
-
-					if(!lowest)
-						lowest = squad
-					else if(squad.num_leaders < lowest.num_leaders)
-						lowest = squad
-
-		else if(real_job in JOB_SQUAD_SPEC_LIST)
-			for(var/datum/squad/squad in mixed_squads)
-				if(squad.usable && squad.roundstart)
-					if(!skip_limit && squad.num_specialists >= squad.max_specialists)
-						continue
-					if(squad == preferred_squad)
-						squad.put_marine_in_squad(human) //fav squad has a spot for us.
-						return
-
-					if(!lowest)
-						lowest = squad
-					else if(squad.num_specialists < lowest.num_specialists)
-						lowest = squad
-
-		else if(real_job in JOB_SQUAD_SUP_LIST)
-			for(var/datum/squad/squad in mixed_squads)
-				if(squad.usable && squad.roundstart)
-					if(!skip_limit && squad.num_tl >= squad.max_tl)
-						continue
-					if(squad == preferred_squad)
-						squad.put_marine_in_squad(human) //fav squad has a spot for us.
-						return
-
-					if(!lowest)
-						lowest = squad
-					else if(squad.num_tl < lowest.num_tl)
-						lowest = squad
-
-		else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
-			for(var/datum/squad/squad in mixed_squads)
-				if(squad.usable && squad.roundstart)
-					if(!skip_limit && squad.num_smartgun >= squad.max_smartgun)
-						continue
-					if(squad == preferred_squad)
-						squad.put_marine_in_squad(human) //fav squad has a spot for us.
-						return
-
-					if(!lowest)
-						lowest = squad
-					else if(squad.num_smartgun < lowest.num_smartgun)
-						lowest = squad
-		if(!lowest)
-			var/ranpick = rand(1,4)
-			lowest = mixed_squads[ranpick]
+	var/datum/squad/preferred_squad
+	if(human && human.client && human.client.prefs.preferred_squad)
+		if(human.client.prefs.preferred_squad in SQUAD_SELECTOR)
+			preferred_squad = SQUAD_BY_FACTION[human.faction.faction_name][SQUAD_SELECTOR[human.client.prefs.preferred_squad]]
 		else
-			if(!lowest.put_marine_in_squad(human))
-				to_chat(human, "Something went badly with randomize_squad()! Tell a coder!")
+			preferred_squad = human.client.prefs.preferred_squad
 
-	else
-		//Deal with marines. They get distributed to the lowest populated squad.
-		var/datum/squad/given_squad = get_lowest_squad(human)
-		if(!given_squad || !istype(given_squad)) //Something went horribly wrong!
-			to_chat(human, "Something went wrong with randomize_squad()! Tell a coder!")
+	var/datum/squad/lowest
+	for(var/datum/squad/squad in mixed_squads)
+		if(slot_check && !skip_limit)
+			if(squad.vars["num_[slot_check]"] >= squad.vars["max_[slot_check]"])
+				continue
+
+		if(preferred_squad == "None")
+			squad.put_marine_in_squad(human)
 			return
-		given_squad.put_marine_in_squad(human) //Found one, finish up
+
+		if(squad == preferred_squad)
+			squad.put_marine_in_squad(human) //fav squad has a spot for us, no more searching needed.
+			return
+
+		if(!lowest)
+			lowest = squad
+		else if(slot_check)
+			if(squad.vars["num_[slot_check]"] < lowest.vars["num_[slot_check]"])
+				lowest = squad
+
+	if(!lowest || !lowest.put_marine_in_squad(human))
+		to_world("Warning! Bug in get_random_squad()!")
+		return
+
+	return lowest //Return whichever squad won the competition.
 
 /datum/authority/branch/role/proc/get_caste_by_text(name)
 	var/mob/living/carbon/xenomorph/M
