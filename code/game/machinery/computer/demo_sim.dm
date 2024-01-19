@@ -135,5 +135,4 @@
 	E.make_copy_of(O)
 	E.prime(TRUE)
 	sim_location = get_turf(simulation.sim_camera)
-	sim_location.chemexploded = FALSE //Make sure that this actually resets
 	QDEL_IN(E,1 MINUTES)

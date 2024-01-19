@@ -61,7 +61,7 @@
 	icon_state = "hull" //Codersprite to make it more obvious in the map maker what's a hull wall and what's not
 	//icon_state = "testwall0_debug" //Uncomment to check hull in the map editor.
 	walltype = WALL_HULL
-	hull = TRUE //Impossible to destroy or even damage. Used for outer walls that would breach into space, potentially some special walls
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 
 /turf/closed/wall/almayer/no_door_tile
 	tiles_with = list(/turf/closed/wall,/obj/structure/window/framed,/obj/structure/window_frame,/obj/structure/girder)
@@ -85,7 +85,7 @@
 /turf/closed/wall/almayer/white/hull
 	name = "ultra reinforced hull"
 	desc = "An extremely reinforced metal wall used to isolate potentially dangerous areas"
-	hull = TRUE
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 	icon_state = "hull"
 
 /turf/closed/wall/almayer/research/can_be_dissolved()
@@ -200,7 +200,6 @@
 	desc = "A metal wall used to separate rooms on spaceships from the cold void of space."
 	icon = 'icons/turf/walls/walls.dmi'
 	icon_state = "sulaco"
-	hull = 0 //Can't be deconstructed
 
 	damage_cap = HEALTH_WALL
 	max_temperature = 28000 //K, walls will take damage if they're next to a fire hotter than this
@@ -209,7 +208,7 @@
 /turf/closed/wall/sulaco/hull
 	name = "outer hull"
 	desc = "A reinforced outer hull, probably to prevent breaches"
-	hull = TRUE
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 	max_temperature = 50000 // Nearly impossible to melt
 	walltype = WALL_SULACO
 
@@ -217,7 +216,7 @@
 /turf/closed/wall/sulaco/unmeltable
 	name = "outer hull"
 	desc = "A reinforced outer hull, probably to prevent breaches"
-	hull = TRUE
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 	max_temperature = 50000 // Nearly impossible to melt
 	walltype = WALL_SULACO
 
@@ -229,7 +228,7 @@
 	icon = 'icons/turf/walls/walls.dmi'
 	icon_state = "riveted"
 	opacity = TRUE
-	hull = TRUE
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 
 
 
@@ -405,7 +404,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 	icon = 'icons/turf/walls/prison/bone_resin.dmi'
 	icon_state = "bone_resin"
 	walltype = WALL_BONE_RESIN
-	hull = TRUE
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 
 //Misc walls
 
@@ -484,7 +483,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 	icon_state = "cavewall"
 	desc = "A rough wall of hardened rock."
 	walltype = WALL_CAVE
-	hull = TRUE
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 	color = "#535963"
 
 /turf/closed/wall/rock/add_debris_element()
@@ -515,7 +514,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 	icon_state = "strata_ice"
 	desc = "An absolutely massive collection of columns made of ice. The longer you stare, the deeper the ice seems to go."
 	walltype = WALL_STRATA_ICE //Not a metal wall
-	hull = TRUE //Can't break this ice.
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 
 /turf/closed/wall/strata_ice/dirty
 	icon_state = "strata_ice_dirty"
@@ -528,7 +527,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 	icon_state = "jungle_veg"
 	desc = "Exceptionally dense vegetation that you can't see through."
 	walltype = WALL_JUNGLE_UPDATED //Not a metal wall
-	hull = TRUE
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 
 /turf/closed/wall/strata_outpost_ribbed //this guy is our reinforced replacement
 	name = "ribbed outpost walls"
@@ -555,7 +554,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 	max_temperature = 28000
 
 /turf/closed/wall/strata_outpost/reinforced/hull
-	hull = TRUE
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 	icon_state = "strata_hull"
 	desc = "A thick and chunky metal wall that is, just by virtue of its placement and imposing presence, entirely indestructible."
 
@@ -578,7 +577,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 /turf/closed/wall/solaris/reinforced/hull
 	name = "heavy reinforced colony wall"
 	icon_state = "solaris_interior_h"
-	hull = TRUE
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 
 /turf/closed/wall/solaris/reinforced/hull/lv522
 	name = "Colony Windbreaker"
@@ -587,7 +586,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 	name = "rock wall"
 	icon_state = "solaris_rock"
 	walltype = WALL_SOLARIS_ROCK
-	hull = TRUE
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 
 
 
@@ -611,7 +610,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 /turf/closed/wall/dev/reinforced/hull
 	name = "greybox hull wall"
 	desc = "Just like in the orange box! This one is indestructible."
-	hull = TRUE
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 
 //KUTJEVO DESERT WALLS / SHARED TRIJENT TILESET
 
@@ -621,7 +620,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 	icon = 'icons/turf/walls/kutjevo/kutjevo.dmi'
 	icon_state = "rock"
 	walltype = WALL_KUTJEVO_ROCK
-	hull = TRUE
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 
 /turf/closed/wall/kutjevo/rock/border
 	icon_state = "rock_border"//no sandy edges
@@ -646,7 +645,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 	icon_state = "colonyh"
 	name = "reinforced colony wall"
 	desc = "Dusty worn down walls that were once built to last. This one is indestructible."
-	hull = TRUE
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 
 //ICE COLONY, AKA SHIVA'S SNOWBALL TOBLERONE WALLS
 /turf/closed/wall/shiva
@@ -657,7 +656,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 	icon_state = "shiva_ice"
 	desc = "Slabs on slabs of dirty black ice crusted over ancient rock formations. The permafrost fluctuates between 20in and 12in during the summer months."
 	walltype = WALL_SHIVA_ICE //Not a metal wall
-	hull = TRUE //Can't break this ice.
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 
 /turf/closed/wall/shiva/prefabricated
 	name = "prefabricated structure wall"
@@ -678,7 +677,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 	icon_state = "shiva_fab_r_h"
 	desc = "It cannot be destroyed by any means you have available. Perhaps praying to the gods may help."
 	walltype = WALL_SHIVA_FAB_R
-	hull = TRUE
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 
 /turf/closed/wall/shiva/prefabricated/orange
 	icon_state = "shiva_fab_oj"
@@ -741,7 +740,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 
 /turf/closed/wall/resin/pillar
 	name = "resin pillar segment"
-	hull = TRUE
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 
 /turf/closed/wall/resin/proc/set_resin_builder(mob/M)
 	if(istype(M) && should_track_build)
@@ -1281,10 +1280,10 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 	icon = 'icons/turf/walls/hunter.dmi'
 	icon_state = "metal"//DMI specific name
 	walltype = WALL_HUNTERSHIP
-	hull = TRUE
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
 
 /turf/closed/wall/huntership/destructible
 	name = "degraded hunter wall"
 	color = "#c5beb4"
 	desc = "Ancient beyond measure, these walls make up the hull of a vessel of non human origin. Despite this, they can be felled with plastic explosives like any other opaque blocker."
-	hull = 0
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF

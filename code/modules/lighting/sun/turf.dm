@@ -199,9 +199,9 @@ Sunlight System
 		.["WEATHERPROOF"] =  TRUE
 	else
 		if(recursionStarted)
-			// This src is acting as a ceiling - so if we are a floor we weatherproof + block the sunlight of our down-Z turf
+			// This src is acting as a ceiling - so if we are a floor we TURF_WEATHE_RPROOF + block the sunlight of our down-Z turf
 			.["SKYVISIBLE"] = istransparentturf(src) //If we are glass floor, we don't block
-			.["WEATHERPROOF"] = weatherproof //If we are air or space, we aren't weatherproof
+			.["WEATHERPROOF"] = turf_flags & TURF_WEATHE_RPROOF //If we are air or space, we aren't TURF_WEATHE_RPROOF
 		else //We are open, so assume open to the elements
 			.["SKYVISIBLE"] = TRUE
 			.["WEATHERPROOF"] = FALSE
@@ -219,7 +219,7 @@ Sunlight System
 		.["WEATHERPROOF"] =  TRUE
 	else
 		// EVERY turf must be transparent for sunlight - so &=
-		// ANY turf must be closed for weatherproof - so |=
+		// ANY turf must be closed for TURF_WEATHE_RPROOF - so |=
 		var/turf/ceiling = get_step_multiz(src, UP)
 		if(ceiling)
 			var/list/ceilingStat = ceiling.get_ceiling_status(TRUE) //Pass TRUE because we are now acting as a ceiling
@@ -233,7 +233,7 @@ Sunlight System
 		return
 	if(locate(/obj/structure/window/framed) in src)
 		return
-	if(!weather_affectable || density || !effect)
+	if(!(turf_flags & TURF_EFFECT_AFFECTABLE) || density || !effect)
 		return
 
 	effect.effect_affect(src)

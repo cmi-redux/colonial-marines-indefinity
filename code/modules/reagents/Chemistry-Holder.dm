@@ -597,16 +597,13 @@
 	if(intensity > 0)
 		var/firecolor = mix_burn_colors(supplements)
 		combust(sourceturf, radius, intensity, duration, supplemented, firecolor, smokerad, fire_penetrating) // TODO: Implement directional flames
-	if(exploded && sourceturf)
-		sourceturf.chemexploded = TRUE // to prevent grenade stacking
-		addtimer(CALLBACK(sourceturf, TYPE_PROC_REF(/turf, reset_chemexploded)), 2 SECONDS)
 	trigger_volatiles = FALSE
 	return exploded
 
 /datum/reagents/proc/explode(turf/sourceturf, ex_power, ex_falloff, ex_falloff_shape, dir, angle)
 	if(!sourceturf)
 		return
-	if(sourceturf.chemexploded)
+	if(exploded)
 		return // Has recently exploded, so no explosion this time. Prevents instagib satchel charges.
 
 	var/shards = EXPLOSION_BASE_SHARDS // Because explosions are messy
@@ -654,7 +651,7 @@
 /datum/reagents/proc/combust(turf/sourceturf, radius, intensity, duration, supplemented, firecolor, smokerad, fire_penetrating)
 	if(!sourceturf)
 		return
-	if(sourceturf.chemexploded)
+	if(exploded)
 		return // Has recently exploded, so no explosion this time. Prevents instagib satchel charges.
 
 	var/flameshape = FLAMESHAPE_DEFAULT
@@ -704,9 +701,6 @@
 
 	new /obj/flamer_fire(sourceturf, create_cause_data("chemical fire", source_mob?.resolve()), R, radius, FALSE, flameshape)
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), sourceturf, 'sound/weapons/gun_flamethrower1.ogg', 25, 1), 0.5 SECONDS)
-
-/turf/proc/reset_chemexploded()
-	chemexploded = FALSE
 
 //*****************************************************************************************************//
 

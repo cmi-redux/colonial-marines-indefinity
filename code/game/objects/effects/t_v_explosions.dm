@@ -248,7 +248,7 @@
 	set_light(radius, radius, color)
 	generate_particles(radius, power)
 	var/turf/turf = get_turf(src)
-	if(turf.can_bloody)
+	if(turf.turf_flags & TURF_EFFECT_AFFECTABLE)
 		icon_state = null
 		return
 	var/image/I = image(icon, src, icon_state, 10, -32, -32)
@@ -261,7 +261,7 @@
 ///Generate the particles
 /obj/effect/temp_visual/explosion/proc/generate_particles(radius, power)
 	var/turf/turf = get_turf(src)
-	if(turf.can_bloody)
+	if(turf.turf_flags & TURF_EFFECT_AFFECTABLE)
 		smoke_wave = new(src, /particles/wave_water)
 		explosion_smoke = new(src, /particles/explosion_water)
 		dirt_kickup = new(src, /particles/water_splash)

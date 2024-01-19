@@ -25,4 +25,3 @@
 	icon = 'icons/turf/floors/reinf_glass.dmi'
 	icon_state = "reinf_glass"
 	base_icon = "reinf_glass"
-	hull_floor = TRUE

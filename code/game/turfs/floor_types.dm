@@ -283,7 +283,7 @@
 
 /turf/open/floor/almayer/no_build
 	allow_construction = FALSE
-	hull_floor = TRUE
+	turf_flags = TURF_MULTIZ|TURF_EFFECT_AFFECTABLE|TURF_HULL
 
 // RESEARCH STUFF
 /turf/open/floor/almayer/research/containment/entrance
@@ -331,7 +331,7 @@
 /turf/open/floor/roof/ship_hull
 	icon = 'icons/turf/roofs/roof_ship.dmi'
 	name = "hull"
-	hull_floor = TRUE
+	turf_flags = TURF_MULTIZ|TURF_EFFECT_AFFECTABLE|TURF_HULL
 
 /turf/open/floor/roof/ship_hull/lab
 	icon = 'icons/turf/roofs/roof_lab_ship.dmi'
@@ -418,9 +418,8 @@
 /turf/open/floor/engine
 	name = "reinforced floor"
 	icon_state = "engine"
+	turf_flags = TURF_MULTIZ|TURF_EFFECT_AFFECTABLE
 	intact_tile = 0
-	breakable_tile = FALSE
-	burnable_tile = FALSE
 	baseturfs = /turf/open/floor
 
 /turf/open/floor/engine/make_plating()

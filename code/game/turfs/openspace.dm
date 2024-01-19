@@ -13,8 +13,8 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 /turf/open/space/openspace
 	icon = 'icons/turf/open_space.dmi'
 	icon_state = "invisible"
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF
 	baseturfs = /turf/open/openspace
-	weatherproof = FALSE
 	antipierce = 0
 
 /turf/open/space/openspace/Initialize(mapload) // handle plane and layer here so that they don't cover other obs/turfs in Dream Maker
@@ -64,16 +64,10 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 	name = "open space"
 	desc = "Watch your step!"
 	icon_state = "invisible"
-	turf_flags = TURF_MULTIZ
+	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF
 	weedable = NOT_WEEDABLE
-	weather_affectable = FALSE
 	baseturfs = /turf/open/openspace
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	weather_affectable = FALSE
-	can_bloody = FALSE
-	always_lit = TRUE
-	supports_surgery = FALSE
-	weatherproof = FALSE
 	antipierce = 0
 
 /turf/open/openspace/Initialize(mapload) // handle plane and layer here so that they don't cover other obs/turfs in Dream Maker

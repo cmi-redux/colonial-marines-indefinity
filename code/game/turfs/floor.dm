@@ -4,15 +4,10 @@
 	name = "floor"
 	icon = 'icons/turf/floors/floors.dmi'
 	icon_state = "floor"
-	turf_flags = TURF_MULTIZ
+	turf_flags = TURF_MULTIZ|TURF_EFFECT_AFFECTABLE|TURF_BURNABLE|TURF_BREAKABLE
 	baseturfs = /turf/open/floor/plating
 	var/broken = FALSE
 	var/burnt = FALSE
-	var/mineral = "metal"
-	breakable_tile = TRUE
-	var/burnable_tile = TRUE
-	var/hull_floor = FALSE //invincible floor, can't interact with it
-	var/image/wet_overlay
 
 	var/tile_type = /obj/item/stack/tile/plasteel
 	var/plating_type = /turf/open/floor/plating
@@ -20,7 +15,7 @@
 
 /turf/open/floor/get_examine_text(mob/user)
 	. = ..()
-	if(!hull_floor)
+	if(!(turf_flags & TURF_HULL))
 		var/tool_output = list()
 		if(tool_flags & REMOVE_CROWBAR)
 			tool_output += SPAN_GREEN("crowbar")
@@ -39,7 +34,7 @@
 
 
 /turf/open/floor/ex_act(severity, explosion_direction)
-	if(hull_floor)
+	if(turf_flags & TURF_HULL)
 		return 0
 	switch(severity)
 		if(0 to EXPLOSION_THRESHOLD_LOW)
@@ -55,7 +50,7 @@
 	return 0
 
 /turf/open/floor/fire_act(exposed_temperature, exposed_volume)
-	if(hull_floor)
+	if(turf_flags & TURF_HULL)
 		return
 	if(!burnt && prob(5))
 		burn_tile()
@@ -92,7 +87,7 @@
 /turf/open/floor/proc/break_tile()
 	if(broken && prob(85))
 		ScrapeAway()
-	if(!breakable_tile || hull_floor)
+	if(!(turf_flags & TURF_BREAKABLE) || turf_flags & TURF_HULL)
 		return
 	broken = TRUE
 	if(is_plasteel_floor())
@@ -116,7 +111,7 @@
 		broken = 1
 
 /turf/open/floor/proc/burn_tile()
-	if(!burnable_tile|| hull_floor) return
+	if(!(turf_flags & TURF_BURNABLE)|| turf_flags & TURF_HULL) return
 	if(broken || burnt) return
 	burnt = TRUE
 	if(is_plasteel_floor())
@@ -147,7 +142,7 @@
 	ChangeTurf(plating_type)
 
 /turf/open/floor/attackby(obj/item/hitting_item, mob/user)
-	if(hull_floor) //no interaction for hulls
+	if(turf_flags & TURF_HULL) //no interaction for hulls
 		return
 
 	if(src.weeds)
@@ -175,26 +170,6 @@
 		return
 
 	return ..()
-
-/turf/open/floor/wet_floor(wet_level = FLOOR_WET_WATER)
-	if(wet >= wet_level) return
-	wet = wet_level
-	if(wet_overlay)
-		overlays -= wet_overlay
-		wet_overlay = null
-	wet_overlay = image('icons/effects/water.dmi',src,"wet_floor")
-	overlays += wet_overlay
-
-	var/oldtype = type
-	spawn(800)
-		if(type != oldtype)
-			return
-		if(wet == wet_level)
-			wet = 0
-			if(wet_overlay)
-				overlays -= wet_overlay
-				wet_overlay = null
-
 
 /turf/open/floor/sandstone
 	name = "sandstone floor"

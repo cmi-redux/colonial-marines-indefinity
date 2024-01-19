@@ -4,10 +4,6 @@
 	icon_state = "0"
 	turf_flags = TURF_MULTIZ
 	weedable = NOT_WEEDABLE
-	weather_affectable = FALSE
-	can_bloody = FALSE
-	always_lit = TRUE
-	supports_surgery = FALSE
 	plane = PLANE_SPACE
 	layer = SPACE_LAYER
 	vis_flags = VIS_INHERIT_ID

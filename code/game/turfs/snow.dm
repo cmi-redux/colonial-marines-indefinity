@@ -7,7 +7,6 @@
 	name = "snow layer"
 	icon = 'icons/turf/floors/snow2.dmi'
 	icon_state = "snow_0"
-	is_groundmap_turf = TRUE
 	shoefootstep = FOOTSTEP_SNOW
 	barefootstep = FOOTSTEP_SNOW
 	mediumxenofootstep = FOOTSTEP_SNOW

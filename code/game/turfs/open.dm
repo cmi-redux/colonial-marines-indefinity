@@ -3,15 +3,10 @@
 
 /turf/open
 	plane = FLOOR_PLANE
-	turf_flags = TURF_MULTIZ
+	turf_flags = TURF_MULTIZ|TURF_EFFECT_AFFECTABLE
 	minimap_color = MINIMAP_AREA_COLONY
-	var/floortype
-	var/breakable_tile = FALSE
-	var/is_groundmap_turf = FALSE //whether this a turf used as main turf type for the 'outside' of a map.
 	var/allow_construction = TRUE //whether you can build things like barricades on this turf.
 	var/bleed_layer = 0 //snow layer
-	var/wet = 0 //whether the turf is wet (only used by floors).
-	var/supports_surgery = TRUE
 	var/scorchable = FALSE //if TRUE set to be an icon_state which is the full sprite version of whatever gets scorched --> for border turfs like grass edges and shorelines
 	var/scorchedness = 0 //how scorched is this turf 0 to 3
 	var/icon_state_before_scorching //this is really dumb, blame the mappers...
@@ -172,9 +167,8 @@
 	name = "void"
 	icon = 'icons/turf/open_space.dmi'
 	icon_state = "black"
+	turf_flags = TURF_MULTIZ
 	mouse_opacity = FALSE
-	can_bloody = FALSE
-	supports_surgery = FALSE
 	plane = PLANE_SPACE
 	layer = SPACE_LAYER
 
@@ -183,9 +177,7 @@
 	opacity = TRUE
 
 /turf/open/river
-	weather_affectable = FALSE
-	can_bloody = FALSE
-	supports_surgery = FALSE
+	turf_flags = TURF_MULTIZ
 	shoefootstep = FOOTSTEP_WATER
 	barefootstep = FOOTSTEP_WATER
 	mediumxenofootstep = FOOTSTEP_WATER
@@ -209,7 +201,6 @@
 	icon_state = "mars_sand_1"
 	turf_flags = TURF_MULTIZ|TURF_TRENCHING
 	weedable = FULLY_WEEDABLE
-	is_groundmap_turf = TRUE
 	minimap_color = MINIMAP_MARS_DIRT
 
 	antipierce = 5
@@ -270,8 +261,6 @@
 /turf/open/beach
 	name = "Beach"
 	icon = 'icons/turf/floors/beach.dmi'
-	supports_surgery = FALSE
-	turf_flags = TURF_MULTIZ
 
 	antipierce = 15
 
@@ -291,7 +280,6 @@
 	icon_state = "sand"
 	turf_flags = TURF_MULTIZ|TURF_TRENCHING
 	weedable = FULLY_WEEDABLE
-	supports_surgery = TRUE
 	shoefootstep = FOOTSTEP_SAND
 	barefootstep = FOOTSTEP_SAND
 	mediumxenofootstep = FOOTSTEP_SAND
@@ -300,8 +288,8 @@
 	name = "Coastline"
 	icon = 'icons/turf/beach2.dmi'
 	icon_state = "sandwater"
+	turf_flags = TURF_MULTIZ
 	weedable = NOT_WEEDABLE
-	weather_affectable = FALSE
 	shoefootstep = FOOTSTEP_SAND
 	barefootstep = FOOTSTEP_SAND
 	mediumxenofootstep = FOOTSTEP_SAND
@@ -309,9 +297,8 @@
 /turf/open/beach/water
 	name = "Water"
 	icon_state = "water"
+	turf_flags = TURF_MULTIZ
 	weedable = NOT_WEEDABLE
-	weather_affectable = FALSE
-	can_bloody = FALSE
 	shoefootstep = FOOTSTEP_WATER
 	barefootstep = FOOTSTEP_WATER
 	mediumxenofootstep = FOOTSTEP_WATER
@@ -320,9 +307,8 @@
 /turf/open/beach/water2
 	name = "Water"
 	icon_state = "water"
+	turf_flags = TURF_MULTIZ
 	weedable = NOT_WEEDABLE
-	weather_affectable = FALSE
-	can_bloody = FALSE
 	shoefootstep = FOOTSTEP_WATER
 	barefootstep = FOOTSTEP_WATER
 	mediumxenofootstep = FOOTSTEP_WATER
@@ -522,8 +508,6 @@
 	icon_state = "seashallow"
 	turf_flags = TURF_MULTIZ
 	weedable = NOT_WEEDABLE
-	weather_affectable = FALSE
-	can_bloody = FALSE
 	var/icon_overlay = "riverwater"
 	var/covered = 0
 	var/covered_name = "grate"
@@ -533,7 +517,6 @@
 	var/no_overlay = FALSE
 	var/base_river_slowdown = 1.75
 	baseturfs = /turf/open/gm/river
-	supports_surgery = FALSE
 	minimap_color = MINIMAP_WATER
 	shoefootstep = FOOTSTEP_WATER
 	barefootstep = FOOTSTEP_WATER
@@ -681,9 +664,7 @@
 	icon_state = "beach"
 	turf_flags = TURF_MULTIZ
 	weedable = NOT_WEEDABLE
-	weather_affectable = FALSE
 	baseturfs = /turf/open/gm/coast
-	supports_surgery = FALSE
 
 	layer = UNDER_TURF_LAYER -0.03
 
@@ -736,10 +717,7 @@
 	icon_state = "seadeep"
 	turf_flags = TURF_MULTIZ
 	weedable = NOT_WEEDABLE
-	weather_affectable = FALSE
-	can_bloody = FALSE
 	baseturfs = /turf/open/gm/riverdeep
-	supports_surgery = FALSE
 	minimap_color = MINIMAP_WATER
 	shoefootstep = FOOTSTEP_WATER
 	barefootstep = FOOTSTEP_WATER
@@ -755,7 +733,6 @@
 
 /turf/open/gm/river/no_overlay
 	no_overlay = TRUE
-	supports_surgery = FALSE
 
 
 //ELEVATOR SHAFT-----------------------------------//
@@ -765,7 +742,6 @@
 	icon_state = "black"
 	turf_flags = TURF_MULTIZ
 	density = TRUE
-	supports_surgery = FALSE
 
 
 //Nostromo turfs
@@ -775,10 +751,8 @@
 	desc = "It's a long way down to the ocean from here."
 	icon = 'icons/turf/ground_map.dmi'
 	icon_state = "seadeep"
+	turf_flags = TURF_MULTIZ
 	weedable = NOT_WEEDABLE
-	weather_affectable = FALSE
-	can_bloody = FALSE
-	supports_surgery = FALSE
 	shoefootstep = FOOTSTEP_WATER
 	barefootstep = FOOTSTEP_WATER
 	mediumxenofootstep = FOOTSTEP_WATER
@@ -957,10 +931,7 @@
 	icon_spawn_state = "water"
 	turf_flags = TURF_MULTIZ
 	weedable = NOT_WEEDABLE
-	weather_affectable = FALSE
-	can_bloody = FALSE
 	bushes_spawn = FALSE
-	supports_surgery = FALSE
 	shoefootstep = FOOTSTEP_WATER
 	barefootstep = FOOTSTEP_WATER
 	mediumxenofootstep = FOOTSTEP_WATER
@@ -1028,7 +999,6 @@
 	icon_state = "floor"
 	icon = 'icons/turf/shuttle.dmi'
 	allow_construction = FALSE
-	supports_surgery = FALSE
 	shoefootstep = FOOTSTEP_PLATING
 	barefootstep = FOOTSTEP_HARD
 	mediumxenofootstep = FOOTSTEP_PLATING
@@ -1040,7 +1010,6 @@
 /turf/open/shuttle/predship
 	name = "ship floor"
 	icon_state = "floor6"
-	supports_surgery = TRUE
 	allow_construction = TRUE
 
 //not really plating, just the look
@@ -1082,4 +1051,3 @@
 /turf/open/shuttle/vehicle/med
 	name = "floor"
 	icon_state = "dark_sterile"
-	supports_surgery = TRUE

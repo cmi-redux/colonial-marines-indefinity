@@ -191,9 +191,9 @@
 			return FALSE
 
 	if(istype(target, /turf/closed/wall))
-		var/turf/closed/wall/W = target
-		if(W.hull)
-			to_chat(user, SPAN_WARNING("You are unable to stick \the [src] to the [W]!"))
+		var/turf/closed/wall/targeted_wall = target
+		if(targeted_wall.turf_flags & TURF_HULL)
+			to_chat(user, SPAN_WARNING("You are unable to stick \the [src] to the [targeted_wall]!"))
 			return FALSE
 
 	if(istype(target, /obj/structure/window))
@@ -276,7 +276,7 @@
 	plant_target.ex_act(2000, dir, temp_cause)
 
 	for(var/turf/closed/wall/W in orange(1, target_turf))
-		if(W.hull)
+		if(W.turf_flags & TURF_HULL)
 			continue
 		W.ex_act(1000 * penetration, , cause_data)
 
@@ -337,8 +337,8 @@
 
 	if(istype(target, /turf/closed/wall))
 		var/turf/closed/wall/targeted_wall = target
-		if(targeted_wall.hull)
-			to_chat(user, SPAN_WARNING("You are unable to stick [src] to [targeted_wall]!"))
+		if(targeted_wall.turf_flags & TURF_HULL)
+			to_chat(user, SPAN_WARNING("You are unable to stick \the [src] to the [targeted_wall]!"))
 			return FALSE
 
 	return TRUE

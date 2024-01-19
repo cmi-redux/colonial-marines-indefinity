@@ -131,7 +131,7 @@ RCD
 		if(3)
 			if(istype(A, /turf/closed/wall))
 				var/turf/closed/wall/WL = A
-				if(WL.hull)
+				if(WL.turf_flags & TURF_HULL)
 					return 0
 				if(istype(A, /turf/closed/wall/r_wall) && !canRwall)
 					return 0

@@ -117,8 +117,6 @@
 /datum/reagent/water/reaction_turf(turf/T, volume)
 	if(!istype(T)) return
 	src = null
-	if(volume >= 3)
-		T.wet_floor(FLOOR_WET_WATER)
 
 /datum/reagent/water/reaction_obj(obj/O, volume)
 	src = null

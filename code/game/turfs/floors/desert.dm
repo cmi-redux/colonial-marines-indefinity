@@ -6,7 +6,6 @@
 	icon = 'icons/turf/floors/desert.dmi'
 	icon_state = "desert1"
 	weedable = FULLY_WEEDABLE
-	is_groundmap_turf = TRUE
 
 /turf/open/desert/ex_act(severity) //Should make it indestructible
 	return
@@ -99,8 +98,8 @@
 /turf/open/desert/desert_shore
 	icon = 'icons/turf/floors/desert_water.dmi'
 	icon_state = "shore1"
+	turf_flags = TURF_MULTIZ
 	var/toxic = 0
-	supports_surgery = FALSE
 
 	layer = UNDER_TURF_LAYER -0.03
 
@@ -149,7 +148,7 @@
 /turf/open/desert/waterway
 	icon = 'icons/turf/floors/desert_water.dmi'
 	icon_state = "dock"
-	supports_surgery = FALSE
+	turf_flags = TURF_MULTIZ
 
 /turf/open/desert/waterway/desert_waterway
 	icon = 'icons/turf/floors/desert_water.dmi'

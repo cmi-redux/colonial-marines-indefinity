@@ -52,8 +52,6 @@
 	SSatoms.InitializeAtoms(atoms)
 
 	for(var/turf/turf as anything in turfs)
-		if(turf.always_lit)
-			continue
 		var/area/area = turf.loc
 		if(!area.static_lighting)
 			continue

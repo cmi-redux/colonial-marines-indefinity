@@ -156,10 +156,6 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[oddbutton ? user.client.auto
 	if(!screwloose && !oddbutton && prob(5))
 		visible_message("[src] makes an excited beeping booping sound!")
 
-	if(screwloose && prob(5))
-		if(isturf(loc))
-			var/turf/T = loc
-			T.wet_floor(FLOOR_WET_WATER)
 	if(oddbutton && prob(5))
 		visible_message("Something flies out of [src]. He seems to be acting oddly.")
 		var/obj/effect/decal/cleanable/blood/gibs/gib = new /obj/effect/decal/cleanable/blood/gibs(loc)

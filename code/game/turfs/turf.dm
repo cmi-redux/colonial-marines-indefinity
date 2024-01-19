@@ -29,12 +29,9 @@
 	icon = 'icons/turf/floors/floors.dmi'
 	vis_flags = VIS_INHERIT_ID | VIS_INHERIT_PLANE// Important for interaction with and visualization of openspace.
 
-	var/turf_flags = TURF_MULTIZ
-	var/weatherproof = TRUE
+	var/turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_EFFECT_AFFECTABLE
 	var/weedable = FULLY_WEEDABLE
-	var/weather_affectable = TRUE
 	var/intact_tile = 1 //used by floors to distinguish floor with/without a floortile(e.g. plating).
-	var/can_bloody = TRUE //Can blood spawn on this turf?
 
 	var/list/linked_sectors
 	var/list/linked_pylons
@@ -43,15 +40,10 @@
 	var/list/datum/automata_cell/autocells
 	var/list/obj/effect/decal/cleanable/cleanables
 
-	var/hull = FALSE
 	var/antipierce = 1
-
-	///Bool, whether this turf will always be illuminated no matter what area it is in
-	var/always_lit = FALSE
 
 	var/list/baseturfs = /turf/baseturf_bottom
 	var/changing_turf = FALSE
-	var/chemexploded = FALSE // Prevents explosion stacking
 
 	///Lumcount added by sources other than lighting datum objects, such as the overlay lighting component.
 	var/dynamic_lumcount = 0
@@ -656,7 +648,7 @@
 		if(turf_above && !istype(turf_above, /turf/open/openspace))
 			if(istype(turf_above, /turf/closed/wall))
 				var/turf/closed/wall/turf = turf_above
-				if(turf && !turf.hull)
+				if(turf && !(turf.turf_flags & TURF_HULL))
 					turf_above.ceiling_debris(protection_penetration)
 					turf_above.ChangeTurf(/turf/open/openspace)
 			else
@@ -664,7 +656,7 @@
 				turf_above.ChangeTurf(/turf/open/openspace)
 
 	protection_penetration -= get_pylon_protection_level()
-	if(hull)
+	if(turf_flags & TURF_HULL)
 		protection_penetration -= 10
 	else
 		protection_penetration -= antipierce
@@ -749,9 +741,6 @@
 		return "The very thin roof lies above. Nothing is getting through that."
 	else if(ceiling.antipierce < 16)
 		return "The ceiling above is made of thick material. Nothing is getting through that."
-
-/turf/proc/wet_floor()
-	return
 
 /turf/proc/get_cell(type)
 	for(var/datum/automata_cell/C in autocells)
