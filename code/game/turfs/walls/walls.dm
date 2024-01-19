@@ -9,6 +9,11 @@
 
 	antipierce = 2
 
+	blend_turfs = list(/turf/closed/wall)
+	noblend_turfs = list(/turf/closed/wall/mineral, /turf/closed/wall/almayer/research/containment)
+	blend_objects = list(/obj/structure/machinery/door, /obj/structure/window_frame, /obj/structure/window/framed)
+	noblend_objects = list(/obj/structure/machinery/door/window)
+
 	var/walltype = WALL_METAL
 	var/junctiontype //when walls smooth with one another, the type of junction each wall is.
 	var/thermite = 0

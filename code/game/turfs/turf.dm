@@ -57,10 +57,10 @@
 	var/list/wall_connections = list("0", "0", "0", "0")
 	var/neighbors_list = 0
 	var/special_icon = TRUE
-	var/list/blend_turfs = list(/turf/closed/wall)
-	var/list/noblend_turfs = list(/turf/closed/wall/mineral, /turf/closed/wall/almayer/research/containment) //Turfs to avoid blending with
-	var/list/blend_objects = list(/obj/structure/machinery/door, /obj/structure/window_frame, /obj/structure/window/framed) // Objects which to blend with
-	var/list/noblend_objects = list(/obj/structure/machinery/door/window) //Objects to avoid blending with (such as children of listed blend objects.
+	var/list/blend_turfs = list()
+	var/list/noblend_turfs = list() //Turfs to avoid blending with
+	var/list/blend_objects = list() // Objects which to blend with
+	var/list/noblend_objects = list() //Objects to avoid blending with (such as children of listed blend objects.
 
 /turf/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE) // this doesn't parent call for optimisation reasons
