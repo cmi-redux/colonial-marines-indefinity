@@ -35,6 +35,3 @@
 ///From base of mob/living/ZImpactDamage() (mob/living, levels, turf/t)
 #define COMSIG_LIVING_Z_IMPACT "living_z_impact"
 	#define NO_Z_IMPACT_DAMAGE (1<<0)
-
-///from base of atom/proc/Initialize(): sent any time a new atom is created in this atom
-#define COMSIG_ATOM_INITIALIZED_ON "atom_initialized_on"

@@ -420,11 +420,9 @@ Parameters are passed from New.
 		CRASH("Warning: [src]([type]) initialized multiple times!")
 	flags_atom |= INITIALIZED
 
-	if(loc)
-		SEND_SIGNAL(loc, COMSIG_ATOM_INITIALIZED_ON, src) /// Sends a signal that the new atom `src`, has been created at `loc`
-
 	if(isturf(loc) && opacity)
 		var/turf/opaque_turf = loc
+		opaque_turf.on_atom_created(src)
 		opaque_turf.directional_opacity = ALL_CARDINALS // No need to recalculate it in this case, it's guaranteed to be on afterwards anyways.
 
 	pass_flags = pass_flags_cache[type]

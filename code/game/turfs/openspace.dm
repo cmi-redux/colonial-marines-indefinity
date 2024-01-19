@@ -73,16 +73,11 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 /turf/open/openspace/Initialize(mapload) // handle plane and layer here so that they don't cover other obs/turfs in Dream Maker
 	. = ..()
 	overlays += GLOB.openspace_backdrop_one_for_all //Special grey square for projecting backdrop darkness filter on it.
-	RegisterSignal(src, COMSIG_ATOM_INITIALIZED_ON, PROC_REF(on_atom_created))
 	return INITIALIZE_HINT_LATELOAD
 
 /turf/open/openspace/LateInitialize()
 	. = ..()
 	AddElement(/datum/element/turf_z_transparency, is_openspace = TRUE)
-
-/turf/open/openspace/ChangeTurf(path, list/new_baseturfs, flags)
-	UnregisterSignal(src, COMSIG_ATOM_INITIALIZED_ON)
-	return ..()
 
 /**
  * Prepares a moving movable to be precipitated if Move() is successful.
@@ -108,8 +103,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
  * so flying mobs, qdeleted movables and things that were moved somewhere else during
  * Initialize() won't fall by accident.
  */
-/turf/open/openspace/proc/on_atom_created(datum/source, atom/created_atom)
-	SIGNAL_HANDLER
+/turf/open/openspace/on_atom_created(atom/created_atom)
 	if(ismovable(created_atom))
 		//Drop it only when it's finished initializing, not before.
 		addtimer(CALLBACK(src, PROC_REF(zfall_if_on_turf), created_atom), 0 SECONDS)

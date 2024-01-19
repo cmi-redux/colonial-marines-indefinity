@@ -161,11 +161,7 @@
 				WARNING("Z-level expansion occurred without no_changeturf set, this may cause problems when /turf/AfterChange is called")
 
 		for(var/line in gset.gridLines)
-			//custom CHECK_TICK here because we don't want things created while we're sleeping to not initialize
-			if(TICK_CHECK)
-				SSatoms.map_loader_stop()
-				stoplag()
-				SSatoms.map_loader_begin()
+			CHECK_TICK
 			if((ycrd - y_offset + 1) < y_lower || (ycrd - y_offset + 1) > y_upper) //Reverse operation and check if it is out of bounds of cropping.
 				--ycrd
 				continue

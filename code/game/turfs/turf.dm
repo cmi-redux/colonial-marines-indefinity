@@ -959,3 +959,6 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	underlay_appearance.icon_state = icon_state
 	underlay_appearance.dir = adjacency_dir
 	return TRUE
+
+/turf/proc/on_atom_created(atom/created_atom)
+	return
