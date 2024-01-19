@@ -544,7 +544,6 @@
 /obj/item/device/radio/intercom/alamo{
 	pixel_y = 24
 	},
-/obj/structure/machinery/chem_dispenser/soda/beer,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin5"
 	},

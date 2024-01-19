@@ -2286,7 +2286,6 @@
 	tag = "icon-intact-supply (SOUTHEAST)"
 	},
 /obj/structure/surface/table/almayer,
-/obj/structure/machinery/chem_dispenser/soda/beer,
 /turf/open/floor/plating/plating_catwalk,
 /area/almayer/squads/alpha)
 "akB" = (
@@ -46563,14 +46562,6 @@
 	},
 /turf/open/floor/plating/plating_catwalk,
 /area/almayer/shipboard/navigation)
-"iyy" = (
-/obj/structure/surface/table/almayer,
-/obj/structure/machinery/chem_dispenser/soda/beer,
-/turf/open/floor/almayer{
-	icon_state = "emeraldfull";
-	tag = "icon-emeraldfull"
-	},
-/area/almayer/living/briefing)
 "iyJ" = (
 /obj/structure/pipes/trinary/mixer{
 	dir = 4;
@@ -56892,16 +56883,6 @@
 	tag = "icon-emeraldcorner"
 	},
 /area/almayer/squads/charlie)
-"mZM" = (
-/obj/structure/surface/table/almayer,
-/obj/structure/machinery/chem_dispenser/soda/beer{
-	icon_state = "soda_dispenser"
-	},
-/turf/open/floor/almayer{
-	icon_state = "redfull";
-	tag = "icon-redfull"
-	},
-/area/almayer/living/briefing)
 "mZO" = (
 /obj/structure/pipes/standard/simple/hidden/supply{
 	dir = 4;
@@ -60152,9 +60133,6 @@
 	},
 /obj/structure/disposalpipe/segment{
 	dir = 4
-	},
-/obj/structure/machinery/chem_dispenser/soda/beer{
-	icon_state = "soda_dispenser"
 	},
 /turf/open/floor/almayer,
 /area/almayer/squads/delta)
@@ -65623,7 +65601,6 @@
 /area/almayer/medical/lower_medical_lobby)
 "qVU" = (
 /obj/structure/surface/table/almayer,
-/obj/structure/machinery/chem_dispenser/soda/beer,
 /turf/open/floor/almayer,
 /area/almayer/squads/bravo)
 "qVY" = (
@@ -80199,9 +80176,6 @@
 /area/almayer/command/airoom)
 "wZQ" = (
 /obj/structure/surface/table/almayer,
-/obj/structure/machinery/chem_dispenser/soda/beer{
-	icon_state = "soda_dispenser"
-	},
 /turf/open/floor/almayer,
 /area/almayer/squads/charlie)
 "wZW" = (
@@ -97842,13 +97816,13 @@ vWk
 bLk
 bQM
 bQO
-mZM
+bLk
 cvg
 fjw
 iPo
 czX
 cGw
-iyy
+cIg
 dbS
 dhv
 dtT
