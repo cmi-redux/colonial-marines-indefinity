@@ -62,17 +62,17 @@
 	if(prob(severity/EXPLOSION_THRESHOLD_LOW * 100))
 		qdel(src)
 
-/obj/effect/particle_effect/smoke/Crossed(atom/movable/M)
+/obj/effect/particle_effect/smoke/Crossed(atom/movable/atom_movable)
 	..()
-	if(istype(M, /obj/item/projectile/beam))
-		var/obj/item/projectile/beam/B = M
+	if(istype(atom_movable, /obj/item/projectile/beam))
+		var/obj/item/projectile/beam/B = atom_movable
 		B.damage = (B.damage/2)
-	if(iscarbon(M))
-		affect(M)
+	if(iscarbon(atom_movable))
+		affect(atom_movable)
 
-/obj/effect/particle_effect/smoke/proc/apply_smoke_effect(turf/T)
-	for(var/mob/living/L in T)
-		affect(L)
+/obj/effect/particle_effect/smoke/proc/apply_smoke_effect(turf/target_turf)
+	for(var/mob/living/living in target_turf)
+		affect(living)
 
 /obj/effect/particle_effect/smoke/proc/spread_smoke(direction)
 	set waitfor = FALSE
@@ -113,8 +113,8 @@
 				return TRUE
 
 
-/obj/effect/particle_effect/smoke/proc/affect(mob/living/carbon/M)
-	if(istype(M))
+/obj/effect/particle_effect/smoke/proc/affect(mob/living/carbon/carbon)
+	if(istype(carbon))
 		return FALSE
 	return TRUE
 
@@ -128,22 +128,22 @@
 
 /obj/effect/particle_effect/smoke/bad/Move()
 	. = ..()
-	for(var/mob/living/carbon/M in get_turf(src))
-		affect(M)
+	for(var/mob/living/carbon/carbon in get_turf(src))
+		affect(carbon)
 
-/obj/effect/particle_effect/smoke/bad/affect(mob/living/carbon/M)
+/obj/effect/particle_effect/smoke/bad/affect(mob/living/carbon/carbon)
 	..()
-	if(M.internal != null && M.wear_mask && (M.wear_mask.flags_inventory & ALLOWINTERNALS))
+	if(carbon.internal != null && carbon.wear_mask && (carbon.wear_mask.flags_inventory & ALLOWINTERNALS))
 		return
 	else
 		if(prob(20))
-			M.drop_held_item()
-		M.apply_damage(1, OXY)
-		if(M.coughedtime != 1)
-			M.coughedtime = 1
-			if(ishuman(M)) //Humans only to avoid issues
-				M.emote("cough")
-			addtimer(VARSET_CALLBACK(M, coughedtime, 0), 2 SECONDS)
+			carbon.drop_held_item()
+		carbon.apply_damage(1, OXY)
+		if(carbon.coughedtime != 1)
+			carbon.coughedtime = 1
+			if(ishuman(carbon)) //Humans only to avoid issues
+				carbon.emote("cough")
+			addtimer(VARSET_CALLBACK(carbon, coughedtime, 0), 2 SECONDS)
 
 /////////////////////////////////////////////
 // Sleep smoke
@@ -154,20 +154,20 @@
 
 /obj/effect/particle_effect/smoke/sleepy/Move()
 	. = ..()
-	for(var/mob/living/carbon/M in get_turf(src))
-		affect(M)
+	for(var/mob/living/carbon/carbon in get_turf(src))
+		affect(carbon)
 
-/obj/effect/particle_effect/smoke/sleepy/affect(mob/living/carbon/M as mob )
+/obj/effect/particle_effect/smoke/sleepy/affect(mob/living/carbon/carbon as mob )
 	if(!..())
 		return 0
 
-	M.drop_held_item()
-	M:sleeping++
-	if(M.coughedtime != 1)
-		M.coughedtime = 1
-		if(ishuman(M)) //Humans only to avoid issues
-			M.emote("cough")
-		addtimer(VARSET_CALLBACK(M, coughedtime, 0), 2 SECONDS)
+	carbon.drop_held_item()
+	carbon.sleeping++
+	if(carbon.coughedtime != 1)
+		carbon.coughedtime = 1
+		if(ishuman(carbon)) //Humans only to avoid issues
+			carbon.emote("cough")
+		addtimer(VARSET_CALLBACK(carbon, coughedtime, 0), 2 SECONDS)
 
 /////////////////////////////////////////////
 // Mustard Gas
@@ -217,34 +217,34 @@
 
 /obj/effect/particle_effect/smoke/phosphorus/Move()
 	. = ..()
-	for(var/mob/living/carbon/M in get_turf(src))
-		affect(M)
+	for(var/mob/living/carbon/carbon in get_turf(src))
+		affect(carbon)
 
-/obj/effect/particle_effect/smoke/phosphorus/affect(mob/living/carbon/M)
+/obj/effect/particle_effect/smoke/phosphorus/affect(mob/living/carbon/carbon)
 	..()
 	burn_damage = 40
-	if(ishuman(M))
-		if(M.internal != null && M.wear_mask && (M.wear_mask.flags_inventory & ALLOWINTERNALS))
+	if(ishuman(carbon))
+		if(carbon.internal != null && carbon.wear_mask && (carbon.wear_mask.flags_inventory & ALLOWINTERNALS))
 			return
 		else
 			if(prob(20))
-				M.drop_held_item()
-			M.apply_damage(1, OXY)
-			M.updatehealth()
-			if(M.coughedtime < world.time)
-				M.emote("cough")
-				M.coughedtime = world.time + next_cough
+				carbon.drop_held_item()
+			carbon.apply_damage(1, OXY)
+			carbon.updatehealth()
+			if(carbon.coughedtime < world.time)
+				carbon.emote("cough")
+				carbon.coughedtime = world.time + next_cough
 
-		M.last_damage_data = cause_data
+		carbon.last_damage_data = cause_data
 
-	if(isyautja(M) || isxeno(M))
+	if(isyautja(carbon) || isxeno(carbon))
 		burn_damage *= xeno_yautja_reduction
 
-	M.burn_skin(burn_damage)
-	M.adjust_fire_stacks(applied_fire_stacks)
-	M.fire_reagent = new /datum/reagent/napalm/ut()
-	M.IgniteMob()
-	M.updatehealth()
+	carbon.burn_skin(burn_damage)
+	carbon.adjust_fire_stacks(applied_fire_stacks)
+	carbon.fire_reagent = new /datum/reagent/napalm/ut()
+	carbon.IgniteMob()
+	carbon.updatehealth()
 
 
 /////////////////////////////////////////////
@@ -394,47 +394,49 @@
 		D.update_health(XENO_ACID_STATIONAR_DAMAGE)
 
 //No effect when merely entering the smoke turf, for balance reasons
-/obj/effect/particle_effect/smoke/xeno_burn/Crossed(mob/living/carbon/M as mob)
+/obj/effect/particle_effect/smoke/xeno_burn/Crossed(mob/living/carbon/carbon as mob)
 	return
 
-/obj/effect/particle_effect/smoke/xeno_burn/affect(mob/living/carbon/M)
+/obj/effect/particle_effect/smoke/xeno_burn/affect(mob/living/carbon/carbon)
 	..()
 
-	if(M.ally(faction))
+	if(carbon.ally(faction))
 		return
 
-	if(isyautja(M) && prob(75))
-		return
-	if(M.stat == DEAD)
-		return
-	if(HAS_TRAIT(M, TRAIT_NESTED) && M.status_flags & XENO_HOST)
+	if(isyautja(carbon) && prob(75))
 		return
 
-	M.last_damage_data = cause_data
+	if(carbon.stat == DEAD)
+		return
 
-	M.apply_damage(3, OXY) //Basic oxyloss from "can't breathe"
+	if(HAS_TRAIT(carbon, TRAIT_NESTED) && carbon.status_flags & XENO_HOST)
+		return
 
-	if(isxeno(M))
-		M.apply_damage(gas_damage * XVX_ACID_DAMAGEMULT, BURN) //Inhalation damage
-	else
-		M.apply_damage(gas_damage, BURN) //Inhalation damage
+	carbon.last_damage_data = cause_data
+	if(!carbon.wear_mask || !(carbon.wear_mask.flags_inventory & BLOCKGASEFFECT))
+		carbon.apply_damage(3, OXY) //Basic oxyloss from "can't breathe"
 
-	if(M.coughedtime != 1 && !M.stat && ishuman(M)) //Coughing/gasping
-		M.coughedtime = 1
-		if(prob(50))
-			M.emote("cough")
+		if(isxeno(carbon))
+			carbon.apply_damage(gas_damage * XVX_ACID_DAMAGEMULT, BURN) //Inhalation damage
 		else
-			M.emote("gasp")
-		addtimer(VARSET_CALLBACK(M, coughedtime, 0), 1.5 SECONDS)
+			carbon.apply_damage(gas_damage, BURN) //Inhalation damage
+
+	if(carbon.coughedtime != 1 && !carbon.stat && ishuman(carbon)) //Coughing/gasping
+		carbon.coughedtime = 1
+		if(prob(50))
+			carbon.emote("cough")
+		else
+			carbon.emote("gasp")
+		addtimer(VARSET_CALLBACK(carbon, coughedtime, 0), 1.5 SECONDS)
 
 	//Topical damage (acid on exposed skin)
-	to_chat(M, SPAN_DANGER("Your skin feels like it is melting away!"))
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		H.apply_armoured_damage(amount*rand(15, 20), ARMOR_BIO, BURN) //Burn damage, randomizes between various parts //Amount corresponds to upgrade level, 1 to 2.5
+	to_chat(carbon, SPAN_DANGER("Your skin feels like it is melting away!"))
+	if(ishuman(carbon))
+		var/mob/living/carbon/human/human = carbon
+		human.apply_armoured_damage(amount*rand(15, 20), ARMOR_BIO, BURN) //Burn damage, randomizes between various parts //Amount corresponds to upgrade level, 1 to 2.5
 	else
-		M.burn_skin(5) //Failsafe for non-humans
-	M.updatehealth()
+		carbon.burn_skin(5) //Failsafe for non-humans
+	carbon.updatehealth()
 
 //Xeno neurotox smoke.
 /obj/effect/particle_effect/smoke/xeno_weak
@@ -448,48 +450,50 @@
 	var/msg = "Your skin tingles as the gas consumes you!" // Message given per tick. Changes depending on which species is hit.
 
 //No effect when merely entering the smoke turf, for balance reasons
-/obj/effect/particle_effect/smoke/xeno_weak/Crossed(mob/living/carbon/moob as mob)
+/obj/effect/particle_effect/smoke/xeno_weak/Crossed(mob/living/carbon/carbon as mob)
 	return
 
-/obj/effect/particle_effect/smoke/xeno_weak/affect(mob/living/carbon/moob) // This applies every tick someone is in the smoke
+/obj/effect/particle_effect/smoke/xeno_weak/affect(mob/living/carbon/carbon) // This applies every tick someone is in the smoke
 	..()
-	if(isxeno(moob))
+	if(isxeno(carbon))
 		return
-	if(isyautja(moob))
+	if(isyautja(carbon))
 		neuro_dose = neuro_dose*2 // Yautja get half effects
 		msg = "You resist the tingling smoke's effects!"
 		return
-	if(moob.stat == DEAD)
+	if(carbon.stat == DEAD)
 		return
-	if(HAS_TRAIT(moob, TRAIT_NESTED) && moob.status_flags & XENO_HOST)
+	if(HAS_TRAIT(carbon, TRAIT_NESTED) && carbon.status_flags & XENO_HOST)
 		return
-	if(ishuman(moob))
-		var/mob/living/carbon/human/H = moob
-		if(H.chem_effect_flags & CHEM_EFFECT_RESIST_NEURO)
+	if(ishuman(carbon))
+		var/mob/living/carbon/human/human = carbon
+		if(human.chem_effect_flags & CHEM_EFFECT_RESIST_NEURO)
 			return
-	var/effect_amt = round(6 + amount*6)
-	moob.eye_blurry = max(moob.eye_blurry, effect_amt)
-	moob.apply_effect(max(moob.eye_blurry, effect_amt), EYE_BLUR)
-	moob.apply_damage(5, OXY) //  Base "I can't breath oxyloss" Slightly more longer lasting then stamina damage
-	// reworked code below
-	if(!issynth(moob))
-		var/datum/effects/neurotoxin/neuro_effect = locate() in moob.effects_list
-		if(!neuro_effect)
-			neuro_effect = new(moob, cause_data.resolve_mob())
-			neuro_effect.strength = effect_amt
-		neuro_effect.duration += neuro_dose
-		if(moob.coughedtime != 1 && !moob.stat) //Coughing/gasping
-			moob.coughedtime = 1
-			if(prob(50))
-				moob.Slow(1)
-				moob.emote("cough")
-			else
-				moob.emote("gasp")
-			addtimer(VARSET_CALLBACK(moob, coughedtime, 0), 1.5 SECONDS)
-	else
-		msg = "You are consumed by the harmless gas, it is hard to navigate in!"
-		moob.apply_effect(SLOW,1)
-	to_chat(moob, SPAN_DANGER(msg))
+
+	if(!carbon.wear_mask || !(carbon.wear_mask.flags_inventory & BLOCKGASEFFECT))
+		var/effect_amt = round(6 + amount*6)
+		carbon.eye_blurry = max(carbon.eye_blurry, effect_amt)
+		carbon.apply_effect(max(carbon.eye_blurry, effect_amt), EYE_BLUR)
+		carbon.apply_damage(5, OXY) //  Base "I can't breath oxyloss" Slightly more longer lasting then stamina damage
+		// reworked code below
+		if(!issynth(carbon))
+			var/datum/effects/neurotoxin/neuro_effect = locate() in carbon.effects_list
+			if(!neuro_effect)
+				neuro_effect = new(carbon, cause_data.resolve_mob())
+				neuro_effect.strength = effect_amt
+			neuro_effect.duration += neuro_dose
+			if(carbon.coughedtime != 1 && !carbon.stat) //Coughing/gasping
+				carbon.coughedtime = 1
+				if(prob(50))
+					carbon.Slow(1)
+					carbon.emote("cough")
+				else
+					carbon.emote("gasp")
+				addtimer(VARSET_CALLBACK(carbon, coughedtime, 0), 1.5 SECONDS)
+		else
+			msg = "You are consumed by the harmless gas, it is hard to navigate in!"
+			carbon.apply_effect(SLOW,1)
+	to_chat(carbon, SPAN_DANGER(msg))
 
 /obj/effect/particle_effect/smoke/xeno_weak_fire
 	time_to_live = 16
@@ -499,50 +503,50 @@
 	smokeranking = SMOKE_RANK_BOILER
 
 //No effect when merely entering the smoke turf, for balance reasons
-/obj/effect/particle_effect/smoke/xeno_weak_fire/Crossed(mob/living/carbon/moob as mob)
-	if(!istype(moob))
+/obj/effect/particle_effect/smoke/xeno_weak_fire/Crossed(mob/living/carbon/carbon as mob)
+	if(!istype(carbon))
 		return
 
-	moob.ExtinguishMob()
+	carbon.ExtinguishMob()
 	. = ..()
 
-/obj/effect/particle_effect/smoke/xeno_weak_fire/affect(mob/living/carbon/moob)
+/obj/effect/particle_effect/smoke/xeno_weak_fire/affect(mob/living/carbon/carbon)
 	..()
 
-	if(isxeno(moob))
+	if(isxeno(carbon))
 		return
-	if(isyautja(moob) && prob(75))
+	if(isyautja(carbon) && prob(75))
 		return
-	if(moob.stat == DEAD)
+	if(carbon.stat == DEAD)
 		return
-	if(HAS_TRAIT(moob, TRAIT_NESTED) && moob.status_flags & XENO_HOST)
+	if(HAS_TRAIT(carbon, TRAIT_NESTED) && carbon.status_flags & XENO_HOST)
 		return
 
 	var/effect_amt = round(6 + amount*6)
 
-	moob.apply_damage(9, OXY) // MUCH harsher
-	moob.SetEarDeafness(max(moob.ear_deaf, round(effect_amt*1.5))) //Paralysis of hearing system, aka deafness
-	if(!moob.eye_blind) //Eye exposure damage
-		to_chat(moob, SPAN_DANGER("Your eyes sting. You can't see!"))
-	moob.SetEyeBlind(round(effect_amt/3))
-	if(moob.coughedtime != 1 && !moob.stat) //Coughing/gasping
-		moob.coughedtime = 1
+	carbon.apply_damage(9, OXY) // MUCH harsher
+	carbon.SetEarDeafness(max(carbon.ear_deaf, round(effect_amt*1.5))) //Paralysis of hearing system, aka deafness
+	if(!carbon.eye_blind) //Eye exposure damage
+		to_chat(carbon, SPAN_DANGER("Your eyes sting. You can't see!"))
+	carbon.SetEyeBlind(round(effect_amt/3))
+	if(carbon.coughedtime != 1 && !carbon.stat) //Coughing/gasping
+		carbon.coughedtime = 1
 		if(prob(50))
-			moob.emote("cough")
+			carbon.emote("cough")
 		else
-			moob.emote("gasp")
-		addtimer(VARSET_CALLBACK(moob, coughedtime, 0), 1.5 SECONDS)
+			carbon.emote("gasp")
+		addtimer(VARSET_CALLBACK(carbon, coughedtime, 0), 1.5 SECONDS)
 	if(prob(20))
-		moob.apply_effect(1, WEAKEN)
+		carbon.apply_effect(1, WEAKEN)
 
 	//Topical damage (neurotoxin on exposed skin)
-	to_chat(moob, SPAN_DANGER("Your body is going numb, almost as if paralyzed!"))
+	to_chat(carbon, SPAN_DANGER("Your body is going numb, almost as if paralyzed!"))
 	if(prob(40 + round(amount*15))) //Highly likely to drop items due to arms/hands seizing up
-		moob.drop_held_item()
-	if(ishuman(moob))
-		var/mob/living/carbon/human/Human = moob
-		Human.temporary_slowdown = max(Human.temporary_slowdown, 4) //One tick every two second
-		Human.recalculate_move_delay = TRUE
+		carbon.drop_held_item()
+	if(ishuman(carbon))
+		var/mob/living/carbon/human/human = carbon
+		human.temporary_slowdown = max(human.temporary_slowdown, 4) //One tick every two second
+		human.recalculate_move_delay = TRUE
 
 /obj/effect/particle_effect/smoke/xeno_weak_fire/spread_smoke(direction)
 	set waitfor = FALSE
@@ -566,8 +570,8 @@
 
 		for(var/atom/A in T)
 			if(istype(A, /mob/living))
-				var/mob/living/M = A
-				M.ExtinguishMob()
+				var/mob/living/living = A
+				living.ExtinguishMob()
 			if(istype(A, /obj/flamer_fire))
 				qdel(A)
 
@@ -653,8 +657,8 @@
 
 	for(var/atom/A in location)
 		if(istype(A, /mob/living))
-			var/mob/living/M = A
-			M.ExtinguishMob()
+			var/mob/living/living = A
+			living.ExtinguishMob()
 		if(istype(A, /obj/flamer_fire))
 			qdel(A)
 
