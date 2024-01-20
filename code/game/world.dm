@@ -2,9 +2,9 @@
 var/world_view_size = 7
 var/lobby_view_size = 16
 
-var/internal_tick_usage = 0
+#define RESTART_COUNTER_PATH "data/round_counter.txt"
+GLOBAL_VAR(restart_counter)
 
-var/list/reboot_sfx = file2list("config/reboot_sfx.txt")
 /world
 	mob = /mob/new_player
 	turf = /turf/open/space/basic
@@ -18,7 +18,6 @@ var/list/reboot_sfx = file2list("config/reboot_sfx.txt")
 	if(debug_server)
 		LIBCALL(debug_server, "auxtools_init")()
 		enable_debugging()
-	internal_tick_usage = 0.2 * world.tick_lag
 	hub_password = "kMZy3U5jJHSiBQjr"
 
 #ifdef BYOND_TRACY
@@ -84,9 +83,13 @@ var/list/reboot_sfx = file2list("config/reboot_sfx.txt")
 
 	update_status()
 
+	if(fexists(RESTART_COUNTER_PATH))
+		GLOB.restart_counter = text2num(trim(file2text(RESTART_COUNTER_PATH)))
+		fdel(RESTART_COUNTER_PATH)
+
 	//Scramble the coords obsfucator
-	obfs_x = rand(-500, 500) //A number between -2000 and 2000
-	obfs_y = rand(-500, 500) //A number between -2000 and 2000
+	obfs_x = rand(-500, 500) //A number between -500 and 500
+	obfs_y = rand(-500, 500) //A number between -500 and 500
 
 	spawn(3000) //so we aren't adding to the round-start lag
 		if(CONFIG_GET(flag/ToRban))
@@ -253,8 +256,24 @@ var/world_topic_spam_protect_time = world.timeofday
 	#endif
 
 	if(TgsAvailable())
+		if(shutdown)
+			TgsChangeRebootType(2)
+		var/do_hard_reboot
+		var/ruhr = CONFIG_GET(number/rounds_until_hard_restart)
+		switch(ruhr)
+			if(-1)
+				do_hard_reboot = FALSE
+			if(0)
+				do_hard_reboot = TRUE
+			else
+				if(GLOB.restart_counter >= ruhr)
+					do_hard_reboot = TRUE
+				else
+					text2file("[++GLOB.restart_counter]", RESTART_COUNTER_PATH)
+					do_hard_reboot = FALSE
+		if(do_hard_reboot)
+			TgsChangeRebootType(1)
 		TgsReboot()
-		TgsEndProcess()
 	else
 		if(shutdown)
 			shutdown()
@@ -262,7 +281,7 @@ var/world_topic_spam_protect_time = world.timeofday
 			..(reason)
 
 /world/proc/send_reboot_sound()
-	var/reboot_sound = SAFEPICK(reboot_sfx)
+	var/reboot_sound = SAFEPICK(CONFIG_GET(str_list/end_round_music))
 	if(reboot_sound)
 		var/sound/reboot_sound_ref = sound(reboot_sound)
 		for(var/client/client as anything in GLOB.clients)
@@ -376,19 +395,18 @@ var/failed_old_db_connections = 0
 
 var/datum/BSQL_Connection/connection
 /proc/setup_database_connection()
-
 	if(failed_db_connections > FAILED_DB_CONNECTION_CUTOFF) //If it failed to establish a connection more than 5 times in a row, don't bother attempting to conenct anymore.
 		return 0
 
 
 	return .
 
+#undef FAILED_DB_CONNECTION_CUTOFF
+
 /proc/set_global_view(view_size)
 	world_view_size = view_size
 	for(var/client/c in GLOB.clients)
 		c.view = world_view_size
-
-#undef FAILED_DB_CONNECTION_CUTOFF
 
 /proc/give_image_to_client(obj/O, icon_text)
 	var/image/I = image(null, O)

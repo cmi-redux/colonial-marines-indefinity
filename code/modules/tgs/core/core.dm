@@ -89,6 +89,11 @@
 		if(result != TGS_UNIMPLEMENTED)
 			return result
 
+/world/TgsChangeRebootType(new_state)
+	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
+	if(api)
+		api.ChangeRebootType(new_state)
+
 /world/TgsReboot()
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)

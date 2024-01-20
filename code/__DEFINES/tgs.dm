@@ -153,6 +153,9 @@
 /// Put this at the start of [/world/proc/Topic].
 #define TGS_TOPIC var/tgs_topic_return = TgsTopic(args[1]); if(tgs_topic_return) return tgs_topic_return
 
+/world/proc/TgsChangeRebootType(new_type)
+	return
+
 /**
  * Call this as late as possible in [world/proc/Reboot] (BEFORE ..()).
  */

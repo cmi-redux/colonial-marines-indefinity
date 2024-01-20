@@ -28,6 +28,9 @@ TGS_PROTECT_DATUM(/datum/tgs_api)
 /datum/tgs_api/proc/OnTopic(T)
 	return TGS_UNIMPLEMENTED
 
+/datum/tgs_api/proc/ChangeRebootType(new_state)
+	return TGS_UNIMPLEMENTED
+
 /datum/tgs_api/proc/OnReboot()
 	return TGS_UNIMPLEMENTED
 

@@ -148,6 +148,9 @@
 				return istext(custom_command_result) ? custom_command_result : SERVICE_RETURN_SUCCESS
 	return "Unknown command: [command]"
 
+/datum/tgs_api/v3210/ChangeRebootType(new_state)
+	reboot_mode = new_state
+
 /datum/tgs_api/v3210/OnReboot()
 	switch(reboot_mode)
 		if(REBOOT_MODE_HARD)
