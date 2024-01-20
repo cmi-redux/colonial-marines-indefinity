@@ -54,7 +54,7 @@ SUBSYSTEM_DEF(factions)
 	return ..()
 
 /datum/controller/subsystem/factions/fire()
-	if(!current_active_run)
+	if(length(current_active_run))
 		active_factions = list()
 		processing_tasks = 0
 

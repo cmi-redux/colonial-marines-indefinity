@@ -194,7 +194,7 @@
 		to_chat(src, SPAN_WARNING("You did not get enlisted in the response team. Better luck next time!"))
 
 /datum/emergency_call/proc/activate(quiet_launch = FALSE, announce = TRUE, turf/override_spawn_loc, announce_dispatch_message = TRUE)
-	set waitfor = 0
+	set waitfor = FALSE
 	if(!SSticker.mode) //Something horribly wrong with the gamemode ticker
 		return
 

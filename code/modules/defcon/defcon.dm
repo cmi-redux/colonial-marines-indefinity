@@ -158,7 +158,7 @@
 
 /datum/objectives_datum/proc/announce_level()
 	var/name = "[r_uppertext(GLOB.faction_datum[associated_faction])] DEFCON LEVEL LOWERED"
-	var/input = "THREAT ASSESSMENT LEVEL INCREASED TO [last_objectives_completion_percentage*100]%.\n\nDEFCON level lowered to [current_level]. Additional assets have been authorised to handle the situation."
+	var/input = "THREAT ASSESSMENT LEVEL INCREASED TO [last_objectives_completion_percentage]%.\n\nDEFCON level lowered to [current_level]. Additional assets have been authorised to handle the situation."
 	faction_announcement(input, name, 'sound/AI/commandreport.ogg', GLOB.faction_datum[associated_faction])
 	if(associated_faction == FACTION_MARINE)
 		SSticker.mode.round_statistics.defcon_level = current_level

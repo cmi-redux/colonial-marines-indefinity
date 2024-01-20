@@ -28,11 +28,13 @@
 	overlays += "[defense_type] bell_tower"
 
 /obj/structure/machinery/defenses/bell_tower/power_on_action()
+	set_light_on(TRUE)
 	clear_tripwires()
 	setup_tripwires()
 	visible_message("[icon2html(src, viewers(src))] [SPAN_NOTICE("The [name] gives a short ring, as it comes alive.")]")
 
 /obj/structure/machinery/defenses/bell_tower/power_off_action()
+	set_light_on(FALSE)
 	clear_tripwires()
 	visible_message("[icon2html(src, viewers(src))] [SPAN_NOTICE("The [name] gives a beep and powers down.")]")
 

@@ -289,7 +289,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/fullscreen/parallax_layer)
 	var/list/viewscales = getviewsize(view)
 	var/countx = CEILING((viewscales[1] / 2) * parallax_scaler, 1) + 1
 	var/county = CEILING((viewscales[2] / 2) * parallax_scaler, 1) + 1
-	var/list/new_overlays = new
+	var/list/new_overlays = list()
 	for(var/x in -countx to countx)
 		for(var/y in -county to county)
 			if(x == 0 && y == 0)
@@ -297,8 +297,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/fullscreen/parallax_layer)
 			var/mutable_appearance/texture_overlay = mutable_appearance(icon, icon_state)
 			texture_overlay.transform = matrix(1, 0, x*480, 0, 1, y*480)
 			new_overlays += texture_overlay
-	cut_overlays()
-	add_overlay(new_overlays)
+	overlays.Cut()
+	overlays += new_overlays
 	view_sized = view
 
 /atom/movable/screen/fullscreen/parallax_layer/layer_1

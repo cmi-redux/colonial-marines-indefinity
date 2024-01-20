@@ -31,7 +31,7 @@
 		turn_light(null, light_on)
 		update_icon()
 
-/obj/item/device/flashlight/turn_light(mob/user, toggle_on, sparks = FALSE, forced = FALSE)
+/obj/item/device/flashlight/turn_light(mob/user, toggle_on, cooldown = 1 SECONDS, sparks = FALSE, forced = FALSE, light_again = FALSE)
 	. = ..()
 	if(. != CHECKS_PASSED)
 		return
@@ -134,7 +134,7 @@
 	if(light_on && can_be_broken)
 		if(breaking_sound)
 			playsound(src.loc, breaking_sound, 25, 1)
-		turn_light(null, FALSE, FALSE, TRUE)
+		turn_light(null, FALSE, 1 SECONDS, FALSE, TRUE)
 
 /obj/item/device/flashlight/on
 	light_on = TRUE
@@ -306,11 +306,11 @@
 	return ..()
 
 /obj/item/device/flashlight/flare/proc/burn_out()
-	turn_light(null, FALSE, FALSE, TRUE)
+	turn_light(null, FALSE, 0, FALSE, TRUE)
 	fuel = 0
 	burnt_out = TRUE
 
-/obj/item/device/flashlight/flare/turn_light(mob/user = null, toggle_on, sparks = FALSE, forced = FALSE, atom/originated_turf = null, distance_max = 0)
+/obj/item/device/flashlight/flare/turn_light(mob/user, toggle_on, cooldown = 0, sparks = FALSE, forced = FALSE, light_again = FALSE)
 	. = ..()
 	if(. != CHECKS_PASSED)
 		return

@@ -14,7 +14,7 @@
 	max_medics = 2
 
 /datum/emergency_call/wo/create_member(datum/mind/mind, turf/override_spawn_loc)
-	set waitfor = 0
+	set waitfor = FALSE
 	if(SSmapping.configs[GROUND_MAP].map_name == MAP_WHISKEY_OUTPOST)
 		name_of_spawn = /obj/effect/landmark/ert_spawns/distress_wo
 	var/turf/spawn_loc = override_spawn_loc ? override_spawn_loc : get_spawn_point()

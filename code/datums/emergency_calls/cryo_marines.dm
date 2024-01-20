@@ -22,7 +22,7 @@
 		announce_dchat("Some cryomarines were not taken, use the Join As Freed Mob verb to take one of them.")
 
 /datum/emergency_call/cryo_squad/create_member(datum/mind/mind, turf/override_spawn_loc)
-	set waitfor = 0
+	set waitfor = FALSE
 	if(SSmapping.configs[GROUND_MAP].map_name == MAP_WHISKEY_OUTPOST)
 		name_of_spawn = /obj/effect/landmark/ert_spawns/distress_wo
 	var/turf/spawn_loc = override_spawn_loc ? override_spawn_loc : get_spawn_point()

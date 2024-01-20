@@ -12,7 +12,7 @@
 
 
 /datum/emergency_call/colonist/create_member(datum/mind/mind, turf/override_spawn_loc) //Blank ERT with only basic items.
-	set waitfor = 0
+	set waitfor = FALSE
 	var/turf/T = override_spawn_loc ? override_spawn_loc : get_spawn_point()
 
 	if(!istype(T))

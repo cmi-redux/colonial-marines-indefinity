@@ -228,7 +228,7 @@
 			deployed_turret.pixel_x = 0
 			deployed_turret.forceMove(src)
 			deployed_turret.setDir(dir)
-			deployed_turret.set_light_on(FALSE)
+			deployed_turret.power_off()
 		else
 			icon_state = "sentry_system_destroyed"
 
@@ -238,7 +238,7 @@
 
 	playsound(loc, 'sound/machines/hydraulics_1.ogg', 40, 1)
 	deployment_cooldown = world.time + 50
-	deployed_turret.set_light_on(TRUE)
+	deployed_turret.power_on()
 
 	if(ship_base.base_category == DROPSHIP_WEAPON)
 		deployed_turret.forceMove(get_step(src, dir))
@@ -270,7 +270,7 @@
 	playsound(loc, 'sound/machines/hydraulics_2.ogg', 40, 1)
 	deployment_cooldown = world.time + 50
 	deployed_turret.forceMove(src)
-	deployed_turret.set_light_on(FALSE)
+	deployed_turret.power_off()
 	deployed_turret.stop_processing()
 	deployed_turret.unset_range()
 	icon_state = "sentry_system_installed"

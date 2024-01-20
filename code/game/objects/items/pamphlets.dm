@@ -47,18 +47,21 @@
 	desc = "A pamphlet used to quickly impart vital knowledge. This one has a medical insignia."
 	icon_state = "pamphlet_medical"
 	trait = /datum/character_trait/skills/medical
+	bypass_pamphlet_limit = TRUE
 
 /obj/item/pamphlet/skill/engineer
 	name = "engineer instructional pamphlet"
 	desc = "A pamphlet used to quickly impart vital knowledge. This one has an engineering insignia."
 	icon_state = "pamphlet_construction"
 	trait = /datum/character_trait/skills/miniengie
+	bypass_pamphlet_limit = TRUE
 
 /obj/item/pamphlet/skill/jtac
 	name = "JTAC instructional pamphlet"
 	desc = "A pamphlet used to quickly impart vital knowledge. This one has the image of a radio on it."
 	icon_state = "pamphlet_jtac"
 	trait = /datum/character_trait/skills/jtac
+	bypass_pamphlet_limit = TRUE
 
 /obj/item/pamphlet/skill/spotter
 	name = "Spotter instructional pamphlet"

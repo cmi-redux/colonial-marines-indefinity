@@ -363,7 +363,7 @@ SUBSYSTEM_DEF(evacuation)
 	return TRUE
 
 /obj/structure/machinery/self_destruct/proc/lock_or_unlock(lock)
-	set waitfor = 0
+	set waitfor = FALSE
 	in_progress = 1
 	flick(initial(icon_state) + (lock? "_5" : "_2"), src)
 	sleep(9)

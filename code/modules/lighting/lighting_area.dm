@@ -42,7 +42,7 @@
 
 /area/proc/remove_base_lighting()
 	for(var/turf/T in src)
-		T.cut_overlay(lighting_effect)
+		T.overlays -= lighting_effect
 	QDEL_NULL(lighting_effect)
 	area_has_base_lighting = FALSE
 
@@ -55,6 +55,6 @@
 	lighting_effect.color = base_lighting_color
 	lighting_effect.appearance_flags = RESET_COLOR | RESET_ALPHA | RESET_TRANSFORM
 	for(var/turf/T in src)
-		T.add_overlay(lighting_effect)
+		T.overlays += lighting_effect
 		T.luminosity = 1
 	area_has_base_lighting = TRUE

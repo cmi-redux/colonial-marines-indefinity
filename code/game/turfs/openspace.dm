@@ -13,7 +13,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 /turf/open/space/openspace
 	icon = 'icons/turf/open_space.dmi'
 	icon_state = "invisible"
-	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
+	turf_flags = TURF_MULTIZ
 	baseturfs = /turf/open/openspace
 	antipierce = 0
 
@@ -64,7 +64,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 	name = "open space"
 	desc = "Watch your step!"
 	icon_state = "invisible"
-	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
+	turf_flags = TURF_MULTIZ
 	weedable = NOT_WEEDABLE
 	baseturfs = /turf/open/openspace
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT

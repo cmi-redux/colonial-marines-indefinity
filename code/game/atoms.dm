@@ -682,7 +682,7 @@ Parameters are passed from New.
  * originated_turf: if not null, will check if the obj_turf is closer than distance_max to originated_turf, and the proc will return if not
  * distance_max: used to check if originated_turf is close to obj.loc
 */
-/atom/proc/turn_light(mob/user, toggle_on , cooldown = 1 SECONDS, sparks = FALSE, forced = FALSE, light_again = FALSE)
+/atom/proc/turn_light(mob/user, toggle_on, cooldown = 1 SECONDS, sparks = FALSE, forced = FALSE, light_again = FALSE)
 	if(TIMER_COOLDOWN_CHECK(src, COOLDOWN_LIGHT) && !forced)
 		return STILL_ON_COOLDOWN
 	if(cooldown <= 0)

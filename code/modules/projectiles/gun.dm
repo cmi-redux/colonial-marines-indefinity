@@ -542,7 +542,7 @@
 			A.Attach(src)
 			update_attachable(A.slot)
 
-/obj/item/weapon/gun/turn_light(mob/user, toggle_on, sparks, forced, light_again)
+/obj/item/weapon/gun/turn_light(mob/user, toggle_on, cooldown = 1 SECONDS, sparks = FALSE, forced = FALSE, light_again = FALSE)
 	. = ..()
 	if(. != CHECKS_PASSED)
 		return

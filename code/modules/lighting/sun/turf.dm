@@ -189,8 +189,8 @@ Sunlight System
 	. = list()
 
 	if(!is_ground_level(z) && !is_mainship_level(z))
-		.["SKYVISIBLE"] =  FALSE
-		.["WEATHERPROOF"] =  TRUE
+		.["SKYVISIBLE"] = FALSE
+		.["WEATHERPROOF"] = TRUE
 		return
 
 	//Check yourself (before you wreck yourself)

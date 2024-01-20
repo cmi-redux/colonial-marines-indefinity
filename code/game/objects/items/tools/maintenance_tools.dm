@@ -288,7 +288,7 @@
 	..()
 	toggle()
 
-/obj/item/tool/weldingtool/turn_light(mob/user, toggle_on)
+/obj/item/tool/weldingtool/turn_light(mob/user, toggle_on, cooldown = 1 SECONDS, sparks = FALSE, forced = FALSE, light_again = FALSE)
 	. = ..()
 	if(. == NO_LIGHT_STATE_CHANGE)
 		return

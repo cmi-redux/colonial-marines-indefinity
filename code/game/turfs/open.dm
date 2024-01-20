@@ -321,7 +321,7 @@
 	name = "ground dirt"
 	icon = 'icons/turf/ground_map.dmi'
 	icon_state = "desert"
-	turf_flags = TURF_MULTIZ|TURF_TRENCHING|TURF_WEATHER_PROOF
+	turf_flags = TURF_MULTIZ|TURF_TRENCHING|TURF_EFFECT_AFFECTABLE|TURF_WEATHER_PROOF
 
 	antipierce = 10
 

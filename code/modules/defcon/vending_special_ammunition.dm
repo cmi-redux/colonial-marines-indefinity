@@ -23,11 +23,6 @@ GLOBAL_REFERENCE_LIST_INDEXED_SORTED(gears_defcon, /datum/defcon_asset, name)
 	var/access_settings_override = FALSE
 
 /obj/structure/defcon_vendor/attack_hand(mob/user)
-	var/area/a = get_area(src)
-	//no idea why it was made just a structure, so this is gonna be here for now
-	if(!a.master || a.master.requires_power && !a.master.unlimited_power && !a.master.power_equip)
-		return
-
 	if(!ishuman(user) || !get_access_permission(user))
 		to_chat(user, SPAN_WARNING("Access denied."))
 		return
@@ -56,19 +51,11 @@ GLOBAL_REFERENCE_LIST_INDEXED_SORTED(gears_defcon, /datum/defcon_asset, name)
 
 	chosen_asset.on_access(user)
 
-/obj/structure/defcon_vendor/proc/get_access_permission(mob/living/carbon/human/user)
-	if(Check_DS())
-		if(access_settings_override) //everyone allowed to grab stuff
-			return TRUE
-		else if(user.ally(faction))	//only it's faction group allowed
-			return TRUE
-	else
-		if(access_settings_override)
-			if(user.ally(faction))	//vica versa for extended and other modes, allowed by default, not allowed with override
-				return TRUE
-		else
-			return TRUE
-
+/obj/structure/defcon_vendor/proc/get_access_permission(mob/user)
+	if(access_settings_override) //everyone allowed to grab stuff
+		return TRUE
+	else if(user.ally(faction))	//only it's faction group allowed
+		return TRUE
 	return FALSE
 
 

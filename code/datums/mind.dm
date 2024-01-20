@@ -55,7 +55,8 @@
 					if(ui.allowed_user_stat == -1)
 						ui.close()
 						continue
-			new_character.client.player_data.setup_statistics()
+			if(new_character.client?.player_data)
+				new_character.client.player_data.setup_statistics()
 
 	new_character.refresh_huds(current) //inherit the HUDs from the old body
 	new_character.aghosted = FALSE //reset aghost and away timer

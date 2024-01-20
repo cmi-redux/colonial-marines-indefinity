@@ -587,7 +587,7 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 		if(squad.roundstart && squad.usable && squad.faction == human.faction.faction_name && squad.name != "Root")
 			mixed_squads += squad
 
-	var/datum/squad/preferred_squad
+	var/preferred_squad
 	if(human && human.client && human.client.prefs.preferred_squad)
 		if(human.client.prefs.preferred_squad in SQUAD_SELECTOR)
 			preferred_squad = SQUAD_BY_FACTION[human.faction.faction_name][SQUAD_SELECTOR[human.client.prefs.preferred_squad]]
@@ -600,12 +600,10 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 			if(squad.vars["num_[slot_check]"] >= squad.vars["max_[slot_check]"])
 				continue
 
-		if(preferred_squad == "None")
-			squad.put_marine_in_squad(human)
+		if(preferred_squad == "None" && squad.put_marine_in_squad(human))
 			return
 
-		if(squad == preferred_squad)
-			squad.put_marine_in_squad(human) //fav squad has a spot for us, no more searching needed.
+		if(squad == preferred_squad && squad.put_marine_in_squad(human)) //fav squad has a spot for us, no more searching needed.
 			return
 
 		if(!lowest)

@@ -57,6 +57,8 @@ SUBSYSTEM_DEF(particle_weather)
 
 		if(weather_special_effect)
 			if(!length(turfs_to_process))
+				if(!weathered_turfs)
+					return
 				turfs_to_process = weathered_turfs.Copy()
 			for(var/turf/turf in turfs_to_process)
 				if(QDELETED(weather_special_effect))

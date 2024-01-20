@@ -180,7 +180,7 @@
 	toggle_light(user, FALSE)
 	..()
 
-/obj/item/storage/backpack/marine/smartpack/turn_light(mob/user, toggle_on, sparks = FALSE, forced = FALSE)
+/obj/item/storage/backpack/marine/smartpack/turn_light(mob/user, toggle_on, cooldown = 1 SECONDS, sparks = FALSE, forced = FALSE, light_again = FALSE)
 	. = ..()
 	if(. != CHECKS_PASSED)
 		return

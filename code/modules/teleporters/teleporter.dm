@@ -177,7 +177,7 @@
 	var/animation_duration = ANIMATION_DURATION // 18 frames long
 
 /obj/effect/teleporter_vfx/New()
-	set waitfor = 0
+	set waitfor = FALSE
 	sleep(animation_duration)
 	qdel(src)
 
