@@ -114,6 +114,7 @@
 	pixel_y = -2
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/iv_drip,
 /turf/open/shuttle/vehicle{
 	icon_state = "dark_sterile_green_7"
 	},
@@ -197,6 +198,7 @@
 	icon_state = "triagedecaldir"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/medical_pod/bodyscanner,
 /turf/open/shuttle/vehicle{
 	icon_state = "dark_sterile_green_8"
 	},
@@ -250,15 +252,22 @@
 	},
 /area/vehicle/apc/med)
 "B" = (
-/obj/structure/machinery/iv_drip{
-	anchored = 1
-	},
-/obj/structure/bed/roller,
 /obj/effect/landmark/interior/spawn/interior_viewport{
 	pixel_x = -6;
 	pixel_y = 23
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/surface/table/reinforced/prison,
+/obj/item/tool/surgery/surgicaldrill,
+/obj/item/tool/surgery/surgical_line,
+/obj/item/tool/surgery/scalpel,
+/obj/item/tool/surgery/retractor,
+/obj/item/tool/surgery/hemostat,
+/obj/item/tool/surgery/circular_saw,
+/obj/item/tool/surgery/cautery,
+/obj/item/tool/surgery/bonesetter,
+/obj/item/tool/surgery/bonegel,
+/obj/item/tool/surgery/FixOVein,
 /turf/open/shuttle/vehicle{
 	icon_state = "dark_sterile_green_12"
 	},
@@ -278,6 +287,9 @@
 	pixel_y = 16
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/sleep_console{
+	dir = 8
+	},
 /turf/open/shuttle/vehicle{
 	icon_state = "dark_sterile"
 	},
@@ -328,14 +340,12 @@
 	},
 /area/vehicle/apc/med)
 "J" = (
-/obj/structure/bed/chair/comfy{
-	dir = 4
-	},
 /obj/structure/machinery/light{
 	dir = 8;
 	req_light_switch = 0
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/structure/machinery/optable,
 /turf/open/shuttle/vehicle{
 	icon_state = "dark_sterile_green_6"
 	},

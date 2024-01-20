@@ -30437,6 +30437,7 @@
 /area/almayer/living/briefing)
 "cOE" = (
 /obj/structure/surface/table/reinforced/almayer_B,
+/obj/structure/machinery/chem_dispenser/soda/beer,
 /turf/open/floor/prison{
 	icon_state = "kitchen"
 	},
@@ -48707,6 +48708,9 @@
 	tag = "icon-sterile"
 	},
 /area/almayer/living/grunt_rnr)
+"jAP" = (
+/turf/open/space/basic,
+/area/almayer/living/briefing)
 "jAV" = (
 /turf/open/floor/engine/nitrogen,
 /area/almayer/engineering/airmix)
@@ -96854,7 +96858,7 @@ crv
 crv
 crv
 xDx
-wFY
+jAP
 fGy
 czM
 cNM
