@@ -258,6 +258,7 @@ var/world_topic_spam_protect_time = world.timeofday
 	if(TgsAvailable())
 		if(shutdown)
 			TgsChangeRebootType(2)
+/*
 		var/do_hard_reboot
 		var/ruhr = CONFIG_GET(number/rounds_until_hard_restart)
 		switch(ruhr)
@@ -273,7 +274,9 @@ var/world_topic_spam_protect_time = world.timeofday
 					do_hard_reboot = FALSE
 		if(do_hard_reboot)
 			TgsChangeRebootType(1)
+*/
 		TgsReboot()
+		TgsEndProcess()
 	else
 		if(shutdown)
 			shutdown()
