@@ -32,7 +32,7 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic_death)
 
 /datum/entity_meta/statistic_death
 	entity_type = /datum/entity/statistic_death
-	table_name = "log_player_statistic_death"
+	table_name = "player_statistic_death"
 	field_types = list(
 		"player_id" = DB_FIELDTYPE_BIGINT,
 		"round_id" = DB_FIELDTYPE_BIGINT,

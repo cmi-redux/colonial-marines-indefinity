@@ -11,7 +11,7 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/medal)
 
 /datum/entity_meta/statistic_medal
     entity_type = /datum/entity/statistic/medal
-    table_name = "log_player_statistic_medal"
+    table_name = "player_statistic_medal"
     field_types = list(
         "player_id" = DB_FIELDTYPE_BIGINT,
         "round_id" = DB_FIELDTYPE_BIGINT,
