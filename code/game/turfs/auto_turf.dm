@@ -2,7 +2,7 @@
 	name = "auto-sand"
 	icon = 'icons/turf/floors/auto_sand.dmi'
 	icon_state = "sand_1"//editor icon
-	turf_flags = TURF_MULTIZ|TURF_TRENCHING
+	turf_flags = TURF_MULTIZ|TURF_TRENCHING|TURF_WEATHER_PROOF|TURF_EFFECT_AFFECTABLE
 	weedable = FULLY_WEEDABLE
 	var/icon_prefix = "sand"
 	var/layer_name = list("layer 1", "layer2", "layer 3", "layer 4", "layer 5")

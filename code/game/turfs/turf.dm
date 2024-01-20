@@ -29,7 +29,7 @@
 	icon = 'icons/turf/floors/floors.dmi'
 	vis_flags = VIS_INHERIT_ID | VIS_INHERIT_PLANE// Important for interaction with and visualization of openspace.
 
-	var/turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_EFFECT_AFFECTABLE
+	var/turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF|TURF_EFFECT_AFFECTABLE
 	var/weedable = FULLY_WEEDABLE
 	var/intact_tile = 1 //used by floors to distinguish floor with/without a floortile(e.g. plating).
 

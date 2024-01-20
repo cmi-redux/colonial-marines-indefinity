@@ -2,7 +2,7 @@
 	name = "trench"
 	icon = 'icons/turf/trenches_turfs.dmi'
 	icon_state = "trench_wall"
-	turf_flags = TURF_MULTIZ|TURF_TRENCH
+	turf_flags = TURF_MULTIZ|TURF_TRENCH|TURF_WEATHER_PROOF
 	weedable = SEMI_WEEDABLE
 	allow_construction = FALSE
 	var/type_matterial = "wood"

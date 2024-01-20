@@ -98,7 +98,7 @@
 /turf/open/desert/desert_shore
 	icon = 'icons/turf/floors/desert_water.dmi'
 	icon_state = "shore1"
-	turf_flags = TURF_MULTIZ
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
 	var/toxic = 0
 
 	layer = UNDER_TURF_LAYER -0.03
@@ -148,7 +148,7 @@
 /turf/open/desert/waterway
 	icon = 'icons/turf/floors/desert_water.dmi'
 	icon_state = "dock"
-	turf_flags = TURF_MULTIZ
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
 
 /turf/open/desert/waterway/desert_waterway
 	icon = 'icons/turf/floors/desert_water.dmi'

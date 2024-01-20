@@ -17,7 +17,7 @@
 #define TURF_NOJAUNT					(1<<6)
 #define TURF_UNUSED_RESERVATION			(1<<7)
 #define TURF_CAN_BE_DIRTY				(1<<8)
-#define TURF_WEATHE_RPROOF				(1<<9)
+#define TURF_WEATHER_PROOF				(1<<9)
 #define TURF_EFFECT_AFFECTABLE			(1<<10)
 #define TURF_HULL						(1<<11)
 #define TURF_BURNABLE					(1<<12)

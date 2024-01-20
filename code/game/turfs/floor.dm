@@ -4,7 +4,7 @@
 	name = "floor"
 	icon = 'icons/turf/floors/floors.dmi'
 	icon_state = "floor"
-	turf_flags = TURF_MULTIZ|TURF_EFFECT_AFFECTABLE|TURF_BURNABLE|TURF_BREAKABLE
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF|TURF_EFFECT_AFFECTABLE|TURF_BURNABLE|TURF_BREAKABLE
 	baseturfs = /turf/open/floor/plating
 	var/broken = FALSE
 	var/burnt = FALSE

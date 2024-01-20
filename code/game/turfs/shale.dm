@@ -2,7 +2,7 @@
 /turf/open/shale
 	icon = 'icons/turf/floors/auto_shale.dmi'
 	icon_state = "shale_0"
-	turf_flags = TURF_MULTIZ
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
 
 /turf/open/shale/get_dirt_type()
 	return DIRT_TYPE_SHALE

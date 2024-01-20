@@ -1,7 +1,7 @@
 //turfs with density = TRUE
 /turf/closed
 	plane = WALL_PLANE
-	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
 	opacity = TRUE
 	density = TRUE
 	/// Icon path. Smoothing objects larger than 32x32 require a visual object to represent the excess part, in order not to increase its hitbox. We call that a frill.

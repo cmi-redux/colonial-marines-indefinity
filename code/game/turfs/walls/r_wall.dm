@@ -192,14 +192,14 @@
 /turf/closed/wall/r_wall/dense
 	icon_state = "iron0"
 	walltype = WALL_REINFORCED_IRON
-	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF|TURF_HULL
 
 /turf/closed/wall/r_wall/unmeltable
 	name = "heavy reinforced wall"
 	desc = "A huge chunk of ultra-reinforced metal used to separate rooms. Looks virtually indestructible."
 	icon_state = "heavy_r_wall_mapicon"
 	walltype = WALL_REINFORCED
-	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF|TURF_HULL
 
 /turf/closed/wall/r_wall/unmeltable/attackby() //This should fix everything else. No cables, etc
 	return
@@ -255,7 +255,7 @@
 	icon = 'icons/turf/walls/prison.dmi'
 	icon_state = "hwall"
 	walltype = WALL_REINFORCED
-	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF|TURF_HULL
 
 /turf/closed/wall/r_wall/prison_unmeltable/ex_act(severity) //Should make it indestructible
 		return
@@ -278,7 +278,7 @@
 	name = "heavy reinforced wall"
 	desc = "A huge chunk of ultra-reinforced metal used to separate rooms. Looks virtually indestructible."
 	icon_state = "h_dome"
-	turf_flags = TURF_MULTIZ|TURF_WEATHE_RPROOF|TURF_HULL
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF|TURF_HULL
 
 /turf/closed/wall/r_wall/biodome/biodome_unmeltable/ex_act(severity) //Should make it indestructible
 		return

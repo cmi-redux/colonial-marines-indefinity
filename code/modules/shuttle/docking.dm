@@ -188,7 +188,7 @@
 			qdel(old_turf.outdoor_effect, TRUE)
 
 		if(new_ceiling)
-			if(!new_ceiling.baseturfs || !(new_ceiling.turf_flags & TURF_WEATHE_RPROOF))
+			if(!new_ceiling.baseturfs || !(new_ceiling.turf_flags & TURF_WEATHER_PROOF))
 				new_ceiling.ChangeTurf(custom_ceiling)
 			else
 				if(length(new_ceiling.baseturfs) > 1)

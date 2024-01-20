@@ -3,7 +3,7 @@
 
 /turf/open
 	plane = FLOOR_PLANE
-	turf_flags = TURF_MULTIZ|TURF_EFFECT_AFFECTABLE
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF|TURF_EFFECT_AFFECTABLE
 	minimap_color = MINIMAP_AREA_COLONY
 	var/allow_construction = TRUE //whether you can build things like barricades on this turf.
 	var/bleed_layer = 0 //snow layer
@@ -167,7 +167,7 @@
 	name = "void"
 	icon = 'icons/turf/open_space.dmi'
 	icon_state = "black"
-	turf_flags = TURF_MULTIZ
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
 	mouse_opacity = FALSE
 	plane = PLANE_SPACE
 	layer = SPACE_LAYER
@@ -177,7 +177,7 @@
 	opacity = TRUE
 
 /turf/open/river
-	turf_flags = TURF_MULTIZ
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
 	shoefootstep = FOOTSTEP_WATER
 	barefootstep = FOOTSTEP_WATER
 	mediumxenofootstep = FOOTSTEP_WATER
@@ -188,7 +188,7 @@
 	name = "grass"
 	icon = 'icons/turf/floors/floors.dmi'
 	icon_state = "grass1"
-	turf_flags = TURF_MULTIZ|TURF_TRENCHING
+	turf_flags = TURF_MULTIZ|TURF_TRENCHING|TURF_WEATHER_PROOF
 	weedable = FULLY_WEEDABLE
 
 	antipierce = 5
@@ -199,7 +199,7 @@
 	name = "sand"
 	icon = 'icons/turf/floors/bigred.dmi'
 	icon_state = "mars_sand_1"
-	turf_flags = TURF_MULTIZ|TURF_TRENCHING
+	turf_flags = TURF_MULTIZ|TURF_TRENCHING|TURF_WEATHER_PROOF
 	weedable = FULLY_WEEDABLE
 	minimap_color = MINIMAP_MARS_DIRT
 
@@ -227,7 +227,7 @@
 	name = "dirt"
 	icon = 'icons/turf/floors/bigred.dmi'
 	icon_state = "mars_dirt_1"
-	turf_flags = TURF_MULTIZ|TURF_TRENCHING
+	turf_flags = TURF_MULTIZ|TURF_TRENCHING|TURF_WEATHER_PROOF
 	minimap_color = MINIMAP_DIRT
 	weedable = FULLY_WEEDABLE
 	shoefootstep = FOOTSTEP_SAND
@@ -278,7 +278,7 @@
 /turf/open/beach/sand
 	name = "Sand"
 	icon_state = "sand"
-	turf_flags = TURF_MULTIZ|TURF_TRENCHING
+	turf_flags = TURF_MULTIZ|TURF_TRENCHING|TURF_WEATHER_PROOF
 	weedable = FULLY_WEEDABLE
 	shoefootstep = FOOTSTEP_SAND
 	barefootstep = FOOTSTEP_SAND
@@ -288,7 +288,7 @@
 	name = "Coastline"
 	icon = 'icons/turf/beach2.dmi'
 	icon_state = "sandwater"
-	turf_flags = TURF_MULTIZ
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
 	weedable = NOT_WEEDABLE
 	shoefootstep = FOOTSTEP_SAND
 	barefootstep = FOOTSTEP_SAND
@@ -297,7 +297,7 @@
 /turf/open/beach/water
 	name = "Water"
 	icon_state = "water"
-	turf_flags = TURF_MULTIZ
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
 	weedable = NOT_WEEDABLE
 	shoefootstep = FOOTSTEP_WATER
 	barefootstep = FOOTSTEP_WATER
@@ -307,7 +307,7 @@
 /turf/open/beach/water2
 	name = "Water"
 	icon_state = "water"
-	turf_flags = TURF_MULTIZ
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
 	weedable = NOT_WEEDABLE
 	shoefootstep = FOOTSTEP_WATER
 	barefootstep = FOOTSTEP_WATER
@@ -321,7 +321,7 @@
 	name = "ground dirt"
 	icon = 'icons/turf/ground_map.dmi'
 	icon_state = "desert"
-	turf_flags = TURF_MULTIZ|TURF_TRENCHING
+	turf_flags = TURF_MULTIZ|TURF_TRENCHING|TURF_WEATHER_PROOF
 
 	antipierce = 10
 
@@ -506,7 +506,7 @@
 /turf/open/gm/river
 	name = "river"
 	icon_state = "seashallow"
-	turf_flags = TURF_MULTIZ
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
 	weedable = NOT_WEEDABLE
 	var/icon_overlay = "riverwater"
 	var/covered = 0
@@ -662,7 +662,7 @@
 /turf/open/gm/coast
 	name = "coastline"
 	icon_state = "beach"
-	turf_flags = TURF_MULTIZ
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
 	weedable = NOT_WEEDABLE
 	baseturfs = /turf/open/gm/coast
 
@@ -715,7 +715,7 @@
 /turf/open/gm/riverdeep
 	name = "river"
 	icon_state = "seadeep"
-	turf_flags = TURF_MULTIZ
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
 	weedable = NOT_WEEDABLE
 	baseturfs = /turf/open/gm/riverdeep
 	minimap_color = MINIMAP_WATER
@@ -740,7 +740,7 @@
 	name = "empty space"
 	icon = 'icons/turf/open_space.dmi'
 	icon_state = "black"
-	turf_flags = TURF_MULTIZ
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
 	density = TRUE
 
 
@@ -751,7 +751,7 @@
 	desc = "It's a long way down to the ocean from here."
 	icon = 'icons/turf/ground_map.dmi'
 	icon_state = "seadeep"
-	turf_flags = TURF_MULTIZ
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
 	weedable = NOT_WEEDABLE
 	shoefootstep = FOOTSTEP_WATER
 	barefootstep = FOOTSTEP_WATER
@@ -765,7 +765,7 @@
 	name = "ice floor"
 	icon = 'icons/turf/ice.dmi'
 	icon_state = "ice_floor"
-	turf_flags = TURF_MULTIZ|TURF_TRENCHING
+	turf_flags = TURF_MULTIZ|TURF_TRENCHING|TURF_WEATHER_PROOF
 	baseturfs = /turf/open/ice
 	shoefootstep = FOOTSTEP_ICE
 	barefootstep = FOOTSTEP_ICE
@@ -807,7 +807,7 @@
 	icon = 'icons/turf/floors/jungle.dmi'
 	icon_state = "grass1"
 	var/icon_spawn_state = "grass1"
-	turf_flags = TURF_MULTIZ|TURF_TRENCHING
+	turf_flags = TURF_MULTIZ|TURF_TRENCHING|TURF_WEATHER_PROOF
 	weedable = FULLY_WEEDABLE
 	allow_construction = FALSE
 	var/bushes_spawn = TRUE
@@ -929,7 +929,7 @@
 	icon = 'icons/turf/floors//beach.dmi'
 	icon_state = "water"
 	icon_spawn_state = "water"
-	turf_flags = TURF_MULTIZ
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
 	weedable = NOT_WEEDABLE
 	bushes_spawn = FALSE
 	shoefootstep = FOOTSTEP_WATER

@@ -222,7 +222,7 @@
 	desc = "There seems to be an awful lot of machinery down below"
 	icon = 'icons/turf/open_space.dmi'
 	icon_state = "black"
-	turf_flags = TURF_MULTIZ
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
 
 /turf/open/floor/almayer/empty/Initialize(mapload, ...)
 	. = ..()
@@ -283,7 +283,7 @@
 
 /turf/open/floor/almayer/no_build
 	allow_construction = FALSE
-	turf_flags = TURF_MULTIZ|TURF_EFFECT_AFFECTABLE|TURF_HULL
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF|TURF_EFFECT_AFFECTABLE|TURF_HULL
 
 // RESEARCH STUFF
 /turf/open/floor/almayer/research/containment/entrance
@@ -331,7 +331,7 @@
 /turf/open/floor/roof/ship_hull
 	icon = 'icons/turf/roofs/roof_ship.dmi'
 	name = "hull"
-	turf_flags = TURF_MULTIZ|TURF_EFFECT_AFFECTABLE|TURF_HULL
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF|TURF_EFFECT_AFFECTABLE|TURF_HULL
 
 /turf/open/floor/roof/ship_hull/lab
 	icon = 'icons/turf/roofs/roof_lab_ship.dmi'
@@ -418,7 +418,7 @@
 /turf/open/floor/engine
 	name = "reinforced floor"
 	icon_state = "engine"
-	turf_flags = TURF_MULTIZ|TURF_EFFECT_AFFECTABLE
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF|TURF_EFFECT_AFFECTABLE
 	intact_tile = 0
 	baseturfs = /turf/open/floor
 
