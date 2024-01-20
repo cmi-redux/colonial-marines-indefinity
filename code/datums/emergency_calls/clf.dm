@@ -47,7 +47,7 @@
 		leader = mob
 		to_chat(mob, SPAN_ROLE_HEADER("You are a Cell Leader of the local resistance group, the Colonial Liberation Front!"))
 		arm_equipment(mob, /datum/equipment_preset/clf/leader, TRUE, TRUE)
-	else if(synths < max_synths && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_SYNTH) && SSticker.role_authority.roles_whitelist[mob.ckey] & WHITELIST_SYNTHETIC)
+	else if(synths < max_synths && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_SYNTH) && mob.client.player_data?.whitelist?.whitelist_flags & WHITELIST_SYNTHETIC)
 		synths++
 		to_chat(mob, SPAN_ROLE_HEADER("You are a Multi-Purpose Synthetic for the local resistance group, the Colonial Liberation Front!"))
 		arm_equipment(mob, /datum/equipment_preset/clf/synth, TRUE, TRUE)

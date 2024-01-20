@@ -1107,7 +1107,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(!key_to_use)
 		return
 
-	if(!(SSticker.role_authority.roles_whitelist[key_to_use] & WHITELIST_PREDATOR))
+	if(!(client.player_data?.whitelist?.whitelist_flags & WHITELIST_PREDATOR))
 		return
 
 	if(!SSticker.mode)

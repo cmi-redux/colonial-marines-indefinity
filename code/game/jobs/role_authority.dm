@@ -37,7 +37,6 @@ var/global/players_preassigned = 0
 	var/list/roles_by_name //Master list generated when role authority is created, listing every default role by name, including those that may not be regularly selected.
 	var/list/roles_by_faction
 	var/list/roles_for_mode //Derived list of roles only for the game mode, generated when the round starts.
-	var/list/roles_whitelist //Associated list of lists, by ckey. Checks to see if a person is whitelisted for a specific role.
 	var/list/castes_by_path //Master list generated when role aithority is created, listing every caste by path.
 	var/list/castes_by_name //Master list generated when role authority is created, listing every default caste by name.
 
@@ -122,59 +121,6 @@ var/global/players_preassigned = 0
 		var/datum/squad/new_squad = new squad()
 		squads += new_squad
 		squads_by_type[new_squad.type] = new_squad
-
-	load_whitelist()
-
-
-/datum/authority/branch/role/proc/load_whitelist(filename = "config/role_whitelist.txt")
-	var/L[] = file2list(filename)
-	var/P[]
-	var/W[] = new //We want a temporary whitelist list, in case we need to reload.
-
-	var/i
-	var/r
-	var/ckey
-	var/role
-	roles_whitelist = list()
-	for(i in L)
-		if(!i) continue
-		i = trim(i)
-		if(!length(i)) continue
-		else if(copytext(i, 1, 2) == "#") continue
-
-		P = splittext(i, "+")
-		if(!P.len) continue
-		ckey = ckey(P[1]) //Converting their key to canonical form. ckey() does this by stripping all spaces, underscores and converting to lower case.
-
-		role = NO_FLAGS
-		r = 1
-		while(++r <= P.len)
-			switch(ckey(P[r]))
-				if("yautja") 						role |= WHITELIST_YAUTJA
-				if("yautjalegacy") 					role |= WHITELIST_YAUTJA_LEGACY
-				if("yautjacouncil")					role |= WHITELIST_YAUTJA_COUNCIL
-				if("yautjacouncillegacy")			role |= WHITELIST_YAUTJA_COUNCIL_LEGACY
-				if("yautjaleader")					role |= WHITELIST_YAUTJA_LEADER
-				if("commander") 					role |= WHITELIST_COMMANDER
-				if("commandercouncil")				role |= WHITELIST_COMMANDER_COUNCIL
-				if("commandercouncillegacy")		role |= WHITELIST_COMMANDER_COUNCIL_LEGACY
-				if("commanderleader")				role |= WHITELIST_COMMANDER_LEADER
-				if("workingjoe")					role |= WHITELIST_JOE
-				if("synthetic") 					role |= (WHITELIST_SYNTHETIC|WHITELIST_JOE)
-				if("syntheticcouncil")				role |= WHITELIST_SYNTHETIC_COUNCIL
-				if("syntheticcouncillegacy")		role |= WHITELIST_SYNTHETIC_COUNCIL_LEGACY
-				if("syntheticleader")				role |= WHITELIST_SYNTHETIC_LEADER
-				if("advisor")						role |= WHITELIST_MENTOR
-				if("allgeneral")					role |= WHITELISTS_GENERAL
-				if("allcouncil")					role |= (WHITELISTS_COUNCIL|WHITELISTS_GENERAL)
-				if("alllegacycouncil")				role |= (WHITELISTS_LEGACY_COUNCIL|WHITELISTS_GENERAL)
-				if("everything", "allleader") 		role |= WHITELIST_EVERYTHING
-
-		W[ckey] = role
-
-	roles_whitelist = W
-
-//#undef FACTION_TO_JOIN
 
 /*
 Consolidated into a better collection of procs. It was also calling too many loops, and I tried to fix that as well.
@@ -384,7 +330,7 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 		return  M.client.auto_lang(LANGUAGE_JS_JOBBANED)
 	if(!job.can_play_role(M.client))
 		return  M.client.auto_lang(LANGUAGE_JS_CANT_PLAY)
-	if(job.flags_startup_parameters & ROLE_WHITELISTED && !(roles_whitelist[M.ckey] & job.flags_whitelist))
+	if(job.flags_startup_parameters & ROLE_WHITELISTED && !(M.client.player_data?.whitelist?.whitelist_flags & job.flags_whitelist))
 		return  M.client.auto_lang(LANGUAGE_JS_WHITELIST)
 	if(job.total_positions != -1 && job.get_total_positions(latejoin) <= job.current_positions)
 		return  M.client.auto_lang(LANGUAGE_JS_NO_SLOTS_OPEN)
@@ -487,7 +433,7 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 	var/mob/living/carbon/human/human = M
 
 	var/job_whitelist = job.title
-	var/whitelist_status = job.get_whitelist_status(roles_whitelist, human.client)
+	var/whitelist_status = job.get_whitelist_status(human.client.player_data?.whitelist?.whitelist_flags, human.client)
 	if(job.job_options && human?.client?.prefs?.pref_special_job_options[job.title])
 		job.handle_job_options(human.client.prefs.pref_special_job_options[job.title])
 

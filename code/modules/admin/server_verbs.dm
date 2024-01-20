@@ -126,3 +126,25 @@
 
 	log_admin("[key_name(usr)] changed the ship map to [VM.map_name].")
 	message_admins("[key_name_admin(usr)] changed the ship map to [VM.map_name].")
+
+/datum/admins/proc/handle_whitelists()
+	set category = "Server"
+	set name = "DB: Handle Whitelists"
+
+	if(!check_rights(R_SERVER))
+		return
+
+	var/client/target = tgui_input_list(usr, "Select player to change whitelist status", "White List", GLOB.clients)
+	if(!istype(target, /client))
+		to_chat(usr, SPAN_RED("Error: handle_whitelists(): Client not found."))
+		return
+
+	if(!target.player_data?.whitelist)
+		to_chat(usr, SPAN_RED("Something went wrong, ty again later."))
+		return
+
+	var/datum/entity/whitelist_player/whitelist = target.player_data.whitelist
+
+	var/new_whitelist_status = input_bitfield(usr, "Editing [target] White List", "whitelist_flags", whitelist.whitelist_flags)
+	if(new_whitelist_status != null)
+		whitelist.whitelist_flags = new_whitelist_status

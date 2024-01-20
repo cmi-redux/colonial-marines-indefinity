@@ -100,17 +100,6 @@
 	message_admins("[usr.ckey] manually reloaded admins.")
 	load_admins()
 
-/client/proc/reload_whitelist()
-	set name = "Reload Whitelist"
-	set category = "Debug"
-	if(alert("Are you sure you want to do this?", , usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
-		return
-	if(!check_rights(R_SERVER) || !SSticker.role_authority)
-		return
-
-	message_admins("[usr.ckey] manually reloaded the role whitelist.")
-	SSticker.role_authority.load_whitelist()
-
 /client/proc/bulk_fetcher()
 	set name = "Bulk Fetch Items"
 	set category = "Debug"

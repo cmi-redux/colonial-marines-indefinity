@@ -30,7 +30,7 @@
 		leader = mob
 		to_chat(mob, SPAN_ROLE_HEADER("You are a Contractor Team Leader of Vanguard's Arrow Incorporated!"))
 		arm_equipment(mob, /datum/equipment_preset/contractor/duty/leader, TRUE, TRUE)
-	else if(synths < max_synths && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_SYNTH) && SSticker.role_authority.roles_whitelist[mob.ckey] & WHITELIST_SYNTHETIC)
+	else if(synths < max_synths && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_SYNTH) && mob.client.player_data?.whitelist?.whitelist_flags & WHITELIST_SYNTHETIC)
 		synths++
 		to_chat(mob, SPAN_ROLE_HEADER("You are a Contractor Support Synthetic of Vanguard's Arrow Incorporated!"))
 		arm_equipment(mob, /datum/equipment_preset/contractor/duty/synth, TRUE, TRUE)
@@ -125,7 +125,7 @@
 		leader = mob
 		to_chat(mob, SPAN_ROLE_HEADER("You are a Covert Contractor Team Leader of Vanguard's Arrow Incorporated!"))
 		arm_equipment(mob, /datum/equipment_preset/contractor/covert/leader, TRUE, TRUE)
-	else if(synths < max_synths && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_SYNTH) && SSticker.role_authority.roles_whitelist[mob.ckey] & WHITELIST_SYNTHETIC)
+	else if(synths < max_synths && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_SYNTH) && mob.client.player_data?.whitelist?.whitelist_flags & WHITELIST_SYNTHETIC)
 		synths++
 		to_chat(mob, SPAN_ROLE_HEADER("You are a Contractor Support Synthetic of Vanguard's Arrow Incorporated!"))
 		arm_equipment(mob, /datum/equipment_preset/contractor/covert/synth, TRUE, TRUE)

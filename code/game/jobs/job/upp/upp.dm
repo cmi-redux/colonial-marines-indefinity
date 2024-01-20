@@ -277,16 +277,16 @@ AddTimelock(/datum/job/upp/command/major, list(
 		"[JOB_UPP_KOL_OFFICER][WHITELIST_LEADER]" = /datum/equipment_preset/upp/officer/kolonel
 	)
 
-/datum/job/upp/command/kolonel/get_whitelist_status(list/roles_whitelist, client/player)
+/datum/job/upp/command/kolonel/get_whitelist_status(roles_whitelist, client/player)
 	. = ..()
 	if(!.)
 		return
 
-	if(roles_whitelist[player.ckey] & WHITELIST_COMMANDER_LEADER)
+	if(roles_whitelist & WHITELIST_COMMANDER_LEADER)
 		return get_desired_status(player.prefs.commander_status, WHITELIST_LEADER)
-	else if(roles_whitelist[player.ckey] & (WHITELIST_COMMANDER_COUNCIL|WHITELIST_COMMANDER_COUNCIL_LEGACY))
+	else if(roles_whitelist & WHITELIST_COMMANDER_COUNCIL)
 		return get_desired_status(player.prefs.commander_status, WHITELIST_COUNCIL)
-	else if(roles_whitelist[player.ckey] & WHITELIST_COMMANDER)
+	else if(roles_whitelist & WHITELIST_COMMANDER)
 		return get_desired_status(player.prefs.commander_status, WHITELIST_NORMAL)
 
 /datum/job/upp/command/kolonel/generate_entry_conditions(mob/living/M, whitelist_status)
@@ -324,16 +324,16 @@ AddTimelock(/datum/job/upp/command/major, list(
 		"[JOB_UPP_COMBAT_SYNTH][WHITELIST_LEADER]" = /datum/equipment_preset/upp/synth
 	)
 
-/datum/job/upp/synthetic/get_whitelist_status(list/roles_whitelist, client/player)
+/datum/job/upp/synthetic/get_whitelist_status(roles_whitelist, client/player)
 	. = ..()
 	if(!.)
 		return
 
-	if(roles_whitelist[player.ckey] & WHITELIST_SYNTHETIC_LEADER)
+	if(roles_whitelist & WHITELIST_SYNTHETIC_LEADER)
 		return get_desired_status(player.prefs.synth_status, WHITELIST_LEADER)
-	else if(roles_whitelist[player.ckey] & (WHITELIST_SYNTHETIC_COUNCIL|WHITELIST_SYNTHETIC_COUNCIL_LEGACY))
+	else if(roles_whitelist & WHITELIST_SYNTHETIC_COUNCIL)
 		return get_desired_status(player.prefs.synth_status, WHITELIST_COUNCIL)
-	else if(roles_whitelist[player.ckey] & WHITELIST_SYNTHETIC)
+	else if(roles_whitelist & WHITELIST_SYNTHETIC)
 		return get_desired_status(player.prefs.synth_status, WHITELIST_NORMAL)
 
 /datum/job/upp/synthetic/set_spawn_positions(count)

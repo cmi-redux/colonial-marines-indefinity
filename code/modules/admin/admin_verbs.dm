@@ -181,9 +181,10 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/vote_ground_map,
 	/datum/admins/proc/servermode,
 	/datum/admins/proc/override_ground_map,
+	/datum/admins/proc/togglejoin,
+	/datum/admins/proc/handle_whitelists,
 	/client/proc/cmd_admin_delete,		/*delete an instance/object/mob/etc*/
 	/client/proc/cmd_debug_del_all,
-	/datum/admins/proc/togglejoin,
 	/client/proc/toggle_cdn,
 )
 
@@ -195,7 +196,6 @@ var/list/admin_verbs_debug = list(
 	/client/proc/cmd_debug_del_all,
 	/client/proc/reload_admins,
 	/client/proc/global_toggle_fov,
-	/client/proc/reload_whitelist,
 	/client/proc/restart_controller,
 	/client/proc/debug_controller,
 	/client/proc/cmd_debug_toggle_should_check_for_win,
@@ -335,14 +335,14 @@ var/list/roundstart_mod_verbs = list(
 		add_verb(src, admin_verbs_sounds)
 	if(CLIENT_HAS_RIGHTS(src, R_SPAWN))
 		add_verb(src, admin_verbs_spawn)
-	if(SSticker.role_authority && (SSticker.role_authority.roles_whitelist[ckey] & WHITELIST_YAUTJA_LEADER))
+	if(SSticker.role_authority && (player_data?.whitelist?.whitelist_flags & WHITELIST_YAUTJA_LEADER))
 		add_verb(src, clan_verbs)
 /client/proc/add_admin_whitelists()
 	UNTIL(SSticker.role_authority)
 	if(CLIENT_HAS_RIGHTS(src, R_MENTOR))
-		SSticker.role_authority.roles_whitelist[ckey] |= WHITELIST_MENTOR
+		player_data?.whitelist?.whitelist_flags |= WHITELIST_MENTOR
 	if(CLIENT_IS_STAFF(src))
-		SSticker.role_authority.roles_whitelist[ckey] |= WHITELIST_JOE
+		player_data?.whitelist?.whitelist_flags |= WHITELIST_JOE
 
 /client/proc/remove_admin_verbs()
 	remove_verb(src, list(

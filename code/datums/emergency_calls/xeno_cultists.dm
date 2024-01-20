@@ -26,7 +26,7 @@
 		leader = mob
 		to_chat(mob, SPAN_ROLE_HEADER("You are the leader of this xeno cult! Bring glory to Queen Mother!"))
 		arm_equipment(mob, /datum/equipment_preset/other/xeno_cultist/leader, TRUE, TRUE)
-	else if(synths < max_synths && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_SYNTH) && SSticker.role_authority.roles_whitelist[mob.ckey] & WHITELIST_SYNTHETIC)
+	else if(synths < max_synths && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_SYNTH) && mob.client.player_data?.whitelist?.whitelist_flags & WHITELIST_SYNTHETIC)
 		synths++
 		to_chat(mob, SPAN_ROLE_HEADER("You are the xeno cult's synthetic! Tend to the Hive and the captured hosts, make sure the Hive grows!"))
 		arm_equipment(mob, /datum/equipment_preset/synth/survivor/cultist_synth, TRUE, TRUE)

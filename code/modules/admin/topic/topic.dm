@@ -1672,7 +1672,7 @@
 
 		var/list/offset = splittext(href_list["offset"],",")
 		var/number = dd_range(1, 100, text2num(href_list["object_count"]))
-		var/xeno = offset.len > 0 ? text2num(offset[1]) : 0
+		var/X = offset.len > 0 ? text2num(offset[1]) : 0
 		var/Y = offset.len > 1 ? text2num(offset[2]) : 0
 		var/Z = offset.len > 2 ? text2num(offset[3]) : 0
 		var/tmp_dir = href_list["object_dir"]
@@ -1714,9 +1714,9 @@
 			if("onfloor")
 				switch (href_list["offset_type"])
 					if("absolute")
-						target = locate(0 + xeno,0 + Y,0 + Z)
+						target = locate(0 + X,0 + Y,0 + Z)
 					if("relative")
-						target = locate(loc.x + xeno,loc.y + Y,loc.z + Z)
+						target = locate(loc.x + X,loc.y + Y,loc.z + Z)
 			if("inmarked")
 				var/datum/D = marked_datum
 				if(!D)
@@ -1846,9 +1846,9 @@
 		var/msg = SPAN_NOTICE("<b>NOTICE: <font color=red>[usr.key]</font> is responding to <font color=red>[key_name(ref_person)]</font>.</b>")
 
 		//send this msg to all admins
-		for(var/client/xeno in GLOB.admins)
-			if((R_ADMIN|R_MOD) & xeno.admin_holder.rights)
-				to_chat(xeno, msg)
+		for(var/client/admin in GLOB.admins)
+			if((R_ADMIN|R_MOD) & admin.admin_holder.rights)
+				to_chat(admin, msg)
 
 		//unanswered_distress -= ref_person
 

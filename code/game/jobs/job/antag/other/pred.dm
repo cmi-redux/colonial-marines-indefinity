@@ -31,7 +31,7 @@
 
 	SSticker.mode.attempt_to_join_as_predator(player)
 
-/datum/job/antag/predator/get_whitelist_status(list/roles_whitelist, client/player) // Might be a problem waiting here, but we've got no choice
+/datum/job/antag/predator/get_whitelist_status(roles_whitelist, client/player) // Might be a problem waiting here, but we've got no choice
 	. = ..()
 	if(!.)
 		return
@@ -50,7 +50,7 @@
 		return CLAN_RANK_BLOODED
 
 	if(\
-		(roles_whitelist[player.ckey] & (WHITELIST_YAUTJA_LEADER|WHITELIST_YAUTJA_COUNCIL|WHITELIST_YAUTJA_COUNCIL_LEGACY)) &&\
+		(roles_whitelist & (WHITELIST_YAUTJA_LEADER|WHITELIST_YAUTJA_COUNCIL)) &&\
 		get_desired_status(player.prefs.yautja_status, WHITELIST_COUNCIL) == WHITELIST_NORMAL\
 	)
 		return CLAN_RANK_BLOODED

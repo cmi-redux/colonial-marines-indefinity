@@ -64,7 +64,7 @@
 		return ""
 	return "[CONFIG_GET(string/wikiarticleurl)]/[replacetext(title, " ", "_")]"
 
-/datum/job/proc/get_whitelist_status(list/roles_whitelist, client/player)
+/datum/job/proc/get_whitelist_status(roles_whitelist, client/player)
 	if(!roles_whitelist)
 		return FALSE
 
@@ -271,7 +271,7 @@
 		var/mob/living/carbon/human/human = M
 
 		var/job_whitelist = title
-		var/whitelist_status = get_whitelist_status(SSticker.role_authority.roles_whitelist, human.client)
+		var/whitelist_status = get_whitelist_status(human.client.player_data?.whitelist?.whitelist_flags, human.client)
 
 		if(whitelist_status)
 			job_whitelist = "[title][whitelist_status]"

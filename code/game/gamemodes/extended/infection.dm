@@ -57,7 +57,7 @@
 			possible_synth_survivors -= A
 			continue
 
-		if(SSticker.role_authority.roles_whitelist[ckey(A.key)] & WHITELIST_SYNTHETIC)
+		if(A.current.client.player_data?.whitelist?.whitelist_flags & WHITELIST_SYNTHETIC)
 			if(A in possible_survivors)
 				continue //they are already applying to be a survivor
 			else

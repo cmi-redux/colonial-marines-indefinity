@@ -5,11 +5,11 @@
 	set waitfor = FALSE
 
 	. = ..()
-	if(SSticker.role_authority && (SSticker.role_authority.roles_whitelist[ckey] & WHITELIST_PREDATOR))
+	if(SSticker.role_authority && (player_data?.whitelist?.whitelist_flags & WHITELIST_PREDATOR))
 		clan_info = GET_CLAN_PLAYER(player.id)
 		clan_info.sync()
 
-		if(SSticker.role_authority.roles_whitelist[ckey] & WHITELIST_YAUTJA_LEADER)
+		if(player_data?.whitelist?.whitelist_flags & WHITELIST_YAUTJA_LEADER)
 			clan_info.clan_rank = GLOB.clan_ranks_ordered[CLAN_RANK_ADMIN]
 			clan_info.permissions |= CLAN_PERMISSION_ALL
 		else

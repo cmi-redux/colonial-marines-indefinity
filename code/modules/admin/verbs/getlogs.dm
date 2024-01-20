@@ -28,7 +28,7 @@
 
 	var/client/target = tgui_input_list(src,"Choose somebody to grant access to the server's runtime logs (permissions expire at the end of each round):","Grant Permissions", GLOB.clients)
 	if(!istype(target, /client))
-		to_chat(src, "<font color='red'>Error: giveruntimelog(): Client not found.</font>")
+		to_chat(src, SPAN_RED("Error: giveruntimelog(): Client not found."))
 		return
 
 	message_admins("[key_name_admin(src)] granted [key_name_admin(target)] access to runtime logs this round.")

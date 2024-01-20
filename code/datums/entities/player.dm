@@ -41,10 +41,11 @@
 	var/list/datum/entity/player_time/playtimes
 	var/datum/player_entity/player_entity
 	var/datum/donator_info/donator_info
+	var/datum/entity/whitelist_player/whitelist
 	var/list/playtime_data
 	var/client/owning_client
 
-//BSQL_PROTECT_DATUM(/datum/entity/player)
+BSQL_PROTECT_DATUM(/datum/entity/player)
 
 /datum/entity_meta/player
 	entity_type = /datum/entity/player
@@ -364,6 +365,11 @@
 		GLOB.donaters |= owning_client
 		add_verb(owning_client, /client/proc/set_ooc_color_self)
 
+/datum/entity/player/proc/load_whitelist_info(list/datum/entity/whitelist_player/_whitelist)
+	if(length(_whitelist))
+		whitelist = pick(_whitelist)
+		whitelist.sync()
+
 /datum/entity/player/proc/load_rels()
 	DB_FILTER(/datum/entity/player_note, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, on_read_notes)))
 	DB_FILTER(/datum/entity/player_job_ban, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, on_read_job_bans)))
@@ -442,6 +448,7 @@
 	player_data.last_known_cid = computer_id
 	record_login_triplet(player.ckey, address, computer_id)
 	player_data.load_donator_info()
+	DB_FILTER(/datum/entity/whitelist_player, DB_COMP("player_id", DB_EQUALS, player_data.id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, load_whitelist_info)))
 	player_data.sync()
 
 /datum/entity/player/proc/check_ban(computer_id, address)

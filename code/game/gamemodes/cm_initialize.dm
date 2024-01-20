@@ -142,7 +142,7 @@ Additional game mode variables.
 		else
 			if(!istype(player,/mob/dead)) continue //Otherwise we just want to grab the ghosts.
 
-		if(SSticker.role_authority.roles_whitelist[player.ckey] & WHITELIST_PREDATOR)  //Are they whitelisted?
+		if(player.client.player_data?.whitelist?.whitelist_flags & WHITELIST_PREDATOR)  //Are they whitelisted?
 			if(!player.client.prefs)
 				player.client.prefs = new /datum/preferences(player.client) //Somehow they don't have one.
 
@@ -175,10 +175,10 @@ Additional game mode variables.
 			to_chat(pred_candidate, SPAN_WARNING("Something went wrong!"))
 		return
 
-	if(show_warning && alert(pred_candidate, "Confirm joining the hunt. You will join as \a [lowertext(job.get_whitelist_status(SSticker.role_authority.roles_whitelist, pred_candidate.client))] predator", pred_candidate.client.auto_lang(LANGUAGE_CONFIRM), pred_candidate.client.auto_lang(LANGUAGE_YES), pred_candidate.client.auto_lang(LANGUAGE_NO)) != pred_candidate.client.auto_lang(LANGUAGE_YES))
+	if(show_warning && alert(pred_candidate, "Confirm joining the hunt. You will join as \a [lowertext(job.get_whitelist_status(pred_candidate.client.player_data?.whitelist?.whitelist_flags, pred_candidate.client))] predator", pred_candidate.client.auto_lang(LANGUAGE_CONFIRM), pred_candidate.client.auto_lang(LANGUAGE_YES), pred_candidate.client.auto_lang(LANGUAGE_NO)) != pred_candidate.client.auto_lang(LANGUAGE_YES))
 		return
 
-	if(!(SSticker.role_authority.roles_whitelist[pred_candidate.ckey] & WHITELIST_PREDATOR))
+	if(!(pred_candidate.client.player_data?.whitelist?.whitelist_flags & WHITELIST_PREDATOR))
 		if(show_warning)
 			to_chat(pred_candidate, SPAN_WARNING("You are not whitelisted! You may apply on the forums to be whitelisted as a predator."))
 		return
@@ -193,7 +193,7 @@ Additional game mode variables.
 			to_chat(pred_candidate, SPAN_WARNING("You already were a Yautja! Give someone else a chance."))
 		return
 
-	if(job.get_whitelist_status(SSticker.role_authority.roles_whitelist, pred_candidate.client) == WHITELIST_NORMAL)
+	if(job.get_whitelist_status(pred_candidate.client.player_data?.whitelist?.whitelist_flags, pred_candidate.client) == WHITELIST_NORMAL)
 		var/pred_max = calculate_pred_max
 		if(pred_current_num >= pred_max)
 			if(show_warning)
@@ -946,7 +946,7 @@ Additional game mode variables.
 			to_chat(joe_candidate, SPAN_WARNING("Something went wrong!"))
 		return
 
-	if(!(SSticker.role_authority.roles_whitelist[joe_candidate.ckey] & WHITELIST_JOE))
+	if(!(joe_candidate.client.player_data?.whitelist?.whitelist_flags & WHITELIST_JOE))
 		if(show_warning)
 			to_chat(joe_candidate, SPAN_WARNING("You are not whitelisted! You may apply on the forums to be whitelisted as a synth."))
 		return
@@ -957,7 +957,7 @@ Additional game mode variables.
 		return
 
 	// council doesn't count towards this conditional.
-	if(joe_job.get_whitelist_status(SSticker.role_authority.roles_whitelist, joe_candidate.client) == WHITELIST_NORMAL)
+	if(joe_job.get_whitelist_status(joe_candidate.client.player_data?.whitelist?.whitelist_flags, joe_candidate.client) == WHITELIST_NORMAL)
 		var/joe_max = joe_job.total_positions
 		if((joe_job.current_positions >= joe_max) && !MODE_HAS_TOGGLEABLE_FLAG(MODE_BYPASS_JOE))
 			if(show_warning)

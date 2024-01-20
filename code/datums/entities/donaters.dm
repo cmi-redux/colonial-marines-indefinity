@@ -56,15 +56,8 @@ BSQL_PROTECT_DATUM(/datum/entity/skin)
 	if(length(ET.skin))
 		.["skins_db"] = json_encode(ET.skin)
 
-/proc/patron_tier_decorated(tier)
-	if(tier == DONATER_NONE)
-		return null
-
-	return "<span class='[tier]'>[tier]</span>"
-
 /datum/donator_info
-	var/donator = FALSE
-	var/patron_type = DONATER_NONE
+	var/datum/entity/donater/donater
 	var/datum/entity/player/player_datum
 	var/list/skins = list()
 	var/list/skins_used = list()
@@ -75,12 +68,18 @@ BSQL_PROTECT_DATUM(/datum/entity/skin)
 
 /datum/donator_info/proc/load_info()
 	DB_FILTER(/datum/entity/skin, DB_COMP("player_id", DB_EQUALS, player_datum.id), CALLBACK(src, TYPE_PROC_REF(/datum/donator_info, load_skins)))
+	DB_FILTER(/datum/entity/donater, DB_COMP("player_id", DB_EQUALS, player_datum.id), CALLBACK(src, TYPE_PROC_REF(/datum/donator_info, load_donator)))
 
 /datum/donator_info/proc/load_skins(list/datum/entity/skin/entity_skins)
 	for(var/datum/entity/skin/skin in entity_skins)
 		skins[skin.skin_name] = skin
 
+/datum/donator_info/proc/load_donator(list/datum/entity/donater/_donater)
+	if(length(_donater))
+		donater = pick(_donater)
+		donater.sync()
+
 /datum/donator_info/proc/patreon_function_available(required)
-	if(GLOB.donaters_functions[patron_type])
-		return GLOB.donaters_functions[patron_type][required]
+	if(GLOB.donaters_functions[GLOB.donaters_ranks[donater.rank]])
+		return GLOB.donaters_functions[GLOB.donaters_ranks[donater.rank]][required]
 	return FALSE

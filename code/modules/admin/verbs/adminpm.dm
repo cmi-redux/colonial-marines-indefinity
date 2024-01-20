@@ -22,19 +22,11 @@
 			html = SPAN_DANGER("Error: Admin-PM-Panel: Only administrators may use this command."),
 			confidential = TRUE)
 		return
-	var/list/targets = list()
-	for(var/client/client as anything in GLOB.clients)
-		if(client.mob)
-			if(isnewplayer(client.mob))
-				targets["(New Player) - [client]"] = client
-			else if(isobserver(client.mob))
-				targets["[client.mob.name](Ghost) - [client]"] = client
-			else
-				targets["[client.mob.real_name](as [client.mob.name]) - [client]"] = client
-		else
-			targets["(No Mob) - [client]"] = client
-	var/target = input(src,"To whom shall we send a message?","Admin PM",null) as null|anything in sort_list(targets)
-	cmd_admin_pm(targets[target],null)
+	var/client/target = tgui_input_list(src, "To whom shall we send a message?", "Admin PM", GLOB.clients)
+	if(!istype(target, /client))
+		to_chat(src, SPAN_RED("Error: cmd_admin_pm_panel(): Client not found."))
+		return
+	cmd_admin_pm(target, null)
 
 /client/proc/cmd_ahelp_reply(whom)
 	if(prefs.muted & MUTE_ADMINHELP)
