@@ -114,7 +114,6 @@
 	dir = 1;
 	name = "\improper Medical Research Wing"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -182,7 +181,6 @@
 /area/ravenue_5/cm/brig)
 "aiM" = (
 /obj/structure/pipes/standard/simple/hidden/supply,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 9;
 	icon_state = "sterile_green_side";
@@ -193,7 +191,6 @@
 /obj/structure/machinery/chem_master{
 	vial_maker = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -223,7 +220,6 @@
 /obj/structure/surface/table/almayer,
 /obj/item/paper,
 /obj/item/tool/lighter/random,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -234,7 +230,6 @@
 	dir = 2;
 	tag = "icon-door_open"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -254,7 +249,6 @@
 	},
 /area/ravenue_5/cm/command)
 "alV" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer/research/containment/corner2,
 /area/ravenue_5/ground/east_central_wasteland)
 "amx" = (
@@ -263,7 +257,6 @@
 /obj/item/storage/fancy/vials,
 /obj/item/storage/fancy/vials,
 /obj/item/storage/fancy/vials,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
@@ -516,7 +509,6 @@
 	dir = 8;
 	icon_state = "pipe-c"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -670,7 +662,6 @@
 /obj/structure/machinery/door/firedoor/border_only/almayer{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating,
 /area/ravenue_5/ground/east_central_wasteland)
 "aAb" = (
@@ -868,7 +859,6 @@
 /obj/structure/sign/safety/chem_lab{
 	pixel_x = 31
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 6;
 	icon_state = "sterile_green_side";
@@ -883,7 +873,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "blue";
@@ -972,7 +961,6 @@
 /obj/structure/pipes/vents/pump{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -992,6 +980,9 @@
 	},
 /area/ravenue_5/cm/armory/bravo)
 "aLq" = (
+/obj/structure/machinery/door/airlock/multi_tile/almayer/generic{
+	name = "\improper Hydroponics"
+	},
 /obj/structure/machinery/door/airlock/multi_tile/almayer/generic{
 	name = "\improper Hydroponics"
 	},
@@ -1018,7 +1009,6 @@
 /obj/structure/disposalpipe/trunk{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -1096,7 +1086,6 @@
 /obj/item/reagent_container/dropper{
 	pixel_y = -3
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_corner";
@@ -1111,7 +1100,6 @@
 /area/ravenue_5/cm/cryo)
 "aNp" = (
 /obj/structure/morgue/crematorium,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -1136,7 +1124,6 @@
 	},
 /area/ravenue_5/cm/brig)
 "aOY" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_corner";
@@ -1334,7 +1321,6 @@
 	name = "Morgue Waiting Room";
 	req_one_access = null
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -1366,7 +1352,6 @@
 /area/ravenue_5/civilian/substation)
 "aXm" = (
 /obj/structure/pipes/standard/manifold/hidden/supply,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -1459,7 +1444,6 @@
 	pixel_x = 8;
 	pixel_y = -32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -1475,7 +1459,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 6;
 	icon_state = "sterile_green_side";
@@ -1515,7 +1498,6 @@
 /area/ravenue_5/civilian/substation)
 "bbg" = (
 /obj/structure/reagent_dispensers/fueltank/custom,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -1664,7 +1646,6 @@
 	},
 /obj/item/reagent_container/glass/watertank,
 /obj/item/reagent_container/glass/watertank,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -1713,7 +1694,6 @@
 	dir = 4;
 	req_access_txt = "28"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
@@ -1766,7 +1746,6 @@
 "bkQ" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/device/autopsy_scanner,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -1823,7 +1802,6 @@
 	dir = 1;
 	tag = "icon-chair (NORTH)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood/ship,
 /area/ravenue_5/ground/east_central_wasteland)
 "bmA" = (
@@ -1839,7 +1817,6 @@
 	tag = "icon-intact (NORTHEAST)"
 	},
 /obj/structure/bed,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -1864,13 +1841,11 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer,
 /area/ravenue_5/ground/east_central_wasteland)
 "bnV" = (
 /obj/structure/surface/table/almayer,
 /obj/item/device/camera,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_corner";
@@ -1899,7 +1874,6 @@
 /area/ravenue_5/cm)
 "bpE" = (
 /obj/structure/pipes/vents/pump,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood/ship,
 /area/ravenue_5/ground/east_central_wasteland)
 "bpO" = (
@@ -1937,7 +1911,6 @@
 	req_access_txt = "5"
 	},
 /obj/structure/pipes/standard/simple/hidden/supply,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -1950,7 +1923,6 @@
 	pixel_x = 8;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -1981,7 +1953,6 @@
 	id = "containmentlockdown_E";
 	name = "\improper Containment Lockdown"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -2025,7 +1996,6 @@
 	icon_state = "S";
 	tag = "icon-S"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "plating";
@@ -2130,7 +2100,6 @@
 	},
 /area/ravenue_5/ground/east_central_wasteland)
 "bzY" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 10;
 	icon_state = "silver";
@@ -2207,7 +2176,6 @@
 /obj/structure/machinery/firealarm{
 	pixel_y = 28
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "blue";
@@ -2339,7 +2307,6 @@
 /obj/structure/machinery/alarm/almayer{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -2433,7 +2400,6 @@
 	},
 /area/ravenue_5/ground/east_central_wasteland)
 "bMm" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 9;
 	icon_state = "sterile_green_side";
@@ -2758,7 +2724,6 @@
 	pixel_y = -7
 	},
 /obj/structure/machinery/cm_vending/sorted/medical/chemistry,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_corner";
@@ -2791,7 +2756,6 @@
 /obj/structure/machinery/light{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "plating";
@@ -2802,7 +2766,6 @@
 /obj/structure/surface/table/almayer,
 /obj/item/clipboard,
 /obj/item/tool/hand_labeler,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_corner";
@@ -2830,7 +2793,6 @@
 /obj/structure/machinery/chem_master{
 	vial_maker = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -3052,7 +3014,6 @@
 /obj/item/tool/hand_labeler{
 	pixel_x = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -3120,7 +3081,6 @@
 	},
 /area/ravenue_5/ground/east_central_wasteland)
 "ckC" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_corner";
@@ -3170,7 +3130,6 @@
 	},
 /area/ravenue_5/upp/office/four)
 "clc" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/research/containment/wall/connect_w,
 /area/ravenue_5/ground/east_central_wasteland)
 "cll" = (
@@ -3341,7 +3300,6 @@
 /area/ravenue_5/cm/office/commander)
 "cpn" = (
 /obj/structure/pipes/standard/simple/hidden/supply,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood/ship,
 /area/ravenue_5/ground/east_central_wasteland)
 "cpu" = (
@@ -3384,7 +3342,6 @@
 /obj/structure/sign/safety/ammunition{
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "redfull";
 	tag = "icon-redfull"
@@ -3435,7 +3392,6 @@
 	pixel_x = -3;
 	pixel_y = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -3455,7 +3411,6 @@
 	pixel_y = 6
 	},
 /obj/item/reagent_container/glass/beaker/cryoxadone,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -3541,7 +3496,6 @@
 	},
 /area/ravenue_5/ground/east_central_wasteland)
 "cta" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "blue";
 	tag = "icon-blue"
@@ -3691,7 +3645,6 @@
 	dir = 5;
 	tag = "icon-intact-supply (NORTHEAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -3768,7 +3721,6 @@
 	icon_state = "N";
 	tag = "icon-N"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -3777,7 +3729,6 @@
 "czY" = (
 /obj/item/reagent_container/glass/beaker/bluespace,
 /obj/structure/machinery/chem_dispenser/research,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -3940,7 +3891,6 @@
 	pixel_y = 7
 	},
 /obj/structure/machinery/cm_vending/clothing/medical_crew,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_corner";
@@ -4027,7 +3977,6 @@
 /obj/structure/machinery/door/airlock/almayer/research/glass/reinforced{
 	name = "\improper Medical Research Workshop"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -4038,7 +3987,6 @@
 	pixel_x = 8;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "blue";
@@ -4064,7 +4012,6 @@
 	dir = 8;
 	tag = "icon-morgue1 (WEST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -4203,7 +4150,6 @@
 	name = "General Listening Channel";
 	pixel_y = 28
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_corner";
 	tag = "icon-sterile"
@@ -4470,7 +4416,6 @@
 	dir = 8;
 	icon_state = "pipe-c"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/white/outer_tile,
 /area/ravenue_5/ground/east_central_wasteland)
 "cUv" = (
@@ -4649,7 +4594,6 @@
 /obj/structure/machinery/light{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "blue";
@@ -4703,7 +4647,6 @@
 	pixel_y = 5;
 	req_access_txt = "28"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -4783,7 +4726,6 @@
 /obj/structure/machinery/chem_storage/research{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -5009,7 +4951,6 @@
 /turf/closed/wall/strata_outpost/reinforced,
 /area/ravenue_5/ground/north_east_wasteland)
 "dpc" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/research/containment/wall/west,
 /area/ravenue_5/ground/east_central_wasteland)
 "dpn" = (
@@ -5036,7 +4977,6 @@
 	pixel_x = 3;
 	pixel_y = 3
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -5129,7 +5069,6 @@
 	},
 /area/ravenue_5/civilian/substation)
 "duB" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_corner";
@@ -5152,7 +5091,6 @@
 /area/ravenue_5/cm/armory/delta)
 "dvb" = (
 /obj/structure/pipes/standard/simple/hidden/supply,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 10;
 	icon_state = "sterile_green_side";
@@ -5278,7 +5216,6 @@
 /obj/item/stack/sheet/cardboard{
 	amount = 50
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -5356,7 +5293,6 @@
 	height = 2;
 	id = "cicladder2"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/ravenue_5/ground/east_central_wasteland)
 "dBG" = (
@@ -5419,7 +5355,6 @@
 /area/ravenue_5/cm/med)
 "dCM" = (
 /obj/structure/machinery/camera/autoname/almayer/containment,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/research/containment/wall/north,
 /area/ravenue_5/ground/east_central_wasteland)
 "dDF" = (
@@ -5471,8 +5406,7 @@
 "dEA" = (
 /obj/structure/machinery/door/airlock/almayer/generic{
 	dir = 2;
-	name = "\improper Command";
-	req_access_txt = "201"
+	name = "\improper Command"
 	},
 /turf/open/floor/prison{
 	dir = 10;
@@ -5622,7 +5556,6 @@
 	pixel_x = -25;
 	req_one_access_txt = "19;28"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -5668,14 +5601,12 @@
 	dir = 9;
 	tag = "icon-intact-supply (NORTHWEST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
 	},
 /area/ravenue_5/ground/east_central_wasteland)
 "dLE" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer/research/containment/corner_var1{
 	icon_state = "containment_corner_variant_2";
 	tag = "icon-containment_corner_variant_2"
@@ -5696,7 +5627,6 @@
 	icon_state = "S";
 	tag = "icon-S"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -5745,7 +5675,6 @@
 	pixel_x = 8;
 	pixel_y = -32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -5851,7 +5780,6 @@
 	req_one_access = null
 	},
 /obj/structure/machinery/door/firedoor/border_only/almayer,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -5933,7 +5861,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -5989,7 +5916,6 @@
 	dir = 5;
 	tag = "icon-intact-supply (NORTHEAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 10;
 	icon_state = "sterile_green_side";
@@ -6016,7 +5942,6 @@
 /area/ravenue_5/ground/south_east_wasteland)
 "dYP" = (
 /obj/structure/filingcabinet/filingcabinet,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -6042,7 +5967,6 @@
 	pixel_x = -4;
 	pixel_y = 7
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -6081,7 +6005,6 @@
 	dir = 4;
 	icon_state = "pipe-c"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/ravenue_5/ground/east_central_wasteland)
 "ebP" = (
@@ -6106,12 +6029,10 @@
 	},
 /area/ravenue_5/ground/south_east_wasteland)
 "ecb" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/research/containment/wall/divide,
 /area/ravenue_5/ground/east_central_wasteland)
 "eci" = (
 /obj/structure/pipes/vents/pump,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -6382,7 +6303,6 @@
 	dir = 1
 	},
 /obj/structure/machinery/light,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile";
 	tag = "icon-sterile"
@@ -6393,7 +6313,6 @@
 	dir = 10;
 	tag = "icon-intact-supply (SOUTHWEST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -6452,7 +6371,6 @@
 	},
 /area/ravenue_5/civilian/bar)
 "ekU" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/research/containment/wall/corner,
 /area/ravenue_5/ground/east_central_wasteland)
 "elb" = (
@@ -6513,7 +6431,6 @@
 	dir = 1;
 	tag = "icon-door_open"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating,
 /area/ravenue_5/ground/east_central_wasteland)
 "emI" = (
@@ -6548,7 +6465,6 @@
 /area/ravenue_5/ground/south_east_wasteland)
 "enr" = (
 /obj/structure/pipes/standard/manifold/fourway/hidden/supply,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -6892,7 +6808,6 @@
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/ravenue_5/ground/east_central_wasteland)
 "eAf" = (
@@ -6924,7 +6839,6 @@
 	icon_state = "SW-out";
 	tag = "icon-SW-out"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 10;
 	icon_state = "sterile_green_side";
@@ -6998,7 +6912,6 @@
 	req_one_access = null
 	},
 /obj/structure/disposalpipe/segment,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -7016,7 +6929,6 @@
 "eCX" = (
 /obj/structure/surface/table/almayer,
 /obj/item/clothing/accessory/storage/black_vest/acid_harness,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -7048,7 +6960,6 @@
 /area/ravenue_5/ground/south_east_wasteland)
 "eDH" = (
 /obj/structure/machinery/optable,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -7066,7 +6977,6 @@
 /obj/structure/machinery/shower{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -7141,7 +7051,6 @@
 	pixel_y = 16
 	},
 /obj/item/clothing/accessory/stethoscope,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_corner";
@@ -7169,7 +7078,6 @@
 "eJd" = (
 /obj/structure/machinery/light,
 /obj/structure/machinery/cm_vending/sorted/medical,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -7229,7 +7137,6 @@
 	pixel_x = -14;
 	pixel_y = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -7242,7 +7149,6 @@
 	tag = "icon-intact-supply (EAST)"
 	},
 /obj/structure/machinery/light,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -7286,7 +7192,6 @@
 /obj/structure/machinery/cm_vending/sorted/medical/wall_med{
 	pixel_y = 25
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -7376,7 +7281,6 @@
 	},
 /area/ravenue_5/cm/brig)
 "ePN" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer/research/containment/corner{
 	dir = 1;
 	tag = "icon-containment_corner (NORTH)"
@@ -7394,7 +7298,6 @@
 /area/ravenue_5/upp/briefing)
 "eQE" = (
 /mob/living/simple_animal/mouse/white/Doc,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
@@ -7516,14 +7419,12 @@
 	dir = 2;
 	name = "\improper Command Ladder"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
 	},
 /area/ravenue_5/ground/east_central_wasteland)
 "eWZ" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "mono"
 	},
@@ -7555,7 +7456,6 @@
 /area/ravenue_5/ground/south_east_wasteland)
 "eXR" = (
 /obj/structure/filingcabinet/filingcabinet,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -7806,7 +7706,6 @@
 /obj/structure/machinery/status_display{
 	pixel_y = 30
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "blue";
@@ -7892,7 +7791,6 @@
 	dir = 4;
 	pixel_x = 11
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -7906,7 +7804,6 @@
 	name = "ship-grade camera";
 	tag = "icon-camera (NORTH)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -7996,7 +7893,6 @@
 /area/ravenue_5/cm/armory/charlie)
 "fmD" = (
 /obj/structure/machinery/portable_atmospherics/hydroponics,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_corner";
@@ -8129,8 +8025,7 @@
 "fuJ" = (
 /obj/structure/machinery/door/airlock/almayer/generic{
 	dir = 2;
-	name = "\improper Command";
-	req_access_txt = "201"
+	name = "\improper Command"
 	},
 /turf/open/floor/prison{
 	dir = 10;
@@ -8147,7 +8042,6 @@
 	pixel_x = 23;
 	pixel_y = -32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
@@ -8213,7 +8107,6 @@
 /obj/structure/machinery/firealarm{
 	pixel_y = 28
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -8391,7 +8284,6 @@
 	dir = 4;
 	icon_state = "pipe-c"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 10;
 	icon_state = "sterile_green_side";
@@ -8415,7 +8307,6 @@
 	icon_state = "N";
 	tag = "icon-N"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "plating";
@@ -8423,7 +8314,6 @@
 	},
 /area/ravenue_5/ground/east_central_wasteland)
 "fGY" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/research/containment/wall/purple{
 	tag = "icon-containment_window (EAST)"
 	},
@@ -8454,7 +8344,6 @@
 	name = "Mounted Flash";
 	pixel_y = 30
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer/research/containment/floor2{
 	dir = 1;
 	tag = "icon-containment_floor_2 (NORTH)"
@@ -8473,7 +8362,6 @@
 /area/ravenue_5/upp/med)
 "fHC" = (
 /obj/structure/machinery/light/containment,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer/research/containment/floor2{
 	dir = 1;
 	tag = "icon-containment_floor_2 (NORTH)"
@@ -8501,7 +8389,6 @@
 	pixel_x = -8;
 	pixel_y = 3
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -8604,7 +8491,6 @@
 	pixel_x = 27;
 	req_access_txt = "28"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "plating";
@@ -8635,7 +8521,6 @@
 	},
 /area/ravenue_5/cm/med)
 "fNT" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -8659,7 +8544,6 @@
 /obj/item/reagent_container/glass/beaker/bluespace{
 	pixel_y = 12
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -8853,7 +8737,6 @@
 /obj/item/folder/black,
 /obj/item/folder/black,
 /obj/item/folder/white,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -8864,7 +8747,6 @@
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 9;
 	icon_state = "sterile_green_side";
@@ -9110,7 +8992,6 @@
 	id = "Containment Cell 3";
 	name = "\improper Containment Cell 3"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -9141,7 +9022,6 @@
 	},
 /area/ravenue_5/cm/brig)
 "gcH" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "silver";
 	tag = "icon-silver"
@@ -9171,7 +9051,6 @@
 	icon_state = "pottedplant_10";
 	tag = "icon-plant-10"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "mono"
 	},
@@ -9180,7 +9059,6 @@
 /obj/structure/machinery/status_display{
 	pixel_y = 30
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "blue";
@@ -9216,7 +9094,6 @@
 /obj/structure/disposalpipe/trunk{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_corner";
@@ -9246,7 +9123,6 @@
 /obj/structure/machinery/power/apc/almayer{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_corner";
@@ -9334,7 +9210,6 @@
 /area/ravenue_5/cm/brig)
 "gkw" = (
 /obj/structure/pipes/standard/simple/hidden/supply,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -9384,7 +9259,6 @@
 	density = 0;
 	pixel_y = 30
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "mono"
 	},
@@ -9460,7 +9334,6 @@
 /obj/structure/machinery/door/airlock/almayer/generic{
 	name = "\improper Bathroom"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -9480,7 +9353,6 @@
 /obj/structure/machinery/door/window/southleft{
 	req_access_txt = "28"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
@@ -9539,7 +9411,6 @@
 /obj/structure/machinery/status_display{
 	pixel_y = 30
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood/ship,
 /area/ravenue_5/ground/east_central_wasteland)
 "grP" = (
@@ -9553,7 +9424,6 @@
 /obj/structure/pipes/vents/scrubber{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -9571,7 +9441,6 @@
 	pixel_x = 8;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "sterile_green_side";
@@ -9644,7 +9513,6 @@
 /obj/structure/closet/secure_closet/personal/cabinet{
 	req_access_txt = "5"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "mono"
 	},
@@ -9653,7 +9521,6 @@
 /obj/structure/machinery/sleep_console{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -9697,7 +9564,6 @@
 	pixel_x = 8;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_corner";
 	tag = "icon-sterile"
@@ -9792,7 +9658,6 @@
 /obj/structure/machinery/autodispenser{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -9831,7 +9696,6 @@
 	},
 /area/ravenue_5/cm/med)
 "gBA" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
@@ -9870,7 +9734,6 @@
 /obj/item/clipboard,
 /obj/item/clipboard,
 /obj/item/clipboard,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood/ship,
 /area/ravenue_5/ground/east_central_wasteland)
 "gDM" = (
@@ -9897,7 +9760,6 @@
 /obj/structure/disposalpipe/trunk/multiz/down{
 	dir = 2
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/white,
 /area/ravenue_5/ground/east_central_wasteland)
 "gEk" = (
@@ -9930,7 +9792,6 @@
 	dir = 8;
 	tag = "icon-map-supply (WEST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 6;
 	icon_state = "sterile_green_side";
@@ -9968,7 +9829,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating,
 /area/ravenue_5/ground/east_central_wasteland)
 "gFy" = (
@@ -10009,7 +9869,6 @@
 	},
 /area/ravenue_5/cm/brig)
 "gHg" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/white/outer_tile,
 /area/ravenue_5/ground/east_central_wasteland)
 "gHr" = (
@@ -10163,7 +10022,6 @@
 	pixel_x = -24;
 	req_access_txt = "25"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/ravenue_5/ground/east_central_wasteland)
 "gPh" = (
@@ -10207,7 +10065,6 @@
 	pixel_x = 15;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_corner";
@@ -10283,7 +10140,6 @@
 	icon_state = "W";
 	tag = "icon-W"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -10346,7 +10202,6 @@
 	name = "ship-grade camera";
 	tag = ""
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "blue";
@@ -10433,7 +10288,6 @@
 	dir = 4;
 	icon_state = "pipe-c"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/white/outer_tile,
 /area/ravenue_5/ground/east_central_wasteland)
 "hcV" = (
@@ -10500,7 +10354,6 @@
 	dir = 8;
 	tag = "icon-morgue1 (WEST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -10562,7 +10415,6 @@
 	name = "ship-grade camera";
 	tag = "icon-camera (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -10613,7 +10465,6 @@
 	id = "Containment Cell 2";
 	name = "\improper Containment Cell 2"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -10694,8 +10545,7 @@
 "hmQ" = (
 /obj/structure/machinery/door/airlock/almayer/generic{
 	dir = 2;
-	name = "\improper Command";
-	req_access_txt = "201"
+	name = "\improper Command"
 	},
 /turf/open/floor/prison{
 	dir = 10;
@@ -10728,7 +10578,6 @@
 	dir = 4;
 	layer = 3.25
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -10872,7 +10721,6 @@
 	},
 /area/ravenue_5/cm/tank_hangar)
 "htG" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood/ship,
 /area/ravenue_5/ground/east_central_wasteland)
 "htI" = (
@@ -11159,7 +11007,6 @@
 /obj/structure/machinery/medical_pod/sleeper{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -11252,7 +11099,6 @@
 /obj/structure/machinery/light{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -11281,7 +11127,6 @@
 /obj/structure/surface/table/almayer,
 /obj/item/clipboard,
 /obj/item/paper,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_corner";
 	tag = "icon-sterile"
@@ -11366,7 +11211,6 @@
 	},
 /area/ravenue_5/upp/brig/armory)
 "hJf" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 10;
 	icon_state = "sterile_green_side";
@@ -11447,7 +11291,6 @@
 /obj/structure/machinery/light{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -11525,7 +11368,6 @@
 /obj/structure/machinery/centrifuge{
 	pixel_y = 7
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -11690,7 +11532,6 @@
 /obj/structure/machinery/chem_master{
 	vial_maker = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -11817,7 +11658,6 @@
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer,
 /area/ravenue_5/ground/east_central_wasteland)
 "iaa" = (
@@ -11843,7 +11683,6 @@
 	pixel_x = 23;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/ravenue_5/ground/east_central_wasteland)
 "iaT" = (
@@ -11883,7 +11722,6 @@
 /area/ravenue_5/civilian/substation)
 "ibk" = (
 /obj/structure/bed/chair/office/dark,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -11922,7 +11760,6 @@
 	},
 /area/ravenue_5/upp/office/commander)
 "idt" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/research/containment/wall/north,
 /area/ravenue_5/ground/east_central_wasteland)
 "idL" = (
@@ -11939,7 +11776,6 @@
 	name = "General Listening Channel";
 	pixel_y = 28
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -12124,8 +11960,7 @@
 "ilL" = (
 /obj/structure/machinery/door/airlock/almayer/generic{
 	dir = 2;
-	name = "\improper Command";
-	req_access_txt = "201"
+	name = "\improper Command"
 	},
 /turf/open/floor/prison{
 	dir = 10;
@@ -12198,7 +12033,6 @@
 /obj/structure/machinery/light{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "mono"
 	},
@@ -12620,7 +12454,6 @@
 	pixel_x = 8;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -12754,7 +12587,6 @@
 	pixel_x = 8;
 	pixel_y = -2
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_corner";
@@ -12906,7 +12738,6 @@
 	tag = "icon-door_open"
 	},
 /obj/structure/pipes/standard/simple/hidden/supply,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -12934,7 +12765,6 @@
 /obj/structure/sign/safety/intercom{
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_corner";
 	tag = "icon-sterile"
@@ -12999,7 +12829,6 @@
 /turf/open/floor/plating,
 /area/ravenue_5/cm)
 "iYJ" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/white,
 /area/ravenue_5/ground/east_central_wasteland)
 "iYK" = (
@@ -13044,7 +12873,6 @@
 /area/ravenue_5/cm/med)
 "iZG" = (
 /obj/structure/machinery/smartfridge/chemistry,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -13052,13 +12880,8 @@
 	},
 /area/ravenue_5/ground/east_central_wasteland)
 "iZO" = (
-/obj/structure/machinery/door/airlock/almayer/command{
-	name = "\improper Rear Admiral, 3rd Fleet 2nd Battlegroup"
-	},
 /obj/structure/machinery/door/airlock/almayer/generic{
-	dir = 4;
-	name = "\improper Command";
-	req_access_txt = "201"
+	name = "\improper Command"
 	},
 /turf/open/floor/prison{
 	dir = 10;
@@ -13373,12 +13196,10 @@
 	height = 2;
 	id = "cicladder4"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/ravenue_5/ground/east_central_wasteland)
 "jlr" = (
 /obj/structure/machinery/door/firedoor/border_only/almayer,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -13404,7 +13225,6 @@
 /obj/structure/pipes/vents/scrubber{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -13568,11 +13388,9 @@
 /obj/structure/machinery/computer/research{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood/ship,
 /area/ravenue_5/ground/east_central_wasteland)
 "jsl" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/ravenue_5/ground/east_central_wasteland)
 "jso" = (
@@ -13659,7 +13477,6 @@
 	pixel_y = -20;
 	req_one_access_txt = "19;28"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -13690,7 +13507,6 @@
 /area/ravenue_5/upp/brig/perma)
 "jxN" = (
 /obj/structure/machinery/portable_atmospherics/hydroponics,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -13744,7 +13560,6 @@
 	pixel_x = -17;
 	pixel_y = -8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -13768,7 +13583,6 @@
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "silver";
@@ -14056,7 +13870,6 @@
 /area/ravenue_5/upp/office/commander)
 "jJb" = (
 /obj/structure/closet/firecloset,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_corner";
@@ -14238,7 +14051,6 @@
 /area/ravenue_5/cm/brig)
 "jRg" = (
 /obj/structure/machinery/light,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "blue";
 	tag = "icon-blue"
@@ -14349,7 +14161,6 @@
 /obj/item/device/mass_spectrometer{
 	pixel_x = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -14421,7 +14232,6 @@
 	pixel_x = 8;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_corner";
 	tag = "icon-sterile"
@@ -14439,7 +14249,6 @@
 /obj/structure/machinery/firealarm{
 	pixel_y = 28
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood/ship,
 /area/ravenue_5/ground/east_central_wasteland)
 "kau" = (
@@ -14563,7 +14372,6 @@
 	pixel_y = 28;
 	req_one_access_txt = "19;28"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -14663,7 +14471,6 @@
 	pixel_x = 8;
 	pixel_y = -32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -14743,7 +14550,6 @@
 	},
 /area/ravenue_5/ground/east_central_wasteland)
 "kmI" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "plating";
@@ -14790,8 +14596,7 @@
 "kow" = (
 /obj/structure/machinery/door/airlock/almayer/generic{
 	dir = 2;
-	name = "\improper Command";
-	req_access_txt = "201"
+	name = "\improper Command"
 	},
 /turf/open/floor/prison{
 	dir = 10;
@@ -14850,7 +14655,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/white/outer_tile,
 /area/ravenue_5/ground/east_central_wasteland)
 "kqS" = (
@@ -14920,7 +14724,6 @@
 /area/ravenue_5/ground/west_central_wasteland)
 "ksS" = (
 /obj/structure/reagent_dispensers/fueltank/custom,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -14951,7 +14754,6 @@
 "kut" = (
 /obj/effect/decal/cleanable/blood/splatter,
 /obj/effect/landmark/corpsespawner/doctor,
-/obj/docking_port/stationary/crashmode,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "whitegreen"
@@ -14990,7 +14792,6 @@
 /obj/structure/machinery/door/firedoor/border_only/almayer{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating,
 /area/ravenue_5/ground/east_central_wasteland)
 "kwa" = (
@@ -15337,7 +15138,6 @@
 /obj/structure/surface/table/almayer,
 /obj/item/folder/white,
 /obj/item/device/flashlight/pen,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood/ship,
 /area/ravenue_5/ground/east_central_wasteland)
 "kMc" = (
@@ -15578,7 +15378,6 @@
 /obj/structure/machinery/light{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -15635,7 +15434,6 @@
 /obj/structure/machinery/chem_storage/medbay{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -15661,8 +15459,7 @@
 "lav" = (
 /obj/structure/machinery/door/airlock/almayer/generic{
 	dir = 2;
-	name = "\improper Command";
-	req_access_txt = "201"
+	name = "\improper Command"
 	},
 /turf/open/floor/prison{
 	dir = 10;
@@ -15679,7 +15476,6 @@
 /area/ravenue_5/ground/east_central_wasteland)
 "laL" = (
 /obj/structure/machinery/portable_atmospherics/hydroponics,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_corner";
@@ -15708,7 +15504,6 @@
 	dir = 1;
 	name = "\improper Containment Airlock"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -15923,7 +15718,6 @@
 	},
 /area/ravenue_5/cm/armory/charlie)
 "liX" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 10;
 	icon_state = "blue";
@@ -15934,7 +15728,6 @@
 /obj/structure/pipes/vents/pump{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -15999,7 +15792,6 @@
 /obj/structure/sign/safety/biohazard{
 	pixel_y = -32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -16069,7 +15861,6 @@
 /obj/structure/disposalpipe/trunk/multiz/down{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/white,
 /area/ravenue_5/ground/east_central_wasteland)
 "lmY" = (
@@ -16203,7 +15994,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/ravenue_5/ground/east_central_wasteland)
 "lrt" = (
@@ -16231,7 +16021,6 @@
 	dir = 2;
 	icon_state = "pipe-c"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/white/outer_tile,
 /area/ravenue_5/ground/east_central_wasteland)
 "lsz" = (
@@ -16241,7 +16030,6 @@
 /obj/structure/pipes/standard/cap/hidden{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -16368,7 +16156,6 @@
 	dir = 1;
 	name = "\improper Containment Airlock"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -16481,7 +16268,6 @@
 	pixel_y = 28
 	},
 /obj/structure/bed,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -16490,7 +16276,6 @@
 /area/ravenue_5/ground/east_central_wasteland)
 "lzw" = (
 /obj/structure/machinery/computer/med_data,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -16520,7 +16305,6 @@
 	name = "General Listening Channel";
 	pixel_y = 28
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_corner";
@@ -16625,7 +16409,6 @@
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -16824,7 +16607,6 @@
 	dir = 1;
 	name = "\improper Medical Research Wing"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -16882,7 +16664,6 @@
 /turf/open/floor/prison,
 /area/ravenue_5/civilian/kitchen)
 "lLF" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -16896,7 +16677,6 @@
 /obj/structure/machinery/light{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -16912,7 +16692,6 @@
 	dir = 8;
 	health = 80
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
@@ -16941,7 +16720,6 @@
 /obj/structure/machinery/light{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -16949,7 +16727,6 @@
 /area/ravenue_5/ground/east_central_wasteland)
 "lMM" = (
 /obj/structure/closet/l3closet/general,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -17001,7 +16778,6 @@
 "lOc" = (
 /obj/structure/pipes/standard/simple/hidden/supply,
 /obj/structure/disposalpipe/segment,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 9;
 	icon_state = "sterile_green_side";
@@ -17158,7 +16934,6 @@
 /obj/structure/sign/safety/intercom{
 	pixel_x = -17
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -17254,7 +17029,6 @@
 	pixel_x = 7;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "silver";
@@ -17277,7 +17051,6 @@
 	},
 /area/ravenue_5/cm/med)
 "lXP" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer/research/containment/entrance{
 	dir = 8;
 	tag = "icon-containment_entrance (WEST)"
@@ -17335,7 +17108,6 @@
 	dir = 4;
 	tag = "icon-map-supply (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -17370,11 +17142,9 @@
 	pixel_x = 15;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood/ship,
 /area/ravenue_5/ground/east_central_wasteland)
 "maO" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -17400,7 +17170,6 @@
 	},
 /area/ravenue_5/cm/command)
 "mbs" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer/research/containment/corner3,
 /area/ravenue_5/ground/east_central_wasteland)
 "mbH" = (
@@ -17488,7 +17257,6 @@
 	pixel_x = 8;
 	pixel_y = -32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -17536,7 +17304,6 @@
 /obj/structure/machinery/light{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -17580,7 +17347,6 @@
 	},
 /area/ravenue_5/ground/south_east_wasteland)
 "miK" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer/research/containment/entrance{
 	dir = 4;
 	tag = "icon-containment_entrance (WEST)"
@@ -17664,7 +17430,6 @@
 	},
 /area/ravenue_5/upp)
 "mmc" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/research/containment/wall/east,
 /area/ravenue_5/ground/east_central_wasteland)
 "mmf" = (
@@ -17853,7 +17618,6 @@
 	},
 /area/ravenue_5/cm/command)
 "mvZ" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -17869,7 +17633,6 @@
 	dir = 8;
 	tag = "icon-tube1 (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -17878,7 +17641,6 @@
 /area/ravenue_5/ground/east_central_wasteland)
 "mxt" = (
 /obj/structure/disposalpipe/segment,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -17901,7 +17663,6 @@
 	icon_state = "S";
 	tag = "icon-S"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -17977,7 +17738,6 @@
 	name = "General Listening Channel";
 	pixel_y = 28
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood/ship,
 /area/ravenue_5/ground/east_central_wasteland)
 "mBP" = (
@@ -18001,7 +17761,6 @@
 /area/ravenue_5/upp/briefing)
 "mCf" = (
 /obj/structure/disposalpipe/segment,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/white/outer_tile,
 /area/ravenue_5/ground/east_central_wasteland)
 "mCx" = (
@@ -18031,7 +17790,6 @@
 	icon_state = "pottedplant_22";
 	tag = "icon-plant-10"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -18072,7 +17830,6 @@
 	name = "\improper Containment Cell 1";
 	unacidable = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -18094,7 +17851,6 @@
 /obj/structure/machinery/light{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_corner";
@@ -18461,7 +18217,6 @@
 "mUx" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/microwave,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_corner";
@@ -18473,7 +18228,6 @@
 	dir = 8;
 	tag = "icon-map-supply (WEST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -18497,7 +18251,6 @@
 /obj/item/storage/box/bodybags,
 /obj/item/storage/box/bodybags,
 /obj/item/storage/box/bodybags,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -18509,7 +18262,6 @@
 	dir = 4;
 	pixel_x = 24
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -18630,7 +18382,6 @@
 	pixel_x = 3;
 	pixel_y = 3
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -18761,7 +18512,6 @@
 	unacidable = 1;
 	unslashable = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer/research/containment/floor2{
 	dir = 1;
 	tag = "icon-containment_floor_2 (NORTH)"
@@ -18842,7 +18592,6 @@
 	},
 /area/ravenue_5/cm/armory/delta)
 "nhh" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer/research/containment/floor2,
 /area/ravenue_5/ground/east_central_wasteland)
 "nhF" = (
@@ -18945,7 +18694,6 @@
 /obj/structure/machinery/light/containment{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer/research/containment/floor2{
 	dir = 1;
 	tag = "icon-containment_floor_2 (NORTH)"
@@ -18981,7 +18729,6 @@
 	},
 /area/ravenue_5/upp/med)
 "nkP" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer/research/containment/corner{
 	dir = 4;
 	tag = "icon-containment_corner (EAST)"
@@ -19148,7 +18895,6 @@
 	},
 /obj/structure/disposalpipe/segment,
 /obj/structure/pipes/standard/simple/hidden/supply,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -19221,7 +18967,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/ravenue_5/ground/east_central_wasteland)
 "nvu" = (
@@ -19278,7 +19023,6 @@
 	dir = 4;
 	icon_state = "pipe-c"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/ravenue_5/ground/east_central_wasteland)
 "nwz" = (
@@ -19314,7 +19058,6 @@
 /obj/structure/machinery/door/airlock/multi_tile/almayer/medidoor/research{
 	name = "\improper Research Laboratory"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -19336,7 +19079,6 @@
 	pixel_x = 23;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
@@ -19455,7 +19197,6 @@
 /obj/structure/bed/chair/office/dark{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -19533,7 +19274,6 @@
 /obj/structure/sign/nosmoking_2{
 	pixel_x = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -19698,7 +19438,6 @@
 	pixel_x = 3;
 	pixel_y = -3
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "mono"
 	},
@@ -19723,7 +19462,6 @@
 	pixel_x = 15;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_corner";
 	tag = "icon-sterile"
@@ -19774,7 +19512,6 @@
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 10;
 	icon_state = "sterile_green_side";
@@ -19832,7 +19569,6 @@
 	pixel_x = 14;
 	pixel_y = -10
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -19871,7 +19607,6 @@
 	},
 /area/ravenue_5/cm/armory/bravo)
 "nTr" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer/research/containment/corner4,
 /area/ravenue_5/ground/east_central_wasteland)
 "nTE" = (
@@ -20084,7 +19819,6 @@
 /obj/structure/machinery/light{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_corner";
@@ -20098,7 +19832,6 @@
 /area/ravenue_5/civilian/kitchen)
 "oeI" = (
 /obj/structure/bed/chair/office/dark,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -20148,7 +19881,6 @@
 	dir = 6;
 	tag = "icon-intact-supply (SOUTHEAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -20269,30 +20001,6 @@
 /area/ravenue_5/civilian/sanitation)
 "olG" = (
 /obj/structure/closet/secure_closet/injection,
-/obj/item/reagent_container/hypospray/autoinjector/quickclot{
-	name = "\improper Lethal Injection"
-	},
-/obj/item/reagent_container/hypospray/autoinjector/quickclot{
-	name = "\improper Lethal Injection"
-	},
-/obj/item/reagent_container/hypospray/autoinjector/quickclot{
-	name = "\improper Lethal Injection"
-	},
-/obj/item/reagent_container/hypospray/autoinjector/quickclot{
-	name = "\improper Lethal Injection"
-	},
-/obj/item/reagent_container/hypospray/autoinjector/quickclot{
-	name = "\improper Lethal Injection"
-	},
-/obj/item/reagent_container/hypospray/autoinjector/quickclot{
-	name = "\improper Lethal Injection"
-	},
-/obj/item/reagent_container/hypospray/autoinjector/quickclot{
-	name = "\improper Lethal Injection"
-	},
-/obj/item/reagent_container/hypospray/autoinjector/quickclot{
-	name = "\improper Lethal Injection"
-	},
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "floor_plate";
@@ -20431,7 +20139,6 @@
 	},
 /area/ravenue_5/upp/office/one)
 "osB" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/research/containment/wall/corner{
 	dir = 8;
 	tag = "icon-containment_wall_corner (WEST)"
@@ -20446,7 +20153,6 @@
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "silver";
@@ -20479,7 +20185,6 @@
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -20808,7 +20513,6 @@
 	name = "General Listening Channel";
 	pixel_x = -28
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/ravenue_5/ground/east_central_wasteland)
 "oHs" = (
@@ -20876,7 +20580,6 @@
 /obj/structure/machinery/light{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -20965,7 +20668,6 @@
 	pixel_x = 23;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -20988,7 +20690,6 @@
 	dir = 1
 	},
 /obj/structure/machinery/cm_vending/clothing/medical_crew,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -21015,7 +20716,6 @@
 /area/ravenue_5/upp/brig/perma)
 "oON" = (
 /obj/structure/pipes/vents/pump,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
@@ -21093,7 +20793,6 @@
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "sterile_green_side";
@@ -21125,7 +20824,6 @@
 	pixel_x = 25;
 	req_one_access_txt = "19;28"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_corner";
@@ -21169,7 +20867,6 @@
 	dir = 2;
 	tag = "icon-door_open"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -21312,7 +21009,6 @@
 	dir = 1;
 	icon_state = "pipe-j2"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/white,
 /area/ravenue_5/ground/east_central_wasteland)
 "oYC" = (
@@ -21404,7 +21100,6 @@
 /obj/structure/machinery/light{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -21419,7 +21114,6 @@
 	icon_state = "SE-out";
 	tag = "icon-SE-out"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "plating";
@@ -21440,7 +21134,6 @@
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -21462,7 +21155,6 @@
 /obj/structure/machinery/light{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -21543,7 +21235,6 @@
 	pixel_x = 23;
 	pixel_y = -32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/ravenue_5/ground/east_central_wasteland)
 "peM" = (
@@ -21598,7 +21289,6 @@
 /obj/structure/machinery/door/firedoor/border_only/almayer{
 	dir = 2
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -21663,7 +21353,6 @@
 	icon_state = "poster8";
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_corner";
@@ -21684,7 +21373,6 @@
 /obj/structure/machinery/door/firedoor/border_only/almayer{
 	dir = 2
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -21747,7 +21435,6 @@
 /obj/structure/machinery/door/airlock/almayer/research/glass/reinforced{
 	name = "\improper Hydroponics Laboratory"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -21883,7 +21570,6 @@
 	},
 /area/ravenue_5/upp/office/two)
 "poR" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/research/containment/wall/south,
 /area/ravenue_5/ground/east_central_wasteland)
 "ppe" = (
@@ -21912,7 +21598,6 @@
 /obj/structure/machinery/light{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
@@ -22048,7 +21733,6 @@
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/ravenue_5/ground/east_central_wasteland)
 "ptj" = (
@@ -22187,7 +21871,6 @@
 /obj/structure/bed/chair/office/dark{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -22457,7 +22140,6 @@
 /obj/item/tool/pen{
 	pixel_y = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_corner";
@@ -22466,7 +22148,6 @@
 /area/ravenue_5/ground/east_central_wasteland)
 "pJf" = (
 /obj/structure/pipes/standard/simple/hidden/supply,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "mono"
 	},
@@ -22510,7 +22191,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "silver";
@@ -22618,11 +22298,9 @@
 	dir = 8;
 	layer = 3.25
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood/ship,
 /area/ravenue_5/ground/east_central_wasteland)
 "pQa" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 9;
 	icon_state = "silver";
@@ -22634,7 +22312,6 @@
 	dir = 6;
 	tag = "icon-intact-supply (SOUTHEAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -22654,7 +22331,6 @@
 	height = 2;
 	id = "med2"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/ravenue_5/ground/east_central_wasteland)
 "pQY" = (
@@ -22669,7 +22345,6 @@
 	pixel_x = 32;
 	pixel_y = 7
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "redfull";
 	tag = "icon-redfull"
@@ -22758,7 +22433,6 @@
 	},
 /area/ravenue_5/cm/briefing)
 "pUL" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "blue";
@@ -22770,7 +22444,6 @@
 	dir = 5;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -22781,7 +22454,6 @@
 	dir = 8;
 	icon_state = "pipe-c"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/ravenue_5/ground/east_central_wasteland)
 "pUS" = (
@@ -22934,7 +22606,6 @@
 	},
 /area/ravenue_5/cm/command)
 "qba" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "blue";
@@ -22948,7 +22619,6 @@
 	pixel_y = 28
 	},
 /obj/structure/bed/chair,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -22976,7 +22646,6 @@
 	pixel_x = -8;
 	pixel_y = -2
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -23021,7 +22690,6 @@
 /obj/structure/machinery/camera/autoname/almayer/containment{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer/research/containment/floor2{
 	dir = 8;
 	tag = "icon-containment_floor_2 (WEST)"
@@ -23036,7 +22704,6 @@
 /obj/structure/machinery/medical_pod/bodyscanner{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -23105,7 +22772,6 @@
 	pixel_x = 15;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "redfull";
 	tag = "icon-redfull"
@@ -23311,7 +22977,6 @@
 "qqo" = (
 /obj/structure/machinery/portable_atmospherics/hydroponics,
 /obj/structure/machinery/light,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -23448,7 +23113,6 @@
 	pixel_y = 5
 	},
 /obj/item/storage/toolbox/electrical,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -23477,7 +23141,6 @@
 /obj/structure/machinery/light{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -23640,7 +23303,6 @@
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -23715,7 +23377,6 @@
 	dir = 4;
 	layer = 2.991
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood/ship,
 /area/ravenue_5/ground/east_central_wasteland)
 "qCX" = (
@@ -23739,7 +23400,6 @@
 /area/ravenue_5/ground/east_central_wasteland)
 "qDB" = (
 /obj/structure/machinery/autolathe,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -23761,7 +23421,6 @@
 /area/ravenue_5/upp/agro)
 "qDV" = (
 /obj/structure/machinery/smartfridge/chemistry,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -23790,7 +23449,6 @@
 	dir = 1
 	},
 /obj/structure/machinery/iv_drip,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -23912,7 +23570,6 @@
 /obj/item/paper_bin/wy{
 	pixel_y = 7
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood/ship,
 /area/ravenue_5/ground/east_central_wasteland)
 "qJs" = (
@@ -23965,7 +23622,6 @@
 /obj/item/clothing/suit/storage/marine/light/vest,
 /obj/item/clothing/suit/storage/marine/light/vest,
 /obj/item/clothing/suit/storage/marine/light/vest,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "redfull";
 	tag = "icon-redfull"
@@ -24090,7 +23746,6 @@
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "blue";
@@ -24106,7 +23761,6 @@
 /obj/item/tool/surgery/hemostat,
 /obj/item/tool/surgery/scalpel,
 /obj/structure/surface/table/reinforced/prison,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_corner";
@@ -24149,7 +23803,6 @@
 	dir = 6;
 	tag = "icon-intact-supply (SOUTHEAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 9;
 	icon_state = "sterile_green_side";
@@ -24169,7 +23822,6 @@
 	dir = 4;
 	pixel_x = 11
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -24449,7 +24101,6 @@
 /obj/structure/surface/table/almayer,
 /obj/effect/spawner/random/toolbox,
 /obj/item/tool/extinguisher,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_corner";
@@ -24544,7 +24195,6 @@
 /obj/structure/filingcabinet/chestdrawer{
 	pixel_x = -8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -24803,7 +24453,6 @@
 	pixel_y = 10;
 	start_vials = 2
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -24814,7 +24463,6 @@
 /obj/structure/machinery/light{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -25019,7 +24667,6 @@
 /turf/open/asphalt,
 /area/ravenue_5/ground/south_west_wasteland)
 "rzD" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -25139,7 +24786,6 @@
 	},
 /area/ravenue_5/upp/armory)
 "rHf" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/research/containment/wall/purple{
 	dir = 1;
 	tag = "icon-containment_window (WEST)"
@@ -25230,7 +24876,6 @@
 	},
 /area/ravenue_5/upp/brig/perma)
 "rJi" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 6;
 	icon_state = "sterile_green_side";
@@ -25255,7 +24900,6 @@
 /area/ravenue_5/ground/south_west_wasteland)
 "rKO" = (
 /obj/structure/window/reinforced,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
@@ -25300,7 +24944,6 @@
 /obj/structure/machinery/body_scanconsole{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -25346,7 +24989,6 @@
 "rPU" = (
 /obj/structure/machinery/vending/snack,
 /obj/structure/machinery/light,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -25408,7 +25050,6 @@
 /area/ravenue_5/ground/east_central_wasteland)
 "rTq" = (
 /obj/structure/pipes/standard/simple/hidden/supply,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -25811,7 +25452,6 @@
 	pixel_x = -17;
 	pixel_y = 7
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/almayer,
 /area/ravenue_5/ground/east_central_wasteland)
 "sdb" = (
@@ -25964,7 +25604,6 @@
 /obj/structure/machinery/light{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/ravenue_5/ground/east_central_wasteland)
 "sjf" = (
@@ -26190,7 +25829,6 @@
 	},
 /area/ravenue_5/civilian/bar)
 "srg" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/research/containment/wall/corner{
 	dir = 4
 	},
@@ -26383,7 +26021,6 @@
 /area/ravenue_5/cm/brig)
 "sws" = (
 /obj/structure/machinery/portable_atmospherics/hydroponics,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -26493,7 +26130,6 @@
 	pixel_x = 8;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "blue";
@@ -26654,7 +26290,6 @@
 /obj/structure/machinery/power/apc/almayer{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -26846,7 +26481,6 @@
 /obj/item/tool/surgery/cautery,
 /obj/item/tool/surgery/retractor,
 /obj/structure/surface/table/reinforced/prison,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -26897,7 +26531,6 @@
 	req_access_txt = "5"
 	},
 /obj/structure/machinery/computer/crew,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_corner";
@@ -26957,7 +26590,6 @@
 /obj/structure/mirror{
 	pixel_x = 28
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile";
 	tag = "icon-sterile"
@@ -27058,7 +26690,6 @@
 	pixel_x = 8;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood/ship,
 /area/ravenue_5/ground/east_central_wasteland)
 "sVi" = (
@@ -27394,7 +27025,6 @@
 /obj/item/storage/box/monkeycubes{
 	pixel_x = 7
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -27513,7 +27143,6 @@
 "tkD" = (
 /obj/structure/window/framed/almayer/white,
 /obj/structure/machinery/door/firedoor/border_only/almayer,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating,
 /area/ravenue_5/ground/east_central_wasteland)
 "tly" = (
@@ -27546,7 +27175,6 @@
 	dir = 1
 	},
 /obj/item/folder/white,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -27682,9 +27310,7 @@
 /area/ravenue_5/civilian/kitchen)
 "trv" = (
 /obj/structure/machinery/door/airlock/almayer/generic{
-	dir = 4;
-	name = "\improper Command";
-	req_access_txt = "201"
+	name = "\improper Command"
 	},
 /turf/open/floor/prison{
 	dir = 10;
@@ -27707,7 +27333,6 @@
 	dir = 8;
 	tag = "icon-pipe-s (WEST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -27721,7 +27346,6 @@
 	},
 /obj/structure/window/framed/almayer/white,
 /obj/structure/machinery/door/firedoor/border_only/almayer,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating,
 /area/ravenue_5/ground/east_central_wasteland)
 "tse" = (
@@ -27951,7 +27575,6 @@
 	pixel_x = -12;
 	pixel_y = 2
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -28128,7 +27751,6 @@
 /turf/open/openspace,
 /area/ravenue_5/cm)
 "tJt" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/research/containment/wall/corner{
 	dir = 1
 	},
@@ -28300,7 +27922,6 @@
 	pixel_y = 7
 	},
 /obj/item/storage/fancy/candle_box,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/ravenue_5/ground/east_central_wasteland)
 "tQh" = (
@@ -28466,7 +28087,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer,
 /area/ravenue_5/ground/east_central_wasteland)
 "tVr" = (
@@ -28691,7 +28311,8 @@
 /obj/structure/prop/sector_center{
 	zone_range = 16;
 	sector_id = "marine_base";
-	sector_connections = list("marine_base_undeground","bar","kitchen")
+	sector_connections = list("marine_base_undeground","bar","kitchen");
+	faction_to_get = "cm"
 	},
 /turf/open/floor/prison{
 	dir = 10;
@@ -28874,7 +28495,6 @@
 	pixel_x = -27;
 	req_access_txt = "28"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 10;
 	icon_state = "sterile_green_side";
@@ -28928,7 +28548,6 @@
 	pixel_x = 8;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -28962,7 +28581,6 @@
 /obj/structure/machinery/door/firedoor/border_only/almayer{
 	tag = "icon-door_open"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating,
 /area/ravenue_5/ground/east_central_wasteland)
 "ulr" = (
@@ -28975,7 +28593,6 @@
 "uls" = (
 /obj/structure/disposalpipe/segment,
 /obj/structure/pipes/standard/simple/hidden/supply,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 9;
 	icon_state = "sterile_green_side";
@@ -29179,7 +28796,6 @@
 /area/ravenue_5/cm/brig/camers)
 "utu" = (
 /obj/structure/window/framed/almayer/white,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating,
 /area/ravenue_5/ground/east_central_wasteland)
 "utw" = (
@@ -29195,7 +28811,6 @@
 /area/ravenue_5/ground/east_central_wasteland)
 "utD" = (
 /obj/structure/machinery/light,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 6;
 	icon_state = "blue";
@@ -29330,7 +28945,6 @@
 	name = "Mounted Flash";
 	pixel_y = 30
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer/research/containment/floor2{
 	dir = 1;
 	tag = "icon-containment_floor_2 (NORTH)"
@@ -29378,7 +28992,6 @@
 /turf/open/floor/wood/ship,
 /area/ravenue_5/ground/south_east_wasteland)
 "uAR" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer/research/containment/corner_var1{
 	dir = 4;
 	tag = "icon-containment_corner_variant_1 (EAST)"
@@ -29389,7 +29002,6 @@
 /obj/structure/disposalpipe/trunk{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -29451,7 +29063,6 @@
 /obj/structure/disposalpipe/junction{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/white,
 /area/ravenue_5/ground/east_central_wasteland)
 "uEk" = (
@@ -29473,7 +29084,6 @@
 	name = "ship-grade camera";
 	tag = "icon-camera (NORTH)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -29561,7 +29171,6 @@
 /area/ravenue_5/cm)
 "uGQ" = (
 /obj/structure/pipes/standard/simple/hidden/supply,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "sterile_green_side";
@@ -29638,7 +29247,6 @@
 "uKy" = (
 /obj/structure/surface/table/almayer,
 /obj/item/clothing/accessory/storage/black_vest/acid_harness,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_corner";
@@ -29672,7 +29280,6 @@
 /area/ravenue_5/ground/east_central_wasteland)
 "uMk" = (
 /obj/structure/filingcabinet/filingcabinet,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_corner";
@@ -29831,7 +29438,6 @@
 /obj/structure/machinery/light{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -30144,7 +29750,6 @@
 /obj/structure/surface/table/almayer,
 /obj/item/paper_bin/wy,
 /obj/item/tool/pen,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -30152,7 +29757,6 @@
 /area/ravenue_5/ground/east_central_wasteland)
 "vbc" = (
 /obj/structure/disposalpipe/segment,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/ravenue_5/ground/east_central_wasteland)
 "vbo" = (
@@ -30239,7 +29843,6 @@
 	dir = 1;
 	icon_state = "pipe-c"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/plating/plating_catwalk,
 /area/ravenue_5/ground/east_central_wasteland)
 "vdL" = (
@@ -30358,7 +29961,6 @@
 /obj/item/storage/box/pillbottles{
 	pixel_y = 12
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
@@ -30375,7 +29977,6 @@
 /area/ravenue_5/civilian/bar)
 "vhq" = (
 /obj/structure/pipes/standard/manifold/hidden/supply,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -30397,7 +29998,6 @@
 	pixel_x = 8;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -30447,7 +30047,6 @@
 	},
 /area/ravenue_5/cm/armory/delta)
 "viR" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -30618,7 +30217,6 @@
 /obj/structure/machinery/light{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 9;
 	icon_state = "blue";
@@ -30822,7 +30420,6 @@
 	},
 /area/ravenue_5/ground/west_road)
 "vBc" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer/research/containment/floor2{
 	dir = 1;
 	tag = "icon-containment_floor_2 (NORTH)"
@@ -30907,7 +30504,6 @@
 /area/ravenue_5/cm/brig)
 "vDA" = (
 /obj/structure/machinery/computer/pandemic,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -30993,7 +30589,6 @@
 	pixel_x = -12;
 	pixel_y = 2
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_corner";
@@ -31113,7 +30708,6 @@
 /obj/item/tool/pen{
 	pixel_x = 8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -31236,7 +30830,6 @@
 	pixel_x = 8;
 	pixel_y = -32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "blue";
 	tag = "icon-blue"
@@ -31403,7 +30996,6 @@
 	pixel_x = 8;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "redfull";
 	tag = "icon-redfull"
@@ -31424,7 +31016,6 @@
 	pixel_y = 30
 	},
 /obj/structure/machinery/iv_drip,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -31439,7 +31030,6 @@
 	},
 /area/ravenue_5/cm/brig/camers)
 "vQC" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/research/containment/wall/connect_e2{
 	icon_state = "containment_wall_connect_e"
 	},
@@ -31459,7 +31049,6 @@
 /obj/structure/sign/safety/terminal{
 	pixel_x = -17
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -31489,7 +31078,6 @@
 /obj/structure/disposalpipe/trunk{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -31531,7 +31119,6 @@
 /area/ravenue_5/upp)
 "vUr" = (
 /obj/structure/disposalpipe/segment,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/white,
 /area/ravenue_5/ground/east_central_wasteland)
 "vUA" = (
@@ -31574,7 +31161,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -31618,7 +31204,6 @@
 /obj/structure/machinery/alarm/almayer{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_corner";
 	tag = "icon-sterile"
@@ -31653,7 +31238,6 @@
 /area/ravenue_5/ground/east_central_wasteland)
 "vWU" = (
 /obj/structure/morgue,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -31691,7 +31275,6 @@
 /area/ravenue_5/upp/armory)
 "vZc" = (
 /obj/structure/machinery/vending/cola/research,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -31758,7 +31341,6 @@
 /obj/structure/closet/secure_closet/personal/patient{
 	name = "morgue closet"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -31833,7 +31415,6 @@
 	icon_state = "pottedplant_21";
 	tag = "icon-plant-10"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_corner";
@@ -31879,7 +31460,6 @@
 /area/ravenue_5/ground/east_central_wasteland)
 "wfv" = (
 /obj/structure/machinery/portable_atmospherics/hydroponics,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -31960,7 +31540,6 @@
 	},
 /area/ravenue_5/upp/med)
 "wiA" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 6;
 	icon_state = "silver";
@@ -32028,7 +31607,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 6;
 	icon_state = "sterile_green_side";
@@ -32115,7 +31693,6 @@
 	req_one_access = null
 	},
 /obj/structure/machinery/door/firedoor/border_only/almayer,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -32176,7 +31753,6 @@
 /obj/structure/sign/safety/bathunisex{
 	pixel_x = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "mono"
 	},
@@ -32195,7 +31771,6 @@
 /obj/structure/machinery/light{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -32208,7 +31783,6 @@
 	dir = 8;
 	pixel_x = -24
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -32303,7 +31877,6 @@
 	dir = 2;
 	icon_state = "pipe-c"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "silver";
@@ -32337,7 +31910,6 @@
 	pixel_x = 8;
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -32447,7 +32019,6 @@
 	},
 /obj/structure/surface/table/almayer,
 /obj/item/paper_bin/uscm,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -32484,7 +32055,6 @@
 /obj/structure/sign/safety/chem_lab{
 	pixel_x = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_corner";
 	tag = "icon-sterile"
@@ -32546,7 +32116,6 @@
 	name = "ship-grade camera";
 	tag = "icon-camera (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -32631,7 +32200,6 @@
 /area/ravenue_5/cm/armory/bravo)
 "wJk" = (
 /obj/structure/curtain/medical,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -32644,7 +32212,6 @@
 	phone_id = "Research";
 	pixel_y = 29
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood/ship,
 /area/ravenue_5/ground/east_central_wasteland)
 "wJQ" = (
@@ -33071,7 +32638,6 @@
 /obj/structure/machinery/door/airlock/multi_tile/almayer/medidoor/research{
 	name = "\improper Researcher Study"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -33091,6 +32657,10 @@
 	icon_state = "whitepurplefull"
 	},
 /area/ravenue_5/ground/east_central_wasteland)
+"wYe" = (
+/obj/structure/machinery/power/apc,
+/turf/open/snow/layer0,
+/area/ravenue_5/ground/south_east_wasteland)
 "wZJ" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/device/defibrillator,
@@ -33154,7 +32724,6 @@
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 6;
 	icon_state = "sterile_green_side";
@@ -33186,7 +32755,6 @@
 	pixel_x = 8;
 	pixel_y = -32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -33349,7 +32917,6 @@
 	},
 /obj/structure/machinery/shower,
 /obj/item/tool/soap,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile";
 	tag = "icon-sterile"
@@ -33542,7 +33109,6 @@
 	pixel_x = 6;
 	pixel_y = -4
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_corner";
@@ -33584,7 +33150,6 @@
 /obj/structure/sign/catclock{
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -33666,7 +33231,6 @@
 	},
 /area/ravenue_5/ground/east_central_wasteland)
 "xuk" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "sterile_green_side";
@@ -33883,7 +33447,6 @@
 	},
 /area/ravenue_5/cm/brig)
 "xCe" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_corner";
 	tag = "icon-sterile"
@@ -33943,7 +33506,6 @@
 	name = "\improper Containment Lockdown"
 	},
 /obj/structure/pipes/standard/simple/hidden/supply,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -34008,7 +33570,6 @@
 	},
 /area/ravenue_5/upp/brig/perma)
 "xGu" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/research/containment/wall/purple{
 	dir = 4;
 	tag = "icon-containment_window (EAST)"
@@ -34109,7 +33670,6 @@
 	icon_state = "W";
 	tag = "icon-W"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_corner";
@@ -34183,7 +33743,6 @@
 	dir = 4;
 	tag = "icon-map-supply (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 10;
 	icon_state = "sterile_green_side";
@@ -34212,7 +33771,6 @@
 	dir = 8;
 	icon_state = "pipe-j2"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 10;
 	icon_state = "sterile_green_side";
@@ -34288,7 +33846,6 @@
 /obj/structure/pipes/vents/pump{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -34368,7 +33925,6 @@
 /area/ravenue_5/ground/east_central_wasteland)
 "xWq" = (
 /obj/structure/closet/l3closet/virology,
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "plating";
@@ -34594,7 +34150,6 @@
 	pixel_x = 32;
 	pixel_y = -8
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "redfull";
 	tag = "icon-redfull"
@@ -34612,7 +34167,6 @@
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -34712,7 +34266,6 @@
 	},
 /area/ravenue_5/cm/tank_hangar)
 "ylC" = (
-/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/closed/wall/almayer/research/containment/wall/purple{
 	dir = 8;
 	tag = "icon-containment_window (WEST)"
@@ -337321,7 +336874,7 @@ jFz
 jFz
 jFz
 jFz
-jFz
+wYe
 jFz
 jFz
 jFz

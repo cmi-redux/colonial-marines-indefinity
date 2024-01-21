@@ -23,7 +23,6 @@
 	var/mob/living/carbon/faction_leader
 	var/datum/tacmap/faction_datum/tcmp_faction_datum
 	var/datum/objectives_datum/objectives_controller
-	var/list/datum/faction_task/active_tasks = list()
 	var/list/objectives = list()
 	var/faction_victory_points = 0
 	var/homes_sector_occupation = TRUE

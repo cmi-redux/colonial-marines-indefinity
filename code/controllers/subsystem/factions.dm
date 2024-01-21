@@ -9,6 +9,7 @@ SUBSYSTEM_DEF(factions)
 
 	var/list/datum/faction/active_factions = list()
 	var/list/obj/structure/prop/sector_center/sectors = list()
+	var/list/datum/faction_task/active_tasks = list()
 	var/list/datum/faction_task/total_tasks = list()
 	var/processing_tasks = 0
 
@@ -62,7 +63,6 @@ SUBSYSTEM_DEF(factions)
 			var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
 			if(!length(faction.totalMobs))
 				continue
-			processing_tasks += length(faction.active_tasks)
 			active_factions += faction
 
 		current_active_run = active_factions.Copy()
@@ -89,7 +89,10 @@ SUBSYSTEM_DEF(factions)
 	while(length(current_active_run))
 		var/datum/faction/faction = current_active_run[length(current_active_run)]
 		if(!length(current_active_run_tasks) && !length(current_active_run_objectives))
-			current_active_run_tasks = faction.active_tasks.Copy()
+			for(var/datum/faction_task/task in SSfactions.active_tasks)
+				if(task.faction_owner != faction)
+					continue
+				current_active_run_tasks += task
 			current_active_run_objectives = faction.objectives_controller.objectives.Copy()
 
 		while(length(current_active_run_tasks))
@@ -160,7 +163,7 @@ SUBSYSTEM_DEF(factions)
 			faction_task = new game_ender_type_to_gen(faction)
 
 	if(faction_task)
-		faction.active_tasks += faction_task
+		active_tasks += faction_task
 		return TRUE
 	return FALSE
 
@@ -180,10 +183,10 @@ SUBSYSTEM_DEF(factions)
 	total_tasks -= task
 
 /datum/controller/subsystem/factions/proc/start_processing_task(datum/faction_task/task)
-	task.faction_owner.active_tasks += task
+	active_tasks += task
 
 /datum/controller/subsystem/factions/proc/stop_processing_task(datum/faction_task/task)
-	task.faction_owner.active_tasks -= task
+	active_tasks -= task
 
 /// Allows to perform objective initialization later on in case of map changes
 /datum/controller/subsystem/factions/proc/initialize_objectives()

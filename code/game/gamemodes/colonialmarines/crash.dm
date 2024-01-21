@@ -78,13 +78,15 @@
 
 
 /datum/game_mode/crash/pre_setup()
-	var/obj/effect/landmark/crash/nuclear_spawn/NS = pick(GLOB.nuke_spawn_locs)
-	GLOB.nuke_list += new /obj/structure/machinery/nuclearbomb/crash(NS.loc)
+	var/obj/effect/landmark/crash/nuclear_spawn/NS = SAFEPICK(GLOB.nuke_spawn_locs)
+	if(NS)
+		GLOB.nuke_list += new /obj/structure/machinery/nuclearbomb/crash(NS.loc)
 	qdel(NS)
-	var/obj/effect/landmark/crash/resin_silo_spawn/RSS = pick(GLOB.resin_silo_spawn_locs)
-	var/obj/effect/alien/resin/special/pylon/core/core = new(RSS.loc, null, GLOB.faction_datum[FACTION_XENOMORPH_NORMAL])
-	core.crash_mode = TRUE
-	GLOB.xeno_resin_silos = core
+	var/obj/effect/landmark/crash/resin_silo_spawn/RSS = SAFEPICK(GLOB.resin_silo_spawn_locs)
+	if(RSS)
+		var/obj/effect/alien/resin/special/pylon/core/core = new(RSS.loc, null, GLOB.faction_datum[FACTION_XENOMORPH_NORMAL])
+		core.crash_mode = TRUE
+		GLOB.xeno_resin_silos += core
 	new /obj/structure/alien/weeds(RSS.loc, null, null, GLOB.faction_datum[FACTION_XENOMORPH_NORMAL])
 	qdel(RSS)
 
@@ -100,9 +102,6 @@
 	QDEL_LIST(GLOB.crap_items)
 	QDEL_LIST(GLOB.good_items)
 
-	if(!length(GLOB.xeno_resin_silos))
-		GLOB.xeno_resin_silos = null //No silos??
-
 	//desert river test
 	if(!length(round_toxic_river))
 		round_toxic_river = null //No tiles?
@@ -110,22 +109,39 @@
 		round_time_river = rand(-100,100)
 		flags_round_type |= MODE_FOG_ACTIVATED
 
+	// Shuttle crash point creating
+	var/obj/docking_port/stationary/crashmode/temp_crashable_port
+	for(var/i = 1 to 10)
+		var/list/all_ground_levels = SSmapping.levels_by_trait(ZTRAIT_GROUND)
+		var/ground_z_level = all_ground_levels[1]
 
-	// Launch shuttle
-	var/list/valid_docks = list()
-	for(var/obj/docking_port/stationary/crashmode/potential_crash_site in SSshuttle.stationary)
-		if(!shuttle.check_dock(potential_crash_site, silent = TRUE))
+		var/list/area/potential_areas = SSmapping.areas_in_z["[ground_z_level]"]
+
+		var/area/area_picked = pick(potential_areas)
+
+		var/list/potential_turfs = list()
+
+		for(var/turf/turf_in_area in area_picked)
+			potential_turfs += turf_in_area
+
+		if(!length(potential_turfs))
 			continue
-		valid_docks += potential_crash_site
 
-	if(!length(valid_docks))
-		CRASH("No valid crash sites found!")
-	var/obj/docking_port/stationary/crashmode/actual_crash_site = pick(valid_docks)
+		var/turf/turf_picked = pick(potential_turfs)
+
+		temp_crashable_port = new(turf_picked)
+		temp_crashable_port.width = shuttle.width
+		temp_crashable_port.height = shuttle.height
+		temp_crashable_port.id = shuttle.id
+
+		if(!shuttle.check_crash_point(temp_crashable_port))
+			qdel(temp_crashable_port)
+			continue
+		break
 
 	shuttle.crashing = TRUE
-	SSshuttle.moveShuttleToDock(shuttle.id, actual_crash_site, TRUE) // FALSE = instant arrival
-	addtimer(CALLBACK(src, PROC_REF(crash_shuttle), actual_crash_site), 10 MINUTES)
-
+	SSshuttle.moveShuttleToDock(shuttle.id, temp_crashable_port, TRUE) // FALSE = instant arrival
+	addtimer(CALLBACK(src, PROC_REF(crash_shuttle), temp_crashable_port), 10 MINUTES)
 
 	..()
 

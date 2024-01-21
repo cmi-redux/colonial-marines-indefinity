@@ -448,9 +448,9 @@
 			selected_turf = get_turf(pick(faction_assigned_spawn.late_join_landmarks[assigned_squad]))
 		if(!selected_turf)
 			for(var/squad in faction_assigned_spawn.late_join_landmarks)
-				if(!length(faction_assigned_spawn.late_join_landmarks[assigned_squad]))
+				if(!length(faction_assigned_spawn.late_join_landmarks[squad]))
 					continue
-				selected_turf = get_turf(pick(faction_assigned_spawn.late_join_landmarks[assigned_squad]))
+				selected_turf = get_turf(pick(faction_assigned_spawn.late_join_landmarks[squad]))
 	return selected_turf
 
 //****************************************** DEFCON ASSETS ************************************************//

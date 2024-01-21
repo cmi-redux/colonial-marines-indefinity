@@ -97,6 +97,7 @@
 
 /obj/structure/prop/sector_center/Initialize()
 	. = ..()
+	name = "Sector [pick(operation_prefixes)]-[pick(operation_postfixes)]"
 	owner = new(faction, src)
 	range_bounds = RECT(loc.x, loc.y, zone_range * 2, zone_range * 2)
 	update_icon()
@@ -293,7 +294,7 @@
 	. = ..()
 	if(sector.faction)
 		grooped_task = new /datum/faction_task/sector_control/protect(sector.faction, sector)
-		sector.faction.active_tasks += grooped_task
+		SSfactions.active_tasks += grooped_task
 
 /datum/faction_task/sector_control/occupy/check_completion()
 	if(!sector_center.captured(faction_owner) || COOLDOWN_FINISHED(src, remaining_time))
@@ -449,7 +450,9 @@
 /datum/faction_task_ui/ui_data(mob/user)
 	. = list()
 	var/list/task_payload = list()
-	for(var/datum/faction_task/task in faction.active_tasks)
+	for(var/datum/faction_task/task in SSfactions.active_tasks)
+		if(task.faction_owner != faction)
+			continue
 		task_payload += list(
 			"name" = task.name,
 			"desc" = task.desc,

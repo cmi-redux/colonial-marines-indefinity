@@ -3852,7 +3852,6 @@
 /area/bigredv2/outside/building/marshal_office)
 "aks" = (
 /obj/effect/landmark/good_item,
-/obj/docking_port/stationary/crashmode,
 /turf/open/floor,
 /area/bigredv2/outside/building/marshal_office)
 "akt" = (
@@ -6525,7 +6524,6 @@
 /obj/structure/toilet{
 	pixel_y = 8
 	},
-/obj/docking_port/stationary/crashmode,
 /turf/open/floor{
 	icon_state = "freezerfloor"
 	},
@@ -13558,7 +13556,6 @@
 /area/bigredv2/outside/building/medical)
 "aJm" = (
 /obj/effect/decal/cleanable/blood/gibs/limb,
-/obj/docking_port/stationary/crashmode,
 /turf/open/mars{
 	icon_state = "mars_dirt_12";
 	tag = "icon-mars_dirt_12"
@@ -30264,7 +30261,6 @@
 	},
 /area/bigred/ground/building/garage_workshop)
 "eex" = (
-/obj/docking_port/stationary/crashmode,
 /turf/open/mars_cave{
 	icon_state = "mars_dirt_4";
 	tag = "icon-mars_dirt_4"
@@ -30578,7 +30574,6 @@
 	},
 /area/bigredv2/caves/lambda/breakroom)
 "eKq" = (
-/obj/docking_port/stationary/crashmode,
 /turf/closed/wall/solaris,
 /area/bigredv2/outside/building/medical)
 "eKU" = (
@@ -31091,7 +31086,6 @@
 	id = "Engineering";
 	name = "\improper Engineering Shutters"
 	},
-/obj/docking_port/stationary/crashmode,
 /turf/open/floor/plating,
 /area/bigredv2/outside/building/engineering)
 "fOc" = (
@@ -32033,7 +32027,6 @@
 	},
 /area/bigredv2/caves/mining)
 "hUW" = (
-/obj/docking_port/stationary/crashmode,
 /turf/open/mars,
 /area/bigredv2/outside/c)
 "hWa" = (
@@ -33355,7 +33348,6 @@
 	},
 /area/bigredv2/caves/mining)
 "kkn" = (
-/obj/docking_port/stationary/crashmode,
 /turf/open/floor{
 	icon_state = "asteroidwarning";
 	tag = "icon-asteroidwarning"
@@ -34481,7 +34473,6 @@
 /obj/structure/bed/chair{
 	dir = 1
 	},
-/obj/docking_port/stationary/crashmode,
 /turf/open/floor,
 /area/bigredv2/outside/building/hydroponics)
 "mDk" = (
@@ -35882,7 +35873,6 @@
 	},
 /area/bigredv2/caves/mining)
 "pmK" = (
-/obj/docking_port/stationary/crashmode,
 /turf/open/floor{
 	dir = 8;
 	icon_state = "carpet15-15";
@@ -35985,7 +35975,6 @@
 /area/bigredv2/caves/mining)
 "pxy" = (
 /obj/structure/pipes/standard/simple/hidden/green,
-/obj/docking_port/stationary/crashmode,
 /turf/open/floor{
 	icon_state = "white"
 	},
@@ -36743,7 +36732,6 @@
 	},
 /area/bigredv2/caves/mining)
 "raz" = (
-/obj/docking_port/stationary/crashmode,
 /turf/open/mars,
 /area/bigredv2/outside/nw)
 "raQ" = (

@@ -360,6 +360,10 @@
 /obj/structure/pipes/standard/tank/oxygen,
 /turf/open/floor/kutjevo/grey/plate,
 /area/kutjevo/interior/complex/med/cells)
+"ayQ" = (
+/obj/effect/landmark/crash/resin_silo_spawn,
+/turf/open/auto_turf/sand/layer1,
+/area/kutjevo/interior/colony_South)
 "azb" = (
 /obj/structure/machinery/chem_dispenser/soda/beer{
 	icon_state = "dispenser"
@@ -808,6 +812,10 @@
 	},
 /turf/open/auto_turf/sand/layer1,
 /area/kutjevo/exterior/complex_border/botany_medical_cave)
+"bkr" = (
+/obj/effect/landmark/crash/nuclear_spawn,
+/turf/open/auto_turf/sand/layer1,
+/area/kutjevo/exterior/stonyfields)
 "bkR" = (
 /turf/open/auto_turf/sand/layer1,
 /area/kutjevo/interior/colony_north)
@@ -3362,6 +3370,10 @@
 /obj/structure/machinery/landinglight/ds1,
 /turf/open/floor/kutjevo/multi_tiles,
 /area/kutjevo/exterior/lz_dunes)
+"eyj" = (
+/obj/effect/landmark/crash/nuclear_spawn,
+/turf/open/auto_turf/sand/layer2,
+/area/kutjevo/exterior/construction)
 "eyk" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/computer/emails{
@@ -3748,6 +3760,10 @@
 /obj/effect/landmark/corpsespawner/colonist/kutjevo,
 /turf/open/floor/kutjevo/multi_tiles,
 /area/kutjevo/interior/power)
+"eWU" = (
+/obj/effect/landmark/crash/resin_silo_spawn,
+/turf/open/auto_turf/sand/layer1,
+/area/kutjevo/interior/colony_north)
 "eXm" = (
 /turf/closed/wall/kutjevo/colony/reinforced,
 /area/kutjevo/interior/complex/botany)
@@ -5234,6 +5250,10 @@
 /obj/effect/landmark/structure_spawner/xvx_hive/xeno_core,
 /turf/open/auto_turf/sand/layer1,
 /area/kutjevo/interior/colony_north)
+"hjo" = (
+/obj/effect/landmark/crash/nuclear_spawn,
+/turf/open/auto_turf/sand/layer1,
+/area/kutjevo/interior/colony_N_East)
 "hkq" = (
 /obj/effect/landmark/corpsespawner/wygoon,
 /turf/open/floor/kutjevo/tan,
@@ -13300,6 +13320,10 @@
 	dir = 1
 	},
 /area/kutjevo/interior/power_pt2_electric_boogaloo)
+"sQC" = (
+/obj/effect/landmark/crash/nuclear_spawn,
+/turf/open/auto_turf/sand/layer1,
+/area/kutjevo/exterior/scrubland)
 "sRb" = (
 /obj/structure/stairs/perspective/kutjevo{
 	dir = 8;
@@ -16870,6 +16894,10 @@
 /obj/effect/decal/cleanable/blood/gibs/xeno,
 /turf/open/floor/kutjevo/tan,
 /area/kutjevo/interior/complex/Northwest_Flight_Control)
+"yhK" = (
+/obj/effect/landmark/crash/resin_silo_spawn,
+/turf/open/auto_turf/sand/layer0,
+/area/kutjevo/interior/colony_N_East)
 "yhV" = (
 /obj/structure/filingcabinet{
 	density = 0;
@@ -28864,7 +28892,7 @@ dxF
 dxF
 dxF
 bXl
-sYd
+sQC
 sYd
 bXl
 sYd
@@ -33817,7 +33845,7 @@ vea
 xJg
 xJg
 xJg
-xJg
+bkr
 xJg
 cDx
 dxF
@@ -42092,7 +42120,7 @@ bKH
 bKH
 bKH
 xWK
-jhx
+eyj
 rvA
 lPR
 oNG
@@ -44158,7 +44186,7 @@ bpj
 bpj
 bpj
 bpj
-bpj
+ayQ
 npL
 npL
 bpj
@@ -46545,7 +46573,7 @@ ykY
 bkR
 bkR
 bkR
-bkR
+eWU
 bkR
 wTt
 hUk
@@ -51249,7 +51277,7 @@ bsl
 bsl
 bsl
 bsl
-kZz
+yhK
 kZz
 bsl
 bsl
@@ -52489,7 +52517,7 @@ bpj
 bpj
 bpj
 bpj
-bpj
+ayQ
 bpj
 bpj
 npL
@@ -55616,7 +55644,7 @@ kZz
 kZz
 bsl
 bsl
-bsl
+hjo
 bsl
 sNZ
 sNZ

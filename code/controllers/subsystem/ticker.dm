@@ -110,7 +110,7 @@ SUBSYSTEM_DEF(ticker)
 						/datum/controller/subsystem/vote/proc/initiate_vote,
 						"gamemode",
 						"SERVER",
-						CALLBACK(src, PROC_REF(handle_map_reboot)),
+						CALLBACK(src, TYPE_PROC_REF(/datum/controller/subsystem/ticker, handle_map_reboot)),
 						TRUE
 					), 3 SECONDS)
 				else
@@ -161,13 +161,13 @@ SUBSYSTEM_DEF(ticker)
 
 /datum/controller/subsystem/ticker/proc/handle_map_reboot()
 	if(SSmapping?.next_map_configs && SSmapping?.next_map_configs?[GROUND_MAP])
-		Reboot(GLOB.href_token, SSticker.graceful)
+		Reboot()
 	addtimer(CALLBACK(
 		SSvote,
 		/datum/controller/subsystem/vote/proc/initiate_vote,
 		"groundmap",
 		"SERVER",
-		CALLBACK(src, PROC_REF(Reboot)),
+		CALLBACK(src, TYPE_PROC_REF(/datum/controller/subsystem/ticker, Reboot)),
 		TRUE
 	), 3 SECONDS)
 
@@ -178,13 +178,11 @@ SUBSYSTEM_DEF(ticker)
 	CHECK_TICK
 	if(!mode.can_start(bypass_checks))
 		to_chat(world, list(CLIENT_LANGUAGE_ENGLISH = LANGUAGE_RLOBBY_ENG, CLIENT_LANGUAGE_RUSSIAN = LANGUAGE_RLOBBY_RU))
-		QDEL_NULL(mode)
 		SSticker.role_authority.reset_roles()
 		return FALSE
 
 	CHECK_TICK
 	if(!mode.pre_setup() && !bypass_checks)
-		QDEL_NULL(mode)
 		to_chat(world, list(CLIENT_LANGUAGE_ENGLISH = "<b>[LANGUAGE_RLOBBYP_ENG] [GLOB.master_mode].</b> [LANGUAGE_RLOBBY_ENG]", CLIENT_LANGUAGE_RUSSIAN = "<b>[LANGUAGE_RLOBBYP_RU] [GLOB.master_mode].</b> [LANGUAGE_RLOBBY_RU]"))
 		SSticker.role_authority.reset_roles()
 		return FALSE

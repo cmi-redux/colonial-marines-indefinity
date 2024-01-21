@@ -1511,7 +1511,6 @@
 /turf/open/floor/prison,
 /area/prison/cellblock/maxsec/north)
 "adB" = (
-/obj/docking_port/stationary/crashmode,
 /turf/open/floor/prison{
 	dir = 1;
 	icon_state = "darkred2"
@@ -12906,7 +12905,6 @@
 "aGV" = (
 /obj/effect/decal/cleanable/blood/splatter,
 /obj/effect/landmark/corpsespawner/doctor,
-/obj/docking_port/stationary/crashmode,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "whitegreen"
@@ -29769,7 +29767,6 @@
 	dir = 4;
 	icon_state = "pipe-c"
 	},
-/obj/docking_port/stationary/crashmode,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/prison/hallway/central/south)
 "bCi" = (
@@ -39856,7 +39853,6 @@
 	dir = 5;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/docking_port/stationary/crashmode,
 /turf/open/floor/prison,
 /area/prison/engineering)
 "cfr" = (
@@ -47612,7 +47608,6 @@
 	},
 /area/prison/canteen)
 "gyq" = (
-/obj/docking_port/stationary/crashmode,
 /turf/closed/wall/prison,
 /area/prison/recreation/highsec/s)
 "gAa" = (
@@ -48282,7 +48277,6 @@
 /area/prison/yard)
 "iaB" = (
 /obj/structure/bed,
-/obj/docking_port/stationary/crashmode,
 /turf/open/floor/prison{
 	icon_state = "floor_plate";
 	tag = "icon-floor_plate"
@@ -48474,7 +48468,6 @@
 /turf/open/floor/plating,
 /area/prison/hallway/central/south)
 "iAa" = (
-/obj/docking_port/stationary/crashmode,
 /turf/open/space,
 /area/space)
 "iBk" = (
@@ -50016,7 +50009,6 @@
 	},
 /area/prison/hallway/central/west)
 "mYM" = (
-/obj/docking_port/stationary/crashmode,
 /turf/closed/wall/prison,
 /area/prison/cellblock/highsec/north/south)
 "mZt" = (
@@ -50140,7 +50132,6 @@
 	},
 /area/prison/residential/south)
 "nrC" = (
-/obj/docking_port/stationary/crashmode,
 /turf/closed/wall/prison,
 /area/prison/security/monitoring/highsec)
 "nsx" = (
@@ -50180,7 +50171,6 @@
 /turf/open/floor/plating,
 /area/prison/engineering/atmos)
 "nzJ" = (
-/obj/docking_port/stationary/crashmode,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/prison/hallway/entrance)
 "nDg" = (
@@ -50596,7 +50586,6 @@
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/docking_port/stationary/crashmode,
 /turf/open/floor/prison{
 	dir = 1;
 	icon_state = "red"
@@ -50867,7 +50856,6 @@
 /turf/open/floor/prison,
 /area/prison/medbay/morgue)
 "piv" = (
-/obj/docking_port/stationary/crashmode,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "bright_clean";
@@ -51320,7 +51308,6 @@
 	},
 /area/prison/security/checkpoint/highsec/s)
 "qzL" = (
-/obj/docking_port/stationary/crashmode,
 /turf/open/floor/prison,
 /area/prison/security)
 "qzW" = (
@@ -51734,7 +51721,6 @@
 	},
 /area/prison/security/monitoring/highsec)
 "skm" = (
-/obj/docking_port/stationary/crashmode,
 /turf/closed/wall/prison,
 /area/prison/cellblock/mediumsec/north)
 "smr" = (
@@ -52413,7 +52399,6 @@
 	},
 /area/prison/cellblock/mediumsec/east)
 "uiJ" = (
-/obj/docking_port/stationary/crashmode,
 /turf/closed/wall/prison,
 /area/prison/cellblock/highsec/south/north)
 "umM" = (
@@ -52460,7 +52445,6 @@
 /turf/open/floor/plating,
 /area/prison/monorail/west)
 "urH" = (
-/obj/docking_port/stationary/crashmode,
 /turf/closed/wall/prison,
 /area/prison/chapel)
 "usx" = (

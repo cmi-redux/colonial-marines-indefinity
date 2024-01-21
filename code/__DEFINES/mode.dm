@@ -208,7 +208,7 @@
 
 #define WHITELIST_EVERYTHING (WHITELISTS_GENERAL|WHITELISTS_COUNCIL|WHITELISTS_LEADER)
 
-#define isCouncil(A) (A?.player_data?.whitelist & (WHITELIST_YAUTJA_COUNCIL | WHITELIST_SYNTHETIC_COUNCIL | WHITELIST_COMMANDER_COUNCIL))
+#define isCouncil(A) (A?.player_data?.whitelist.whitelist_flags & (WHITELIST_YAUTJA_COUNCIL | WHITELIST_SYNTHETIC_COUNCIL | WHITELIST_COMMANDER_COUNCIL))
 
 //=================================================
 

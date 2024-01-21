@@ -160,9 +160,6 @@ SUBSYSTEM_DEF(vote)
 			if("gamemode")
 				SSticker.save_mode(.)
 				GLOB.master_mode = .
-				if(. == MODE_NAME_WISKEY_OUTPOST)
-					var/datum/map_config/VM = config.maplist[GROUND_MAP][.]
-					SSmapping.changemap(VM, GROUND_MAP)
 				to_chat(world, SPAN_BOLDNOTICE("Уведомление: Игровой режим для следующего раунда выставлен [.]"))
 			if("restart")
 				if(. == "Restart Round")

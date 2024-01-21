@@ -288,9 +288,7 @@
 	faction_to_get = FACTION_UPP
 
 /obj/structure/machinery/cm_vending/ammo/squad_prep/upp/get_listed_products(mob/user)
-	var/special_ammo_cmod = 4
-	if(GLOB.objective_controller[faction?.faction_name].current_level < 4)
-		special_ammo_cmod = 1
+	var/special_ammo_cmod = GLOB.objective_controller[faction?.faction_name].current_level * 0.6
 	var/listed_products_list = list(
 		list("BASE AMMUNITION", 0, null, null, null),
 		list("Type 71 magazine", 22, /obj/item/ammo_magazine/rifle/type71, null, VENDOR_ITEM_REGULAR),

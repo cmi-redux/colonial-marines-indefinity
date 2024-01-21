@@ -83,7 +83,6 @@
 	var/mutable_appearance/final_texture = mutable_appearance(output_texture)
 	final_texture.layer = input_human.layer + 0.02
 	final_texture.plane = input_human.plane
-*/
 	var/icon/subtraction_texture = icon('icons/effects/mob_icon_cutter.dmi', "icon_cutter")
 	subtraction_texture.Shift(SOUTH, (96 - abs(mask_pixel_y_offset)-3), FALSE)
 	subtraction_texture.Shift(EAST, -32, FALSE)
@@ -92,3 +91,4 @@
 	final_texture.invisibility = INVISIBILITY_LIGHTING
 	final_texture.blend_mode = BLEND_OVERLAY
 	overlays += final_texture
+*/
