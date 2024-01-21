@@ -20,6 +20,9 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	var/obj/effect/statclick/ticket_list/cstatclick
 	var/obj/effect/statclick/ticket_list/rstatclick
 
+/datum/admin_help_tickets/New()
+	InitTickets()
+
 /datum/admin_help_tickets/Destroy()
 	QDEL_LIST(active_tickets)
 	QDEL_LIST(closed_tickets)
