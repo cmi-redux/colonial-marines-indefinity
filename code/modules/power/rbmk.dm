@@ -239,7 +239,7 @@ DEFINE_BITFIELD(reactor_flags, list(
 		icon_state = "reactor_hot"
 	else if(temperature <= temperature_pre_critical)
 		icon_state = "reactor_veryhot"
-	else if(ttemperature <= temperature_critical) //Point of no return.
+	else if(temperature <= temperature_critical) //Point of no return.
 		icon_state = "reactor_overheat"
 	else
 		icon_state = "reactor_meltdown"
