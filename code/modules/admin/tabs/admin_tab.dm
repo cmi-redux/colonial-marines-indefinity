@@ -153,10 +153,10 @@
 
 	if(!check_rights(0))
 		return
-	var/message = input("Global message to send:", "Admin Announce", null, null)  as message
+	var/message = tgui_input_text(usr, "Global message to send", "Admin Announce", null, MAX_BOOK_MESSAGE_LEN, TRUE)
 	if(message)
 		if(!check_rights(R_SERVER,0))
-			message = adminscrub(message,500)
+			message = adminscrub(message, 1000)
 		message = emoji_parse(src, message)
 		to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ANNOUNCEMENT_HEADER_ADMIN(" <b>[usr.client.admin_holder.fakekey ? "Administrator" : usr.key] Announces:</b>\n \t [message]"))
 		log_admin("Announce: [key_name(usr)] : [message]")

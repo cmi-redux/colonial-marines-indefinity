@@ -19,7 +19,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player_time_log)
 
 /datum/entity_meta/player_time_log
 	entity_type = /datum/entity/player_time_log
-	table_name = "log_player_playtime"
+	table_name = "player_playtime_log"
 	field_types = list(
 		"player_id" = DB_FIELDTYPE_BIGINT,
 		"round_id" = DB_FIELDTYPE_BIGINT,

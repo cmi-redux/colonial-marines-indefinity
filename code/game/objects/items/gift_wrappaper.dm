@@ -124,7 +124,7 @@
 
 /obj/item/wrapping_paper/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-	if(!( locate(/obj/structure/surface/table, src.loc) ))
+	if(!(locate(/obj/structure/surface/table, loc)))
 		to_chat(user, SPAN_NOTICE(" You MUST put the paper on a table!"))
 	if(W.w_class < 4)
 		var/obj/item/left_item = user.l_hand

@@ -43,8 +43,8 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 	var/list/active_roles_pool = list()
 	var/list/factions_pool = list()
 
-	var/population_min = 0
-	var/population_max = 0
+	var/population_min = null
+	var/population_max = null
 
 	var/planet_nuked = NUKE_NONE
 

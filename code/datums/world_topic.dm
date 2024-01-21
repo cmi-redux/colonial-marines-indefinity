@@ -192,7 +192,7 @@
 		return
 
 	data["ckey"] = player.ckey
-	var/datum/view_record/whitelist_player_view/whitelist = locate() in DB_VIEW(/datum/view_record/whitelist_player_view, DB_COMP("player_id", DB_EQUALS, player.id))
+	var/datum/view_record/player_whitelist_view/whitelist = locate() in DB_VIEW(/datum/view_record/player_whitelist_view, DB_COMP("player_id", DB_EQUALS, player.id))
 	data["roles"] = get_whitelisted_roles(whitelist?.whitelist_flags)
 
 	if(player.discord_link)
@@ -304,7 +304,7 @@
 	data["notes"] = get_all_notes(player.ckey)
 	data["total_minutes"] = get_total_living_playtime(player.id)
 	data["ckey"] = player.ckey
-	var/datum/view_record/whitelist_player_view/whitelist = locate() in DB_VIEW(/datum/view_record/whitelist_player_view, DB_COMP("player_id", DB_EQUALS, player.id))
+	var/datum/view_record/player_whitelist_view/whitelist = locate() in DB_VIEW(/datum/view_record/player_whitelist_view, DB_COMP("player_id", DB_EQUALS, player.id))
 	data["roles"] = get_whitelisted_roles(whitelist?.whitelist_flags)
 	statuscode = 200
 	response = "Lookup successful."
@@ -330,7 +330,7 @@
 
 	data["notes"] = get_all_notes(player.ckey)
 	data["total_minutes"] = get_total_living_playtime(player.id)
-	var/datum/view_record/whitelist_player_view/whitelist = locate() in DB_VIEW(/datum/view_record/whitelist_player_view, DB_COMP("player_id", DB_EQUALS, player.id))
+	var/datum/view_record/player_whitelist_view/whitelist = locate() in DB_VIEW(/datum/view_record/player_whitelist_view, DB_COMP("player_id", DB_EQUALS, player.id))
 	data["roles"] = get_whitelisted_roles(whitelist?.whitelist_flags)
 	statuscode = 200
 	response = "Lookup successful."

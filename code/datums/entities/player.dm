@@ -41,7 +41,7 @@
 	var/list/datum/entity/player_time/playtimes
 	var/datum/player_entity/player_entity
 	var/datum/donator_info/donator_info
-	var/datum/entity/whitelist_player/whitelist
+	var/datum/entity/player_whitelist/whitelist
 	var/list/playtime_data
 	var/client/owning_client
 
@@ -439,7 +439,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	player_data.last_known_cid = computer_id
 	record_login_triplet(player.ckey, address, computer_id)
 	player_data.load_donator_info()
-	player_data.whitelist = DB_EKEY(/datum/entity/whitelist_player, player_data.id)
+	player_data.whitelist = DB_EKEY(/datum/entity/player_whitelist, player_data.id)
 	player_data.whitelist.sync()
 	player_data.sync()
 

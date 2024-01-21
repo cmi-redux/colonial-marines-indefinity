@@ -21,8 +21,7 @@
 	flags_round_type = MODE_NEW_SPAWN|MODE_NO_SHIP_MAP
 	static_comms_amount = 2
 
-	votable = FALSE
-
+	vote_cycle = 5
 	population_min = 20
 
 	var/req_victory_points = 100000

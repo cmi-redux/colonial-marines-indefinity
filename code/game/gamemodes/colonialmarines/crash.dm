@@ -139,8 +139,6 @@
 		var/turf/turf_picked = pick(potential_turfs)
 
 		temp_crashable_port = new(turf_picked)
-		temp_crashable_port.width = shuttle.width
-		temp_crashable_port.height = shuttle.height
 
 		if(!shuttle.check_crash_point(temp_crashable_port))
 			qdel(temp_crashable_port)

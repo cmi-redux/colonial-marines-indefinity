@@ -53,7 +53,7 @@
 
 	var/list/whiskey_outpost_waves = list()
 
-	votable = FALSE
+	vote_cycle = 5
 
 	taskbar_icon = 'icons/taskbar/gml_wo.png'
 
@@ -122,9 +122,6 @@
 		spawn(0)
 			//Deleting Almayer, for performance!
 			SSitem_cleanup.delete_almayer()
-	if(SSxenocon)
-		//Don't need XENOCON
-		SSxenocon.wait = 30 MINUTES
 
 
 //PROCCESS

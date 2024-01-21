@@ -62,7 +62,7 @@ It's a little finiky, and you may need to override the lists or worst case senar
 But it should behave like you expect
 */
 
-///What to connect with by default. Used by /atom/proc/auto_align(). This can be overriden
+///What to connect with by default. Used by /atom/proc/auto_align_atom(). This can be overriden
 GLOBAL_LIST_INIT(default_connectables, typecacheof(list(
 		/obj/structure/machinery/door/airlock,
 		/obj/structure/machinery/door/poddoor,
@@ -80,7 +80,7 @@ GLOBAL_LIST_INIT(lower_priority_connectables, typecacheof(list(
 
 ///Ok so this whole proc is about finding tiles that we could in theory be connected to, and blocking off that direction right?
 ///It's not perfect, and it can make mistakes, but it does a pretty good job predicting a mapper's intentions
-/atom/proc/auto_align(connectables_typecache, lower_priority_typecache)
+/atom/proc/auto_align_atom(connectables_typecache, lower_priority_typecache)
 	if(!connectables_typecache)
 		connectables_typecache = GLOB.default_connectables
 	if(!lower_priority_typecache)
@@ -114,4 +114,4 @@ GLOBAL_LIST_INIT(lower_priority_connectables, typecacheof(list(
 /obj/machinery/door/LateInitialize(mapload)
 	. = ..()
 	if(mapload)
-		auto_align()*/
+		auto_align_atom()*/

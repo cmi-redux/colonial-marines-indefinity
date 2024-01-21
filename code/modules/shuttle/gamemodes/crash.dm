@@ -2,12 +2,8 @@
 /obj/docking_port/stationary/crashmode
 	id = DROPSHIP_HEART_OF_GOLD
 	name = "USS Heart Of Gold Crash Site"
-	dir = SOUTH
 	width = 29
 	height = 19
-	dwidth = 14
-	dheight = 9
-	hidden = TRUE  //To make them not block landings during distress
 
 /obj/docking_port/stationary/crashmode/on_prearrival()
 	//clear areas around the shuttle with explosions
@@ -45,8 +41,6 @@
 	dir = SOUTH
 	width = 29
 	height = 19
-	dwidth = 14
-	dheight = 9
 
 	callTime = 10 MINUTES
 	ignitionTime = 5 SECONDS

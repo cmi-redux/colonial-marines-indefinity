@@ -31,8 +31,7 @@ GLOBAL_LIST_INIT_TYPED(custom_event_info_list, /datum/custom_event_info, setup_c
 	var/datum/custom_event_info/CEI = new()
 	CEI.faction_name = "Global"
 	.[CEI.faction_name] = CEI
-	var/list/factions = GLOB.faction_datum
-	for(var/faction_to_get in factions)
+	for(var/faction_to_get in FACTION_LIST_ALL)
 		var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
 		CEI = new()
 		CEI.faction_name = faction.name

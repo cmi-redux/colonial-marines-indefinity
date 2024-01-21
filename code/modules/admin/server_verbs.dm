@@ -144,7 +144,7 @@
 		return
 
 	var/datum/entity/player/player = get_player_from_key(ckey)
-	var/datum/entity/whitelist_player/whitelist = DB_EKEY(/datum/entity/whitelist_player, player.id)
+	var/datum/entity/player_whitelist/whitelist = DB_EKEY(/datum/entity/player_whitelist, player.id)
 	whitelist.sync()
 
 	var/new_whitelist_status = input_bitfield(usr, "Editing [ckey] White List", "whitelist_flags", whitelist.whitelist_flags)

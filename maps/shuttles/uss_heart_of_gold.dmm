@@ -349,8 +349,8 @@
 	},
 /area/shuttle/uss_heart_of_gold)
 "aK" = (
-/obj/structure/surface/table/almayer,
 /obj/structure/machinery/prop/almayer/CICmap,
+/obj/structure/surface/table/reinforced/almayer_B,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"

@@ -132,10 +132,7 @@ SUBSYSTEM_DEF(factions)
 
 /datum/controller/subsystem/factions/proc/make_potential_tasks(datum/faction/faction, use_game_enders = FALSE)
 	var/datum/faction_task/faction_task
-	var/list/list_to_pick = GLOB.task_gen_list
-	if(use_game_enders)
-		list_to_pick = GLOB.task_gen_list_game_enders
-	var/picked_gen = pick(list_to_pick)
+	var/picked_gen = pick(use_game_enders ? GLOB.task_gen_list_game_enders : GLOB.task_gen_list)
 	switch(picked_gen)
 		if("sector_control")
 			for(var/obj/structure/prop/sector_center/sector in sectors)
