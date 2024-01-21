@@ -34,6 +34,8 @@
 		)
 	)
 
+	population_min = 10
+
 	var/research_allocation_interval = 10 MINUTES
 	var/next_research_allocation = 0
 	var/next_stat_check = 0

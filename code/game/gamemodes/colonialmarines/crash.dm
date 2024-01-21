@@ -29,6 +29,9 @@
 		)
 	)
 
+	population_min = 0
+	population_max = 30
+
 	// Round end conditions
 	var/shuttle_landed = FALSE
 	var/marines_evac = CRASH_EVAC_NONE
@@ -179,7 +182,6 @@
 	to_chat(world, "<span class='round_header'>Ship crashed over - [SSmapping.configs[GROUND_MAP].map_name]! You know all about enemy, time to final battle!</span>")
 	faction_announcement("Scheduled for landing in T-10 Minutes. Prepare for landing. Known hostiles near LZ. Detonation Protocol Active, planet disposable. Marines disposable.")
 	playsound(shuttle, 'sound/machines/warning-buzzer.ogg', 75, 0, 30)
-
 
 #define XENO_FOG_DELAY_INTERVAL		(60 MINUTES)
 #define FOG_DELAY_INTERVAL		(15 MINUTES)

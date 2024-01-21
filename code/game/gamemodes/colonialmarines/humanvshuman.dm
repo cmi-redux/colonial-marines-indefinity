@@ -23,6 +23,8 @@
 
 	votable = FALSE
 
+	population_min = 20
+
 	var/req_victory_points = 100000
 	var/list/datum/faction_task/faction_mode_tasks
 
