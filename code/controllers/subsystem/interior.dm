@@ -28,9 +28,6 @@ SUBSYSTEM_DEF(interior)
 	for(var/turf/current_turf as anything in turfs)
 		areas |= current_turf.loc
 
-	for(var/area/current_area as anything in areas)
-		current_area.add_base_lighting()
-
 	interiors += interior
 	return reserved_area
 

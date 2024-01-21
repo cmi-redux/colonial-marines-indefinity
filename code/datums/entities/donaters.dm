@@ -78,8 +78,12 @@ BSQL_PROTECT_DATUM(/datum/entity/skin)
 	if(length(_donater))
 		donater = pick(_donater)
 		donater.sync()
+		if(patreon_function_available("ooc_color"))
+			GLOB.donaters |= player_datum.owning_client
+			add_verb(player_datum.owning_client, /client/proc/set_ooc_color_self)
 
 /datum/donator_info/proc/patreon_function_available(required)
-	if(GLOB.donaters_functions[GLOB.donaters_ranks[donater.rank]])
-		return GLOB.donaters_functions[GLOB.donaters_ranks[donater.rank]][required]
+	if(donater)
+		if(GLOB.donaters_functions[GLOB.donaters_ranks[donater.rank]])
+			return GLOB.donaters_functions[GLOB.donaters_ranks[donater.rank]][required]
 	return FALSE

@@ -116,6 +116,7 @@
 		add_debris_element()
 
 /turf/LateInitialize()
+	SHOULD_CALL_PARENT(FALSE)
 	multiz_turfs()
 	if(!special_icon)
 		update_connections(FALSE)

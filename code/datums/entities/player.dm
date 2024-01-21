@@ -361,10 +361,6 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		donator_info = new(src)
 		GLOB.donators_info["[ckey]"] = donator_info
 
-	if(donator_info.patreon_function_available("ooc_color"))
-		GLOB.donaters |= owning_client
-		add_verb(owning_client, /client/proc/set_ooc_color_self)
-
 /datum/entity/player/proc/load_whitelist_info(list/datum/entity/whitelist_player/_whitelist)
 	if(length(_whitelist))
 		whitelist = pick(_whitelist)
@@ -448,7 +444,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	player_data.last_known_cid = computer_id
 	record_login_triplet(player.ckey, address, computer_id)
 	player_data.load_donator_info()
-	DB_FILTER(/datum/entity/whitelist_player, DB_COMP("player_id", DB_EQUALS, player_data.id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, load_whitelist_info)))
+	DB_FILTER(/datum/entity/whitelist_player, DB_COMP("player_id", DB_EQUALS, player_data.id), CALLBACK(player_data, TYPE_PROC_REF(/datum/entity/player, load_whitelist_info)))
 	player_data.sync()
 
 /datum/entity/player/proc/check_ban(computer_id, address)

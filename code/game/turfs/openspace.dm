@@ -76,8 +76,12 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 	return INITIALIZE_HINT_LATELOAD
 
 /turf/open/openspace/LateInitialize()
-	. = ..()
+	SHOULD_CALL_PARENT(FALSE)
+	multiz_turfs()
 	AddElement(/datum/element/turf_z_transparency, is_openspace = TRUE)
+
+/turf/open/space/add_debris_element()
+	return
 
 /**
  * Prepares a moving movable to be precipitated if Move() is successful.

@@ -34,9 +34,13 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /turf/open/space/LateInitialize()
+	SHOULD_CALL_PARENT(FALSE)
 	if(!istype(src, /turf/open/space/transit))
 		icon_state = "[((x + y) ^ ~(x * y) + z) % 25]"
 
+	multiz_turfs()
+
+/turf/open/space/multiz_turfs()
 	var/turf/T = SSmapping.get_turf_above(src)
 	if(T)
 		T.multiz_turf_new(src, DOWN)
@@ -44,7 +48,8 @@
 	if(T)
 		T.multiz_turf_new(src, UP)
 
-	multiz_turfs()
+/turf/open/space/add_debris_element()
+	return
 
 /turf/open/space/zPassIn(atom/movable/A, direction, turf/source)
 	if(direction == DOWN)
