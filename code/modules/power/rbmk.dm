@@ -1,14 +1,4 @@
 // Defines for reactor states
-#define RBMK_TEMPERATURE_OPERATING 800
-#define RBMK_TEMPERATURE_CRITICAL 1400
-#define RBMK_TEMPERATURE_MELTDOWN 1800
-
-#define RBMK_MAX_CRITICALITY		25
-
-#define RBMK_POWER_FLAVOURISER		4000
-
-#define RBMK_BASE_TEMPERATURE		5
-
 #define REACTOR_MELTDOWN			(1<<0)
 #define REACTOR_SLAGGED				(1<<1)
 #define REACTOR_FUEL_ACTIONS		(1<<2)
@@ -51,9 +41,12 @@ DEFINE_BITFIELD(reactor_flags, list(
 	var/id = null
 	var/datum/cause_data/cause_data
 
+	var/temperature_operating = 800
+	var/temperature_critical = 1400
+	var/temperature_meltdown = 1800
+
 	//Variables essential to operation
 	var/temperature = 0 //Lose control of this -> Meltdown
-	var/vessel_integrity = 400 //How long can the reactor withstand meltdown? This gives you a fair chance to react to even a massive pipe fire
 	var/K = 0 //Rate of reaction.
 	var/desired_k = 0
 	var/base_control_rod_effectiveness = 2
@@ -70,16 +63,18 @@ DEFINE_BITFIELD(reactor_flags, list(
 	var/next_warning = 0 //To avoid spam.
 	var/last_power_produced = 0 //For logging purposes
 	var/next_flicker = 0 //Light flicker timer
-	var/base_power_modifier = RBMK_POWER_FLAVOURISER
+	var/base_power_modifier = 4000
 	//Console statistics.
 	var/last_temperature = 0
 	var/last_heat_delta = 0 //For administrative cheating only. Knowing the delta lets you know EXACTLY what to set K at.
+
+	var/max_criticality = 25
 
 /obj/structure/machinery/power/rbmk/Initialize(mapload)
 	. = ..()
 	icon_state = "reactor_off"
 	cause_data = create_cause_data("взрыв реактора", src)
-	absorption_effectiveness = rand(50, 60)/100
+	absorption_effectiveness = rand(40, 60)/100
 	absorption_constant = absorption_effectiveness //And set this up for the rest of the round.
 	if(!id)
 		id = "[pick(alphabet_uppercase)][pick(alphabet_uppercase)]-[rand(0,9)][rand(0,9)][rand(0,9)]"
@@ -122,11 +117,10 @@ DEFINE_BITFIELD(reactor_flags, list(
 		return
 
 	control_rod_effectiveness = base_control_rod_effectiveness
-	var/heat_delta = RBMK_BASE_TEMPERATURE * absorption_effectiveness
-	last_heat_delta = heat_delta
-	temperature -= heat_delta
+	last_heat_delta = absorption_effectiveness
+	temperature -= absorption_effectiveness
 
-	power = (temperature / RBMK_TEMPERATURE_CRITICAL) * 100
+	power = (temperature / temperature_critical) * 100
 	var/depletion_modifier = 0.035 //How rapidly do your rods decay
 	absorption_effectiveness = absorption_constant
 
@@ -157,12 +151,12 @@ DEFINE_BITFIELD(reactor_flags, list(
 		else if(desired_k < K)
 			K -= difference
 
-	K = Clamp(K, 0, RBMK_MAX_CRITICALITY)
+	K = Clamp(K, 0, max_criticality)
 	if(has_fuel())
 		temperature += K
 	else
 		temperature -= 10 //Nothing to heat us up, so.
-	absorption_effectiveness += temperature/max(K, 1) * 0.01
+	absorption_effectiveness += temperature/max(K, 1) * 0.1
 	last_temperature = temperature
 	handle_alerts() //Let's check if they're about to die, and let them know.
 	update_icon()
@@ -177,12 +171,12 @@ DEFINE_BITFIELD(reactor_flags, list(
 	if(K <= 0 && temperature <= 0)
 		shut_down()
 	//First alert condition: Overheat
-	if(temperature >= RBMK_TEMPERATURE_CRITICAL)
+	if(temperature >= temperature_critical)
 		alert = TRUE
-		if(temperature >= RBMK_TEMPERATURE_MELTDOWN)
-			var/temp_damage = min(temperature/100, initial(vessel_integrity)/40)	//40 seconds to meltdown from full integrity, worst-case. Bit less than blowout since it's harder to spike heat that much.
-			vessel_integrity -= temp_damage
-			if(vessel_integrity <= temp_damage) //It wouldn't be able to tank another hit.
+		if(temperature >= temperature_meltdown)
+			var/temp_damage = temperature/100	//40 seconds to meltdown from full integrity, worst-case. Bit less than blowout since it's harder to spike heat that much.
+			health -= temp_damage
+			if(health <= temp_damage) //It wouldn't be able to tank another hit.
 				meltdown() //Oops! All meltdown
 				return
 	else
@@ -237,13 +231,13 @@ DEFINE_BITFIELD(reactor_flags, list(
 	switch(temperature)
 		if(0 to 200)
 			icon_state = "reactor_on"
-		if(200 to RBMK_TEMPERATURE_OPERATING)
+		if(200 to temperature_operating)
 			icon_state = "reactor_hot"
-		if(RBMK_TEMPERATURE_OPERATING to 1100)
+		if(temperature_operating to 1100)
 			icon_state = "reactor_veryhot"
-		if(1100 to RBMK_TEMPERATURE_CRITICAL) //Point of no return.
+		if(1100 to temperature_critical) //Point of no return.
 			icon_state = "reactor_overheat"
-		if(RBMK_TEMPERATURE_CRITICAL to INFINITY)
+		if(temperature_critical to INFINITY)
 			icon_state = "reactor_meltdown"
 	if(!has_fuel())
 		icon_state = "reactor_off"
@@ -275,7 +269,7 @@ DEFINE_BITFIELD(reactor_flags, list(
 	. = ..()
 	if(Adjacent(src, user))
 		if(do_after(user, 1 SECONDS))
-			var/percent = vessel_integrity / initial(vessel_integrity) * 100
+			var/percent = health / initial(health) * 100
 			. += "<span class='warning'>The reactor looks operational.</span>"
 			switch(percent)
 				if(0 to 10)
@@ -320,7 +314,7 @@ DEFINE_BITFIELD(reactor_flags, list(
 		if(power >= 20)
 			to_chat(user, SPAN_NOTICE("You can't repair [src] while it is running at above 20% power."))
 			return FALSE
-		if(vessel_integrity > 0.5 * initial(vessel_integrity))
+		if(health > 0.5 * initial(health))
 			to_chat(user, SPAN_NOTICE("[src] is free from cracks."))
 			return FALSE
 		var/obj/item/tool/weldingtool/WT = O
@@ -328,10 +322,10 @@ DEFINE_BITFIELD(reactor_flags, list(
 			if(do_after(user, 20 SECONDS * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 				if(!WT.isOn())
 					return FALSE
-				if(vessel_integrity > 0.5 * initial(vessel_integrity))
+				if(health > 0.5 * initial(health))
 					to_chat(user, SPAN_NOTICE("[src] is free from cracks."))
 					return FALSE
-				vessel_integrity += 20
+				health += 20
 				playsound(loc, 'sound/items/Welder2.ogg', 25, 1)
 				to_chat(user, SPAN_NOTICE("You weld together some of [src]'s cracks. This'll do for now."))
 				return TRUE

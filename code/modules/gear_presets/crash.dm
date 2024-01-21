@@ -1,6 +1,6 @@
 /datum/equipment_preset/crash
 	name = MODE_NAME_CRASH
-	faction = FACTION_USCM
+	faction = FACTION_MARINE
 	languages = list(LANGUAGE_ENGLISH)
 	idtype = /obj/item/card/id/dogtag
 
