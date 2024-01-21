@@ -62,7 +62,7 @@
 
 	var/list/weather = list()
 
-	var/total_corpses = 0
+	var/map_corpses = 0
 
 	var/vote_cycle = 1
 
@@ -350,10 +350,10 @@
 		log_world("map_config weather is not a list!")
 		return
 
-	if(islist(json["total_corpses"]))
-		total_corpses = json["total_corpses"]
+	if(islist(json["map_corpses"]))
+		map_corpses = json["map_corpses"]
 	else
-		total_corpses = 50
+		map_corpses = 50
 
 	if(json["nightmare_path"])
 		nightmare_path = json["nightmare_path"]

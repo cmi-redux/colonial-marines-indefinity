@@ -195,7 +195,7 @@ SUBSYSTEM_DEF(factions)
 		connect_objectives(objectives_controller)
 		var/faction_mobs = length(GLOB.faction_datum[objectives_controller.associated_faction].totalMobs)
 		if(faction_mobs)
-			objectives_controller.corpsewar.generate_corpses(round(ground_map.total_corpses * faction_mobs / total_percent))
+			objectives_controller.corpsewar.generate_corpses(round(ground_map.map_corpses * faction_mobs / total_percent))
 
 /datum/controller/subsystem/factions/proc/post_round_start()
 	set waitfor = FALSE

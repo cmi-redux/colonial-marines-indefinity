@@ -5,7 +5,7 @@
 	name = "Recover corpses"
 	objective_state = OBJECTIVE_ACTIVE
 	/// List of list of active corpses per tech-faction ownership
-	var/static/list/total_corpses = list()
+	var/static/list/map_corpses = list()
 	var/static/list/corpses = list()
 	var/list/handling_corpses = list()
 	var/list/scored_corpses = list()
@@ -32,7 +32,7 @@
 		var/turf/spawnpoint = get_turf(spawner)
 		if(spawnpoint)
 			var/mob/living/carbon/human/M = new /mob/living/carbon/human(spawnpoint)
-			total_corpses += M
+			map_corpses += M
 			handling_corpses += M
 			M.create_hud() //Need to generate hud before we can equip anything apparently...
 			arm_equipment(M, spawner.equip_path, TRUE, FALSE)
@@ -53,7 +53,7 @@
 /datum/cm_objective/recover_corpses/proc/handle_mob_deaths(datum/source, mob/living/carbon/dead_mob, gibbed)
 	SIGNAL_HANDLER
 
-	if(!(dead_mob in handling_corpses) && (dead_mob in total_corpses))
+	if(!(dead_mob in handling_corpses) && (dead_mob in map_corpses))
 		return
 
 	if(dead_mob in corpses + scored_corpses)
