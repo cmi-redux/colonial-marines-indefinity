@@ -42,6 +42,7 @@ DEFINE_BITFIELD(reactor_flags, list(
 	var/datum/cause_data/cause_data
 
 	var/temperature_operating = 800
+	var/temperature_pre_critical = 1100
 	var/temperature_critical = 1400
 	var/temperature_meltdown = 1800
 
@@ -228,21 +229,20 @@ DEFINE_BITFIELD(reactor_flags, list(
 
 /obj/structure/machinery/power/rbmk/update_icon()
 	icon_state = "reactor_off"
-	switch(temperature)
-		if(0 to 200)
-			icon_state = "reactor_on"
-		if(200 to temperature_operating)
-			icon_state = "reactor_hot"
-		if(temperature_operating to 1100)
-			icon_state = "reactor_veryhot"
-		if(1100 to temperature_critical) //Point of no return.
-			icon_state = "reactor_overheat"
-		if(temperature_critical to INFINITY)
-			icon_state = "reactor_meltdown"
 	if(!has_fuel())
 		icon_state = "reactor_off"
-	if(flags_reactor & REACTOR_SLAGGED)
+	else if(flags_reactor & REACTOR_SLAGGED)
 		icon_state = "reactor_slagged"
+	else if(temperature <= 200)
+		icon_state = "reactor_on"
+	else if(temperature <= temperature_operating)
+		icon_state = "reactor_hot"
+	else if(temperature <= temperature_pre_critical)
+		icon_state = "reactor_veryhot"
+	else if(ttemperature <= temperature_critical) //Point of no return.
+		icon_state = "reactor_overheat"
+	else
+		icon_state = "reactor_meltdown"
 
 
 //Startup, shutdown
