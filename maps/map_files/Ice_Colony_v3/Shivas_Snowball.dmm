@@ -16636,6 +16636,13 @@
 	dir = 1
 	},
 /area/shiva/interior/colony/n_admin)
+"lXJ" = (
+/obj/structure/machinery/computer/nuke_disk_generator/green,
+/turf/open/floor/shiva{
+	dir = 6;
+	icon_state = "green"
+	},
+/area/shiva/interior/colony/botany)
 "lXM" = (
 /obj/structure/surface/table/woodentable,
 /obj/item/reagent_container/food/condiment/saltshaker,
@@ -23086,6 +23093,7 @@
 	dir = 1;
 	pixel_y = -24
 	},
+/obj/structure/machinery/computer/nuke_disk_generator/blue,
 /turf/open/floor/shiva{
 	icon_state = "red"
 	},
@@ -24670,6 +24678,10 @@
 	dir = 1
 	},
 /area/shiva/interior/caves/s_lz2)
+"uKM" = (
+/obj/structure/machinery/computer/nuke_disk_generator/red,
+/turf/open/floor/wood,
+/area/shiva/interior/aerodrome)
 "uKN" = (
 /obj/structure/bed/chair{
 	dir = 4
@@ -45660,7 +45672,7 @@ iAt
 nUn
 aUM
 aUM
-vhL
+lXJ
 doJ
 rNZ
 ejt
@@ -52660,7 +52672,7 @@ gJo
 iMA
 aJM
 aJU
-bKV
+uKM
 aLk
 bMK
 uji

@@ -15,6 +15,8 @@
 
 /datum/job/marine/leader/crash
 	title = JOB_CRASH_SQUAD_LEADER
+	total_positions = 1
+	spawn_positions = 1
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = /datum/equipment_preset/crash/marine/sl
 

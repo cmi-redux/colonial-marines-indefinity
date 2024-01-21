@@ -8,7 +8,7 @@
 	config_tag = MODE_NAME_CRASH
 	required_players = 1 //Need at least one player, but really we need 2.
 	xeno_required_num = 1 //Need at least one xeno.
-	flags_round_type = MODE_NEW_SPAWN|MODE_NO_SHIP_MAP|MODE_FOG_ACTIVATED
+	flags_round_type = MODE_NEW_SPAWN|MODE_NO_SHIP_MAP
 	var/round_status_flags
 	round_end_states = list(MODE_CRASH_X_MAJOR, MODE_CRASH_M_MAJOR, MODE_CRASH_X_MINOR, MODE_CRASH_M_MINOR, MODE_GENERIC_DRAW_NUKE)
 

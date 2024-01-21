@@ -150,3 +150,4 @@
 	var/new_whitelist_status = input_bitfield(usr, "Editing [ckey] White List", "whitelist_flags", whitelist.whitelist_flags)
 	if(new_whitelist_status != null)
 		whitelist.whitelist_flags = new_whitelist_status
+		whitelist.save()

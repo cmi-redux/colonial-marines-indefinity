@@ -547,13 +547,14 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 				continue
 
 		if(preferred_squad == "None" && squad.put_marine_in_squad(human))
-			return
+			return squad
 
 		if(squad == preferred_squad && squad.put_marine_in_squad(human)) //fav squad has a spot for us, no more searching needed.
-			return
+			return squad
 
 		if(!lowest)
 			lowest = squad
+
 		else if(slot_check)
 			if(squad.vars["num_[slot_check]"] < lowest.vars["num_[slot_check]"])
 				lowest = squad
@@ -561,8 +562,7 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 	if(!lowest || !lowest.put_marine_in_squad(human))
 		to_world("Warning! Bug in get_random_squad()!")
 		return
-
-	return lowest //Return whichever squad won the competition.
+	return lowest
 
 /datum/authority/branch/role/proc/get_caste_by_text(name)
 	var/mob/living/carbon/xenomorph/M

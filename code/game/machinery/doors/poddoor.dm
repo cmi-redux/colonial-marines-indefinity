@@ -286,19 +286,24 @@
 
 /obj/structure/machinery/door/poddoor/almayer/open
 	density = FALSE
+
 /obj/structure/machinery/door/poddoor/almayer/blended
 	icon_state = "almayer_pdoor1"
 	base_icon_state = "almayer_pdoor"
+
 /obj/structure/machinery/door/poddoor/almayer/blended/open
 	density = FALSE
+
 /obj/structure/machinery/door/poddoor/almayer/blended/white
 	icon_state = "w_almayer_pdoor1"
 	base_icon_state = "w_almayer_pdoor"
+
 /obj/structure/machinery/door/poddoor/almayer/blended/white/open
 	density = FALSE
 
 /obj/structure/machinery/door/poddoor/almayer/blended/crash
 	icon_state = "crash_pdoor"
+	base_icon_state = "crash_pdoor"
 
 /obj/structure/machinery/door/poddoor/almayer/Initialize()
 	. = ..()

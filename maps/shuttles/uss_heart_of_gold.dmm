@@ -116,9 +116,6 @@
 	},
 /area/shuttle/uss_heart_of_gold)
 "am" = (
-/obj/effect/landmark{
-	name = "Observer-Start-Crash"
-	},
 /turf/open/floor/almayer/uscm/directional{
 	dir = 8
 	},
@@ -317,10 +314,6 @@
 	tag = "icon-sterile"
 	},
 /area/shuttle/uss_heart_of_gold)
-"aF" = (
-/obj/effect/landmark/start,
-/turf/open/floor/plating/plating_catwalk,
-/area/shuttle/uss_heart_of_gold)
 "aG" = (
 /obj/item/storage/surgical_tray,
 /obj/structure/surface/table/almayer,
@@ -475,10 +468,10 @@
 	},
 /area/shuttle/uss_heart_of_gold)
 "aX" = (
-/obj/structure/surface/table/almayer,
 /obj/structure/machinery/status_display{
 	pixel_y = 30
 	},
+/obj/structure/defcon_vendor,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -1961,7 +1954,7 @@ dL
 dL
 dL
 dL
-aF
+dL
 dL
 dL
 dL

@@ -18,6 +18,8 @@
 
 /datum/job/marine/standard/crash
 	title = JOB_CRASH_SQUAD_MARINE
+	total_positions = 16
+	spawn_positions = 16
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = /datum/equipment_preset/crash/marine/pfc
 

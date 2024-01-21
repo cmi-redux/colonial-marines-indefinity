@@ -5612,6 +5612,10 @@
 	dir = 1
 	},
 /area/kutjevo/exterior/runoff_bridge)
+"hJR" = (
+/obj/structure/machinery/computer/nuke_disk_generator/blue,
+/turf/open/floor/kutjevo/multi_tiles,
+/area/kutjevo/interior/power)
 "hKE" = (
 /obj/structure/platform/kutjevo{
 	dir = 1
@@ -8931,6 +8935,10 @@
 /obj/item/stack/cable_coil/random,
 /turf/open/floor/kutjevo/colors/orange,
 /area/kutjevo/interior/colony_South/power2)
+"mEV" = (
+/obj/structure/machinery/computer/nuke_disk_generator/green,
+/turf/open/floor/kutjevo/colors/green/tile,
+/area/kutjevo/interior/complex/botany)
 "mFd" = (
 /obj/structure/platform/kutjevo{
 	dir = 4
@@ -14751,6 +14759,12 @@
 	},
 /turf/open/auto_turf/sand/layer0,
 /area/kutjevo/exterior/runoff_dunes)
+"uRZ" = (
+/obj/structure/machinery/computer/nuke_disk_generator/red,
+/turf/open/floor/kutjevo/colors/cyan/inner_corner{
+	dir = 4
+	},
+/area/kutjevo/interior/complex/med/operating)
 "uSr" = (
 /obj/item/stack/cable_coil/random,
 /turf/open/floor/plating/kutjevo,
@@ -25157,7 +25171,7 @@ eyU
 dyU
 pyp
 pyp
-vOC
+hJR
 pyp
 bbL
 bbL
@@ -32741,7 +32755,7 @@ rQa
 gEc
 cbg
 mqG
-gNI
+uRZ
 xgl
 oww
 xgl
@@ -34811,7 +34825,7 @@ vDS
 qQU
 vDS
 lHs
-uTa
+mEV
 uTa
 uTa
 dcA

@@ -30,6 +30,8 @@
 
 /datum/job/marine/smartgunner/crash
 	title = JOB_CRASH_SQUAD_SMARTGUNNER
+	total_positions = 1
+	spawn_positions = 1
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = /datum/equipment_preset/crash/marine/sg
 
