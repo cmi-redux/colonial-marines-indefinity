@@ -76,7 +76,7 @@
 	if(target_area)
 		soundscape_playlist = target_area.soundscape_playlist
 		if(target_area.background_planet_sounds)
-			if(SSsunlighting.current_step_datum.position_number <= 2)
+			if(SSsunlighting.current_step_datum.position_number > 3 && SSsunlighting.current_step_datum.position_number < 10)
 				soundscape_playlist += SCAPE_PL_BACKGROUND_SOUNDS_DAY_SUMMER
 //			else
 //				soundscape_playlist += SCAPE_PL_BACKGROUND_SOUNDS_NIGHT_SUMMER

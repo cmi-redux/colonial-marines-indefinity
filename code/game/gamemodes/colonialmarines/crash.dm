@@ -140,7 +140,7 @@
 		break
 
 	shuttle.crashing = TRUE
-	SSshuttle.moveShuttleToDock(shuttle.id, temp_crashable_port, TRUE) // FALSE = instant arrival
+	SSshuttle.moveShuttleToDock(shuttle, temp_crashable_port, TRUE) // FALSE = instant arrival
 	addtimer(CALLBACK(src, PROC_REF(crash_shuttle), temp_crashable_port), 10 MINUTES)
 
 	..()
