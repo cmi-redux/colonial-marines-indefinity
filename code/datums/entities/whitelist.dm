@@ -9,7 +9,7 @@ BSQL_PROTECT_DATUM(/datum/entity/whitelist_player)
 	table_name = "whitelist_player"
 	field_types = list(
 		"player_id" = DB_FIELDTYPE_BIGINT,
-		"whitelist_flags" = DB_FIELDTYPE_STRING_MAX,
+		"whitelist_flags" = DB_FIELDTYPE_INT,
 	)
 	key_field = "player_id"
 
