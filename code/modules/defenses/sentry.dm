@@ -216,14 +216,14 @@
 	. = ..()
 	if(ammo)
 		. += SPAN_NOTICE("[src] has [ammo.ammo_position]/[ammo.max_rounds] rounds loaded.")
+	else if(!ammo || !ammo.ammo_position)
+		. += SPAN_NOTICE("\The [src] is empty and needs to be refilled with ammo.")
+		if(inherent_rounds)
+			. += SPAN_HELPFUL("Click \The [src] while it's turned off to reload.")
 	if(inherent_rounds)
 		. += SPAN_NOTICE("\The [src] has [inherent_rounds] round\s left in storage.")
 	if(upgraded)
 		. += SPAN_NOTICE("\The [src] has been reinforced with metal sheets.")
-	else
-		. += SPAN_NOTICE("\The [src] is empty and needs to be refilled with ammo.")
-		if(inherent_rounds)
-			. += SPAN_HELPFUL("Click \The [src] while it's turned off to reload.")
 
 /obj/structure/machinery/defenses/sentry/power_on_action()
 	actual_target = null

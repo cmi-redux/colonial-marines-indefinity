@@ -39,7 +39,7 @@
 	if(!evolve_checks())
 		return
 
-	if((!faction.living_xeno_queen) && castepick != XENO_CASTE_QUEEN && !islarva(src) && !faction.allow_no_queen_actions && !Check_Crash())
+	if((!faction.living_xeno_queen) && castepick != XENO_CASTE_QUEEN && !islarva(src) && !faction.allow_no_queen_actions && !faction.evolution_without_ovipositor)
 		to_chat(src, SPAN_WARNING("The Hive is shaken by the death of the last Queen. You can't find the strength to evolve."))
 		return
 
@@ -50,7 +50,7 @@
 				return
 
 			if(plasma_stored >= 500)
-				if(faction.living_xeno_queen)
+				if(faction.living_xeno_queen || faction.evolution_without_ovipositor)
 					to_chat(src, SPAN_WARNING("There already is a living Queen."))
 					return
 			else

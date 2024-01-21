@@ -527,7 +527,7 @@
 /datum/squad/proc/put_marine_in_squad(mob/living/carbon/human/human, obj/item/card/id/ID)
 	if(!istype(human))
 		return FALSE //Logic
-	if(!src.usable)
+	if(!usable)
 		return FALSE
 	if(!human.job)
 		return FALSE //Not yet

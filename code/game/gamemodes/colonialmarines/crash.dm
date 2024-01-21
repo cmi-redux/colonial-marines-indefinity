@@ -81,6 +81,12 @@
 
 
 /datum/game_mode/crash/pre_setup()
+	if(SSticker.role_authority)
+		for(var/datum/squad/squad in SSticker.role_authority.squads)
+			if(squad.faction == GLOB.faction_datum[FACTION_MARINE] && squad.name != "Root")
+				squad.roundstart = FALSE
+				squad.usable = FALSE
+
 	var/obj/effect/landmark/crash/nuclear_spawn/NS = SAFEPICK(GLOB.nuke_spawn_locs)
 	if(NS)
 		GLOB.nuke_list += new /obj/structure/machinery/nuclearbomb/crash(NS.loc)

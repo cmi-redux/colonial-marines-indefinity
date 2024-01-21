@@ -513,7 +513,7 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 		intel_squad.put_marine_in_squad(human) //Found one, finish up
 		return
 
-	if(!(human.job in JOB_SQUAD_NORMAL_LIST) && human.job != "Reinforcements")
+	if(human.job != "Reinforcements")
 		if(human.job in JOB_SQUAD_ENGI_LIST)
 			slot_check = "engineers"
 		else if(human.job in JOB_SQUAD_MEDIC_LIST)
