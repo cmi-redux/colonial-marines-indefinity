@@ -53,8 +53,7 @@
 
 	var/list/whiskey_outpost_waves = list()
 
-	votable = TRUE
-	vote_cycle = 20 // approx. once every 5 days, if it wins the vote
+	votable = FALSE
 
 	taskbar_icon = 'icons/taskbar/gml_wo.png'
 

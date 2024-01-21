@@ -21,6 +21,8 @@
 	flags_round_type = MODE_NEW_SPAWN|MODE_NO_SHIP_MAP
 	static_comms_amount = 2
 
+	votable = FALSE
+
 	var/req_victory_points = 100000
 	var/list/datum/faction_task/faction_mode_tasks
 

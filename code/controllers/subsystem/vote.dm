@@ -303,6 +303,8 @@ SUBSYSTEM_DEF(vote)
 							continue
 						if(VM.config_min_users && players < VM.config_min_users)
 							continue
+					if(initial(VM.vote_cycle) && text2num(SSperf_logging?.round?.id) % initial(VM.vote_cycle) != 0)
+						continue
 					maps += i
 
 				choices.Add(maps)

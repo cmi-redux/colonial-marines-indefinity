@@ -71,5 +71,5 @@ map whiskey_outpost_v2
 endmap
 
 map ravenue_5
-	disabled
+	minplayers 60
 endmap
