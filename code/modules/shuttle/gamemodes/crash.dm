@@ -9,7 +9,7 @@
 	dheight = 9
 	hidden = TRUE  //To make them not block landings during distress
 
-/obj/docking_port/stationary/crashmode/on_crash()
+/obj/docking_port/stationary/crashmode/on_prearrival()
 	//clear areas around the shuttle with explosions
 	var/turf/C = return_center_turf()
 
@@ -34,11 +34,10 @@
 	var/turf/left = locate(C.x - leftright, C.y, C.z)
 	var/turf/right = locate(C.x + leftright, C.y, C.z)
 
-	cell_explosion(front, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("посадки USS Heart Of Gold"))//Clears out walls
-	cell_explosion(rear, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("посадки USS Heart Of Gold"))
-	cell_explosion(left, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("посадки USS Heart Of Gold"))
-	cell_explosion(right, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("посадки USS Heart Of Gold"))
-
+	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), front, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("посадки USS Heart Of Gold"))
+	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), rear, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("посадки USS Heart Of Gold"))
+	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), left, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("посадки USS Heart Of Gold"))
+	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), right, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("посадки USS Heart Of Gold"))
 // -- Shuttles
 
 /obj/docking_port/mobile/crashmode

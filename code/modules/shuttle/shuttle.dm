@@ -275,9 +275,6 @@
 	if(roundstart_template)
 		SSshuttle.action_load(roundstart_template, src)
 
-/obj/docking_port/stationary/proc/on_crash()
-	return
-
 /// Called when a new shuttle arrives
 /obj/docking_port/stationary/proc/on_arrival(obj/docking_port/mobile/arriving_shuttle)
 	return
@@ -561,9 +558,6 @@
 	if(destination)
 		destination.on_prearrival(src)
 	playsound(return_center_turf(), landing_sound, 60, 0)
-	return
-
-/obj/docking_port/mobile/proc/on_crash()
 	return
 
 /obj/docking_port/mobile/proc/set_idle()

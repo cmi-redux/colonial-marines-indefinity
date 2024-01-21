@@ -141,7 +141,6 @@
 		temp_crashable_port = new(turf_picked)
 		temp_crashable_port.width = shuttle.width
 		temp_crashable_port.height = shuttle.height
-		temp_crashable_port.id = shuttle.id
 
 		if(!shuttle.check_crash_point(temp_crashable_port))
 			qdel(temp_crashable_port)
@@ -249,8 +248,6 @@
 #undef PODLOCKS_OPEN_WAIT
 
 /datum/game_mode/crash/proc/crash_shuttle(obj/docking_port/stationary/target)
-	shuttle.crashing = FALSE
-
 	sleep(1200)
 	shuttle_landed = TRUE
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(show_blurb_uscm)), DROPSHIP_DROP_MSG_DELAY)
