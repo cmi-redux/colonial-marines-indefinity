@@ -139,7 +139,6 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 	return
 
 /datum/game_mode/proc/announce_ending()
-	log_game("Результат раунда: [round_finished]")
 	to_chat_spaced(world, margin_top = 2, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDHEADER("|Раунд Закончен|"))
 	var/rendered_announce_text = replacetext(end_game_announce, "###SHIPNAME###", MAIN_SHIP_NAME)
 	to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDBODY("[rendered_announce_text] [SSmapping.configs[GROUND_MAP].map_name].\nИгровой режим был: [GLOB.master_mode]!\n[CONFIG_GET(string/endofroundblurb)]"))
@@ -187,7 +186,7 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 
 	var/list/winners_info = get_winners_states()
 
-	log_game("Round end result - [round_finished]")
+	log_game("Результат раунда - [round_finished]")
 	if(round_statistics)
 		round_statistics.game_mode = name
 		round_statistics.round_length = world.time

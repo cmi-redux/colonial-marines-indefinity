@@ -240,6 +240,9 @@ var/world_topic_spam_protect_time = world.timeofday
 		log_debug("Failed to notify discord about restart")
 
 	Master.Shutdown()
+	if(TgsAvailable())
+		TgsReboot()
+
 	send_reboot_sound()
 	var/server = CONFIG_GET(string/server)
 	for(var/thing in GLOB.clients)
@@ -256,32 +259,32 @@ var/world_topic_spam_protect_time = world.timeofday
 	#endif
 
 	if(TgsAvailable())
+		var/do_hard_reboot
 		if(shutdown)
 			TgsChangeRebootType(2)
-/*
-		var/do_hard_reboot
-		var/ruhr = CONFIG_GET(number/rounds_until_hard_restart)
-		switch(ruhr)
-			if(-1)
-				do_hard_reboot = FALSE
-			if(0)
-				do_hard_reboot = TRUE
-			else
-				if(GLOB.restart_counter >= ruhr)
+			do_hard_reboot = TRUE
+		else
+			var/ruhr = CONFIG_GET(number/rounds_until_hard_restart)
+			switch(ruhr)
+				if(-1)
+					do_hard_reboot = FALSE
+				if(0)
 					do_hard_reboot = TRUE
 				else
-					text2file("[++GLOB.restart_counter]", RESTART_COUNTER_PATH)
-					do_hard_reboot = FALSE
+					if(GLOB.restart_counter >= ruhr)
+						do_hard_reboot = TRUE
+					else
+						text2file("[++GLOB.restart_counter]", RESTART_COUNTER_PATH)
+						do_hard_reboot = FALSE
 		if(do_hard_reboot)
 			TgsChangeRebootType(1)
-*/
-		TgsReboot()
-		TgsEndProcess()
+			TgsEndProcess()
+		return ..()
 	else
 		if(shutdown)
 			shutdown()
 		else
-			..(reason)
+			return ..()
 
 /world/proc/send_reboot_sound()
 	var/reboot_sound = SAFEPICK(CONFIG_GET(str_list/end_round_music))
