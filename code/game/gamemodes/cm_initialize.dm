@@ -255,7 +255,7 @@ Additional game mode variables.
 	var/list/datum/mind/possible_queens = get_players_for_role(JOB_XENOMORPH_QUEEN)
 	if(possible_xenomorphs.len < xeno_required_num) //We don't have enough aliens, we don't consider people rolling for only Queen.
 		to_world("<h2 style=\"color:red\">Not enough players have chosen to be a xenomorph in their character setup. <b>Aborting</b>.</h2>")
-		return
+		return FALSE
 
 	//Minds are not transferred at this point, so we have to clean out those who may be already picked to play.
 	for(var/datum/mind/A in possible_queens)
@@ -318,7 +318,7 @@ Additional game mode variables.
 	*/
 	if(length(xenomorphs) < xeno_required_num && length(picked_queens) != length(hives))
 		to_world("<h2 style=\"color:red\">Could not find any candidates after initial alien list pass. <b>Aborting</b>.</h2>")
-		return
+		return FALSE
 
 	return TRUE
 

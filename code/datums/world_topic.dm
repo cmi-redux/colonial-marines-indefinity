@@ -59,6 +59,7 @@
 	response = "Pong!"
 	data = length(GLOB.clients)
 
+
 /datum/world_topic/playing
 	key = "playing"
 	anonymous = TRUE
@@ -68,6 +69,7 @@
 	statuscode = 200
 	response = "Player count retrieved"
 	data = length(GLOB.player_list)
+
 
 /datum/world_topic/adminwho
 	key = "adminwho"
@@ -87,6 +89,7 @@
 	response = "Admin list fetched"
 	data = admins
 
+
 /datum/world_topic/playerlist
 	key = "playerlist"
 	anonymous = TRUE
@@ -99,22 +102,37 @@
 	statuscode = 200
 	response = "Player list fetched"
 
+
 /datum/world_topic/status
 	key = "status"
 	anonymous = TRUE
 
 /datum/world_topic/status/Run(list/input)
 	. = ..()
-	data = list()
+	. = list()
 
-	data["mode"] = GLOB.master_mode
-	if(SSmapping && SSmapping?.configs?[GROUND_MAP])
+	data["round_name"] = "Loading..."
+	data["mode"] = "Loading..."
+	if(SSticker.mode)
+		if(SSticker.mode.round_statistics?.round_name)
+			data["round_name"] = SSticker.mode.round_statistics.round_name
+		if(SSticker.mode.round_finished)
+			data["round_end_state"] = SSticker.mode.end_round_message()
+		data["mode"] = SSticker.mode.name
+
+	data["map"] = "Loading..."
+	if(SSmapping.configs?[GROUND_MAP])
 		data["map"] = SSmapping.configs[GROUND_MAP].map_name
-	data["vote"] = CONFIG_GET(flag/allow_vote_mode)
-	data["ai"] = CONFIG_GET(flag/allow_ai)
-	data["host"] = world.host ? world.host : null
-	data["round_id"] = text2num(GLOB.round_id)
+	if(SSmapping.next_map_configs?[GROUND_MAP])
+		data["map_next"] = SSmapping.next_map_configs[GROUND_MAP].map_name
+
+	data["round_id"] = "Loading..."
+	if(SSperf_logging.round?.id)
+		data["round_id"] = SSperf_logging.round.id
+
 	data["players"] = length(GLOB.clients)
+	data["players_avg"] = round(SSstats_collector.get_avg_players(), 0.01)
+
 	data["revision"] = GLOB.revdata.commit
 	data["revision_date"] = GLOB.revdata.date
 
@@ -124,10 +142,7 @@
 	data["admins"] = length(presentmins) + length(afkmins) //equivalent to the info gotten from adminwho
 	data["gamestate"] = SSticker.current_state
 
-	data["map_name"] = SSmapping.configs[GROUND_MAP]?.map_name || "Loading..."
-
-	data["security_level"] = get_security_level()
-	data["round_duration"] = ROUND_TIME
+	data["round_duration"] = duration2text()
 	// Amount of world's ticks in seconds, useful for calculating round duration
 
 	//Time dilation stats.
@@ -141,6 +156,7 @@
 
 	statuscode = 200
 	response = "Status retrieved"
+
 
 /datum/world_topic/status/authed
 	key = "status_authed"
@@ -285,6 +301,7 @@
 	statuscode = 200
 	response = "Decertification successful."
 
+
 /datum/world_topic/lookup_discord_id
 	key = "lookup_discord_id"
 	required_params = list("discord_id")
@@ -308,6 +325,7 @@
 	data["roles"] = get_whitelisted_roles(whitelist?.whitelist_flags)
 	statuscode = 200
 	response = "Lookup successful."
+
 
 /datum/world_topic/lookup_ckey
 	key = "lookup_ckey"

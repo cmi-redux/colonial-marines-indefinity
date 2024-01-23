@@ -259,7 +259,7 @@ var/world_topic_spam_protect_time = world.timeofday
 	#endif
 
 	if(TgsAvailable())
-		var/do_hard_reboot
+		var/do_hard_reboot = FALSE
 		if(shutdown)
 			TgsChangeRebootType(2)
 			do_hard_reboot = TRUE

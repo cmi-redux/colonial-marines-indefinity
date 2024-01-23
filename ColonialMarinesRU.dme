@@ -437,7 +437,6 @@
 #include "code\datums\effects\acid.dm"
 #include "code\datums\effects\bleeding.dm"
 #include "code\datums\effects\heal_over_time.dm"
-#include "code\datums\effects\mob_overlay_effect.dm"
 #include "code\datums\effects\neurotoxin.dm"
 #include "code\datums\effects\plasma_over_time.dm"
 #include "code\datums\effects\tether.dm"

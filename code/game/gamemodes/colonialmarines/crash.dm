@@ -6,8 +6,8 @@
 /datum/game_mode/crash
 	name = MODE_NAME_CRASH
 	config_tag = MODE_NAME_CRASH
-	required_players = 1 //Need at least one player, but really we need 2.
-	xeno_required_num = 1 //Need at least one xeno.
+	required_players = 2
+	xeno_required_num = 1
 	flags_round_type = MODE_NEW_SPAWN|MODE_NO_SHIP_MAP
 	var/round_status_flags
 	round_end_states = list(MODE_CRASH_X_MAJOR, MODE_CRASH_M_MAJOR, MODE_CRASH_X_MINOR, MODE_CRASH_M_MINOR, MODE_GENERIC_DRAW_NUKE)
@@ -47,6 +47,20 @@
 
 /* Pre-pre-startup */
 /datum/game_mode/crash/can_start()
+	var/list/datum/mind/possible_xenomorphs = get_players_for_role(JOB_XENOMORPH)
+	var/list/datum/mind/possible_queens = get_players_for_role(JOB_XENOMORPH_QUEEN)
+	if(possible_xenomorphs.len + possible_queens.len < xeno_required_num) //We don't have enough aliens, we don't consider people rolling for only Queen.
+		to_world("Not enough players have chosen to be a xenomorph in their character setup. <b>Aborting</b>.")
+		return FALSE
+
+	var/players = 0
+	for(var/mob/new_player/player in GLOB.new_player_list)
+		if(player.client && player.ready)
+			players++
+
+	if(players < required_players)
+		return FALSE
+
 	initialize_special_clamps()
 
 	var/datum/map_template/shuttle/ST = SSmapping.shuttle_templates[shuttle_id]

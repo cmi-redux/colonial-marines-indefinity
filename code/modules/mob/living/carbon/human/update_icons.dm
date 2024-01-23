@@ -108,8 +108,6 @@ There are several things that need to be remembered:
 		apply_transform(new_matrix)
 
 	for(var/datum/effects/overlay_effect in effects_list)
-		if(!istype(overlay_effect, /datum/effects/mob_overlay_effect))
-			continue
 		update_effects()
 		var/turf/gotten_turf = get_turf(src)
 		gotten_turf.Entered(src, loc)

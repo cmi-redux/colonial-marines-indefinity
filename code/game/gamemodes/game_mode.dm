@@ -69,12 +69,12 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 /datum/game_mode/proc/can_start()
 	var/playerC = 0
 	for(var/mob/new_player/player in GLOB.new_player_list)
-		if((player.client)&&(player.ready))
+		if(player.client && player.ready)
 			playerC++
 
 	if(GLOB.master_mode == "secret")
 		if(playerC >= required_players_secret)
-			return 1
+			return TRUE
 	else
 		if(playerC >= required_players)
 			return TRUE

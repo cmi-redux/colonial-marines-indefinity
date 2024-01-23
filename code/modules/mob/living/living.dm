@@ -20,7 +20,6 @@
 	initialize_pain()
 	initialize_stamina()
 	GLOB.living_mob_list += src
-	add_filter("mob_efect_reverse_alpha_mask", 1, alpha_mask_filter(render_source = MOB_REVERSE_RENDER_TARGET, flags = MASK_INVERSE))
 
 /mob/living/Destroy()
 	GLOB.living_mob_list -= src

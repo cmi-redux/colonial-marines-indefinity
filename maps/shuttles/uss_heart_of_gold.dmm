@@ -6,7 +6,9 @@
 /turf/closed/shuttle/crash{
 	icon_state = "31"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ac" = (
 /obj/structure/surface/table/almayer,
 /obj/item/storage/backpack/marine/marsoc,
@@ -19,7 +21,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ad" = (
 /obj/item/defenses/handheld/sentry,
 /obj/structure/surface/rack,
@@ -35,24 +39,32 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ae" = (
 /obj/structure/machinery/recharge_station,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "af" = (
 /turf/closed/shuttle/crash{
 	icon_state = "engine"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ag" = (
 /turf/open/floor/almayer/uscm/directional{
 	dir = 1
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ah" = (
 /obj/structure/machinery/cm_vending/sorted/cargo_guns/squad{
 	req_access = null;
@@ -66,7 +78,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ai" = (
 /obj/structure/surface/table/almayer,
 /obj/item/storage/pouch/medkit,
@@ -93,17 +107,23 @@
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aj" = (
 /obj/structure/machinery/cm_vending/clothing/synth,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ak" = (
 /turf/open/floor/almayer/uscm/directional,
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "al" = (
 /obj/item/device/radio/intercom{
 	freerange = 1;
@@ -114,23 +134,31 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "am" = (
 /turf/open/floor/almayer/uscm/directional{
 	dir = 8
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "an" = (
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ao" = (
 /turf/closed/shuttle/crash{
 	icon_state = "25"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ap" = (
 /obj/item/defenses/handheld/sentry/flamer,
 /obj/structure/surface/rack,
@@ -144,7 +172,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aq" = (
 /obj/structure/machinery/iv_drip,
 /obj/item/reagent_container/blood/OMinus,
@@ -158,14 +188,18 @@
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ar" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "as" = (
 /obj/structure/bed/chair/vehicle{
 	dir = 4
@@ -174,7 +208,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "at" = (
 /obj/item/defenses/handheld/sentry/flamer,
 /obj/structure/surface/rack,
@@ -196,21 +232,27 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "au" = (
 /obj/structure/machinery/cm_vending/own_points/experimental_tools,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "av" = (
 /obj/structure/machinery/vending/sovietsoda,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aw" = (
 /obj/item/defenses/handheld/sentry,
 /obj/structure/surface/rack,
@@ -225,7 +267,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ax" = (
 /obj/item/defenses/handheld/sentry/flamer,
 /obj/structure/surface/rack,
@@ -244,7 +288,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ay" = (
 /obj/structure/surface/rack,
 /obj/structure/machinery/status_display{
@@ -255,14 +301,18 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "az" = (
 /obj/structure/machinery/vending/snack/packaged,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aA" = (
 /obj/structure/closet/secure_closet/medical2,
 /obj/item/storage/box/gloves{
@@ -280,14 +330,18 @@
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aB" = (
 /obj/structure/machinery/vending/cola,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aC" = (
 /obj/structure/machinery/light{
 	dir = 1;
@@ -297,14 +351,18 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aD" = (
 /obj/structure/machinery/sleep_console,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aE" = (
 /obj/structure/machinery/light{
 	tag = "icon-tube1 (NORTH)"
@@ -313,7 +371,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aG" = (
 /obj/item/storage/surgical_tray,
 /obj/structure/surface/table/almayer,
@@ -333,7 +393,9 @@
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aI" = (
 /obj/structure/machinery/light{
 	dir = 8
@@ -342,12 +404,16 @@
 	dir = 4
 	},
 /turf/open/floor/almayer,
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aJ" = (
 /turf/closed/shuttle/crash{
 	icon_state = "26"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aK" = (
 /obj/structure/machinery/prop/almayer/CICmap,
 /obj/structure/surface/table/reinforced/almayer_B,
@@ -355,28 +421,36 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aL" = (
 /obj/structure/machinery/vending/cigarette/free,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aM" = (
 /obj/structure/machinery/washing_machine,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aO" = (
 /obj/structure/machinery/computer/crew,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aP" = (
 /obj/structure/machinery/iv_drip,
 /obj/item/reagent_container/blood/OMinus,
@@ -391,7 +465,9 @@
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aR" = (
 /obj/structure/machinery/cm_vending/sorted/cargo_ammo/squad{
 	req_access = null;
@@ -404,7 +480,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aS" = (
 /obj/structure/machinery/cm_vending/clothing/smartgun/alpha{
 	req_access = null;
@@ -416,7 +494,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aT" = (
 /obj/structure/surface/rack,
 /obj/item/storage/belt/utility/full,
@@ -430,20 +510,25 @@
 	},
 /obj/item/clothing/accessory/storage/webbing,
 /obj/structure/machinery/power/apc/almayer/hardened{
-	dir = 1
+	dir = 1;
+	cell_type = /obj/item/cell/hyper
 	},
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aU" = (
 /obj/structure/surface/table/reinforced/almayer_B,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aV" = (
 /obj/structure/surface/table/almayer,
 /obj/item/storage/pouch/medkit,
@@ -466,7 +551,9 @@
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aX" = (
 /obj/structure/machinery/status_display{
 	pixel_y = 30
@@ -476,7 +563,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aY" = (
 /obj/structure/machinery/cm_vending/clothing/marine/alpha{
 	req_access = null;
@@ -488,7 +577,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "aZ" = (
 /obj/item/device/radio/intercom{
 	freerange = 1;
@@ -504,14 +595,18 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ba" = (
 /obj/structure/machinery/cm_vending/clothing/commanding_officer,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bb" = (
 /obj/structure/machinery/light{
 	dir = 8
@@ -523,14 +618,18 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bc" = (
 /obj/structure/machinery/cm_vending/sorted/marine_food,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bd" = (
 /obj/structure/machinery/medical_pod/sleeper,
 /obj/structure/prop/almayer/ship_memorial{
@@ -540,7 +639,9 @@
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "be" = (
 /obj/structure/bed/chair/vehicle{
 	dir = 4
@@ -549,21 +650,27 @@
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bf" = (
 /obj/structure/machinery/medical_pod/bodyscanner,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bg" = (
 /obj/structure/machinery/body_scanconsole,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bh" = (
 /obj/item/device/radio/intercom{
 	freerange = 1;
@@ -579,7 +686,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bi" = (
 /obj/structure/machinery/cm_vending/clothing/tl/alpha{
 	req_access = null;
@@ -591,7 +700,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bj" = (
 /obj/structure/machinery/cm_vending/sorted/attachments/squad{
 	req_access = null;
@@ -604,27 +715,35 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bk" = (
 /obj/structure/reagent_dispensers/watertank,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bl" = (
 /obj/structure/bed/chair/dropship/pilot{
 	dir = 1
 	},
 /turf/open/floor/almayer,
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bm" = (
 /obj/structure/machinery/autodoc_console,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bn" = (
 /obj/structure/bed/chair/vehicle{
 	dir = 1
@@ -633,7 +752,9 @@
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bo" = (
 /obj/item/device/radio/intercom{
 	freerange = 1;
@@ -649,7 +770,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bp" = (
 /obj/structure/machinery/keycard_auth{
 	pixel_x = -23
@@ -658,17 +781,23 @@
 /turf/open/floor/almayer/uscm/directional{
 	dir = 10
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bq" = (
 /turf/closed/shuttle/crash{
 	icon_state = "17"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "br" = (
 /turf/closed/shuttle/crash{
 	icon_state = "5"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bs" = (
 /obj/structure/surface/table/almayer,
 /obj/item/storage/beer_pack,
@@ -676,7 +805,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bt" = (
 /obj/structure/closet/crate/trashcart,
 /obj/item/storage/bag/trash,
@@ -685,7 +816,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bu" = (
 /obj/structure/surface/rack,
 /obj/item/storage/belt/utility/full,
@@ -699,7 +832,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bv" = (
 /obj/structure/machinery/cm_vending/clothing/leader/alpha{
 	req_access = null;
@@ -711,7 +846,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bw" = (
 /obj/structure/machinery/light{
 	tag = "icon-tube1 (NORTH)"
@@ -721,7 +858,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bx" = (
 /obj/structure/bed/chair/dropship/pilot{
 	dir = 4
@@ -730,14 +869,18 @@
 	dir = 8;
 	icon_state = "logo_c"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "by" = (
 /obj/structure/machinery/cryopod,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bz" = (
 /obj/structure/machinery/computer/shuttle/shuttle_control/uss_heart_of_gold,
 /obj/structure/transmitter{
@@ -756,7 +899,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bA" = (
 /obj/structure/machinery/light{
 	dir = 8
@@ -771,11 +916,15 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bB" = (
 /obj/effect/landmark/late_join/marine,
 /turf/open/floor/almayer,
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bC" = (
 /obj/structure/machinery/computer/card{
 	dir = 8
@@ -785,7 +934,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bD" = (
 /obj/structure/machinery/door_control{
 	id = "CIC Lockdown";
@@ -801,7 +952,9 @@
 /turf/open/floor/almayer/uscm/directional{
 	dir = 9
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bE" = (
 /obj/structure/machinery/door/poddoor/almayer/open{
 	dir = 2;
@@ -818,7 +971,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bF" = (
 /obj/structure/machinery/door/poddoor/almayer/blended/crash{
 	dir = 2;
@@ -829,7 +984,9 @@
 /turf/closed/shuttle/crash/window{
 	icon_state = "37"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bG" = (
 /obj/structure/machinery/door/poddoor/almayer/open{
 	dir = 4;
@@ -846,14 +1003,18 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bH" = (
 /obj/structure/closet/secure_closet/medical_doctor,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bI" = (
 /obj/structure/machinery/cm_vending/sorted/cargo_guns/squad_prep{
 	req_access = null;
@@ -864,7 +1025,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bJ" = (
 /obj/structure/machinery/cm_vending/clothing/engi/alpha{
 	req_access = null;
@@ -876,7 +1039,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bK" = (
 /obj/structure/machinery/cm_vending/gear/leader{
 	req_access = null;
@@ -887,7 +1052,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bL" = (
 /obj/structure/machinery/cm_vending/gear/engi{
 	req_access = null;
@@ -898,7 +1065,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bM" = (
 /obj/structure/machinery/cm_vending/clothing/specialist/alpha{
 	req_access = null;
@@ -910,7 +1079,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bN" = (
 /obj/structure/machinery/cm_vending/sorted/uniform_supply/squad_prep{
 	req_access = null;
@@ -921,7 +1092,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bO" = (
 /obj/structure/machinery/light{
 	tag = "icon-tube1 (NORTH)"
@@ -936,7 +1109,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bP" = (
 /obj/structure/machinery/cm_vending/gear/spec{
 	req_access = null;
@@ -947,12 +1122,16 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bQ" = (
 /turf/closed/shuttle/crash{
 	icon_state = "6"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bR" = (
 /obj/structure/machinery/cm_vending/gear/medic{
 	req_access = null;
@@ -963,7 +1142,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bS" = (
 /obj/structure/machinery/light{
 	dir = 8
@@ -972,18 +1153,24 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bT" = (
 /obj/structure/bed/chair/vehicle{
 	dir = 4
 	},
 /turf/open/floor/almayer,
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bU" = (
 /turf/closed/shuttle/crash{
 	icon_state = "3"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bV" = (
 /obj/item/storage/surgical_tray,
 /obj/structure/surface/table/almayer,
@@ -1021,48 +1208,66 @@
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bW" = (
 /obj/effect/landmark/late_join/marine,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bX" = (
 /obj/effect/landmark/late_join/marine,
 /turf/open/floor/plating/plating_catwalk,
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bY" = (
 /turf/closed/shuttle/crash{
 	icon_state = "22"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "bZ" = (
 /turf/closed/shuttle/crash{
 	icon_state = "1"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ca" = (
 /turf/closed/shuttle/crash{
 	icon_state = "8"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cb" = (
 /turf/closed/shuttle/crash{
 	icon_state = "10"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cc" = (
 /turf/closed/shuttle/crash{
 	icon_state = "11"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cd" = (
 /turf/closed/shuttle/crash{
 	icon_state = "35"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ce" = (
 /obj/structure/machinery/light{
 	dir = 8
@@ -1072,54 +1277,74 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cf" = (
 /turf/closed/shuttle/crash{
 	icon_state = "9"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cg" = (
 /turf/closed/shuttle/crash{
 	icon_state = "12"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ch" = (
 /turf/closed/shuttle/crash{
 	icon_state = "19"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ci" = (
 /turf/closed/shuttle/crash{
 	icon_state = "23"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cj" = (
 /turf/closed/shuttle/crash{
 	icon_state = "24"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ck" = (
 /turf/closed/shuttle/crash{
 	icon_state = "27"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cl" = (
 /turf/closed/shuttle/crash{
 	icon_state = "20"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cm" = (
 /obj/structure/machinery/door/airlock/multi_tile/almayer/generic,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cn" = (
 /turf/closed/shuttle/crash/window{
 	icon_state = "37"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "co" = (
 /obj/structure/machinery/chem_dispenser/soda,
 /obj/structure/surface/table/almayer,
@@ -1132,7 +1357,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cp" = (
 /obj/structure/machinery/door/poddoor/almayer/open{
 	dir = 4;
@@ -1140,19 +1367,25 @@
 	name = "\improper Ship Lockdown"
 	},
 /turf/open/floor/plating/plating_catwalk,
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cq" = (
 /obj/structure/machinery/door/airlock/multi_tile/almayer/generic,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cr" = (
 /turf/closed/shuttle/crash{
 	icon_state = "18"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cs" = (
 /obj/structure/machinery/door/poddoor/almayer/open{
 	dir = 4;
@@ -1167,7 +1400,9 @@
 	unslashable = 1
 	},
 /turf/open/floor/almayer,
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ct" = (
 /obj/item/defenses/handheld/sentry,
 /obj/structure/surface/rack,
@@ -1186,12 +1421,16 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cu" = (
 /turf/closed/shuttle/crash{
 	icon_state = "30"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cv" = (
 /obj/structure/machinery/door/poddoor/almayer/blended/crash{
 	dir = 8;
@@ -1200,12 +1439,16 @@
 	unacidable = 1
 	},
 /turf/closed/shuttle/crash/window,
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cw" = (
 /turf/closed/shuttle/crash{
 	icon_state = "34"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cx" = (
 /obj/structure/machinery/vending/coffee,
 /obj/structure/machinery/door/poddoor/almayer/open{
@@ -1217,7 +1460,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cy" = (
 /obj/structure/machinery/door/poddoor/almayer/blended/crash{
 	id = "crash_pod1";
@@ -1227,7 +1472,9 @@
 /turf/closed/shuttle/crash/window{
 	icon_state = "36"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cz" = (
 /obj/structure/machinery/door/poddoor/almayer/open{
 	dir = 2;
@@ -1243,7 +1490,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cB" = (
 /obj/structure/machinery/computer/squad_changer{
 	dir = 8
@@ -1253,14 +1502,18 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cC" = (
 /obj/structure/machinery/constructable_frame/porta_comms,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cD" = (
 /obj/structure/machinery/computer/groundside_operations{
 	dir = 8
@@ -1277,12 +1530,16 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cE" = (
 /obj/structure/bed/chair/dropship/pilot,
 /obj/effect/landmark/start/intel,
 /turf/open/floor/almayer,
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cF" = (
 /obj/item/circuitboard/machine/telecomms/relay/tower,
 /obj/structure/closet/crate/construction,
@@ -1296,7 +1553,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cG" = (
 /obj/structure/machinery/computer/communications{
 	dir = 8
@@ -1306,7 +1565,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cH" = (
 /obj/structure/surface/table/reinforced/almayer_B,
 /obj/structure/machinery/computer/disk_reader{
@@ -1316,21 +1577,27 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "cI" = (
 /obj/structure/surface/table/reinforced/almayer_B,
 /obj/structure/machinery/computer/intel{
 	dir = 1
 	},
 /turf/open/floor/almayer,
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dp" = (
 /obj/structure/machinery/medical_pod/autodoc,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dr" = (
 /obj/structure/machinery/optable,
 /obj/item/tank/anesthetic,
@@ -1343,7 +1610,9 @@
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ds" = (
 /obj/structure/machinery/bioprinter{
 	stored_metal = 1000
@@ -1355,7 +1624,9 @@
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dz" = (
 /obj/structure/surface/table/almayer,
 /obj/item/stack/sheet/metal{
@@ -1398,7 +1669,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dA" = (
 /obj/structure/machinery/cm_vending/sorted/tech/electronics_storage,
 /obj/structure/machinery/status_display{
@@ -1408,50 +1681,66 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dC" = (
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dF" = (
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_corner";
 	tag = "icon-sterile_green_corner (WEST)"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dG" = (
 /turf/open/floor/almayer{
 	dir = 10;
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dH" = (
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dI" = (
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dL" = (
 /turf/open/floor/plating/plating_catwalk,
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dM" = (
 /obj/structure/machinery/autolathe,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dN" = (
 /obj/structure/machinery/door/poddoor/almayer/open{
 	dir = 2;
@@ -1462,7 +1751,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dP" = (
 /obj/structure/machinery/power/geothermal{
 	fail_rate = 5
@@ -1474,52 +1765,68 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dR" = (
 /turf/open/floor/almayer,
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dS" = (
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_corner";
 	tag = "icon-sterile_green_corner (NORTH)"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dT" = (
 /turf/open/floor/almayer{
 	dir = 9;
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dU" = (
 /turf/open/floor/almayer{
 	dir = 6;
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dV" = (
 /obj/structure/machinery/cm_vending/sorted/medical/no_access,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "dW" = (
 /obj/structure/reagent_dispensers/fueltank,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ef" = (
 /obj/structure/bed/chair/vehicle,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ej" = (
 /obj/structure/machinery/door/airlock/almayer/engineering{
 	dir = 1;
@@ -1530,7 +1837,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "el" = (
 /obj/structure/bed/chair/vehicle{
 	dir = 1
@@ -1539,7 +1848,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "eu" = (
 /obj/structure/bed/chair/vehicle,
 /obj/structure/machinery/status_display{
@@ -1549,7 +1860,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "ex" = (
 /obj/structure/machinery/door/poddoor/almayer/open{
 	dir = 4;
@@ -1560,22 +1873,30 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "eC" = (
 /obj/docking_port/mobile/crashmode,
 /turf/open/floor/plating/plating_catwalk,
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "fe" = (
 /obj/effect/landmark/observer_start,
 /turf/open/floor/plating/plating_catwalk,
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "fg" = (
 /obj/structure/machinery/cryopod/right,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 "zC" = (
 /turf/template_noop,
 /area/space)
@@ -1585,7 +1906,9 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/shuttle/uss_heart_of_gold)
+/area/shuttle/uss_heart_of_gold{
+	powernet_name = "ground"
+	})
 
 (1,1,1) = {"
 zC

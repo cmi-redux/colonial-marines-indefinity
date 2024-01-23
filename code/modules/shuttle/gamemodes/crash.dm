@@ -9,21 +9,8 @@
 	//clear areas around the shuttle with explosions
 	var/turf/C = return_center_turf()
 
-	var/cos = 1
-	var/sin = 0
-	switch(dir)
-		if(WEST)
-			cos = 0
-			sin = 1
-		if(SOUTH)
-			cos = -1
-			sin = 0
-		if(EAST)
-			cos = 0
-			sin = -1
-
-	var/updown = (round(width/2))*sin + (round(height/2))*cos
-	var/leftright = (round(width/2))*cos - (round(height/2))*sin
+	var/updown = (round(width/2)) + (round(height/2))
+	var/leftright = (round(width/2)) - (round(height/2))
 
 	var/turf/front = locate(C.x, C.y - updown, C.z)
 	var/turf/rear = locate(C.x, C.y + updown, C.z)
@@ -38,7 +25,6 @@
 
 /obj/docking_port/mobile/crashmode
 	name = "USS Heart Of Gold"
-	dir = SOUTH
 	width = 29
 	height = 19
 
