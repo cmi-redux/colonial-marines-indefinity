@@ -304,7 +304,7 @@ var/global/east_riverstart = 0
 	//var/area/A = get_area(src)
 	//A.ambience_exterior = 'sound/ambience/ambiatm1.ogg'
 
-	for(var/obj/structure/machinery/dispersal_initiator/M in machines)
+	for(var/obj/structure/machinery/dispersal_initiator/M in GLOB.machines)
 		if(M.id == src.id)
 			M.initiate()
 

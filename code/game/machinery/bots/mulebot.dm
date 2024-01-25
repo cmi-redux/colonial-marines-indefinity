@@ -84,7 +84,7 @@
 	SSradio.add_object(src, beacon_freq, filter = RADIO_NAVBEACONS)
 
 	var/count = 0
-	for(var/obj/structure/machinery/bot/mulebot/other in machines)
+	for(var/obj/structure/machinery/bot/mulebot/other in GLOB.machines)
 		count++
 	if(!suffix)
 		suffix = "#[count]"

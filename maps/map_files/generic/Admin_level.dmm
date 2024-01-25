@@ -1125,7 +1125,7 @@
 	teleport_z = 1;
 	teleport_z_offset = 1
 	},
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "bmb" = (
 /obj/structure/bed/chair/comfy/black{
@@ -6224,7 +6224,7 @@
 	teleport_z = 1;
 	teleport_z_offset = 1
 	},
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "huN" = (
 /obj/structure/sign/safety/cryo{
@@ -22545,7 +22545,7 @@
 /turf/open/floor/almayer,
 /area/adminlevel/chinook)
 "ylS" = (
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "ymb" = (
 /obj/structure/machinery/light{

@@ -1164,12 +1164,10 @@ and you're good to go.
 
 
 /obj/item/weapon/gun/proc/create_bullet(datum/ammo/chambered, bullet_source)
-	if(!chambered)
+	if(!chambered || !istype(chambered))
 		to_chat(usr, "Something has gone horribly wrong. Ahelp the following: ERROR CODE I2: null ammo while create_bullet()")
 		log_debug("ERROR CODE I2: null ammo while create_bullet(). User: <b>[usr]</b> Weapon: <b>[src]</b> Magazine: <b>[current_mag]</b>")
 		chambered = GLOB.ammo_list[/datum/ammo/bullet] //Slap on a default bullet if somehow ammo wasn't passed.
-	else
-		chambered = GLOB.ammo_list[chambered]
 
 	var/weapon_source_mob = null
 	if(isliving(loc))

@@ -99,7 +99,7 @@ SUBSYSTEM_DEF(events)
 	set name = "Trigger Event"
 	set category = "Admin.Events"
 
-	if(!admin_holder ||!check_rights(R_EVENT))
+	if(!check_rights(R_EVENT))
 		return
 
 	admin_holder.force_event()
@@ -122,7 +122,7 @@ SUBSYSTEM_DEF(events)
 	set name = "Toggle Events Subsystem"
 	set category = "Admin.Events"
 
-	if(!admin_holder ||!check_rights(R_EVENT))
+	if(!check_rights(R_EVENT))
 		return
 
 	SSevents.can_fire = !SSevents.can_fire

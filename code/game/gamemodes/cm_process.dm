@@ -158,7 +158,7 @@ of predators), but can be added to include variant game modes (like humans vs. h
 // Open podlocks with the given ID if they aren't already opened.
 // DO NOT USE THIS WITH ID's CORRESPONDING TO SHUTTLES OR THEY WILL BREAK!
 /datum/game_mode/proc/open_podlocks(podlock_id)
-	for(var/obj/structure/machinery/door/poddoor/mob in machines)
+	for(var/obj/structure/machinery/door/poddoor/mob in GLOB.machines)
 		if(mob.id == podlock_id && mob.density)
 			mob.open()
 

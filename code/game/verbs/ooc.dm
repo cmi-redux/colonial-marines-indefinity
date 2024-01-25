@@ -14,7 +14,7 @@
 		to_chat(src, SPAN_DANGER("You have OOC muted."))
 		return
 
-	if(!admin_holder || !(admin_holder.rights & R_MOD))
+	if(!check_rights(R_MOD))
 		if(!ooc_allowed) //Send to LOOC instead
 			looc(msg)
 			return
@@ -111,7 +111,7 @@
 		to_chat(src, SPAN_DANGER("You have LOOC muted."))
 		return
 
-	if(!admin_holder || !(admin_holder.rights & R_MOD))
+	if(!check_rights(R_MOD))
 		if(!looc_allowed)
 			to_chat(src, SPAN_DANGER("LOOC is globally muted"))
 			return

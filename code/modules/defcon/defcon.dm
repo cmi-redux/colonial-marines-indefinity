@@ -75,7 +75,7 @@
 				var/atom/new_potential_spawn = SAFEPICK(objectives_handler.linked_spawns)
 				if(!new_potential_spawn)
 					continue
-				//TODO: Make multi use spawning objection points (something like machines)
+				//TODO: Make multi use spawning objection points (something like GLOB.machines)
 				objectives_handler.linked_spawns -= new_potential_spawn
 				potential_spawns += new_potential_spawn
 

@@ -91,8 +91,8 @@
 	. = ..()
 	if(!static_lighting)
 		blend_mode = BLEND_MULTIPLY
-	LAZYADD(active_areas, src)
-	LAZYADD(all_areas, src)
+	GLOB.active_areas += src
+	GLOB.all_areas += src
 	reg_in_areas_in_z()
 
 	if(base_lighting_alpha)
@@ -137,7 +137,7 @@
 						aiPlayer.cancelAlarm("Power", src, source)
 					else
 						aiPlayer.triggerAlarm("Power", src, cameras, source)
-			for(var/obj/structure/machinery/computer/station_alert/a in machines)
+			for(var/obj/structure/machinery/computer/station_alert/a in GLOB.machines)
 				if(a.z == source.z)
 					if(state == 1)
 						a.cancelAlarm("Power", src, source)
@@ -164,7 +164,7 @@
 				C.network.Remove(CAMERA_NET_ATMOSPHERE_ALARMS)
 			for(var/mob/living/silicon/aiPlayer in ai_mob_list)
 				aiPlayer.cancelAlarm("Atmosphere", src, src)
-			for(var/obj/structure/machinery/computer/station_alert/a in machines)
+			for(var/obj/structure/machinery/computer/station_alert/a in GLOB.machines)
 				a.cancelAlarm("Atmosphere", src, src)
 
 		if(danger_level >= 2 && atmosalm < 2)
@@ -175,7 +175,7 @@
 				C.network.Add(CAMERA_NET_ATMOSPHERE_ALARMS)
 			for(var/mob/living/silicon/aiPlayer in ai_mob_list)
 				aiPlayer.triggerAlarm("Atmosphere", src, cameras, src)
-			for(var/obj/structure/machinery/computer/station_alert/a in machines)
+			for(var/obj/structure/machinery/computer/station_alert/a in GLOB.machines)
 				a.triggerAlarm("Atmosphere", src, cameras, src)
 			air_doors_close()
 
@@ -226,7 +226,7 @@
 			C.network.Add(CAMERA_NET_FIRE_ALARMS)
 		for (var/mob/living/silicon/ai/aiPlayer in ai_mob_list)
 			aiPlayer.triggerAlarm("Fire", src, cameras, src)
-		for (var/obj/structure/machinery/computer/station_alert/a in machines)
+		for (var/obj/structure/machinery/computer/station_alert/a in GLOB.machines)
 			a.triggerAlarm("Fire", src, cameras, src)
 
 /area/proc/firereset()
@@ -244,7 +244,7 @@
 			C.network.Remove(CAMERA_NET_FIRE_ALARMS)
 		for (var/mob/living/silicon/ai/aiPlayer in ai_mob_list)
 			aiPlayer.cancelAlarm("Fire", src, src)
-		for (var/obj/structure/machinery/computer/station_alert/a in machines)
+		for (var/obj/structure/machinery/computer/station_alert/a in GLOB.machines)
 			a.cancelAlarm("Fire", src, src)
 
 /area/proc/readyalert()
@@ -277,7 +277,7 @@
 
 /area/proc/destroy_area() //Just overlays for now to make it seem like nothing is left.
 	flags_alarm_state = NO_FLAGS
-	active_areas -= src //So it doesn't process anymore.
+	GLOB.active_areas -= src //So it doesn't process anymore.
 	icon_state = "area_destroyed"
 */
 

@@ -4,7 +4,7 @@
 	icon_state = "rear_2"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "b" = (
 /obj/structure/bed/chair/vehicle{
@@ -58,7 +58,7 @@
 	icon_state = "rear_1"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "f" = (
 /obj/effect/landmark/interior/spawn/vehicle_support_gunner_seat/second,
@@ -80,7 +80,7 @@
 	icon_state = "front_5"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "h" = (
 /obj/structure/interior_wall/apc{
@@ -88,7 +88,7 @@
 	opacity = 0
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "i" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -98,14 +98,14 @@
 /area/vehicle/apc)
 "j" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "k" = (
 /obj/structure/interior_wall/apc{
 	icon_state = "rear_wheel_L"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "l" = (
 /obj/structure/interior_wall/apc{
@@ -115,7 +115,7 @@
 	pixel_y = 32
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "m" = (
 /obj/effect/landmark/interior/spawn/vehicle_driver_seat/armor{
@@ -131,7 +131,7 @@
 	icon_state = "front_2"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "o" = (
 /obj/structure/interior_wall/apc{
@@ -139,21 +139,21 @@
 	opacity = 0
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "p" = (
 /obj/structure/interior_wall/apc{
 	icon_state = "front_4"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "q" = (
 /obj/structure/interior_wall/apc{
 	icon_state = "front_3"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "r" = (
 /obj/structure/interior_wall/apc{
@@ -161,7 +161,7 @@
 	opacity = 0
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "s" = (
 /obj/effect/landmark/interior/spawn/entrance{
@@ -184,7 +184,7 @@
 	icon_state = "rear_3"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "u" = (
 /obj/effect/landmark/interior/spawn/weapons_loader,
@@ -238,7 +238,7 @@
 	icon_state = "front_6"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "z" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -258,7 +258,7 @@
 	opacity = 0
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "C" = (
 /obj/structure/machinery/cm_vending/sorted/vehicle_supply{
@@ -279,7 +279,7 @@
 	opacity = 0
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "E" = (
 /obj/structure/interior_wall/apc{
@@ -292,7 +292,7 @@
 	pixel_y = -4
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "F" = (
 /obj/effect/landmark/interior/spawn/entrance{
@@ -360,7 +360,7 @@
 	pixel_y = -4
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "K" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -376,14 +376,14 @@
 	icon_state = "rear_5"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "M" = (
 /obj/structure/interior_wall/apc{
 	icon_state = "front_1"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "N" = (
 /obj/structure/interior_wall/apc{
@@ -392,21 +392,21 @@
 	pixel_y = -4
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "O" = (
 /obj/structure/interior_wall/apc{
 	icon_state = "door_back"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "P" = (
 /obj/structure/interior_wall/apc{
 	icon_state = "rear_6"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "R" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -422,7 +422,7 @@
 	pixel_y = 32
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "T" = (
 /obj/structure/interior_wall/apc{
@@ -431,7 +431,7 @@
 	pixel_y = -4
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "U" = (
 /obj/effect/landmark/interior/spawn/entrance{
@@ -460,7 +460,7 @@
 	icon_state = "wall"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "W" = (
 /obj/effect/landmark/interior/spawn/vehicle_gunner_seat/armor{
@@ -480,7 +480,7 @@
 	icon_state = "front_wheel_R"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "Y" = (
 /obj/effect/landmark/interior/spawn/entrance{
@@ -504,7 +504,7 @@
 	icon_state = "rear_4"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 
 (1,1,1) = {"

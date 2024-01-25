@@ -80,7 +80,7 @@
 
 	if(CLIENT_IS_STAFF(src))
 		options = note_categories.Copy()
-		if(admin_holder.rights & R_PERMISSIONS)
+		if(check_rights(R_PERMISSIONS))
 			MA = TRUE
 	else if(!isCouncil(src))
 		to_chat(usr, SPAN_WARNING("Error: you are not authorised to view the records of another player!"))

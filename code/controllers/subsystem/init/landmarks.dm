@@ -9,7 +9,7 @@ SUBSYSTEM_DEF(landmark_init)
 	// List of all the datums we need to loop through
 	var/list/datum/item_pool_holder/pools = list()
 
-	for (var/obj/effect/landmark/item_pool_spawner/L in item_pool_landmarks)
+	for(var/obj/effect/landmark/item_pool_spawner/L in item_pool_landmarks)
 
 		var/curr_pool_name = L.pool_name
 
@@ -33,7 +33,7 @@ SUBSYSTEM_DEF(landmark_init)
 
 		qdel(L)
 
-	for (var/pool_key in pools)
+	for(var/pool_key in pools)
 
 		var/datum/item_pool_holder/pool = pools[pool_key]
 
@@ -48,8 +48,8 @@ SUBSYSTEM_DEF(landmark_init)
 			continue
 
 		if(pool.quota > pool.turfs.len)
-			log_debug("Item pool [pool.pool_name] wants to spawn more items than it has landmarks for. Spawning [turfs.len] instances of [pool.type_to_spawn] instead. Code: ITEM_POOL_4")
-			message_admins("Item pool [pool.pool_name] wants to spawn more items than it has landmarks for. Spawning [turfs.len] instances of [pool.type_to_spawn] instead. Tell the devs. Code: ITEM_POOL_4")
+			log_debug("Item pool [pool.pool_name] wants to spawn more items than it has landmarks for. Spawning [pool.turfs.len] instances of [pool.type_to_spawn] instead. Code: ITEM_POOL_4")
+			message_admins("Item pool [pool.pool_name] wants to spawn more items than it has landmarks for. Spawning [pool.turfs.len] instances of [pool.type_to_spawn] instead. Tell the devs. Code: ITEM_POOL_4")
 			pool.quota = pool.turfs.len
 
 		// Quota times, pick a random turf, spawn an item there, then remove that turf from the list.

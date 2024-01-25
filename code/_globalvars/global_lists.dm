@@ -147,12 +147,12 @@ GLOBAL_LIST_INIT(surgical_patient_types, setup_surgical_patient_types())
 GLOBAL_LIST_INIT_TYPED(gear_path_presets_list, /datum/equipment_preset, setup_gear_path_presets())
 GLOBAL_LIST_INIT_TYPED(gear_name_presets_list, /datum/equipment_preset, setup_gear_name_presets())
 
-var/global/list/active_areas = list()
-var/global/list/all_areas = list()
+GLOBAL_LIST_EMPTY_TYPED(active_areas, /area)
+GLOBAL_LIST_EMPTY_TYPED(all_areas, /area)
 
-var/global/list/turfs = list()
+GLOBAL_LIST_EMPTY_TYPED(turfs, /turf)
 
-/var/global/list/objects_of_interest // This is used to track the stealing objective for Agents.
+GLOBAL_LIST_EMPTY(objects_of_interest)
 
 // Areas exempt from explosive antigrief (not Z-levels)
 GLOBAL_LIST_INIT(explosive_antigrief_exempt_areas, list(

@@ -95,7 +95,7 @@
 					D.safe = 1
 
 /obj/structure/machinery/door_control/proc/handle_pod()
-	for(var/obj/structure/machinery/door/poddoor/M in machines)
+	for(var/obj/structure/machinery/door/poddoor/M in GLOB.machines)
 		if(M.id == id)
 			if(M.density)
 				INVOKE_ASYNC(M, TYPE_PROC_REF(/obj/structure/machinery/door, open))
@@ -170,19 +170,19 @@
 	active = 1
 	icon_state = "launcheract"
 
-	for(var/obj/structure/machinery/door/poddoor/M in machines)
+	for(var/obj/structure/machinery/door/poddoor/M in GLOB.machines)
 		if(M.id == src.id)
 			INVOKE_ASYNC(M, TYPE_PROC_REF(/obj/structure/machinery/door, open))
 
 	sleep(20)
 
-	for(var/obj/structure/machinery/mass_driver/M in machines)
+	for(var/obj/structure/machinery/mass_driver/M in GLOB.machines)
 		if(M.id == src.id)
 			M.drive()
 
 	sleep(50)
 
-	for(var/obj/structure/machinery/door/poddoor/M in machines)
+	for(var/obj/structure/machinery/door/poddoor/M in GLOB.machines)
 		if(M.id == src.id)
 			INVOKE_ASYNC(M, TYPE_PROC_REF(/obj/structure/machinery/door, close))
 
@@ -228,7 +228,7 @@
 	add_fingerprint(user)
 
 	var/effective = 0
-	for(var/obj/structure/machinery/door/poddoor/M in machines)
+	for(var/obj/structure/machinery/door/poddoor/M in GLOB.machines)
 		if(M.id == id)
 			effective = 1
 			spawn()

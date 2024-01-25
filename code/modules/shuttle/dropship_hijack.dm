@@ -10,7 +10,7 @@
 
 /datum/dropship_hijack/almayer/proc/crash_landing()
 	//break APCs
-	for(var/obj/structure/machinery/power/apc/A in machines)
+	for(var/obj/structure/machinery/power/apc/A in GLOB.machines)
 		if(A.z != crash_site.z)
 			continue
 		if(prob(A.crash_break_probability))

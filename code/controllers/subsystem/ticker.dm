@@ -259,7 +259,7 @@ SUBSYSTEM_DEF(ticker)
 	for(var/i in GLOB.closet_list) //Set up special equipment for lockers and vendors, depending on gamemode
 		var/obj/structure/closet/C = i
 		INVOKE_ASYNC(C, TYPE_PROC_REF(/obj/structure/closet, select_gamemode_equipment), mode.type)
-	for(var/obj/structure/machinery/vending/V in machines)
+	for(var/obj/structure/machinery/vending/V in GLOB.machines)
 		INVOKE_ASYNC(V, TYPE_PROC_REF(/obj/structure/machinery/vending, select_gamemode_equipment), mode.type)
 
 	SSautobalancer.round_start()

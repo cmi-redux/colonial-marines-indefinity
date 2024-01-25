@@ -8,46 +8,46 @@
 	set name = "Jump to Area"
 	set category = null
 
-	if(!src.admin_holder || !(admin_holder.rights & R_MOD))
+	if(!check_rights(R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
 
-	if(!src.mob)
+	if(!mob)
 		return
 
 	if(!isobserver(mob))
-		src.admin_ghost()
+		admin_ghost()
 
-	src.mob.on_mob_jump()
-	src.mob.forceMove(pick(get_area_turfs(A)))
+	mob.on_mob_jump()
+	mob.forceMove(pick(get_area_turfs(A)))
 
 	message_admins(WRAP_STAFF_LOG(usr, "jumped to area [get_area(usr)] ([usr.loc.x],[usr.loc.y],[usr.loc.z])."), usr.loc.x, usr.loc.y, usr.loc.z)
 
-/client/proc/jump_to_turf(turf/T in turfs)
+/client/proc/jump_to_turf(turf/T in GLOB.turfs)
 	set name = "Jump to Turf"
 	set category = null
 
-	if(!src.admin_holder || !(admin_holder.rights & R_MOD))
+	if(!check_rights(R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
 
-	if(!src.mob)
+	if(!mob)
 		return
 
 	if(!isobserver(mob))
-		src.admin_ghost()
+		admin_ghost()
 
 	message_admins(WRAP_STAFF_LOG(usr, "jumped to a turf in [T.loc] ([T.x],[T.y],[T.z])."), T.x, T.y, T.z)
 
-	src.mob.on_mob_jump()
-	src.mob.forceMove(T)
+	mob.on_mob_jump()
+	mob.forceMove(T)
 	return
 
 /client/proc/jump_to_object(obj/O as obj in world)
 	set name = "Jump to Object"
 	set category = null
 
-	if(!src.admin_holder || !(admin_holder.rights & R_MOD))
+	if(!check_rights(R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
 
@@ -56,11 +56,11 @@
 		to_chat(usr, "This object is not located in the game world.")
 		return
 
-	if(src.mob)
+	if(mob)
 		if(!isobserver(mob))
-			src.admin_ghost()
+			admin_ghost()
 
-		var/mob/A = src.mob
+		var/mob/A = mob
 		A.on_mob_jump()
 		A.forceMove(object_location)
 		message_admins(WRAP_STAFF_LOG(usr, "jumped to [O] in [get_area(O)] ([O.x],[O.y],[O.z])."), O.x, O.y, O.z)
@@ -69,15 +69,15 @@
 	set name = "Jump to Mob"
 	set category = null
 
-	if(!src.admin_holder || !(admin_holder.rights & R_MOD))
+	if(!check_rights(R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
 
-	if(src.mob)
+	if(mob)
 		if(!isobserver(mob))
-			src.admin_ghost()
+			admin_ghost()
 
-		var/mob/A = src.mob
+		var/mob/A = mob
 		var/turf/T = get_turf(M)
 		if(T && isturf(T))
 			A.on_mob_jump()
@@ -90,15 +90,15 @@
 	set name = "Jump to Coordinate"
 	set category = null
 
-	if(!admin_holder || !(admin_holder.rights & R_MOD))
+	if(!check_rights(R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
 
-	if(src.mob)
+	if(mob)
 		if(!isobserver(mob))
-			src.admin_ghost()
+			admin_ghost()
 
-		var/mob/A = src.mob
+		var/mob/A = mob
 		A.on_mob_jump()
 		A.forceMove(locate(tx,ty,tz))
 
@@ -111,15 +111,15 @@
 	set name = "Jump to Offset Coordinate"
 	set category = null
 
-	if(!CLIENT_IS_STAFF(src))
+	if(!check_rights(R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
 
-	if(src.mob)
+	if(mob)
 		if(!isobserver(mob))
-			src.admin_ghost()
+			admin_ghost()
 
-		var/mob/A = src.mob
+		var/mob/A = mob
 		A.on_mob_jump()
 		var/ground_level = 1
 		var/list/ground_z_levels = SSmapping.levels_by_trait(ZTRAIT_GROUND)
@@ -137,7 +137,7 @@
 	set name = "Jump to Ckey"
 	set category = null
 
-	if(!src.admin_holder || !(admin_holder.rights & R_MOD))
+	if(!check_rights(R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
 
@@ -166,7 +166,7 @@
 	set category = null
 	set hidden = TRUE
 
-	if(!src.admin_holder)
+	if(!check_rights(R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
 
@@ -179,7 +179,7 @@
 	set category = null
 	set desc = "Key to teleport"
 
-	if(!src.admin_holder || !(admin_holder.rights & R_MOD))
+	if(!check_rights(R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
 
@@ -202,7 +202,7 @@
 	set name = "Send Mob"
 	set hidden = TRUE
 
-	if(!src.admin_holder || !(admin_holder.rights & R_MOD))
+	if(!check_rights(R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
 	var/area/A = tgui_input_list(usr, "Pick an area.", "Pick an area", return_sorted_areas())

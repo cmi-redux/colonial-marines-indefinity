@@ -370,7 +370,7 @@
 
 /mob/living/carbon/xenomorph/Initialize(mapload, mob/living/carbon/xenomorph/old_xeno, datum/faction/faction_to_set)
 	var/area/A = get_area(src)
-	if(A && A.statistic_exempt)
+	if(A && A.statistic_exempt || SSticker.mode?.round_finished)
 		statistic_exempt = TRUE
 
 	wound_icon_carrier = new(null, src)

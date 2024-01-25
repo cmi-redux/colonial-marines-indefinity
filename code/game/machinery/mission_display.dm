@@ -173,15 +173,15 @@
 /obj/structure/machinery/mission_display/proc/update_display(status)
 	switch(status)
 		if(UI_DISPLAY_DEFAULT)
-			for(var/obj/structure/machinery/mission_display/M in machines)
+			for(var/obj/structure/machinery/mission_display/M in GLOB.machines)
 				M.ui = "D"
 				M.update_display(M.mode)
 		if(UI_DISPLAY_USCM)
-			for(var/obj/structure/machinery/mission_display/M in machines)
+			for(var/obj/structure/machinery/mission_display/M in GLOB.machines)
 				M.ui = "Y"
 				M.update_display(M.mode)
 		if(UI_DISPLAY_MERC)
-			for(var/obj/structure/machinery/mission_display/M in machines)
+			for(var/obj/structure/machinery/mission_display/M in GLOB.machines)
 				M.ui = "G"
 				M.update_display(M.mode)
 		if(MISSION_DISPLAY_OFF)
@@ -481,7 +481,7 @@
 					color = rgb(0, 255, 21)
 				set_text(STATE10 + f, num2text(living_count), color)
 				f++
-				for(var/obj/structure/machinery/telecomms/relay/T in machines)
+				for(var/obj/structure/machinery/telecomms/relay/T in GLOB.machines)
 					if(is_ground_level(T.loc.z) && T.operable() && T.on)
 						set_state(STATE14, "comms")
 						break

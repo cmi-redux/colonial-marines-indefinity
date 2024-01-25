@@ -22,14 +22,14 @@
 	},
 /obj/effect/vehicle_roof/van,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "f" = (
 /obj/structure/interior_wall/van{
 	icon_state = "front_2"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "h" = (
 /obj/structure/bed/chair/comfy{
@@ -50,7 +50,7 @@
 	icon_state = "front_1"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "j" = (
 /obj/structure/interior_wall/van{
@@ -60,7 +60,7 @@
 	icon_state = "roof_2"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "n" = (
 /obj/structure/interior_wall/van{
@@ -70,7 +70,7 @@
 	pixel_y = 32
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "o" = (
 /obj/structure/bed/chair/comfy,
@@ -90,7 +90,7 @@
 	icon_state = "roof_3"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "s" = (
 /obj/structure/bed/chair/comfy,
@@ -138,21 +138,21 @@
 	},
 /obj/effect/landmark/interior/spawn/interior_viewport/simple/windshield,
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "w" = (
 /obj/structure/interior_wall/van{
 	icon_state = "front_3"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "x" = (
 /obj/structure/interior_wall/van{
 	icon_state = "back_2"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "y" = (
 /obj/effect/landmark/interior/spawn/entrance{
@@ -175,14 +175,14 @@
 	icon_state = "back_1"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "E" = (
 /obj/structure/interior_wall/van{
 	icon_state = "back_3"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "F" = (
 /obj/structure/interior_wall/van{
@@ -192,7 +192,7 @@
 	pixel_y = 32
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "G" = (
 /obj/structure/bed/chair/comfy{
@@ -212,7 +212,7 @@
 	pixel_y = 32
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "M" = (
 /obj/structure/bed/chair/comfy,
@@ -229,7 +229,7 @@
 /area/vehicle/van)
 "O" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "V" = (
 /obj/structure/interior_wall/van{
@@ -239,7 +239,7 @@
 	pixel_y = 32
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 
 (1,1,1) = {"

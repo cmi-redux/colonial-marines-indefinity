@@ -797,17 +797,17 @@
 		if(shuttle_tag == DROPSHIP_NORMANDY)
 			ship_id = "sh_dropship2"
 
-		for(var/obj/structure/machinery/door/airlock/dropship_hatch/D in machines)
+		for(var/obj/structure/machinery/door/airlock/dropship_hatch/D in GLOB.machines)
 			if(D.id == ship_id)
 				D.unlock()
 
 		var/obj/structure/machinery/door/airlock/multi_tile/almayer/reardoor
 		switch(ship_id)
 			if("sh_dropship1")
-				for(var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/ds1/D in machines)
+				for(var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/ds1/D in GLOB.machines)
 					reardoor = D
 			if("sh_dropship2")
-				for(var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/ds2/D in machines)
+				for(var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/ds2/D in GLOB.machines)
 					reardoor = D
 		if(!reardoor)
 			CRASH("Shuttle crashed trying to override invalid rear door with shuttle id [ship_id]")

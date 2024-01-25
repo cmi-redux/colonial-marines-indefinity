@@ -83,7 +83,7 @@
 			SSevacuation.ship_operation_stage_status = OPERATION_BRIEFING
 
 		if(!active_lz && world.time > lz_selection_timer)
-			for(var/obj/structure/machinery/computer/shuttle/dropship/flight/default_console in machines)
+			for(var/obj/structure/machinery/computer/shuttle/dropship/flight/default_console in GLOB.machines)
 				if(is_ground_level(default_console.z))
 					select_lz(default_console)
 					break

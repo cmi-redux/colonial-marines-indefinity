@@ -328,22 +328,25 @@
 	set name = "List Processing Items"
 	set desc = "For scheduler debugging"
 
+	if(!check_rights(R_DEBUG|R_ADMIN))
+		return
+
 	var/list/individual_counts = list()
 	for(var/datum/disease/M in active_diseases)
 		individual_counts["[M.type]"]++
 	for(var/mob/M in SShuman.processable_human_list)
 		individual_counts["[M.type]"]++
-	for(var/obj/structure/machinery/M in processing_machines)
+	for(var/obj/structure/machinery/M in GLOB.processing_machines)
 		individual_counts["[M.type]"]++
-	for(var/datum/powernet/M in powernets)
+	for(var/datum/powernet/M in GLOB.powernets)
 		individual_counts["[M.type]"]++
 	for(var/mob/M in SSmob.living_misc_mobs)
 		individual_counts["[M.type]"]++
 	for(var/datum/nanoui/M in SSnano.nanomanager.processing_uis)
 		individual_counts["[M.type]"]++
-	for(var/datum/powernet/M in powernets)
+	for(var/datum/powernet/M in GLOB.powernets)
 		individual_counts["[M.type]"]++
-	for(var/datum/M in power_machines)
+	for(var/datum/M in GLOB.power_machines)
 		individual_counts["[M.type]"]++
 	for(var/mob/M in GLOB.xeno_mob_list)
 		individual_counts["[M.type]"]++
@@ -351,6 +354,5 @@
 	var/str = ""
 	for(var/tmp in individual_counts)
 		str += "[tmp],[individual_counts[tmp]]<BR>"
-
 
 	show_browser(usr, "<TT>[str]</TT>", "Ticker Count", "tickercount")

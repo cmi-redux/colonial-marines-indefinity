@@ -162,20 +162,6 @@
 		return TRUE
 	return FALSE
 
-// Black & invisible to the mouse. used by vehicle interiors
-/turf/open/void
-	name = "void"
-	icon = 'icons/turf/open_space.dmi'
-	icon_state = "black"
-	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
-	mouse_opacity = FALSE
-	plane = PLANE_SPACE
-	layer = SPACE_LAYER
-
-/turf/open/void/vehicle
-	density = TRUE
-	opacity = TRUE
-
 /turf/open/river
 	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
 	shoefootstep = FOOTSTEP_WATER

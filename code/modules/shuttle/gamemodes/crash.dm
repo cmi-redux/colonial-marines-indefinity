@@ -37,7 +37,7 @@
 /obj/docking_port/mobile/crashmode/register()
 	. = ..()
 	SSshuttle.uss_heart_of_gold = src
-	for(var/obj/structure/machinery/door/poddoor/almayer/blended/crash/B in machines)
+	for(var/obj/structure/machinery/door/poddoor/almayer/blended/crash/B in GLOB.machines)
 		if(B.id == "crash_pod1")
 			blended += B
 

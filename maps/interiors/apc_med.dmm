@@ -4,7 +4,7 @@
 	icon_state = "rear_2"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "b" = (
 /obj/structure/surface/table/reinforced/prison,
@@ -48,14 +48,14 @@
 	icon_state = "rear_1"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "f" = (
 /obj/structure/interior_wall/apc{
 	icon_state = "rear_wheel_L"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "g" = (
 /obj/structure/interior_wall/apc{
@@ -63,7 +63,7 @@
 	opacity = 0
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "h" = (
 /obj/structure/bed/chair/vehicle{
@@ -84,11 +84,11 @@
 	icon_state = "rear_6"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "k" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "l" = (
 /obj/structure/interior_wall/apc{
@@ -98,7 +98,7 @@
 	pixel_y = 32
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "m" = (
 /obj/structure/machinery/cm_vending/sorted/medical/blood/vehicle{
@@ -126,14 +126,14 @@
 	pixel_y = -4
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "p" = (
 /obj/structure/interior_wall/apc{
 	icon_state = "wall"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "q" = (
 /obj/structure/interior_wall/apc{
@@ -146,7 +146,7 @@
 	pixel_y = -4
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "r" = (
 /obj/structure/interior_wall/apc{
@@ -156,21 +156,21 @@
 	icon_state = "front_5"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "s" = (
 /obj/structure/interior_wall/apc{
 	icon_state = "front_6"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "t" = (
 /obj/structure/interior_wall/apc{
 	icon_state = "rear_3"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "u" = (
 /obj/structure/interior_wall/apc{
@@ -183,14 +183,14 @@
 	pixel_y = -4
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "v" = (
 /obj/structure/interior_wall/apc{
 	icon_state = "front_3"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "w" = (
 /obj/effect/decal/medical_decals/permanent{
@@ -209,7 +209,7 @@
 	opacity = 0
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "y" = (
 /obj/effect/landmark/interior/spawn/interior_viewport{
@@ -237,7 +237,7 @@
 	pixel_y = -4
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "A" = (
 /obj/structure/bed/chair/vehicle{
@@ -278,7 +278,7 @@
 	opacity = 0
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "D" = (
 /obj/effect/decal/medical_decals/permanent{
@@ -311,7 +311,7 @@
 	icon_state = "front_2"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "G" = (
 /obj/structure/interior_wall/apc{
@@ -321,14 +321,14 @@
 	pixel_y = 32
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "H" = (
 /obj/structure/interior_wall/apc{
 	icon_state = "front_wheel_R"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "I" = (
 /obj/effect/landmark/interior/spawn/vehicle_driver_seat/armor{
@@ -379,7 +379,7 @@
 	opacity = 0
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "N" = (
 /obj/structure/interior_wall/apc{
@@ -389,7 +389,7 @@
 	icon_state = "rear_5"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "O" = (
 /obj/effect/decal/medical_decals/permanent{
@@ -414,7 +414,7 @@
 	icon_state = "door_back"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "Q" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -438,7 +438,7 @@
 	icon_state = "front_4"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "T" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
@@ -451,7 +451,7 @@
 	icon_state = "front_1"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "V" = (
 /obj/structure/bed/chair/vehicle{
@@ -493,7 +493,7 @@
 	icon_state = "rear_4"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 "Z" = (
 /obj/structure/interior_wall/apc{
@@ -501,7 +501,7 @@
 	opacity = 0
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
-/turf/open/void/vehicle,
+/turf/open/void/densy,
 /area/space)
 
 (1,1,1) = {"

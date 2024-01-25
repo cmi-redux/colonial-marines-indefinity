@@ -506,7 +506,7 @@
 	if(choice == "Everyone (-Yautja)")
 		faction_announcement(input, customname, 'sound/AI/commandreport.ogg', choice)
 	else if(choice == FACTION_MARINE)
-		for(var/obj/structure/machinery/computer/almayer_control/C in machines)
+		for(var/obj/structure/machinery/computer/almayer_control/C in GLOB.machines)
 			if(!(C.inoperable()))
 				var/obj/item/paper/P = new /obj/item/paper(C.loc)
 				P.name = "'[command_name].'"

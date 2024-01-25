@@ -29,7 +29,7 @@
 	for(var/obj/structure/machinery/status_display/lifeboat/SD as anything in GLOB.lifeboat_displays)
 		if(SD.id == id)
 			status_displays += SD
-	for(var/obj/structure/machinery/bolt_control/target/T in machines)
+	for(var/obj/structure/machinery/bolt_control/target/T in GLOB.machines)
 		if(T.id == id)
 			terminal = T
 			return

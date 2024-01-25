@@ -47,7 +47,7 @@
 		if("whiteout")
 			if(alert(usr, "Are you sure you want to do this?", usr.client.auto_lang(LANGUAGE_CONFIRM), usr.client.auto_lang(LANGUAGE_YES), usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 				return
-			for(var/obj/structure/machinery/light/L in machines)
+			for(var/obj/structure/machinery/light/L in GLOB.machines)
 				L.fix()
 			message_admins("[key_name_admin(usr)] fixed all lights")
 		if("power")

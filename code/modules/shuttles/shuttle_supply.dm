@@ -155,7 +155,7 @@
 
 /datum/shuttle/ferry/supply/proc/raise_railings()
 	var/effective = 0
-	for(var/obj/structure/machinery/door/poddoor/M in machines)
+	for(var/obj/structure/machinery/door/poddoor/M in GLOB.machines)
 		if(M.id == railing_id && !M.density)
 			effective = 1
 			spawn()
@@ -165,7 +165,7 @@
 
 /datum/shuttle/ferry/supply/proc/lower_railings()
 	var/effective = 0
-	for(var/obj/structure/machinery/door/poddoor/M in machines)
+	for(var/obj/structure/machinery/door/poddoor/M in GLOB.machines)
 		if(M.id == railing_id && M.density)
 			effective = 1
 			INVOKE_ASYNC(M, TYPE_PROC_REF(/obj/structure/machinery/door, open))
@@ -173,14 +173,14 @@
 		playsound(locate(Elevator_x,Elevator_y,Elevator_z), 'sound/machines/elevator_openclose.ogg', 50, 0)
 
 /datum/shuttle/ferry/supply/proc/start_gears(direction = 1)
-	for(var/obj/structure/machinery/gear/M in machines)
+	for(var/obj/structure/machinery/gear/M in GLOB.machines)
 		if(M.id == gear_id)
 			spawn()
 				M.icon_state = "gear_moving"
 				M.setDir(direction)
 
 /datum/shuttle/ferry/supply/proc/stop_gears()
-	for(var/obj/structure/machinery/gear/M in machines)
+	for(var/obj/structure/machinery/gear/M in GLOB.machines)
 		if(M.id == gear_id)
 			spawn()
 				M.icon_state = "gear"

@@ -1,7 +1,7 @@
 /*
 
 TODO:
-give money an actual use (QM stuff, vending machines)
+give money an actual use (QM stuff, vending GLOB.machines)
 send money to people (might be worth attaching money to custom database thing for this, instead of being in the ID)
 log transactions
 

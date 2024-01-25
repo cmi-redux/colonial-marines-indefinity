@@ -771,7 +771,7 @@ GLOBAL_LIST_INIT(airlock_wire_descriptions, list(
 /obj/structure/machinery/door/airlock/LateInitialize()
 	. = ..()
 	if(closeOtherId != null)
-		for(var/obj/structure/machinery/door/airlock/A in machines)
+		for(var/obj/structure/machinery/door/airlock/A in GLOB.machines)
 			if(A.closeOtherId == closeOtherId && A != src)
 				closeOther = A
 				break

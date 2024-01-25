@@ -98,7 +98,7 @@ SUBSYSTEM_DEF(evacuation)
 		ai_announcement("Внимание. Чрезвычайная ситуация. Всему персоналу и морпехам немедленно вернуться на корабль, в связи с критической ситуацией начинается немедленный процесс отбытия с зоны операции, посадочные шатлы станут недоступны через [duration2text_hour_min_sec(SHIP_ESCAPE_ESTIMATE_DEPARTURE, "hh:mm:ss")]!", 'sound/AI/evacuate.ogg', logging = ARES_LOG_SECURITY)
 		xeno_message_all("Волна адреналина прокатилась по улью. Существа из плоти пытаются улететь, надо сейчас же попасть на их железный улей! У вас есть всего [duration2text_hour_min_sec(SHIP_ESCAPE_ESTIMATE_DEPARTURE, "hh:mm:ss")] до того как они покинут зону досягаемости.")
 
-		for(var/obj/structure/machinery/status_display/status_display in machines)
+		for(var/obj/structure/machinery/status_display/status_display in GLOB.machines)
 			if(is_mainship_level(status_display.z))
 				status_display.set_picture("depart")
 		for(var/shuttle_id in shuttles_to_check)
@@ -124,7 +124,7 @@ SUBSYSTEM_DEF(evacuation)
 			var/obj/structure/machinery/computer/shuttle/dropship/flight/console = shuttle.getControlConsole()
 			console.escape_locked = FALSE
 
-		for(var/obj/structure/machinery/status_display/status_display in machines)
+		for(var/obj/structure/machinery/status_display/status_display in GLOB.machines)
 			if(is_mainship_level(status_display.z))
 				status_display.set_picture("redalert")
 		return TRUE
@@ -164,7 +164,7 @@ SUBSYSTEM_DEF(evacuation)
 		evac_status = EVACUATION_STATUS_INITIATING
 		ai_announcement("Внимание. Чрезвычайная ситуация. Всему персоналу немедленно покинуть корабль. У вас есть всего [duration2text_hour_min_sec(EVACUATION_ESTIMATE_DEPARTURE, "hh:mm:ss")] до отлета капсул, после чего все вторичные системы выключатся.", 'sound/AI/evacuate.ogg', logging = ARES_LOG_SECURITY)
 		xeno_message_all("Волна адреналина прокатилась по улью. Существа из плоти пытаются сбежать!")
-		for(var/obj/structure/machinery/status_display/status_display in machines)
+		for(var/obj/structure/machinery/status_display/status_display in GLOB.machines)
 			if(is_mainship_level(status_display.z))
 				status_display.set_picture("evac")
 		activate_escape()
@@ -179,7 +179,7 @@ SUBSYSTEM_DEF(evacuation)
 		evac_status = EVACUATION_STATUS_STANDING_BY
 		ai_announcement("Эвакуация отменена.", 'sound/AI/evacuate_cancelled.ogg', logging = ARES_LOG_SECURITY)
 		if(get_security_level() == "red")
-			for(var/obj/structure/machinery/status_display/status_display in machines)
+			for(var/obj/structure/machinery/status_display/status_display in GLOB.machines)
 				if(is_mainship_level(status_display.z))
 					status_display.set_picture("redalert")
 		deactivate_escape()
@@ -286,7 +286,7 @@ SUBSYSTEM_DEF(evacuation)
 		dest_started_at = world.time
 		set_security_level(SEC_LEVEL_DELTA) //also activate Delta alert, to open the status_display shutters.
 		spawn(0)
-			for(var/obj/structure/machinery/door/poddoor/almayer/D in machines)
+			for(var/obj/structure/machinery/door/poddoor/almayer/D in GLOB.machines)
 				if(D.id == "sd_lockdown")
 					D.open()
 		return TRUE

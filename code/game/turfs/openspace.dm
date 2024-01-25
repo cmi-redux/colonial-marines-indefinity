@@ -80,6 +80,14 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 	multiz_turfs()
 	AddElement(/datum/element/turf_z_transparency, is_openspace = TRUE)
 
+/turf/open/openspace/multiz_turfs()
+	var/turf/T = SSmapping.get_turf_above(src)
+	if(T)
+		T.multiz_turf_new(src, DOWN)
+	T = SSmapping.get_turf_below(src)
+	if(T)
+		T.multiz_turf_new(src, UP)
+
 /turf/open/space/add_debris_element()
 	return
 

@@ -36,12 +36,12 @@
 /obj/structure/machinery/siren/start_processing()
 	if(!machine_processing)
 		machine_processing = TRUE
-		addToListNoDupe(power_machines, src)
+		addToListNoDupe(GLOB.power_machines, src)
 
 /obj/structure/machinery/siren/stop_processing()
 	if(machine_processing)
 		machine_processing = FALSE
-		processing_machines -= src
+		GLOB.processing_machines -= src
 
 /obj/structure/machinery/siren/proc/siren_warning_start(msg, sound_ch = 'sound/effects/weather_warning.ogg')
 	if(!msg)

@@ -30,6 +30,7 @@
 
 /obj/item/weapon/gun/energy/Initialize(mapload, spawn_empty)
 	. = ..()
+	ammo = GLOB.ammo_list[ammo]
 	cell = new /obj/item/cell/high(src)
 	update_icon()
 	max_shots = round((cell.maxcharge / charge_cost), 1)

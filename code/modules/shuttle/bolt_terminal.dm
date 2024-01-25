@@ -48,7 +48,7 @@ DEFINE_BITFIELD(bt_shoot_flags, list(
 /obj/structure/machinery/bolt_control/target/LateInitialize()
 	if(sis_panel)
 		return
-	for(var/obj/structure/machinery/bolt_control/panel/M in machines)
+	for(var/obj/structure/machinery/bolt_control/panel/M in GLOB.machines)
 		if(M.id == id)
 			M.sis_target = src
 			sis_panel = M
@@ -223,7 +223,7 @@ DEFINE_BITFIELD(bt_shoot_flags, list(
 
 /obj/structure/machinery/bolt_control/panel/LateInitialize()
 	if(!sis_target)
-		for(var/obj/structure/machinery/bolt_control/target/M in machines)
+		for(var/obj/structure/machinery/bolt_control/target/M in GLOB.machines)
 			if(M.id == id)
 				M.sis_panel = src
 				sis_target = M

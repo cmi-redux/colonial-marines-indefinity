@@ -460,7 +460,7 @@ var/list/ai_verbs_default = list(
 
 	var/list/ai_emotions = list("Very Happy", "Happy", "Neutral", "Unsure", "Confused", "Surprised", "Sad", "Upset", "Angry", "Awesome", "BSOD", "Blank", "Problems?", "Facepalm", "Friend Computer")
 	var/emote = tgui_input_list(usr, "Please, select a status!", "AI Status", ai_emotions)
-	for (var/obj/structure/machinery/M in machines) //change status
+	for (var/obj/structure/machinery/M in GLOB.machines) //change status
 		if(istype(M, /obj/structure/machinery/ai_status_display))
 			var/obj/structure/machinery/ai_status_display/AISD = M
 			AISD.emotion = emote

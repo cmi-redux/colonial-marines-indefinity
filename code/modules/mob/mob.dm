@@ -64,7 +64,7 @@
 	var/area/current_area = get_area(loc)
 	if(current_area)
 		current_area.Entered(src)
-	if(!isnull(current_area) && current_area.statistic_exempt)
+	if(!isnull(current_area) && current_area.statistic_exempt || SSticker.mode?.round_finished)
 		statistic_exempt = TRUE
 
 	set_focus(src)

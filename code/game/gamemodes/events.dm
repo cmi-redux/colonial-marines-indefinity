@@ -13,7 +13,7 @@
 		return
 
 	else
-		for(var/obj/structure/machinery/power/apc/apc in machines)
+		for(var/obj/structure/machinery/power/apc/apc in GLOB.machines)
 			apc.overload_lighting()
 
 	return

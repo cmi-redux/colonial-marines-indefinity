@@ -13,7 +13,7 @@
 	if(explosive)
 		addtimer(CALLBACK(src, PROC_REF(cell_explosion), get_turf(src), 700, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("взрыва ИИ", usr)), 10)
 
-	for(var/obj/structure/machinery/ai_status_display/O in machines)
+	for(var/obj/structure/machinery/ai_status_display/O in GLOB.machines)
 		spawn( 0 )
 		O.mode = 2
 		if(istype(loc, /obj/item/device/aicard))

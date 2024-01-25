@@ -454,7 +454,7 @@
 
 	shake_cameras(turfs_int) //shake for 1.5 seconds before crash, 0.5 after
 
-	for(var/obj/structure/machinery/power/apc/A in machines) //break APCs
+	for(var/obj/structure/machinery/power/apc/A in GLOB.machines) //break APCs
 		if(A.z != T_trg.z) continue
 		if(prob(A.crash_break_probability))
 			A.overload_lighting()
@@ -529,15 +529,15 @@
 	open_doors_crashed(turfs_trg) //And now open the doors
 
 
-	for (var/obj/structure/machinery/door_display/research_cell/d in machines)
+	for (var/obj/structure/machinery/door_display/research_cell/d in GLOB.machines)
 		if(is_mainship_level(d.z) || is_reserved_level(d.z))
 			d.ion_act() //Breaking xenos out of containment
 
 	//Stolen from events.dm. WARNING: This code is old as hell
-	for (var/obj/structure/machinery/power/apc/APC in machines)
+	for (var/obj/structure/machinery/power/apc/APC in GLOB.machines)
 		if(is_mainship_level(APC.z) || is_reserved_level(APC.z))
 			APC.ion_act()
-	for (var/obj/structure/machinery/power/smes/SMES in machines)
+	for (var/obj/structure/machinery/power/smes/SMES in GLOB.machines)
 		if(is_mainship_level(SMES.z) || is_reserved_level(SMES.z))
 			SMES.ion_act()
 

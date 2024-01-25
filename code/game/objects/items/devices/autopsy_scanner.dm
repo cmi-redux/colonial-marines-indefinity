@@ -17,12 +17,12 @@
 /obj/item/device/autopsy_scanner/Initialize()
 	. = ..()
 
-	LAZYADD(objects_of_interest, src)
+	GLOB.objects_of_interest += src
 
 /obj/item/device/autopsy_scanner/Destroy()
 	. = ..()
 
-	LAZYREMOVE(objects_of_interest, src)
+	GLOB.objects_of_interest -= src
 
 /datum/autopsy_data_scanner
 	var/weapon = null // this is the DEFINITE weapon type that was used

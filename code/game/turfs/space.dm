@@ -18,7 +18,7 @@
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
 	flags_atom |= INITIALIZED
 
-	turfs += src
+	GLOB.turfs += src
 
 	if(opacity)
 		directional_opacity = ALL_CARDINALS
@@ -182,3 +182,54 @@
 			spawn (0)
 				if((arrived && arrived.loc))
 					arrived.loc.Entered(arrived)
+
+// Black & invisible to the mouse. used by vehicle interiors
+/turf/open/void
+	name = "void"
+	icon = 'icons/turf/open_space.dmi'
+	icon_state = "black"
+	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
+	mouse_opacity = FALSE
+	plane = PLANE_SPACE
+	layer = SPACE_LAYER
+
+/turf/open/void/Initialize(mapload, ...)
+	SHOULD_CALL_PARENT(FALSE)
+
+	vis_contents.Cut() //removes inherited overlays
+	visibilityChanged()
+
+	if(flags_atom & INITIALIZED)
+		stack_trace("Warning: [src]([type]) initialized multiple times!")
+	flags_atom |= INITIALIZED
+
+	GLOB.turfs += src
+
+	if(opacity)
+		directional_opacity = ALL_CARDINALS
+
+	pass_flags = pass_flags_cache[type]
+	if(isnull(pass_flags))
+		pass_flags = new()
+		initialize_pass_flags(pass_flags)
+		pass_flags_cache[type] = pass_flags
+	else
+		initialize_pass_flags()
+
+	return INITIALIZE_HINT_LATELOAD
+
+/turf/open/void/LateInitialize()
+	SHOULD_CALL_PARENT(FALSE)
+	multiz_turfs()
+
+/turf/open/void/multiz_turfs()
+	var/turf/T = SSmapping.get_turf_above(src)
+	if(T)
+		T.multiz_turf_new(src, DOWN)
+	T = SSmapping.get_turf_below(src)
+	if(T)
+		T.multiz_turf_new(src, UP)
+
+/turf/open/void/densy
+	density = TRUE
+	opacity = TRUE

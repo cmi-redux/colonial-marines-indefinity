@@ -1,5 +1,4 @@
 GLOBAL_LIST_EMPTY_TYPED(cm_vending_vendors, /obj/structure/machinery/cm_vending/sorted) //Used by our gamemode code
-GLOBAL_LIST_EMPTY_TYPED(machines, /obj/structure/machinery)//NOTE: this is a list of ALL machines now. The processing machines list is SSmachine.processing !
 
 GLOBAL_LIST_EMPTY_TYPED(gun_list, /obj/item/weapon/gun)
 GLOBAL_LIST_EMPTY_TYPED(ammo_magazine_list, /obj/item/ammo_magazine)
