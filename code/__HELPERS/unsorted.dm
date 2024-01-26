@@ -34,11 +34,8 @@
 
 #define can_xeno_build(T) (!T.density && !T.snow && !(locate(/obj/structure/fence) in T) && !(locate(/obj/structure/tunnel) in T) && (locate(/obj/effect/alien/weeds) in T))
 
-///Turf trait for when a turf is transparent
-#define TURF_Z_TRANSPARENT_TRAIT "turf_z_transparent"
 /// Trait applied by element
 #define ELEMENT_TRAIT(source) "element_trait_[source]"
-#define istransparentturf(A) (HAS_TRAIT(A, TURF_Z_TRANSPARENT_TRAIT))
 
 // For the purpose of a skillcheck, not having a skillset counts as being skilled in everything (!user.skills check)
 // Note that is_skilled() checks if the skillset contains the skill internally, so a has_skill check is unnecessary

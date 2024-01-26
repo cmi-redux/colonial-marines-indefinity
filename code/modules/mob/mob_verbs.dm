@@ -273,7 +273,7 @@
 
 	if(!shadow)
 		var/turf/above = SSmapping.get_turf_above(loc)
-		if(above && istransparentturf(above))
+		if(above && above.turf_flags & TURF_TRANSPARENT)
 			to_chat(src, SPAN_NOTICE("You look up."))
 			shadow = new(above)
 			reset_view(shadow)

@@ -1108,7 +1108,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 		handle_watch_above(above)
 
 /mob/proc/handle_watch_above(turf/above)
-	if(above && istransparentturf(above))
+	if(above && above.turf_flags & TURF_TRANSPARENT)
 		shadow.forceMove(above)
 	else
 		to_chat(src, SPAN_NOTICE("You stop looking up."))

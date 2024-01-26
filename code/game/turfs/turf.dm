@@ -97,14 +97,11 @@
 	var/area/current_area = loc
 	if(current_area?.lighting_effect)
 		overlays += current_area.lighting_effect
+	else
+		GLOB.sunlight_queue_work += src
 
 	if(opacity)
 		directional_opacity = ALL_CARDINALS
-
-	//Get area light
-	var/area/A = loc
-	if(A?.lighting_effect)
-		overlays += A.lighting_effect
 
 	if(mapload)
 		return INITIALIZE_HINT_LATELOAD
@@ -728,7 +725,7 @@
 	var/turf/ceiling = get_step_multiz(src, UP)
 	if(!ceiling || istype(ceiling, /turf/open/openspace) || istype(ceiling, /turf/open/space/openspace))
 		return "It is in the open."
-	else if(istransparentturf(ceiling))
+	else if(ceiling.turf_flags & TURF_TRANSPARENT)
 		return "The ceiling above is glass. That's not going to stop anything."
 	else if(ceiling.antipierce < 3)
 		return "The ceiling above is metal. You can't see through it with a camera from above, but that's not going to stop anything."

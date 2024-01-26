@@ -22,6 +22,7 @@
 #define TURF_HULL						(1<<11)
 #define TURF_BURNABLE					(1<<12)
 #define TURF_BREAKABLE					(1<<13)
+#define TURF_TRANSPARENT				(1<<15)
 
 #define REMOVE_CROWBAR  (1<<0)
 #define BREAK_CROWBAR   (1<<1)

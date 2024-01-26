@@ -216,11 +216,10 @@
 	else
 		initialize_pass_flags()
 
-	return INITIALIZE_HINT_LATELOAD
+	multiz_turfs()
 
 /turf/open/void/LateInitialize()
 	SHOULD_CALL_PARENT(FALSE)
-	multiz_turfs()
 
 /turf/open/void/multiz_turfs()
 	var/turf/T = SSmapping.get_turf_above(src)

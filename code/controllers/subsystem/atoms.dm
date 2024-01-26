@@ -5,14 +5,14 @@
 
 SUBSYSTEM_DEF(atoms)
 	name = "Atoms"
+	wait = 2 SECONDS
 	init_order = SS_INIT_ATOMS
-	flags = SS_NO_FIRE
+	runlevels = RUNLEVEL_LOBBY|RUNLEVEL_SETUP|RUNLEVEL_GAME|RUNLEVEL_POSTGAME
 
 	var/old_initialized
 	/// A count of how many initalize changes we've made. We want to prevent old_initialize being overriden by some other value, breaking init code
 	var/initialized_changed = 0
 	var/init_start_time
-	var/processing_late_loaders = FALSE
 
 	var/list/late_loaders = list()
 	var/list/roundstart_loaders = list()
@@ -34,6 +34,24 @@ SUBSYSTEM_DEF(atoms)
 	populate_seed_list()
 	return SS_INIT_SUCCESS
 
+/datum/controller/subsystem/atoms/fire(resumed)
+	var/worked_length = 0
+
+	//Add our weather particle obj to any new weather screens
+	for(worked_length in 1 to late_loaders.len)
+		var/atom/atom = late_loaders[worked_length]
+		if(QDELETED(atom))
+			continue
+		atom.LateInitialize()
+		if(MC_TICK_CHECK)
+			break
+	if(worked_length)
+		late_loaders.Cut(1, worked_length+1)
+		worked_length = 0
+
+	if(!late_loaders.len)
+		can_fire = FALSE
+
 /datum/controller/subsystem/atoms/proc/InitializeAtoms(list/atoms)
 	if(initialized == INITIALIZATION_INSSATOMS)
 		return
@@ -46,32 +64,7 @@ SUBSYSTEM_DEF(atoms)
 	CreateAtoms(atoms)
 	clear_tracked_initalize()
 
-	InitializeLateLoaders()
-
-/// Processes all late_loaders, checking the length each iteration and prevents duplicate calls
-/// This is necessary because of an edge case where there might be simultanious calls to InitializeAtoms
-/datum/controller/subsystem/atoms/proc/InitializeLateLoaders()
-	if(processing_late_loaders) // If we still manage to double this proc, try a ++ here, or solve the root of the problem
-		#ifdef TESTING
-		testing("Ignoring duplicate request to InitializeLateLoaders")
-		#endif
-		return
-
-	processing_late_loaders = TRUE
-
-	for(var/I = 1; I <= late_loaders.len; I++)
-		var/atom/A = late_loaders[I]
-		//I hate that we need this
-		if(QDELETED(A))
-			continue
-		CHECK_TICK
-		A.LateInitialize()
-
-	#ifdef TESTING
-	testing("Late initialized [late_loaders.len] atoms")
-	#endif
-	late_loaders.Cut()
-	processing_late_loaders = FALSE
+	can_fire = TRUE
 
 /// Actually creates the list of atoms. Exists soley so a runtime in the creation logic doesn't cause initalized to totally break
 /datum/controller/subsystem/atoms/proc/CreateAtoms(list/atoms)

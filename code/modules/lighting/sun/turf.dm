@@ -70,7 +70,7 @@ Sunlight System
 		if(C.master_NW)
 			T |= C.master_NW
 	T |= source_turf /* get our calculated indoor lighting */
-	GLOB.SUNLIGHT_QUEUE_CORNER += T
+	GLOB.sunlight_queue_corner += T
 
 	//Empty our affecting_corners list
 	affecting_corners = null
@@ -84,7 +84,7 @@ Sunlight System
 
 #define HARDSUN 0.5 /* our hyperboloidy modifyer funky times - I wrote this in like, 2020 and can't remember how it works - I think it makes a 3D cone shape with a flat top */
 /* calculate the indoor corners we are affecting */
-#define SUN_FALLOFF(C, T) (1 - CLAMP01(sqrt((C.x - T.x) ** 2 + (C.y - T.y) ** 2 - HARDSUN) / max(1, GLOB.GLOBAL_LIGHT_RANGE)))
+#define SUN_FALLOFF(C, T) (1 - CLAMP01(sqrt((C.x - T.x) ** 2 + (C.y - T.y) ** 2 - HARDSUN) / max(1, GLOB.global_light_range)))
 
 
 /atom/movable/outdoor_effect/proc/calc_sunlight_spread()
@@ -96,9 +96,9 @@ Sunlight System
 
 	//Set lum so we can see things
 	var/oldLum = luminosity
-	luminosity = GLOB.GLOBAL_LIGHT_RANGE
+	luminosity = GLOB.global_light_range
 
-	for(T in view(CEILING(GLOB.GLOBAL_LIGHT_RANGE, 1), source_turf))
+	for(T in view(CEILING(GLOB.global_light_range, 1), source_turf))
 		if(IS_OPAQUE_TURF(T)) /* get_corners used to do opacity checks for arse */
 			continue
 		if (!T.lighting_corners_initialised)
@@ -144,7 +144,7 @@ Sunlight System
 		if(C.master_NW)
 			tempMasterList |= C.master_NW
 
-	GLOB.SUNLIGHT_QUEUE_CORNER += tempMasterList /* update the boys */
+	GLOB.sunlight_queue_corner += tempMasterList /* update the boys */
 
 /* Related object changes */
 /* I moved this here to consolidate sunlight changes as much as possible, so its easily disabled */
@@ -195,12 +195,12 @@ Sunlight System
 
 	//Check yourself (before you wreck yourself)
 	if(istype(src, /turf/closed) || (/obj/structure/window/framed in contents)) //Closed, but we might be transparent
-		.["SKYVISIBLE"] =  istransparentturf(src) // a column of glass should still let the sun in
+		.["SKYVISIBLE"] =  turf_flags & TURF_TRANSPARENT // a column of glass should still let the sun in
 		.["WEATHERPROOF"] =  TRUE
 	else
 		if(recursionStarted)
 			// This src is acting as a ceiling - so if we are a floor we TURF_WEATHER_PROOF + block the sunlight of our down-Z turf
-			.["SKYVISIBLE"] = istransparentturf(src) //If we are glass floor, we don't block
+			.["SKYVISIBLE"] = turf_flags & TURF_TRANSPARENT //If we are glass floor, we don't block
 			.["WEATHERPROOF"] = turf_flags & TURF_WEATHER_PROOF //If we are air or space, we aren't TURF_WEATHER_PROOF
 		else //We are open, so assume open to the elements
 			.["SKYVISIBLE"] = TRUE
@@ -338,7 +338,7 @@ Sunlight System
 		for(S in lighting_corner_NW.glob_affect)
 			SunlightUpdates |= S.source_turf
 
-	GLOB.SUNLIGHT_QUEUE_WORK += SunlightUpdates
+	GLOB.sunlight_queue_work += SunlightUpdates
 
 	var/turf/T = SSmapping.get_turf_below(src)
 	if(T)

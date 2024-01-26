@@ -73,10 +73,10 @@
 	start_at = 0.916	//22:00:00
 	position_number = 10
 
-GLOBAL_VAR_INIT(GLOBAL_LIGHT_RANGE, 5)
-GLOBAL_LIST_EMPTY(SUNLIGHT_QUEUE_WORK)
-GLOBAL_LIST_EMPTY(SUNLIGHT_QUEUE_UPDATE)
-GLOBAL_LIST_EMPTY(SUNLIGHT_QUEUE_CORNER)
+GLOBAL_VAR_INIT(global_light_range, 5)
+GLOBAL_LIST_EMPTY(sunlight_queue_work)
+GLOBAL_LIST_EMPTY(sunlight_queue_update)
+GLOBAL_LIST_EMPTY(sunlight_queue_corner)
 
 SUBSYSTEM_DEF(sunlighting)
 	name = "Sun Lighting"
@@ -104,18 +104,10 @@ SUBSYSTEM_DEF(sunlighting)
 	var/custom_time_offset = 0
 
 /datum/controller/subsystem/sunlighting/stat_entry(msg)
-	msg = "W:[GLOB.SUNLIGHT_QUEUE_WORK.len]|U:[GLOB.SUNLIGHT_QUEUE_UPDATE.len]|C:[GLOB.SUNLIGHT_QUEUE_CORNER.len]"
+	msg = "W:[GLOB.sunlight_queue_work.len]|U:[GLOB.sunlight_queue_update.len]|C:[GLOB.sunlight_queue_corner.len]"
 	return ..()
 
-/datum/controller/subsystem/sunlighting/proc/Initialize_Turfs()
-	for(var/z in SSmapping.levels_by_trait(ZTRAIT_GROUND))
-		for(var/turf/T in block(locate(1,1,z), locate(world.maxx,world.maxy,z)))
-			var/area/TArea = T.loc
-			if(TArea.static_lighting)
-				GLOB.SUNLIGHT_QUEUE_WORK += T
-
 /datum/controller/subsystem/sunlighting/Initialize(timeofday)
-	Initialize_Turfs()
 	game_time_length = SSmapping.configs[GROUND_MAP].custom_time_length
 	custom_time_offset = rand(0, game_time_length)
 	create_steps()
@@ -154,10 +146,10 @@ SUBSYSTEM_DEF(sunlighting)
 	return FALSE
 
 /datum/controller/subsystem/sunlighting/proc/set_time_of_day()
-	for(var/i = 1 to length(steps))
-		if(game_time_offseted() >= steps["[i]"].start_at * game_time_length)
-			current_step_datum = steps["[i]"]
-			next_step_datum = i == length(steps) ? steps["1"] : steps["[i + 1]"]
+	for(var/worked_length = 1 to length(steps))
+		if(game_time_offseted() >= steps["[worked_length]"].start_at * game_time_length)
+			current_step_datum = steps["[worked_length]"]
+			next_step_datum = worked_length == length(steps) ? steps["1"] : steps["[worked_length + 1]"]
 
 	if(!current_step_datum)
 		current_step_datum = steps["1"]
@@ -180,77 +172,77 @@ SUBSYSTEM_DEF(sunlighting)
 	update_color()
 
 	MC_SPLIT_TICK_INIT(3)
-	var/i = 0
+	var/worked_length = 0
 
 	//Add our weather particle obj to any new weather screens
 	if(SSparticle_weather.initialized)
-		for(i in 1 to weather_planes_need_vis.len)
-			var/atom/movable/screen/plane_master/weather_effect/W = weather_planes_need_vis[i]
-			if(W)
-				W.vis_contents = list(SSparticle_weather.get_weather_effect())
+		for(worked_length in 1 to weather_planes_need_vis.len)
+			var/atom/movable/screen/plane_master/weather_effect/weather_effect = weather_planes_need_vis[worked_length]
+			if(weather_effect)
+				weather_effect.vis_contents = list(SSparticle_weather.get_weather_effect())
 			if(MC_TICK_CHECK)
 				break
-		if(i)
-			weather_planes_need_vis.Cut(1, i+1)
-			i = 0
+		if(worked_length)
+			weather_planes_need_vis.Cut(1, worked_length+1)
+			worked_length = 0
 
-	for(i in 1 to GLOB.SUNLIGHT_QUEUE_WORK.len)
-		var/turf/T = GLOB.SUNLIGHT_QUEUE_WORK[i]
-		if(T)
-			T.get_sky_and_weather_states()
-			if(T.outdoor_effect)
-				GLOB.SUNLIGHT_QUEUE_UPDATE += T.outdoor_effect
-
-		if(MC_TICK_CHECK)
-			break
-	if(i)
-		GLOB.SUNLIGHT_QUEUE_WORK.Cut(1, i+1)
-		i = 0
-
-	MC_SPLIT_TICK
-
-	for(i in 1 to GLOB.SUNLIGHT_QUEUE_UPDATE.len)
-		var/atom/movable/outdoor_effect/U = GLOB.SUNLIGHT_QUEUE_UPDATE[i]
-		if(U)
-			U.process_state()
-			update_outdoor_effect_overlays(U)
+	for(worked_length in 1 to GLOB.sunlight_queue_work.len)
+		var/turf/turf = GLOB.sunlight_queue_work[worked_length]
+		if(turf)
+			turf.get_sky_and_weather_states()
+			if(turf.outdoor_effect)
+				GLOB.sunlight_queue_update += turf.outdoor_effect
 
 		if(MC_TICK_CHECK)
 			break
-	if(i)
-		GLOB.SUNLIGHT_QUEUE_UPDATE.Cut(1, i+1)
-		i = 0
+	if(worked_length)
+		GLOB.sunlight_queue_work.Cut(1, worked_length+1)
+		worked_length = 0
+
+	MC_SPLIT_TICK
+
+	for(worked_length in 1 to GLOB.sunlight_queue_update.len)
+		var/atom/movable/outdoor_effect/outdoor_effect = GLOB.sunlight_queue_update[worked_length]
+		if(outdoor_effect)
+			outdoor_effect.process_state()
+			update_outdoor_effect_overlays(outdoor_effect)
+
+		if(MC_TICK_CHECK)
+			break
+	if(worked_length)
+		GLOB.sunlight_queue_update.Cut(1, worked_length+1)
+		worked_length = 0
 
 
 	MC_SPLIT_TICK
 
-	for(i in 1 to GLOB.SUNLIGHT_QUEUE_CORNER.len)
-		var/turf/T = GLOB.SUNLIGHT_QUEUE_CORNER[i]
-		var/atom/movable/outdoor_effect/U = T.outdoor_effect
+	for(worked_length in 1 to GLOB.sunlight_queue_corner.len)
+		var/turf/turf = GLOB.sunlight_queue_corner[worked_length]
+		var/atom/movable/outdoor_effect/outdoor_effect = turf.outdoor_effect
 
 		/* if we haven't initialized but we are affected, create new and check state */
-		if(!U)
-			T.outdoor_effect = new /atom/movable/outdoor_effect(T)
-			T.get_sky_and_weather_states()
-			U = T.outdoor_effect
+		if(!outdoor_effect)
+			turf.outdoor_effect = new /atom/movable/outdoor_effect(turf)
+			turf.get_sky_and_weather_states()
+			outdoor_effect = turf.outdoor_effect
 
 			/* in case we aren't indoor somehow, wack us into the proc queue, we will be skipped on next indoor check */
-			if(U.state != SKY_BLOCKED)
-				GLOB.SUNLIGHT_QUEUE_UPDATE += T.outdoor_effect
+			if(outdoor_effect.state != SKY_BLOCKED)
+				GLOB.sunlight_queue_update += turf.outdoor_effect
 
-		if(U.state != SKY_BLOCKED)
+		if(outdoor_effect.state != SKY_BLOCKED)
 			continue
 
 		//This might need to be run more liberally
-		update_outdoor_effect_overlays(U)
+		update_outdoor_effect_overlays(outdoor_effect)
 
 
 		if(MC_TICK_CHECK)
 			break
 
-	if(i)
-		GLOB.SUNLIGHT_QUEUE_CORNER.Cut(1, i+1)
-		i = 0
+	if(worked_length)
+		GLOB.sunlight_queue_corner.Cut(1, worked_length+1)
+		worked_length = 0
 
 	check_cycle()
 
