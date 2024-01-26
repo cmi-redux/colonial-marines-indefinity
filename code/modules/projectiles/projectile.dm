@@ -173,7 +173,7 @@
 /obj/item/projectile/proc/apply_bullet_trait(list/entry)
 	bullet_traits += list(entry.Copy())
 	// Need to use the proc instead of the wrapper because each entry is a list
-	_AddElement(entry)
+	AddElement(entry)
 
 /obj/item/projectile/proc/give_bullet_traits(obj/item/projectile/proj)
 	for(var/list/entry in bullet_traits)

@@ -1,6 +1,5 @@
 /datum/element/turf_z_transparency
 	element_flags = ELEMENT_DETACH
-	var/is_openspace = FALSE
 
 ///This proc sets up the signals to handle updating viscontents when turfs above/below update. Handle plane and layer here too so that they don't cover other obs/turfs in Dream Maker
 /datum/element/turf_z_transparency/Attach(datum/target, is_openspace = FALSE)
@@ -16,9 +15,7 @@
 	else
 		our_turf.plane = TRANSPARENT_FLOOR_PLANE
 
-	RegisterSignal(target, COMSIG_TURF_MULTIZ_DEL, PROC_REF(on_multiz_turf_del))
-	RegisterSignal(target, COMSIG_TURF_MULTIZ_NEW, PROC_REF(on_multiz_turf_new))
-
+	our_turf.transparency_element = src
 	our_turf.turf_flags |= TURF_TRANSPARENT
 
 	var/turf/below_turf = our_turf.below()
@@ -29,15 +26,15 @@
 /datum/element/turf_z_transparency/Detach(datum/source)
 	. = ..()
 	var/turf/our_turf = source
-	our_turf.vis_contents.len = 0
-	UnregisterSignal(our_turf, list(COMSIG_TURF_MULTIZ_NEW, COMSIG_TURF_MULTIZ_DEL))
+	our_turf.vis_contents.Cut()
+	our_turf.transparency_element = null
 	our_turf.turf_flags ^= TURF_TRANSPARENT
 
 ///Updates the viscontents or underlays below this tile.
 /datum/element/turf_z_transparency/proc/update_multi_z(turf/our_turf)
 	var/turf/below_turf = our_turf.below()
 	if(!below_turf)
-		our_turf.vis_contents.len = 0
+		our_turf.vis_contents.Cut()
 		add_baseturf_underlay(our_turf)
 
 	if(istype(our_turf, /turf/closed)) //Show girders below closed turfs
@@ -49,15 +46,7 @@
 		our_turf.underlays += plating_underlay
 	return TRUE
 
-/datum/element/turf_z_transparency/proc/on_multiz_turf_del(turf/our_turf, turf/below_turf, dir)
-	SIGNAL_HANDLER
-
-	if(dir != DOWN)
-		return
-
-	update_multi_z(our_turf)
-
-/datum/element/turf_z_transparency/proc/on_multiz_turf_new(turf/our_turf, turf/below_turf, dir)
+/datum/element/turf_z_transparency/proc/on_multiz_turf_update(turf/our_turf, turf/below_turf, dir)
 	SIGNAL_HANDLER
 
 	if(dir != DOWN)

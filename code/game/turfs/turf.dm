@@ -33,6 +33,7 @@
 	var/weedable = FULLY_WEEDABLE
 	var/intact_tile = 1 //used by floors to distinguish floor with/without a floortile(e.g. plating).
 
+	var/datum/element/turf_z_transparency/transparency_element // Thanks lummox to fun with list object
 	var/list/linked_sectors
 	var/list/linked_pylons
 	var/obj/effect/alien/weeds/weeds
@@ -171,9 +172,13 @@
 	return 0
 
 /turf/proc/multiz_turf_del(turf/T, dir)
+	if(transparency_element)
+		transparency_element.on_multiz_turf_update(src, T, dir)
 	SEND_SIGNAL(src, COMSIG_TURF_MULTIZ_DEL, T, dir)
 
 /turf/proc/multiz_turf_new(turf/T, dir)
+	if(transparency_element)
+		transparency_element.on_multiz_turf_update(src, T, dir)
 	SEND_SIGNAL(src, COMSIG_TURF_MULTIZ_NEW, T, dir)
 
 /turf/proc/multiz_turfs()
@@ -568,7 +573,7 @@
 		W.overlays += thisarea.lighting_effect
 
 	W.levelupdate()
-	SEND_SIGNAL(src, COMSIG_TURF_MULTIZ_NEW, src, dir)
+	multiz_turfs()
 	return W
 
 // Take off the top layer turf and replace it with the next baseturf down

@@ -79,7 +79,7 @@
 			target._AddComponent(lst)
 		else
 			datumname = "element"
-			target._AddElement(lst)
+			target.AddElement(lst)
 		log_admin("[key_name(usr)] has added [result] [datumname] to [key_name(target)].")
 		message_admins(SPAN_NOTICE("[key_name_admin(usr)] has added [result] [datumname] to [key_name_admin(target)]."))
 	if(href_list[VV_HK_REMOVECOMPONENT] || href_list[VV_HK_MASS_REMOVECOMPONENT])
