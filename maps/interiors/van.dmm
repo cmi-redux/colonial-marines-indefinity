@@ -12,6 +12,7 @@
 	tag = "back_right"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
+/obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/vehicle{
 	icon_state = "floor_1_10"
 	},

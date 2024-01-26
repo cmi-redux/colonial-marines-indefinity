@@ -24,6 +24,9 @@
 #define TURF_BREAKABLE					(1<<13)
 #define TURF_TRANSPARENT				(1<<14)
 
+#define SKYVISIBLE						(1<<0)
+#define WEATHERVISIBLE					(1<<1)
+
 #define REMOVE_CROWBAR  (1<<0)
 #define BREAK_CROWBAR   (1<<1)
 #define REMOVE_SCREWDRIVER (1<<2)

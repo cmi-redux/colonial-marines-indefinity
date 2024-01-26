@@ -212,21 +212,6 @@
 		return FALSE
 
 	if(!round_finished)
-		for(var/faction_to_get in FACTION_LIST_ALL)
-			var/datum/faction/faction = GLOB.faction_datum[faction_to_get]
-			if(!faction.xeno_queen_timer)
-				continue
-
-			if(!faction.living_xeno_queen && faction.xeno_queen_timer < world.time)
-				xeno_message("Улей готов для эволюции новой королевы.", 3, faction)
-
-			if(!evolution_ovipositor_threshold && world.time >= SSticker.round_start_time + round_time_evolution_ovipositor)
-				faction.evolution_without_ovipositor = FALSE
-				if(faction.living_xeno_queen && !faction.living_xeno_queen.ovipositor)
-					to_chat(faction.living_xeno_queen, SPAN_XENODANGER("Время сесть на яйцеклад и дать эволюцию детям."))
-				evolution_ovipositor_threshold = TRUE
-				msg_admin_niche("[faction] требуется Королева на яйцекладе.")
-
 		// Automated bioscan / Queen Mother message
 		if(world.time > bioscan_current_interval) //If world time is greater than required bioscan time.
 			announce_bioscans() //Announce the results of the bioscan to both sides.

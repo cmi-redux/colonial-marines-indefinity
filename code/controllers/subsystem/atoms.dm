@@ -60,9 +60,10 @@ SUBSYSTEM_DEF(atoms)
 
 	fix_atoms_locs(atoms)
 
+	clear_tracked_initalize()
+
 	// This may look a bit odd, but if the actual atom creation runtimes for some reason, we absolutely need to set initialized BACK
 	CreateAtoms(atoms)
-	clear_tracked_initalize()
 
 	can_fire = TRUE
 

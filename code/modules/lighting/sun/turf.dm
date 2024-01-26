@@ -28,7 +28,6 @@ Sunlight System
 	/* misc vars */
 	var/mutable_appearance/sunlight_overlay
 	var/state = SKY_VISIBLE	// If we can see the see the sky, are blocked, or we have a blocked neighbour (SKY_BLOCKED/VISIBLE/VISIBLE_BORDER)
-	var/weatherproof = FALSE        // If we have a weather overlay
 	var/turf/source_turf
 	var/list/datum/static_lighting_corner/affecting_corners
 
@@ -156,75 +155,83 @@ Sunlight System
 /* check ourselves and neighbours to see what outdoor effects we need */
 /* turf won't initialize an outdoor_effect if sky_blocked*/
 /turf/proc/get_sky_and_weather_states()
-	var/TempState
-
-	var/roofStat = get_ceiling_status()
-	var/tempRoofStat
-	if(roofStat["SKYVISIBLE"])
-		TempState = SKY_VISIBLE
-		for(var/turf/CT in RANGE_TURFS(1, src))
-			tempRoofStat = CT.get_ceiling_status()
-			if(!tempRoofStat["SKYVISIBLE"]) /* if we have a single roofed/indoor neighbour, we are a border */
-				TempState = SKY_VISIBLE_BORDER
+	var/tempstate
+	update_ceiling_status()
+	if(ceiling_status & SKYVISIBLE)
+		tempstate = SKY_VISIBLE
+		for(var/turf/neighbour_turf in RANGE_TURFS(1, src))
+			neighbour_turf.update_ceiling_status()
+			if(!(neighbour_turf.ceiling_status & SKYVISIBLE)) /* if we have a single roofed/indoor neighbour, we are a border */
+				tempstate = SKY_VISIBLE_BORDER
 				break
 	else /* roofed, so turn off the lights */
-		TempState = SKY_BLOCKED
+		tempstate = SKY_BLOCKED
 
 	/* if border or indoor, initialize. Set sunlight state if valid */
-	if(!outdoor_effect && (TempState <> SKY_BLOCKED || !roofStat["WEATHERPROOF"]))
+	if(!outdoor_effect && (tempstate <> SKY_BLOCKED || ceiling_status & WEATHERVISIBLE))
 		outdoor_effect = new /atom/movable/outdoor_effect(src)
 
 	if(outdoor_effect)
-		outdoor_effect.state = TempState
-		outdoor_effect.weatherproof = roofStat["WEATHERPROOF"]
+		outdoor_effect.state = tempstate
 		turf_flags &= ~TURF_WEATHER
 		LAZYREMOVE(SSparticle_weather.weathered_turfs, src)
-		if(!outdoor_effect.weatherproof)
+		if(ceiling_status & WEATHERVISIBLE)
 			turf_flags |= TURF_WEATHER
 			LAZYADD(SSparticle_weather.weathered_turfs, src)
 
 /* runs up the Z stack for this turf, returns a assoc (SKYVISIBLE, WEATHERPROOF)*/
 /* pass recursionStarted=TRUE when we are checking our ceiling's stats */
-/turf/proc/get_ceiling_status(recursionStarted = FALSE)
-	. = list()
-
+/turf/proc/update_ceiling_status(recursionStarted = FALSE)
+	var/skyvisible
+	var/weathervisible
 	if(!is_ground_level(z) && !is_mainship_level(z))
-		.["SKYVISIBLE"] = FALSE
-		.["WEATHERPROOF"] = TRUE
+		skyvisible = FALSE
+		weathervisible = TRUE
 		return
 
 	//Check yourself (before you wreck yourself)
 	if(istype(src, /turf/closed) || (/obj/structure/window/framed in contents)) //Closed, but we might be transparent
-		.["SKYVISIBLE"] =  turf_flags & TURF_TRANSPARENT // a column of glass should still let the sun in
-		.["WEATHERPROOF"] =  TRUE
+		skyvisible =  turf_flags & TURF_TRANSPARENT // a column of glass should still let the sun in
+		weathervisible =  TRUE
 	else
 		if(recursionStarted)
 			// This src is acting as a ceiling - so if we are a floor we TURF_WEATHER_PROOF + block the sunlight of our down-Z turf
-			.["SKYVISIBLE"] = turf_flags & TURF_TRANSPARENT //If we are glass floor, we don't block
-			.["WEATHERPROOF"] = turf_flags & TURF_WEATHER_PROOF //If we are air or space, we aren't TURF_WEATHER_PROOF
+			skyvisible = turf_flags & TURF_TRANSPARENT //If we are glass floor, we don't block
+			weathervisible = turf_flags & TURF_WEATHER_PROOF //If we are air or space, we aren't TURF_WEATHER_PROOF
 		else //We are open, so assume open to the elements
-			.["SKYVISIBLE"] = TRUE
-			.["WEATHERPROOF"] = FALSE
+			skyvisible = TRUE
+			weathervisible = FALSE
 
 	// Early leave if we can't see the sky - if we are an opaque turf, we already know the results
 	// I can't think of a case where we would have a turf that would block light but let weather effects through - Maybe a vent?
 	// fix this if that is the case
-	if(!.["SKYVISIBLE"])
-		return .
+	if(!skyvisible)
+		ceiling_status = NO_FLAGS
+		if(skyvisible)
+			ceiling_status |= SKYVISIBLE
+		if(weathervisible)
+			ceiling_status |= WEATHERVISIBLE
+		return
 
 	//Ceiling Check
 	// Psuedo-roof, for the top of the map (no actual turf exists up here) -- We assume these are solid, if you add glass pseudo_roofs then fix this
 	if(pseudo_roof)
-		.["SKYVISIBLE"] =  FALSE
-		.["WEATHERPROOF"] =  TRUE
+		skyvisible =  FALSE
+		weathervisible =  TRUE
 	else
 		// EVERY turf must be transparent for sunlight - so &=
 		// ANY turf must be closed for TURF_WEATHER_PROOF - so |=
 		var/turf/ceiling = get_step_multiz(src, UP)
 		if(ceiling)
-			var/list/ceilingStat = ceiling.get_ceiling_status(TRUE) //Pass TRUE because we are now acting as a ceiling
-			.["SKYVISIBLE"] &= ceilingStat["SKYVISIBLE"]
-			.["WEATHERPROOF"] |= ceilingStat["WEATHERPROOF"]
+			ceiling.update_ceiling_status(TRUE) //Pass TRUE because we are now acting as a ceiling
+			skyvisible &= ceiling.ceiling_status & SKYVISIBLE
+			weathervisible &= ceiling.ceiling_status & WEATHERVISIBLE
+
+		ceiling_status = NO_FLAGS
+		if(skyvisible)
+			ceiling_status |= SKYVISIBLE
+		if(weathervisible)
+			ceiling_status |= WEATHERVISIBLE
 
 /turf/proc/apply_weather_effect(datum/weather_effect/effect)
 	SIGNAL_HANDLER

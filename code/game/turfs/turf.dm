@@ -30,10 +30,10 @@
 	vis_flags = VIS_INHERIT_ID | VIS_INHERIT_PLANE// Important for interaction with and visualization of openspace.
 
 	var/turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF|TURF_EFFECT_AFFECTABLE
+	var/ceiling_status = NO_FLAGS
 	var/weedable = FULLY_WEEDABLE
 	var/intact_tile = 1 //used by floors to distinguish floor with/without a floortile(e.g. plating).
 
-	var/datum/element/turf_z_transparency/transparency_element // Thanks lummox to fun with list object
 	var/list/linked_sectors
 	var/list/linked_pylons
 	var/obj/effect/alien/weeds/weeds
@@ -172,13 +172,17 @@
 	return 0
 
 /turf/proc/multiz_turf_del(turf/T, dir)
-	if(transparency_element)
-		transparency_element.on_multiz_turf_update(src, T, dir)
+	if(turf_flags & TURF_TRANSPARENT)
+		if(dir != DOWN)
+			return
+		update_multi_z()
 	SEND_SIGNAL(src, COMSIG_TURF_MULTIZ_DEL, T, dir)
 
 /turf/proc/multiz_turf_new(turf/T, dir)
-	if(transparency_element)
-		transparency_element.on_multiz_turf_update(src, T, dir)
+	if(turf_flags & TURF_TRANSPARENT)
+		if(dir != DOWN)
+			return
+		update_multi_z()
 	SEND_SIGNAL(src, COMSIG_TURF_MULTIZ_NEW, T, dir)
 
 /turf/proc/multiz_turfs()
@@ -963,3 +967,32 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 /turf/proc/on_atom_created(atom/created_atom)
 	return
+
+/turf/proc/handle_transpare_turf(is_openspace)
+	layer = OPENSPACE_LAYER
+	if(is_openspace)
+		plane = OPENSPACE_PLANE
+	else
+		plane = TRANSPARENT_FLOOR_PLANE
+
+	turf_flags |= TURF_TRANSPARENT
+
+	var/turf/below_turf = below()
+	if(below_turf)
+		vis_contents += below_turf
+	update_multi_z()
+
+///Updates the viscontents or underlays below this tile.
+/turf/proc/update_multi_z()
+	var/turf/below_turf = below()
+	if(!below_turf)
+		vis_contents.Cut()
+		var/turf/path = SSmapping.level_trait(z, ZTRAIT_BASETURF) || /turf/open/space
+		if(!ispath(path))
+			path = text2path(path)
+			if(!ispath(path))
+				warning("Z-level [z] has invalid baseturf '[SSmapping.level_trait(z, ZTRAIT_BASETURF)]'")
+				path = /turf/open/space
+		var/mutable_appearance/underlay_appearance = mutable_appearance(initial(path.icon), initial(path.icon_state), layer = TURF_LAYER-0.02, plane = PLANE_SPACE)
+		underlay_appearance.appearance_flags = RESET_ALPHA | RESET_COLOR
+		underlays += underlay_appearance

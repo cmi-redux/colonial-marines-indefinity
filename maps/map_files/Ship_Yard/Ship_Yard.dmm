@@ -263,7 +263,7 @@
 	},
 /area/space)
 "oi" = (
-/turf/open/space/openspace,
+/turf/open/openspace,
 /area/space)
 "ot" = (
 /turf/open/floor/almayer{

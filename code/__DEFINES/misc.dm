@@ -284,3 +284,13 @@
 #define FRILL_GAME_CUT "frill game cut"
 
 #define FRILL_MOB_MASK "frill mob mask"
+
+#define REACTOR_MELTDOWN			(1<<0)
+#define REACTOR_SLAGGED				(1<<1)
+#define REACTOR_FUEL_ACTIONS		(1<<2)
+
+DEFINE_BITFIELD(reactor_flags, list(
+	"MELTDOWN" = REACTOR_MELTDOWN,
+	"SLAGGED" = REACTOR_SLAGGED,
+	"FUEL_ACTIONS" = REACTOR_FUEL_ACTIONS,
+))

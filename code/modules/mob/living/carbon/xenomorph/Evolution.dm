@@ -50,7 +50,7 @@
 				return
 
 			if(plasma_stored >= 500)
-				if(faction.living_xeno_queen || faction.evolution_without_ovipositor)
+				if(faction.living_xeno_queen || Check_Crash())
 					to_chat(src, SPAN_WARNING("There already is a living Queen."))
 					return
 			else
@@ -59,6 +59,7 @@
 		else
 			to_chat(src, SPAN_WARNING("Nuh-uhh."))
 			return
+
 	if(evolution_threshold && castepick != XENO_CASTE_QUEEN) //Does the caste have an evolution timer? Then check it
 		if(evolution_stored < evolution_threshold)
 			to_chat(src, SPAN_WARNING("You must wait before evolving. Currently at: [evolution_stored] / [evolution_threshold]."))

@@ -282,7 +282,7 @@ SUBSYSTEM_DEF(sunlighting)
 		MA = get_sunlight_overlay(fr, fg, fb, fa)
 
 	OE.sunlight_overlay = MA
-	if(is_ground_level(OE.z) && !OE.weatherproof)
+	if(is_ground_level(OE.z) && OE.source_turf.ceiling_status & WEATHERVISIBLE)
 		OE.overlays = list(OE.sunlight_overlay, get_weather_overlay())
 	else
 		OE.overlays = list(OE.sunlight_overlay)

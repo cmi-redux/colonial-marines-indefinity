@@ -1,16 +1,5 @@
-// Defines for reactor states
-#define REACTOR_MELTDOWN			(1<<0)
-#define REACTOR_SLAGGED				(1<<1)
-#define REACTOR_FUEL_ACTIONS		(1<<2)
-
-DEFINE_BITFIELD(reactor_flags, list(
-	"MELTDOWN" = REACTOR_MELTDOWN,
-	"SLAGGED" = REACTOR_SLAGGED,
-	"FUEL_ACTIONS" = REACTOR_FUEL_ACTIONS,
-))
-
 /obj/structure/machinery/power/rbmk
-	name = "\improper Advanced Nuclear Reactor"
+	name = "Advanced Nuclear Reactor"
 	desc = "A tried and tested design which can output stable power at an acceptably low risk. The moderator can be changed to provide different effects."
 	icon = 'icons/obj/structures/machinery/rbmk.dmi'
 	icon_state = "reactor_off"

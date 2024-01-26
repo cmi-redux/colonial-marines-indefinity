@@ -17,7 +17,7 @@
 
 /turf/open/floor/glass/LateInitialize()
 	. = ..()
-	AddElement(/datum/element/turf_z_transparency)
+	handle_transpare_turf()
 
 /turf/open/floor/glass/reinforced
 	name = "reinforced glass floor"
