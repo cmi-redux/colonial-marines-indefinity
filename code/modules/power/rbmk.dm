@@ -334,6 +334,7 @@
 	light_color = "#55BA55"
 	light_power = 1
 	light_range = 3
+	density = TRUE
 	var/id = "default_reactor_for_lazy_mappers"
 	var/obj/structure/machinery/power/rbmk/reactor //Our reactor.
 
@@ -356,7 +357,6 @@
 /obj/structure/machinery/computer/reactor/control_rods
 	name = "control rod management computer"
 	desc = "A computer which can remotely raise / lower the control rods of a reactor."
-	density = TRUE
 
 /obj/structure/machinery/computer/reactor/control_rods/attack_hand(mob/living/user)
 	. = ..()
@@ -398,7 +398,10 @@
 	var/next_stat_interval = 0
 	var/list/powerData = list()
 	var/list/temperatureData = list()
-	density = TRUE
+
+/obj/structure/machinery/computer/reactor/stats/Initialize()
+	. = ..()
+	start_processing()
 
 /obj/structure/machinery/computer/reactor/stats/attack_hand(mob/living/user)
 	. = ..()
@@ -480,26 +483,12 @@
 	var/control_rod_effectiveness = 0.15
 
 	var/rad_strength = 500
-	var/half_life = 60 MINUTES // how many depletion time are needed to half the fuel_power
-	var/time_created = 0
-	var/og_fuel_power = 0.20 //the original fuel power value
-	var/process = FALSE
-	// The depletion where depletion_final() will be called (and does something)
-	var/depletion_threshold = 100
 	// How fast this rod will deplete
 	var/depletion_speed_modifier = 1
 	var/depleted_final = FALSE // depletion_final should run only once
 	var/depletion_conversion_type = "plutonium"
 
-/obj/item/fuel_rod/Initialize(mapload)
-	. = ..()
-	time_created = world.time
-	if(process)
-		START_PROCESSING(SSobj, src)
-
 /obj/item/fuel_rod/Destroy()
-	if(process)
-		STOP_PROCESSING(SSobj, src)
 	var/obj/structure/machinery/power/rbmk/N = loc
 	if(istype(N))
 		N.fuel_rods -= src
@@ -548,9 +537,6 @@
 	process = TRUE
 	depletion_threshold = 300
 	depletion_conversion_type = "depleted"
-
-/obj/item/fuel_rod/process()
-	fuel_power = og_fuel_power * 0.5**((world.time - time_created) / half_life) // halves the fuel power every half life (33 minutes)
 
 /obj/item/fuel_rod/depleted
 	fuel_power = 0.05
