@@ -41,12 +41,12 @@
 	multiz_turfs()
 
 /turf/open/space/multiz_turfs()
-	var/turf/T = SSmapping.get_turf_above(src)
-	if(T)
-		T.multiz_turf_new(src, DOWN)
-	T = SSmapping.get_turf_below(src)
-	if(T)
-		T.multiz_turf_new(src, UP)
+	var/turf/turf = SSmapping.get_turf_above(src)
+	if(turf)
+		turf.multiz_turf_new(src, DOWN)
+	turf = SSmapping.get_turf_below(src)
+	if(turf)
+		turf.multiz_turf_new(src, UP)
 
 /turf/open/space/add_debris_element()
 	return
@@ -220,12 +220,12 @@
 	SHOULD_CALL_PARENT(FALSE)
 
 /turf/open/void/multiz_turfs()
-	var/turf/T = SSmapping.get_turf_above(src)
-	if(T)
-		T.multiz_turf_new(src, DOWN)
-	T = SSmapping.get_turf_below(src)
-	if(T)
-		T.multiz_turf_new(src, UP)
+	var/turf/turf = SSmapping.get_turf_above(src)
+	if(turf)
+		turf.multiz_turf_new(src, DOWN)
+	turf = SSmapping.get_turf_below(src)
+	if(turf)
+		turf.multiz_turf_new(src, UP)
 
 /turf/open/void/densy
 	density = TRUE

@@ -191,24 +191,22 @@ Sunlight System
 
 	//Check yourself (before you wreck yourself)
 	if(istype(src, /turf/closed) || (/obj/structure/window/framed in contents)) //Closed, but we might be transparent
-		skyvisible =  turf_flags & TURF_TRANSPARENT // a column of glass should still let the sun in
-		weathervisible =  TRUE
+		skyvisible = turf_flags & TURF_TRANSPARENT // a column of glass should still let the sun in
+		weathervisible = TRUE
 	else
 		if(recursionStarted)
 			// This src is acting as a ceiling - so if we are a floor we TURF_WEATHER_PROOF + block the sunlight of our down-Z turf
 			skyvisible = turf_flags & TURF_TRANSPARENT //If we are glass floor, we don't block
-			weathervisible = turf_flags & TURF_WEATHER_PROOF //If we are air or space, we aren't TURF_WEATHER_PROOF
+			weathervisible = !(turf_flags & TURF_WEATHER_PROOF) //If we are air or space, we aren't TURF_WEATHER_PROOF
 		else //We are open, so assume open to the elements
 			skyvisible = TRUE
-			weathervisible = FALSE
+			weathervisible = TRUE
 
 	// Early leave if we can't see the sky - if we are an opaque turf, we already know the results
 	// I can't think of a case where we would have a turf that would block light but let weather effects through - Maybe a vent?
 	// fix this if that is the case
 	if(!skyvisible)
 		ceiling_status = NO_FLAGS
-		if(skyvisible)
-			ceiling_status |= SKYVISIBLE
 		if(weathervisible)
 			ceiling_status |= WEATHERVISIBLE
 		return
@@ -216,8 +214,8 @@ Sunlight System
 	//Ceiling Check
 	// Psuedo-roof, for the top of the map (no actual turf exists up here) -- We assume these are solid, if you add glass pseudo_roofs then fix this
 	if(pseudo_roof)
-		skyvisible =  FALSE
-		weathervisible =  TRUE
+		skyvisible = FALSE
+		weathervisible = FALSE
 	else
 		// EVERY turf must be transparent for sunlight - so &=
 		// ANY turf must be closed for TURF_WEATHER_PROOF - so |=
@@ -345,11 +343,11 @@ Sunlight System
 		for(S in lighting_corner_NW.glob_affect)
 			SunlightUpdates |= S.source_turf
 
-	GLOB.sunlight_queue_work += SunlightUpdates
+	GLOB.sunlight_queue_work |= SunlightUpdates
 
-	var/turf/T = SSmapping.get_turf_below(src)
-	if(T)
-		T.reconsider_sunlight()
+	var/turf/turf = SSmapping.get_turf_below(src)
+	if(turf)
+		turf.reconsider_sunlight()
 
 /* corner fuckery */
 /datum/static_lighting_corner/var/list/glob_affect = list() /* list of sunlight objects affecting this corner */

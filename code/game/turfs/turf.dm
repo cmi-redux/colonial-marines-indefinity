@@ -98,8 +98,6 @@
 	var/area/current_area = loc
 	if(current_area?.lighting_effect)
 		overlays += current_area.lighting_effect
-	else
-		GLOB.sunlight_queue_work += src
 
 	if(opacity)
 		directional_opacity = ALL_CARDINALS
@@ -186,12 +184,12 @@
 	SEND_SIGNAL(src, COMSIG_TURF_MULTIZ_NEW, T, dir)
 
 /turf/proc/multiz_turfs()
-	var/turf/T = SSmapping.get_turf_above(src)
-	if(T)
-		T.multiz_turf_new(src, DOWN)
-	T = SSmapping.get_turf_below(src)
-	if(T)
-		T.multiz_turf_new(src, UP)
+	var/turf/turf = SSmapping.get_turf_above(src)
+	if(turf)
+		turf.multiz_turf_new(src, DOWN)
+	turf = SSmapping.get_turf_below(src)
+	if(turf)
+		turf.multiz_turf_new(src, UP)
 		if(turf_flags & TURF_MULTIZ)
 			var/list/baseturfsold = list(/turf/open/openspace)
 			baseturfsold += baseturfs

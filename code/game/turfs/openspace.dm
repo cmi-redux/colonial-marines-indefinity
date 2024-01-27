@@ -79,14 +79,15 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 	SHOULD_CALL_PARENT(FALSE)
 	multiz_turfs()
 	handle_transpare_turf(is_openspace = TRUE)
+	reconsider_sunlight()
 
 /turf/open/openspace/multiz_turfs()
-	var/turf/T = SSmapping.get_turf_above(src)
-	if(T)
-		T.multiz_turf_new(src, DOWN)
-	T = SSmapping.get_turf_below(src)
-	if(T)
-		T.multiz_turf_new(src, UP)
+	var/turf/turf = SSmapping.get_turf_above(src)
+	if(turf)
+		turf.multiz_turf_new(src, DOWN)
+	turf = SSmapping.get_turf_below(src)
+	if(turf)
+		turf.multiz_turf_new(src, UP)
 
 /turf/open/space/add_debris_element()
 	return

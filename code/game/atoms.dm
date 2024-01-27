@@ -420,10 +420,11 @@ Parameters are passed from New.
 		CRASH("Warning: [src]([type]) initialized multiple times!")
 	flags_atom |= INITIALIZED
 
-	if(isturf(loc) && opacity)
-		var/turf/opaque_turf = loc
-		opaque_turf.on_atom_created(src)
-		opaque_turf.directional_opacity = ALL_CARDINALS // No need to recalculate it in this case, it's guaranteed to be on afterwards anyways.
+	if(isturf(loc))
+		var/turf/turf = loc
+		turf.on_atom_created(src)
+		if(opacity)
+			turf.directional_opacity = ALL_CARDINALS // No need to recalculate it in this case, it's guaranteed to be on afterwards anyways.
 
 	pass_flags = pass_flags_cache[type]
 	if(isnull(pass_flags))
