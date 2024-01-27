@@ -975,8 +975,6 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	else
 		plane = TRANSPARENT_FLOOR_PLANE
 
-	turf_flags |= TURF_TRANSPARENT
-
 	var/turf/below_turf = below()
 	if(below_turf)
 		vis_contents += below_turf

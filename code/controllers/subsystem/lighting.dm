@@ -35,15 +35,14 @@ SUBSYSTEM_DEF(lighting)
 		MC_SPLIT_TICK
 	var/updators_num = 0
 	while(updators_num < length(static_sources_queue))
-		updators_num += 1
+		updators_num++
 
 		var/datum/static_light_source/L = static_sources_queue[updators_num]
 		L.update_corners()
+		if(QDELETED(L))
+			continue
+		L.needs_update = LIGHTING_NO_UPDATE
 
-		if(!QDELETED(L))
-			L.needs_update = LIGHTING_NO_UPDATE
-		else
-			updators_num -= 1
 		if(init_tick_checks)
 			if(!TICK_CHECK)
 				continue
@@ -60,7 +59,7 @@ SUBSYSTEM_DEF(lighting)
 		MC_SPLIT_TICK
 
 	while(updators_num < length(corners_queue))
-		updators_num += 1
+		updators_num++
 
 		var/datum/static_lighting_corner/C = corners_queue[updators_num]
 		C.needs_update = FALSE //update_objects() can call qdel if the corner is storing no data
@@ -81,10 +80,10 @@ SUBSYSTEM_DEF(lighting)
 		MC_SPLIT_TICK
 
 	while(updators_num < length(objects_queue))
-		updators_num += 1
+		updators_num++
 
 		var/datum/static_lighting_object/O = objects_queue[updators_num]
-		if (QDELETED(O))
+		if(QDELETED(O))
 			continue
 		O.update()
 		O.needs_update = FALSE
@@ -94,7 +93,7 @@ SUBSYSTEM_DEF(lighting)
 				continue
 			objects_queue.Cut(1, updators_num + 1)
 			updators_num = 0
-		else if (MC_TICK_CHECK)
+		else if(MC_TICK_CHECK)
 			break
 	if(updators_num)
 		objects_queue.Cut(1, updators_num + 1)
@@ -103,7 +102,7 @@ SUBSYSTEM_DEF(lighting)
 		MC_SPLIT_TICK
 
 	while(updators_num > length(mask_queue))
-		updators_num += 1
+		updators_num++
 
 		var/atom/movable/lighting_mask/mask_to_update = mask_queue[updators_num]
 		mask_to_update.calculate_lighting_shadows()

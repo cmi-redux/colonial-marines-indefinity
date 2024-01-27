@@ -40,11 +40,14 @@ SUBSYSTEM_DEF(atoms)
 	var/worked_length = 0
 
 	//Add our weather particle obj to any new weather screens
-	for(worked_length in 1 to late_loaders.len)
+	while(worked_length < length(late_loaders))
+		worked_length++
+
 		var/atom/atom = late_loaders[worked_length]
 		if(QDELETED(atom))
 			continue
 		atom.LateInitialize()
+
 		if(init_tick_checks)
 			if(!TICK_CHECK)
 				continue
@@ -53,6 +56,7 @@ SUBSYSTEM_DEF(atoms)
 			stoplag()
 		else if(MC_TICK_CHECK)
 			break
+
 	if(worked_length)
 		late_loaders.Cut(1, worked_length+1)
 		worked_length = 0

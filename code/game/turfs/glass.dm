@@ -12,7 +12,8 @@
 
 /turf/open/floor/glass/Initialize(mapload)
 	icon_state = "" //Prevent the normal icon from appearing behind the smooth overlays
-	..()
+	turf_flags |= TURF_TRANSPARENT
+	. = ..()
 	return INITIALIZE_HINT_LATELOAD
 
 /turf/open/floor/glass/LateInitialize()
