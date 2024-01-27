@@ -6,7 +6,7 @@ export const DragonCoreControl = (props, context) => {
   const { act, data } = useBackend(context);
   if (data.reactor) {
     return (
-      <Window resizable theme="weyland" width={300} height={700}>
+      <Window resizable theme="weyland" width={400} height={600}>
         <Window.Content>
           <Section title="Inner Core System Management:">
             Shield Power:

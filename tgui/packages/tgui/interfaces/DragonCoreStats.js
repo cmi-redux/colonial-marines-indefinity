@@ -17,7 +17,7 @@ export const DragonCoreStats = (props, context) => {
   const temdiffData = data.temdiffData.map((value, i) => [i, value]);
   const shieldData = data.shieldData.map((value, i) => [i, value]);
   return (
-    <Window resizable theme="weyland" width={350} height={500}>
+    <Window resizable theme="weyland" width={400} height={600}>
       <Window.Content>
         <Section title="Legend:">
           Reactor Power (%):
@@ -53,7 +53,7 @@ export const DragonCoreStats = (props, context) => {
             {data.shields} Ps^2/R*L
           </ProgressBar>
         </Section>
-        <Section fill title="Reactor Statistics:" height="200px">
+        <Section fill title="Reactor Statistics:" height="400px">
           <Chart.Line
             fillPositionedParent
             data={powerData}

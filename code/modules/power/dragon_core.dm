@@ -241,7 +241,7 @@
 			create_fuel_k += fuel_to_lose * 10000 / total_energy_capacity * (fuel_compression * 0.5)
 	current_fuel_k += create_fuel_k
 
-	var/k_for_transfer = (current_fuel_k - (current_k ^ 2 * 0.01)) * 0.0001
+	var/k_for_transfer = (current_fuel_k - current_k * 10000) * 0.0001
 	if(k_for_transfer)
 		if(shield_projection)
 			k_for_transfer /= shield_projection ^ 4
@@ -260,7 +260,7 @@
 
 	var/cooled_down_k = 0
 	if(reactor_cooling_rate)
-		cooled_down_k = current_k * (rand(reactor_cooling_rate, reactor_cooling_rate * 10) / 1000)
+		cooled_down_k = current_k * (rand(reactor_cooling_rate, reactor_cooling_rate * 10) / 100)
 	current_k -= cooled_down_k
 
 	power = current_fuel_k / temperature_critical * 100
@@ -273,7 +273,7 @@
 
 	//Using energy here
 	last_power_produced -= heating_rate * (base_power_modifier * 0.1)
-	last_power_produced -= shield_projection * (base_power_modifier * (fuel_compression) * total_energy_capacity) * 0.01
+	last_power_produced -= shield_projection * (fuel_compression * total_energy_capacity)
 	last_power_produced -= magnet_impulsion * (base_power_modifier * total_energy_capacity)
 	last_power_produced -= reactor_cooling_rate * cooled_down_k
 
