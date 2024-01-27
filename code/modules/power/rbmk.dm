@@ -483,6 +483,8 @@
 	var/control_rod_effectiveness = 0.15
 
 	var/rad_strength = 500
+	// The depletion where depletion_final() will be called (and does something)
+	var/depletion_threshold = 100
 	// How fast this rod will deplete
 	var/depletion_speed_modifier = 1
 	var/depleted_final = FALSE // depletion_final should run only once
@@ -534,7 +536,6 @@
 	desc = "A highly energetic titanium sheathed rod containing a sizeable measure of weapons grade plutonium, it's highly efficient as nuclear fuel, but will cause the reaction to get out of control if not properly utilised."
 	icon_state = "inferior"
 	rad_strength = 1500
-	process = TRUE
 	depletion_threshold = 300
 	depletion_conversion_type = "depleted"
 
@@ -545,7 +546,6 @@
 	icon_state = "normal"
 	rad_strength = 6000 // smelly
 	depletion_conversion_type = null // we don't want it to turn into anything
-	process = TRUE
 
 /obj/effect/landmark/reactor_rods
 	name = "Reactor fuel rod"
