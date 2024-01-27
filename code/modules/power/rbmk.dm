@@ -214,7 +214,7 @@
 		var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttle_id)
 		var/obj/structure/machinery/computer/shuttle/dropship/flight/console = shuttle.getControlConsole()
 		console.disable()
-	to_chat_spaced(world, html = SPAN_ANNOUNCEMENT_HEADER_BLUE("Вы видите как на орбите рядом взрывается USS Almayer, его осколки охватывают всю орбиту"))
+	to_chat_spaced(world, html = SPAN_ANNOUNCEMENT_HEADER_BLUE("Вы видите как на орбите рядом взрывается [MAIN_SHIP_NAME], его осколки охватывают всю орбиту"))
 
 /obj/structure/machinery/power/rbmk/update_icon()
 	icon_state = "reactor_off"
@@ -306,10 +306,10 @@
 		if(health > 0.5 * initial(health))
 			to_chat(user, SPAN_NOTICE("[src] is free from cracks."))
 			return FALSE
-		var/obj/item/tool/weldingtool/WT = O
-		if(WT.remove_fuel(1, user))
+		var/obj/item/tool/weldingtool/weldingtool = O
+		if(weldingtool.remove_fuel(1, user))
 			if(do_after(user, 20 SECONDS * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
-				if(!WT.isOn())
+				if(!weldingtool.isOn())
 					return FALSE
 				if(health > 0.5 * initial(health))
 					to_chat(user, SPAN_NOTICE("[src] is free from cracks."))

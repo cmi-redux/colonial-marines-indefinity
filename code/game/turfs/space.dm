@@ -188,10 +188,8 @@
 	name = "void"
 	icon = 'icons/turf/open_space.dmi'
 	icon_state = "black"
-	turf_flags = TURF_MULTIZ|TURF_WEATHER_PROOF
+	turf_flags = TURF_WEATHER_PROOF
 	mouse_opacity = FALSE
-	plane = PLANE_SPACE
-	layer = SPACE_LAYER
 
 /turf/open/void/Initialize(mapload, ...)
 	SHOULD_CALL_PARENT(FALSE)

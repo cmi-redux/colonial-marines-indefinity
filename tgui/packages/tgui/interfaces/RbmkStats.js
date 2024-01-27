@@ -24,7 +24,7 @@ export const RbmkStats = (props, context) => {
             minValue={0}
             maxValue={2000}
             color="bad">
-            {data.coolantOutput} °F
+            {data.temperature} °F
           </ProgressBar>
         </Section>
         <Section fill title="Reactor Statistics:" height="200px">

@@ -16,6 +16,7 @@ GLOBAL_LIST_EMPTY(active_nuke_list)
 GLOBAL_LIST_EMPTY(resin_silo_spawn_locs)
 GLOBAL_LIST_EMPTY(xeno_resin_silos)
 GLOBAL_LIST_EMPTY(siren_objects)
+GLOBAL_LIST_EMPTY(dragon_cores)
 GLOBAL_LIST_EMPTY(fusion_cores)
 GLOBAL_LIST_EMPTY(larva_burst_by_hive)
 

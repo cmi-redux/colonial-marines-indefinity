@@ -5,7 +5,7 @@
 
 SUBSYSTEM_DEF(atoms)
 	name = "Atoms"
-	wait = 2 SECONDS
+	wait = 1
 	init_order = SS_INIT_ATOMS
 	runlevels = RUNLEVEL_LOBBY|RUNLEVEL_SETUP|RUNLEVEL_GAME|RUNLEVEL_POSTGAME
 
@@ -60,10 +60,10 @@ SUBSYSTEM_DEF(atoms)
 
 	fix_atoms_locs(atoms)
 
-	clear_tracked_initalize()
-
 	// This may look a bit odd, but if the actual atom creation runtimes for some reason, we absolutely need to set initialized BACK
 	CreateAtoms(atoms)
+
+	clear_tracked_initalize()
 
 	can_fire = TRUE
 

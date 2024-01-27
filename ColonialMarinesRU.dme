@@ -2126,6 +2126,7 @@
 #include "code\modules\power\cable.dm"
 #include "code\modules\power\cable_heavyduty.dm"
 #include "code\modules\power\cell.dm"
+#include "code\modules\power\dragon_core.dm"
 #include "code\modules\power\fractal_reactor.dm"
 #include "code\modules\power\generator.dm"
 #include "code\modules\power\gravitygenerator.dm"
