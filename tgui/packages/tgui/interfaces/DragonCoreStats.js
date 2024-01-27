@@ -32,7 +32,7 @@ export const DragonCoreStats = (props, context) => {
           <ProgressBar
             value={data.temperature}
             minValue={0}
-            maxValue={1100000000000}
+            maxValue={110000000}
             color="bad">
             {data.temperature} °F
           </ProgressBar>
@@ -40,7 +40,7 @@ export const DragonCoreStats = (props, context) => {
           <ProgressBar
             value={data.vessel_temperature}
             minValue={0}
-            maxValue={110000}
+            maxValue={11000}
             color="bad">
             {data.vessel_temperature} °F
           </ProgressBar>
@@ -66,7 +66,7 @@ export const DragonCoreStats = (props, context) => {
             fillPositionedParent
             data={temperatureData}
             rangeX={[0, temperatureData.length - 1]}
-            rangeY={[0, 1100000000000]}
+            rangeY={[0, 110000000]}
             strokeColor="rgba(255, 0, 0, 1)"
             fillColor="rgba(255, 0, 0, 0.1)"
           />
@@ -74,7 +74,7 @@ export const DragonCoreStats = (props, context) => {
             fillPositionedParent
             data={vesseltemperatureData}
             rangeX={[0, vesseltemperatureData.length - 1]}
-            rangeY={[0, 110000]}
+            rangeY={[0, 11000]}
             strokeColor="rgba(255, 100, 100, 1)"
             fillColor="rgba(255, 100, 100, 0.1)"
           />
@@ -82,7 +82,7 @@ export const DragonCoreStats = (props, context) => {
             fillPositionedParent
             data={vesselcoolingData}
             rangeX={[0, vesselcoolingData.length - 1]}
-            rangeY={[0, 110000]}
+            rangeY={[0, 11000]}
             strokeColor="rgba(0, 0, 255, 1)"
             fillColor="rgba(0, 0, 255, 0.1)"
           />
@@ -90,7 +90,7 @@ export const DragonCoreStats = (props, context) => {
             fillPositionedParent
             data={temdiffData}
             rangeX={[0, temdiffData.length - 1]}
-            rangeY={[-1100000000000, 1100000000000]}
+            rangeY={[-110000000, 110000000]}
             strokeColor="rgba(100, 0, 100, 1)"
             fillColor="rgba(100, 0, 100, 0.1)"
           />
