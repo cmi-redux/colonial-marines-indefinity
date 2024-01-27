@@ -26,11 +26,6 @@ SUBSYSTEM_DEF(lighting)
 	fire(FALSE, TRUE)
 	return SS_INIT_SUCCESS
 
-/datum/controller/subsystem/lighting/fire(resumed, init_tick_checks)
-	MC_SPLIT_TICK_INIT(3)
-	if(!init_tick_checks)
-		MC_SPLIT_TICK
-
 /datum/controller/subsystem/lighting/stat_entry()
 	. = ..("ShCalcs:[total_shadow_calculations]|SourcQ:[static_sources_queue.len]|CcornQ:[corners_queue.len]|ObjQ:[objects_queue.len]|HybrQ:[mask_queue.len]")
 

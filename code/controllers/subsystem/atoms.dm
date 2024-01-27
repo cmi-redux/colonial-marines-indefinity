@@ -26,6 +26,7 @@ SUBSYSTEM_DEF(atoms)
 	init_start_time = world.time
 	initialized = INITIALIZATION_INNEW_MAPLOAD
 	InitializeAtoms()
+	fire(FALSE, TRUE)
 	initialized = INITIALIZATION_INNEW_REGULAR
 	old_initialized = initialized
 
@@ -35,7 +36,7 @@ SUBSYSTEM_DEF(atoms)
 	populate_seed_list()
 	return SS_INIT_SUCCESS
 
-/datum/controller/subsystem/atoms/fire(resumed)
+/datum/controller/subsystem/atoms/fire(resumed, init_tick_checks)
 	var/worked_length = 0
 
 	//Add our weather particle obj to any new weather screens
@@ -44,7 +45,9 @@ SUBSYSTEM_DEF(atoms)
 		if(QDELETED(atom))
 			continue
 		atom.LateInitialize()
-		if(MC_TICK_CHECK)
+		if(init_tick_checks)
+			CHECK_TICK
+		else if(MC_TICK_CHECK)
 			break
 	if(worked_length)
 		late_loaders.Cut(1, worked_length+1)

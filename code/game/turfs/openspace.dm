@@ -79,7 +79,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 	SHOULD_CALL_PARENT(FALSE)
 	multiz_turfs()
 	handle_transpare_turf(is_openspace = TRUE)
-	reconsider_sunlight()
+	GLOB.sunlight_queue_work |= src
 
 /turf/open/openspace/multiz_turfs()
 	var/turf/turf = SSmapping.get_turf_above(src)
