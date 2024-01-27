@@ -46,7 +46,11 @@ SUBSYSTEM_DEF(atoms)
 			continue
 		atom.LateInitialize()
 		if(init_tick_checks)
-			CHECK_TICK
+			if(!TICK_CHECK)
+				continue
+			late_loaders.Cut(1, worked_length+1)
+			worked_length = 0
+			stoplag()
 		else if(MC_TICK_CHECK)
 			break
 	if(worked_length)
