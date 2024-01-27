@@ -6685,11 +6685,19 @@
 	},
 /area/almayer/living/basketball)
 "aIs" = (
-/obj/structure/machinery/computer/reactor/stats{
-	id = "ship_reactor"
+/obj/structure/platform{
+	dir = 1
 	},
-/turf/open/floor/almayer,
-/area/almayer/engineering/engineering_workshop)
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = "icon-S"
+	},
+/turf/open/floor/almayer{
+	dir = 5;
+	icon_state = "plating";
+	tag = "icon-blue (NORTHEAST)"
+	},
+/area/almayer/engineering/engine_core)
 "aIu" = (
 /obj/structure/pipes/standard/simple/hidden/supply{
 	dir = 4;
@@ -25562,8 +25570,6 @@
 	name = "General Listening Channel";
 	pixel_y = 28
 	},
-/obj/effect/landmark/reactor_rods,
-/obj/effect/landmark/reactor_rods,
 /turf/open/floor/almayer{
 	icon_state = "cargo";
 	tag = "icon-bluecorner (NORTH)"
@@ -26426,10 +26432,11 @@
 	name = "General Listening Channel";
 	pixel_y = 28
 	},
-/obj/structure/machinery/computer/reactor/fuel_rods{
-	id = "ship_reactor"
+/obj/structure/machinery/computer/dragon_core_reactor/stats,
+/turf/open/floor/almayer{
+	icon_state = "plate";
+	tag = "icon-sterile"
 	},
-/turf/open/floor/almayer,
 /area/almayer/engineering/engineering_workshop)
 "ctO" = (
 /obj/structure/platform{
@@ -26447,6 +26454,10 @@
 	dir = 8;
 	tag = "icon-tube1 (EAST)"
 	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "SE-out";
+	tag = "icon-SE-out"
+	},
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "plating";
@@ -26457,6 +26468,10 @@
 /obj/structure/platform_decoration{
 	dir = 4
 	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = "icon-S"
+	},
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "plating";
@@ -26464,9 +26479,12 @@
 	},
 /area/almayer/engineering/engine_core)
 "ctT" = (
+/obj/structure/platform{
+	dir = 1
+	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "SE-out";
-	tag = "icon-SE-out"
+	icon_state = "SW-out";
+	tag = "icon-SW-out"
 	},
 /turf/open/floor/almayer{
 	dir = 5;
@@ -26517,9 +26535,10 @@
 	},
 /area/almayer/hull/lower_hull/l_a_s)
 "cuf" = (
+/obj/structure/platform,
 /obj/effect/decal/warning_stripes{
-	icon_state = "E";
-	tag = "icon-E"
+	icon_state = "NW-out";
+	tag = "icon-NW-out"
 	},
 /turf/open/floor/almayer{
 	dir = 5;
@@ -27100,6 +27119,10 @@
 	dir = 8;
 	tag = "icon-platform_deco (EAST)"
 	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = "icon-S"
+	},
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "plating";
@@ -27673,17 +27696,6 @@
 "cAk" = (
 /turf/open/floor/almayer,
 /area/almayer/engineering/engineering_workshop)
-"cAn" = (
-/obj/effect/decal/warning_stripes{
-	icon_state = "NW-out";
-	tag = "icon-NW-out"
-	},
-/turf/open/floor/almayer{
-	dir = 5;
-	icon_state = "plating";
-	tag = "icon-blue (NORTHEAST)"
-	},
-/area/almayer/engineering/engine_core)
 "cAo" = (
 /obj/structure/closet/crate,
 /obj/item/stack/sheet/plasteel{
@@ -27793,9 +27805,7 @@
 	},
 /area/almayer/engineering/engineering_workshop)
 "cAW" = (
-/obj/structure/machinery/power/rbmk{
-	id = "ship_reactor"
-	},
+/obj/structure/machinery/power/dragon_core,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -31662,6 +31672,10 @@
 	dir = 8;
 	tag = "icon-tube1 (EAST)"
 	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "NE-out";
+	tag = "icon-NE-out"
+	},
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "plating";
@@ -31782,6 +31796,10 @@
 /obj/structure/platform_decoration{
 	dir = 1;
 	tag = "icon-platform_deco (NORTH)"
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "N";
+	tag = "icon-N"
 	},
 /turf/open/floor/almayer{
 	dir = 5;
@@ -38962,8 +38980,6 @@
 /obj/structure/machinery/alarm/almayer{
 	dir = 1
 	},
-/obj/effect/landmark/reactor_rods,
-/obj/effect/landmark/reactor_rods,
 /turf/open/floor/almayer{
 	icon_state = "cargo";
 	tag = "icon-bluecorner (NORTH)"
@@ -43535,8 +43551,6 @@
 /area/almayer/hull/upper_hull/u_m_p)
 "hbq" = (
 /obj/structure/surface/table/almayer,
-/obj/effect/landmark/reactor_rods,
-/obj/effect/landmark/reactor_rods,
 /turf/open/floor/almayer{
 	icon_state = "cargo";
 	tag = "icon-bluecorner (NORTH)"
@@ -46093,9 +46107,10 @@
 	},
 /area/almayer/command/lifeboat)
 "imY" = (
+/obj/structure/platform,
 /obj/effect/decal/warning_stripes{
-	icon_state = "SW-out";
-	tag = "icon-SW-out"
+	icon_state = "N";
+	tag = "icon-N"
 	},
 /turf/open/floor/almayer{
 	dir = 5;
@@ -54125,6 +54140,10 @@
 /obj/structure/platform{
 	dir = 8
 	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	tag = "icon-E"
+	},
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "plating";
@@ -55215,6 +55234,10 @@
 "mnQ" = (
 /obj/structure/platform_decoration{
 	tag = "icon-platform_deco (EAST)"
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "N";
+	tag = "icon-N"
 	},
 /turf/open/floor/almayer{
 	dir = 5;
@@ -74522,9 +74545,7 @@
 /obj/structure/machinery/firealarm{
 	pixel_y = 28
 	},
-/obj/structure/machinery/computer/reactor/control_rods{
-	id = "ship_reactor"
-	},
+/obj/structure/machinery/computer/dragon_core_reactor/control_rods,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -104355,7 +104376,7 @@ xfn
 sZf
 huy
 xLx
-aIs
+cAk
 cAk
 xBh
 cyy
@@ -104835,13 +104856,13 @@ hsv
 teZ
 xaV
 iEI
-ctU
-ctT
-cuf
-cuf
-cuf
-cxf
-cWj
+aIs
+vkR
+vkR
+vkR
+vkR
+vkR
+imY
 iEI
 uok
 teZ
@@ -104932,11 +104953,11 @@ kSd
 cqk
 pZZ
 ctQ
-iuw
 vkR
 vkR
 vkR
-frC
+vkR
+vkR
 cWh
 ntc
 diD
@@ -105027,13 +105048,13 @@ hbq
 teZ
 cqj
 nEt
-cxf
 iuw
+vkR
 vkR
 cAW
 vkR
+vkR
 frC
-cxf
 dcv
 diE
 teZ
@@ -105124,11 +105145,11 @@ dAk
 cqk
 fwX
 cxe
-iuw
 vkR
 vkR
 vkR
-frC
+vkR
+vkR
 mnQ
 jko
 wTy
@@ -105219,13 +105240,13 @@ cJL
 coK
 xaV
 teZ
-ctU
+aIs
+vkR
+vkR
+vkR
+vkR
+vkR
 imY
-kOX
-kOX
-kOX
-cAn
-cWj
 teZ
 uok
 hbq
@@ -105315,13 +105336,13 @@ cJL
 hbq
 xaV
 cJL
-ctU
-cxf
-cxf
-cxf
-cxf
-cxf
-cWj
+ctT
+kOX
+kOX
+kOX
+kOX
+kOX
+cuf
 cJL
 cGY
 hbq

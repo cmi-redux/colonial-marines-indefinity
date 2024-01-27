@@ -13,7 +13,7 @@ export const DragonCoreControl = (props, context) => {
             <br />
             <Slider
               value={data.shield_projection}
-              fillValue={data.shield_power}
+              fillValue={data.shield_projection}
               minValue={0}
               maxValue={data.max_shield_power}
               step={0.1}

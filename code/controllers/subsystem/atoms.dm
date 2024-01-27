@@ -6,6 +6,7 @@
 SUBSYSTEM_DEF(atoms)
 	name = "Atoms"
 	wait = 1
+	priority = SS_PRIORITY_ATOMS
 	init_order = SS_INIT_ATOMS
 	runlevels = RUNLEVEL_LOBBY|RUNLEVEL_SETUP|RUNLEVEL_GAME|RUNLEVEL_POSTGAME
 

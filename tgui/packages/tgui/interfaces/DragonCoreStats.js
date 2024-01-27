@@ -48,7 +48,7 @@ export const DragonCoreStats = (props, context) => {
           <ProgressBar
             value={data.shields}
             minValue={0}
-            maxValue={max_shields}
+            maxValue={data.max_shields}
             color="bad">
             {data.shields} Ps^2/R*L
           </ProgressBar>
@@ -98,7 +98,7 @@ export const DragonCoreStats = (props, context) => {
             fillPositionedParent
             data={shieldData}
             rangeX={[0, shieldData.length - 1]}
-            rangeY={[0, max_shields]}
+            rangeY={[0, data.max_shields]}
             strokeColor="rgba(50, 100, 255, 1)"
             fillColor="rgba(50, 100, 255, 0.1)"
           />

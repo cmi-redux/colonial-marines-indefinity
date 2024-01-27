@@ -2,6 +2,8 @@
 #define SPENT_FUEL_ENERGY_CAPACITY *0.25
 #define COOLANT_ENERGY_CAPACITY *8
 
+#define GET_FULL_NUMBER *(10^9)
+
 /obj/structure/machinery/power/dragon_core
 	name = "Dragon Core"
 	desc = "Reactor edging technologies, allowing us to generate a lot of energy, by generating itself degenerated matter and supporting reaction. On in red writed on black: \"Warning, use with care, can callaps in black hole or fully annihilate system!\", this is reactor also can work with plasma in stundby mode.\n This is test example, any case of damage can happen."
@@ -17,12 +19,12 @@
 	indestructible = TRUE
 	layer = ABOVE_TURF_LAYER
 
-	pixel_x = -32
-	pixel_y = -32
-	bound_width = 96
-	bound_height = 96
-	bound_x = -32
-	bound_y = -32
+	pixel_x = -64
+	pixel_y = -64
+	bound_width = 128
+	bound_height = 128
+	bound_x = -64
+	bound_y = -64
 
 	light_system = STATIC_LIGHT
 	light_range = 7
@@ -32,10 +34,10 @@
 	var/light_status = 0
 
 	//Reactor operating temp values
-	var/temperature_operating = 4000000000000
-	var/temperature_pre_critical = 700000000000
-	var/temperature_critical = 900000000000
-	var/temperature_meltdown = 1100000000000 //1 trillion, just make BOOM
+	var/temperature_operating = 40
+	var/temperature_pre_critical = 70
+	var/temperature_critical = 90
+	var/temperature_meltdown = 110 //1.1 trillion, just make BOOM
 
 	//Reactor processing values
 	var/reactor_capacity = 10000 // L ? I think so...
@@ -101,7 +103,7 @@
 
 /obj/structure/machinery/power/dragon_core/Initialize(mapload)
 	. = ..()
-	cause_data = create_cause_data("взрыв дегенративной материи", src)
+	cause_data = create_cause_data("взрыв дегенеративной материи", src)
 	if(!id)
 		id = "[pick(alphabet_uppercase)][pick(alphabet_uppercase)]-[rand(0,9)][rand(0,9)][rand(0,9)]"
 	GLOB.dragon_cores += src
@@ -131,13 +133,13 @@
 		icon_state = "offline"
 	else if(flags_reactor & REACTOR_SLAGGED)
 		icon_state = "slagged"
-	else if(current_fuel_k <= temperature_operating)
+	else if(current_fuel_k > temperature_operating GET_FULL_NUMBER)
 		icon_state = "online"
-	else if(current_fuel_k <= temperature_pre_critical)
+	else if(current_fuel_k > temperature_pre_critical GET_FULL_NUMBER)
 		icon_state = "hot"
-	else if(current_fuel_k <= temperature_critical)
+	else if(current_fuel_k > temperature_critical GET_FULL_NUMBER)
 		icon_state = "overheat"
-	else if(current_fuel_k <= temperature_meltdown) //Point of no return.
+	else if(current_fuel_k > temperature_meltdown GET_FULL_NUMBER) //Point of no return.
 		icon_state = "meltdown"
 	else
 		icon_state = "loaded"
@@ -166,7 +168,7 @@
 /obj/structure/machinery/power/dragon_core/process()
 	if(next_slowprocess < world.time)
 		slowprocess()
-		next_slowprocess = world.time + 10 SECONDS
+		next_slowprocess = world.time + 5 SECONDS
 
 /obj/structure/machinery/power/dragon_core/proc/has_fuel()
 	var/fuel_amount_stored = chambered_fuel
@@ -182,21 +184,30 @@
 	if(shield_projection)
 		shield_power = min(shield_power + max_shield_power / 120 * (shield_projection * 0.01), max_shield_power)
 	else
-		shield_power -= max_shield_power / 120
+		shield_power = max(shield_power - max_shield_power / 120, 0)
+
+	if(current_fuel_k < 0)
+		current_fuel_k = 0
 
 	var/total_energy_capacity = chambered_fuel FUEL_ENERGY_CAPACITY + chambered_spent_fuel SPENT_FUEL_ENERGY_CAPACITY + chambered_coolant COOLANT_ENERGY_CAPACITY
 
 	var/fuel_to_inject = 0
 	for(var/obj/item/dcore_reactor_supply_cell/cell as anything in fuel_cells)
 		fuel_to_inject += cell.get_fuel(fuel_injection)
-	current_fuel_k -= current_fuel_k / total_energy_capacity * (fuel_to_inject FUEL_ENERGY_CAPACITY) * 0.5
+	if(total_energy_capacity && total_energy_capacity)
+		current_fuel_k -= current_fuel_k / total_energy_capacity * (fuel_to_inject FUEL_ENERGY_CAPACITY) * 0.5
 	chambered_fuel += fuel_to_inject
+
+	total_energy_capacity = chambered_fuel FUEL_ENERGY_CAPACITY + chambered_spent_fuel SPENT_FUEL_ENERGY_CAPACITY + chambered_coolant COOLANT_ENERGY_CAPACITY
 
 	var/coolant_to_inject = 0
 	for(var/obj/item/dcore_reactor_supply_cell/cell as anything in coolant_cells)
 		coolant_to_inject += cell.get_fuel(coolant_injection)
-	current_fuel_k -= current_fuel_k / total_energy_capacity * (coolant_to_inject COOLANT_ENERGY_CAPACITY) * 0.5
+	if(total_energy_capacity && total_energy_capacity)
+		current_fuel_k -= current_fuel_k / total_energy_capacity * (coolant_to_inject COOLANT_ENERGY_CAPACITY) * 0.5
 	chambered_coolant += coolant_to_inject
+
+	total_energy_capacity = chambered_fuel FUEL_ENERGY_CAPACITY + chambered_spent_fuel SPENT_FUEL_ENERGY_CAPACITY + chambered_coolant COOLANT_ENERGY_CAPACITY
 
 	//TODO: do rods actions here, like controll, buffs and debuffs,
 
@@ -204,7 +215,7 @@
 	if(fuel_compression_percentage)
 		fuel_compression_percentage = fuel_compression_percentage / reactor_capacity / max(0.02, compression / 50) * 100
 
-	fuel_compression = fuel_compression * 0.9 + (fuel_compression_percentage * max(1, magnet_impulsion) ^ 2 * 0.1)
+	fuel_compression = fuel_compression * 0.9 + (fuel_compression_percentage * max(1, magnet_impulsion) * 0.1)
 
 	if(rand(fuel_compression_percentage, fuel_compression_percentage * 2) > 100)
 		shield_power -= current_fuel_k / 10000000000000 * fuel_compression
@@ -237,7 +248,7 @@
 			create_fuel_k += fuel_to_lose * 1000000000000 / total_energy_capacity * (fuel_compression * 0.5)
 	current_fuel_k += create_fuel_k
 
-	var/k_for_transfer = (current_fuel_k - (current_k ^ 2)) * 0.000000001
+	var/k_for_transfer = (current_fuel_k - (current_k ^ 2 * 0.01)) * 0.000000001
 	if(k_for_transfer)
 		if(shield_projection)
 			k_for_transfer /= shield_projection ^ 4
@@ -249,7 +260,7 @@
 
 	if(total_energy_capacity)
 		if(shield_projection)
-			current_k += (total_energy_capacity / reactor_capacity + current_fuel_k * 0.0000000001) * shield_projection ^ 2
+			current_k += (total_energy_capacity / reactor_capacity + current_fuel_k * 0.0000000001) * shield_projection
 
 		if(magnet_impulsion)
 			current_k += magnet_impulsion * (current_fuel_k * 0.0000000001)
@@ -259,9 +270,9 @@
 		cooled_down_k = current_k * (rand(reactor_cooling_rate, reactor_cooling_rate * 10) / 1000)
 	current_k -= cooled_down_k
 
-	power = current_fuel_k / temperature_critical * 100
+	power = current_fuel_k / (temperature_critical GET_FULL_NUMBER) * 100
 
-	last_power_produced = k_for_transfer * 100
+	last_power_produced = k_for_transfer * 10000
 	last_power_produced *= (max(1, power) / 100) * (max(1, energy_absorbtion_rate) / 100)
 	last_power_produced *= rand(50, 150) * 0.01
 
@@ -271,7 +282,7 @@
 
 	//Using energy here
 	last_power_produced -= heating_rate * (base_power_modifier * 0.1)
-	last_power_produced -= shield_projection * (base_power_modifier * (fuel_compression ^ 2) * total_energy_capacity) * 0.01
+	last_power_produced -= shield_projection * (base_power_modifier * (fuel_compression) * total_energy_capacity) * 0.01
 	last_power_produced -= magnet_impulsion * (base_power_modifier * total_energy_capacity)
 	last_power_produced -= reactor_cooling_rate * cooled_down_k
 
@@ -306,13 +317,13 @@
 		shut_down()
 
 	//First alerts condition: Overheat
-	if(current_fuel_k >= temperature_critical || current_k >= temperature_critical * 0.0000001)
+	if(current_fuel_k >= temperature_critical GET_FULL_NUMBER || current_k >= temperature_critical * 10000)
 		alerts["Overheat"] = TRUE
 		var/temp_damage = 0
-		if(current_fuel_k >= temperature_meltdown)
+		if(current_fuel_k >= temperature_meltdown GET_FULL_NUMBER)
 			temp_damage = current_fuel_k/10000000000
 
-		else if(current_k >= temperature_meltdown * 0.0000001)
+		else if(current_k >= temperature_meltdown * 10000)
 			temp_damage = current_k/100
 
 		if(temp_damage)
@@ -375,7 +386,7 @@
 	stop_processing()
 	playsound('sound/effects/rbmk/meltdown.ogg', 25, 1, 7)
 	visible_message(SPAN_USERDANGER("You hear a horrible metallic hissing."))
-	if(current_fuel_k >= temperature_critical)
+	if(current_fuel_k >= temperature_critical GET_FULL_NUMBER)
 		enter_allowed = FALSE
 		for(var/shuttle_id in list(DROPSHIP_ALAMO, DROPSHIP_NORMANDY))
 			var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttle_id)
@@ -551,8 +562,7 @@
 	.["reactor"] = !!reactor
 	if(reactor)
 		.["shield_projection"] = reactor.shield_projection
-		.["max_shield_power"] = reactor.max_shield_power
-		.["shield_power"] = reactor.shield_power ? reactor.shield_power / reactor.max_shield_power * 100 : 0
+		.["max_shield_power"] = reactor.max_shield_projection
 		.["magnet_impulsion"] = reactor.magnet_impulsion
 		.["max_magnet_impulsion"] = reactor.max_magnet_impulsion
 		.["compression"] = reactor.compression
