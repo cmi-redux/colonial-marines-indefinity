@@ -354,6 +354,7 @@ ICEY GRASS. IT LOOKS LIKE IT'S MADE OF ICE.
 		TallGrassEdgeCache[SOUTHEAST].color = color
 		TallGrassEdgeCache[SOUTHWEST] = image(icon, "grass_edges_s-e")
 		TallGrassEdgeCache[SOUTHWEST].color = color
+	AddElement(/datum/element/mob_overlay_effect, -2, 12, 255)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/flora/grass/short_grass/LateInitialize()
@@ -378,11 +379,6 @@ ICEY GRASS. IT LOOKS LIKE IT'S MADE OF ICE.
 	T = get_step(src, SOUTHWEST)
 	if(T && !T.contents.Find(/obj/structure/flora/grass/tall_grass))
 		T.overlays -= TallGrassEdgeCache[SOUTHWEST]
-
-/obj/structure/flora/grass/short_grass/Crossed(atom/movable/arrived)
-	. = ..()
-	if(isliving(arrived))
-		arrived.AddComponent(/datum/component/mob_overlay_effect, -2, 12, 255)
 
 /obj/structure/flora/grass/short_grass/proc/auto_grass()
 	set waitfor = FALSE
@@ -421,11 +417,12 @@ ICEY GRASS. IT LOOKS LIKE IT'S MADE OF ICE.
 
 	update_overlays()
 
+	AddElement(/datum/element/mob_overlay_effect, -4, 15, 255)
+
 /obj/structure/flora/grass/tall_grass/Crossed(atom/movable/arrived)
 	. = ..()
 	if(isliving(arrived))
 		set_diged_ways(GLOB.reverse_dir[arrived.dir])
-		arrived.AddComponent(/datum/component/mob_overlay_effect, -4, 15, 255)
 
 /obj/structure/flora/grass/tall_grass/Uncrossed(atom/movable/gone)
 	. = ..()

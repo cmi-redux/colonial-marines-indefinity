@@ -116,7 +116,6 @@
 	rod = 0
 	for(rod in 1 to max_coolant_cells)
 		coolant_cells += new /obj/item/dcore_reactor_supply_cell/coolant(src)
-	start_up()
 
 /obj/structure/machinery/power/dragon_core/power_change()
 	return
@@ -236,8 +235,9 @@
 
 	var/create_fuel_k = 0
 	if(total_energy_capacity)
-		create_fuel_k += heating_rate ^ 2 / total_energy_capacity
-		if(fuel_to_lose > 0)
+		if(heating_rate)
+			create_fuel_k += heating_rate * 1.5 ^ 2 / (total_energy_capacity * 4)
+		if(fuel_to_lose)
 			create_fuel_k += fuel_to_lose * 10000 / total_energy_capacity * (fuel_compression * 0.5)
 	current_fuel_k += create_fuel_k
 
@@ -247,7 +247,7 @@
 			k_for_transfer /= shield_projection ^ 4
 		if(magnet_impulsion)
 			k_for_transfer /= magnet_impulsion
-		k_for_transfer = k_for_transfer * total_energy_capacity ^ 2
+		k_for_transfer = k_for_transfer * total_energy_capacity
 		current_k += k_for_transfer
 		current_fuel_k -= k_for_transfer * (max(1, energy_absorbtion_rate) / 50)
 

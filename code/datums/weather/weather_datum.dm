@@ -174,6 +174,8 @@
 	update_corners(TRUE)
 	update_overlays()
 
+	AddElement(/datum/element/mob_overlay_effect, bleed_layer * 2, bleed_layer * 3, 255)
+
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/snow/proc/update_corners(propagate = FALSE)
@@ -224,6 +226,8 @@
 		if(diged[i])
 			new_overlay += i
 	overlays += "[new_overlay]"
+	RemoveElement(/datum/element/mob_overlay_effect)
+	AddElement(/datum/element/mob_overlay_effect)
 
 /obj/structure/snow/proc/damage_act(damage)
 	if(pts > damage / 5)
@@ -302,7 +306,6 @@
 				new_slowdown += 4 SECONDS
 			living.next_move_slowdown = new_slowdown
 		set_diged_ways(GLOB.reverse_dir[living.dir])
-		living.AddComponent(/datum/component/mob_overlay_effect, bleed_layer * 2, bleed_layer * 3, 255)
 
 /obj/structure/snow/Uncrossed(atom/movable/gone)
 	. = ..()

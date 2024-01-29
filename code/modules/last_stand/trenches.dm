@@ -17,6 +17,7 @@
 		CB.to_block = src
 
 		cadeblockers.Add(CB)
+	AddElement(/datum/element/mob_overlay_effect, -4, -4)
 
 /turf/open/trench/ChangeTurf()
 	QDEL_NULL_LIST(cadeblockers)
@@ -112,7 +113,6 @@
 /turf/open/trench/Entered(atom/movable/arrived)
 	. = ..()
 	if(isliving(arrived))
-		arrived.AddComponent(/datum/component/mob_overlay_effect, -4, -4)
 		var/mob/living/C = arrived
 		if(C && C.throwing)
 			return

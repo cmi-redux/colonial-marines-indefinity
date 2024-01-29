@@ -576,6 +576,8 @@ var/list/ob_type_fuel_requirements
 	var/fire_type = "white"
 
 /obj/structure/ob_ammo/warhead/nuke/warhead_impact(turf/target)
+	world << sound('sound/AI/nuclear_launch_warning.ogg')
+	sleep(OB_TRAVEL_TIMING)
 	. = ..()
 	if(!.)
 		return

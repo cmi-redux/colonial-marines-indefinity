@@ -511,6 +511,10 @@
 
 	layer = UNDER_TURF_LAYER -0.03
 
+/turf/open/gm/river/Initialize()
+	. = ..()
+	AddElement(/datum/element/mob_overlay_effect, -8, 18)
+
 /turf/open/gm/river/update_overlays()
 	. = ..()
 	if(!.)
@@ -552,8 +556,6 @@
 		return
 
 	if(!covered)
-		if(isliving(arrived))
-			arrived.AddComponent(/datum/component/mob_overlay_effect, -8, 18)
 		var/mob/living/carbon/carbon = arrived
 		var/river_slowdown = base_river_slowdown
 
@@ -654,10 +656,9 @@
 
 	layer = UNDER_TURF_LAYER -0.03
 
-/turf/open/gm/coast/Entered(atom/movable/arrived)
+/turf/open/gm/coast/Initialize(mapload, ...)
 	. = ..()
-	if(isliving(arrived))
-		arrived.AddComponent(/datum/component/mob_overlay_effect, -2, 12)
+	AddElement(/datum/element/mob_overlay_effect, -2, 12)
 
 /turf/open/gm/coast/north
 
@@ -712,10 +713,9 @@
 
 	layer = UNDER_TURF_LAYER -0.03
 
-/turf/open/gm/riverdeep/Entered(atom/movable/arrived)
+/turf/open/gm/riverdeep/Initialize(mapload, ...)
 	. = ..()
-	if(ishuman(arrived))
-		arrived.AddComponent(/datum/component/mob_overlay_effect, -16, 28)
+	AddElement(/datum/element/mob_overlay_effect, -16, 28)
 
 /turf/open/gm/river/no_overlay
 	no_overlay = TRUE

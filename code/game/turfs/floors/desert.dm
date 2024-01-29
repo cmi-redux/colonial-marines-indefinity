@@ -103,10 +103,9 @@
 
 	layer = UNDER_TURF_LAYER -0.03
 
-/turf/open/desert/desert_shore/Entered(atom/movable/arrived)
+/turf/open/desert/desert_shore/Initialize(mapload, ...)
 	. = ..()
-	if(isliving(arrived))
-		arrived.AddComponent(/datum/component/mob_overlay_effect, -2, 12)
+	AddElement(/datum/element/mob_overlay_effect, -2, 12)
 
 /turf/open/desert/desert_shore/update_icon()
 	..()
@@ -234,11 +233,9 @@
 	icon_state = "shallow"
 	icon_overlay = "_shallow"
 
-/turf/open/gm/river/desert/shallow/Entered(atom/movable/arrived)
+/turf/open/gm/river/desert/shallow/Initialize(mapload, ...)
 	. = ..()
-	if(!covered)
-		if(isliving(arrived))
-			arrived.AddComponent(/datum/component/mob_overlay_effect, -8, 18)
+	AddElement(/datum/element/mob_overlay_effect, -8, 18)
 
 /turf/open/gm/river/desert/shallow/covered
 	covered = 1
@@ -249,11 +246,9 @@
 	icon_state = "shallow_edge"
 	icon_overlay = "shallow_edge_overlay"
 
-/turf/open/gm/river/desert/shallow_edge/Entered(atom/movable/arrived)
+/turf/open/gm/river/desert/shallow_edge/Initialize(mapload, ...)
 	. = ..()
-	if(!covered)
-		if(isliving(arrived))
-			arrived.AddComponent(/datum/component/mob_overlay_effect, -12, 22)
+	AddElement(/datum/element/mob_overlay_effect, -12, 22)
 
 /turf/open/gm/river/desert/shallow_edge/covered
 	covered = 1
@@ -264,11 +259,9 @@
 	icon_state = "shallow_c"
 	icon_overlay = "shallow_c_overlay"
 
-/turf/open/gm/river/desert/shallow_corner/Entered(atom/movable/arrived)
+/turf/open/gm/river/desert/shallow_corner/Initialize(mapload, ...)
 	. = ..()
-	if(!covered)
-		if(isliving(arrived))
-			arrived.AddComponent(/datum/component/mob_overlay_effect, -12, 22)
+	AddElement(/datum/element/mob_overlay_effect, -12, 22)
 
 /turf/open/gm/river/desert/shallow_corner/covered
 	covered = 1
@@ -280,11 +273,9 @@
 	icon_state = "deep"
 	icon_overlay = "_deep"
 
-/turf/open/gm/river/desert/deep/Entered(atom/movable/arrived)
+/turf/open/gm/river/desert/deep/Initialize(mapload, ...)
 	. = ..()
-	if(!covered)
-		if(isliving(arrived))
-			arrived.AddComponent(/datum/component/mob_overlay_effect, -16, 28)
+	AddElement(/datum/element/mob_overlay_effect, -16, 28)
 
 /turf/open/gm/river/desert/deep/covered
 	covered = 1
