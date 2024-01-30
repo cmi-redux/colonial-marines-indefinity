@@ -100,10 +100,9 @@ SUBSYSTEM_DEF(vote)
 				if(choices["Continue Playing"] >= greatest_votes)
 					greatest_votes = choices["Continue Playing"]
 	. = list()
-	if(greatest_votes)
-		for(var/option in choices_adjusted)
-			if(choices_adjusted[option] == greatest_votes)
-				. += option
+	for(var/option in choices_adjusted)
+		if(choices_adjusted[option] == greatest_votes)
+			. += option
 	return .
 
 
