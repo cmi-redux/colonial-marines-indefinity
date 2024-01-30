@@ -6,7 +6,7 @@ export const DragonCoreControl = (props, context) => {
   const { act, data } = useBackend(context);
   if (data.reactor) {
     return (
-      <Window resizable theme="weyland" width={400} height={600}>
+      <Window resizable theme="weyland" width={500} height={1000}>
         <Window.Content>
           <Section title="Inner Core System Management:">
             Shield Power:
@@ -25,19 +25,19 @@ export const DragonCoreControl = (props, context) => {
                 })
               }
             />
-            Magnits Power:
+            Gravity Well Impulsion:
             <br />
             <Slider
-              value={data.magnet_impulsion}
-              fillValue={data.magnet_impulsion}
+              value={data.gravity_well_impulsion}
+              fillValue={data.gravity_well_impulsion}
               minValue={0}
-              maxValue={data.max_magnet_impulsion}
+              maxValue={data.max_gravity_well_impulsion}
               step={0.1}
               stepPixelSize={1}
               onDrag={(e, value) =>
                 act('input', {
                   amount: value,
-                  var: 'magnet_impulsion',
+                  var: 'gravity_well_impulsion',
                 })
               }
             />

@@ -51,39 +51,6 @@
 			var/obj/structure/machinery/door/poddoor/almayer/blended/B = i
 			INVOKE_ASYNC(B, TYPE_PROC_REF(/obj/structure/machinery/door, open))
 
-
-/// Checks for anything that may get in the way of a crash, returns FALSE if there is something in the way or is out of bounds
-/obj/docking_port/mobile/crashmode/proc/check_crash_point(obj/docking_port/stationary/crashmode/checked_crashable_port)
-	for(var/turf/found_turf as anything in checked_crashable_port.return_turfs())
-		var/area/found_area = get_area(found_turf)
-		if(found_area.flags_area & AREA_NOTUNNEL)
-			return FALSE
-
-		if(!found_area.can_build_special)
-			return FALSE
-
-		if(found_turf.turf_flags & TURF_HULL)
-			return FALSE
-
-		if(istype(found_turf, /turf/closed/shuttle))
-			return FALSE
-
-	for(var/obj/docking_port/stationary/stationary_dock in get_turf(checked_crashable_port))
-		if(stationary_dock != checked_crashable_port)
-			return FALSE
-
-	for(var/obj/docking_port/mobile/cycled_mobile_port as anything in SSshuttle.mobile)
-		if(cycled_mobile_port == src)
-			continue
-
-		if(!cycled_mobile_port.destination)
-			continue
-
-		if(length(checked_crashable_port.return_turfs() & cycled_mobile_port.destination.return_turfs()))
-			return FALSE
-
-	return TRUE
-
 /obj/docking_port/stationary/crashmode/hangar
 	name = "Hangar Pad One"
 	id = DROPSHIP_HEART_OF_GOLD

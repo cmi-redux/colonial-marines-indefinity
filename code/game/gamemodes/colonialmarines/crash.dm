@@ -48,8 +48,7 @@
 /* Pre-pre-startup */
 /datum/game_mode/crash/can_start()
 	var/list/datum/mind/possible_xenomorphs = get_players_for_role(JOB_XENOMORPH)
-	var/list/datum/mind/possible_queens = get_players_for_role(JOB_XENOMORPH_QUEEN)
-	if(possible_xenomorphs.len + possible_queens.len < xeno_required_num) //We don't have enough aliens, we don't consider people rolling for only Queen.
+	if(possible_xenomorphs.len < xeno_required_num) //We don't have enough aliens, we don't consider people rolling for only Queen.
 		to_world("Not enough players have chosen to be a xenomorph in their character setup. <b>Aborting</b>.")
 		return FALSE
 

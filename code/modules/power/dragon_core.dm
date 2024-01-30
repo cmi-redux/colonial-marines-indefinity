@@ -44,11 +44,10 @@
 	var/last_temperature = 0
 	var/last_vessel_temperature = 0
 	var/last_vessel_cooled = 0
+	var/last_fuel_compression_percentage = 0
 	var/power = 0
 	var/last_power_produced = 0
 	var/base_power_modifier = 5000
-
-	var/next_slowprocess = 0
 
 	var/next_warning = 0 //To avoid spam.
 	var/alerts = list("Overheat" = FALSE, "Energydrain" = FALSE, "Vesselconsumption" = FALSE)
@@ -62,11 +61,11 @@
 	//Max controlable reactor values
 	var/max_shield_projection = 100
 	var/max_shield_power = 500000
-	var/max_magnet_impulsion = 100
+	var/max_gravity_well_impulsion = 100
 	var/max_compression = 100
 	var/max_fuel_injection = 12
 	var/max_coolant_injection = 4
-	var/max_contained_ejection = 48
+	var/max_contained_ejection = 100
 	var/max_heating_rate = 100
 	var/max_energy_absorbtion_rate = 100
 	var/max_reactor_cooling_rate = 100
@@ -74,7 +73,7 @@
 	//Controlable reactor values
 	var/shield_projection = 0 //Additional barrier for containing, preventing reactor from eating itself (use a lot of energy), but if you get enough energy in moment of explosion, ship can survive.
 	var/shield_power = 0
-	var/magnet_impulsion = 5 //How strong we powering magnets, for contain fuel (use a lot of energy)
+	var/gravity_well_impulsion = 5 //How strong we powering magnets, for contain fuel (use a lot of energy)
 	var/compression = 5 //How strong we compressing fusion
 	var/fuel_compression = 0 //Bigger value, take more heat but can very fast produce more if condition for fusion meet
 	var/fuel_compression_percentage = 0
@@ -116,6 +115,12 @@
 	rod = 0
 	for(rod in 1 to max_coolant_cells)
 		coolant_cells += new /obj/item/dcore_reactor_supply_cell/coolant(src)
+	health = initial(health)
+	current_fuel_k = 0
+	current_k = 0
+	chambered_fuel = 0
+	chambered_spent_fuel = 0
+	chambered_coolant = 0
 
 /obj/structure/machinery/power/dragon_core/power_change()
 	return
@@ -125,13 +130,13 @@
 		icon_state = "offline"
 	else if(flags_reactor & REACTOR_SLAGGED)
 		icon_state = "slagged"
-	else if(current_fuel_k > temperature_operating)
+	else if(current_fuel_k < temperature_operating)
 		icon_state = "online"
-	else if(current_fuel_k > temperature_pre_critical)
+	else if(current_fuel_k < temperature_pre_critical)
 		icon_state = "hot"
-	else if(current_fuel_k > temperature_critical)
+	else if(current_fuel_k < temperature_critical)
 		icon_state = "overheat"
-	else if(current_fuel_k > temperature_meltdown) //Point of no return.
+	else if(current_fuel_k >= temperature_critical) //Point of no return.
 		icon_state = "meltdown"
 	else
 		icon_state = "loaded"
@@ -157,26 +162,21 @@
 /obj/structure/machinery/power/dragon_core/ex_act(severity)
 	health -= severity
 
-/obj/structure/machinery/power/dragon_core/process()
-	if(next_slowprocess < world.time)
-		slowprocess()
-		next_slowprocess = world.time + 2 SECONDS
-
 /obj/structure/machinery/power/dragon_core/proc/has_fuel()
 	var/fuel_amount_stored = chambered_fuel
 	for(var/obj/item/dcore_reactor_supply_cell/cell as anything in fuel_cells)
 		fuel_amount_stored += cell.fuel
 	return fuel_amount_stored
 
-/obj/structure/machinery/power/dragon_core/proc/slowprocess()
+/obj/structure/machinery/power/dragon_core/process()
 	if(flags_reactor & REACTOR_SLAGGED)
 		stop_processing()
 		return
 
 	if(shield_projection)
-		shield_power = min(shield_power + max_shield_power / 120 * (shield_projection * 0.01), max_shield_power)
+		shield_power = min(shield_power + max_shield_power / rand(20, 120) * (shield_projection * 0.01), max_shield_power)
 	else
-		shield_power = max(shield_power - max_shield_power / 120, 0)
+		shield_power = max(shield_power - max_shield_power / rand(20, 120), 0)
 
 	if(current_fuel_k < 0)
 		current_fuel_k = 0
@@ -207,23 +207,23 @@
 	if(fuel_compression_percentage)
 		fuel_compression_percentage = fuel_compression_percentage / reactor_capacity / max(0.02, compression / 50) * 100
 
-	fuel_compression = fuel_compression * 0.9 + (fuel_compression_percentage * max(1, magnet_impulsion) * 0.1)
+	fuel_compression = fuel_compression * 0.9 + (fuel_compression_percentage * max(0.1, gravity_well_impulsion) * 0.1)
 
 	if(rand(fuel_compression_percentage, fuel_compression_percentage * 2) > 100)
-		shield_power -= current_fuel_k / 10000 * fuel_compression
+		shield_power -= current_fuel_k * 0.000001 * (fuel_compression / 100 * 0.5)
 		if(shield_power < 0)
 			shield_power = 0
-			health -= fuel_compression_percentage * 10
-			chambered_fuel += fuel_compression_percentage * 40
+		if(!shield_power)
+			health -= fuel_compression_percentage
+			chambered_fuel += rand(1, 5)
 			alerts["Vesselconsumption"] = TRUE
 	else
 		alerts["Vesselconsumption"] = FALSE
 
 	var/fuel_to_lose = 0
 	if(current_fuel_k)
-		fuel_to_lose = current_fuel_k / 10000 * fuel_compression
-		if(heating_rate)
-			fuel_to_lose *= heating_rate ^ 2
+		fuel_to_lose = current_fuel_k * 0.0000001 * (fuel_compression / 100 * 0.5)
+		fuel_to_lose *= max(0.1, heating_rate / 20)
 		if(reactor_cooling_rate)
 			fuel_to_lose /= reactor_cooling_rate * 0.25
 		fuel_to_lose = min(chambered_fuel, fuel_to_lose)
@@ -236,37 +236,33 @@
 	var/create_fuel_k = 0
 	if(total_energy_capacity)
 		if(heating_rate)
-			create_fuel_k += heating_rate * 1.5 ^ 2 / (total_energy_capacity * 4)
+			create_fuel_k += heating_rate * 15 / (total_energy_capacity * 4)
 		if(fuel_to_lose)
-			create_fuel_k += fuel_to_lose * 10000 / total_energy_capacity * (fuel_compression * 0.5)
+			create_fuel_k += fuel_to_lose * 10000000 / total_energy_capacity * (fuel_compression / 100 * 0.5)
 	current_fuel_k += create_fuel_k
 
 	var/k_for_transfer = (current_fuel_k - current_k * 10000) * 0.0001
 	if(k_for_transfer)
 		if(shield_projection)
-			k_for_transfer /= shield_projection ^ 4
-		if(magnet_impulsion)
-			k_for_transfer /= magnet_impulsion
+			k_for_transfer /= shield_projection
 		k_for_transfer = k_for_transfer * total_energy_capacity
 		current_k += k_for_transfer
-		current_fuel_k -= k_for_transfer * (max(1, energy_absorbtion_rate) / 50)
+		current_fuel_k -= k_for_transfer * (max(0.1, energy_absorbtion_rate) + (max(0.1, gravity_well_impulsion)))
 
 	if(total_energy_capacity)
-		if(shield_projection)
-			current_k += (total_energy_capacity / reactor_capacity + current_fuel_k * 0.0001) * shield_projection
-
-		if(magnet_impulsion)
-			current_k += magnet_impulsion * (current_fuel_k * 0.0001)
+		current_k += (total_energy_capacity / reactor_capacity + current_fuel_k * 0.0000001) * (shield_projection + gravity_well_impulsion)
 
 	var/cooled_down_k = 0
 	if(reactor_cooling_rate)
-		cooled_down_k = current_k * (rand(reactor_cooling_rate, reactor_cooling_rate * 10) / 100)
-	current_k -= cooled_down_k
+		cooled_down_k = current_k / 4 * (rand(reactor_cooling_rate * 0.7, reactor_cooling_rate * 1.3) / 50)
+	current_k -= cooled_down_k + rand(1, 100)
+	if(current_k < 0)
+		current_k = 0
 
 	power = current_fuel_k / temperature_critical * 100
 
-	last_power_produced = k_for_transfer * 10000
-	last_power_produced *= (max(1, power) / 100) * (max(1, energy_absorbtion_rate) / 100)
+	last_power_produced = k_for_transfer * 10000000
+	last_power_produced *= (max(0.1, power) / 100) * (max(0.1, energy_absorbtion_rate) / 100) * (max(0.1, energy_absorbtion_rate) / 100)
 	last_power_produced *= rand(50, 150) * 0.01
 
 	last_power_produced *= base_power_modifier
@@ -274,7 +270,7 @@
 	//Using energy here
 	last_power_produced -= heating_rate * (base_power_modifier * 0.1)
 	last_power_produced -= shield_projection * (fuel_compression * total_energy_capacity)
-	last_power_produced -= magnet_impulsion * (base_power_modifier * total_energy_capacity)
+	last_power_produced -= gravity_well_impulsion * (base_power_modifier * total_energy_capacity)
 	last_power_produced -= reactor_cooling_rate * cooled_down_k
 
 	add_avail(last_power_produced)
@@ -287,12 +283,13 @@
 	//Ejecting some percentage of fuel
 	if(contained_ejection && total_energy_capacity)
 		chambered_fuel -= min(chambered_fuel, total_energy_capacity / 100 * (contained_ejection / 100))
-		chambered_spent_fuel -= min(chambered_spent_fuel, total_energy_capacity / 100 * (contained_ejection / 25))
+		chambered_spent_fuel -= min(chambered_spent_fuel, total_energy_capacity / 100 * (contained_ejection / 5))
 		chambered_coolant -= min(chambered_coolant, total_energy_capacity / 100 * (contained_ejection / 100))
 
 	last_temperature = current_fuel_k + rand(1, 10000) / 10
 	last_vessel_temperature = current_k + rand(1, 100) / 10
 	last_vessel_cooled = cooled_down_k + rand(1, 100) / 10
+	last_fuel_compression_percentage = fuel_compression_percentage + rand(0, 10)
 	handle_alerts()
 	update_icon()
 
@@ -310,18 +307,19 @@
 	//First alerts condition: Overheat
 	if(current_fuel_k >= temperature_critical || current_k >= temperature_critical * 0.0001)
 		alerts["Overheat"] = TRUE
-		var/temp_damage = 0
-		if(current_fuel_k >= temperature_meltdown)
-			temp_damage = current_fuel_k/1000000
+		if(!shield_power)
+			var/temp_damage = 0
+			if(current_fuel_k >= temperature_meltdown)
+				temp_damage = current_fuel_k/1000000
 
-		else if(current_k >= temperature_meltdown * 0.0001)
-			temp_damage = current_k/1000
+			else if(current_k >= temperature_meltdown * 0.0001)
+				temp_damage = current_k/1000
 
-		if(temp_damage)
-			health -= temp_damage
-			if(health <= temp_damage)
-				meltdown()
-				return
+			if(temp_damage)
+				health -= temp_damage
+				if(health <= temp_damage)
+					meltdown()
+					return
 	else
 		alerts["Overheat"] = FALSE
 
@@ -556,8 +554,8 @@
 	if(reactor)
 		.["shield_projection"] = reactor.shield_projection
 		.["max_shield_power"] = reactor.max_shield_projection
-		.["magnet_impulsion"] = reactor.magnet_impulsion
-		.["max_magnet_impulsion"] = reactor.max_magnet_impulsion
+		.["gravity_well_impulsion"] = reactor.gravity_well_impulsion
+		.["max_gravity_well_impulsion"] = reactor.max_gravity_well_impulsion
 		.["compression"] = reactor.compression
 		.["max_compression"] = reactor.max_compression
 		.["fuel_injection"] = reactor.fuel_injection
@@ -576,14 +574,15 @@
 /obj/structure/machinery/computer/dragon_core_reactor/stats
 	name = "reactor statistics console"
 	desc = "A console for monitoring the statistics of a nuclear reactor."
-	var/next_stat_interval = 0
-	var/reactor_prev_temp = 0
 	var/list/powerData = list()
 	var/list/temperatureData = list()
 	var/list/vesseltemperatureData = list()
 	var/list/vesselcoolingData = list()
-	var/list/temdiffData = list()
 	var/list/shieldData = list()
+	var/list/fuelcompressionData = list()
+	var/list/fuelData = list()
+	var/list/spentfuelData = list()
+	var/list/coolantData = list()
 
 /obj/structure/machinery/computer/dragon_core_reactor/stats/Initialize()
 	. = ..()
@@ -605,32 +604,41 @@
 		ui.set_autoupdate(TRUE)
 
 /obj/structure/machinery/computer/dragon_core_reactor/stats/process()
-	if(world.time >= next_stat_interval)
-		next_stat_interval = world.time + 1 SECONDS //You only get a slow tick.
-		powerData += reactor ? reactor.power*10 : 0
-		if(powerData.len > 120)
-			powerData.Cut(1, 2)
+	powerData += reactor ? reactor.power*10 : 0
+	if(powerData.len > 240)
+		powerData.Cut(1, 2)
 
-		temperatureData += reactor ? reactor.last_temperature : 0
-		if(temperatureData.len > 120)
-			temperatureData.Cut(1, 2)
+	temperatureData += reactor ? reactor.last_temperature : 0
+	if(temperatureData.len > 240)
+		temperatureData.Cut(1, 2)
 
-		vesseltemperatureData += reactor ? reactor.last_vessel_temperature : 0
-		if(vesseltemperatureData.len > 120)
-			vesseltemperatureData.Cut(1, 2)
+	vesseltemperatureData += reactor ? reactor.last_vessel_temperature : 0
+	if(vesseltemperatureData.len > 240)
+		vesseltemperatureData.Cut(1, 2)
 
-		vesselcoolingData += reactor ? reactor.last_vessel_cooled : 0
-		if(vesselcoolingData.len > 120)
-			vesselcoolingData.Cut(1, 2)
+	vesselcoolingData += reactor ? reactor.last_vessel_cooled : 0
+	if(vesselcoolingData.len > 240)
+		vesselcoolingData.Cut(1, 2)
 
-		temdiffData += reactor ? reactor_prev_temp - reactor.last_temperature : 0
-		reactor_prev_temp = reactor ? reactor.last_temperature : 0
-		if(temdiffData.len > 120)
-			temdiffData.Cut(1, 2)
+	shieldData += reactor ? reactor.shield_power : 0
+	if(shieldData.len > 240)
+		shieldData.Cut(1, 2)
 
-		shieldData += reactor ? reactor.shield_power : 0
-		if(shieldData.len > 120)
-			shieldData.Cut(1, 2)
+	fuelcompressionData += reactor ? reactor.last_fuel_compression_percentage : 0
+	if(fuelcompressionData.len > 240)
+		fuelcompressionData.Cut(1, 2)
+
+	fuelData += reactor ? reactor.chambered_fuel : 0
+	if(fuelData.len > 240)
+		fuelData.Cut(1, 2)
+
+	spentfuelData += reactor ? reactor.chambered_spent_fuel : 0
+	if(spentfuelData.len > 240)
+		spentfuelData.Cut(1, 2)
+
+	coolantData += reactor ? reactor.chambered_coolant : 0
+	if(coolantData.len > 240)
+		coolantData.Cut(1, 2)
 
 /obj/structure/machinery/computer/dragon_core_reactor/stats/ui_data(mob/user)
 	. = list()
@@ -640,12 +648,20 @@
 	.["vessel_cooled"] = reactor ? reactor.last_vessel_cooled : 0
 	.["max_shields"] = reactor ? reactor.max_shield_power : 0
 	.["shields"] = reactor ? reactor.shield_power : 0
+	.["fuelcompression"] = reactor ? reactor.last_fuel_compression_percentage : 0
+	.["fuel"] = reactor ? reactor.chambered_fuel : 0
+	.["spent_fuel"] = reactor ? reactor.chambered_spent_fuel : 0
+	.["coolant"] = reactor ? reactor.chambered_coolant : 0
+	.["reactor_capacity"] = reactor ? reactor.reactor_capacity : 0
 	.["powerData"] = powerData
 	.["temperatureData"] = temperatureData
 	.["vesseltemperatureData"] = vesseltemperatureData
 	.["vesselcoolingData"] = vesselcoolingData
-	.["temdiffData"] = temdiffData
 	.["shieldData"] = shieldData
+	.["fuelcompressionData"] = fuelcompressionData
+	.["fuelData"] = fuelData
+	.["spentfuelData"] = spentfuelData
+	.["coolantData"] = coolantData
 
 //Cells and Rods
 

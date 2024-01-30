@@ -165,8 +165,7 @@
 		build_signal_listener()
 
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_EXIT = PROC_REF(on_exit),
-		COMSIG_ATOM_ENTERED = PROC_REF(on_enter)
+		COMSIG_ATOM_EXIT = TYPE_PROC_REF(/obj/structure/stairs, on_exit)
 	)
 
 	AddElement(/datum/element/connect_loc, loc_connections)
@@ -186,21 +185,6 @@
 	if(isTerminator() && direction == dir)
 		leaving.set_currently_z_moving(CURRENTLY_Z_ASCENDING)
 		INVOKE_ASYNC(src, PROC_REF(stair_ascend), leaving)
-		return COMPONENT_ATOM_BLOCK_EXIT
-
-/obj/structure/stairs/proc/on_enter(datum/source, atom/movable/arrived, old_loc, old_locs)
-	SIGNAL_HANDLER
-
-	if(arrived == src)
-		return
-
-	if(isTerminator() && arrived.dir == dir)
-//		if(istype(arrived, /obj/vehicle/multitile))
-//			var/obj/vehicle/multitile/multitile = arrived
-//			multitile.try_use_stairs()
-//		else
-		arrived.set_currently_z_moving(CURRENTLY_Z_ASCENDING)
-		INVOKE_ASYNC(src, PROC_REF(stair_ascend), arrived)
 		return COMPONENT_ATOM_BLOCK_EXIT
 
 /obj/structure/stairs/proc/stair_ascend(atom/movable/climber)

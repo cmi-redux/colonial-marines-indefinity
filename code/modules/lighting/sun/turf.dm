@@ -186,13 +186,13 @@ Sunlight System
 	var/weathervisible
 	if(!is_ground_level(z) && !is_mainship_level(z))
 		skyvisible = FALSE
-		weathervisible = TRUE
+		weathervisible = FALSE
 		return
 
 	//Check yourself (before you wreck yourself)
 	if(istype(src, /turf/closed) || (/obj/structure/window/framed in contents)) //Closed, but we might be transparent
 		skyvisible = turf_flags & TURF_TRANSPARENT // a column of glass should still let the sun in
-		weathervisible = TRUE
+		weathervisible = FALSE
 	else
 		if(recursionStarted)
 			// This src is acting as a ceiling - so if we are a floor we TURF_WEATHER_PROOF + block the sunlight of our down-Z turf
