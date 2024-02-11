@@ -23,7 +23,6 @@
 	var/identifier
 	var/playerid
 	var/realtime
-	var/used
 
 /datum/entity_view_meta/discord_identifier
 	root_record_type = /datum/entity/discord_identifier

@@ -143,11 +143,6 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 	var/rendered_announce_text = replacetext(end_game_announce, "###SHIPNAME###", MAIN_SHIP_NAME)
 	to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDBODY("[rendered_announce_text] [SSmapping.configs[GROUND_MAP].map_name].\nИгровой режим был: [GLOB.master_mode]!\n[CONFIG_GET(string/endofroundblurb)]"))
 
-	var/current_real_hour = text2num(time2text(world.timeofday, "hh"))
-	if(current_real_hour < 12 && world.port == 1400)
-		SSticker.graceful = TRUE
-		to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDBODY("<h1>Это последний раунд.</h1>"))
-
 //////////////////////////////////////////////////////////////////////
 //Announces the end of the game with all relevant information stated//
 //////////////////////////////////////////////////////////////////////

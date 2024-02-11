@@ -115,14 +115,6 @@ var/list/AAlarmWireColorToIndex
 /// 10 minutes to arrive.
 #define shuttle_time_to_arrive 10 MINUTES
 
-	// MySQL configuration
-
-var/sqladdress = "localhost"
-var/sqlport = "3306"
-var/sqldb = "ss13"
-var/sqllogin = "ss13"
-var/sqlpass = ""
-
 
 	// For FTP requests. (i.e. downloading runtime logs.)
 	// However it'd be ok to use for accessing attack logs and such too, which are even laggier.

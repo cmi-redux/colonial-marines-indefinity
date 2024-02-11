@@ -36,7 +36,7 @@
 	var/token
 
 	while(not_unique)
-		token = replacetext(trim("[pick(long_list)]-[pick(long_list)]-[pick(long_list)]-[pick(long_list)]-[pick(long_list)]-[pick(long_list)]"), " ", "")
+		token = replacetext(trim("CM-[pick(long_list)]-[pick(long_list)]-[pick(long_list)]-[pick(long_list)]-[pick(long_list)]-[pick(long_list)]"), " ", "")
 		not_unique = locate(/datum/view_record/discord_identifier) in DB_VIEW(/datum/view_record/discord_identifier, DB_COMP("identifier", DB_EQUALS, token))
 
 	new_identifier.identifier = token

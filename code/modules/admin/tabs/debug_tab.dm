@@ -146,5 +146,5 @@
 	log_admin("[key_name(usr)] has [on_off ? "disabled" : "enabled"] the Native Field of View configuration.")
 	CONFIG_SET(flag/native_fov, !on_off)
 
-//	for(mob/living/mob in GLOB.player_list)
-//		mob.update_fov()
+	for(var/mob/living/mob in GLOB.player_list)
+		mob.update_fov()

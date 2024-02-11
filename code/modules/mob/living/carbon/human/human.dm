@@ -22,7 +22,7 @@
 
 	vendor_datum = new(src)
 
-//	update_fov()
+	update_fov()
 
 /mob/living/carbon/human/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()

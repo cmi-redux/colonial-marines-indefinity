@@ -37,7 +37,6 @@ BSQL_PROTECT_DATUM(/datum/entity/discord_rank)
 	root_record_type = /datum/entity/discord_rank
 	destination_entity = /datum/view_record/discord_rank
 	fields = list(
-		"id",
 		"rank",
 		"rank_name",
 		"functions",

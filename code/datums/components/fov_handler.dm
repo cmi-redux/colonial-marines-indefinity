@@ -113,11 +113,7 @@
 /// When a mob logs out, delete the component
 /datum/component/fov_handler/proc/mob_logout(mob/user)
 	SIGNAL_HANDLER
-	if(!tracked)
-		qdel(src)
-		return
-
-	parent = tracked.mob
+	qdel(src)
 
 /datum/component/fov_handler/RegisterWithParent()
 	. = ..()

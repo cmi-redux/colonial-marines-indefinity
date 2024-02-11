@@ -81,7 +81,8 @@ var/datum/controller/subsystem/entity_manager/SSentity_manager
 			view.root_entity_meta = tables[view.root_record_type]
 			adapter.prepare_view(view)
 
-	GLOB.discord_ranks = DB_VIEW(/datum/view_record/discord_rank)
+	for(var/datum/view_record/discord_rank/discord_rank in DB_VIEW(/datum/view_record/discord_rank))
+		GLOB.discord_ranks["[discord_rank.rank]"] = discord_rank
 
 	initialized = TRUE
 	return SS_INIT_SUCCESS
