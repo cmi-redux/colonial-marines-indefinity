@@ -1,33 +1,53 @@
-/datum/entity/donater
-	var/player_id
-	var/ckey
+GLOBAL_LIST_EMPTY(discord_ranks)
+
+/datum/entity/discord_rank
 	var/rank
+	var/rank_name
+	var/functions
+	var/list/buns = list()
 
-BSQL_PROTECT_DATUM(/datum/entity/donater)
+BSQL_PROTECT_DATUM(/datum/entity/discord_rank)
 
-/datum/entity_meta/donater
-	entity_type = /datum/entity/donater
-	table_name = "donaters"
+/datum/entity_meta/discord_rank
+	entity_type = /datum/entity/discord_rank
+	table_name = "discord_ranks"
 	field_types = list(
-	"player_id" = DB_FIELDTYPE_BIGINT,
-	"ckey" = DB_FIELDTYPE_STRING_MAX,
-	"rank" = DB_FIELDTYPE_STRING_MAX,
+		"rank" = DB_FIELDTYPE_INT,
+		"rank_name" = DB_FIELDTYPE_STRING_LARGE,
+		"functions" = DB_FIELDTYPE_STRING_MAX,
 	)
 
-/datum/view_record/donater_view
-	var/ckey
+/datum/entity_meta/discord_rank/map(datum/entity/discord_rank/ET, list/values)
+	..()
+	if(values["functions"])
+		ET.buns = json_decode(values["functions"])
+
+/datum/entity_meta/discord_rank/unmap(datum/entity/discord_rank/ET)
+	. = ..()
+	if(length(ET.buns))
+		.["functions"] = json_encode(ET.buns)
+
+/datum/view_record/discord_rank
 	var/rank
+	var/rank_name
+	var/functions
+	var/list/buns = list()
 
-/datum/entity_view_meta/donater_view
-	root_record_type = /datum/entity/donater
-	destination_entity = /datum/view_record/donater_view
+/datum/entity_view_meta/discord_rank
+	root_record_type = /datum/entity/discord_rank
+	destination_entity = /datum/view_record/discord_rank
 	fields = list(
-		"player_id",
-		"ckey",
+		"id",
 		"rank",
+		"rank_name",
+		"functions",
 	)
-	order_by = list("ckey" = DB_ORDER_BY_DESC)
+	order_by = list("rank" = DB_ORDER_BY_ASC)
 
+/datum/entity_view_meta/discord_rank/map(datum/view_record/discord_rank/ET, list/values)
+	..()
+	if(values["functions"])
+		ET.buns = json_decode(values["functions"])
 
 /datum/entity/skin
 	var/player_id
@@ -57,7 +77,6 @@ BSQL_PROTECT_DATUM(/datum/entity/skin)
 		.["skins_db"] = json_encode(ET.skin)
 
 /datum/donator_info
-	var/datum/entity/donater/donater
 	var/datum/entity/player/player_datum
 	var/list/skins = list()
 	var/list/skins_used = list()
@@ -68,22 +87,17 @@ BSQL_PROTECT_DATUM(/datum/entity/skin)
 
 /datum/donator_info/proc/load_info()
 	DB_FILTER(/datum/entity/skin, DB_COMP("player_id", DB_EQUALS, player_datum.id), CALLBACK(src, TYPE_PROC_REF(/datum/donator_info, load_skins)))
-	DB_FILTER(/datum/entity/donater, DB_COMP("player_id", DB_EQUALS, player_datum.id), CALLBACK(src, TYPE_PROC_REF(/datum/donator_info, load_donator)))
+	if(patreon_function_available("ooc_color"))
+		GLOB.donaters |= player_datum.owning_client
+		add_verb(player_datum.owning_client, /client/proc/set_ooc_color_self)
 
 /datum/donator_info/proc/load_skins(list/datum/entity/skin/entity_skins)
 	for(var/datum/entity/skin/skin in entity_skins)
 		skins[skin.skin_name] = skin
 
-/datum/donator_info/proc/load_donator(list/datum/entity/donater/_donater)
-	if(length(_donater))
-		donater = pick(_donater)
-		donater.sync()
-		if(patreon_function_available("ooc_color"))
-			GLOB.donaters |= player_datum.owning_client
-			add_verb(player_datum.owning_client, /client/proc/set_ooc_color_self)
-
 /datum/donator_info/proc/patreon_function_available(required)
-	if(donater)
-		if(GLOB.donaters_functions[GLOB.donaters_ranks[donater.rank]])
-			return GLOB.donaters_functions[GLOB.donaters_ranks[donater.rank]][required]
+	if(player_datum?.discord_link)
+		var/datum/view_record/discord_rank/discord_rank = GLOB.discord_ranks["[player_datum.discord_link.role_rank]"]
+		if(discord_rank)
+			return discord_rank.buns[required]
 	return FALSE

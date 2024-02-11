@@ -81,8 +81,15 @@ var/datum/controller/subsystem/entity_manager/SSentity_manager
 			view.root_entity_meta = tables[view.root_record_type]
 			adapter.prepare_view(view)
 
+	GLOB.discord_ranks = DB_VIEW(/datum/view_record/discord_rank)
+
 	initialized = TRUE
 	return SS_INIT_SUCCESS
+
+/datum/controller/subsystem/entity_manager/proc/setup_round_id()
+	round = SSentity_manager.select(/datum/entity/mc_round)
+	round.save()
+	round.sync_then(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(start_logging)))
 
 /datum/controller/subsystem/entity_manager/proc/prepare_tables()
 	adapter.sync_table_meta()
@@ -291,9 +298,3 @@ var/datum/controller/subsystem/entity_manager/SSentity_manager
 		var/V = new meta.destination_entity()
 		meta.map(V, r)
 		to_write.Add(V)
-
-/datum/controller/subsystem/entity_manager/proc/setup_round_id()
-	round = SSentity_manager.select(/datum/entity/mc_round)
-	round.save()
-	round.sync_then(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(start_logging)))
-

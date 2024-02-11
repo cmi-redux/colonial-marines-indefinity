@@ -401,7 +401,7 @@
 	if(H.client && H.client.clan_info)
 		var/datum/entity/clan_player/clan_info = H.client.clan_info
 		if(clan_info.permissions & CLAN_PERMISSION_ADMIN_VIEW)
-			var/list/datum/view_record/clan_view/CPV = DB_VIEW(/datum/view_record/clan_view/)
+			var/list/datum/view_record/clan_view/CPV = DB_VIEW(/datum/view_record/clan_view)
 			for(var/datum/view_record/clan_view/CV in CPV)
 				if(!SSpredships.is_clanship_loaded(CV?.clan_id))
 					continue

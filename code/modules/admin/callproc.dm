@@ -1,5 +1,5 @@
 /// Use this for indirect proccalls which require a user
-GLOBAL_DATUM_INIT(AdminProcCallHandler, /mob/proccall_handler, new())
+GLOBAL_DATUM_INIT(AdminProcCallHandler, /mob/proccall_handler, new)
 GLOBAL_PROTECT(AdminProcCallHandler)
 
 GLOBAL_VAR(AdminProcCaller)

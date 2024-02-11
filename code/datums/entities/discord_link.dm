@@ -1,6 +1,8 @@
 /datum/entity/discord_link
 	var/player_id
 	var/discord_id
+	var/role_rank
+	var/stable_rank
 
 /datum/entity_meta/discord_link
 	entity_type = /datum/entity/discord_link
@@ -10,12 +12,16 @@
 	field_types = list(
 		"player_id" = DB_FIELDTYPE_BIGINT,
 		"discord_id" = DB_FIELDTYPE_STRING_MEDIUM,
+		"role_rank" = DB_FIELDTYPE_INT,
+		"stable_rank" = DB_FIELDTYPE_INT,
 	)
 
 /datum/view_record/discord_link
 	var/id
 	var/player_id
 	var/discord_id
+	var/role_rank
+	var/stable_rank
 
 /datum/entity_view_meta/discord_link
 	root_record_type = /datum/entity/discord_link
@@ -24,6 +30,8 @@
 		"id",
 		"player_id",
 		"discord_id",
+		"role_rank",
+		"stable_rank",
 	)
 	order_by = list("player_id" = DB_ORDER_BY_ASC)
 
@@ -34,5 +42,3 @@
 
 	parent_name = "player"
 	child_name = "discord_link_id"
-
-

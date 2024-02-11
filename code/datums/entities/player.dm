@@ -354,13 +354,6 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 
 	player.load_rels()
 
-/datum/entity/player/proc/load_donator_info()
-	if(GLOB.donators_info["[ckey]"])
-		donator_info = GLOB.donators_info["[ckey]"]
-	else
-		donator_info = new(src)
-		GLOB.donators_info["[ckey]"] = donator_info
-
 /datum/entity/player/proc/load_rels()
 	DB_FILTER(/datum/entity/player_note, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, on_read_notes)))
 	DB_FILTER(/datum/entity/player_job_ban, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, TYPE_PROC_REF(/datum/entity/player, on_read_job_bans)))
@@ -372,8 +365,19 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		time_ban_admin = DB_ENTITY(/datum/entity/player, time_ban_admin_id)
 	if(discord_link_id)
 		discord_link = DB_ENTITY(/datum/entity/discord_link, discord_link_id)
+		discord_link.sync()
 
+	load_donator_info()
 	setup_statistics()
+
+/datum/entity/player/proc/load_donator_info()
+	if(GLOB.donators_info["[ckey]"])
+		donator_info = GLOB.donators_info["[ckey]"]
+		donator_info.player_datum = src
+		donator_info.load_info()
+	else
+		donator_info = new(src)
+		GLOB.donators_info["[ckey]"] = donator_info
 
 /datum/entity/player/proc/setup_statistics()
 	if(!player_entity)
@@ -438,7 +442,6 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	player_data.last_known_ip = address
 	player_data.last_known_cid = computer_id
 	record_login_triplet(player.ckey, address, computer_id)
-	player_data.load_donator_info()
 	player_data.whitelist = DB_EKEY(/datum/entity/player_whitelist, player_data.id)
 	player_data.whitelist.sync()
 	player_data.sync()

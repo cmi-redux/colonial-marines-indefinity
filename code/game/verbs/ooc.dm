@@ -2,7 +2,9 @@
 	set name = "OOC" //Gave this shit a shorter name so you only have to time out "ooc" rather than "ooc message" to use it --NeoFite
 	set category = "OOC.OOC"
 
-	if(!mob) return
+	if(!mob)
+		return
+
 	if(IsGuestKey(key))
 		to_chat(src, "Guests may not use OOC.")
 		return
@@ -34,10 +36,6 @@
 	if(!attempt_talking(msg))
 		return
 
-	log_ooc("[mob.name]/[key] : [msg]")
-	GLOB.STUI.ooc.Add("\[[time_stamp()]] <font color='#display_colour'>OOC: [mob.name]/[key]: [msg]</font><br>")
-	GLOB.STUI.processing |= STUI_LOG_OOC_CHAT
-
 	var/display_colour = GLOB.ooc_color_override
 	if(!display_colour)
 		display_colour = CONFIG_GET(string/ooc_color_normal)
@@ -57,6 +55,10 @@
 
 	if(!display_colour) // if invalid R_COLOR choice
 		display_colour = CONFIG_GET(string/ooc_color_default)
+
+	log_ooc("[mob.name]/[key] : [msg]")
+	GLOB.STUI.ooc.Add("\[[time_stamp()]] <font color='[display_colour]'>OOC: [mob.name]/[key]: [msg]</font><br>")
+	GLOB.STUI.processing |= STUI_LOG_OOC_CHAT
 
 	msg = process_chat_markup(msg, list("*"))
 	msg = emoji_parse(src, msg)
@@ -81,7 +83,7 @@
 		prefix += "[icon2html(byond, GLOB.clients)]"
 	if(CONFIG_GET(flag/ooc_country_flags) && (prefs.toggle_prefs & TOGGLE_OOC_FLAG))
 		prefix += "[country2chaticon(src.country, GLOB.clients)]"
-	if(player_data.donator_info.patreon_function_available("occ_color"))
+	if(player_data.donator_info.patreon_function_available("badge"))
 		prefix += "[icon2html('icons/ooc.dmi', GLOB.clients, "Donator")]"
 	if(isCouncil(src))
 		prefix += "[icon2html('icons/ooc.dmi', GLOB.clients, "WhitelistCouncil")]"

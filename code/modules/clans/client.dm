@@ -50,7 +50,7 @@
 		return
 
 	if(clan_info.permissions & CLAN_PERMISSION_ADMIN_VIEW)
-		var/list/datum/view_record/clan_view/CPV = DB_VIEW(/datum/view_record/clan_view/)
+		var/list/datum/view_record/clan_view/CPV = DB_VIEW(/datum/view_record/clan_view)
 
 		var/clans = list()
 		for(var/datum/view_record/clan_view/CV in CPV)

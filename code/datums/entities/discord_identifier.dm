@@ -2,7 +2,6 @@
 	var/identifier
 	var/playerid
 	var/realtime
-	var/used = FALSE
 
 /datum/entity/discord_identifier/New()
 	. = ..()
@@ -18,7 +17,6 @@
 		"identifier" = DB_FIELDTYPE_STRING_LARGE,
 		"playerid" = DB_FIELDTYPE_BIGINT,
 		"realtime" = DB_FIELDTYPE_BIGINT,
-		"used" = DB_FIELDTYPE_INT,
 	)
 
 /datum/view_record/discord_identifier
@@ -34,7 +32,6 @@
 		"identifier",
 		"playerid",
 		"realtime",
-		"used",
 	)
 	order_by = list("identifier" = DB_ORDER_BY_ASC)
 

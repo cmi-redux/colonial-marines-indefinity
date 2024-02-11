@@ -303,7 +303,7 @@ SUBSYSTEM_DEF(predships)
 				return
 
 			var/is_clan_manager = user.client.has_clan_permission(CLAN_PERMISSION_ADMIN_MANAGER, warn = FALSE)
-			var/list/datum/view_record/clan_view/CPV = DB_VIEW(/datum/view_record/clan_view/)
+			var/list/datum/view_record/clan_view/CPV = DB_VIEW(/datum/view_record/clan_view)
 
 			var/list/clans = list()
 			for(var/datum/view_record/clan_view/CV in CPV)
@@ -396,7 +396,7 @@ SUBSYSTEM_DEF(predships)
 				chosen_rank = ranks[input]
 
 				if(chosen_rank.limit_type)
-					var/list/datum/view_record/clan_playerbase_view/CPV = DB_VIEW(/datum/view_record/clan_playerbase_view/, DB_AND(DB_COMP("clan_id", DB_EQUALS, target.clan_id), DB_COMP("rank", DB_EQUALS, GLOB.clan_ranks_ordered[input])))
+					var/list/datum/view_record/clan_playerbase_view/CPV = DB_VIEW(/datum/view_record/clan_playerbase_view, DB_AND(DB_COMP("clan_id", DB_EQUALS, target.clan_id), DB_COMP("rank", DB_EQUALS, GLOB.clan_ranks_ordered[input])))
 					var/players_in_rank = CPV.len
 
 					switch(chosen_rank.limit_type)
@@ -406,7 +406,7 @@ SUBSYSTEM_DEF(predships)
 								return
 
 						if(CLAN_LIMIT_SIZE)
-							var/list/datum/view_record/clan_playerbase_view/clan_players = DB_VIEW(/datum/view_record/clan_playerbase_view/, DB_COMP("clan_id", DB_EQUALS, target.clan_id))
+							var/list/datum/view_record/clan_playerbase_view/clan_players = DB_VIEW(/datum/view_record/clan_playerbase_view, DB_COMP("clan_id", DB_EQUALS, target.clan_id))
 							var/available_slots = Ceiling(clan_players.len / chosen_rank.limit)
 
 							if(players_in_rank >= available_slots)

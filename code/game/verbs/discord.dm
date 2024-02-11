@@ -21,8 +21,7 @@
 
 	var/datum/view_record/discord_identifier/ident = locate() in DB_VIEW(/datum/view_record/discord_identifier, DB_AND(
 		DB_COMP("playerid", DB_EQUALS, player_data.id),
-		DB_COMP("realtime", DB_GREATER, world.realtime - 4 HOURS),
-		DB_COMP("used", DB_EQUALS, FALSE)
+		DB_COMP("realtime", DB_GREATER, world.realtime - 4 HOURS)
 		))
 
 	if(ident)
