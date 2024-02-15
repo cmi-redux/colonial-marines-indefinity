@@ -2,21 +2,18 @@
 	set name = "Discord Certify"
 	set category = "OOC"
 
-	if(SSticker.current_state < GAME_STATE_PREGAME)
-		to_chat(src, SPAN_WARNING(auto_lang(LANGUAGE_LOBBY_WAIT)))
-		return
 	if(!SSentity_manager.initialized)
 		to_chat(src, SPAN_WARNING(auto_lang(LANGUAGE_LOBBY_WAIT_DB)))
+		return
+
+	if(player_data.discord_link)
+		to_chat(src, SPAN_ALERTWARNING("You already have a linked Discord. Ask an Admin to remove it."))
 		return
 
 	var/total_playtime = get_total_xeno_playtime(skip_cache = TRUE) + get_total_human_playtime(skip_cache = TRUE)
 
 	if(total_playtime < CONFIG_GET(number/certification_minutes))
 		to_chat(src, SPAN_ALERTWARNING("You don't have enough minutes - [CONFIG_GET(number/certification_minutes) - total_playtime] remaining."))
-		return
-
-	if(player_data.discord_link)
-		to_chat(src, SPAN_ALERTWARNING("You already have a linked Discord. Ask an Admin to remove it."))
 		return
 
 	var/datum/view_record/discord_identifier/ident = locate() in DB_VIEW(/datum/view_record/discord_identifier, DB_AND(

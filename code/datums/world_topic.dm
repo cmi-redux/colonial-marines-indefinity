@@ -208,11 +208,10 @@
 		response = "Database lookup failed."
 		return
 
-	if(player.discord_link_id)
-		var/datum/view_record/discord_link/link = locate() in DB_VIEW(/datum/view_record/discord_link, DB_COMP("id", DB_EQUALS, player.discord_link_id))
+	var/datum/view_record/discord_link/link = locate() in DB_VIEW(/datum/view_record/discord_link, DB_COMP("player_id", DB_EQUALS, player.id))
 
-		if(link && link.discord_id)
-			data["discord_id"] = link.discord_id
+	if(link && link.discord_id)
+		data["discord_id"] = link.discord_id
 
 	data["notes"] = get_all_notes(player.ckey)
 	data["total_minutes"] = get_total_living_playtime(player.id)

@@ -5,8 +5,6 @@
 	var/last_known_ip
 	var/last_known_cid
 
-	var/discord_link_id
-
 	var/last_login
 
 	var/is_permabanned = FALSE
@@ -33,7 +31,7 @@
 	var/playtime_loaded = FALSE
 	var/discord_loaded = FALSE
 
-	var/datum/entity/discord_link/discord_link
+	var/datum/view_record/discord_link/discord_link
 	var/datum/entity/player/permaban_admin
 	var/datum/entity/player/time_ban_admin
 	var/list/datum/entity/player_note/notes
@@ -59,7 +57,6 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		"is_permabanned" = DB_FIELDTYPE_INT,
 		"permaban_reason" = DB_FIELDTYPE_STRING_MAX,
 		"permaban_date" = DB_FIELDTYPE_STRING_LARGE,
-		"discord_link_id" = DB_FIELDTYPE_BIGINT,
 		"permaban_admin_id" = DB_FIELDTYPE_BIGINT,
 		"is_time_banned" = DB_FIELDTYPE_INT,
 		"time_ban_reason" = DB_FIELDTYPE_STRING_MAX,
@@ -363,9 +360,8 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		permaban_admin = DB_ENTITY(/datum/entity/player, permaban_admin_id)
 	if(time_ban_admin_id)
 		time_ban_admin = DB_ENTITY(/datum/entity/player, time_ban_admin_id)
-	if(discord_link_id)
-		discord_link = DB_ENTITY(/datum/entity/discord_link, discord_link_id)
-		discord_link.sync()
+
+	discord_link = locate() in DB_VIEW(/datum/view_record/discord_link, DB_COMP("player_id", DB_EQUALS, id))
 
 	load_donator_info()
 	setup_statistics()
@@ -543,7 +539,6 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	var/admin
 	var/last_known_cid
 	var/last_known_ip
-	var/discord_link_id
 
 /datum/entity_view_meta/players
 	root_record_type = /datum/entity/player
@@ -560,5 +555,4 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		"admin" = DB_CASE(DB_COMP("is_permabanned", DB_EQUALS, 1), "permabanning_admin.ckey", "banning_admin.ckey"),
 		"last_known_ip",
 		"last_known_cid",
-		"discord_link_id",
 		)
