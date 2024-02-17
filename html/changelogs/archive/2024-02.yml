@@ -1,0 +1,36 @@
+2024-02-17:
+  Casper:
+  - bugfix: fixed cigarette punctuation error
+  - bugfix: fixed reagent canister being deleted if ejected with your hands full
+  Drathek:
+  - bugfix: Fix dead huggers converting to non-player huggers
+  FreetoZ:
+  - rscadd: Added functionality for faxing photos and paper bundles
+  - bugfix: Fixed examine text for fax machines
+  - bugfix: Fixed examine text for paper
+  Git-Nivrak:
+  - bugfix: Fixes no fire delay on m56d in semi-auto and burst fire
+  HeresKozmos:
+  - mapadd: added 9 new tunnels to Fiorina SciAnnex
+  - mapadd: added 9 new tunnels to trijent dam
+  Morrow:
+  - bugfix: Fixed a bug with akimbo firing
+  - rscdel: Removed alpha egg on LV522
+  NewyearnewmeUwu:
+  - bugfix: fixed yautja loudroars displaying nothing
+  Segrain:
+  - qol: Activating ammo boxes in hand now unfolds them on harm intent and deploys
+      them on any other intent, even if empty.
+  TeDGamer:
+  - balance: All trained+ engineer skill levels affect duration now.
+  - balance: Removed double skill duration multiplier for m56d's.
+  TheGamerdk:
+  - bugfix: Adding marines to intel squad broke the crew manifest
+  Zonespace27:
+  - bugfix: HEFA Knights now spawn with their armor again
+  - balance: HEFA Knights now spawn with 2 HEFA in their helmets
+  bostonthebear:
+  - rscadd: Changes pilot officer timelock from 5 hours as squad marine to 2 hours
+      as DCC
+  realforest2001:
+  - balance: Adds an extra 75% damage and hive interference to plasma rifle vs xenos.
