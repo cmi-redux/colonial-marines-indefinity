@@ -596,12 +596,12 @@ This maintains a list of ip addresses that are able to bypass topic filtering.
 
 //Fail2Topic settings.
 /datum/config_entry/number/topic_rate_limit
-	config_entry_value = 5
+	config_entry_value = 10
 	min_val = 1
 	protection = CONFIG_ENTRY_HIDDEN|CONFIG_ENTRY_LOCKED
 
 /datum/config_entry/number/topic_max_fails
-	config_entry_value = 5
+	config_entry_value = 10
 	min_val = 1
 	protection = CONFIG_ENTRY_HIDDEN|CONFIG_ENTRY_LOCKED
 
@@ -614,6 +614,7 @@ This maintains a list of ip addresses that are able to bypass topic filtering.
 	protection = CONFIG_ENTRY_HIDDEN|CONFIG_ENTRY_LOCKED
 
 /datum/config_entry/flag/topic_enabled
+	config_entry_value = TRUE
 	protection = CONFIG_ENTRY_HIDDEN|CONFIG_ENTRY_LOCKED
 
 /datum/config_entry/flag/redis_enabled
