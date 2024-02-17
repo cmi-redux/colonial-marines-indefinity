@@ -63,7 +63,7 @@ SUBSYSTEM_DEF(ticker)
 				return
 			if(isnull(start_at))
 				start_at = time_left || world.time + (CONFIG_GET(number/lobby_countdown) * 10)
-			var/message_send = list(CLIENT_LANGUAGE_ENGLISH = SPAN_ROUNDHEADER("[LANGUAGE_WELCOME_ENG] [CONFIG_GET(string/servername)]!"), CLIENT_LANGUAGE_RUSSIAN = SPAN_ROUNDHEADER("[LANGUAGE_WELCOME_RU] [CONFIG_GET(string/servername)]!"))
+			var/message_send = list(CLIENT_LANGUAGE_ENGLISH = SPAN_ROUNDHEADER("[LANGUAGE_WELCOME_ENG] [CONFIG_GET(string/server_name)]!"), CLIENT_LANGUAGE_RUSSIAN = SPAN_ROUNDHEADER("[LANGUAGE_WELCOME_RU] [CONFIG_GET(string/server_name)]!"))
 			var/countdown = time_left || CONFIG_GET(number/lobby_countdown) * 10
 			var/second_message_send = list(CLIENT_LANGUAGE_ENGLISH = SPAN_ROUNDBODY("[LANGUAGE_WELCOME_SET_ENG] [DisplayTimeText(countdown, language = CLIENT_LANGUAGE_ENGLISH)]"), CLIENT_LANGUAGE_RUSSIAN = SPAN_ROUNDBODY("[LANGUAGE_WELCOME_SET_RU] [DisplayTimeText(countdown, language = CLIENT_LANGUAGE_RUSSIAN)]"))
 			to_chat_spaced(world, message_send, MESSAGE_TYPE_SYSTEM, margin_top = 2, margin_bottom = 0)

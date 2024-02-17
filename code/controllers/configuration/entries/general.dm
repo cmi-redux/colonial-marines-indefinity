@@ -1,7 +1,7 @@
 /*
 Basics, the most important.
 */
-/datum/config_entry/string/servername // The name used for the server almost universally.
+/datum/config_entry/string/server_name // The name used for the server almost universally.
 
 /datum/config_entry/string/serversqlname // Short form of the previous used for the DB.
 

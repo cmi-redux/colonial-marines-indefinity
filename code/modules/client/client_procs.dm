@@ -420,6 +420,8 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CLIENT_LOGIN, src)
 
+	winset(src, null, "mainwindow.title='[CONFIG_GET(string/title)]'")
+
 	//////////////
 	//DISCONNECT//
 	//////////////
