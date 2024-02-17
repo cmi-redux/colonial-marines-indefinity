@@ -54,24 +54,24 @@ SUBSYSTEM_DEF(fail_to_topic)
 
 	var/last_attempt = rate_limiting[ip]
 
-	if (config.fail_to_topic_whitelisted_ips[ip])
+	if(config.fail_to_topic_whitelisted_ips[ip])
 		return FALSE
 
-	if (active_bans[ip])
+	if(active_bans[ip])
 		return TRUE
 
-	rate_limiting[ip] = world.time
+	rate_limiting[ip] = world.realtime
 
-	if (isnull(last_attempt))
+	if(isnull(last_attempt))
 		return FALSE
 
-	if (world.time - last_attempt > rate_limit)
+	if(world.realtime - last_attempt > rate_limit)
 		fail_counts -= ip
 		return FALSE
 	else
 		var/failures = fail_counts[ip]
 
-		if (isnull(failures))
+		if(isnull(failures))
 			fail_counts[ip] = 1
 			return TRUE
 		else if (failures > max_fails)

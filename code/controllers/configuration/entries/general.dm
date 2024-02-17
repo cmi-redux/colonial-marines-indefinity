@@ -126,8 +126,6 @@ Administrative related.
 
 /datum/config_entry/flag/log_emote
 
-/datum/config_entry/flag/log_world_topic
-
 /datum/config_entry/flag/log_manifest
 
 /datum/config_entry/flag/allow_admin_ooccolor // Allows admins to customize their OOC color.
@@ -585,9 +583,6 @@ This maintains a list of ip addresses that are able to bypass topic filtering.
 /datum/config_entry/number/certification_minutes
 	protection = CONFIG_ENTRY_LOCKED
 
-/datum/config_entry/number/topic_max_size
-	protection = CONFIG_ENTRY_HIDDEN|CONFIG_ENTRY_LOCKED
-
 /datum/config_entry/flag/log_world_topic
 	protection = CONFIG_ENTRY_HIDDEN|CONFIG_ENTRY_LOCKED
 
@@ -598,7 +593,6 @@ This maintains a list of ip addresses that are able to bypass topic filtering.
 
 /datum/config_entry/keyed_list/topic_tokens/ValidateListEntry(key_name, key_value)
 	return key_value != "topic_token" && ..()
-
 
 //Fail2Topic settings.
 /datum/config_entry/number/topic_rate_limit
