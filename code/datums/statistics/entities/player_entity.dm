@@ -50,6 +50,7 @@
 		for(var/datum/entity/statistic/clone as anything in statistics)
 			if(clone.value < real_stat.value)
 				clone.delete()
+				log_runtime("found duplicated table [faction], [statistic_type], [general_name], [statistic_name]") // Check for bug persist
 			else
 				real_stat.delete()
 				real_stat = clone
