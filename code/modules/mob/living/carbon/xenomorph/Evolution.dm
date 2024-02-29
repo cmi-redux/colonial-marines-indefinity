@@ -44,13 +44,13 @@
 		return
 
 	if(castepick == XENO_CASTE_QUEEN) //Special case for dealing with queenae
-		if(!MODE_HAS_FLAG(MODE_HARDCORE))
+		if(!MODE_HAS_FLAG(MODE_HARDCORE) && !Check_Crash())
 			if(SSticker.mode && faction.xeno_queen_timer > world.time)
 				to_chat(src, SPAN_WARNING("You must wait about [DisplayTimeText(faction.xeno_queen_timer - world.time, 1, language = client.language)] for the hive to recover from the previous Queen's death."))
 				return
 
 			if(plasma_stored >= 500)
-				if(faction.living_xeno_queen || Check_Crash())
+				if(faction.living_xeno_queen)
 					to_chat(src, SPAN_WARNING("There already is a living Queen."))
 					return
 			else

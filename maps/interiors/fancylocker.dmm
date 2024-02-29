@@ -18,7 +18,6 @@
 "d" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/carpet{
-	tag = "icon-carpetside (NORTHWEST)";
 	icon_state = "carpetside";
 	dir = 9
 	},
@@ -26,7 +25,6 @@
 "e" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/carpet{
-	tag = "icon-carpetside (NORTH)";
 	icon_state = "carpetside";
 	dir = 1
 	},
@@ -34,7 +32,6 @@
 "f" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/carpet{
-	tag = "icon-carpetside (NORTHEAST)";
 	icon_state = "carpetside";
 	dir = 5
 	},
@@ -42,7 +39,6 @@
 "g" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/carpet{
-	tag = "icon-carpetside (WEST)";
 	icon_state = "carpetside";
 	dir = 8
 	},
@@ -65,7 +61,6 @@
 "k" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/carpet{
-	tag = "icon-carpetside (EAST)";
 	icon_state = "carpetside";
 	dir = 4
 	},
@@ -79,7 +74,6 @@
 "m" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/carpet{
-	tag = "icon-carpetside (SOUTHWEST)";
 	icon_state = "carpetside";
 	dir = 10
 	},
@@ -93,7 +87,6 @@
 "o" = (
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/carpet{
-	tag = "icon-carpetside (SOUTHEAST)";
 	icon_state = "carpetside";
 	dir = 6
 	},
@@ -105,8 +98,7 @@
 /area/vehicle/apc)
 "q" = (
 /obj/structure/flora/pottedplant{
-	icon_state = "pottedplant_10";
-	tag = "icon-plant-10"
+	icon_state = "pottedplant_10"
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood,
@@ -137,8 +129,7 @@
 	pixel_y = -2
 	},
 /obj/structure/machinery/light{
-	dir = 1;
-	tag = "icon-tube1 (NORTH)"
+	dir = 1
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/floor/wood,
@@ -181,7 +172,6 @@
 /area/vehicle/apc)
 "z" = (
 /obj/structure/bed/chair/wood/wings{
-	tag = "icon-wooden_chair_wings (EAST)";
 	icon_state = "wooden_chair_wings";
 	dir = 4
 	},

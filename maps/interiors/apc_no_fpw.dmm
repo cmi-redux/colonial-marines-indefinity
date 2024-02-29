@@ -21,8 +21,7 @@
 "d" = (
 /obj/effect/landmark/interior/spawn/entrance{
 	alpha = 50;
-	exit_type = /obj/structure/interior_exit/vehicle/apc;
-	tag = "right"
+	exit_type = /obj/structure/interior_exit/vehicle/apc
 	},
 /obj/effect/landmark/interior/spawn/interior_viewport{
 	dir = 8;
@@ -84,8 +83,7 @@
 /obj/effect/landmark/interior/spawn/entrance{
 	dir = 8;
 	exit_type = /obj/structure/interior_exit/vehicle/apc/rear/right;
-	pixel_x = -32;
-	tag = "rear right"
+	pixel_x = -32
 	},
 /obj/structure/bed/chair/vehicle{
 	dir = 1;
@@ -167,8 +165,7 @@
 	dir = 1;
 	exit_type = /obj/structure/interior_exit/vehicle/apc;
 	name = "Left APC door";
-	pixel_y = 32;
-	tag = "left"
+	pixel_y = 32
 	},
 /obj/effect/mapping_helpers/sunlight/pseudo_roof_setter/ship_hull,
 /turf/open/shuttle/vehicle{
@@ -240,8 +237,7 @@
 /obj/effect/landmark/interior/spawn/entrance{
 	dir = 8;
 	exit_type = /obj/structure/interior_exit/vehicle/apc/rear;
-	pixel_x = -32;
-	tag = "rear center"
+	pixel_x = -32
 	},
 /obj/structure/machinery/light{
 	dir = 8;
@@ -487,8 +483,7 @@
 /obj/effect/landmark/interior/spawn/entrance{
 	dir = 8;
 	exit_type = /obj/structure/interior_exit/vehicle/apc/rear/left;
-	pixel_x = -32;
-	tag = "rear left"
+	pixel_x = -32
 	},
 /obj/structure/bed/chair/vehicle{
 	pixel_x = -8

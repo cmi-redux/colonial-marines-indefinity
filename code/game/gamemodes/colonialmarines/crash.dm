@@ -97,7 +97,7 @@
 /datum/game_mode/crash/pre_setup()
 	if(SSticker.role_authority)
 		for(var/datum/squad/squad in SSticker.role_authority.squads)
-			if(squad.faction == GLOB.faction_datum[FACTION_MARINE] && squad.name != "Root")
+			if(squad.faction == GLOB.faction_datum[FACTION_MARINE] && squad.name != "Root" && squad.name != "Alpha")
 				squad.roundstart = FALSE
 				squad.usable = FALSE
 

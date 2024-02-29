@@ -87,8 +87,7 @@
 		// Round stats
 		round_statistics = DB_ENTITY(/datum/entity/statistic_round)
 		round_statistics.round_name = operation_name
-		var/datum/map_config/ground = SSmapping.configs[GROUND_MAP]
-		round_statistics.map_name = ground.map_name
+		round_statistics.map_name = SSmapping.configs[GROUND_MAP].map_name
 		var/datum/entity/statistic_map/new_map = DB_EKEY(/datum/entity/statistic_map, round_statistics.map_name)
 		round_statistics.current_map = new_map
 		round_statistics.current_map.save()

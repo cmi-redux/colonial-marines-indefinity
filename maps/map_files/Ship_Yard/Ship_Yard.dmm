@@ -5,8 +5,7 @@
 "ao" = (
 /turf/open/floor/almayer{
 	dir = 9;
-	icon_state = "blue";
-	tag = "icon-blue (NORTHWEST)"
+	icon_state = "blue"
 	},
 /area/space)
 "aJ" = (
@@ -16,29 +15,25 @@
 /area/space)
 "aS" = (
 /turf/open/shuttle/dropship{
-	icon_state = "rasputin3";
-	tag = "icon-rasputin3"
+	icon_state = "rasputin3"
 	},
 /area/space)
 "aW" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "red";
-	tag = "icon-red (EAST)"
+	icon_state = "red"
 	},
 /area/space)
 "bf" = (
 /turf/open/floor/almayer{
 	dir = 10;
-	icon_state = "sterile_green_side";
-	tag = "icon-sterile_green_side (SOUTHWEST)"
+	icon_state = "sterile_green_side"
 	},
 /area/space)
 "bj" = (
 /turf/open/floor/almayer{
 	dir = 5;
-	icon_state = "green";
-	tag = "icon-green (NORTHEAST)"
+	icon_state = "green"
 	},
 /area/space)
 "bO" = (
@@ -50,34 +45,29 @@
 "dq" = (
 /turf/open/floor/almayer{
 	dir = 1;
-	icon_state = "silvercorner";
-	tag = "icon-silvercorner (NORTH)"
+	icon_state = "silvercorner"
 	},
 /area/space)
 "dQ" = (
 /turf/open/floor/almayer{
-	icon_state = "sterile";
-	tag = "icon-sterile"
+	icon_state = "sterile"
 	},
 /area/space)
 "dR" = (
 /turf/closed/wall/almayer/research/containment/wall/purple{
-	dir = 8;
-	tag = "icon-containment_window (WEST)"
+	dir = 8
 	},
 /area/space)
 "ej" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "silvercorner";
-	tag = "icon-silvercorner"
+	icon_state = "silvercorner"
 	},
 /area/space)
 "eA" = (
 /turf/open/floor/almayer{
 	dir = 1;
-	icon_state = "bluecorner";
-	tag = "icon-bluecorner (NORTH)"
+	icon_state = "bluecorner"
 	},
 /area/space)
 "ff" = (
@@ -85,8 +75,7 @@
 /area/space)
 "fn" = (
 /turf/open/floor/almayer/research/containment/floor2{
-	dir = 1;
-	tag = "icon-containment_floor_2 (NORTH)"
+	dir = 1
 	},
 /area/space)
 "fH" = (
@@ -102,14 +91,12 @@
 "gs" = (
 /turf/open/floor/almayer{
 	dir = 6;
-	icon_state = "silver";
-	tag = "icon-silver (WEST)"
+	icon_state = "silver"
 	},
 /area/space)
 "gN" = (
 /turf/open/floor/almayer{
-	icon_state = "orange";
-	tag = "icon-orange"
+	icon_state = "orange"
 	},
 /area/space)
 "hz" = (
@@ -122,8 +109,7 @@
 /area/space)
 "ii" = (
 /turf/open/floor/almayer{
-	icon_state = "plate";
-	tag = "icon-sterile"
+	icon_state = "plate"
 	},
 /area/space)
 "iR" = (
@@ -132,22 +118,19 @@
 "iU" = (
 /turf/open/floor/roof/ship_hull{
 	dir = 5;
-	icon_state = "outerhull_dir";
-	tag = "icon-outerhull_dir (NORTHEAST)"
+	icon_state = "outerhull_dir"
 	},
 /area/space)
 "jh" = (
 /turf/open/floor/almayer{
 	dir = 9;
-	icon_state = "red";
-	tag = "icon-red"
+	icon_state = "red"
 	},
 /area/space)
 "jp" = (
 /turf/open/floor/almayer{
 	dir = 5;
-	icon_state = "plating";
-	tag = "icon-blue (NORTHEAST)"
+	icon_state = "plating"
 	},
 /area/space)
 "jv" = (
@@ -158,8 +141,7 @@
 "jP" = (
 /turf/open/floor/almayer{
 	dir = 6;
-	icon_state = "blue";
-	tag = "icon-blue (SOUTHEAST)"
+	icon_state = "blue"
 	},
 /area/space)
 "jQ" = (
@@ -168,29 +150,25 @@
 "jZ" = (
 /turf/open/floor/almayer{
 	dir = 1;
-	icon_state = "red";
-	tag = "icon-red (NORTH)"
+	icon_state = "red"
 	},
 /area/space)
 "kk" = (
 /turf/open/floor/almayer{
 	dir = 9;
-	icon_state = "sterile_green_side";
-	tag = "icon-sterile_green_side (NORTHWEST)"
+	icon_state = "sterile_green_side"
 	},
 /area/space)
 "kl" = (
 /turf/open/floor/almayer{
 	dir = 1;
-	icon_state = "emeraldcorner";
-	tag = "icon-emerald (NORTH)"
+	icon_state = "emeraldcorner"
 	},
 /area/space)
 "ks" = (
 /turf/open/floor/almayer{
 	dir = 1;
-	icon_state = "greencorner";
-	tag = "icon-greencorner (NORTH)"
+	icon_state = "greencorner"
 	},
 /area/space)
 "kv" = (
@@ -203,8 +181,7 @@
 "kx" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "orange";
-	tag = "icon-orange (EAST)"
+	icon_state = "orange"
 	},
 /area/space)
 "lr" = (
@@ -215,22 +192,19 @@
 /area/space)
 "lN" = (
 /turf/open/floor/almayer{
-	icon_state = "bluefull";
-	tag = "icon-bluefull"
+	icon_state = "bluefull"
 	},
 /area/space)
 "md" = (
 /turf/open/floor/almayer{
 	dir = 9;
-	icon_state = "orange";
-	tag = "icon-orange (NORTHWEST)"
+	icon_state = "orange"
 	},
 /area/space)
 "mj" = (
 /turf/open/floor/almayer{
 	dir = 1;
-	icon_state = "blue";
-	tag = "icon-blue (NORTH)"
+	icon_state = "blue"
 	},
 /area/space)
 "mk" = (
@@ -238,28 +212,24 @@
 /area/space)
 "mx" = (
 /turf/open/floor/almayer{
-	icon_state = "greencorner";
-	tag = "icon-greencorner"
+	icon_state = "greencorner"
 	},
 /area/space)
 "mR" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "emeraldcorner";
-	tag = "icon-emeraldcorner (EAST)"
+	icon_state = "emeraldcorner"
 	},
 /area/space)
 "mZ" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "redcorner";
-	tag = "icon-redcorner (EAST)"
+	icon_state = "redcorner"
 	},
 /area/space)
 "nv" = (
 /turf/open/floor/almayer{
-	icon_state = "redcorner";
-	tag = "icon-redcorner"
+	icon_state = "redcorner"
 	},
 /area/space)
 "oi" = (
@@ -268,21 +238,18 @@
 "ot" = (
 /turf/open/floor/almayer{
 	dir = 10;
-	icon_state = "green";
-	tag = "icon-green (SOUTHWEST)"
+	icon_state = "green"
 	},
 /area/space)
 "oE" = (
 /turf/open/floor/almayer{
-	icon_state = "plating_striped";
-	tag = "icon-emerald (NORTH)"
+	icon_state = "plating_striped"
 	},
 /area/space)
 "oI" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "sterile_green_corner";
-	tag = "icon-sterile_green_corner (EAST)"
+	icon_state = "sterile_green_corner"
 	},
 /area/space)
 "oQ" = (
@@ -296,8 +263,7 @@
 "pp" = (
 /turf/open/floor/almayer{
 	dir = 9;
-	icon_state = "silver";
-	tag = "icon-silver (NORTHWEST)"
+	icon_state = "silver"
 	},
 /area/space)
 "pw" = (
@@ -306,70 +272,60 @@
 "pO" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "greencorner";
-	tag = "icon-greencorner (EAST)"
+	icon_state = "greencorner"
 	},
 /area/space)
 "pT" = (
 /turf/open/floor/almayer{
-	icon_state = "emeraldcorner";
-	tag = "icon-emeraldcorner"
+	icon_state = "emeraldcorner"
 	},
 /area/space)
 "pW" = (
 /turf/open/floor/almayer{
 	dir = 10;
-	icon_state = "red";
-	tag = "icon-red"
+	icon_state = "red"
 	},
 /area/space)
 "qs" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "blue";
-	tag = "icon-blue (WEST)"
+	icon_state = "blue"
 	},
 /area/space)
 "qt" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "bluecorner";
-	tag = "icon-bluecorner (NORTH)"
+	icon_state = "bluecorner"
 	},
 /area/space)
 "rz" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "orangecorner";
-	tag = "icon-orangecorner (WEST)"
+	icon_state = "orangecorner"
 	},
 /area/space)
 "rW" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "silvercorner";
-	tag = "icon-silvercorner"
+	icon_state = "silvercorner"
 	},
 /area/space)
 "rY" = (
 /turf/open/floor/almayer{
 	dir = 9;
-	icon_state = "green";
-	tag = "icon-green (NORTHWEST)"
+	icon_state = "green"
 	},
 /area/space)
 "sh" = (
 /turf/open/floor/almayer{
 	dir = 1;
-	icon_state = "green";
-	tag = "icon-green (NORTH)"
+	icon_state = "green"
 	},
 /area/space)
 "sp" = (
 /turf/open/floor/almayer{
 	dir = 9;
-	icon_state = "emerald";
-	tag = "icon-emerald (NORTHWEST)"
+	icon_state = "emerald"
 	},
 /area/space)
 "sJ" = (
@@ -377,14 +333,12 @@
 /area/space)
 "sZ" = (
 /turf/open/floor/almayer{
-	icon_state = "dark_sterile";
-	tag = "icon-sterile"
+	icon_state = "dark_sterile"
 	},
 /area/space)
 "ta" = (
 /turf/open/floor/almayer{
-	icon_state = "emeraldfull";
-	tag = "icon-emeraldfull"
+	icon_state = "emeraldfull"
 	},
 /area/space)
 "th" = (
@@ -397,21 +351,18 @@
 /area/space)
 "tD" = (
 /turf/open/floor/almayer{
-	icon_state = "ai_floors";
-	tag = "icon-sterile"
+	icon_state = "ai_floors"
 	},
 /area/space)
 "tV" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "redcorner";
-	tag = "icon-redcorner (WEST)"
+	icon_state = "redcorner"
 	},
 /area/space)
 "uc" = (
 /turf/open/floor/almayer/research/containment/floor2{
-	dir = 8;
-	tag = "icon-containment_floor_2 (WEST)"
+	dir = 8
 	},
 /area/space)
 "uG" = (
@@ -426,28 +377,24 @@
 "uK" = (
 /turf/open/floor/almayer{
 	dir = 5;
-	icon_state = "orange";
-	tag = "icon-orange (NORTHEAST)"
+	icon_state = "orange"
 	},
 /area/space)
 "uM" = (
 /turf/open/floor/almayer{
-	icon_state = "emerald";
-	tag = "icon-emerald"
+	icon_state = "emerald"
 	},
 /area/space)
 "vf" = (
 /turf/open/floor/almayer{
 	dir = 6;
-	icon_state = "orange";
-	tag = "icon-orange (SOUTHEAST)"
+	icon_state = "orange"
 	},
 /area/space)
 "vg" = (
 /turf/open/floor/almayer{
 	dir = 1;
-	icon_state = "redcorner";
-	tag = "icon-redcorner (NORTH)"
+	icon_state = "redcorner"
 	},
 /area/space)
 "vu" = (
@@ -456,30 +403,26 @@
 "vz" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "green";
-	tag = "icon-green (WEST)"
+	icon_state = "green"
 	},
 /area/space)
 "vH" = (
 /turf/open/floor/roof/ship_hull{
 	dir = 6;
-	icon_state = "outerhull_dir";
-	tag = "icon-outerhull_dir (SOUTHEAST)"
+	icon_state = "outerhull_dir"
 	},
 /area/space)
 "vM" = (
 /turf/open/floor/almayer{
 	dir = 1;
-	icon_state = "orangecorner";
-	tag = "icon-orangecorner (NORTH)"
+	icon_state = "orangecorner"
 	},
 /area/space)
 "vQ" = (
 /turf/open/space/basic,
 /turf/open/floor/almayer{
 	dir = 5;
-	icon_state = "plating";
-	tag = "icon-blue (NORTHEAST)"
+	icon_state = "plating"
 	},
 /area/space)
 "vU" = (
@@ -488,15 +431,13 @@
 "vV" = (
 /turf/open/floor/almayer{
 	allow_construction = 0;
-	icon_state = "plate";
-	tag = "icon-sterile"
+	icon_state = "plate"
 	},
 /area/space)
 "wo" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "orangecorner";
-	tag = "icon-orangecorner (EAST)"
+	icon_state = "orangecorner"
 	},
 /area/space)
 "wF" = (
@@ -504,14 +445,12 @@
 /area/space)
 "wG" = (
 /turf/closed/wall/almayer/research/containment/wall/purple{
-	dir = 1;
-	tag = "icon-containment_window (WEST)"
+	dir = 1
 	},
 /area/space)
 "wP" = (
 /turf/open/floor/almayer{
-	icon_state = "test_floor5";
-	tag = "icon-test_floor5"
+	icon_state = "test_floor5"
 	},
 /area/space)
 "wY" = (
@@ -520,8 +459,7 @@
 "wZ" = (
 /turf/open/floor/almayer{
 	dir = 5;
-	icon_state = "silver";
-	tag = "icon-silver (NORTHEAST)"
+	icon_state = "silver"
 	},
 /area/space)
 "xc" = (
@@ -530,43 +468,37 @@
 "xr" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "red";
-	tag = "icon-red"
+	icon_state = "red"
 	},
 /area/space)
 "xB" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "orange";
-	tag = "icon-orange (WEST)"
+	icon_state = "orange"
 	},
 /area/space)
 "xI" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "silver";
-	tag = "icon-silver (WEST)"
+	icon_state = "silver"
 	},
 /area/space)
 "xS" = (
 /turf/open/floor/almayer{
 	dir = 5;
-	icon_state = "emerald";
-	tag = "icon-emerald (NORTH)"
+	icon_state = "emerald"
 	},
 /area/space)
 "yk" = (
 /turf/open/floor/almayer{
 	dir = 6;
-	icon_state = "sterile_green_side";
-	tag = "icon-sterile_green_side (SOUTHEAST)"
+	icon_state = "sterile_green_side"
 	},
 /area/space)
 "yl" = (
 /turf/open/floor/almayer{
 	dir = 10;
-	icon_state = "silver";
-	tag = "icon-silver (SOUTHWEST)"
+	icon_state = "silver"
 	},
 /area/space)
 "yq" = (
@@ -575,14 +507,12 @@
 "yJ" = (
 /turf/open/floor/roof/ship_hull{
 	dir = 10;
-	icon_state = "outerhull_dir";
-	tag = "icon-outerhull_dir (SOUTHWEST)"
+	icon_state = "outerhull_dir"
 	},
 /area/space)
 "ze" = (
 /turf/open/floor/almayer{
-	icon_state = "sterile_green";
-	tag = "icon-sterile"
+	icon_state = "sterile_green"
 	},
 /area/space)
 "zA" = (
@@ -591,79 +521,66 @@
 "zP" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "emerald";
-	tag = "icon-emerald (EAST)"
+	icon_state = "emerald"
 	},
 /area/space)
 "Ao" = (
-/turf/closed/wall/almayer/research/containment/wall/purple{
-	tag = "icon-containment_window (EAST)"
-	},
+/turf/closed/wall/almayer/research/containment/wall/purple,
 /area/space)
 "Ar" = (
 /turf/open/floor/almayer{
 	dir = 6;
-	icon_state = "red";
-	tag = "icon-red"
+	icon_state = "red"
 	},
 /area/space)
 "Av" = (
 /turf/open/floor/roof/ship_hull{
 	dir = 4;
-	icon_state = "outerhull_dir";
-	tag = "icon-outerhull_dir (EAST)"
+	icon_state = "outerhull_dir"
 	},
 /area/space)
 "AA" = (
 /turf/open/floor/almayer{
-	icon_state = "orangecorner";
-	tag = "icon-orangecorner"
+	icon_state = "orangecorner"
 	},
 /area/space)
 "AL" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "plating_striped";
-	tag = "icon-plating_striped (EAST)"
+	icon_state = "plating_striped"
 	},
 /area/space)
 "AR" = (
 /turf/open/floor/almayer/research/containment/entrance{
-	dir = 8;
-	tag = "icon-containment_entrance (WEST)"
+	dir = 8
 	},
 /area/space)
 "AY" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "greencorner";
-	tag = "icon-greencorner (WEST)"
+	icon_state = "greencorner"
 	},
 /area/space)
 "Bc" = (
 /turf/open/floor/almayer/research/containment/corner_var1{
-	icon_state = "containment_corner_variant_2";
-	tag = "icon-containment_corner_variant_2"
+	icon_state = "containment_corner_variant_2"
 	},
 /area/space)
 "Bg" = (
 /turf/open/floor/almayer{
-	icon_state = "redfull";
-	tag = "icon-redfull"
+	icon_state = "redfull"
 	},
 /area/space)
 "Bk" = (
 /turf/open/floor/roof/ship_hull{
 	dir = 8;
-	icon_state = "outerhull_dir";
-	tag = "icon-outerhull_dir (WEST)"
+	icon_state = "outerhull_dir"
 	},
 /area/space)
 "Bp" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "silver";
-	tag = "icon-green (EAST)"
+	icon_state = "silver"
 	},
 /area/space)
 "Bs" = (
@@ -674,21 +591,18 @@
 /area/space)
 "BY" = (
 /turf/open/floor/almayer{
-	icon_state = "silvercorner";
-	tag = "icon-silvercorner"
+	icon_state = "silvercorner"
 	},
 /area/space)
 "Cx" = (
 /turf/open/floor/almayer{
-	icon_state = "test_floor4";
-	tag = "icon-test_floor4"
+	icon_state = "test_floor4"
 	},
 /area/space)
 "CA" = (
 /turf/open/floor/almayer{
 	dir = 1;
-	icon_state = "cargo_arrow";
-	tag = "icon-cargo_arrow (NORTH)"
+	icon_state = "cargo_arrow"
 	},
 /area/space)
 "DH" = (
@@ -707,40 +621,34 @@
 "EE" = (
 /turf/open/floor/roof/ship_hull{
 	dir = 9;
-	icon_state = "outerhull_dir";
-	tag = "icon-outerhull_dir (NORTHWEST)"
+	icon_state = "outerhull_dir"
 	},
 /area/space)
 "EI" = (
 /turf/open/shuttle/dropship{
-	icon_state = "rasputin15";
-	tag = "icon-rasputin15"
+	icon_state = "rasputin15"
 	},
 /area/space)
 "EN" = (
 /turf/closed/wall/almayer/research/containment/wall/purple{
-	dir = 4;
-	tag = "icon-containment_window (EAST)"
+	dir = 4
 	},
 /area/space)
 "FD" = (
 /turf/open/floor/almayer{
-	icon_state = "green";
-	tag = "icon-green"
+	icon_state = "green"
 	},
 /area/space)
 "FZ" = (
 /turf/open/floor/almayer{
 	dir = 1;
-	icon_state = "orange";
-	tag = "icon-orange (NORTH)"
+	icon_state = "orange"
 	},
 /area/space)
 "Ga" = (
 /turf/open/floor/almayer{
 	dir = 5;
-	icon_state = "sterile_green_side";
-	tag = "icon-sterile_green_side (NORTHEAST)"
+	icon_state = "sterile_green_side"
 	},
 /area/space)
 "Gx" = (
@@ -749,8 +657,7 @@
 "GI" = (
 /turf/open/floor/almayer{
 	dir = 10;
-	icon_state = "blue";
-	tag = "icon-blue (SOUTHWEST)"
+	icon_state = "blue"
 	},
 /area/space)
 "He" = (
@@ -758,29 +665,25 @@
 /area/space)
 "Hl" = (
 /turf/open/floor/almayer{
-	icon_state = "sterile_green_side";
-	tag = "icon-sterile"
+	icon_state = "sterile_green_side"
 	},
 /area/space)
 "HO" = (
 /turf/open/floor/almayer{
 	dir = 10;
-	icon_state = "red";
-	tag = "icon-red (SOUTHWEST)"
+	icon_state = "red"
 	},
 /area/space)
 "HP" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "sterile_green_side";
-	tag = "icon-sterile_green_side (WEST)"
+	icon_state = "sterile_green_side"
 	},
 /area/space)
 "Ik" = (
 /turf/open/floor/almayer{
 	dir = 5;
-	icon_state = "blue";
-	tag = "icon-blue (NORTHEAST)"
+	icon_state = "blue"
 	},
 /area/space)
 "Il" = (
@@ -789,27 +692,23 @@
 "Ip" = (
 /turf/open/floor/almayer{
 	dir = 10;
-	icon_state = "emerald";
-	tag = "icon-emerald (NORTHWEST)"
+	icon_state = "emerald"
 	},
 /area/space)
 "IH" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "green";
-	tag = "icon-green (WEST)"
+	icon_state = "green"
 	},
 /area/space)
 "II" = (
 /turf/open/floor/almayer/research/containment/corner{
-	dir = 1;
-	tag = "icon-containment_corner (NORTH)"
+	dir = 1
 	},
 /area/space)
 "IS" = (
 /turf/open/floor/almayer{
-	icon_state = "red";
-	tag = "icon-red"
+	icon_state = "red"
 	},
 /area/space)
 "IU" = (
@@ -822,15 +721,13 @@
 /area/space)
 "Jr" = (
 /turf/open/floor/almayer{
-	icon_state = "cargo";
-	tag = "icon-bluecorner (NORTH)"
+	icon_state = "cargo"
 	},
 /area/space)
 "JY" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "sterile_green_corner";
-	tag = "icon-sterile_green_corner (WEST)"
+	icon_state = "sterile_green_corner"
 	},
 /area/space)
 "Ka" = (
@@ -846,41 +743,35 @@
 "Lb" = (
 /turf/open/floor/almayer{
 	dir = 10;
-	icon_state = "cargo";
-	tag = "icon-cargo (SOUTHWEST)"
+	icon_state = "cargo"
 	},
 /area/space)
 "Li" = (
 /turf/open/floor/almayer{
 	dir = 5;
-	icon_state = "red";
-	tag = "icon-red (NORTHEAST)"
+	icon_state = "red"
 	},
 /area/space)
 "LB" = (
 /turf/open/floor/almayer{
-	icon_state = "cargo_arrow";
-	tag = "null"
+	icon_state = "cargo_arrow"
 	},
 /area/space)
 "LG" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "silver";
-	tag = "icon-silver (WEST)"
+	icon_state = "silver"
 	},
 /area/space)
 "LJ" = (
 /turf/open/floor/almayer{
 	dir = 1;
-	icon_state = "silver";
-	tag = "icon-silver (NORTH)"
+	icon_state = "silver"
 	},
 /area/space)
 "LO" = (
 /turf/open/floor/almayer{
-	icon_state = "orangefull";
-	tag = "icon-orangefull"
+	icon_state = "orangefull"
 	},
 /area/space)
 "Mg" = (
@@ -896,15 +787,13 @@
 "MJ" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "sterile_green_side";
-	tag = "icon-sterile_green_side (EAST)"
+	icon_state = "sterile_green_side"
 	},
 /area/space)
 "MQ" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "cargo_arrow";
-	tag = "icon-cargo_arrow (WEST)"
+	icon_state = "cargo_arrow"
 	},
 /area/space)
 "Nq" = (
@@ -913,8 +802,7 @@
 "NN" = (
 /turf/closed/wall/almayer/research/containment/wall/purple{
 	dir = 8;
-	icon_state = "containment_window_h";
-	tag = "icon-containment_window (WEST)"
+	icon_state = "containment_window_h"
 	},
 /area/space)
 "NZ" = (
@@ -925,15 +813,13 @@
 "Oa" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "green";
-	tag = "icon-green (EAST)"
+	icon_state = "green"
 	},
 /area/space)
 "OE" = (
 /turf/open/floor/almayer{
 	dir = 1;
-	icon_state = "green";
-	tag = "icon-green"
+	icon_state = "green"
 	},
 /area/space)
 "OG" = (
@@ -942,22 +828,19 @@
 "OO" = (
 /turf/open/floor/almayer{
 	dir = 6;
-	icon_state = "red";
-	tag = "icon-red (SOUTHEAST)"
+	icon_state = "red"
 	},
 /area/space)
 "OQ" = (
 /turf/open/floor/almayer{
 	dir = 1;
-	icon_state = "sterile_green_corner";
-	tag = "icon-sterile_green_corner (NORTH)"
+	icon_state = "sterile_green_corner"
 	},
 /area/space)
 "Pc" = (
 /turf/open/floor/almayer{
 	dir = 6;
-	icon_state = "green";
-	tag = "icon-green (SOUTHEAST)"
+	icon_state = "green"
 	},
 /area/space)
 "PY" = (
@@ -968,21 +851,18 @@
 /area/space)
 "Qp" = (
 /turf/closed/wall/almayer/research/containment/wall/corner{
-	dir = 8;
-	tag = "icon-containment_wall_corner (WEST)"
+	dir = 8
 	},
 /area/space)
 "Qw" = (
 /turf/open/floor/almayer{
-	icon_state = "greenfull";
-	tag = "icon-greenfull"
+	icon_state = "greenfull"
 	},
 /area/space)
 "QB" = (
 /turf/open/floor/almayer{
 	dir = 10;
-	icon_state = "green";
-	tag = "icon-green (SOUTHEAST)"
+	icon_state = "green"
 	},
 /area/space)
 "Ro" = (
@@ -994,8 +874,7 @@
 "Sk" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "silvercorner";
-	tag = "icon-greencorner (WEST)"
+	icon_state = "silvercorner"
 	},
 /area/space)
 "SD" = (
@@ -1003,21 +882,18 @@
 /area/space)
 "SF" = (
 /turf/open/floor/almayer/research/containment/entrance{
-	dir = 4;
-	tag = "icon-containment_entrance (WEST)"
+	dir = 4
 	},
 /area/space)
 "ST" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "blue";
-	tag = "icon-blue (EAST)"
+	icon_state = "blue"
 	},
 /area/space)
 "SZ" = (
 /turf/open/floor/almayer{
-	icon_state = "silver";
-	tag = "icon-silver"
+	icon_state = "silver"
 	},
 /area/space)
 "Tu" = (
@@ -1041,8 +917,7 @@
 "Uu" = (
 /turf/open/floor/roof/ship_hull{
 	dir = 1;
-	icon_state = "outerhull_dir";
-	tag = "icon-outerhull_dir (NORTH)"
+	icon_state = "outerhull_dir"
 	},
 /area/space)
 "UL" = (
@@ -1052,8 +927,7 @@
 /area/space)
 "UM" = (
 /turf/open/floor/almayer{
-	icon_state = "sterile_green_corner";
-	tag = "icon-sterile"
+	icon_state = "sterile_green_corner"
 	},
 /area/space)
 "UU" = (
@@ -1062,8 +936,7 @@
 "UV" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "bluecorner";
-	tag = "icon-bluecorner (EAST)"
+	icon_state = "bluecorner"
 	},
 /area/space)
 "Vb" = (
@@ -1075,68 +948,58 @@
 "Ve" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "emeraldcorner";
-	tag = "icon-emeraldcorner (EAST)"
+	icon_state = "emeraldcorner"
 	},
 /area/space)
 "Vh" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "orange";
-	tag = "icon-orange (EAST)"
+	icon_state = "orange"
 	},
 /area/space)
 "VJ" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "emerald";
-	tag = "icon-emerald (WEST)"
+	icon_state = "emerald"
 	},
 /area/space)
 "VP" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "silvercorner";
-	tag = "icon-silvercorner (EAST)"
+	icon_state = "silvercorner"
 	},
 /area/space)
 "VQ" = (
 /turf/open/floor/almayer{
-	icon_state = "blue";
-	tag = "icon-blue"
+	icon_state = "blue"
 	},
 /area/space)
 "Wa" = (
 /turf/open/floor/almayer{
 	dir = 1;
-	icon_state = "sterile_green_side";
-	tag = "icon-sterile_green_side (NORTH)"
+	icon_state = "sterile_green_side"
 	},
 /area/space)
 "Wc" = (
 /turf/open/floor/almayer{
 	dir = 6;
-	icon_state = "emerald";
-	tag = "icon-emerald (SOUTHEAST)"
+	icon_state = "emerald"
 	},
 /area/space)
 "Wt" = (
 /turf/open/floor/almayer{
 	dir = 10;
-	icon_state = "red";
-	tag = "icon-red (NORTHWEST)"
+	icon_state = "red"
 	},
 /area/space)
 "WI" = (
 /turf/open/floor/almayer{
-	icon_state = "orange";
-	tag = "icon-orange (NORTH)"
+	icon_state = "orange"
 	},
 /area/space)
 "WO" = (
 /turf/open/floor/almayer{
-	icon_state = "green";
-	tag = "icon-green (NORTH)"
+	icon_state = "green"
 	},
 /area/space)
 "WX" = (
@@ -1147,55 +1010,47 @@
 "WZ" = (
 /turf/open/floor/almayer{
 	dir = 1;
-	icon_state = "orange";
-	tag = "icon-orange (EAST)"
+	icon_state = "orange"
 	},
 /area/space)
 "Xc" = (
 /turf/open/floor/almayer{
 	dir = 10;
-	icon_state = "orange";
-	tag = "icon-orange (SOUTHWEST)"
+	icon_state = "orange"
 	},
 /area/space)
 "Xv" = (
 /turf/open/floor/almayer/research/containment/corner_var1{
-	dir = 4;
-	tag = "icon-containment_corner_variant_1 (EAST)"
+	dir = 4
 	},
 /area/space)
 "XX" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "red";
-	tag = "icon-red (WEST)"
+	icon_state = "red"
 	},
 /area/space)
 "Ym" = (
 /turf/open/floor/almayer{
 	dir = 9;
-	icon_state = "red";
-	tag = "icon-red (NORTHWEST)"
+	icon_state = "red"
 	},
 /area/space)
 "Yp" = (
 /turf/open/floor/almayer{
-	icon_state = "bluecorner";
-	tag = "icon-bluecorner"
+	icon_state = "bluecorner"
 	},
 /area/space)
 "YC" = (
 /turf/open/floor/almayer{
 	dir = 5;
-	icon_state = "red";
-	tag = "icon-red"
+	icon_state = "red"
 	},
 /area/space)
 "YI" = (
 /turf/closed/wall/almayer/research/containment/wall/purple{
 	dir = 4;
-	icon_state = "containment_window_h";
-	tag = "icon-containment_window (WEST)"
+	icon_state = "containment_window_h"
 	},
 /area/space)
 "YK" = (
@@ -1205,35 +1060,30 @@
 /area/space)
 "YM" = (
 /turf/open/floor/almayer/research/containment/corner{
-	dir = 4;
-	tag = "icon-containment_corner (EAST)"
+	dir = 4
 	},
 /area/space)
 "Zc" = (
 /turf/open/floor/almayer{
-	icon_state = "orange";
-	tag = "icon-orange (EAST)"
+	icon_state = "orange"
 	},
 /area/space)
 "Zn" = (
 /turf/open/floor/almayer{
 	dir = 1;
-	icon_state = "emerald";
-	tag = "icon-emerald (NORTH)"
+	icon_state = "emerald"
 	},
 /area/space)
 "Zs" = (
 /turf/open/floor/almayer{
 	dir = 4;
-	icon_state = "red";
-	tag = "icon-red"
+	icon_state = "red"
 	},
 /area/space)
 "ZC" = (
 /turf/open/floor/almayer{
 	dir = 8;
-	icon_state = "plating_striped";
-	tag = "icon-plating_striped (WEST)"
+	icon_state = "plating_striped"
 	},
 /area/space)
 

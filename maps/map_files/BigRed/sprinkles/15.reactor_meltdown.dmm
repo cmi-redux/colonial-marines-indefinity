@@ -147,8 +147,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/machinery/alarm{
 	dir = 1;
-	pixel_y = -30;
-	tag = "icon-alarm0 (NORTH)"
+	pixel_y = -30
 	},
 /turf/open/floor,
 /area/bigredv2/outside/building/engineering)
@@ -590,14 +589,12 @@
 /area/bigredv2/outside/lz2_south_cas)
 "cN" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_11";
-	tag = "icon-mars_dirt_11"
+	icon_state = "mars_dirt_11"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "cO" = (
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_4";
-	tag = "icon-mars_dirt_4"
+	icon_state = "mars_dirt_4"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "cP" = (
@@ -612,8 +609,7 @@
 /area/bigredv2/outside/building/engineering)
 "cT" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_13";
-	tag = "icon-mars_dirt_13"
+	icon_state = "mars_dirt_13"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "cX" = (
@@ -628,8 +624,7 @@
 /area/bigredv2/outside/building/engineering)
 "cY" = (
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_5";
-	tag = "icon-mars_dirt_5"
+	icon_state = "mars_dirt_5"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "da" = (
@@ -642,21 +637,18 @@
 /area/bigredv2/outside/building/engineering)
 "dc" = (
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_7";
-	tag = "icon-mars_dirt_7"
+	icon_state = "mars_dirt_7"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "dd" = (
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_6";
-	tag = "icon-mars_dirt_6"
+	icon_state = "mars_dirt_6"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "de" = (
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars_cave{
-	icon_state = "mars_cave_19";
-	tag = "icon-mars_cave_19"
+	icon_state = "mars_cave_19"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "df" = (
@@ -680,8 +672,7 @@
 /area/bigredv2/outside/building/engineering)
 "dl" = (
 /turf/open/mars_cave{
-	icon_state = "mars_cave_17";
-	tag = "icon-mars_cave_17"
+	icon_state = "mars_cave_17"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "dn" = (
@@ -714,8 +705,7 @@
 /area/bigredv2/outside/building/engineering)
 "dt" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_13";
-	tag = "icon-mars_dirt_13"
+	icon_state = "mars_dirt_13"
 	},
 /area/bigredv2/outside/s)
 "dv" = (
@@ -741,14 +731,12 @@
 /area/bigredv2/outside/building/engineering)
 "dA" = (
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_4";
-	tag = "icon-mars_dirt_4"
+	icon_state = "mars_dirt_4"
 	},
 /area/bigredv2/outside/s)
 "dC" = (
 /turf/open/mars{
-	icon_state = "mars_dirt_10";
-	tag = "icon-mars_dirt_10"
+	icon_state = "mars_dirt_10"
 	},
 /area/bigredv2/outside/s)
 "dE" = (
@@ -757,8 +745,7 @@
 /area/bigredv2/outside/building/engineering)
 "dF" = (
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_7";
-	tag = "icon-mars_dirt_7"
+	icon_state = "mars_dirt_7"
 	},
 /area/bigredv2/outside/s)
 "dG" = (
@@ -769,8 +756,7 @@
 "dJ" = (
 /obj/effect/landmark/hunter_primary,
 /turf/open/mars_cave{
-	icon_state = "mars_cave_2";
-	tag = "icon-mars_cave_2"
+	icon_state = "mars_cave_2"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "dK" = (
@@ -782,20 +768,17 @@
 /area/bigredv2/outside/building/engineering)
 "dO" = (
 /turf/open/mars_cave{
-	icon_state = "mars_cave_6";
-	tag = "icon-mars_cave_6"
+	icon_state = "mars_cave_6"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "dR" = (
 /turf/open/mars_cave{
-	icon_state = "mars_cave_2";
-	tag = "icon-mars_cave_2"
+	icon_state = "mars_cave_2"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "dS" = (
 /turf/open/mars_cave{
-	icon_state = "mars_cave_7";
-	tag = "icon-mars_cave_7"
+	icon_state = "mars_cave_7"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "dT" = (
@@ -804,20 +787,17 @@
 "dU" = (
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars_cave{
-	icon_state = "mars_cave_10";
-	tag = "icon-mars_cave_10"
+	icon_state = "mars_cave_10"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "dV" = (
 /turf/open/mars_cave{
-	icon_state = "mars_cave_5";
-	tag = "icon-mars_cave_5"
+	icon_state = "mars_cave_5"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "dW" = (
 /turf/open/mars_cave{
-	icon_state = "mars_cave_23";
-	tag = "icon-mars_cave_23"
+	icon_state = "mars_cave_23"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "dX" = (
@@ -906,8 +886,7 @@
 /obj/effect/decal/cleanable/dirt/greenglow,
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars_cave{
-	icon_state = "mars_cave_7";
-	tag = "icon-mars_cave_7"
+	icon_state = "mars_cave_7"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "ep" = (
@@ -1044,8 +1023,7 @@
 "eN" = (
 /obj/effect/decal/cleanable/dirt/greenglow,
 /turf/open/mars_cave{
-	icon_state = "mars_cave_5";
-	tag = "icon-mars_cave_5"
+	icon_state = "mars_cave_5"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "eO" = (
@@ -1054,8 +1032,7 @@
 "jr" = (
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_5";
-	tag = "icon-mars_dirt_5"
+	icon_state = "mars_dirt_5"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "kN" = (
@@ -1072,8 +1049,7 @@
 "sU" = (
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_6";
-	tag = "icon-mars_dirt_6"
+	icon_state = "mars_dirt_6"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "vs" = (
@@ -1115,8 +1091,7 @@
 "IE" = (
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars_cave{
-	icon_state = "mars_cave_7";
-	tag = "icon-mars_cave_7"
+	icon_state = "mars_cave_7"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "KJ" = (
@@ -1132,15 +1107,13 @@
 "NX" = (
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars{
-	icon_state = "mars_dirt_11";
-	tag = "icon-mars_dirt_11"
+	icon_state = "mars_dirt_11"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "Ph" = (
 /obj/structure/blocker/forcefield/multitile_vehicles,
 /turf/open/mars_cave{
-	icon_state = "mars_dirt_4";
-	tag = "icon-mars_dirt_4"
+	icon_state = "mars_dirt_4"
 	},
 /area/bigredv2/outside/lz2_south_cas)
 "RN" = (

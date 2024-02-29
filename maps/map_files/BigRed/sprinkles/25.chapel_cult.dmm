@@ -16,14 +16,12 @@
 	name = "\improper Chapel"
 	},
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "ae" = (
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "af" = (
@@ -35,14 +33,12 @@
 "ag" = (
 /obj/item/tool/candle,
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "ah" = (
 /obj/effect/decal/cleanable/blood{
-	icon_state = "gib6";
-	tag = "icon-gib6"
+	icon_state = "gib6"
 	},
 /turf/open/floor{
 	dir = 1;
@@ -52,8 +48,7 @@
 "ai" = (
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "ak" = (
@@ -61,8 +56,7 @@
 	dir = 6
 	},
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "al" = (
@@ -71,8 +65,7 @@
 	},
 /obj/item/tool/candle,
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "an" = (
@@ -84,8 +77,7 @@
 	pixel_x = 24
 	},
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "ao" = (
@@ -105,14 +97,12 @@
 "aq" = (
 /turf/open/floor{
 	dir = 1;
-	icon_state = "rampbottom";
-	tag = "icon-rampbottom"
+	icon_state = "rampbottom"
 	},
 /area/bigredv2/outside/building/chapel)
 "as" = (
 /obj/effect/decal/cleanable/blood{
-	icon_state = "gib6";
-	tag = "icon-gib6"
+	icon_state = "gib6"
 	},
 /turf/open/floor{
 	dir = 8;
@@ -121,8 +111,7 @@
 /area/bigredv2/outside/building/chapel)
 "at" = (
 /obj/structure/bed/chair/wood/normal{
-	dir = 8;
-	tag = ""
+	dir = 8
 	},
 /obj/effect/decal/cleanable/ash,
 /turf/open/floor{
@@ -138,8 +127,7 @@
 /area/bigredv2/outside/building/chapel)
 "av" = (
 /obj/structure/bed/chair/wood/normal{
-	dir = 8;
-	tag = ""
+	dir = 8
 	},
 /turf/open/floor{
 	dir = 4;
@@ -148,8 +136,7 @@
 /area/bigredv2/outside/building/chapel)
 "aw" = (
 /obj/structure/bed/chair/wood/normal{
-	dir = 8;
-	tag = ""
+	dir = 8
 	},
 /obj/effect/decal/cleanable/ash,
 /turf/open/floor{
@@ -159,8 +146,7 @@
 /area/bigredv2/outside/building/chapel)
 "ax" = (
 /obj/structure/bed/chair/wood/normal{
-	dir = 8;
-	tag = ""
+	dir = 8
 	},
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor{
@@ -170,8 +156,7 @@
 /area/bigredv2/outside/building/chapel)
 "ay" = (
 /obj/structure/bed/chair/wood/normal{
-	dir = 8;
-	tag = ""
+	dir = 8
 	},
 /turf/open/floor{
 	dir = 1;
@@ -195,8 +180,7 @@
 /obj/structure/surface/table/woodentable,
 /obj/item/tool/candle,
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "aC" = (
@@ -204,8 +188,7 @@
 	icon_state = "candle2"
 	},
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "aD" = (
@@ -220,18 +203,15 @@
 	dir = 4
 	},
 /obj/effect/decal/cleanable/blood{
-	icon_state = "gib6";
-	tag = "icon-gib6"
+	icon_state = "gib6"
 	},
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "aF" = (
 /obj/structure/bed/chair/wood/normal{
-	dir = 8;
-	tag = ""
+	dir = 8
 	},
 /obj/effect/decal/cleanable/ash,
 /turf/open/floor{
@@ -240,8 +220,7 @@
 /area/bigredv2/outside/building/chapel)
 "aG" = (
 /obj/structure/bed/chair/wood/normal{
-	dir = 8;
-	tag = ""
+	dir = 8
 	},
 /obj/effect/decal/cleanable/ash,
 /turf/open/floor{
@@ -251,8 +230,7 @@
 /area/bigredv2/outside/building/chapel)
 "aH" = (
 /obj/structure/bed/chair/wood/normal{
-	dir = 8;
-	tag = ""
+	dir = 8
 	},
 /turf/open/floor{
 	dir = 8;
@@ -261,8 +239,7 @@
 /area/bigredv2/outside/building/chapel)
 "aI" = (
 /obj/structure/bed/chair/wood/normal{
-	dir = 8;
-	tag = ""
+	dir = 8
 	},
 /turf/open/floor{
 	icon_state = "chapel"
@@ -271,8 +248,7 @@
 "aJ" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/structure/bed/chair/wood/normal{
-	dir = 8;
-	tag = ""
+	dir = 8
 	},
 /turf/open/floor{
 	dir = 8;
@@ -332,12 +308,10 @@
 	},
 /obj/effect/decal/cleanable/blood{
 	dir = 4;
-	icon_state = "gib6";
-	tag = "icon-gib6"
+	icon_state = "gib6"
 	},
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "aT" = (
@@ -348,16 +322,14 @@
 	icon_state = "candle3"
 	},
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "aU" = (
 /obj/structure/pipes/standard/manifold/hidden/green,
 /obj/item/tool/candle,
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "aW" = (
@@ -365,8 +337,7 @@
 	dir = 4
 	},
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "aX" = (
@@ -374,8 +345,7 @@
 	dir = 8
 	},
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "aZ" = (
@@ -386,8 +356,7 @@
 /area/bigredv2/outside/building/chapel)
 "ba" = (
 /obj/structure/bed/chair/wood/normal{
-	dir = 8;
-	tag = ""
+	dir = 8
 	},
 /obj/effect/landmark/survivor_spawner,
 /turf/open/floor{
@@ -407,8 +376,7 @@
 /area/bigredv2/outside/building/chapel)
 "be" = (
 /turf/open/floor{
-	icon_state = "rampbottom";
-	tag = "icon-rampbottom"
+	icon_state = "rampbottom"
 	},
 /area/bigredv2/outside/building/chapel)
 "bh" = (
@@ -428,8 +396,7 @@
 /obj/structure/surface/table/woodentable,
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "bk" = (
@@ -446,30 +413,25 @@
 "bl" = (
 /obj/structure/machinery/light,
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "bm" = (
 /obj/structure/machinery/power/apc,
 /obj/effect/decal/cleanable/blood{
-	icon_state = "gib6";
-	tag = "icon-gib6"
+	icon_state = "gib6"
 	},
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "bp" = (
 /obj/structure/machinery/alarm{
 	dir = 1;
-	pixel_y = -30;
-	tag = "icon-alarm0 (NORTH)"
+	pixel_y = -30
 	},
 /turf/open/floor{
-	icon_state = "darkish";
-	tag = "icon-darkish"
+	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/chapel)
 "bq" = (

@@ -49,8 +49,7 @@
 "p" = (
 /turf/closed/shuttle/elevator{
 	dir = 4;
-	icon_state = "wall_w";
-	tag = "icon-wall (EAST)"
+	icon_state = "wall_w"
 	},
 /area/shuttle/sky_scraper_elevator)
 "q" = (

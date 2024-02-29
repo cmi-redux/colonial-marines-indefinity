@@ -195,6 +195,7 @@
 			stoplag()
 
 	if(SSticker.current_state == GAME_STATE_PREGAME)
+		SSticker.bypass_checks = TRUE
 		SSticker.request_start()
 		message_admins(SPAN_BLUE("[usr.key] has started the game."))
 

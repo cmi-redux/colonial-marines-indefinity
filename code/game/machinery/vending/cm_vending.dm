@@ -42,7 +42,6 @@
 	var/vend_y_offset = 0
 
 	var/list/listed_products = list()
-	var/special_mode_rest = 0			//in special gamemode using
 
 	// Are points associated with this vending_machine tied to its instance?
 	var/instanced_vendor_points = FALSE

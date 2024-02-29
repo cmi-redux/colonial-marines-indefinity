@@ -1,29 +1,25 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "ap" = (
 /obj/structure/machinery/landinglight/ds2/delaytwo{
-	dir = 4;
-	tag = "icon-landingstripe (EAST)"
+	dir = 4
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
 "cb" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
-	dir = 1;
-	tag = "icon-landingstripe (NORTH)"
+	dir = 1
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
 "cp" = (
 /obj/structure/machinery/landinglight/ds1/delaytwo{
-	dir = 1;
-	tag = "icon-landingstripe (NORTH)"
+	dir = 1
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
 "cz" = (
 /obj/structure/machinery/landinglight/ds2{
-	dir = 8;
-	tag = "icon-landingstripe (WEST)"
+	dir = 8
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
@@ -47,43 +43,37 @@
 /area/admin_test)
 "gE" = (
 /obj/structure/machinery/landinglight/ds1{
-	dir = 4;
-	tag = "icon-landingstripe (EAST)"
+	dir = 4
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
 "gT" = (
 /obj/structure/machinery/landinglight/ds2/delayone{
-	dir = 1;
-	tag = "icon-landingstripe (NORTH)"
+	dir = 1
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
 "hx" = (
 /obj/structure/machinery/landinglight/ds1{
-	dir = 1;
-	tag = "icon-landingstripe (NORTH)"
+	dir = 1
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
 "hR" = (
 /obj/structure/machinery/landinglight/ds2/delayone{
-	dir = 4;
-	tag = "icon-landingstripe (EAST)"
+	dir = 4
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
 "jp" = (
 /obj/structure/machinery/landinglight/ds2/delayone{
-	dir = 8;
-	tag = "icon-landingstripe (WEST)"
+	dir = 8
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
 "kt" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
-	dir = 4;
-	tag = "icon-landingstripe (EAST)"
+	dir = 4
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
@@ -103,8 +93,7 @@
 /area/admin_test)
 "my" = (
 /obj/structure/machinery/landinglight/ds2/delaytwo{
-	dir = 1;
-	tag = "icon-landingstripe (NORTH)"
+	dir = 1
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
@@ -117,15 +106,13 @@
 /area/admin_test)
 "mW" = (
 /obj/structure/machinery/landinglight/ds2{
-	dir = 1;
-	tag = "icon-landingstripe (NORTH)"
+	dir = 1
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
 "oh" = (
 /obj/structure/machinery/landinglight/ds1{
-	dir = 8;
-	tag = "icon-landingstripe (WEST)"
+	dir = 8
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
@@ -135,8 +122,7 @@
 /area/admin_test)
 "qa" = (
 /obj/structure/machinery/landinglight/ds2{
-	dir = 4;
-	tag = "icon-landingstripe (EAST)"
+	dir = 4
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
@@ -147,9 +133,7 @@
 /turf/open/asphalt/cement,
 /area/admin_test)
 "qY" = (
-/obj/structure/machinery/landinglight/ds2/delayone{
-	tag = "icon-landingstripe"
-	},
+/obj/structure/machinery/landinglight/ds2/delayone,
 /turf/open/asphalt/cement,
 /area/admin_test)
 "rE" = (
@@ -162,21 +146,16 @@
 	},
 /area/admin_test)
 "sp" = (
-/obj/structure/machinery/landinglight/ds2/delaythree{
-	tag = "icon-landingstripe"
-	},
+/obj/structure/machinery/landinglight/ds2/delaythree,
 /turf/open/asphalt/cement,
 /area/admin_test)
 "su" = (
-/obj/structure/machinery/landinglight/ds1/delaytwo{
-	tag = "icon-landingstripe"
-	},
+/obj/structure/machinery/landinglight/ds1/delaytwo,
 /turf/open/asphalt/cement,
 /area/admin_test)
 "sG" = (
 /obj/structure/machinery/landinglight/ds1/delaythree{
-	dir = 1;
-	tag = "icon-landingstripe (NORTH)"
+	dir = 1
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
@@ -193,8 +172,7 @@
 /area/admin_test)
 "uV" = (
 /obj/structure/machinery/landinglight/ds1/delaythree{
-	dir = 8;
-	tag = "icon-landingstripe (WEST)"
+	dir = 8
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
@@ -228,15 +206,13 @@
 /area/admin_test)
 "AK" = (
 /obj/structure/machinery/landinglight/ds2/delaythree{
-	dir = 8;
-	tag = "icon-landingstripe (WEST)"
+	dir = 8
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
 "Bl" = (
 /obj/structure/machinery/landinglight/ds1/delaytwo{
-	dir = 8;
-	tag = "icon-landingstripe (WEST)"
+	dir = 8
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
@@ -249,8 +225,7 @@
 /area/admin_test)
 "CC" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
-	dir = 4;
-	tag = "icon-landingstripe (EAST)"
+	dir = 4
 	},
 /obj/structure/machinery/computer/shuttle/dropship/flight/lz1,
 /turf/open/asphalt/cement,
@@ -263,15 +238,13 @@
 /area/admin_test)
 "EA" = (
 /obj/structure/machinery/landinglight/ds2/delaythree{
-	dir = 4;
-	tag = "icon-landingstripe (EAST)"
+	dir = 4
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
 "FC" = (
 /obj/structure/machinery/landinglight/ds1/delaythree{
-	dir = 4;
-	tag = "icon-landingstripe (EAST)"
+	dir = 4
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
@@ -312,16 +285,13 @@
 /area/admin_test)
 "Lu" = (
 /obj/structure/machinery/landinglight/ds2/delayone{
-	dir = 8;
-	tag = "icon-landingstripe (WEST)"
+	dir = 8
 	},
 /obj/structure/machinery/computer/shuttle/dropship/flight/lz2,
 /turf/open/asphalt/cement,
 /area/admin_test)
 "LR" = (
-/obj/structure/machinery/landinglight/ds1{
-	tag = "icon-landingstripe"
-	},
+/obj/structure/machinery/landinglight/ds1,
 /turf/open/asphalt/cement,
 /area/admin_test)
 "Mw" = (
@@ -330,15 +300,12 @@
 	},
 /area/admin_test)
 "Oq" = (
-/obj/structure/machinery/landinglight/ds1/delaythree{
-	tag = "icon-landingstripe"
-	},
+/obj/structure/machinery/landinglight/ds1/delaythree,
 /turf/open/asphalt/cement,
 /area/admin_test)
 "PO" = (
 /obj/structure/machinery/landinglight/ds2/delaythree{
-	dir = 1;
-	tag = "icon-landingstripe (NORTH)"
+	dir = 1
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
@@ -350,8 +317,7 @@
 /area/admin_test)
 "Qy" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
-	dir = 8;
-	tag = "icon-landingstripe (WEST)"
+	dir = 8
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
@@ -373,15 +339,11 @@
 /turf/open/asphalt/cement,
 /area/admin_test)
 "Sy" = (
-/obj/structure/machinery/landinglight/ds1/delayone{
-	tag = "icon-landingstripe"
-	},
+/obj/structure/machinery/landinglight/ds1/delayone,
 /turf/open/asphalt/cement,
 /area/admin_test)
 "SC" = (
-/obj/structure/machinery/landinglight/ds2{
-	tag = "icon-landingstripe"
-	},
+/obj/structure/machinery/landinglight/ds2,
 /turf/open/asphalt/cement,
 /area/admin_test)
 "TD" = (
@@ -397,9 +359,7 @@
 /turf/open/asphalt/cement,
 /area/admin_test)
 "Us" = (
-/obj/structure/machinery/landinglight/ds2/delaytwo{
-	tag = "icon-landingstripe"
-	},
+/obj/structure/machinery/landinglight/ds2/delaytwo,
 /turf/open/asphalt/cement,
 /area/admin_test)
 "Xq" = (
@@ -410,15 +370,13 @@
 /area/admin_test)
 "Yw" = (
 /obj/structure/machinery/landinglight/ds1/delaytwo{
-	dir = 4;
-	tag = "icon-landingstripe (EAST)"
+	dir = 4
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)
 "ZO" = (
 /obj/structure/machinery/landinglight/ds2/delaytwo{
-	dir = 8;
-	tag = "icon-landingstripe (WEST)"
+	dir = 8
 	},
 /turf/open/asphalt/cement,
 /area/admin_test)

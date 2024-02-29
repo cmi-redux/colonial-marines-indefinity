@@ -14,7 +14,6 @@
 /area/bigredv2/outside/building/medical)
 "ad" = (
 /obj/effect/decal/cleanable/blood{
-	tag = "icon-gib6";
 	icon_state = "gib6"
 	},
 /obj/structure/machinery/door/airlock/multi_tile/almayer/medidoor{
@@ -100,14 +99,12 @@
 /obj/structure/closet/secure_closet/CMO,
 /obj/item/device/healthanalyzer,
 /turf/open/floor{
-	tag = "icon-whitegreenfull";
 	icon_state = "whitegreenfull"
 	},
 /area/bigredv2/outside/building/medical)
 "ar" = (
 /obj/structure/machinery/computer/crew,
 /turf/open/floor{
-	tag = "icon-whitegreenfull";
 	icon_state = "whitegreenfull"
 	},
 /area/bigredv2/outside/building/medical)
@@ -126,7 +123,6 @@
 /area/bigredv2/outside/building/medical)
 "au" = (
 /obj/structure/morgue{
-	tag = "icon-morgue1 (WEST)";
 	dir = 8
 	},
 /turf/open/floor{
@@ -190,7 +186,6 @@
 /area/bigredv2/outside/building/medical)
 "aD" = (
 /turf/open/floor{
-	tag = "icon-whitegreenfull";
 	icon_state = "whitegreenfull"
 	},
 /area/bigredv2/outside/building/medical)
@@ -209,7 +204,6 @@
 "aF" = (
 /obj/structure/machinery/computer/med_data,
 /turf/open/floor{
-	tag = "icon-whitegreenfull";
 	icon_state = "whitegreenfull"
 	},
 /area/bigredv2/outside/building/medical)
@@ -345,12 +339,10 @@
 "ba" = (
 /obj/structure/surface/table,
 /obj/structure/machinery/light{
-	tag = "icon-tube1 (EAST)";
 	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
-	tag = "icon-whitegreenfull";
 	icon_state = "whitegreenfull"
 	},
 /area/bigredv2/outside/building/medical)
@@ -467,7 +459,6 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
-	tag = "icon-whitegreenfull";
 	icon_state = "whitegreenfull"
 	},
 /area/bigredv2/outside/building/medical)
@@ -662,7 +653,6 @@
 "bX" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
-	tag = "icon-whitegreen";
 	icon_state = "whitegreen"
 	},
 /area/bigredv2/outside/building/medical)
@@ -1075,13 +1065,11 @@
 "df" = (
 /obj/structure/bed/chair,
 /turf/open/floor{
-	tag = "icon-darkish";
 	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/medical)
 "dg" = (
 /turf/open/floor{
-	tag = "icon-darkish";
 	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/medical)
@@ -1114,7 +1102,6 @@
 	pixel_x = -28
 	},
 /turf/open/floor{
-	tag = "icon-darkish";
 	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/medical)
@@ -1167,7 +1154,6 @@
 "dt" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/machinery/light{
-	tag = "icon-tube1 (EAST)";
 	dir = 4
 	},
 /obj/item/device/radio/intercom{
@@ -1307,14 +1293,12 @@
 "dQ" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
-	tag = "icon-whitegreenfull";
 	icon_state = "whitegreenfull"
 	},
 /area/bigredv2/outside/building/medical)
 "dR" = (
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor{
-	tag = "icon-whitegreenfull";
 	icon_state = "whitegreenfull"
 	},
 /area/bigredv2/outside/building/medical)
@@ -1365,7 +1349,6 @@
 "dY" = (
 /obj/item/shard,
 /turf/open/floor{
-	tag = "icon-darkish";
 	icon_state = "darkish"
 	},
 /area/bigredv2/outside/building/medical)
@@ -1401,7 +1384,6 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
-	tag = "icon-whitegreenfull";
 	icon_state = "whitegreenfull"
 	},
 /area/bigredv2/outside/building/medical)
@@ -1509,7 +1491,6 @@
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor{
-	tag = "icon-whitegreenfull";
 	icon_state = "whitegreenfull"
 	},
 /area/bigredv2/outside/building/medical)
@@ -1609,7 +1590,6 @@
 	},
 /obj/item/trash/kepler,
 /turf/open/floor{
-	tag = "icon-whitegreenfull";
 	icon_state = "whitegreenfull"
 	},
 /area/bigredv2/outside/building/medical)
@@ -1727,19 +1707,16 @@
 	dir = 4
 	},
 /turf/open/floor{
-	tag = "icon-whitegreenfull";
 	icon_state = "whitegreenfull"
 	},
 /area/bigredv2/outside/building/medical)
 "eT" = (
 /turf/open/floor{
-	tag = "icon-asteroidwarning";
 	icon_state = "asteroidwarning"
 	},
 /area/bigredv2/outside/c)
 "eU" = (
 /turf/open/floor{
-	tag = "icon-asteroidwarning";
 	icon_state = "asteroidwarning"
 	},
 /area/bigredv2/outside/building/medical)
@@ -1846,7 +1823,6 @@
 /obj/structure/surface/table/reinforced,
 /obj/item/trash/buritto,
 /turf/open/floor{
-	tag = "icon-whitegreenfull";
 	icon_state = "whitegreenfull"
 	},
 /area/bigredv2/outside/building/medical)
@@ -1877,14 +1853,12 @@
 "fm" = (
 /obj/item/stack/sheet/metal,
 /turf/open/floor{
-	tag = "icon-asteroidwarning";
 	icon_state = "asteroidwarning"
 	},
 /area/bigredv2/outside/c)
 "fn" = (
 /obj/structure/bed,
 /obj/structure/machinery/light{
-	tag = "icon-tube1 (EAST)";
 	dir = 4
 	},
 /turf/open/floor{
