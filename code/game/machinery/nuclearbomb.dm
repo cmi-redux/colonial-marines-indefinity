@@ -1,5 +1,3 @@
-var/bomb_set = FALSE
-
 /obj/structure/machinery/nuclearbomb
 	name = "Nuclear Fission Explosive"
 	desc = "Nuke the entire site from orbit, it's the only way to be sure. Too bad we don't have any orbital nukes."
@@ -9,6 +7,7 @@ var/bomb_set = FALSE
 	unslashable = TRUE
 	unacidable = TRUE
 	anchored = FALSE
+	var/bomb_set = FALSE
 	var/stationar = TRUE
 	var/crash_nuke = FALSE
 	var/timing = FALSE
@@ -20,9 +19,6 @@ var/bomb_set = FALSE
 	var/end_round = TRUE
 	var/timer_announcements_flags = NUKE_SHOW_TIMER_ALL
 	var/has_auth
-	var/obj/item/disk/nuclear/red/r_auth
-	var/obj/item/disk/nuclear/green/g_auth
-	var/obj/item/disk/nuclear/blue/b_auth
 	pixel_x = -16
 	use_power = USE_POWER_NONE
 	req_access = list()
@@ -200,12 +196,14 @@ var/bomb_set = FALSE
 				if(timing)
 					if(!safety)
 						bomb_set = TRUE
+						GLOB.active_nuke_list += src
 						explosion_time = world.time + timeleft
 						start_processing()
 						announce_to_players()
 						message_admins("\The [src] has been activated by [key_name(ui.user, 1)] [ADMIN_JMP_USER(ui.user)]")
 					else
 						bomb_set = FALSE
+						GLOB.active_nuke_list -= src
 				else
 					disable()
 					message_admins("\The [src] has been deactivated by [key_name(ui.user, 1)] [ADMIN_JMP_USER(ui.user)]")
@@ -235,6 +233,7 @@ var/bomb_set = FALSE
 			if(safety)
 				timing = FALSE
 				bomb_set = FALSE
+				GLOB.active_nuke_list -= src
 			. = TRUE
 
 		if("toggleCommandLockout")
@@ -265,8 +264,11 @@ var/bomb_set = FALSE
 			. = TRUE
 
 		if("toggleAnchor")
-			if(timing || (crash_nuke && !has_auth))
-				to_chat(ui.user, SPAN_DANGER("Disengage first!"))
+			if(!allowed(ui.user) || (crash_nuke && !has_auth))
+				to_chat(ui.user, SPAN_DANGER("Access denied!"))
+				return
+			if(timing)
+				to_chat(ui.user, SPAN_INFO("Disengage first!"))
 				return
 			if(!A.can_build_special)
 				to_chat(ui.user, SPAN_INFO("You cannot deploy [src] here!"))
@@ -379,9 +381,9 @@ var/bomb_set = FALSE
 /obj/structure/machinery/nuclearbomb/proc/disable()
 	timing = FALSE
 	bomb_set = FALSE
+	GLOB.active_nuke_list -= src
 	timeleft = initial(timeleft)
 	explosion_time = null
-	GLOB.active_nuke_list -= src
 	announce_to_players()
 
 /obj/structure/machinery/nuclearbomb/proc/explode()
@@ -396,7 +398,7 @@ var/bomb_set = FALSE
 
 	SSticker.mode.on_nuclear_explosion()
 
-	sleep(100)
+	sleep(10 SECONDS)
 	cell_explosion(loc, 4000, 1, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data(initial(name)))
 	qdel(src)
 	return TRUE
@@ -406,6 +408,7 @@ var/bomb_set = FALSE
 		message_admins("\The [src] has been unexpectedly deleted at ([x],[y],[x]). [ADMIN_JMP(src)]")
 		log_game("\The [src] has been unexpectedly deleted at ([x],[y],[x]).")
 	bomb_set = FALSE
+	GLOB.active_nuke_list -= src
 	SSmapview.remove_marker(src)
 	return ..()
 
@@ -413,6 +416,9 @@ var/bomb_set = FALSE
 	name = "\improper Nuclear Fission Explosive"
 	desc = "This is nuclear bomb, need three disks to activate."
 	crash_nuke = TRUE
+	var/obj/item/disk/nuclear/red/r_auth
+	var/obj/item/disk/nuclear/green/g_auth
+	var/obj/item/disk/nuclear/blue/b_auth
 
 /obj/structure/machinery/nuclearbomb/crash/Initialize(mapload, ...)
 	GLOB.nuke_list += src

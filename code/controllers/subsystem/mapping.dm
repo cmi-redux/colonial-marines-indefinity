@@ -39,14 +39,12 @@ SUBSYSTEM_DEF(mapping)
 
 //dlete dis once #39770 is resolved
 /datum/controller/subsystem/mapping/proc/HACK_LoadMapConfig()
-	if(!configs)
-		configs = load_map_configs(ALL_MAPTYPES, error_if_missing = FALSE)
-		for(var/i in GLOB.clients)
-			var/client/C = i
-			winset(C, null, "mainwindow.title='[CONFIG_GET(string/title)] - [SSmapping.configs[SHIP_MAP].map_name]'")
+	configs = load_map_configs(ALL_MAPTYPES, error_if_missing = FALSE)
+	world.name = "[CONFIG_GET(string/title)] - [SSmapping.configs[SHIP_MAP].map_name]"
 
 /datum/controller/subsystem/mapping/Initialize(timeofday)
-	HACK_LoadMapConfig()
+	if(!configs)
+		HACK_LoadMapConfig()
 	if(initialized)
 		return SS_INIT_SUCCESS
 
@@ -70,7 +68,6 @@ SUBSYSTEM_DEF(mapping)
 		var/datum/map_config/MC = configs[maptype]
 		if(MC.perf_mode)
 			GLOB.perf_flags |= MC.perf_mode
-	SSticker.load_mode()
 	return SS_INIT_SUCCESS
 
 /// Takes a z level datum, and tells the mapping subsystem to manage it

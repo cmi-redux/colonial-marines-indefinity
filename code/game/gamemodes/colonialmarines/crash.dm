@@ -46,19 +46,20 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 
 /* Pre-pre-startup */
-/datum/game_mode/crash/can_start()
-	var/list/datum/mind/possible_xenomorphs = get_players_for_role(JOB_XENOMORPH)
-	if(possible_xenomorphs.len < xeno_required_num) //We don't have enough aliens, we don't consider people rolling for only Queen.
-		to_world("Not enough players have chosen to be a xenomorph in their character setup. <b>Aborting</b>.")
-		return FALSE
+/datum/game_mode/crash/can_start(bypass_checks = FALSE)
+	if(!bypass_checks)
+		var/list/datum/mind/possible_xenomorphs = get_players_for_role(JOB_XENOMORPH)
+		if(possible_xenomorphs.len < xeno_required_num) //We don't have enough aliens, we don't consider people rolling for only Queen.
+			to_world("Not enough players have chosen to be a xenomorph in their character setup. <b>Aborting</b>.")
+			return FALSE
 
-	var/players = 0
-	for(var/mob/new_player/player in GLOB.new_player_list)
-		if(player.client && player.ready)
-			players++
+		var/players = 0
+		for(var/mob/new_player/player in GLOB.new_player_list)
+			if(player.client && player.ready)
+				players++
 
-	if(players < required_players)
-		return FALSE
+		if(players < required_players)
+			return FALSE
 
 	initialize_special_clamps()
 
@@ -183,6 +184,8 @@
 
 	round_time_lobby = world.time
 
+	open_podlocks("map_lockdown")
+
 	return ..()
 
 /datum/game_mode/crash/proc/update_controllers()
@@ -218,20 +221,6 @@
 
 
 		if(++round_checkwin >= 5) //Only check win conditions every 5 ticks..
-			if(!(round_status_flags & ROUNDSTATUS_PODDOORS_OPEN))
-				if(SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_LOCKDOWN])
-					if(world.time >= (PODLOCKS_OPEN_WAIT + round_time_lobby))
-						round_status_flags |= ROUNDSTATUS_PODDOORS_OPEN
-						var/input = "Защитная блокировка будет снята через 30 секунд согласно автоматическому протоколу."
-						var/name = "Automated Security Authority Announcement"
-						faction_announcement(input, name, 'sound/AI/commandreport.ogg')
-						for(var/i in GLOB.living_xeno_list)
-							var/mob/M = i
-							sound_to(M, sound(get_sfx("queen"), wait = 0, volume = 50))
-							to_chat(M, SPAN_XENOANNOUNCE("The Queen Mother reaches into your mind from worlds away."))
-							to_chat(M, SPAN_XENOANNOUNCE("Для моих детей и их Королевы. Я чувствую что большие двери ловушки откроются через 30 секунд."))
-						addtimer(CALLBACK(src, PROC_REF(open_podlocks), "map_lockdown"), 300)
-
 			if(round_should_check_for_win)
 				check_win()
 			round_checkwin = 0

@@ -12,23 +12,31 @@
 	var/atom/movable/target
 	var/list/tracked_list
 
+/obj/item/device/pinpointer/attack_self()
+	. = ..()
+
+	if(!active)
+		activate(usr)
+	else
+		deactivate(usr)
+
 /obj/item/device/pinpointer/proc/set_target(mob/user)
 	if(!length(tracked_list))
-		to_chat(user, "<span class='warning'>No traceable signals found!</span>")
+		to_chat(user, SPAN_WARNING("No traceable signals found!"))
 		return
 	target = tgui_input_list(user, "Select the item you wish to track.", "Pinpointer", tracked_list)
 	if(QDELETED(target))
 		return
 	var/turf/pinpointer_loc = get_turf(src)
 	if(target.z != pinpointer_loc.z)
-		to_chat(user, "<span class='warning'>Chosen target signal too weak. Choose another.</span>")
+		to_chat(user, SPAN_WARNING("Chosen target signal too weak. Choose another."))
 		target = null
 		return
 
 /obj/item/device/pinpointer/proc/workdisk()
 	if(!active) return
 	if(!target)
-		target = locate()
+		target = pick(tracked_list)
 		if(!target)
 			icon_state = "pinonnull"
 			return
@@ -49,12 +57,6 @@
 	for(var/obj/structure/machinery/nuclearbomb/bomb in GLOB.machines)
 		if(bomb.timing)
 			. += "Extreme danger.  Arming signal detected.   Time remaining: [bomb.timeleft]"
-
-	if(ishuman(user))
-		if(active)
-			deactivate(user)
-		else
-			activate(user)
 
 /obj/item/device/pinpointer/proc/activate(mob/user)
 	set_target(user)
@@ -175,7 +177,7 @@
 
 	active = 0
 	icon_state = "pinoff"
-	target=null
+	target = null
 	location = null
 
 	switch(alert("Please select the mode you want to put the pinpointer in.", "Pinpointer Mode Select", "Location", "Disk Recovery", "Other Signature"))

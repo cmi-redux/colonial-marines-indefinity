@@ -66,7 +66,9 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 
 ///can_start()
 ///Checks to see if the game can be setup and ran with the current number of players or whatnot.
-/datum/game_mode/proc/can_start()
+/datum/game_mode/proc/can_start(bypass_checks = FALSE)
+	if(bypass_checks)
+		return TRUE
 	var/playerC = 0
 	for(var/mob/new_player/player in GLOB.new_player_list)
 		if(player.client && player.ready)
@@ -398,8 +400,8 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 
 /datum/game_mode/proc/on_nuclear_explosion(datum/source, list/z_levels = SSmapping.levels_by_trait(ZTRAIT_GROUND))
 	planet_nuked = NUKE_INPROGRESS
-	faction_announcement("DANGER. DANGER. Planetary Nuke Activated. DANGER. DANGER. Self destruct in progress. DANGER. DANGER.", "Priority Alert", sound('sound/effects/explosionfar.ogg', 'sound/music/round_end/nuclear_detonation1.ogg', 'sound/music/round_end/nuclear_detonation2.ogg'), "Everyone (-Yautja)")
-	INVOKE_ASYNC(src, PROC_REF(play_cinematic), z_levels, list("intro_planet", "intro_planet", "planet_nuke", "planet_end"), create_cause_data("взрыва ядерной боеголовки", source))
+	faction_announcement("DANGER. DANGER. Planetary Nuke Activated. DANGER. DANGER. Activation in progress. DANGER. DANGER.", "Priority Alert", sound('sound/effects/explosionfar.ogg', 'sound/music/round_end/nuclear_detonation1.ogg', 'sound/music/round_end/nuclear_detonation2.ogg'), "Everyone (-Yautja)")
+	INVOKE_ASYNC(src, TYPE_PROC_REF(/datum/game_mode, play_cinematic), z_levels, list("intro_planet", "intro_planet", "planet_nuke", "planet_end"), create_cause_data("взрыва ядерной боеголовки", source))
 	addtimer(VARSET_CALLBACK(src, planet_nuked, NUKE_COMPLETED), 5 SECONDS)
 
 /datum/game_mode/proc/play_cinematic(list/z_levels = SSmapping.levels_by_trait(ZTRAIT_MARINE_MAIN_SHIP), cinematic_icons = list("intro_ship", "intro_nuke", "ship_spared", "summary_spared"), datum/cause_data/cause_data, explosion_sound = list('sound/effects/explosionfar.ogg'))

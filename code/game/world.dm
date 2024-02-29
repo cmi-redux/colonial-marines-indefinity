@@ -48,7 +48,6 @@ GLOBAL_VAR(restart_counter)
 	LoadBans()
 	load_motd()
 	load_tm_message()
-	load_mode()
 	loadShuttleInfoDatums()
 	populate_gear_list()
 	initialize_global_regex()
@@ -357,15 +356,6 @@ var/world_topic_spam_protect_time = world.timeofday
 	var/payload_ser = url_encode(json_encode(payload))
 	world.Export("[manager]/?payload=[payload_ser]")
 	return TRUE
-
-/world/proc/load_mode()
-	GLOB.master_mode = trim(file2text("data/mode.txt"))
-	log_misc("Saved mode is '[GLOB.master_mode]'")
-
-/world/proc/save_mode(the_mode)
-	var/F = file("data/mode.txt")
-	fdel(F)
-	F << the_mode
 
 /world/proc/load_motd()
 	join_motd = list(CLIENT_LANGUAGE_RUSSIAN = file2text("config/motd_ru.txt"), CLIENT_LANGUAGE_ENGLISH = file2text("config/motd_en.txt"))

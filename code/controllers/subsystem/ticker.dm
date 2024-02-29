@@ -45,12 +45,16 @@ SUBSYSTEM_DEF(ticker)
 	var/totalPlayersReady = 0 //used for pregame stats on statpanel
 
 /datum/controller/subsystem/ticker/Initialize(timeofday)
+	if(!SSmapping.configs)
+		SSmapping.HACK_LoadMapConfig()
+
+	load_mode()
+
 	var/all_music = CONFIG_GET(keyed_list/lobby_music)
 	var/key = SAFEPICK(all_music)
 	if(key)
 		login_music = file(all_music[key])
-	mode = config.pick_mode(GLOB.master_mode)
-	mode.setup_round_stats()
+
 	if(!role_authority)
 		role_authority = new /datum/authority/branch/role()
 		INIT_ANNOUNCE("\b Job setup complete")
@@ -328,11 +332,17 @@ SUBSYSTEM_DEF(ticker)
 
 
 /datum/controller/subsystem/ticker/proc/load_mode()
-	var/mode = trim(file2text("data/mode.txt"))
-	if(mode)
-		GLOB.master_mode = SSmapping?.configs?[GROUND_MAP].force_mode ? SSmapping.configs[GROUND_MAP].force_mode : mode
+	var/cfg_mode = trim(file2text("data/mode.txt"))
+	if(SSmapping?.configs?[GROUND_MAP].force_mode)
+		GLOB.master_mode = SSmapping.configs[GROUND_MAP].force_mode
+	else if(cfg_mode)
+		GLOB.master_mode = cfg_mode
 	else
 		GLOB.master_mode = MODE_NAME_EXTENDED
+
+	mode = config.pick_mode(GLOB.master_mode)
+	mode.setup_round_stats()
+
 	log_game("Saved mode is '[GLOB.master_mode]'")
 
 

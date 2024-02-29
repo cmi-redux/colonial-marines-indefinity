@@ -105,7 +105,6 @@ SUBSYSTEM_DEF(vote)
 			. += option
 	return .
 
-
 /datum/controller/subsystem/vote/proc/announce_result()
 	var/list/winners = get_result()
 	var/text
@@ -150,7 +149,6 @@ SUBSYSTEM_DEF(vote)
 	to_chat(world, "<br><font color='purple'>[text]</font>")
 	return .
 
-
 /datum/controller/subsystem/vote/proc/result()
 	. = announce_result()
 	var/restart = FALSE
@@ -189,7 +187,6 @@ SUBSYSTEM_DEF(vote)
 
 	return .
 
-
 /datum/controller/subsystem/vote/proc/handle_client_joining(dcs, client/C)
 	SIGNAL_HANDLER
 
@@ -209,7 +206,6 @@ SUBSYSTEM_DEF(vote)
 				update_static_data(usr)
 				return vote
 	return FALSE
-
 
 /datum/controller/subsystem/vote/proc/carry_over_callback(list/datum/entity/map_vote/votes)
 	src.votes = votes
@@ -300,8 +296,6 @@ SUBSYSTEM_DEF(vote)
 							continue
 						if(VM.config_min_users && players < VM.config_min_users)
 							continue
-					if(initial(VM.vote_cycle) && text2num(SSperf_logging?.round?.id) % initial(VM.vote_cycle) != 0)
-						continue
 					maps += i
 
 				choices.Add(maps)

@@ -1318,7 +1318,8 @@
 		hud_used.locate_leader.icon_state = "trackon[tracking_suffix]"
 
 /mob/living/carbon/proc/locate_nearest_nuke()
-	if(!bomb_set) return
+	if(!length(GLOB.active_nuke_list))
+		return
 	var/obj/structure/machinery/nuclearbomb/N
 	for(var/obj/structure/machinery/nuclearbomb/bomb in world)
 		if(!istype(N) || N.z != src.z )

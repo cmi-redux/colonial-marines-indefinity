@@ -313,7 +313,7 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 						addtimer(CALLBACK(XQ.faction, TYPE_PROC_REF(/datum/faction/xenomorph, abandon_on_hijack)), DROPSHIP_WARMUP_TIME, TIMER_UNIQUE)
 						XQ.faction.hijack_burrowed_surge = TRUE
 
-					if(bomb_set)
+					if(length(GLOB.active_nuke_list))
 						for(var/obj/structure/machinery/nuclearbomb/bomb in world)
 							bomb.end_round = FALSE
 

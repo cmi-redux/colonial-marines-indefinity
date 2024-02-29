@@ -17,10 +17,11 @@
 	var/turf/left = locate(C.x - leftright, C.y, C.z)
 	var/turf/right = locate(C.x + leftright, C.y, C.z)
 
-	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), front, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("посадки USS Heart Of Gold"))
-	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), rear, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("посадки USS Heart Of Gold"))
-	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), left, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("посадки USS Heart Of Gold"))
-	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), right, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("посадки USS Heart Of Gold"))
+	var/datum/cause_data/cause_data = create_cause_data("посадки USS Heart Of Gold")
+	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), front, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
+	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), rear, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
+	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), left, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
+	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(cell_explosion), right, 600, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
 // -- Shuttles
 
 /obj/docking_port/mobile/crashmode
