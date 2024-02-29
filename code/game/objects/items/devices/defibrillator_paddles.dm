@@ -43,8 +43,9 @@
 	icon_state = "[icon_state]_[attached_to.icon_state_for_paddles]"
 
 /obj/item/device/paddles/proc/remove_attached()
-	attached_to?.paddles_type = null
-	attached_to = null
+	if(attached_to)
+		attached_to.remove_attached()
+		attached_to = null
 	reset_tether()
 
 /obj/item/device/paddles/proc/reset_tether()

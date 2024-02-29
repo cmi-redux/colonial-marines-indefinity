@@ -77,12 +77,6 @@
 	RegisterSignal(paddles_type, COMSIG_PARENT_PREQDELETED, PROC_REF(override_delete))
 	update_icon()
 
-/obj/item/device/defibrillator/Destroy()
-	QDEL_NULL(dcell)
-	QDEL_NULL(sparks)
-	QDEL_NULL(paddles_type)
-	return ..()
-
 /obj/item/device/defibrillator/update_icon()
 	icon_state = initial(icon_state)
 	overlays.Cut()
@@ -263,12 +257,19 @@
 	if(paddles_type)
 		if(paddles_type.loc == src)
 			UnregisterSignal(paddles_type, COMSIG_PARENT_PREQDELETED)
-			qdel(paddles_type)
 		else
 			paddles_type.attached_to = null
 			paddles_type = null
 
-	return ..()
+	QDEL_NULL(dcell)
+	QDEL_NULL(sparks)
+	QDEL_NULL(paddles_type)
+
+	. = ..()
+
+/obj/item/device/defibrillator/proc/remove_attached()
+	UnregisterSignal(paddles_type, COMSIG_PARENT_PREQDELETED)
+	paddles_type = null
 
 /mob/living/carbon/human/proc/get_ghost(check_client = TRUE, check_can_reenter = TRUE)
 	if(client)
