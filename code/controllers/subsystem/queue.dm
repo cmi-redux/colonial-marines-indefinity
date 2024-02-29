@@ -9,8 +9,6 @@ SUBSYSTEM_DEF(queue)
 	var/list/queued = list()
 	var/hard_popcap = FALSE
 
-// MAKE PRIORITY BASED ENTER
-
 /datum/controller/subsystem/queue/Initialize()
 	hard_popcap = CONFIG_GET(number/hard_popcap) //TODO MAKE CALCULATION OF MAX PLAYERS AND SOME LAG DETECT FEATURES TO GOOD
 	if(!hard_popcap)

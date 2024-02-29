@@ -235,8 +235,8 @@ var/world_topic_spam_protect_time = world.timeofday
 		bad_reboot_auth(auth)
 		return
 
-	if(!notify_restart())
-		log_debug("Failed to notify discord about restart")
+//	if(!notify_restart()) TODO: create here script that feed to bot about restart happening
+//		log_debug("Failed to notify discord about restart")
 
 	Master.Shutdown()
 	if(TgsAvailable())
@@ -292,45 +292,6 @@ var/world_topic_spam_protect_time = world.timeofday
 		for(var/client/client as anything in GLOB.clients)
 			if(client?.prefs.toggles_sound & SOUND_REBOOT)
 				SEND_SOUND(client, reboot_sound_ref)
-
-/world/proc/notify_restart()
-	if(world.port != 1400)
-		return FALSE
-	var/datum/discord_embed/embed = new()
-	embed.title = "**Раунд [SSticker.mode.round_statistics.round_name], № [SSperf_logging?.round?.id] ЗАВЕРШЕН**"
-	var/next_map_info = ""
-	if(SSmapping?.next_map_configs && SSmapping?.next_map_configs?[GROUND_MAP])
-		next_map_info = ", **Следующая Карта:** __[SSmapping.next_map_configs[GROUND_MAP]?.map_name]__"
-	var/last_round = ""
-	if(SSticker.graceful)
-		last_round = "\n__**Это последний раунд!**__\nВсем спасибо за участие на старте, cледующий старт по расписанию."
-	embed.description = "[SSticker.mode.end_round_message()]\n**Онлайн:** **(AVG)** ``[round(SSstats_collector.get_avg_players(), 0.01)]``, *на момент перезапуска ``[length(GLOB.clients)]``*\n\
-	**Карта:** __[SSmapping.configs[GROUND_MAP]?.map_name]__[next_map_info]\n**Длительность раунда:** *[duration2text()]*[last_round]"
-	embed.color = COLOR_WEBHOOK_DEFAULT
-	embed.content = "[CONFIG_GET(string/new_round_mention_webhook_url)]"
-	send2new_round_webhook(embed)
-	return TRUE
-
-/proc/send2new_round_webhook(message_or_embed)
-	var/webhook = CONFIG_GET(string/new_round_webhook_url)
-	if(!webhook)
-		return
-
-	var/list/webhook_info = list()
-	if(istext(message_or_embed))
-		var/message_content = replacetext(replacetext(message_or_embed, "\proper", ""), "\improper", "")
-		message_content = GLOB.has_discord_embeddable_links.Replace(replacetext(message_content, "`", ""), " ```$1``` ")
-		webhook_info["content"] = message_content
-	else
-		var/datum/discord_embed/embed = message_or_embed
-		webhook_info["embeds"] = list(embed.convert_to_list())
-		if(embed.content)
-			webhook_info["content"] = embed.content
-	var/list/headers = list()
-	headers["Content-Type"] = "application/json"
-	var/datum/http_request/request = new()
-	request.prepare(RUSTG_HTTP_METHOD_POST, webhook, json_encode(webhook_info), headers, "tmp/response.json")
-	request.begin_async()
 
 /world/proc/notify_manager(restarting = FALSE)
 	. = FALSE

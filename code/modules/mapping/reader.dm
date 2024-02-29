@@ -161,7 +161,11 @@
 				WARNING("Z-level expansion occurred without no_changeturf set, this may cause problems when /turf/AfterChange is called")
 
 		for(var/line in gset.gridLines)
-			CHECK_TICK
+			//custom CHECK_TICK here because we don't want things created while we're sleeping to not initialize
+			if(TICK_CHECK)
+				SSatoms.map_loader_stop()
+				stoplag()
+				SSatoms.map_loader_begin()
 			if((ycrd - y_offset + 1) < y_lower || (ycrd - y_offset + 1) > y_upper) //Reverse operation and check if it is out of bounds of cropping.
 				--ycrd
 				continue
@@ -264,8 +268,6 @@
 			//then fill the members_attributes list with the corresponding variables
 			members_attributes.len++
 			members_attributes[index++] = fields
-
-			CHECK_TICK
 
 		//check and see if we can just skip this turf
 		//So you don't have to understand this horrid statement, we can do this if

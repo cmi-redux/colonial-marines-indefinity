@@ -4,6 +4,9 @@
 	name = "USS Heart Of Gold Crash Site"
 	width = 29
 	height = 19
+	dwidth = 14
+	dheight = 9
+	dir = NORTH
 
 /obj/docking_port/stationary/crashmode/on_prearrival()
 	//clear areas around the shuttle with explosions
@@ -31,6 +34,9 @@
 	name = "USS Heart Of Gold"
 	width = 29
 	height = 19
+	dwidth = 14
+	dheight = 9
+	preferred_direction = SOUTH
 
 	callTime = 10 MINUTES
 	ignitionTime = 5 SECONDS

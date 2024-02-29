@@ -57,9 +57,7 @@
 
 	client.init_verbs()
 
-	var/soft_popcap = CONFIG_GET(number/soft_popcap)
-	var/popcap_value = GLOB.clients.len
-	if(popcap_value >= soft_popcap)
+	if(length(GLOB.clients) >= CONFIG_GET(number/soft_popcap))
 		to_chat(src, SPAN_WARNING("<h1>[CONFIG_GET(string/soft_popcap_message)]</h1>"))
 
 	SSautobalancer.balance_action(src, "login")

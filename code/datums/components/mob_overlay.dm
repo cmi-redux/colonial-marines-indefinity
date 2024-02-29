@@ -14,17 +14,17 @@
 	mask_y_offset = _mask_y_offset
 	effect_alpha = _effect_alpha
 
-	RegisterSignal(get_turf(target), COMSIG_ATOM_EXIT, TYPE_PROC_REF(/datum/element/mob_overlay_effect, on_exit), override = TRUE)
+	RegisterSignal(get_turf(target), COMSIG_TURF_EXITED, TYPE_PROC_REF(/datum/element/mob_overlay_effect, on_exit), override = TRUE)
 	RegisterSignal(get_turf(target), COMSIG_TURF_ENTERED, TYPE_PROC_REF(/datum/element/mob_overlay_effect, on_enter), override = TRUE)
 
 /datum/element/mob_overlay_effect/Detach(datum/source, force)
 	. = ..()
-	UnregisterSignal(get_turf(source), COMSIG_ATOM_EXIT)
+	UnregisterSignal(get_turf(source), COMSIG_TURF_EXITED)
 	UnregisterSignal(get_turf(source), COMSIG_TURF_ENTERED)
 
 /datum/element/mob_overlay_effect/proc/on_exit(datum/source, datum/target)
 	SIGNAL_HANDLER
-	if(!istype(target, /mob))
+	if(!istype(target, /mob/living))
 		return
 	var/mob/mob = target
 	var/icon/mob_icon = icon(mob.icon)
@@ -37,7 +37,7 @@
 
 /datum/element/mob_overlay_effect/proc/on_enter(datum/source, datum/target)
 	SIGNAL_HANDLER
-	if(!istype(target, /mob))
+	if(!istype(target, /mob/living))
 		return
 	var/mob/arrived_mob = target
 	var/icon/mob_icon = icon(arrived_mob.icon)

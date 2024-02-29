@@ -334,6 +334,8 @@
 	if(!istype(gone))
 		return
 
+	SEND_SIGNAL(src, COMSIG_TURF_EXITED, gone, direction)
+	SEND_SIGNAL(gone, COMSIG_MOVABLE_TURF_EXITED, src, direction)
 
 //zPassIn doesn't necessarily pass an atom!
 //direction is direction of travel of air

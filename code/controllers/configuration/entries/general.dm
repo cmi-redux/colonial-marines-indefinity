@@ -52,8 +52,6 @@ Basics, the most important.
 /// URL for the CentCom Galactic Ban DB API
 /datum/config_entry/string/centcom_ban_db
 
-/datum/config_entry/string/python_path
-
 /datum/config_entry/string/restart_message
 
 /datum/config_entry/flag/guest_ban
@@ -533,13 +531,7 @@ This maintains a list of ip addresses that are able to bypass topic filtering.
 
 /datum/config_entry/string/adminhelp_ahelp_link
 
-/datum/config_entry/string/verefy_webhook_url
-
 /datum/config_entry/string/round_statistic_webhook_url
-
-/datum/config_entry/string/new_round_webhook_url
-
-/datum/config_entry/string/new_round_mention_webhook_url
 
 /datum/config_entry/flag/native_fov
 
