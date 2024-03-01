@@ -100,7 +100,6 @@
 	l_move_time = world.time
 	if((old_loc != loc && old_loc && old_loc.z == z))
 		last_move_dir = get_dir(old_loc, loc)
-	NewLoc.Entered(src, old_loc)
 	if(.)
 		Moved(old_loc, direction)
 

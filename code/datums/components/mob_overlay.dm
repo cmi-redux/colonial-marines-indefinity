@@ -8,11 +8,10 @@
 	var/mask_y_offset = 0
 	var/effect_alpha = 0
 
-/datum/element/mob_overlay_effect/Attach(datum/target, _y_offset, _mask_y_offset, _effect_alpha)
+/datum/element/mob_overlay_effect/Attach(datum/target, _y_offset, _mask_y_offset)
 	. = ..()
 	y_offset = _y_offset
 	mask_y_offset = _mask_y_offset
-	effect_alpha = _effect_alpha
 
 	RegisterSignal(get_turf(target), COMSIG_TURF_EXITED, TYPE_PROC_REF(/datum/element/mob_overlay_effect, on_exit), override = TRUE)
 	RegisterSignal(get_turf(target), COMSIG_TURF_ENTERED, TYPE_PROC_REF(/datum/element/mob_overlay_effect, on_enter), override = TRUE)
@@ -27,28 +26,22 @@
 	if(!istype(target, /mob/living))
 		return
 	var/mob/mob = target
-	var/icon/mob_icon = icon(mob.icon)
-	var/height_to_use = mob_icon.Height() * (-1)//gives us the right height based on carbon's icon height relative to the 64 high alpha mask
-
 	if(mob.get_filter(MOB_LIQUID_TURF_MASK))
-		animate(mob.get_filter(MOB_LIQUID_TURF_MASK), y = height_to_use, time = mob.move_delay)
-		animate(mob, pixel_y = mob.pixel_y - y_offset, time = mob.move_delay, flags = ANIMATION_PARALLEL)
-		addtimer(CALLBACK(mob, TYPE_PROC_REF(/atom, remove_filter), MOB_LIQUID_TURF_MASK), mob.move_delay)
+		animate(mob.get_filter(MOB_LIQUID_TURF_MASK), y = -32, time = mob.move_delay)
+		addtimer(CALLBACK(mob, TYPE_PROC_REF(/atom, remove_filter), MOB_LIQUID_TURF_MASK), mob.move_delay*0.5)
+	animate(mob, pixel_y = mob.pixel_y - y_offset, time = mob.move_delay, flags = ANIMATION_PARALLEL)
 
 /datum/element/mob_overlay_effect/proc/on_enter(datum/source, datum/target)
 	SIGNAL_HANDLER
 	if(!istype(target, /mob/living))
 		return
 	var/mob/arrived_mob = target
-	var/icon/mob_icon = icon(arrived_mob.icon)
-	var/height_to_use = mob_icon.Height() * (-1)//gives us the right height based on carbon's icon height relative to the 64 high alpha mask
-
 	if(arrived_mob.get_filter(MOB_LIQUID_TURF_MASK))
-		animate(arrived_mob.get_filter(MOB_LIQUID_TURF_MASK), y = mask_y_offset, time = arrived_mob.move_delay)
+		animate(arrived_mob.get_filter(MOB_LIQUID_TURF_MASK), y = mask_y_offset, time = arrived_mob.move_delay*0.5)
 		animate(arrived_mob, pixel_y = arrived_mob.pixel_y + y_offset, time = arrived_mob.move_delay, flags = ANIMATION_PARALLEL)
 	else
 		//The mask is spawned below the mob, then the animate() raises it up, giving the illusion of dropping into water, combining with the animate to actual drop the pixel_y into the water
 		if(effect_alpha)
-			arrived_mob.add_filter(MOB_LIQUID_TURF_MASK, 1, alpha_mask_filter(0, height_to_use, icon('icons/effects/icon_cutter.dmi', "icon_cutter"), null, MASK_INVERSE))
-			animate(arrived_mob.get_filter(MOB_LIQUID_TURF_MASK), y = mask_y_offset, time = arrived_mob.move_delay)
+			arrived_mob.add_filter(MOB_LIQUID_TURF_MASK, 1, alpha_mask_filter(0, -32, icon('icons/effects/icon_cutter.dmi', "icon_cutter"), null, MASK_INVERSE))
+			animate(arrived_mob.get_filter(MOB_LIQUID_TURF_MASK), y = mask_y_offset, time = arrived_mob.move_delay*0.5)
 		animate(arrived_mob, pixel_y = arrived_mob.pixel_y + y_offset, time = arrived_mob.move_delay, flags = ANIMATION_PARALLEL)

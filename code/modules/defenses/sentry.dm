@@ -362,14 +362,14 @@
 
 /obj/structure/machinery/defenses/sentry/proc/actual_fire(atom/target)
 	var/obj/item/projectile/proj = ammo.transfer_bullet_out()
-	proj.forceMove(src)
+	apply_traits(proj)
 	proj.bullet_ready_to_fire(initial(name), weapon_source_mob = owner_mob)
+	proj.forceMove(src)
 	var/datum/cause_data/cause_data = create_cause_data(initial(name), owner_mob, src)
 	proj.weapon_cause_data = cause_data
 	proj.firer = cause_data?.resolve_mob()
 	proj.damage *= damage_mult
 	proj.accuracy *= accuracy_mult
-	apply_traits(proj)
 	proj.fire_at(target, src, owner_mob, proj.ammo.max_range, proj.ammo.shell_speed, null)
 	muzzle_flash(Get_Angle(get_turf(src), target))
 	track_shot()

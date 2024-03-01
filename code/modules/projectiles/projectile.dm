@@ -173,7 +173,7 @@
 /obj/item/projectile/proc/apply_bullet_trait(list/entry)
 	bullet_traits += list(entry.Copy())
 	// Need to use the proc instead of the wrapper because each entry is a list
-	AddElement(entry)
+	_AddElement(entry)
 
 /obj/item/projectile/proc/give_bullet_traits(obj/item/projectile/proj)
 	for(var/list/entry in bullet_traits)
@@ -1857,6 +1857,7 @@ So if we are on the 32th absolute pixel coordinate we are on tile 1, but if we a
 
 //This is where the bullet bounces off.
 /atom/proc/bullet_ping(obj/item/projectile/proj, pixel_x_offset = 0, pixel_y_offset = 0)
+	SEND_SIGNAL(proj, COMSIG_BULLET_PING_ACT, src)
 	if(!proj || !proj.ammo.ping)
 		return
 

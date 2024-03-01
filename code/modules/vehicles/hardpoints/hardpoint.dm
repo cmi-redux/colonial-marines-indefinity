@@ -149,8 +149,9 @@
 
 /obj/item/hardpoint/proc/generate_bullet(mob/user, turf/origin_turf)
 	var/obj/item/projectile/proj = ammo.transfer_bullet_out()
-	proj.forceMove(origin_turf)
+	apply_traits(proj)
 	proj.bullet_ready_to_fire(initial(name), weapon_source_mob = user)
+	proj.forceMove(origin_turf)
 	var/datum/cause_data/cause_data = create_cause_data(initial(name), user, src)
 	proj.weapon_cause_data = cause_data
 	proj.firer = user

@@ -59,7 +59,7 @@ PLANT_CUT_MACHETE = 3 = Needs at least a machete to be cut down
 	else
 		. = ..()
 
-/obj/structure/flora/get_projectile_hit_boolean(obj/item/projectile/projectile)
+/obj/structure/flora/get_projectile_hit_boolean(obj/item/projectile/proj)
 	return FALSE
 
 /obj/structure/flora/bullet_act(obj/item/projectile/proj)
@@ -335,7 +335,6 @@ ICEY GRASS. IT LOOKS LIKE IT'S MADE OF ICE.
 	unacidable = TRUE
 	cut_level = PLANT_CUT_MACHETE
 	layer = UNDER_TURF_LAYER -0.03
-	var/overlay_deep = 1
 	var/list/image/TallGrassEdgeCache = list()
 
 /obj/structure/flora/grass/short_grass/Initialize()
@@ -354,7 +353,7 @@ ICEY GRASS. IT LOOKS LIKE IT'S MADE OF ICE.
 		TallGrassEdgeCache[SOUTHEAST].color = color
 		TallGrassEdgeCache[SOUTHWEST] = image(icon, "grass_edges_s-e")
 		TallGrassEdgeCache[SOUTHWEST].color = color
-	AddElement(/datum/element/mob_overlay_effect, -2, 12, 255)
+	AddElement(/datum/element/mob_overlay_effect, -2, -15)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/flora/grass/short_grass/LateInitialize()
@@ -407,7 +406,6 @@ ICEY GRASS. IT LOOKS LIKE IT'S MADE OF ICE.
 	unslashable = TRUE
 	unacidable = TRUE
 	cut_level = PLANT_CUT_MACHETE
-	var/overlay_deep = 2
 	var/list/diged = list("2" = FALSE, "1" = FALSE, "8" = FALSE, "4" = FALSE)
 
 /obj/structure/flora/grass/tall_grass/Initialize()
@@ -417,7 +415,7 @@ ICEY GRASS. IT LOOKS LIKE IT'S MADE OF ICE.
 
 	update_overlays()
 
-	AddElement(/datum/element/mob_overlay_effect, -4, 15, 255)
+	AddElement(/datum/element/mob_overlay_effect, -4, -10)
 
 /obj/structure/flora/grass/tall_grass/Crossed(atom/movable/arrived)
 	. = ..()

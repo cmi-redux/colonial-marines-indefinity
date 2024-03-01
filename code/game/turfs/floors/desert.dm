@@ -105,7 +105,7 @@
 
 /turf/open/desert/desert_shore/Initialize(mapload, ...)
 	. = ..()
-	AddElement(/datum/element/mob_overlay_effect, -2, 12)
+	AddElement(/datum/element/mob_overlay_effect, -2, -5)
 
 /turf/open/desert/desert_shore/update_icon()
 	..()
@@ -235,7 +235,7 @@
 
 /turf/open/gm/river/desert/shallow/Initialize(mapload, ...)
 	. = ..()
-	AddElement(/datum/element/mob_overlay_effect, -8, 18)
+	AddElement(/datum/element/mob_overlay_effect, -8, -2)
 
 /turf/open/gm/river/desert/shallow/covered
 	covered = 1
@@ -248,7 +248,7 @@
 
 /turf/open/gm/river/desert/shallow_edge/Initialize(mapload, ...)
 	. = ..()
-	AddElement(/datum/element/mob_overlay_effect, -12, 22)
+	AddElement(/datum/element/mob_overlay_effect, -12, 0)
 
 /turf/open/gm/river/desert/shallow_edge/covered
 	covered = 1
@@ -261,7 +261,7 @@
 
 /turf/open/gm/river/desert/shallow_corner/Initialize(mapload, ...)
 	. = ..()
-	AddElement(/datum/element/mob_overlay_effect, -12, 22)
+	AddElement(/datum/element/mob_overlay_effect, -12, 0)
 
 /turf/open/gm/river/desert/shallow_corner/covered
 	covered = 1
@@ -275,7 +275,7 @@
 
 /turf/open/gm/river/desert/deep/Initialize(mapload, ...)
 	. = ..()
-	AddElement(/datum/element/mob_overlay_effect, -16, 28)
+	AddElement(/datum/element/mob_overlay_effect, -16, 6)
 
 /turf/open/gm/river/desert/deep/covered
 	covered = 1

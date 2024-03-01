@@ -17,7 +17,7 @@
 		CB.to_block = src
 
 		cadeblockers.Add(CB)
-	AddElement(/datum/element/mob_overlay_effect, -4, -4)
+	AddElement(/datum/element/mob_overlay_effect, -4, -32)
 
 /turf/open/trench/ChangeTurf()
 	QDEL_NULL_LIST(cadeblockers)

@@ -14,8 +14,8 @@
 /obj/structure/dps_tester/ex_act(severity)
 	damaged(armor_damage_reduction(GLOB.xeno_explosive, severity, armor_simulation , 60, 0, 0.5, armor_simulation))
 
-/obj/structure/dps_tester/bullet_act(obj/item/projectile/projectile)
-	damaged(armor_damage_reduction(GLOB.xeno_ranged, projectile.calculate_damage(), armor_simulation, projectile.ammo.penetration, projectile.ammo.pen_armor_punch, projectile.ammo.damage_armor_punch, armor_simulation))
+/obj/structure/dps_tester/bullet_act(obj/item/projectile/proj)
+	damaged(armor_damage_reduction(GLOB.xeno_ranged, proj.calculate_damage(), armor_simulation, proj.ammo.penetration, proj.ammo.pen_armor_punch, proj.ammo.damage_armor_punch, armor_simulation))
 
 /obj/structure/dps_tester/attackby(obj/item/weapon/weapon, mob/user)
 	var/power = weapon.force

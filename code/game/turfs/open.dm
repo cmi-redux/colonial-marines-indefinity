@@ -513,7 +513,7 @@
 
 /turf/open/gm/river/Initialize()
 	. = ..()
-	AddElement(/datum/element/mob_overlay_effect, -8, 18)
+	AddElement(/datum/element/mob_overlay_effect, -8, -5)
 
 /turf/open/gm/river/update_overlays()
 	. = ..()
@@ -658,7 +658,7 @@
 
 /turf/open/gm/coast/Initialize(mapload, ...)
 	. = ..()
-	AddElement(/datum/element/mob_overlay_effect, -2, 12)
+	AddElement(/datum/element/mob_overlay_effect, -2, -15)
 
 /turf/open/gm/coast/north
 
@@ -715,7 +715,7 @@
 
 /turf/open/gm/riverdeep/Initialize(mapload, ...)
 	. = ..()
-	AddElement(/datum/element/mob_overlay_effect, -16, 28)
+	AddElement(/datum/element/mob_overlay_effect, -16, 5)
 
 /turf/open/gm/river/no_overlay
 	no_overlay = TRUE

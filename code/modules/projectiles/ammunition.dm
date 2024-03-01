@@ -372,9 +372,9 @@ They're all essentially identical when it comes to getting the job done.
 	while(ammo_position)
 		var/obj/item/projectile/proj = transfer_bullet_out()
 		proj.bullet_ready_to_fire(initial(name), cause_data)
+		proj.forceMove(get_turf(src))
 		if(cause_data_new)
 			proj.weapon_cause_data = cause_data_new
-		proj.forceMove(get_turf(src))
 
 		var/mob/source_mob = cause_data_new?.resolve_mob()
 		if(mob_standing_on_turf && mob_standing_on_turf && prob(100*on_hit_coefficient)) //if a non-prone mob is on the same turf as the shrapnel explosion, some of the shrapnel hits him

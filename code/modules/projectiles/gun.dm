@@ -1113,7 +1113,6 @@ and you're good to go.
 			var/obj/item/projectile/proj = active_attachable.current_rounds[active_attachable.ammo_position]
 			active_attachable.current_rounds[active_attachable.ammo_position] = "empty"
 			active_attachable.ammo_position--
-			apply_traits(proj)
 			proj.forceMove(src)
 			return proj
 		else
@@ -1157,11 +1156,9 @@ and you're good to go.
 		var/obj/item/projectile/proj = current_mag.current_rounds[current_mag.ammo_position]
 		current_mag.current_rounds[current_mag.ammo_position] = "empty"
 		current_mag.ammo_position--
-		apply_traits(proj)
 		proj.forceMove(src)
 		in_chamber = proj
 		return in_chamber
-
 
 /obj/item/weapon/gun/proc/create_bullet(datum/ammo/chambered, bullet_source)
 	if(!chambered || !istype(chambered))
@@ -1175,7 +1172,6 @@ and you're good to go.
 		weapon_source_mob = M
 	var/obj/item/projectile/proj = new /obj/item/projectile()
 	proj.forceMove(src)
-	apply_traits(proj)
 	var/datum/cause_data/cause_data = create_cause_data(bullet_source, weapon_source_mob)
 	proj.weapon_cause_data = cause_data
 	proj.firer = cause_data?.resolve_mob()
@@ -1431,6 +1427,7 @@ and you're good to go.
 
 	if(targloc != curloc)
 		simulate_recoil(dual_wield, user, target)
+		apply_traits(projectile_to_fire)
 		projectile_to_fire.bullet_ready_to_fire(initial(name), weapon_source_mob = user)
 		//This is where the projectile leaves the barrel and deals with projectile code only.
 		//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
@@ -1653,6 +1650,7 @@ and you're good to go.
 			flags_gun_features &= ~GUN_BURST_FIRING
 			return TRUE
 
+		apply_traits(projectile_to_fire)
 		projectile_to_fire.bullet_ready_to_fire(initial(name), weapon_source_mob = user)
 		//We actually have a projectile, let's move on. We're going to simulate the fire cycle.
 		if(projectile_to_fire.ammo.on_pointblank(attacked_mob, projectile_to_fire, user, src))

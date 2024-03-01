@@ -29,17 +29,17 @@
 
 	var/mob/source_mob = cause_data?.resolve_mob()
 	for(var/i = 0 to shrapnel_number)
-		var/obj/item/projectile/projectile = new(epicenter)
-		projectile.weapon_cause_data = cause_data
-		projectile.firer = cause_data?.resolve_mob()
-		projectile.ammo = GLOB.ammo_list[shrapnel_type]
-		projectile.bullet_ready_to_fire(source_mob, weapon_source_mob = source_mob)
+		var/obj/item/projectile/proj = new(epicenter)
+		proj.weapon_cause_data = cause_data
+		proj.firer = cause_data?.resolve_mob()
+		proj.ammo = GLOB.ammo_list[shrapnel_type]
+		proj.bullet_ready_to_fire(source_mob, weapon_source_mob = source_mob)
 		if(ignore_source_mob)
 			if(mob_standing_on_turf == source_mob)
-				projectile.permutated |= mob_standing_on_turf
+				proj.permutated |= mob_standing_on_turf
 			else if(mob_lying_on_turf == source_mob)
-				projectile.permutated |= mob_lying_on_turf
+				proj.permutated |= mob_lying_on_turf
 
 		var/angle = initial_angle + i*angle_increment + rand(-angle_randomization,angle_randomization)
-		projectile.projectile_flags |= PROJECTILE_SHRAPNEL
-		projectile.fire_at(null, source_mob, source, projectile.ammo.max_range, projectile.ammo.shell_speed, null, angle)
+		proj.projectile_flags |= PROJECTILE_SHRAPNEL
+		proj.fire_at(null, source_mob, source, proj.ammo.max_range, proj.ammo.shell_speed, null, angle)

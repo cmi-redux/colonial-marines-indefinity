@@ -47,31 +47,13 @@
 	debris_velocity = _debris_velocity
 	debris_amount = _debris_amount
 	debris_scale = _debris_scale
-	RegisterSignal(target, list(
-		COMSIG_BULLET_ACT_LIVING,
-		COMSIG_ATOM_BULLET_ACT,
-		COMSIG_TURF_BULLET_ACT
-	), PROC_REF(register_for_impact), TRUE)
-	RegisterSignal(target, list(
-		COMSIG_XENO_BULLET_ACT,
-		COMSIG_HUMAN_BULLET_ACT
-	), PROC_REF(register_for_impact_mob), TRUE) //override because the element gets overriden
+	RegisterSignal(target, COMSIG_BULLET_PING_ACT, PROC_REF(register_for_impact), TRUE)
 
 /datum/element/debris/Detach(datum/source, force)
 	. = ..()
-	UnregisterSignal(source, list(
-		COMSIG_XENO_BULLET_ACT,
-		COMSIG_HUMAN_BULLET_ACT,
-		COMSIG_BULLET_ACT_LIVING,
-		COMSIG_ATOM_BULLET_ACT,
-		COMSIG_TURF_BULLET_ACT
-	))
+	UnregisterSignal(source, COMSIG_BULLET_PING_ACT)
 
 /datum/element/debris/proc/register_for_impact(obj/item/projectile/proj, datum/source)
-	SIGNAL_HANDLER
-	INVOKE_ASYNC(src, PROC_REF(on_impact), source, proj)
-
-/datum/element/debris/proc/register_for_impact_mob(datum/source, damage_result, ammo_flags, obj/item/projectile/proj)
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(on_impact), source, proj)
 
