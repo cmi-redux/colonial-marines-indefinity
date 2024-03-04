@@ -205,20 +205,20 @@
 		marine_data += list("paygrade" = get_paygrades(id_card.paygrade, 1))
 		var/rank = id_card.rank
 		var/real_job = GET_DEFAULT_ROLE(rank)
-		if(real_job in JOB_SQUAD_NORMAL_LIST)
-			rank = "Mar"
-		else if(real_job in JOB_SQUAD_ENGI_LIST)
-			rank = "Eng"
-		else if(real_job in JOB_SQUAD_MEDIC_LIST)
-			rank = "Med"
-		else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
-			rank = "SG"
+		if(real_job in JOB_SQUAD_LEADER_LIST)
+			rank = "SL"
 		else if(real_job in JOB_SQUAD_SPEC_LIST)
 			rank = "Spc"
+		else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
+			rank = "SG"
 		else if(real_job in JOB_SQUAD_SUP_LIST)
 			rank = "TL"
-		else if(real_job in JOB_SQUAD_LEADER_LIST)
-			rank = "SL"
+		else if(real_job in JOB_SQUAD_MEDIC_LIST)
+			rank = "Med"
+		else if(real_job in JOB_SQUAD_ENGI_LIST)
+			rank = "Eng"
+		if(real_job in JOB_SQUAD_NORMAL_LIST)
+			rank = "Mar"
 		else
 			rank = ""
 		marine_data += list("rank" = rank)

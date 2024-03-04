@@ -102,7 +102,8 @@
 /area/shuttle/lifeboat/starboard)
 "lS" = (
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat{
-	throw_dir = 2
+	id = "Boat2-D1";
+	throw_dir = 1
 	},
 /turf/open/shuttle/lifeboat,
 /area/shuttle/lifeboat/starboard)
@@ -153,6 +154,13 @@
 	icon_state = "23,1"
 	},
 /area/shuttle/lifeboat/starboard)
+"uA" = (
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat{
+	id = "Boat2-D2";
+	throw_dir = 1
+	},
+/turf/open/shuttle/lifeboat,
+/area/shuttle/lifeboat/starboard)
 "uJ" = (
 /obj/structure/prop/invuln/dropship_parts/lifeboat{
 	icon_state = "25,6"
@@ -167,8 +175,8 @@
 /area/shuttle/lifeboat/starboard)
 "uX" = (
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat{
-	id = "Boat2-D2";
-	throw_dir = 1
+	throw_dir = 2;
+	id = "Boat2-D4"
 	},
 /turf/open/shuttle/lifeboat{
 	icon_state = "test_floor4"
@@ -191,8 +199,8 @@
 /area/shuttle/lifeboat/starboard)
 "ya" = (
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat{
-	id = "Boat2-D1";
-	throw_dir = 1
+	throw_dir = 2;
+	id = "Boat2-D3"
 	},
 /turf/open/shuttle/lifeboat{
 	icon_state = "test_floor4"
@@ -605,7 +613,7 @@ OO
 VZ
 OO
 AF
-lS
+uA
 "}
 (15,1,1) = {"
 Qj

@@ -165,11 +165,6 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 
 	unassigned_players = shuffle(unassigned_players, 1) //Shuffle the players.
 
-	for(var/datum/squad/squad in squads)
-		if(!isnull(squad.min_online_requered) && squad.min_online_requered > length(GLOB.clients))
-			squad.roundstart = FALSE
-			squad.usable = FALSE
-
 	// How many positions do we open based on total pop
 	for(var/i in roles_by_name)
 		var/datum/job/job = roles_by_name[i]
@@ -371,19 +366,18 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 		if(!squad)
 			return
 		var/slot_check
-		if(real_job != "Reinforcements")
-			if(real_job in JOB_SQUAD_LEADER_LIST)
-				slot_check = "leaders"
-			else if(real_job in JOB_SQUAD_SPEC_LIST)
-				slot_check = "specialists"
-			else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
-				slot_check = "main_supports"
-			else if(real_job in JOB_SQUAD_SUP_LIST)
-				slot_check = "supports"
-			else if(real_job in JOB_SQUAD_MEDIC_LIST)
-				slot_check = "medics"
-			else if(real_job in JOB_SQUAD_ENGI_LIST)
-				slot_check = "engineers"
+		if(real_job in JOB_SQUAD_LEADER_LIST)
+			slot_check = "leaders"
+		else if(real_job in JOB_SQUAD_SPEC_LIST)
+			slot_check = "specialists"
+		else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
+			slot_check = "main_supports"
+		else if(real_job in JOB_SQUAD_SUP_LIST)
+			slot_check = "supports"
+		else if(real_job in JOB_SQUAD_MEDIC_LIST)
+			slot_check = "medics"
+		else if(real_job in JOB_SQUAD_ENGI_LIST)
+			slot_check = "engineers"
 
 		if(squad.vars["num_[slot_check]"] > 0)
 			squad.vars["num_[slot_check]"]--
@@ -503,19 +497,18 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 
 	var/slot_check
 	var/real_job = GET_DEFAULT_ROLE(human.job)
-	if(real_job != "Reinforcements")
-		if(real_job in JOB_SQUAD_LEADER_LIST)
-			slot_check = "leaders"
-		else if(real_job in JOB_SQUAD_SPEC_LIST)
-			slot_check = "specialists"
-		else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
-			slot_check = "main_supports"
-		else if(real_job in JOB_SQUAD_SUP_LIST)
-			slot_check = "supports"
-		else if(real_job in JOB_SQUAD_MEDIC_LIST)
-			slot_check = "medics"
-		else if(real_job in JOB_SQUAD_ENGI_LIST)
-			slot_check = "engineers"
+	if(real_job in JOB_SQUAD_LEADER_LIST)
+		slot_check = "leaders"
+	else if(real_job in JOB_SQUAD_SPEC_LIST)
+		slot_check = "specialists"
+	else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
+		slot_check = "main_supports"
+	else if(real_job in JOB_SQUAD_SUP_LIST)
+		slot_check = "supports"
+	else if(real_job in JOB_SQUAD_MEDIC_LIST)
+		slot_check = "medics"
+	else if(real_job in JOB_SQUAD_ENGI_LIST)
+		slot_check = "engineers"
 
 	//we make a list of squad that is randomized so alpha isn't always lowest squad.
 	var/list/mixed_squads = list()
@@ -645,19 +638,18 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 /datum/authority/branch/role/proc/check_squad_capacity(mob/living/carbon/human/transfer_marine, datum/squad/new_squad)
 	var/slot_check
 	var/real_job = GET_DEFAULT_ROLE(transfer_marine.job)
-	if(real_job != "Reinforcements")
-		if(real_job in JOB_SQUAD_LEADER_LIST)
-			slot_check = "leaders"
-		else if(real_job in JOB_SQUAD_SPEC_LIST)
-			slot_check = "specialists"
-		else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
-			slot_check = "main_supports"
-		else if(real_job in JOB_SQUAD_SUP_LIST)
-			slot_check = "supports"
-		else if(real_job in JOB_SQUAD_MEDIC_LIST)
-			slot_check = "medics"
-		else if(real_job in JOB_SQUAD_ENGI_LIST)
-			slot_check = "engineers"
+	if(real_job in JOB_SQUAD_LEADER_LIST)
+		slot_check = "leaders"
+	else if(real_job in JOB_SQUAD_SPEC_LIST)
+		slot_check = "specialists"
+	else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
+		slot_check = "main_supports"
+	else if(real_job in JOB_SQUAD_SUP_LIST)
+		slot_check = "supports"
+	else if(real_job in JOB_SQUAD_MEDIC_LIST)
+		slot_check = "medics"
+	else if(real_job in JOB_SQUAD_ENGI_LIST)
+		slot_check = "engineers"
 	if(new_squad.vars["num_[slot_check]"] >= new_squad.vars["max_[slot_check]"])
 		return TRUE
 	return FALSE

@@ -531,7 +531,7 @@
 //Straight-up insert a marine into a squad.
 //This sets their ID, increments the total count, and so on. Everything else is done in job_controller.dm.
 //So it does not check if the squad is too full already, or randomize it, etc.
-/datum/squad/proc/put_marine_in_squad(mob/living/carbon/human/human, obj/item/card/id/ID)
+/datum/squad/proc/put_marine_in_squad(mob/living/carbon/human/human, obj/item/card/id/id_card)
 	if(!istype(human))
 		return FALSE //Logic
 	if(!usable)
@@ -541,7 +541,6 @@
 	if(human.assigned_squad)
 		return FALSE //already in a squad
 
-	var/obj/item/card/id/id_card = ID
 	if(!id_card)
 		id_card = human.wear_id
 	if(!id_card)
@@ -556,19 +555,18 @@
 
 	var/slot_check
 	var/real_job = GET_DEFAULT_ROLE(human.job)
-	if(real_job != "Reinforcements")
-		if(real_job in JOB_SQUAD_LEADER_LIST)
-			slot_check = "leaders"
-		else if(real_job in JOB_SQUAD_SPEC_LIST)
-			slot_check = "specialists"
-		else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
-			slot_check = "main_supports"
-		else if(real_job in JOB_SQUAD_SUP_LIST)
-			slot_check = "supports"
-		else if(real_job in JOB_SQUAD_MEDIC_LIST)
-			slot_check = "medics"
-		else if(real_job in JOB_SQUAD_ENGI_LIST)
-			slot_check = "engineers"
+	if(real_job in JOB_SQUAD_LEADER_LIST)
+		slot_check = "leaders"
+	else if(real_job in JOB_SQUAD_SPEC_LIST)
+		slot_check = "specialists"
+	else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
+		slot_check = "main_supports"
+	else if(real_job in JOB_SQUAD_SUP_LIST)
+		slot_check = "supports"
+	else if(real_job in JOB_SQUAD_MEDIC_LIST)
+		slot_check = "medics"
+	else if(real_job in JOB_SQUAD_ENGI_LIST)
+		slot_check = "engineers"
 	vars["num_[slot_check]"]++
 	if(slot_check == "engineers" || slot_check ==  "medics")
 		id_card.claimedgear = FALSE
@@ -579,8 +577,6 @@
 			var/old_lead = squad_leader
 			demote_squad_leader() //replaced by the real one
 			SStracking.start_tracking(tracking_id, old_lead)
-		else
-			vars["num_[slot_check]"]--
 		assignment = squad_type + " Leader"
 		squad_leader = human
 		SStracking.set_leader(tracking_id, human)
@@ -663,19 +659,18 @@
 
 	var/slot_check
 	var/real_job = GET_DEFAULT_ROLE(human.job)
-	if(real_job != "Reinforcements")
-		if(real_job in JOB_SQUAD_LEADER_LIST)
-			slot_check = "leaders"
-		else if(real_job in JOB_SQUAD_SPEC_LIST)
-			slot_check = "specialists"
-		else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
-			slot_check = "main_supports"
-		else if(real_job in JOB_SQUAD_SUP_LIST)
-			slot_check = "supports"
-		else if(real_job in JOB_SQUAD_MEDIC_LIST)
-			slot_check = "medics"
-		else if(real_job in JOB_SQUAD_ENGI_LIST)
-			slot_check = "engineers"
+	if(real_job in JOB_SQUAD_LEADER_LIST)
+		slot_check = "leaders"
+	else if(real_job in JOB_SQUAD_SPEC_LIST)
+		slot_check = "specialists"
+	else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
+		slot_check = "main_supports"
+	else if(real_job in JOB_SQUAD_SUP_LIST)
+		slot_check = "supports"
+	else if(real_job in JOB_SQUAD_MEDIC_LIST)
+		slot_check = "medics"
+	else if(real_job in JOB_SQUAD_ENGI_LIST)
+		slot_check = "engineers"
 	vars["num_[slot_check]"]--
 
 //proc for demoting current Squad Leader

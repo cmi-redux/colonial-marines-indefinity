@@ -102,7 +102,8 @@
 /area/shuttle/lifeboat/port)
 "lS" = (
 /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat{
-	throw_dir = 2
+	throw_dir = 2;
+	id = "Boat2-D4"
 	},
 /turf/open/shuttle/lifeboat,
 /area/shuttle/lifeboat/port)
@@ -197,6 +198,13 @@
 /turf/open/shuttle/lifeboat{
 	icon_state = "test_floor4"
 	},
+/area/shuttle/lifeboat/port)
+"yZ" = (
+/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/blastdoor/lifeboat{
+	throw_dir = 2;
+	id = "Boat2-D3"
+	},
+/turf/open/shuttle/lifeboat,
 /area/shuttle/lifeboat/port)
 "zv" = (
 /turf/closed/shuttle/lifeboat{
@@ -560,7 +568,7 @@ OO
 VZ
 OO
 AF
-lS
+yZ
 "}
 (10,1,1) = {"
 Qj

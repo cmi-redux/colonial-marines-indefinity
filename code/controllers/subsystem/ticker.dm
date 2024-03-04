@@ -206,6 +206,11 @@ SUBSYSTEM_DEF(ticker)
 
 	round_start_time = world.time
 
+	for(var/datum/squad/squad in SSticker.role_authority.squads)
+		if(!isnull(squad.min_online_requered) && squad.min_online_requered > length(GLOB.clients))
+			squad.roundstart = FALSE
+			squad.usable = FALSE
+
 	CHECK_TICK
 	for(var/I in round_start_events)
 		var/datum/callback/cb = I
