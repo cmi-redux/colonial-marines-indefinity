@@ -1,4 +1,4 @@
-/datum/job/marine/specialist
+/datum/job/uscm/squad/specialist
 	title = JOB_SQUAD_SPECIALIST
 	total_positions = 4
 	spawn_positions = 4
@@ -8,42 +8,33 @@
 	gear_preset = /datum/equipment_preset/uscm/spec
 	entry_message_body = "<a href='%WIKIPAGE%'>You are the very rare and valuable weapon expert</a>, trained to use special equipment. You can serve a variety of roles, so choose carefully."
 
-/datum/job/marine/specialist/set_spawn_positions(count)
-	spawn_positions = spec_slot_formula(count)
+/datum/job/uscm/squad/specialist/get_total_positions(latejoin = FALSE)
+	var/total_max
+	for(var/datum/squad/squad in SSticker.role_authority.squads)
+		if(squad.roundstart && squad.usable && squad.faction == FACTION_MARINE && squad.name != "Root")
+			total_max += squad.max_specialists
+	return total_max
 
-/datum/job/marine/specialist/get_total_positions(latejoin = 0)
-	var/positions = spawn_positions
-	if(latejoin)
-		positions = spec_slot_formula(get_total_population(FACTION_MARINE))
-		if(positions <= total_positions_so_far)
-			positions = total_positions_so_far
-		else
-			total_positions_so_far = positions
-	else
-		total_positions_so_far = positions
-	return positions
-
-
-/datum/job/marine/specialist/whiskey
+/datum/job/uscm/squad/specialist/whiskey
 	title = JOB_WO_SQUAD_SPECIALIST
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = /datum/equipment_preset/wo/marine/spec
 
-/datum/job/marine/specialist/crash
+/datum/job/uscm/squad/specialist/crash
 	title = JOB_CRASH_SQUAD_SPECIALIST
 	total_positions = 1
 	spawn_positions = 1
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = /datum/equipment_preset/crash/marine/spec
 
-AddTimelock(/datum/job/marine/specialist, list(
+AddTimelock(/datum/job/uscm/squad/specialist, list(
 	JOB_SQUAD_ROLES = 5 HOURS
 ))
 
 /obj/effect/landmark/start/marine/spec
 	name = JOB_SQUAD_SPECIALIST
 	icon_state = "spec_spawn"
-	job = /datum/job/marine/specialist
+	job = /datum/job/uscm/squad/specialist
 
 /obj/effect/landmark/start/marine/spec/alpha
 	icon_state = "spec_spawn_alpha"

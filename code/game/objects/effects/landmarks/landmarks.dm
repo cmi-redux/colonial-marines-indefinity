@@ -260,31 +260,31 @@
 
 /obj/effect/landmark/start/whiskey/marine
 	icon_state = "marine_spawn"
-	job = /datum/job/marine/standard/whiskey
+	job = /datum/job/uscm/squad/standard/whiskey
 
 /obj/effect/landmark/start/whiskey/leader
 	icon_state = "leader_spawn"
-	job = /datum/job/marine/leader/whiskey
+	job = /datum/job/uscm/squad/leader/whiskey
 
 /obj/effect/landmark/start/whiskey/tl
 	icon_state = "tl_spawn"
-	job = /datum/job/marine/tl //Need to create a WO variant in the future
+	job = /datum/job/uscm/squad/tl //Need to create a WO variant in the future
 
 /obj/effect/landmark/start/whiskey/spec
 	icon_state = "spec_spawn"
-	job = /datum/job/marine/specialist/whiskey
+	job = /datum/job/uscm/squad/specialist/whiskey
 
 /obj/effect/landmark/start/whiskey/smartgunner
 	icon_state = "smartgunner_spawn"
-	job = /datum/job/marine/smartgunner/whiskey
+	job = /datum/job/uscm/squad/smartgunner/whiskey
 
 /obj/effect/landmark/start/whiskey/medic
 	icon_state = "medic_spawn"
-	job = /datum/job/marine/medic/whiskey
+	job = /datum/job/uscm/squad/medic/whiskey
 
 /obj/effect/landmark/start/whiskey/engineer
 	icon_state = "engi_spawn"
-	job = /datum/job/marine/engineer/whiskey
+	job = /datum/job/uscm/squad/engineer/whiskey
 
 //****************************************** LOGISTICAL ROLES ************************************************//
 /obj/effect/landmark/start/whiskey/requisition

@@ -97,10 +97,11 @@
 		dat += "No Squad selected!<BR>"
 	else
 		var/leader_text = ""
+		var/smart_text = ""
+		var/tl_text = ""
 		var/spec_text = ""
 		var/medic_text = ""
 		var/engi_text = ""
-		var/smart_text = ""
 		var/marine_text = ""
 		var/misc_text = ""
 		var/living_count = 0
@@ -160,13 +161,15 @@
 				leader_text += marine_infos
 			else if(real_job in JOB_SQUAD_SPEC_LIST)
 				spec_text += marine_infos
+			else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
+				smart_text += marine_infos
+			else if(real_job in JOB_SQUAD_SUP_LIST)
+				tl_text += marine_infos
 			else if(real_job in JOB_SQUAD_MEDIC_LIST)
 				medic_text += marine_infos
 			else if(real_job in JOB_SQUAD_ENGI_LIST)
 				engi_text += marine_infos
-			else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
-				smart_text += marine_infos
-			else if(real_job in JOB_SQUAD_NORMAL_LIST)
+			if(real_job in JOB_SQUAD_NORMAL_LIST)
 				marine_text += marine_infos
 			else
 				misc_text += marine_infos
@@ -175,7 +178,7 @@
 		dat += "<center><b>Search:</b> <input type='text' id='filter' value='' onkeyup='updateSearch();' style='width:300px;'></center>"
 		dat += "<table id='marine_list' border='2px' style='width: 100%; border-collapse: collapse;' align='center'><tr>"
 		dat += "<th>Name</th><th>Role</th><th>State</th><th>Location</th></tr>"
-		dat += leader_text + spec_text + medic_text + engi_text + smart_text + marine_text + misc_text
+		dat += leader_text + spec_text + smart_text + tl_text + medic_text + engi_text + marine_text + misc_text
 		dat += "</table>"
 	dat += "<br><hr>"
 	dat += "<A href='?src=\ref[src];operation=refresh'>Refresh</a><br>"

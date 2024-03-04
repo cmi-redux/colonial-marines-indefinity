@@ -8,6 +8,13 @@
 	entry_message_body = "<a href='%WIKIURL%'>You are responsible for the men and women of your squad.</a> Make sure they are on task, working together, and communicating. You are also in charge of communicating with command and letting them know about the situation first hand. Keep out of harm's way."
 	balance_formulas = list(BALANCE_FORMULA_COMMANDING, BALANCE_FORMULA_MISC, BALANCE_FORMULA_FIELD)
 
+/datum/job/upp/squad/leader/get_total_positions(count)
+	var/total_max
+	for(var/datum/squad/squad in SSticker.role_authority.squads)
+		if(squad.roundstart && squad.usable && squad.faction == FACTION_UPP && squad.name != "Root")
+			total_max += squad.max_leaders
+	return total_max
+
 AddTimelock(/datum/job/upp/squad/leader, list(
 	JOB_SQUAD_SUP_LIST = 3 HOURS,
 	JOB_SQUAD_ROLES = 10 HOURS

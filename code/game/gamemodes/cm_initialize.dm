@@ -105,10 +105,6 @@ Additional game mode variables.
 	xeno_starting_num = clamp((readied_players/CONFIG_GET(number/xeno_number_divider)), xeno_required_num, INFINITY) //(n, minimum, maximum)
 	surv_starting_num = clamp((readied_players/CONFIG_GET(number/surv_number_divider)), 2, 8) //this doesnt run
 	marine_starting_num = GLOB.player_list.len - xeno_starting_num - surv_starting_num
-	for(var/datum/squad/sq in SSticker.role_authority.squads)
-		if(sq)
-			sq.max_engineers = engi_slot_formula(marine_starting_num)
-			sq.max_medics = medic_slot_formula(marine_starting_num)
 
 	for(var/role_name in SSticker.role_authority.roles_by_name)
 		var/datum/job/job = SSticker.role_authority.roles_by_name[role_name]

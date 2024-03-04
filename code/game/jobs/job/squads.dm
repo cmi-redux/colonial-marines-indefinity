@@ -2,7 +2,7 @@
 //access you must add them individually to access.dm with the other squads. Just look for "access_alpha" and add the new one
 
 //Note: some important procs are held by the job controller, in job_controller.dm.
-//In particular, get_lowest_squad() and randomize_squad()
+//In particular, randomize_squad()
 /datum/squad_type //Majority of this is for a follow-on PR to fully flesh the system out and add more bits for other factions.
 	var/name = "Squad Type"
 	var/lead_name
@@ -43,18 +43,25 @@
 	var/list/access = list()
 	/// Can use any squad vendor regardless of squad connection
 	var/omni_squad_vendor = FALSE
-	/// maximum # of engineers allowed in the squad
-	var/max_engineers = 3
-	/// maximum # of squad medics allowed in the squad
-	var/max_medics = 4
-	/// maximum # of specs allowed in the squad
-	var/max_specialists = 1
-	/// maximum # of fireteam leaders allowed in the suqad
-	var/max_tl = 2
-	/// maximum # of smartgunners allowed in the squad
-	var/max_smartgun = 1
-	/// maximum # of squad leaders allowed in the squad
-	var/max_leaders = 1
+	/// Squad slots
+	var/max_leaders = 1 // maximum # of squad leaders allowed in the squad
+	var/num_leaders = 0
+	var/max_specialists = 1 // maximum # of specs allowed in the squad
+	var/num_specialists = 0
+	var/max_main_supports = 1 // maximum # of smartgunners allowed in the squad
+	var/num_main_supports = 0
+	var/max_supports = 2 // maximum # of fireteam leaders allowed in the suqad
+	var/num_supports = 0
+	var/max_medics = 4 // maximum # of squad medics allowed in the squad
+	var/num_medics = 0
+	var/max_engineers = 3 // maximum # of engineers allowed in the squad
+	var/num_engineers = 0
+	/// Squad lists of marines
+	var/count = 0 // current # in the squad
+	var/list/marines_list = list() // list of mobs (or name, not always a mob ref) in that squad.
+
+	var/min_online_requered = null // Poplock
+
 	/// Squad headsets default radio frequency
 	var/radio_freq = 1461
 
@@ -87,15 +94,6 @@
 							"FT3" = list()
 							) //3 FTs where references to marines stored.
 	var/list/squad_info_data = list()
-
-	var/num_engineers = 0
-	var/num_medics = 0
-	var/num_leaders = 0
-	var/num_smartgun = 0
-	var/num_specialists = 0
-	var/num_tl = 0
-	var/count = 0 //Current # in the squad
-	var/list/marines_list = list() // list of mobs (or name, not always a mob ref) in that squad.
 
 	var/mob/living/carbon/human/overwatch_officer = null //Who's overwatching this squad?
 	COOLDOWN_DECLARE(next_supplydrop)
@@ -134,6 +132,7 @@
 	equipment_color = "#ffc32d"
 	chat_color = "#ffe650"
 	access = list(ACCESS_MARINE_BRAVO)
+	min_online_requered = 30
 	radio_freq = BRAVO_FREQ
 	minimap_color = MINIMAP_SQUAD_BRAVO
 
@@ -142,6 +141,7 @@
 	equipment_color = "#c864c8"
 	chat_color = "#ff96ff"
 	access = list(ACCESS_MARINE_CHARLIE)
+	min_online_requered = 60
 	radio_freq = CHARLIE_FREQ
 	minimap_color = MINIMAP_SQUAD_CHARLIE
 
@@ -150,6 +150,7 @@
 	equipment_color = "#4148c8"
 	chat_color = "#828cff"
 	access = list(ACCESS_MARINE_DELTA)
+	min_online_requered = 90
 	radio_freq = DELTA_FREQ
 	minimap_color = MINIMAP_SQUAD_DELTA
 
@@ -190,12 +191,12 @@
 	roundstart = FALSE
 	prepend_squad_name_to_assignment = FALSE
 
-	max_engineers = 0
-	max_medics = 0
-	max_specialists = 0
-	max_tl = 0
-	max_smartgun = 0
 	max_leaders = 0
+	max_specialists = 0
+	max_main_supports = 0
+	max_supports = 0
+	max_medics = 0
+	max_engineers = 0
 
 /datum/squad/marine/sof
 	name = SQUAD_MARINE_SOF
@@ -230,18 +231,21 @@
 	name = SQUAD_UPP_2
 	equipment_color = "#ffc32d"
 	chat_color = "#ffe650"
+	min_online_requered = 30
 	minimap_color = MINIMAP_SQUAD_BRAVO
 
 /datum/squad/upp/veiled_threat
 	name = SQUAD_UPP_3
 	equipment_color = "#c864c8"
 	chat_color = "#ff96ff"
+	min_online_requered = 60
 	minimap_color = MINIMAP_SQUAD_CHARLIE
 
 /datum/squad/upp/death_seekers
 	name = SQUAD_UPP_4
 	equipment_color = "#4148c8"
 	chat_color = "#828cff"
+	min_online_requered = 90
 	minimap_color = MINIMAP_SQUAD_DELTA
 
 /datum/squad/upp/echo
@@ -275,12 +279,12 @@
 	roundstart = FALSE
 	prepend_squad_name_to_assignment = FALSE
 
-	max_engineers = 0
-	max_medics = 0
-	max_specialists = 0
-	max_tl = 0
-	max_smartgun = 0
 	max_leaders = 0
+	max_specialists = 0
+	max_main_supports = 0
+	max_supports = 0
+	max_medics = 0
+	max_engineers = 0
 
 /datum/squad/upp/soz
 	name = SQUAD_UPP_SOZ
@@ -332,18 +336,21 @@
 	name = SQUAD_CLF_2
 	equipment_color = "#c864c8"
 	chat_color = "#ff96ff"
+	min_online_requered = 30
 	minimap_color = MINIMAP_SQUAD_BRAVO
 
 /datum/squad/clf/cobra
 	name = SQUAD_CLF_3
 	equipment_color = "#c47a50"
 	chat_color = "#c47a50"
+	min_online_requered = 60
 	minimap_color = MINIMAP_SQUAD_CHARLIE
 
 /datum/squad/clf/boa
 	name = SQUAD_CLF_4
 	equipment_color = "#ffc32d"
 	chat_color = "#ffe650"
+	min_online_requered = 90
 	minimap_color = MINIMAP_SQUAD_DELTA
 
 /datum/squad/clf/engagers
@@ -373,12 +380,12 @@
 	roundstart = FALSE
 	prepend_squad_name_to_assignment = FALSE
 
-	max_engineers = 0
-	max_medics = 0
-	max_specialists = 0
-	max_tl = 0
-	max_smartgun = 0
 	max_leaders = 0
+	max_specialists = 0
+	max_main_supports = 0
+	max_supports = 0
+	max_medics = 0
+	max_engineers = 0
 
 //###############################
 /datum/squad/New()
@@ -534,12 +541,12 @@
 	if(human.assigned_squad)
 		return FALSE //already in a squad
 
-	var/obj/item/card/id/C = ID
-	if(!C)
-		C = human.wear_id
-	if(!C)
-		C = human.get_active_hand()
-	if(!istype(C))
+	var/obj/item/card/id/id_card = ID
+	if(!id_card)
+		id_card = human.wear_id
+	if(!id_card)
+		id_card = human.get_active_hand()
+	if(!istype(id_card))
 		return FALSE //No ID found
 
 	var/assignment = human.job
@@ -547,36 +554,43 @@
 
 	var/list/extra_access = list()
 
+	var/slot_check
 	var/real_job = GET_DEFAULT_ROLE(human.job)
-	if(real_job in JOB_SQUAD_ENGI_LIST)
-		num_engineers++
-		C.claimedgear = FALSE
-	else if(real_job in JOB_SQUAD_MEDIC_LIST)
-		num_medics++
-		C.claimedgear = FALSE
-	else if(real_job in JOB_SQUAD_SPEC_LIST)
-		num_specialists++
-	else if(real_job in JOB_SQUAD_SUP_LIST)
-		num_tl++
+	if(real_job != "Reinforcements")
+		if(real_job in JOB_SQUAD_LEADER_LIST)
+			slot_check = "leaders"
+		else if(real_job in JOB_SQUAD_SPEC_LIST)
+			slot_check = "specialists"
+		else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
+			slot_check = "main_supports"
+		else if(real_job in JOB_SQUAD_SUP_LIST)
+			slot_check = "supports"
+		else if(real_job in JOB_SQUAD_MEDIC_LIST)
+			slot_check = "medics"
+		else if(real_job in JOB_SQUAD_ENGI_LIST)
+			slot_check = "engineers"
+	vars["num_[slot_check]"]++
+	if(slot_check == "engineers" || slot_check ==  "medics")
+		id_card.claimedgear = FALSE
+	else if(slot_check == "supports")
 		human.important_radio_channels += radio_freq
-	else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
-		num_smartgun++
-	else if(real_job in JOB_SQUAD_LEADER_LIST)
+	else if(slot_check == "leaders")
 		if(squad_leader && !(list(GET_DEFAULT_ROLE(squad_leader.job)) & JOB_SQUAD_LEADER_LIST)) //field promoted SL
 			var/old_lead = squad_leader
 			demote_squad_leader() //replaced by the real one
 			SStracking.start_tracking(tracking_id, old_lead)
-			num_leaders++
+		else
+			vars["num_[slot_check]"]--
 		assignment = squad_type + " Leader"
 		squad_leader = human
 		SStracking.set_leader(tracking_id, human)
 		SStracking.start_tracking("marine_sl", human)
 
-	else if(real_job in list(JOB_MARINE_RAIDER))
+	if(human.job in list(JOB_MARINE_RAIDER))
 		if(name == JOB_MARINE_RAIDER)
 			assignment = "Special Operator"
 
-	else if(real_job in list(JOB_MARINE_RAIDER_CMD))
+	else if(human.job in list(JOB_MARINE_RAIDER_CMD))
 		if(name == JOB_MARINE_RAIDER)
 			assignment = "Officer"
 
@@ -590,17 +604,17 @@
 		log_admin("[key_name(human)] has been assigned as [name] [human.job]") // we don't want to spam squad marines but the others are useful
 	marines_list += human
 	human.assigned_squad = src //Add them to the squad
-	C.access += (src.access + extra_access) //Add their squad access to their ID
+	id_card.access += (src.access + extra_access) //Add their squad access to their ID
 	if(prepend_squad_name_to_assignment)
-		C.assignment = "[name] [assignment]"
+		id_card.assignment = "[name] [assignment]"
 	else
-		C.assignment = assignment
+		id_card.assignment = assignment
 
 	SEND_SIGNAL(human, COMSIG_SET_SQUAD)
 
 	if(paygrade)
-		C.paygrade = paygrade
-	C.name = "[C.registered_name]'s ID Card ([C.assignment])"
+		id_card.paygrade = paygrade
+	id_card.name = "[id_card.registered_name]'s ID Card ([id_card.assignment])"
 
 	var/obj/item/device/radio/headset/almayer/marine/headset = locate() in list(human.wear_l_ear, human.wear_r_ear)
 	if(headset && radio_freq)
@@ -614,15 +628,15 @@
 /datum/squad/proc/remove_marine_from_squad(mob/living/carbon/human/human, obj/item/card/id/ID)
 	if(human.assigned_squad != src)
 		return //not assigned to the correct squad
-	var/obj/item/card/id/C = ID
-	if(!istype(C))
-		C = human.wear_id
-	if(!istype(C))
+	var/obj/item/card/id/id_card = ID
+	if(!istype(id_card))
+		id_card = human.wear_id
+	if(!istype(id_card))
 		return FALSE //Abort, no ID found
 
-	C.access -= src.access
-	C.assignment = human.job
-	C.name = "[C.registered_name]'s ID Card ([C.assignment])"
+	id_card.access -= src.access
+	id_card.assignment = human.job
+	id_card.name = "[id_card.registered_name]'s ID Card ([id_card.assignment])"
 
 	forget_marine_in_squad(human)
 
@@ -647,19 +661,22 @@
 	update_free_mar()
 	human.assigned_squad = null
 
+	var/slot_check
 	var/real_job = GET_DEFAULT_ROLE(human.job)
-	if(real_job in JOB_SQUAD_ENGI_LIST)
-		num_engineers--
-	else if(real_job in JOB_SQUAD_MEDIC_LIST)
-		num_medics--
-	else if(real_job in JOB_SQUAD_SPEC_LIST)
-		num_specialists--
-	else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
-		num_smartgun--
-	else if(real_job in JOB_SQUAD_SUP_LIST)
-		num_tl--
-	else if(real_job in JOB_SQUAD_LEADER_LIST)
-		num_leaders--
+	if(real_job != "Reinforcements")
+		if(real_job in JOB_SQUAD_LEADER_LIST)
+			slot_check = "leaders"
+		else if(real_job in JOB_SQUAD_SPEC_LIST)
+			slot_check = "specialists"
+		else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
+			slot_check = "main_supports"
+		else if(real_job in JOB_SQUAD_SUP_LIST)
+			slot_check = "supports"
+		else if(real_job in JOB_SQUAD_MEDIC_LIST)
+			slot_check = "medics"
+		else if(real_job in JOB_SQUAD_ENGI_LIST)
+			slot_check = "engineers"
+	vars["num_[slot_check]"]--
 
 //proc for demoting current Squad Leader
 /datum/squad/proc/demote_squad_leader(leader_killed)
@@ -670,19 +687,19 @@
 
 	squad_leader = null
 	var/real_job = GET_DEFAULT_ROLE(old_lead.job)
-	if(real_job in JOB_SQUAD_SPEC_LIST)
-		old_lead.comm_title = "Spc"
-	else if(real_job in JOB_SQUAD_ENGI_LIST)
-		old_lead.comm_title = "ComTech"
-	else if(real_job in JOB_SQUAD_MEDIC_LIST)
-		old_lead.comm_title = "HM"
-	else if(real_job in JOB_SQUAD_SUP_LIST)
-		old_lead.comm_title = "TL"
-	else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
-		old_lead.comm_title = "SG"
-	else if(real_job in JOB_SQUAD_LEADER_LIST)
+	if(real_job in JOB_SQUAD_LEADER_LIST)
 		if(!leader_killed)
 			old_lead.comm_title = "Sgt"
+	else if(real_job in JOB_SQUAD_SPEC_LIST)
+		old_lead.comm_title = "Spc"
+	else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
+		old_lead.comm_title = "SG"
+	else if(real_job in JOB_SQUAD_SUP_LIST)
+		old_lead.comm_title = "TL"
+	else if(real_job in JOB_SQUAD_MEDIC_LIST)
+		old_lead.comm_title = "HM"
+	else if(real_job in JOB_SQUAD_ENGI_LIST)
+		old_lead.comm_title = "ComTech"
 	else if(real_job in list(JOB_MARINE_RAIDER))
 		old_lead.comm_title = "Op."
 	else if(real_job in list(JOB_MARINE_RAIDER_SL))

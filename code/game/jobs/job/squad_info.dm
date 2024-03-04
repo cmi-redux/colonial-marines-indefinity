@@ -26,13 +26,13 @@
 	return data
 
 /datum/squad/proc/get_leadership(mob/user)
-	var/mob/living/carbon/human/H = user
-	if (squad_leader && H.name == squad_leader.name)
+	var/mob/living/carbon/human/human = user
+	if (squad_leader && human.name == squad_leader.name)
 		return "sl"
 	else
 		for(var/fireteam in fireteams)
 			var/mob/living/carbon/human/ftl = fireteam_leaders[fireteam]
-			if (ftl && ftl.name == H.name)
+			if (ftl && ftl.name == human.name)
 				return fireteam
 	return FALSE
 
@@ -137,57 +137,17 @@
 		return
 
 	if(fireteam_leaders[team])
-		var/mob/living/carbon/human/H = null
-		var/obj/item/card/id/ID = null
-		H = fireteam_leaders[team]
-		var/Med = FALSE
-		var/Eng = FALSE
-		if(H.has_used_pamphlet)
-			if(skillcheck(H, SKILL_MEDICAL, SKILL_MEDICAL_TRAINED))
-				Med = TRUE
-			else
-				if(skillcheck(H, SKILL_ENGINEER, SKILL_ENGINEER_TRAINED))
-					Eng = TRUE
-		ID = H.get_idcard()
-		squad_info_data["fireteams"][team]["tl"] = list(
-							"name" = H.real_name,
-							"med" = Med,
-							"eng" = Eng,
-							"status" = H.squad_status,
-							"refer" = "\ref[H]")
-		if(ID)
-			squad_info_data["fireteams"][team]["tl"] += list("paygrade" = get_paygrades(ID.paygrade, 1))
-			var/rank = ID.rank
-			var/real_job = GET_DEFAULT_ROLE(rank)
-			if(real_job in JOB_SQUAD_NORMAL_LIST)
-				rank = "Mar"
-			else if(real_job in JOB_SQUAD_ENGI_LIST)
-				rank = "Eng"
-			else if(real_job in JOB_SQUAD_MEDIC_LIST)
-				rank = "Med"
-			else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
-				rank = "SG"
-			else if(real_job in JOB_SQUAD_SPEC_LIST)
-				rank = "Spc"
-			else if(real_job in JOB_SQUAD_SUP_LIST)
-				rank = "TL"
-			else if(real_job in JOB_SQUAD_LEADER_LIST)
-				rank = "SL"
-			else
-				rank = ""
-			squad_info_data["fireteams"][team]["tl"] += list("rank" = rank)
-		else
-			squad_info_data["fireteams"][team]["tl"] += list("paygrade" = "N/A")
-			squad_info_data["fireteams"][team]["tl"] += list("rank" = "")
+		squad_info_data["fireteams"][team]["tl"] = get_marine_status(fireteam_leaders[team])
 	else
 		squad_info_data["fireteams"][team]["tl"] = list(
-							"name" = "Not assigned",
-							"paygrade" = "",
-							"rank" = "",
-							"med" = FALSE,
-							"eng" = FALSE,
-							"status" = null,
-							"refer" = null)
+			"name" = "Not assigned",
+			"paygrade" = "",
+			"rank" = "",
+			"med" = FALSE,
+			"eng" = FALSE,
+			"status" = null,
+			"refer" = null
+		)
 
 	squad_info_data["fireteams"][team]["mar"] = get_marines(team)
 
@@ -211,96 +171,58 @@
 /datum/squad/proc/get_marines(team)
 	var/list/mar = list()
 	if(!team)
-		for(var/mob/living/carbon/human/H in marines_list)
-			if(H.assigned_fireteam || H == squad_leader)
+		for(var/mob/living/carbon/human/human in marines_list)
+			if(human.assigned_fireteam || human == squad_leader)
 				continue
-			if(H.squad_status == "K.I.A.")
+			if(human.squad_status == "K.I.A.")
 				squad_info_data["total_kia"]++
-			var/obj/item/card/id/ID = H.get_idcard()
-			var/Med = FALSE
-			var/Eng = FALSE
-			if(H.has_used_pamphlet)
-				if(skillcheck(H, SKILL_MEDICAL, SKILL_MEDICAL_TRAINED))
-					Med = TRUE
-				else
-					if(skillcheck(H, SKILL_ENGINEER, SKILL_ENGINEER_TRAINED))
-						Eng = TRUE
-			mar[H.real_name] = list(
-					"name" = H.real_name,
-					"med" = Med,
-					"eng" = Eng,
-					"status" = H.squad_status,
-					"refer" = "\ref[H]"
-					)
-			if(ID)
-				mar[H.real_name] += list("paygrade" = get_paygrades(ID.paygrade, 1))
-				var/rank = ID.rank
-				var/real_job = GET_DEFAULT_ROLE(rank)
-				if(real_job in JOB_SQUAD_NORMAL_LIST)
-					rank = "Mar"
-				else if(real_job in JOB_SQUAD_ENGI_LIST)
-					rank = "Eng"
-				else if(real_job in JOB_SQUAD_MEDIC_LIST)
-					rank = "Med"
-				else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
-					rank = "SG"
-				else if(real_job in JOB_SQUAD_SPEC_LIST)
-					rank = "Spc"
-				else if(real_job in JOB_SQUAD_SUP_LIST)
-					rank = "TL"
-				else if(real_job in JOB_SQUAD_LEADER_LIST)
-					rank = "SL"
-				else
-					rank = ""
-				if(H.rank_fallback)
-					rank = H.rank_fallback
-				mar[H.real_name] += list("rank" = rank)
-			else
-				mar[H.real_name] += list("paygrade" = "N/A")
-				mar[H.real_name] += list("rank" = "")
-
+			mar[human.real_name] = get_marine_status(human)
 	else
-		for(var/mob/living/carbon/human/H in fireteams[team])
-			if(H == fireteam_leaders[team])
+		for(var/mob/living/carbon/human/human in fireteams[team])
+			if(human == fireteam_leaders[team])
 				continue
-			var/obj/item/card/id/ID = H.get_idcard()
-			var/Med = FALSE
-			var/Eng = FALSE
-			if(H.has_used_pamphlet)
-				if(skillcheck(H, SKILL_MEDICAL, SKILL_MEDICAL_TRAINED))
-					Med = TRUE
-				else
-					if(skillcheck(H, SKILL_ENGINEER, SKILL_ENGINEER_TRAINED))
-						Eng = TRUE
-			mar[H.real_name] = list(
-				"name" = H.real_name,
-				"med" = Med,
-				"eng" = Eng,
-				"status" = H.squad_status,
-				"refer" = "\ref[H]"
-				)
-			if(ID)
-				mar[H.real_name] += list("paygrade" = get_paygrades(ID.paygrade, 1))
-				var/rank = ID.rank
-				var/real_job = GET_DEFAULT_ROLE(rank)
-				if(real_job in JOB_SQUAD_NORMAL_LIST)
-					rank = "Mar"
-				else if(real_job in JOB_SQUAD_ENGI_LIST)
-					rank = "Eng"
-				else if(real_job in JOB_SQUAD_MEDIC_LIST)
-					rank = "Med"
-				else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
-					rank = "SG"
-				else if(real_job in JOB_SQUAD_SPEC_LIST)
-					rank = "Spc"
-				else if(real_job in JOB_SQUAD_SUP_LIST)
-					rank = "TL"
-				else if(real_job in JOB_SQUAD_LEADER_LIST)
-					rank = "SL"
-				else
-					rank = ""
-				mar[H.real_name] += list("rank" = rank)
-			else
-				mar[H.real_name] += list("paygrade" = "N/A")
-				mar[H.real_name] += list("rank" = "")
+			mar[human.real_name] = get_marine_status(human)
 	return mar
+
+/datum/squad/proc/get_marine_status(mob/living/carbon/human/human)
+	var/list/marine_data
+	var/obj/item/card/id/id_card = human.get_idcard()
+	var/Med = FALSE
+	var/Eng = FALSE
+	if(human.has_used_pamphlet)
+		if(skillcheck(human, SKILL_MEDICAL, SKILL_MEDICAL_TRAINED))
+			Med = TRUE
+		if(skillcheck(human, SKILL_ENGINEER, SKILL_ENGINEER_TRAINED))
+			Eng = TRUE
+	marine_data = list(
+		"name" = human.real_name,
+		"med" = Med,
+		"eng" = Eng,
+		"status" = human.squad_status,
+		"refer" = "\ref[human]"
+	)
+	if(id_card)
+		marine_data += list("paygrade" = get_paygrades(id_card.paygrade, 1))
+		var/rank = id_card.rank
+		var/real_job = GET_DEFAULT_ROLE(rank)
+		if(real_job in JOB_SQUAD_NORMAL_LIST)
+			rank = "Mar"
+		else if(real_job in JOB_SQUAD_ENGI_LIST)
+			rank = "Eng"
+		else if(real_job in JOB_SQUAD_MEDIC_LIST)
+			rank = "Med"
+		else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
+			rank = "SG"
+		else if(real_job in JOB_SQUAD_SPEC_LIST)
+			rank = "Spc"
+		else if(real_job in JOB_SQUAD_SUP_LIST)
+			rank = "TL"
+		else if(real_job in JOB_SQUAD_LEADER_LIST)
+			rank = "SL"
+		else
+			rank = ""
+		marine_data += list("rank" = rank)
+	else
+		marine_data += list("paygrade" = "N/A")
+		marine_data += list("rank" = "")
+	return marine_data

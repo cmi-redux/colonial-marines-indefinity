@@ -41,5 +41,8 @@
 	},
 	"workbench.editorAssociations": {
 		"*.dmi": "dmiEditor.dmiEditor"
-	}
+	},
+	"dreammaker.byondPath": [
+		"C:\\Users\\Кристалик\\Desktop\\byond"
+	]
 }

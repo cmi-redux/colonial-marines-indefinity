@@ -8,20 +8,12 @@
 	gear_preset = /datum/equipment_preset/upp/specialist
 	entry_message_body = "<a href='%WIKIURL%'>You are the very rare and valuable weapon expert</a>, trained to use special equipment. You can serve a variety of roles, so choose carefully."
 
-/datum/job/upp/squad/specialist/set_spawn_positions(count)
-	spawn_positions = spec_slot_formula(count)
-
-/datum/job/upp/squad/specialist/get_total_positions(latejoin = 0)
-	var/positions = spawn_positions
-	if(latejoin)
-		positions = spec_slot_formula(get_total_population(FACTION_UPP))
-		if(positions <= total_positions_so_far)
-			positions = total_positions_so_far
-		else
-			total_positions_so_far = positions
-	else
-		total_positions_so_far = positions
-	return positions
+/datum/job/upp/squad/specialist/get_total_positions(count)
+	var/total_max
+	for(var/datum/squad/squad in SSticker.role_authority.squads)
+		if(squad.roundstart && squad.usable && squad.faction == FACTION_UPP && squad.name != "Root")
+			total_max += squad.max_specialists
+	return total_max
 
 AddTimelock(/datum/job/upp/squad/specialist, list(
 	JOB_SQUAD_ROLES = 5 HOURS

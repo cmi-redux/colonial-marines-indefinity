@@ -1,4 +1,4 @@
-/datum/job/marine/medic
+/datum/job/uscm/squad/medic
 	title = JOB_SQUAD_MEDIC
 	total_positions = 16
 	spawn_positions = 16
@@ -8,39 +8,27 @@
 	entry_message_body = "<a href='%WIKIPAGE%'>You tend the wounds of your squad mates</a> and make sure they are healthy and active. You may not be a fully-fledged doctor, but you stand between life and death when it matters."
 	balance_formulas = list("misc", BALANCE_FORMULA_MEDIC, BALANCE_FORMULA_FIELD)
 
-/datum/job/marine/medic/set_spawn_positions(count)
-	for(var/datum/squad/sq in SSticker.role_authority.squads)
-		if(sq)
-			sq.max_medics = medic_slot_formula(count)
 
-/datum/job/marine/medic/get_total_positions(latejoin = FALSE)
-	var/slots = medic_slot_formula(get_total_population(FACTION_MARINE))
+/datum/job/uscm/squad/medic/get_total_positions(latejoin = FALSE)
+	var/total_max
+	for(var/datum/squad/squad in SSticker.role_authority.squads)
+		if(squad.roundstart && squad.usable && squad.faction == FACTION_MARINE && squad.name != "Root")
+			total_max += squad.max_medics
+	return total_max
 
-	if(slots <= total_positions_so_far)
-		slots = total_positions_so_far
-	else
-		total_positions_so_far = slots
-
-	if(latejoin)
-		for(var/datum/squad/sq in SSticker.role_authority.squads)
-			if(sq)
-				sq.max_medics = slots
-
-	return (slots*4)
-
-/datum/job/marine/medic/whiskey
+/datum/job/uscm/squad/medic/whiskey
 	title = JOB_WO_SQUAD_MEDIC
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = /datum/equipment_preset/wo/marine/medic
 
-/datum/job/marine/medic/crash
+/datum/job/uscm/squad/medic/crash
 	title = JOB_CRASH_SQUAD_MEDIC
 	total_positions = 3
 	spawn_positions = 3
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = /datum/equipment_preset/crash/marine/medic
 
-AddTimelock(/datum/job/marine/medic, list(
+AddTimelock(/datum/job/uscm/squad/medic, list(
 	JOB_MEDIC_ROLES = 1 HOURS,
 	JOB_SQUAD_ROLES = 1 HOURS
 ))
@@ -48,7 +36,7 @@ AddTimelock(/datum/job/marine/medic, list(
 /obj/effect/landmark/start/marine/medic
 	name = JOB_SQUAD_MEDIC
 	icon_state = "medic_spawn"
-	job = /datum/job/marine/medic
+	job = /datum/job/uscm/squad/medic
 
 /obj/effect/landmark/start/marine/medic/alpha
 	icon_state = "medic_spawn_alpha"

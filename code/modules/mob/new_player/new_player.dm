@@ -243,11 +243,6 @@
 	SSticker.minds += character.mind
 	SSticker.mode.latejoin_tally += character.faction.get_role_coeff(player_rank)
 
-	for(var/datum/squad/sq in SSticker.role_authority.squads)
-		if(sq)
-			sq.max_engineers = engi_slot_formula(GLOB.clients.len)
-			sq.max_medics = medic_slot_formula(GLOB.clients.len)
-
 	if(SSticker.mode.latejoin_larva_drop && SSticker.mode.latejoin_tally >= SSticker.mode.latejoin_larva_drop)
 		SSticker.mode.latejoin_tally -= SSticker.mode.latejoin_larva_drop
 		var/datum/faction/faction = GLOB.faction_datum[FACTION_XENOMORPH_NORMAL]

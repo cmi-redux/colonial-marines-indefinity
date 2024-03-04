@@ -13,12 +13,6 @@
 		return min
 	return round(Clamp((marine_count/factor)+c, min, max))
 
-/proc/medic_slot_formula(playercount)
-	return job_slot_formula(playercount,40,1,3,5)
-
-/proc/engi_slot_formula(playercount)
-	return job_slot_formula(playercount,50,1,2,4)
-
 /proc/mp_slot_formula(playercount)
 	return job_slot_formula(playercount,25,2,4,8)
 
@@ -39,12 +33,6 @@
 
 /proc/int_slot_formula(playercount)
 	return job_slot_formula(playercount,20,1,1,6)
-
-/proc/spec_slot_formula(playercount)
-	return job_slot_formula(playercount,20,1,2,4)
-
-/proc/sg_slot_formula(playercount)
-	return job_slot_formula(playercount,20,1,2,4)
 
 /proc/synth_slot_formula(playercount)
 	return job_slot_formula(playercount,120,1,1,2)

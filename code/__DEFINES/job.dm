@@ -447,7 +447,7 @@
 #define TIMELOCK_JOB(role_id, hours) new/datum/timelock(role_id, hours, role_id)
 
 //SQUAD THINGS
-#define JOB_SQUAD_NORMAL_LIST list(JOB_SQUAD_MARINE, JOB_WO_SQUAD_MARINE, JOB_CRASH_SQUAD_MARINE, JOB_MARINE_RAIDER, JOB_UPP)
+#define JOB_SQUAD_NORMAL_LIST list(JOB_SQUAD_MARINE, JOB_MARINE_RAIDER, JOB_UPP)
 #define JOB_SQUAD_MEDIC_LIST list(JOB_SQUAD_MEDIC, JOB_WO_SQUAD_MEDIC, JOB_CRASH_SQUAD_MEDIC, JOB_UPP_MEDIC)
 #define JOB_SQUAD_ENGI_LIST list(JOB_SQUAD_ENGI, JOB_WO_SQUAD_ENGINEER, JOB_CRASH_SQUAD_ENGINEER, JOB_UPP_ENGI)
 #define JOB_SQUAD_SUP_LIST list(JOB_SQUAD_TEAM_LEADER, JOB_UPP_CONSCRIPT)
@@ -462,3 +462,5 @@
 	FACTION_UPP = list(/datum/squad/upp/red_daragon, /datum/squad/upp/sun_rise, /datum/squad/upp/veiled_threat, /datum/squad/upp/death_seekers, /datum/squad/upp/echo, /datum/squad/marine/cryo, /datum/squad/marine/intel),\
 	FACTION_CLF = list(/datum/squad/clf/python, /datum/squad/clf/viper, /datum/squad/clf/cobra, /datum/squad/clf/boa, /datum/squad/clf/engagers, /datum/squad/marine/cryo, /datum/squad/marine/intel),\
 )
+
+#define STANDARD_MARINE_TO_TOTAL_SPAWN_RATIO 0.4

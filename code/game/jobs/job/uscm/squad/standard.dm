@@ -1,6 +1,4 @@
-#define STANDARD_MARINE_TO_TOTAL_SPAWN_RATIO 0.4
-
-/datum/job/marine/standard
+/datum/job/uscm/squad/standard
 	title = JOB_SQUAD_MARINE
 	total_positions = -1
 	spawn_positions = -1
@@ -8,15 +6,15 @@
 	gear_preset = /datum/equipment_preset/uscm/pfc
 	entry_message_body = "You are a rank-and-file <a href='"+URL_WIKI_MARINE_QUICKSTART+"'>Marine of the USCM</a>, and that is your strength. What you lack alone, you gain standing shoulder to shoulder with the men and women of the corps. Ooh-rah!"
 
-/datum/job/marine/standard/set_spawn_positions(count)
+/datum/job/uscm/squad/standard/set_spawn_positions(count)
 	spawn_positions = max((round(count * STANDARD_MARINE_TO_TOTAL_SPAWN_RATIO)), 8)
 
-/datum/job/marine/standard/whiskey
+/datum/job/uscm/squad/standard/whiskey
 	title = JOB_WO_SQUAD_MARINE
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = /datum/equipment_preset/wo/marine/pfc
 
-/datum/job/marine/standard/crash
+/datum/job/uscm/squad/standard/crash
 	title = JOB_CRASH_SQUAD_MARINE
 	total_positions = 16
 	spawn_positions = 16
@@ -26,7 +24,7 @@
 /obj/effect/landmark/start/marine
 	name = JOB_SQUAD_MARINE
 	icon_state = "marine_spawn"
-	job = /datum/job/marine/standard
+	job = /datum/job/uscm/squad/standard
 
 /obj/effect/landmark/start/marine/alpha
 	icon_state = "marine_spawn_alpha"

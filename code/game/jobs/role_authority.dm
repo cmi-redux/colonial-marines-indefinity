@@ -56,7 +56,7 @@ var/global/players_preassigned = 0
 											/datum/job/command,
 											/datum/job/civilian,
 											/datum/job/logistics,
-											/datum/job/marine,
+											/datum/job/uscm/squad,
 											/datum/job/antag,
 											/datum/job/special,
 											/datum/job/special/provost,
@@ -165,6 +165,10 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 
 	unassigned_players = shuffle(unassigned_players, 1) //Shuffle the players.
 
+	for(var/datum/squad/squad in squads)
+		if(!isnull(squad.min_online_requered) && squad.min_online_requered > length(GLOB.clients))
+			squad.roundstart = FALSE
+			squad.usable = FALSE
 
 	// How many positions do we open based on total pop
 	for(var/i in roles_by_name)
@@ -355,55 +359,39 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 
 //here is the main reason this proc exists - to remove freed squad jobs from squad,
 //so latejoining person ends in the squad which's job was freed and not random one
-	var/datum/squad/sq = null
+	var/datum/squad/squad = null
 	var/real_job = GET_DEFAULT_ROLE(job)
 	if(real_job in JOB_SQUAD_ROLES_LIST)
 		var/list/squad_list = list()
-		for(sq in SSticker.role_authority.squads)
-			if(sq.usable)
-				squad_list += sq
-		sq = null
-		sq = input(user, "Select squad you want to free [job.title] slot from.", "Squad Selection")  as null|anything in squad_list
-		if(!sq)
+		for(squad in SSticker.role_authority.squads)
+			if(squad.roundstart && squad.usable && squad.faction == job.faction && squad.name != "Root")
+				squad_list += squad
+		squad = null
+		squad = input(user, "Select squad you want to free [job.title] slot from.", "Squad Selection")  as null|anything in squad_list
+		if(!squad)
 			return
-		if(real_job in JOB_SQUAD_ENGI_LIST)
-			if(sq.num_engineers > 0)
-				sq.num_engineers--
-			else
-				to_chat(user, "There are no [job.title] slots occupied in [sq.name] Squad.")
-				return
-		else if(real_job in JOB_SQUAD_MEDIC_LIST)
-			if(sq.num_medics > 0)
-				sq.num_medics--
-			else
-				to_chat(user, "There are no [job.title] slots occupied in [sq.name] Squad.")
-				return
-		else if(real_job in JOB_SQUAD_SPEC_LIST)
-			if(sq.num_specialists > 0)
-				sq.num_specialists--
-			else
-				to_chat(user, "There are no [job.title] slots occupied in [sq.name] Squad.")
-				return
-		else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
-			if(sq.num_smartgun > 0)
-				sq.num_smartgun--
-			else
-				to_chat(user, "There are no [job.title] slots occupied in [sq.name] Squad.")
-				return
-		else if(real_job in JOB_SQUAD_SUP_LIST)
-			if(sq.num_tl > 0)
-				sq.num_tl--
-			else
-				to_chat(user, "There are no [job.title] slots occupied in [sq.name] Squad.")
-				return
-		else if(real_job in JOB_SQUAD_LEADER_LIST)
-			if(sq.num_leaders > 0)
-				sq.num_leaders--
-			else
-				to_chat(user, "There are no [job.title] slots occupied in [sq.name] Squad.")
-				return
+		var/slot_check
+		if(real_job != "Reinforcements")
+			if(real_job in JOB_SQUAD_LEADER_LIST)
+				slot_check = "leaders"
+			else if(real_job in JOB_SQUAD_SPEC_LIST)
+				slot_check = "specialists"
+			else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
+				slot_check = "main_supports"
+			else if(real_job in JOB_SQUAD_SUP_LIST)
+				slot_check = "supports"
+			else if(real_job in JOB_SQUAD_MEDIC_LIST)
+				slot_check = "medics"
+			else if(real_job in JOB_SQUAD_ENGI_LIST)
+				slot_check = "engineers"
+
+		if(squad.vars["num_[slot_check]"] > 0)
+			squad.vars["num_[slot_check]"]--
+		else
+			to_chat(user, "There are no [job.title] slots occupied in [squad.name] Squad.")
+			return
 	job.current_positions--
-	message_admins("[key_name(user)] freed the [job.title] job slot[sq ? " in [sq.name] Squad" : ""].")
+	message_admins("[key_name(user)] freed the [job.title] job slot[squad ? " in [squad.name] Squad" : ""].")
 	return 1
 
 /datum/authority/branch/role/proc/modify_role(datum/job/job, amount)
@@ -493,7 +481,7 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 	SSround_recording.recorder.track_player(human)
 
 //Find which squad has the least population. If all 4 squads are equal it should just use a random one
-/datum/authority/branch/role/proc/randomize_squad(mob/living/carbon/human/human, skip_limit = FALSE, slot_check)
+/datum/authority/branch/role/proc/randomize_squad(mob/living/carbon/human/human, skip_limit = FALSE)
 	if(!human)
 		return
 
@@ -513,19 +501,21 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 		intel_squad.put_marine_in_squad(human) //Found one, finish up
 		return
 
-	if(human.job != "Reinforcements")
-		if(human.job in JOB_SQUAD_ENGI_LIST)
-			slot_check = "engineers"
-		else if(human.job in JOB_SQUAD_MEDIC_LIST)
-			slot_check = "medics"
-		else if(human.job in JOB_SQUAD_LEADER_LIST)
+	var/slot_check
+	var/real_job = GET_DEFAULT_ROLE(human.job)
+	if(real_job != "Reinforcements")
+		if(real_job in JOB_SQUAD_LEADER_LIST)
 			slot_check = "leaders"
-		else if(human.job in JOB_SQUAD_SPEC_LIST)
+		else if(real_job in JOB_SQUAD_SPEC_LIST)
 			slot_check = "specialists"
-		else if(human.job in JOB_SQUAD_SUP_LIST)
-			slot_check = "tl"
-		else if(human.job in JOB_SQUAD_MAIN_SUP_LIST)
-			slot_check = "smartgun"
+		else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
+			slot_check = "main_supports"
+		else if(real_job in JOB_SQUAD_SUP_LIST)
+			slot_check = "supports"
+		else if(real_job in JOB_SQUAD_MEDIC_LIST)
+			slot_check = "medics"
+		else if(real_job in JOB_SQUAD_ENGI_LIST)
+			slot_check = "engineers"
 
 	//we make a list of squad that is randomized so alpha isn't always lowest squad.
 	var/list/mixed_squads = list()
@@ -653,23 +643,21 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 
 // returns TRUE if transfer_marine's role is at max capacity in the new squad
 /datum/authority/branch/role/proc/check_squad_capacity(mob/living/carbon/human/transfer_marine, datum/squad/new_squad)
+	var/slot_check
 	var/real_job = GET_DEFAULT_ROLE(transfer_marine.job)
-	if(real_job in JOB_SQUAD_LEADER_LIST)
-		if(new_squad.num_leaders >= new_squad.max_leaders)
-			return TRUE
-	else if(real_job in JOB_SQUAD_SPEC_LIST)
-		if(new_squad.num_specialists >= new_squad.max_specialists)
-			return TRUE
-	else if(real_job in JOB_SQUAD_ENGI_LIST)
-		if(new_squad.num_engineers >= new_squad.max_engineers)
-			return TRUE
-	else if(real_job in JOB_SQUAD_MEDIC_LIST)
-		if(new_squad.num_medics >= new_squad.max_medics)
-			return TRUE
-	else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
-		if(new_squad.num_smartgun >= new_squad.max_smartgun)
-			return TRUE
-	else if(real_job in JOB_SQUAD_SUP_LIST)
-		if(new_squad.num_tl >= new_squad.max_tl)
-			return TRUE
+	if(real_job != "Reinforcements")
+		if(real_job in JOB_SQUAD_LEADER_LIST)
+			slot_check = "leaders"
+		else if(real_job in JOB_SQUAD_SPEC_LIST)
+			slot_check = "specialists"
+		else if(real_job in JOB_SQUAD_MAIN_SUP_LIST)
+			slot_check = "main_supports"
+		else if(real_job in JOB_SQUAD_SUP_LIST)
+			slot_check = "supports"
+		else if(real_job in JOB_SQUAD_MEDIC_LIST)
+			slot_check = "medics"
+		else if(real_job in JOB_SQUAD_ENGI_LIST)
+			slot_check = "engineers"
+	if(new_squad.vars["num_[slot_check]"] >= new_squad.vars["max_[slot_check]"])
+		return TRUE
 	return FALSE

@@ -1,4 +1,4 @@
-/datum/job/marine/tl
+/datum/job/uscm/squad/tl
 	title = JOB_SQUAD_TEAM_LEADER
 	total_positions = 8
 	spawn_positions = 8
@@ -7,18 +7,25 @@
 	gear_preset = /datum/equipment_preset/uscm/tl
 	entry_message_body = "You are the <a href='%WIKIPAGE%'>Team Leader.</a>Your task is to assist the squad leader in leading the squad as well as utilize ordnance such as orbital bombardments, CAS, and mortar as well as coordinating resupply with Requisitions and CIC. If the squad leader dies, you are expected to lead in their place."
 
-/datum/job/marine/tl/generate_entry_conditions(mob/living/carbon/human/spawning_human)
+/datum/job/uscm/squad/tl/get_total_positions(latejoin = FALSE)
+	var/total_max
+	for(var/datum/squad/squad in SSticker.role_authority.squads)
+		if(squad.roundstart && squad.usable && squad.faction == FACTION_MARINE && squad.name != "Root")
+			total_max += squad.max_supports
+	return total_max
+
+/datum/job/uscm/squad/tl/generate_entry_conditions(mob/living/carbon/human/spawning_human)
 	. = ..()
 	spawning_human.important_radio_channels += JTAC_FREQ
 
-AddTimelock(/datum/job/marine/tl, list(
+AddTimelock(/datum/job/uscm/squad/tl, list(
 	JOB_SQUAD_ROLES = 8 HOURS
 ))
 
 /obj/effect/landmark/start/marine/tl
 	name = JOB_SQUAD_TEAM_LEADER
 	icon_state = "tl_spawn"
-	job = /datum/job/marine/tl
+	job = /datum/job/uscm/squad/tl
 
 /obj/effect/landmark/start/marine/tl/alpha
 	icon_state = "tl_spawn_alpha"

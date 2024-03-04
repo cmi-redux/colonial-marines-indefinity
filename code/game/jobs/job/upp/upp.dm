@@ -5,6 +5,8 @@
 	spawn_positions = 8
 	allow_additional = TRUE
 
+	faction = FACTION_UPP
+
 /datum/job/upp/command
 	supervisors = "the acting commanding officer"
 	selection_class = "job_command"

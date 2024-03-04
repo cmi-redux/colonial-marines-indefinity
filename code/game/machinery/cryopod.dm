@@ -327,7 +327,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_MARINE_1 = list(), SQUAD_MARINE_2 = li
 			var/datum/squad/S = H.assigned_squad
 			S.forget_marine_in_squad(H)
 			var/datum/job/J = GET_MAPPED_ROLE(H.job)
-			if(istype(J, /datum/job/marine/specialist))
+			if(istype(J, /datum/job/uscm/squad/specialist))
 				//we make the set this specialist took if any available again
 				if(H.skills)
 					var/set_name

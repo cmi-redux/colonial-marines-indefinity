@@ -29,5 +29,5 @@
 #define iscarbonsizehuman(A) (A.mob_size <= MOB_SIZE_HUMAN)
 
 //job/role helpers
-#define ismarinejob(J) (istype(J, /datum/job/marine))
+#define ismarinejob(J) (istype(J, /datum/job/uscm/squad))
 #define issurvivorjob(J) (J == JOB_SURVIVOR)

@@ -41,6 +41,8 @@
 	/// If TRUE, this job will spawn w/ a cryo emergency kit during evac/red alert
 	var/gets_emergency_kit = TRUE
 
+	var/faction
+
 /datum/job/New()
 	. = ..()
 

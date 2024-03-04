@@ -146,7 +146,7 @@
 						ears.forceMove(src.loc)
 						ears = null
 						for(var/possible_phrase in speak)
-							if(copytext(possible_phrase,1,3) in department_radio_keys)
+							if(copytext(possible_phrase,1,3) in GLOB.department_radio_keys)
 								possible_phrase = copytext(possible_phrase,3,length(possible_phrase))
 					else
 						to_chat(usr, SPAN_DANGER("There is nothing to remove from its [remove_from]."))
@@ -332,7 +332,7 @@
 						if(prob(50))
 							useradio = 1
 
-						if(copytext(possible_phrase,1,3) in department_radio_keys)
+						if(copytext(possible_phrase,1,3) in GLOB.department_radio_keys)
 							possible_phrase = "[useradio?pick(available_channels):""] [copytext(possible_phrase,3,length(possible_phrase)+1)]" //crop out the channel prefix
 						else
 							possible_phrase = "[useradio?pick(available_channels):""] [possible_phrase]"
@@ -341,7 +341,7 @@
 
 				else //If we have no headset or channels to use, dont try to use any!
 					for(var/possible_phrase in speak)
-						if(copytext(possible_phrase,1,3) in department_radio_keys)
+						if(copytext(possible_phrase,1,3) in GLOB.department_radio_keys)
 							possible_phrase = "[copytext(possible_phrase,3,length(possible_phrase)+1)]" //crop out the channel prefix
 						newspeak.Add(possible_phrase)
 				speak = newspeak
@@ -713,7 +713,7 @@
 
 	if(length(message) >= 2)
 		var/channel_prefix = copytext(message, 1 ,3)
-		message_mode = department_radio_keys[channel_prefix]
+		message_mode = GLOB.department_radio_keys[channel_prefix]
 
 	if(copytext(message,1,2) == ":")
 		var/positioncut = 3

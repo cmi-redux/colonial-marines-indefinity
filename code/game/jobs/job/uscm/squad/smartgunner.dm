@@ -1,4 +1,4 @@
-/datum/job/marine/smartgunner
+/datum/job/uscm/squad/smartgunner
 	title = JOB_SQUAD_SMARTGUN
 	total_positions = 4
 	spawn_positions = 4
@@ -8,41 +8,33 @@
 	gear_preset = /datum/equipment_preset/uscm/sg
 	entry_message_body = "<a href='%WIKIPAGE%'>You are the smartgunner.</a> Your task is to provide heavy weapons support."
 
-/datum/job/marine/smartgunner/set_spawn_positions(count)
-	spawn_positions = sg_slot_formula(count)
+/datum/job/uscm/squad/smartgunner/get_total_positions(latejoin = FALSE)
+	var/total_max
+	for(var/datum/squad/squad in SSticker.role_authority.squads)
+		if(squad.roundstart && squad.usable && squad.faction == FACTION_MARINE && squad.name != "Root")
+			total_max += squad.max_main_supports
+	return total_max
 
-/datum/job/marine/smartgunner/get_total_positions(latejoin = 0)
-	var/positions = spawn_positions
-	if(latejoin)
-		positions = sg_slot_formula(get_total_population(FACTION_MARINE))
-		if(positions <= total_positions_so_far)
-			positions = total_positions_so_far
-		else
-			total_positions_so_far = positions
-	else
-		total_positions_so_far = positions
-	return positions
-
-/datum/job/marine/smartgunner/whiskey
+/datum/job/uscm/squad/smartgunner/whiskey
 	title = JOB_WO_SQUAD_SMARTGUNNER
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = /datum/equipment_preset/wo/marine/sg
 
-/datum/job/marine/smartgunner/crash
+/datum/job/uscm/squad/smartgunner/crash
 	title = JOB_CRASH_SQUAD_SMARTGUNNER
 	total_positions = 1
 	spawn_positions = 1
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = /datum/equipment_preset/crash/marine/sg
 
-AddTimelock(/datum/job/marine/smartgunner, list(
+AddTimelock(/datum/job/uscm/squad/smartgunner, list(
 	JOB_SQUAD_ROLES = 5 HOURS
 ))
 
 /obj/effect/landmark/start/marine/smartgunner
 	name = JOB_SQUAD_SMARTGUN
 	icon_state = "smartgunner_spawn"
-	job = /datum/job/marine/smartgunner
+	job = /datum/job/uscm/squad/smartgunner
 
 /obj/effect/landmark/start/marine/smartgunner/alpha
 	icon_state = "smartgunner_spawn_alpha"

@@ -17,12 +17,12 @@
 			/datum/job/civilian/synthetic/crash = JOB_SYNTH,
 			/datum/job/logistics/engineering/crash = JOB_CHIEF_ENGINEER,
 			/datum/job/civilian/professor/crash = JOB_CMO,
-			/datum/job/marine/leader/crash = JOB_SQUAD_LEADER,
-			/datum/job/marine/specialist/crash = JOB_SQUAD_SPECIALIST,
-			/datum/job/marine/smartgunner/crash = JOB_SQUAD_SMARTGUN,
-			/datum/job/marine/medic/crash = JOB_SQUAD_MEDIC,
-			/datum/job/marine/engineer/crash = JOB_SQUAD_ENGI,
-			/datum/job/marine/standard/crash = JOB_SQUAD_MARINE
+			/datum/job/uscm/squad/leader/crash = JOB_SQUAD_LEADER,
+			/datum/job/uscm/squad/specialist/crash = JOB_SQUAD_SPECIALIST,
+			/datum/job/uscm/squad/smartgunner/crash = JOB_SQUAD_SMARTGUN,
+			/datum/job/uscm/squad/medic/crash = JOB_SQUAD_MEDIC,
+			/datum/job/uscm/squad/engineer/crash = JOB_SQUAD_ENGI,
+			/datum/job/uscm/squad/standard/crash = JOB_SQUAD_MARINE
 		),
 		MODE_NAME_WISKEY_OUTPOST = list(
 			/datum/job/command/commander/whiskey = JOB_CO,
@@ -40,12 +40,12 @@
 			/datum/job/logistics/engineering/whiskey = JOB_CHIEF_ENGINEER,
 			/datum/job/logistics/otech/maint/whiskey = JOB_MAINT_TECH,
 			/datum/job/logistics/cargo/whiskey = JOB_CARGO_TECH,
-			/datum/job/marine/leader/whiskey = JOB_SQUAD_LEADER,
-			/datum/job/marine/specialist/whiskey = JOB_SQUAD_SPECIALIST,
-			/datum/job/marine/smartgunner/whiskey = JOB_SQUAD_SMARTGUN,
-			/datum/job/marine/medic/whiskey = JOB_SQUAD_MEDIC,
-			/datum/job/marine/engineer/whiskey = JOB_SQUAD_ENGI,
-			/datum/job/marine/standard/whiskey = JOB_SQUAD_MARINE
+			/datum/job/uscm/squad/leader/whiskey = JOB_SQUAD_LEADER,
+			/datum/job/uscm/squad/specialist/whiskey = JOB_SQUAD_SPECIALIST,
+			/datum/job/uscm/squad/smartgunner/whiskey = JOB_SQUAD_SMARTGUN,
+			/datum/job/uscm/squad/medic/whiskey = JOB_SQUAD_MEDIC,
+			/datum/job/uscm/squad/engineer/whiskey = JOB_SQUAD_ENGI,
+			/datum/job/uscm/squad/standard/whiskey = JOB_SQUAD_MARINE
 		),
 		MODE_NAME_HUNTER_GAMES = list(),
 		MODE_NAME_HIVE_WARS = list(),
