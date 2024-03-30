@@ -67,6 +67,7 @@ SUBSYSTEM_DEF(ticker)
 				return
 			if(isnull(start_at))
 				start_at = time_left || world.time + (CONFIG_GET(number/lobby_countdown) * 10)
+			REDIS_PUBLISH("byond.round", "type" = "round", "state" = "start")
 			var/message_send = list(CLIENT_LANGUAGE_ENGLISH = SPAN_ROUNDHEADER("[LANGUAGE_WELCOME_ENG] [CONFIG_GET(string/server_name)]!"), CLIENT_LANGUAGE_RUSSIAN = SPAN_ROUNDHEADER("[LANGUAGE_WELCOME_RU] [CONFIG_GET(string/server_name)]!"))
 			var/countdown = time_left || CONFIG_GET(number/lobby_countdown) * 10
 			var/second_message_send = list(CLIENT_LANGUAGE_ENGLISH = SPAN_ROUNDBODY("[LANGUAGE_WELCOME_SET_ENG] [DisplayTimeText(countdown, language = CLIENT_LANGUAGE_ENGLISH)]"), CLIENT_LANGUAGE_RUSSIAN = SPAN_ROUNDBODY("[LANGUAGE_WELCOME_SET_RU] [DisplayTimeText(countdown, language = CLIENT_LANGUAGE_RUSSIAN)]"))
@@ -142,7 +143,7 @@ SUBSYSTEM_DEF(ticker)
 	current_state = GAME_STATE_SETTING_UP
 	INVOKE_ASYNC(src, PROC_REF(setup_start))
 
-	REDIS_PUBLISH("byond.round", "type" = "round", "state" = "start")
+	REDIS_PUBLISH("byond.round", "type" = "round", "state" = "started")
 
 	for(var/client/C in GLOB.admins)
 		remove_verb(C, roundstart_mod_verbs)
