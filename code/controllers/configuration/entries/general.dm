@@ -273,10 +273,6 @@ Voting
 /datum/config_entry/string/gamemode_default
 	config_entry_value = "Extended"
 
-// Rounds needed for gamemode vote
-/datum/config_entry/number/gamemode_rounds_needed
-	config_entry_value = 5
-
 /datum/config_entry/number/rounds_until_hard_restart
 	config_entry_value = -1 // -1 is disabled by default, 0 is every round, x is after so many rounds
 
@@ -631,3 +627,5 @@ This maintains a list of ip addresses that are able to bypass topic filtering.
 	protection = CONFIG_ENTRY_HIDDEN|CONFIG_ENTRY_LOCKED
 
 /datum/config_entry/flag/guest_ban
+
+/datum/config_entry/flag/auto_profile

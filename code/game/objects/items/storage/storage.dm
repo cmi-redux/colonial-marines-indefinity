@@ -22,7 +22,7 @@
 	var/atom/movable/screen/storage/storage_start = null //storage UI
 	var/atom/movable/screen/storage/storage_continue = null
 	var/atom/movable/screen/storage/storage_end = null
-	var/datum/item_storage_box/stored_ISB = null // This contains what previously was known as stored_start, stored_continue, and stored_end
+	var/datum/item_storage_box/stored_ISB //! This contains what previously was known as stored_start, stored_continue, and stored_end
 	var/atom/movable/screen/close/closer = null
 	var/foldable = null
 	var/use_sound = "rustle" //sound played when used. null for no sound.
@@ -104,25 +104,24 @@
 				return
 	if(user.s_active)
 		user.s_active.hide_from(user)
-	user.client.screen -= boxes
-	user.client.screen -= storage_start
-	user.client.screen -= storage_continue
-	user.client.screen -= storage_end
-	user.client.screen -= closer
-	user.client.screen -= contents
-	user.client.screen += closer
-	user.client.screen += contents
+	user.client.remove_from_screen(boxes)
+	user.client.remove_from_screen(storage_start)
+	user.client.remove_from_screen(storage_continue)
+	user.client.remove_from_screen(storage_end)
+	user.client.remove_from_screen(closer)
+	user.client.remove_from_screen(contents)
+	user.client.add_to_screen(closer)
+	user.client.add_to_screen(contents)
 
 	if(storage_slots)
-		user.client.screen += boxes
+		user.client.add_to_screen(boxes)
 	else
-		user.client.screen += storage_start
-		user.client.screen += storage_continue
-		user.client.screen += storage_end
+		user.client.add_to_screen(storage_start)
+		user.client.add_to_screen(storage_continue)
+		user.client.add_to_screen(storage_end)
 
 	user.s_active = src
 	add_to_watchers(user)
-	return
 
 /obj/item/storage/proc/add_to_watchers(mob/user)
 	if(!(user in content_watchers))
@@ -137,12 +136,12 @@
 ///Used to hide the storage's inventory screen.
 /obj/item/storage/proc/hide_from(mob/user as mob)
 	if(user.client)
-		user.client.screen -= src.boxes
-		user.client.screen -= storage_start
-		user.client.screen -= storage_continue
-		user.client.screen -= storage_end
-		user.client.screen -= src.closer
-		user.client.screen -= src.contents
+		user.client.remove_from_screen(src.boxes)
+		user.client.remove_from_screen(storage_start)
+		user.client.remove_from_screen(storage_continue)
+		user.client.remove_from_screen(storage_end)
+		user.client.remove_from_screen(src.closer)
+		user.client.remove_from_screen(src.contents)
 	if(user.s_active == src)
 		user.s_active = null
 	del_from_watchers(user)
@@ -213,16 +212,17 @@
 	if (storage_flags & STORAGE_SHOW_FULLNESS)
 		boxes.update_fullness(src)
 
-var/list/global/item_storage_box_cache = list()
+GLOBAL_LIST_EMPTY_TYPED(item_storage_box_cache, /datum/item_storage_box)
 
 /datum/item_storage_box
-	var/atom/movable/screen/storage/start = null
-	var/atom/movable/screen/storage/continued = null
-	var/atom/movable/screen/storage/end = null
-	/// The index that indentifies me inside item_storage_box_cache
+	var/atom/movable/screen/storage/start
+	var/atom/movable/screen/storage/continued
+	var/atom/movable/screen/storage/end
+	/// The index that indentifies me inside GLOB.item_storage_box_cache
 	var/index
 
 /datum/item_storage_box/New()
+	. = ..()
 	start = new()
 	start.icon_state = "stored_start"
 	continued = new()
@@ -234,7 +234,7 @@ var/list/global/item_storage_box_cache = list()
 	QDEL_NULL(start)
 	QDEL_NULL(continued)
 	QDEL_NULL(end)
-	item_storage_box_cache[index] = null // Or would it be better to -= src?
+	GLOB.item_storage_box_cache -= index
 	return ..()
 
 /obj/item/storage/proc/space_orient_objs(list/obj/item/display_contents)
@@ -272,7 +272,7 @@ var/list/global/item_storage_box_cache = list()
 		click_border_start.Add(startpoint)
 		click_border_end.Add(endpoint)
 
-		if(!item_storage_box_cache[isb_index])
+		if(!GLOB.item_storage_box_cache[isb_index])
 			var/datum/item_storage_box/box = new()
 			var/matrix/M_start = matrix()
 			var/matrix/M_continue = matrix()
@@ -285,9 +285,9 @@ var/list/global/item_storage_box_cache = list()
 			box.continued.apply_transform(M_continue)
 			box.end.apply_transform(M_end)
 			box.index = isb_index
-			item_storage_box_cache[isb_index] = box
+			GLOB.item_storage_box_cache[isb_index] = box
 
-		var/datum/item_storage_box/ISB = item_storage_box_cache[isb_index]
+		var/datum/item_storage_box/ISB = GLOB.item_storage_box_cache[isb_index]
 		stored_ISB = ISB
 
 		storage_start.overlays += ISB.start
@@ -508,7 +508,7 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 	W.on_enter_storage(src)
 	if(user)
 		if (user.client && user.s_active != src)
-			user.client.screen -= W
+			user.client.remove_from_screen(W)
 		add_fingerprint(user)
 		if(!prevent_warning)
 			var/visidist = W.w_class >= 3 ? 3 : 1
@@ -534,7 +534,7 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 /obj/item/storage/proc/_item_removal(obj/item/W as obj, atom/new_location)
 	for(var/mob/M in can_see_content())
 		if(M.client)
-			M.client.screen -= W
+			M.client.remove_from_screen(W)
 
 	if(new_location)
 		if(ismob(new_location))
@@ -559,11 +559,6 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 //This proc is called when you want to place an item into the storage item.
 /obj/item/storage/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-
-	if(isrobot(user))
-		to_chat(user, SPAN_NOTICE(" You're a robot. No."))
-		return //Robots can't interact with storage items.
-
 	return attempt_item_insertion(W, FALSE, user)
 
 /obj/item/storage/equipped(mob/user, slot, silent)
@@ -852,6 +847,7 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 	return ..()
 
 /obj/item/storage/emp_act(severity)
+	. = ..()
 	if(!istype(src.loc, /mob/living))
 		for(var/obj/O in contents)
 			O.emp_act(severity)
