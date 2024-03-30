@@ -106,7 +106,7 @@ SUBSYSTEM_DEF(ticker)
 				current_state = GAME_STATE_FINISHED
 				ooc_allowed = TRUE
 				mode.declare_completion(force_ending)
-				REDIS_PUBLISH("byond.round", "type" = "round-complete")
+				REDIS_PUBLISH("byond.round", "type" = "round", "state" = "end")
 				flash_clients()
 				if(text2num(SSperf_logging?.round?.id) % CONFIG_GET(number/gamemode_rounds_needed) == 0 || GLOB.master_mode != MODE_NAME_DISTRESS_SIGNAL)
 					addtimer(CALLBACK(
@@ -142,7 +142,7 @@ SUBSYSTEM_DEF(ticker)
 	current_state = GAME_STATE_SETTING_UP
 	INVOKE_ASYNC(src, PROC_REF(setup_start))
 
-	REDIS_PUBLISH("byond.round", "type" = "round-start")
+	REDIS_PUBLISH("byond.round", "type" = "round", "state" = "start")
 
 	for(var/client/C in GLOB.admins)
 		remove_verb(C, roundstart_mod_verbs)

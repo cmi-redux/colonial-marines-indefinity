@@ -1,6 +1,6 @@
 /datum/entity/discord_identifier
 	var/identifier
-	var/playerid
+	var/player_ckey
 	var/realtime
 
 /datum/entity/discord_identifier/New()
@@ -15,13 +15,13 @@
 
 	field_types = list(
 		"identifier" = DB_FIELDTYPE_STRING_LARGE,
-		"playerid" = DB_FIELDTYPE_BIGINT,
+		"player_ckey" = DB_FIELDTYPE_BIGINT,
 		"realtime" = DB_FIELDTYPE_BIGINT,
 	)
 
 /datum/view_record/discord_identifier
 	var/identifier
-	var/playerid
+	var/player_ckey
 	var/realtime
 
 /datum/entity_view_meta/discord_identifier
@@ -29,7 +29,7 @@
 	destination_entity = /datum/view_record/discord_identifier
 	fields = list(
 		"identifier",
-		"playerid",
+		"player_ckey",
 		"realtime",
 	)
 	order_by = list("identifier" = DB_ORDER_BY_ASC)

@@ -17,7 +17,7 @@
 		return
 
 	var/datum/view_record/discord_identifier/ident = locate() in DB_VIEW(/datum/view_record/discord_identifier, DB_AND(
-		DB_COMP("playerid", DB_EQUALS, player_data.id),
+		DB_COMP("player_ckey", DB_EQUALS, player_data.ckey),
 		DB_COMP("realtime", DB_GREATER, world.realtime - 4 HOURS)
 		))
 
@@ -37,7 +37,7 @@
 		not_unique = locate(/datum/view_record/discord_identifier) in DB_VIEW(/datum/view_record/discord_identifier, DB_COMP("identifier", DB_EQUALS, token))
 
 	new_identifier.identifier = token
-	new_identifier.playerid = player_data.id
+	new_identifier.player_ckey = player_data.ckey
 	new_identifier.save()
 
 	show_browser(src, "Your one time password is [token]. Please use [CONFIG_GET(string/bot_prefix)][CONFIG_GET(string/bot_command)] [token] to certify.", "One Time Password", "one-time-pass")

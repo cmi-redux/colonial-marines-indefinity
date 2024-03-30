@@ -88,10 +88,11 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////Panels
 
-/datum/player_info/var/author // admin who authored the information
-/datum/player_info/var/rank //rank of admin who made the notes
-/datum/player_info/var/content // text content of the information
-/datum/player_info/var/timestamp // Because this is bloody annoying
+/datum/player_info
+	var/author // admin who authored the information
+	var/rank //rank of admin who made the notes
+	var/content // text content of the information
+	var/timestamp // Because this is bloody annoying
 
 
 /datum/admins/proc/player_has_info(key as text)

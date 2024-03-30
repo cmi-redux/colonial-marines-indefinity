@@ -458,16 +458,7 @@
 	running_round_stats = running_round_stats + list(total_data)
 
 /datum/game_mode/colonialmarines/proc/handle_round_results_statistics_output()
-	if(world.port != 1400)
-		return FALSE
-
-	var/webhook = CONFIG_GET(string/round_statistic_webhook_url)
-	if(!webhook)
-		return
-
-	var/list/headers = list()
-	headers["Content-Type"] = "application/json"
-	var/list/requests = list()
+	var/list/data = list()
 	for(var/list/round_status_report in running_round_stats)
 		var/special_status = round_status_report["special round status"]
 		var/round_time = round_status_report["round time"]
@@ -489,21 +480,9 @@
 			for(var/mob_info in dead_mob_report)
 				job_final_text += "[mob_info]\n"
 
-		var/datum/discord_embed/per_report_embed = new()
-		per_report_embed.title = "[field_name]"
-		per_report_embed.description = "[job_final_text]"
+		data += list(list("title" = "[field_name]", "desc" = "[job_final_text]"))
 
-		var/list/per_report_webhook_info = list()
-		per_report_webhook_info["embeds"] = list(per_report_embed.convert_to_list())
-
-		var/datum/http_request/per_report_request = new()
-		per_report_request.prepare(RUSTG_HTTP_METHOD_POST, webhook, json_encode(per_report_webhook_info), headers, "tmp/response.json")
-		requests += per_report_request
-
-	var/incrementer = 1
-	for(var/datum/http_request/request in requests)
-		addtimer(CALLBACK(request, TYPE_PROC_REF(/datum/http_request, begin_async)), (2 * incrementer) SECONDS)
-		incrementer++
+	REDIS_PUBLISH("byond.round", "type" = "statistic", "state" = "statistic", "statistic" = data)
 
 #undef HIJACK_EXPLOSION_COUNT
 #undef MARINE_MAJOR_ROUND_END_DELAY
