@@ -225,7 +225,7 @@
 
 	var/obj/item/projectile/proj = ammo.transfer_bullet_out()
 	apply_traits(proj)
-	proj.bullet_ready_to_fire(initial(name), weapon_source_mob = user)
+	proj.bullet_ready_to_fire(src, weapon_source_mob = user)
 	proj.forceMove(origin_turf)
 	SEND_SIGNAL(proj, COMSIG_BULLET_USER_EFFECTS, owner.seats[VEHICLE_GUNNER])
 	proj.fire_at(A, owner.seats[VEHICLE_GUNNER], src, get_dist(origin_turf, A) + 1, proj.ammo.shell_speed)

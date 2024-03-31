@@ -399,7 +399,7 @@
 	SSticker.mode.on_nuclear_explosion()
 
 	sleep(10 SECONDS)
-	cell_explosion(loc, 4000, 1, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data(initial(name)))
+	cell_explosion(loc, 4000, 1, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("взрыва ядерной боеголовки"))
 	qdel(src)
 	return TRUE
 

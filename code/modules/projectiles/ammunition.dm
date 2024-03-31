@@ -371,7 +371,7 @@ They're all essentially identical when it comes to getting the job done.
 
 	while(ammo_position)
 		var/obj/item/projectile/proj = transfer_bullet_out()
-		proj.bullet_ready_to_fire(initial(name), cause_data)
+		proj.bullet_ready_to_fire(src, cause_data)
 		proj.forceMove(get_turf(src))
 		if(cause_data_new)
 			proj.weapon_cause_data = cause_data_new

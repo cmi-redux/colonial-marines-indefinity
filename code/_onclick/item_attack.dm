@@ -111,7 +111,7 @@
 		if(user.faction == mob.faction)
 			user.track_friendly_damage(initial(name), mob, power)
 		if(power > 5)
-			mob.last_damage_data = create_cause_data(initial(name), user)
+			mob.last_damage_data = create_cause_data(initial(name), user, src)
 			user.track_hit(initial(name))
 			if(user.faction == mob.faction)
 				user.track_friendly_fire(initial(name))
