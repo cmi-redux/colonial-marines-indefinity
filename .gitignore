@@ -25,6 +25,8 @@ sound/music/walkman/*.txt
 icons/custom/*
 maps/**/backup
 *.before
+rust_g.dll
+librust_g.so
 __pycache__
 test_environment.txt
 .cache

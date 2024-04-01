@@ -18,11 +18,6 @@ SUBSYSTEM_DEF(fail_to_topic)
 	max_fails = CONFIG_GET(number/topic_max_fails)
 	enabled = CONFIG_GET(flag/topic_enabled)
 
-	if (world.system_type == UNIX && enabled)
-		enabled = FALSE
-		WARNING("fail_to_topic subsystem disabled. UNIX is not supported.")
-		return SS_INIT_NO_NEED
-
 	if (!enabled)
 		can_fire = FALSE
 		return SS_INIT_NO_NEED
