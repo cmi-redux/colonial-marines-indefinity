@@ -20,7 +20,7 @@ SUBSYSTEM_DEF(fail_to_topic)
 	if(active_bans[ip])
 		return 0
 
-	if(world.realtime - rate_limiting[ip] > rate_limit)
+	if(isnull(rate_limiting[ip]) || world.realtime - rate_limiting[ip] > rate_limit)
 		rate_limiting[ip] = world.realtime
 		return 2
 	else
