@@ -108,7 +108,16 @@
 	anonymous = TRUE
 
 /datum/world_topic/status/Run(list/input)
-	. = ..()
+	datas = get_status_message()
+	statuscode = 200
+	response = "Status retrieved"
+
+
+/datum/world_topic/status/authed
+	key = "status_authed"
+	anonymous = FALSE
+
+/datum/world_topic/status/authed/Run(list/input)
 	. = list()
 
 	data["round_name"] = "Loading..."
@@ -154,20 +163,12 @@
 	data["mcpu"] = world.map_cpu
 	data["cpu"] = world.cpu
 
-	statuscode = 200
-	response = "Status retrieved"
-
-
-/datum/world_topic/status/authed
-	key = "status_authed"
-	anonymous = FALSE
-
-/datum/world_topic/status/authed/Run(list/input)
-	. = ..()
-	// Add on a little extra data for our "special" patrons
 	data["active_players"] = get_active_player_count()
 	if(SSticker.HasRoundStarted())
 		data["real_mode"] = SSticker.mode.name
+
+	statuscode = 200
+	response = "Status retrieved"
 
 
 /datum/world_topic/lookup_discord_id
