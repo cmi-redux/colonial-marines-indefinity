@@ -7,6 +7,7 @@
 	UNTIL(SSticker.current_state == GAME_STATE_PREGAME)
 
 	//trigger things to run the whole process
+	SSticker.bypass_checks = TRUE
 	SSticker.request_start()
 	CONFIG_SET(number/round_end_countdown, 0)
 	SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(generate_autowiki)))

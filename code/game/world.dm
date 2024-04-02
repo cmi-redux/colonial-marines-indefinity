@@ -104,6 +104,7 @@ GLOBAL_VAR(restart_counter)
 			sleep(10)
 
 		// Start the game ASAP
+		SSticker.bypass_checks = TRUE
 		SSticker.request_start()
 	return
 
@@ -421,6 +422,7 @@ var/datum/BSQL_Connection/connection
 	UNTIL(SSticker.initialized)
 
 	//trigger things to run the whole process
+	SSticker.bypass_checks = TRUE
 	SSticker.request_start()
 	CONFIG_SET(number/round_end_countdown, 0)
 	var/datum/callback/cb

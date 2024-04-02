@@ -141,13 +141,6 @@ SUBSYSTEM_DEF(ticker)
 		return
 	current_state = GAME_STATE_SETTING_UP
 	INVOKE_ASYNC(src, PROC_REF(setup_start))
-
-	REDIS_PUBLISH("byond.round", "type" = "round", "state" = "started")
-
-	for(var/client/C in GLOB.admins)
-		remove_verb(C, roundstart_mod_verbs)
-	admin_verbs_minor_event -= roundstart_mod_verbs
-
 	return TRUE
 
 /// Try to effectively setup gamemode and start now
@@ -161,6 +154,10 @@ SUBSYSTEM_DEF(ticker)
 		start_at = world.time + (CONFIG_GET(number/lobby_countdown) * 10)
 		Master.SetRunLevel(RUNLEVEL_LOBBY)
 		return FALSE
+	REDIS_PUBLISH("byond.round", "type" = "round", "state" = "started")
+	for(var/client/C in GLOB.admins)
+		remove_verb(C, roundstart_mod_verbs)
+	admin_verbs_minor_event -= roundstart_mod_verbs
 	return TRUE
 
 /datum/controller/subsystem/ticker/proc/handle_map_reboot()
