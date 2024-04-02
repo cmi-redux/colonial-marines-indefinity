@@ -5,6 +5,7 @@ SUBSYSTEM_DEF(fail_to_topic)
 	runlevels = ALL
 
 	var/list/rate_limiting = list()
+	var/list/fail_counts = list()
 	var/list/active_bans = list()
 
 	var/rate_limit = 10
@@ -20,10 +21,17 @@ SUBSYSTEM_DEF(fail_to_topic)
 	if(active_bans[ip])
 		return 0
 
-	if(isnull(rate_limiting[ip]) || world.realtime - rate_limiting[ip] > rate_limit)
-		rate_limiting[ip] = world.realtime
-		return 2
+	if(isnull(rate_limiting[ip]) || world.timeofday - rate_limiting[ip] > rate_limit)
+		rate_limiting[ip] = world.timeofday
 	else
-		active_bans[ip] = TRUE
-		rate_limiting -= ip
-		return 1
+		if(isnull(active_bans[ip]))
+			rate_limiting[ip] = world.timeofday
+			active_bans[ip] = 0
+			spawn(rate_limit)
+				if(!active_bans[ip])
+					active_bans -= ip
+		else
+			active_bans[ip] = 1
+			rate_limiting -= ip
+			return 1
+	return 2
