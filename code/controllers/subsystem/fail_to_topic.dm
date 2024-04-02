@@ -7,10 +7,10 @@ SUBSYSTEM_DEF(fail_to_topic)
 	var/list/rate_limiting = list()
 	var/list/active_bans = list()
 
-	var/rate_limit = 10 SECONDS
+	var/rate_limit = 10
 
 /datum/controller/subsystem/fail_to_topic/Initialize(timeofday)
-	rate_limit = ((CONFIG_GET(number/topic_rate_limit)) SECONDS)
+	rate_limit = CONFIG_GET(number/topic_rate_limit)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/fail_to_topic/proc/IsRateLimited(ip)
