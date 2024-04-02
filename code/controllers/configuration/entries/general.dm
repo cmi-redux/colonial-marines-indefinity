@@ -592,21 +592,8 @@ This maintains a list of ip addresses that are able to bypass topic filtering.
 	min_val = 1
 	protection = CONFIG_ENTRY_HIDDEN|CONFIG_ENTRY_LOCKED
 
-/datum/config_entry/number/topic_max_fails
-	config_entry_value = 10
-	min_val = 1
-	protection = CONFIG_ENTRY_HIDDEN|CONFIG_ENTRY_LOCKED
-
-/datum/config_entry/string/topic_rule_name
-	config_entry_value = "_DD_Fail2topic"
-	protection = CONFIG_ENTRY_HIDDEN|CONFIG_ENTRY_LOCKED
-
 /datum/config_entry/number/topic_max_size
 	config_entry_value = 500
-	protection = CONFIG_ENTRY_HIDDEN|CONFIG_ENTRY_LOCKED
-
-/datum/config_entry/flag/topic_enabled
-	config_entry_value = TRUE
 	protection = CONFIG_ENTRY_HIDDEN|CONFIG_ENTRY_LOCKED
 
 /datum/config_entry/flag/redis_enabled

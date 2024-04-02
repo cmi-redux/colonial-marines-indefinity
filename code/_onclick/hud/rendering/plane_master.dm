@@ -237,22 +237,6 @@
 	render_relay_plane = null
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
-//Contains the weather effect itself
-/atom/movable/screen/plane_master/weather_effect
-	name = "weather effect plane master"
-	plane = WEATHER_EFFECT_PLANE
-	appearance_flags = PLANE_MASTER
-	render_relay_plane = RENDER_PLANE_GAME
-	blend_mode = BLEND_OVERLAY
-
-/atom/movable/screen/plane_master/weather_effect/Initialize(mapload)
-	. = ..()
-	SSsunlighting.weather_planes_need_vis |= src
-
-/atom/movable/screen/plane_master/weather_effect/Destroy()
-	. = ..()
-	SSsunlighting.weather_planes_need_vis -= src
-
 ///Contains space parallax
 /atom/movable/screen/plane_master/parallax
 	name = "parallax plane master"
@@ -299,7 +283,7 @@
 	plane = ABOVE_LIGHTING_PLANE
 	appearance_flags = PLANE_MASTER //should use client color
 	blend_mode = BLEND_OVERLAY
-	render_relay_plane = RENDER_PLANE_GAME
+//TODO: Fix that shit, wrong render effects
 
 /atom/movable/screen/plane_master/runechat
 	name = "runechat plane master"

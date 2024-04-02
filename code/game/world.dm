@@ -162,16 +162,16 @@ var/world_topic_spam_protect_time = world.timeofday
 /world/Topic(T, addr, master, key)
 	TGS_TOPIC
 
-	var/list/response = list()
+	switch(SSfail_to_topic?.IsRateLimited(addr))
+		if(0)
+			return
+		if(1)
+			return json_encode(list("statuscode" = 429, "response" = "Rate limited"))
 
+	var/list/response = list()
 	if(length(T) > CONFIG_GET(number/topic_max_size))
 		response["statuscode"] = 413
 		response["response"] = "Payload too large"
-		return json_encode(response)
-
-	if(SSfail_to_topic?.IsRateLimited(addr))
-		response["statuscode"] = 429
-		response["response"] = "Rate limited"
 		return json_encode(response)
 
 	var/logging = CONFIG_GET(flag/log_world_topic)
@@ -179,7 +179,6 @@ var/world_topic_spam_protect_time = world.timeofday
 	if(!rustg_json_is_valid(topic_decoded))
 		if(logging)
 			log_topic("(NON-JSON) \"[topic_decoded]\", from:[addr], master:[master], key:[key]")
-		// Fallback check for spacestation13.com requests
 		if(topic_decoded == "status")
 			return get_status_message()
 		response["statuscode"] = 400

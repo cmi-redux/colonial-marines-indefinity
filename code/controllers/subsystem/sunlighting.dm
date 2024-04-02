@@ -91,7 +91,6 @@ SUBSYSTEM_DEF(sunlighting)
 	var/datum/particle_weather/weather_datum
 	var/datum/weather_event/weather_light_affecting_event
 	var/list/mutable_appearance/sunlight_overlays
-	var/list/atom/movable/screen/plane_master/weather_effect/weather_planes_need_vis = list()
 
 	var/list/datum/time_of_day/steps = list()
 
@@ -173,19 +172,6 @@ SUBSYSTEM_DEF(sunlighting)
 
 	MC_SPLIT_TICK_INIT(3)
 	var/worked_length = 0
-
-	//Add our weather particle obj to any new weather screens
-	if(SSparticle_weather.initialized)
-		for(worked_length in 1 to weather_planes_need_vis.len)
-			var/atom/movable/screen/plane_master/weather_effect/weather_effect = weather_planes_need_vis[worked_length]
-			if(weather_effect)
-				weather_effect.vis_contents = list(SSparticle_weather.get_weather_effect())
-			if(MC_TICK_CHECK)
-				break
-		if(worked_length)
-			weather_planes_need_vis.Cut(1, worked_length+1)
-			worked_length = 0
-
 	for(worked_length in 1 to GLOB.sunlight_queue_work.len)
 		var/turf/turf = GLOB.sunlight_queue_work[worked_length]
 		if(turf)
