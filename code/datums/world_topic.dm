@@ -108,7 +108,7 @@
 	anonymous = TRUE
 
 /datum/world_topic/status/Run(list/input)
-	datas = get_status_message()
+	data = get_status_message()
 	statuscode = 200
 	response = "Status retrieved"
 
@@ -118,8 +118,7 @@
 	anonymous = FALSE
 
 /datum/world_topic/status/authed/Run(list/input)
-	. = list()
-
+	data = list()
 	data["round_name"] = "Loading..."
 	data["mode"] = "Loading..."
 	if(SSticker.mode)
