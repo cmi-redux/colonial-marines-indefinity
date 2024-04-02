@@ -133,12 +133,12 @@ SUBSYSTEM_DEF(redis)
 	if(!connected)
 		var/datum/redis_message/redis = new()
 		redis.channel = channel
-		redis.message = json_encode(message)
+		redis.message = message
 
 		queue += redis
 		return
 
-	rustg_redis_publish(channel, json_encode(message))
+	rustg_redis_publish(channel, message)
 
 /datum/controller/subsystem/redis/CanProcCall(procname)
 	return FALSE
