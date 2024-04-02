@@ -133,7 +133,7 @@ SUBSYSTEM_DEF(redis)
 	if(!connected)
 		var/datum/redis_message/redis = new()
 		redis.channel = channel
-		redis.message = message
+		redis.message = json_encode(message)
 
 		queue += redis
 		return
