@@ -25,5 +25,5 @@ SUBSYSTEM_DEF(fail_to_topic)
 		return 2
 	else
 		active_bans[ip] = TRUE
-		rate_limiting[ip] -= ip
+		rate_limiting -= ip
 		return 1

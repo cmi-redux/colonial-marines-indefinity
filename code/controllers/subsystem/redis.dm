@@ -138,7 +138,7 @@ SUBSYSTEM_DEF(redis)
 		queue += redis
 		return
 
-	rustg_redis_publish(channel, message)
+	rustg_redis_publish(channel, json_encode(message))
 
 /datum/controller/subsystem/redis/CanProcCall(procname)
 	return FALSE
