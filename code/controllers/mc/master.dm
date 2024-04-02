@@ -260,6 +260,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	var/msg = "Инициализация выполнена за [time] секунд[time == 1 ? "у" : ""]!"
 	to_chat(world, SPAN_BOLDANNOUNCE("[msg]"))
 	log_world(msg)
+	REDIS_PUBLISH("byond.round", "type" = "round", "state" = "start")
 
 
 	// Set world options.

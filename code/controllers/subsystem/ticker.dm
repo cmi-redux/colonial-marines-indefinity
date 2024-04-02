@@ -58,7 +58,6 @@ SUBSYSTEM_DEF(ticker)
 	if(!role_authority)
 		role_authority = new /datum/authority/branch/role()
 		INIT_ANNOUNCE("\b Job setup complete")
-		REDIS_PUBLISH("byond.round", "type" = "round", "state" = "start")
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/ticker/fire(resumed = FALSE)
