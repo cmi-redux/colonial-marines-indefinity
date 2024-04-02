@@ -179,7 +179,7 @@
 	for(var/list/entry in bullet_traits)
 		proj.apply_bullet_trait(entry.Copy())
 
-/obj/item/projectile/proc/bullet_ready_to_fire(bullet_source = null, happened = "выстрел", weapon_source_mob = null)
+/obj/item/projectile/proc/bullet_ready_to_fire(atom/bullet_source = null, weapon_source_mob = null)
 	unacidable = TRUE
 	anchored = TRUE
 	flags_atom = NOINTERACT
@@ -190,9 +190,9 @@
 	if(isliving(loc) && !weapon_source_mob)
 		var/mob/M = loc
 		weapon_source_mob = M
-	var/datum/cause_data/cause_data = create_cause_data(happened, weapon_source_mob, bullet_source)
-	weapon_cause_data = cause_data
-	firer = cause_data?.resolve_mob()
+	if(!weapon_cause_data)
+		weapon_cause_data = create_cause_data(initial(bullet_source.name), weapon_source_mob, bullet_source)
+	firer = weapon_cause_data?.resolve_mob()
 
 /obj/item/projectile/ex_act()
 	if(fire_ready)

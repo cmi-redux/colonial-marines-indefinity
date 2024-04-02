@@ -214,7 +214,7 @@
 	if(flamer_tank.glob_flame)
 		var/obj/item/projectile/proj = flamer_tank.transfer_bullet_out()
 		apply_traits(proj)
-		proj.bullet_ready_to_fire(src, weapon_source_mob = user)
+		proj.bullet_ready_to_fire(src, user)
 		proj.forceMove(src)
 		GIVE_BULLET_TRAIT(proj, /datum/element/bullet_trait_iff, faction)
 		playsound(get_turf(user), src.get_fire_sound(), 50, TRUE)

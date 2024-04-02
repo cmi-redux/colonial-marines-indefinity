@@ -363,9 +363,9 @@
 /obj/structure/machinery/defenses/sentry/proc/actual_fire(atom/target)
 	var/obj/item/projectile/proj = ammo.transfer_bullet_out()
 	apply_traits(proj)
-	proj.bullet_ready_to_fire(src, weapon_source_mob = owner_mob)
+	proj.bullet_ready_to_fire(src, owner_mob)
 	proj.forceMove(src)
-	var/datum/cause_data/cause_data = create_cause_data("выстрел", owner_mob, src)
+	var/datum/cause_data/cause_data = create_cause_data(initial(name), owner_mob, src)
 	proj.weapon_cause_data = cause_data
 	proj.firer = cause_data?.resolve_mob()
 	proj.damage *= damage_mult

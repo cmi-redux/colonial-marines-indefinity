@@ -50,7 +50,7 @@
 			display_colour = CONFIG_GET(string/ooc_color_admin)
 		else if(check_rights(R_MOD))
 			display_colour = CONFIG_GET(string/ooc_color_mods)
-	else if(player_data.donator_info.patreon_function_available("ooc_color"))
+	else if(player_data?.donator_info.patreon_function_available("ooc_color"))
 		display_colour = prefs.ooccolor
 
 	if(!display_colour) // if invalid R_COLOR choice

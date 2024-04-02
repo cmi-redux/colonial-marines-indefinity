@@ -30,10 +30,8 @@
 	var/mob/source_mob = cause_data?.resolve_mob()
 	for(var/i = 0 to shrapnel_number)
 		var/obj/item/projectile/proj = new(epicenter)
-		proj.weapon_cause_data = cause_data
-		proj.firer = cause_data?.resolve_mob()
 		proj.ammo = GLOB.ammo_list[shrapnel_type]
-		proj.bullet_ready_to_fire("шрапнель", weapon_source_mob = source_mob)
+		proj.bullet_ready_to_fire(null, source_mob, cause_data)
 		if(ignore_source_mob)
 			if(mob_standing_on_turf == source_mob)
 				proj.permutated |= mob_standing_on_turf
