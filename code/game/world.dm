@@ -235,9 +235,6 @@ var/world_topic_spam_protect_time = world.timeofday
 		bad_reboot_auth(auth)
 		return
 
-//	if(!notify_restart()) TODO: create here script that feed to bot about restart happening
-//		log_debug("Failed to notify discord about restart")
-
 	Master.Shutdown()
 	if(TgsAvailable())
 		TgsReboot()
@@ -292,31 +289,6 @@ var/world_topic_spam_protect_time = world.timeofday
 		for(var/client/client as anything in GLOB.clients)
 			if(client?.prefs.toggles_sound & SOUND_REBOOT)
 				SEND_SOUND(client, reboot_sound_ref)
-
-/world/proc/notify_manager(restarting = FALSE)
-	. = FALSE
-	var/manager = CONFIG_GET(string/manager_url)
-	if(!manager)
-		return TRUE
-
-	var/list/payload = list()
-	payload["round_time"] = world.time
-	payload["drift"] = Master.tickdrift
-	if(restarting)
-		payload["restarting"] = TRUE
-		if(SSticker?.mode)
-			payload["round_result"] = SSticker.mode.end_round_message()
-	if(SSticker?.mode?.round_statistics)
-		payload["mission_name"] = SSticker.mode.round_statistics.round_name
-	if(SSmapping.next_map_configs)
-		var/datum/map_config/next_map = SSmapping.next_map_configs[GROUND_MAP]
-		if(next_map)
-			payload["next_map"] = next_map.map_name
-	payload["avg_players"] = SSstats_collector.get_avg_players()
-
-	var/payload_ser = url_encode(json_encode(payload))
-	world.Export("[manager]/?payload=[payload_ser]")
-	return TRUE
 
 /world/proc/load_motd()
 	join_motd = list(CLIENT_LANGUAGE_RUSSIAN = file2text("config/motd_ru.txt"), CLIENT_LANGUAGE_ENGLISH = file2text("config/motd_en.txt"))

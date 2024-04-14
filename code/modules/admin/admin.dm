@@ -47,6 +47,7 @@
 	else
 		rendered = SPAN_COMBAT("<span class=\"prefix\">ATTACK:</span> <font color=#FFA500><b>[text]</b></font>")
 		text = "///DEAD/// - " + text
+
 	log_attack(text) //Do everything normally BUT IN GREEN SO THEY KNOW
 	for(var/client/C as anything in GLOB.admins)
 		if(C && C.admin_holder && (R_MOD & C.admin_holder.rights))
@@ -54,36 +55,7 @@
 				var/msg = rendered
 				to_chat(C, msg)
 
-	var/datum/discord_embed/embed = new()
-	embed.title = "ДО лог"
-	embed.description = hook_text
-	embed.color = COLOR_WEBHOOK_DEFAULT
-	send2adminchat_webhook(embed)
-
-
-/proc/send2adminchat_webhook(message_or_embed)
-	var/webhook = CONFIG_GET(string/adminlogs_webhook_url)
-	if(!webhook)
-		return
-	var/list/webhook_info = list()
-	if(istext(message_or_embed))
-		var/message_content = replacetext(replacetext(message_or_embed, "\proper", ""), "\improper", "")
-		message_content = GLOB.has_discord_embeddable_links.Replace(replacetext(message_content, "`", ""), " ```$1``` ")
-		webhook_info["content"] = message_content
-	else
-		var/datum/discord_embed/embed = message_or_embed
-		webhook_info["embeds"] = list(embed.convert_to_list())
-		if(embed.content)
-			webhook_info["content"] = embed.content
-	if(CONFIG_GET(string/adminhelp_webhook_name))
-		webhook_info["username"] = CONFIG_GET(string/adminhelp_webhook_name)
-	if(CONFIG_GET(string/adminhelp_webhook_pfp))
-		webhook_info["avatar_url"] = CONFIG_GET(string/adminhelp_webhook_pfp)
-	var/list/headers = list()
-	headers["Content-Type"] = "application/json"
-	var/datum/http_request/request = new()
-	request.prepare(RUSTG_HTTP_METHOD_POST, webhook, json_encode(webhook_info), headers, "tmp/response.json")
-	request.begin_async()
+	REDIS_PUBLISH("byond.admin", "type" = "admin", "state" = "fflog", "title" = "FF log", "desc" = "[hook_text]", "color" = "#dd4b0f")
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////Panels

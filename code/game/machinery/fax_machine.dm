@@ -197,18 +197,7 @@ GLOBAL_LIST_EMPTY(alldepartments)
 
 			copy_fax_paper()
 
-			var/datum/discord_embed/embed = new()
-			embed.title = "Факс"
-			embed.description = "[usr.client.ckey] отправил факс"
-			embed.fields = list(
-				"ИМЯ ОТПРАВИТЕЛЯ" = usr,
-				"НАЗВАНИЕ" = original_fax.name,
-				"ОТДЕЛ" = "[network], [target_department]",
-				"СООБЩЕНИЕ" = original_fax.info,
-				"АДМИНИСТРАЦИЯ" = length(GLOB.admins),
-			)
-			embed.color = COLOR_WEBHOOK_DEFAULT
-			send2adminchathelp_webhook(embed)
+			REDIS_PUBLISH("byond.admin", "type" = "admin", "state" = "fax", "title" = "Факс", "desc" = "[usr.client.ckey] отправил факс", "fields" = list("ИМЯ ОТПРАВИТЕЛЯ" = usr, "НАЗВАНИЕ" = original_fax.name, "ОТДЕЛ" = "[network], [target_department]", "СООБЩЕНИЕ" = original_fax.info, "АДМИНИСТРАЦИЯ" = length(GLOB.admins)))
 			outgoing_fax_message(ui.user)
 
 			COOLDOWN_START(src, send_cooldown, fax_cooldown)

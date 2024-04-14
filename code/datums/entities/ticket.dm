@@ -38,4 +38,3 @@ BSQL_PROTECT_DATUM(/datum/entity/ticket)
 	ticket_ent.detach()
 
 	REDIS_PUBLISH("byond.ticket", "ticket-id" = ticket, "action" = action, "message" = message, "recipient" = recipient, "sender" = sender, "urgent" = urgent)
-

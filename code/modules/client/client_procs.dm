@@ -455,7 +455,7 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 		message_admins("Админ Вышел: [key_name(src)]")
 
 		var/list/adm = get_admin_counts(R_MOD)
-		REDIS_PUBLISH("byond.access", "type" = "logout", "key" = src.key, "remaining" = length(adm["total"]), "afk" = length(adm["afk"]))
+		REDIS_PUBLISH("byond.access", "type" = "admin", "state" = "logout", "key" = src.key, "remaining" = length(adm["total"]), "afk" = length(adm["afk"]))
 
 	..()
 	return QDEL_HINT_HARDDEL_NOW
@@ -472,7 +472,7 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 		message_admins("Админ Вошел: [key_name(src)]")
 
 		var/list/adm = get_admin_counts(R_MOD)
-		REDIS_PUBLISH("byond.access", "type" = "login", "key" = src.key, "remaining" = length(adm["total"]), "afk" = length(adm["afk"]))
+		REDIS_PUBLISH("byond.access", "type" = "admin", "state" = "login", "key" = src.key, "remaining" = length(adm["total"]), "afk" = length(adm["afk"]))
 
 	if(CONFIG_GET(flag/log_access))
 		for(var/mob/M in GLOB.player_list)

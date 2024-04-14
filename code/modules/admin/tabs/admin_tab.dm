@@ -253,7 +253,7 @@
 		return
 
 	msg = emoji_parse(src, msg)
-	REDIS_PUBLISH("byond.asay", "author" = src.key, "message" = strip_html(msg), "admin" = CLIENT_HAS_RIGHTS(src, R_ADMIN), "rank" = admin_holder.rank)
+	REDIS_PUBLISH("byond.asay", "type" = "admin", "state" = "asay", "author" = src.key, "message" = strip_html(msg), "admin" = CLIENT_HAS_RIGHTS(src, R_ADMIN), "rank" = admin_holder.rank)
 
 	if(findtext(msg, "@") || findtext(msg, "#"))
 		var/list/link_results = check_asay_links(msg)

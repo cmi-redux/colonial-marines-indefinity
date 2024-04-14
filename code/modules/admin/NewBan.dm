@@ -6,7 +6,7 @@ var/savefile/Banlist
 	if(!Banlist) // if Banlist cannot be located for some reason
 		LoadBans() // try to load the bans
 		if(!Banlist) // uh oh, can't find bans!
-			return 0 // ABORT ABORT ABORT
+			return FALSE // ABORT ABORT ABORT
 
 	. = list()
 	var/appeal
@@ -18,7 +18,7 @@ var/savefile/Banlist
 		if(Banlist["temp"])
 			if(!GetExp(Banlist["minutes"]))
 				ClearTempbans()
-				return 0
+				return FALSE
 			else
 				.["desc"] = "\nReason: [Banlist["reason"]]\nExpires: [GetExp(Banlist["minutes"])]\nBy: [Banlist["bannedby"]][appeal]"
 		else
@@ -51,11 +51,11 @@ var/savefile/Banlist
 					.["desc"] = "\nReason: [Banlist["reason"]]\nExpires: <B>PERMENANT</B>\nBy: [Banlist["bannedby"]][appeal]"
 				.["reason"] = matches
 				return .
-	return 0
+	return FALSE
 
 /proc/UpdateTime() //No idea why i made this a proc.
 	CMinutes = (world.realtime / 10) / 60
-	return 1
+	return TRUE
 
 /proc/LoadBans()
 
@@ -72,7 +72,7 @@ var/savefile/Banlist
 		Banlist.cd = "/base"
 
 	ClearTempbans()
-	return 1
+	return TRUE
 
 /proc/ClearTempbans()
 	UpdateTime()
@@ -89,7 +89,7 @@ var/savefile/Banlist
 		if(!Banlist["temp"]) continue
 		if(CMinutes >= Banlist["minutes"]) RemoveBan(A)
 
-	return 1
+	return TRUE
 
 
 /proc/AddBan(ckey, computerid, reason, bannedby, temp, minutes, address)
@@ -119,19 +119,14 @@ var/savefile/Banlist
 	if(temp)
 		Banlist["minutes"] << bantimestamp
 
-	var/datum/discord_embed/embed = new()
-	embed.title = "Бан"
-	embed.description = "[bannedby] забанил [ckey], по причине [reason], на[temp ? "всегда" : " [minutes] минут"]"
-	embed.color = COLOR_WEBHOOK_DEFAULT
-	send2adminchat_webhook(embed)
-
-	return 1
+	REDIS_PUBLISH("byond.admin", "type" = "admin", "state" = "ban", "title" = "Ban", "desc" = "[bannedby] забанил [ckey], по причине [reason], на[temp ? "всегда" : " [minutes] минут"]", "color" = "#6c1517")
+	return TRUE
 
 /proc/RemoveBan(foldername)
 	if(!Banlist) // if Banlist cannot be located for some reason
 		LoadBans() // try to load the bans
 		if(!Banlist) // uh oh, can't find bans!
-			return 0 // ABORT ABORT ABORT
+			return FALSE // ABORT ABORT ABORT
 
 	var/key
 	var/id
@@ -142,7 +137,7 @@ var/savefile/Banlist
 	Banlist.cd = "/base"
 
 	if(!Banlist.dir.Remove(foldername))
-		return 0
+		return FALSE
 
 	if(!usr)
 		log_admin("Ban Expired: [key]")
@@ -158,19 +153,14 @@ var/savefile/Banlist
 			Banlist.dir.Remove(A)
 			continue
 
-	var/datum/discord_embed/embed = new()
-	embed.title = "Разбан"
-	embed.description = "[usr ? "Вышло время бана для" : "[key_name_admin(usr)] разбанил"] [key]"
-	embed.color = COLOR_WEBHOOK_DEFAULT
-	send2adminchat_webhook(embed)
-
-	return 1
+	REDIS_PUBLISH("byond.admin", "type" = "admin", "state" = "ban", "title" = "Unban", "desc" = "[usr ? "Вышло время бана для" : "[key_name_admin(usr)] разбанил"] [key]", "color" = "#679249")
+	return TRUE
 
 /proc/GetExp(minutes as num)
 	UpdateTime()
 	var/exp = minutes - CMinutes
 	if(exp <= 0)
-		return 0
+		return FALSE
 	else
 		var/timeleftstring
 		if(exp >= 1440) //1440 = 1 day in minutes

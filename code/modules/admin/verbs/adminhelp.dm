@@ -254,10 +254,10 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	GLOB.ahelp_tickets.active_tickets += src
 
 /datum/admin_help/proc/format_embed_discord(message)
-	var/datum/discord_embed/embed = new()
-	embed.title = "Тикет #[id]"
-	embed.description = "<byond://[world.internet_address]:[world.port]>"
-	embed.author = key_name(initiator_ckey)
+	. = list()
+	.["title"] = "Тикет #[id]"
+	.["desc"] = "<byond://[world.internet_address]:[world.port]>"
+	.["author"] = key_name(initiator_ckey)
 	var/round_state
 	switch(SSticker.current_state)
 		if(GAME_STATE_STARTUP, GAME_STATE_PREGAME, GAME_STATE_SETTING_UP)
@@ -278,7 +278,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		admin_text += "**AFK**: [afk_admins]\n"
 	if(other_admins)
 		admin_text += "**Не имеют +BAN**: [other_admins]\n"
-	embed.fields = list(
+	.["fields"] = list(
 		"CKEY" = initiator_ckey,
 		"ОНЛАЙН" = player_count,
 		"ИНФОРМАЦИЯ О РАУНДЕ" = "статус: [round_state]\nID: [SSperf_logging.round?.id]\nвремя: [duration2text()]",
@@ -288,8 +288,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	if(CONFIG_GET(string/adminhelp_ahelp_link))
 		var/ahelp_link = replacetext(CONFIG_GET(string/adminhelp_ahelp_link), "$RID", SSperf_logging.round?.id)
 		ahelp_link = replacetext(ahelp_link, "$TID", id)
-		embed.url = ahelp_link
-	return embed
+		.["url"] = ahelp_link
 
 /datum/admin_help/proc/send_message_to_external(message)
 	var/list/adm = get_admin_counts(R_BAN)
@@ -297,40 +296,14 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	var/admin_number_present = activemins.len
 
 	log_admin_private("Тикет #[id]: [key_name(initiator)]: [name] - услышали [admin_number_present] не-AFK администрацией кто имеет права +BAN.")
-	var/webhook_url = CONFIG_GET(string/adminhelp_webhook_url)
-	if(webhook_url)
-		heard_by_no_admins = TRUE
-		var/extra_message = CONFIG_GET(string/ahelp_message)
-		var/datum/discord_embed/embed = format_embed_discord(message)
-		embed.content = extra_message
-		if(admin_number_present <= 0)
-			to_chat(initiator, SPAN_NOTICE("No active admins are online, your adminhelp was sent to admins who are available through IRC or Discord."), confidential = TRUE)
-			embed.footer = "This player sent an ahelp when no admins are available and also requested an admin"
-		send2adminchathelp_webhook(embed)
-
-/proc/send2adminchathelp_webhook(message_or_embed)
-	var/webhook = CONFIG_GET(string/adminhelp_webhook_url)
-	if(!webhook)
-		return
-	var/list/webhook_info = list()
-	if(istext(message_or_embed))
-		var/message_content = replacetext(replacetext(message_or_embed, "\proper", ""), "\improper", "")
-		message_content = GLOB.has_discord_embeddable_links.Replace(replacetext(message_content, "`", ""), " ```$1``` ")
-		webhook_info["content"] = message_content
-	else
-		var/datum/discord_embed/embed = message_or_embed
-		webhook_info["embeds"] = list(embed.convert_to_list())
-		if(embed.content)
-			webhook_info["content"] = embed.content
-	if(CONFIG_GET(string/adminhelp_webhook_name))
-		webhook_info["username"] = CONFIG_GET(string/adminhelp_webhook_name)
-	if(CONFIG_GET(string/adminhelp_webhook_pfp))
-		webhook_info["avatar_url"] = CONFIG_GET(string/adminhelp_webhook_pfp)
-	var/list/headers = list()
-	headers["Content-Type"] = "application/json"
-	var/datum/http_request/request = new()
-	request.prepare(RUSTG_HTTP_METHOD_POST, webhook, json_encode(webhook_info), headers, "tmp/response.json")
-	request.begin_async()
+	heard_by_no_admins = TRUE
+	var/extra_message = CONFIG_GET(string/ahelp_message)
+	var/list/actions = format_embed_discord(message)
+	actions["content"] = extra_message
+	if(admin_number_present <= 0)
+		to_chat(initiator, SPAN_NOTICE("No active admins are online, your adminhelp was sent to admins who are available through IRC or Discord."), confidential = TRUE)
+		actions["footer"] = "This player sent an ahelp when no admins are available and also requested an admin"
+	REDIS_PUBLISH("byond.admin", "type" = "admin", "state" = "ahelp", "embed" = actions)
 
 /datum/admin_help/Destroy()
 	RemoveActive()
@@ -397,14 +370,13 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	//Message to be sent to all admins
 	var/admin_msg = SPAN_ADMINSAY(SPAN_ADMINHELP("Тикет [TicketHref("#[id]", ref_src)]</span><b>: [LinkedReplyName(ref_src)] [FullMonty(ref_src)]:</b> <span class='linkify'>[msg]"))
 
-	var/datum/discord_embed/embed = new()
-	embed.title = "Тикет #[id]"
+	var/list/actions = list()
+	actions["title"] = "Тикет #[id]"
 	if(CONFIG_GET(string/adminhelp_ahelp_link))
 		var/ahelp_link = replacetext(CONFIG_GET(string/adminhelp_ahelp_link), "$RID", SSperf_logging.round?.id)
 		ahelp_link = replacetext(ahelp_link, "$TID", id)
-		embed.url = ahelp_link
-		embed.description = "[initiator_key_name] написал\n"
-		embed.description += "**Cообщение:** [msg]"
+		actions["url"] = ahelp_link
+		actions["desc"] = "[initiator_key_name] написал\n**Cообщение:** [msg]"
 
 	AddInteraction("<font color='red'>[LinkedReplyName(ref_src)]: [msg]</font>", player_message = "<font color='red'>[LinkedReplyName(ref_src)]: [msg]</font>")
 	log_admin_private("Тикет #[id]: [key_name(initiator)]: [msg]")
@@ -427,7 +399,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		html = SPAN_ADMINNOTICE("PM to-<b>Admins</b>: <span class='linkify'>[msg]</span>"),
 		confidential = TRUE)
 	log_ahelp(id, "Тикет открыт", msg, null, initiator.ckey)
-	send2adminchathelp_webhook(embed)
+	REDIS_PUBLISH("byond.admin", "type" = "admin", "state" = "ahelp", "embed" = actions)
 
 //Reopen a closed ticket
 /datum/admin_help/proc/Reopen()
@@ -661,13 +633,13 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //Forwarded action from admin/Topic
 /datum/admin_help/proc/Action(action)
-	var/datum/discord_embed/embed = new()
-	embed.title = "Тикет #[id]"
+	var/list/actions = list()
+	actions["title"] = "Тикет #[id]"
 	if(CONFIG_GET(string/adminhelp_ahelp_link))
 		var/ahelp_link = replacetext(CONFIG_GET(string/adminhelp_ahelp_link), "$RID", SSperf_logging.round?.id)
 		ahelp_link = replacetext(ahelp_link, "$TID", id)
-		embed.url = ahelp_link
-	embed.description = "[key_name(usr)] отправил действие на этот тикет. ID действия: [action]\n"
+		actions["url"] = ahelp_link
+	actions["desc"] = "[key_name(usr)] отправил действие на этот тикет. ID действия: [action]\n"
 	switch(action)
 		if("ticket")
 			TicketPanel()
@@ -678,7 +650,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		if("reject")
 			Reject()
 		if("reply")
-			embed.description += "**Cообщение:** [usr.client.cmd_ahelp_reply(initiator)]"
+			actions["desc"] += "**Cообщение:** [usr.client.cmd_ahelp_reply(initiator)]"
 		if("autoreply")
 			AutoReply()
 		if("close")
@@ -689,7 +661,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 			Reopen()
 		if("defer")
 			defer_to_mentors()
-	send2adminchathelp_webhook(embed)
+	REDIS_PUBLISH("byond.admin", "type" = "admin", "state" = "ahelp", "embed" = actions)
 
 /datum/admin_help/proc/player_ticket_panel()
 	var/list/dat = list("<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>Тикет Игрока</title></head>")
