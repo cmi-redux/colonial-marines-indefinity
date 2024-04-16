@@ -29,6 +29,7 @@ SUBSYSTEM_DEF(nightmare)
 
 /datum/controller/subsystem/nightmare/proc/resolve_nodes(context_name, scope)
 	var/datum/nmcontext/context = contexts[context_name]
+	context.set_scenario_value("gamemode", GLOB.master_mode)
 	var/datum/nmnode/nodes = roots["[context_name]-[scope]"]
 	nodes?.invoke(context)
 
@@ -66,6 +67,7 @@ SUBSYSTEM_DEF(nightmare)
 		if(stat != NIGHTMARE_STATUS_RUNNING)
 			return TRUE // Panic Abort
 		var/datum/nmcontext/context = contexts[context_name]
+		context.set_scenario_value("gamemode", GLOB.master_mode)
 		var/ret = context.run_tasks()
 		if(ret != NIGHTMARE_TASK_OK)
 			log_debug("Nightmare: Failed tasks execution for [context_name]")
