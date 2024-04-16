@@ -96,7 +96,7 @@
 
 /datum/game_mode/crash/pre_setup()
 	if(SSticker.role_authority)
-		for(var/datum/squad/squad in SSticker.role_authority.squads)
+		for(var/datum/squad/squad as anything in SSticker.role_authority.squads)
 			if(squad.faction == GLOB.faction_datum[FACTION_MARINE] && squad.name != "Root" && squad.name != "Alpha")
 				squad.roundstart = FALSE
 				squad.usable = FALSE
@@ -198,7 +198,7 @@
 			SSitem_cleanup.delete_almayer()
 
 /datum/game_mode/crash/announce()
-	to_chat(world, "<span class='round_header'>Ship crashed over - [SSmapping.configs[GROUND_MAP].map_name]! You know all about enemy, time to final battle!</span>")
+	to_chat(world, SPAN_ROUNDHEADER("Your ship has crashed over - [SSmapping.configs[GROUND_MAP].map_name]! You know everything about the enemy, time for the final battle!"))
 	faction_announcement("Scheduled for landing in T-10 Minutes. Prepare for landing. Known hostiles near LZ. Detonation Protocol Active, planet disposable. Marines disposable.")
 	playsound(shuttle, 'sound/machines/warning-buzzer.ogg', 75, 0, 30)
 

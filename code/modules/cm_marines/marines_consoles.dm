@@ -579,7 +579,7 @@
 /obj/structure/machinery/computer/squad_changer/ui_static_data(mob/user)
 	var/list/data = list()
 	var/list/squads = list()
-	for(var/datum/squad/current_squad in SSticker.role_authority.squads)
+	for(var/datum/squad/current_squad as anything in SSticker.role_authority.squads)
 		if(current_squad.name != "Root" && !current_squad.locked && current_squad.active && current_squad.faction == faction.faction_name)
 			var/list/squad = list(list(
 				"name" = current_squad.name,

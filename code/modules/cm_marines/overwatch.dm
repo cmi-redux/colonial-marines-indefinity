@@ -110,7 +110,7 @@
 
 	if(!current_squad)
 		.["squad_list"] = list()
-		for(var/datum/squad/current_squad in SSticker.role_authority.squads)
+		for(var/datum/squad/current_squad as anything in SSticker.role_authority.squads)
 			if(current_squad.active && !current_squad.overwatch_officer && current_squad.faction == faction.faction_name && current_squad.name != "Root")
 				.["squad_list"] += current_squad.name
 		return
@@ -341,7 +341,7 @@
 			if(current_squad)
 				return
 			var/datum/squad/selected_squad
-			for(var/datum/squad/searching_squad in SSticker.role_authority.squads)
+			for(var/datum/squad/searching_squad as anything in SSticker.role_authority.squads)
 				if(searching_squad.active && !searching_squad.overwatch_officer && searching_squad.faction == faction.faction_name && searching_squad.name != "Root" && searching_squad.name == params["squad"])
 					selected_squad = searching_squad
 					break
@@ -634,7 +634,7 @@
 		return
 	var/ob_type = almayer_orbital_cannon.tray.warhead ? almayer_orbital_cannon.tray.warhead.warhead_kind : "UNKNOWN"
 
-	for(var/datum/squad/squad in SSticker.role_authority.squads)
+	for(var/datum/squad/squad as anything in SSticker.role_authority.squads)
 		if(!squad.active)
 			continue
 		for(var/mob/living/carbon/human/M in squad.marines_list)

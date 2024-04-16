@@ -138,11 +138,11 @@
 	icon_state = "90"
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	plane = FIELD_OF_VISION_BLOCKER_PLANE
-	screen_loc = "BOTTOM,LEFT"
+	screen_loc = "CENTER-7,CENTER-7"
 
 /atom/movable/screen/fov_shadow
 	icon = 'icons/effects/fov/field_of_view.dmi'
 	icon_state = "90_v"
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	plane = ABOVE_LIGHTING_PLANE
-	screen_loc = "BOTTOM,LEFT"
+	screen_loc = "CENTER-7,CENTER-7"

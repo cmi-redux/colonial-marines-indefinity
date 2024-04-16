@@ -358,7 +358,7 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 	var/real_job = GET_DEFAULT_ROLE(job)
 	if(real_job in JOB_SQUAD_ROLES_LIST)
 		var/list/squad_list = list()
-		for(squad in SSticker.role_authority.squads)
+		for(squad as anything in SSticker.role_authority.squads)
 			if(squad.roundstart && squad.usable && squad.faction == job.faction && squad.name != "Root")
 				squad_list += squad
 		squad = null

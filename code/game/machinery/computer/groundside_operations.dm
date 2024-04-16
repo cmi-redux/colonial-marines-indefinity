@@ -255,7 +255,7 @@
 
 		if("pick_squad")
 			var/list/squad_list = list()
-			for(var/datum/squad/searching_squad in SSticker.role_authority.squads)
+			for(var/datum/squad/searching_squad as anything in SSticker.role_authority.squads)
 				if(searching_squad.name != "Root" && !searching_squad.locked && searching_squad.active && searching_squad.faction == faction.faction_name)
 					squad_list += searching_squad.name
 

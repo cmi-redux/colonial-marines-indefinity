@@ -10,7 +10,7 @@
 
 /datum/job/uscm/squad/leader/get_total_positions(latejoin = FALSE)
 	var/total_max
-	for(var/datum/squad/squad in SSticker.role_authority.squads)
+	for(var/datum/squad/squad as anything in SSticker.role_authority.squads)
 		if(squad.roundstart && squad.usable && squad.faction == FACTION_MARINE && squad.name != "Root")
 			total_max += squad.max_leaders
 	return total_max

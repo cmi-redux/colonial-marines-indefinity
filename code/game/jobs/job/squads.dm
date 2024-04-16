@@ -725,10 +725,9 @@
 /proc/get_squad_by_name(text)
 	if(!SSticker.role_authority || SSticker.role_authority.squads.len == 0)
 		return null
-	var/datum/squad/S
-	for(S in SSticker.role_authority.squads)
-		if(S.name == text)
-			return S
+	for(var/datum/squad/squad as anything in SSticker.role_authority.squads)
+		if(squad.name == text)
+			return squad
 	return null
 
 /datum/squad/proc/engage_squad(toggle_lock = FALSE)

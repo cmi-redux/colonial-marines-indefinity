@@ -539,7 +539,7 @@
 
 /obj/structure/machinery/mission_display/proc/populate()
 	set waitfor = FALSE
-	for(var/datum/squad/squad in SSticker.role_authority.squads)
+	for(var/datum/squad/squad as anything in SSticker.role_authority.squads)
 		squad_list += squad.name
 	planet = SSmapping.configs[GROUND_MAP].map_name
 	state[STATE1][X_COORDINATE] = SHIP_STATE1_X

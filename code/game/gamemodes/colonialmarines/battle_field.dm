@@ -100,7 +100,7 @@
 
 	CONFIG_SET(flag/remove_gun_restrictions, TRUE)
 	sleep(10)
-	to_world("<span class='round_header'>В данный момент игровой режим - [name]!</span>")
+	to_world(SPAN_ROUNDHEADER("В данный момент игровой режим - [name]!"))
 
 	to_world(SPAN_ROUNDBODY("Сложность [special_game_mode], Количество подсекторов [mini_sectors_accepted], Сложность рецептов [crafting_probability]."))
 	if(additional_changes)
@@ -190,7 +190,7 @@
 		round_statistics.track_round_end()
 	if(finished == 1)
 		log_game("Round end result - second side won")
-		to_world("<span class='round_header'>Последние укрепления маринов на LV21 пали.</span>")
+		to_world(SPAN_ROUNDHEADER("Последние укрепления маринов на LV21 пали."))
 		to_world(SPAN_ROUNDBODY("Этот бой оказался непосилен маринам, к сожалению это конец истории маринов на планете LV21!"))
 		world << sound('sound/misc/Game_Over_Man.ogg')
 		if(round_statistics)
@@ -201,7 +201,7 @@
 
 	else if(finished == 2)
 		log_game("Round end result - marines won")
-		to_world("<span class='round_header'>Glory to mens and womens of Battle Fields LV21.</span>")
+		to_world(SPAN_ROUNDHEADER("Glory to mens and womens of Battle Fields LV21."))
 		addtimer(CALLBACK(src, PROC_REF(story_announce), 3))
 		switch(ending)
 			if(0)
@@ -225,7 +225,7 @@
 
 	else
 		log_game("Round end result - no winners")
-		to_world("<span class='round_header'>NOBODY WON!</span>")
+		to_world(SPAN_ROUNDHEADER("NOBODY WON!"))
 		to_world(SPAN_ROUNDBODY("How? Don't ask me..."))
 		world << 'sound/misc/sadtrombone.ogg'
 		if(round_statistics)

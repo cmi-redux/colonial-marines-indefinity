@@ -10,7 +10,7 @@
 
 /datum/job/upp/squad/engineer/get_total_positions(count)
 	var/total_max
-	for(var/datum/squad/squad in SSticker.role_authority.squads)
+	for(var/datum/squad/squad as anything in SSticker.role_authority.squads)
 		if(squad.roundstart && squad.usable && squad.faction == FACTION_UPP && squad.name != "Root")
 			total_max += squad.max_engineers
 	return total_max
