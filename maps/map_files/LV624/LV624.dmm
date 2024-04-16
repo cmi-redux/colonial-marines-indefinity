@@ -5086,13 +5086,6 @@
 	icon_state = "white"
 	},
 /area/lv624/lazarus/research)
-"ayL" = (
-/obj/structure/machinery/computer/nuke_disk_generator/blue,
-/turf/open/floor{
-	dir = 9;
-	icon_state = "green"
-	},
-/area/lv624/lazarus/hydroponics)
 "ayM" = (
 /obj/effect/landmark/good_item,
 /turf/open/floor{
@@ -10344,7 +10337,6 @@
 /area/lv624/ground/jungle/west_jungle)
 "aUh" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
-/obj/effect/landmark/crash/resin_silo_spawn,
 /turf/open/floor{
 	icon_state = "cult"
 	},
@@ -10675,13 +10667,6 @@
 	icon_state = "dark"
 	},
 /area/lv624/lazarus/engineering)
-"aVI" = (
-/obj/structure/machinery/computer/nuke_disk_generator/green,
-/turf/open/floor{
-	dir = 9;
-	icon_state = "brown"
-	},
-/area/lv624/lazarus/comms)
 "aVJ" = (
 /obj/effect/landmark/lv624/xeno_tunnel,
 /turf/open/gm/grass/grass1,
@@ -11049,7 +11034,6 @@
 /area/lv624/lazarus/main_hall)
 "aWL" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
-/obj/effect/landmark/crash/resin_silo_spawn,
 /turf/open/floor{
 	icon_state = "cult"
 	},
@@ -11834,12 +11818,6 @@
 /obj/structure/flora/bush/ausbushes/var3/stalkybush,
 /turf/open/gm/grass/grass2,
 /area/lv624/ground/jungle/west_jungle)
-"bbw" = (
-/obj/effect/landmark/crash/nuclear_spawn,
-/turf/open/floor{
-	icon_state = "dark"
-	},
-/area/lv624/ground/barrens/north_east_barrens)
 "bbx" = (
 /obj/structure/flora/jungle/vines/light_1,
 /obj/structure/flora/jungle/vines/heavy,
@@ -12639,10 +12617,6 @@
 /obj/structure/flora/bush/ausbushes/reedbush,
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/south_east_jungle)
-"cUM" = (
-/obj/effect/landmark/crash/nuclear_spawn,
-/turf/open/gm/dirt,
-/area/lv624/ground/jungle/south_west_jungle)
 "cWm" = (
 /obj/structure/flora/bush/ausbushes/ausbush,
 /turf/open/gm/grass/grass1,
@@ -13185,10 +13159,6 @@
 /obj/structure/machinery/colony_floodlight,
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/colony/south_medbay_road)
-"eoM" = (
-/obj/effect/landmark/crash/resin_silo_spawn,
-/turf/open/gm/dirt,
-/area/lv624/ground/caves/west_caves)
 "epG" = (
 /obj/structure/surface/table/reinforced/prison,
 /turf/open/floor{
@@ -13642,12 +13612,6 @@
 	icon_state = "whiteyellow"
 	},
 /area/lv624/lazarus/corporate_dome)
-"fzZ" = (
-/obj/structure/machinery/computer/nuke_disk_generator/red,
-/turf/open/floor{
-	icon_state = "dark"
-	},
-/area/lv624/ground/barrens/north_east_barrens)
 "fAz" = (
 /obj/item/weapon/claymore/mercsword{
 	pixel_x = -6;
@@ -15124,10 +15088,6 @@
 	icon_state = "dark"
 	},
 /area/lv624/lazarus/engineering)
-"jQW" = (
-/obj/effect/landmark/crash/nuclear_spawn,
-/turf/open/floor/greengrid,
-/area/lv624/lazarus/secure_storage)
 "jRm" = (
 /turf/open/gm/dirt,
 /area/lv624/ground/colony/north_nexus_road)
@@ -15959,10 +15919,6 @@
 /obj/structure/flora/jungle/vines/light_1,
 /turf/open/gm/grass/grass1,
 /area/lv624/ground/jungle/central_jungle)
-"mgs" = (
-/obj/effect/landmark/crash/nuclear_spawn,
-/turf/open/gm/dirt,
-/area/lv624/ground/barrens/south_eastern_barrens)
 "mhZ" = (
 /obj/structure/showcase{
 	desc = "An ancient, dusty tomb with strange alien writing. It's best not to touch it.";
@@ -19149,10 +19105,6 @@
 /obj/structure/flora/bush/ausbushes/ppflowers,
 /turf/open/gm/river,
 /area/lv624/ground/river/central_river)
-"ubJ" = (
-/obj/effect/landmark/crash/resin_silo_spawn,
-/turf/open/gm/dirt,
-/area/lv624/ground/caves/north_west_caves)
 "ubN" = (
 /obj/structure/flora/bush/ausbushes/var3/leafybush,
 /turf/open/gm/grass/grass1,
@@ -26553,7 +26505,7 @@ cQJ
 aXh
 exf
 xTT
-cUM
+xTT
 xdO
 aKb
 aKb
@@ -26588,7 +26540,7 @@ dhD
 dhD
 dhD
 dhD
-ubJ
+dhD
 dhD
 dhD
 dhD
@@ -28790,7 +28742,7 @@ fmS
 aZt
 arI
 aZt
-jQW
+aZt
 uEL
 aWu
 aWu
@@ -28867,7 +28819,7 @@ xMb
 adJ
 gwP
 gwP
-eoM
+gwP
 gwP
 gwP
 xMb
@@ -36169,7 +36121,7 @@ bwR
 cPV
 bCH
 aTG
-aVI
+abF
 nHj
 abF
 abF
@@ -43055,7 +43007,7 @@ tyG
 tyG
 tyG
 aoP
-ayL
+hEs
 hEs
 hEs
 anG
@@ -45467,7 +45419,7 @@ pDt
 drm
 dGQ
 auz
-fzZ
+auz
 azw
 drm
 pDt
@@ -45914,7 +45866,7 @@ pDt
 pDt
 drm
 aTF
-bbw
+auz
 auz
 aeT
 drm
@@ -59151,7 +59103,7 @@ ahv
 ahv
 ahv
 ahv
-mgs
+xch
 xch
 xch
 xch
