@@ -29,8 +29,6 @@
 
 //Puts the item into your l_hand if possible and calls all necessary triggers/updates. returns 1 on success.
 /mob/proc/put_in_l_hand(obj/item/W)
-	if(!can_action)
-		return FALSE
 	if(!istype(W))
 		return FALSE
 	if(!l_hand)
@@ -48,8 +46,6 @@
 
 //Puts the item into your r_hand if possible and calls all necessary triggers/updates. returns 1 on success.
 /mob/proc/put_in_r_hand(obj/item/W)
-	if(!can_action)
-		return FALSE
 	if(!istype(W))
 		return FALSE
 	if(!r_hand)
@@ -134,7 +130,7 @@
 	if(I)
 		if(I == r_hand)
 			return drop_r_hand()
-		else if(I == l_hand)
+		else if (I == l_hand)
 			return drop_l_hand()
 	else if(hand)
 		return drop_l_hand()
@@ -179,7 +175,9 @@
 		if(!previously_held_object)
 			remembered_dropped_objects -= weak_ref
 			break
-		if(previously_held_object.in_contents_of(check_turf))
+		if(previously_held_object in check_turf)
+			if(previously_held_object.throwing)
+				return FALSE
 			if(previously_held_object.anchored)
 				return FALSE
 			put_in_hands(previously_held_object, drop_on_fail = FALSE)
@@ -203,15 +201,16 @@
 	if((I.flags_item & NODROP) && !force)
 		return FALSE //u_equip() only fails if item has NODROP
 	var/slot = get_slot_by_item(I)
-	if(I == r_hand)
+	if (I == r_hand)
 		r_hand = null
 		update_inv_r_hand()
-	else if(I == l_hand)
+	else if (I == l_hand)
 		l_hand = null
 		update_inv_l_hand()
 
-	if(client)
-		client.screen -= I
+	if (client)
+		client.remove_from_screen(I)
+
 	I.layer = initial(I.layer)
 	I.plane = initial(I.plane)
 	if(newloc)
@@ -221,7 +220,7 @@
 			I.forceMove(newloc)
 	I.unequipped(src, slot)
 	I.dropped(src)
-	if(length(I.unequip_sounds))
+	if(LAZYLEN(I.unequip_sounds))
 		playsound_client(client, pick(I.unequip_sounds), null, ITEM_EQUIP_VOLUME)
 
 	return TRUE
@@ -229,12 +228,12 @@
 //Remove an item on a mob's inventory.  It does not change the item's loc, just unequips it from the mob.
 //Used just before you want to delete the item, or moving it afterwards.
 /mob/proc/temp_drop_inv_item(obj/item/I, force)
-	return u_equip(I, null, force)
+	return u_equip(I, null, TRUE, force)
 
 
 //Outdated but still in use apparently. This should at least be a human proc.
 /mob/proc/get_equipped_items()
-	var/list/items = list()
+	var/list/items = new/list()
 
 	if(hasvar(src,"back")) if(src:back) items += src:back
 	if(hasvar(src,"belt")) if(src:belt) items += src:belt
@@ -257,15 +256,10 @@
 
 //proc to get the item in the active hand.
 /mob/proc/get_held_item()
-	if(isSilicon(src))
-		if(isrobot(src))
-			if(src:module_active)
-				return src:module_active
+	if (hand)
+		return l_hand
 	else
-		if(hand)
-			return l_hand
-		else
-			return r_hand
+		return r_hand
 
 /mob/living/carbon/human/proc/equip_if_possible(obj/item/W, slot, del_on_fail = 1) // since byond doesn't seem to have pointers, this seems like the best way to do this :/
 	//warning: icky code
@@ -344,18 +338,18 @@
 				src.s_store = W
 				equipped = 1
 		if(WEAR_IN_BACK)
-			if(src.back && isstorage(src.back))
+			if (src.back && isstorage(src.back))
 				var/obj/item/storage/B = src.back
 				if(B.contents.len < B.storage_slots && W.w_class <= B.max_w_class)
 					W.forceMove(B)
 					equipped = 1
 		if(WEAR_IN_SHOES)
-			if(src.shoes && istype(src.shoes, /obj/item/clothing/shoes))
-				var/obj/item/clothing/shoes/S = src.shoes
-				if(!S.stored_item)
-					S.stored_item = W
-					W.forceMove(S)
-					equipped = 1
+			// If the player isn't wearing shoes, or the shoes somehow aren't shoes.
+			if(!istype(shoes, /obj/item/clothing/shoes))
+				return
+			// If the item was successfully inserted.
+			if(shoes.attempt_insert_item(src, W))
+				equipped = 1 // what is this proc
 		if(WEAR_IN_SCABBARD)
 			if(src.back && istype(src.back, /obj/item/storage/large_holster))
 				var/obj/item/storage/large_holster/B = src.back
@@ -413,7 +407,7 @@
 		if(src.back && W.loc != src.back)
 			W.forceMove(src)
 	else
-		if(del_on_fail)
+		if (del_on_fail)
 			qdel(W)
 	return equipped
 

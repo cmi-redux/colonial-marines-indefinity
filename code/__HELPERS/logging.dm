@@ -55,7 +55,7 @@
 
 /proc/log_admin(text)
 	var/time = time_stamp()
-	admin_log.Add(text)
+	GLOB.admin_log.Add(text)
 	if(CONFIG_GET(flag/log_admin))
 		WRITE_LOG(GLOB.world_game_log, "ADMIN: [text]")
 		LOG_REDIS("admin", "\[[time]\] [text]")
@@ -70,7 +70,7 @@
 		LOG_REDIS("asset", "\[[time]\] [text]")
 
 /proc/log_adminpm(text)
-	admin_log.Add(text)
+	GLOB.admin_log.Add(text)
 	if (CONFIG_GET(flag/log_admin))
 		WRITE_LOG(GLOB.world_game_log, "ADMIN: [text]")
 	GLOB.STUI.staff.Add("\[[time_stamp()]]ADMIN: [text]")

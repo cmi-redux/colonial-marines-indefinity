@@ -104,7 +104,7 @@ SUBSYSTEM_DEF(ticker)
 
 			if((!roundend_check_paused && mode.check_finished(force_ending)) || force_ending)
 				current_state = GAME_STATE_FINISHED
-				ooc_allowed = TRUE
+				GLOB.ooc_allowed = TRUE
 				mode.declare_completion(force_ending)
 				REDIS_PUBLISH("byond.round", "type" = "round", "state" = "end")
 				flash_clients()
@@ -199,14 +199,9 @@ SUBSYSTEM_DEF(ticker)
 
 
 	if(CONFIG_GET(flag/autooocmute))
-		ooc_allowed = FALSE
+		GLOB.ooc_allowed = FALSE
 
 	round_start_time = world.time
-
-	for(var/datum/squad/squad as anything in SSticker.role_authority.squads)
-		if(!isnull(squad.min_online_requered) && squad.min_online_requered > length(GLOB.clients))
-			squad.roundstart = FALSE
-			squad.usable = FALSE
 
 	CHECK_TICK
 	for(var/I in round_start_events)

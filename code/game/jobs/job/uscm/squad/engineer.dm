@@ -13,6 +13,12 @@
 	for(var/datum/squad/squad as anything in SSticker.role_authority.squads)
 		if(squad.roundstart && squad.usable && squad.faction == FACTION_MARINE && squad.name != "Root")
 			total_max += squad.max_engineers
+
+	if(total_max > total_positions_so_far)
+		total_positions_so_far = total_max
+
+	spawn_positions = total_max
+
 	return total_max
 
 /datum/job/uscm/squad/engineer/whiskey

@@ -31,45 +31,45 @@
 
 	if(!istype(spawn_loc)) return //Didn't find a useable spawn point.
 
-	var/mob/living/carbon/human/H = new(spawn_loc)
-	mind.transfer_to(H, TRUE)
-	GLOB.ert_mobs += H
+	var/mob/living/carbon/human/new_human = new(spawn_loc)
+	mind.transfer_to(new_human, TRUE)
+	GLOB.ert_mobs += new_human
 
 	sleep(5)
 	var/datum/squad/marine/cryo/cryo_squad = SSticker.role_authority.squads_by_type[/datum/squad/marine/cryo]
-	if(leaders < cryo_squad.max_leaders && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(H.client, JOB_SQUAD_LEADER, time_required_for_job))
-		leader = H
+	if(leaders < cryo_squad.max_leaders && HAS_FLAG(new_human.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(new_human.client, JOB_SQUAD_LEADER, time_required_for_job))
+		leader = new_human
 		leaders++
-		arm_equipment(H, /datum/equipment_preset/uscm/leader_equipped/cryo, TRUE, TRUE)
-		to_chat(H, SPAN_ROLE_HEADER("You are a Squad Leader in the USCM"))
-		to_chat(H, SPAN_ROLE_BODY("Your squad is here to assist in the defence of the [SSmapping.configs[GROUND_MAP].map_name]."))
-	else if (heavies < max_heavies && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_HEAVY) && check_timelock(H.client, JOB_SQUAD_SPECIALIST, time_required_for_job))
+		arm_equipment(new_human, /datum/equipment_preset/uscm/leader_equipped/cryo, TRUE, TRUE)
+		to_chat(new_human, SPAN_ROLE_HEADER("You are a Squad Leader in the USCM"))
+		to_chat(new_human, SPAN_ROLE_BODY("Your squad is here to assist in the defence of the [SSmapping.configs[GROUND_MAP].map_name]."))
+	else if (heavies < max_heavies && HAS_FLAG(new_human.client.prefs.toggles_ert, PLAY_HEAVY) && check_timelock(new_human.client, JOB_SQUAD_SPECIALIST, time_required_for_job))
 		heavies++
-		arm_equipment(H, /datum/equipment_preset/uscm/specialist_equipped/cryo, TRUE, TRUE)
-		to_chat(H, SPAN_ROLE_HEADER("You are a Weapons Specialist in the USCM"))
-		to_chat(H, SPAN_ROLE_BODY("Your squad is here to assist in the defence of the [SSmapping.configs[GROUND_MAP].map_name]."))
-	else if(smartgunners < max_smartgunners && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_SMARTGUNNER) && check_timelock(H.client, JOB_SQUAD_SMARTGUN, time_required_for_job))
+		arm_equipment(new_human, /datum/equipment_preset/uscm/specialist_equipped/cryo, TRUE, TRUE)
+		to_chat(new_human, SPAN_ROLE_HEADER("You are a Weapons Specialist in the USCM"))
+		to_chat(new_human, SPAN_ROLE_BODY("Your squad is here to assist in the defence of the [SSmapping.configs[GROUND_MAP].map_name]."))
+	else if(smartgunners < max_smartgunners && HAS_FLAG(new_human.client.prefs.toggles_ert, PLAY_SMARTGUNNER) && check_timelock(new_human.client, JOB_SQUAD_SMARTGUN, time_required_for_job))
 		smartgunners++
-		arm_equipment(H, /datum/equipment_preset/uscm/smartgunner_equipped/cryo, TRUE, TRUE)
-		to_chat(H, SPAN_ROLE_HEADER("You are a Smartgunner in the USCM"))
-		to_chat(H, SPAN_ROLE_BODY("Your squad is here to assist in the defence of the [SSmapping.configs[GROUND_MAP].map_name]."))
-	else if(engineers < max_engineers && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_ENGINEER) && check_timelock(H.client, JOB_SQUAD_ENGI, time_required_for_job))
+		arm_equipment(new_human, /datum/equipment_preset/uscm/smartgunner_equipped/cryo, TRUE, TRUE)
+		to_chat(new_human, SPAN_ROLE_HEADER("You are a Smartgunner in the USCM"))
+		to_chat(new_human, SPAN_ROLE_BODY("Your squad is here to assist in the defence of the [SSmapping.configs[GROUND_MAP].map_name]."))
+	else if(engineers < max_engineers && HAS_FLAG(new_human.client.prefs.toggles_ert, PLAY_ENGINEER) && check_timelock(new_human.client, JOB_SQUAD_ENGI, time_required_for_job))
 		engineers++
-		arm_equipment(H, /datum/equipment_preset/uscm/engineer_equipped/cryo, TRUE, TRUE)
-		to_chat(H, SPAN_ROLE_HEADER("You are an Engineer in the USCM"))
-		to_chat(H, SPAN_ROLE_BODY("Your squad is here to assist in the defence of the [SSmapping.configs[GROUND_MAP].map_name]."))
-	else if (medics < max_medics && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_MEDIC) && check_timelock(H.client, JOB_SQUAD_MEDIC, time_required_for_job))
+		arm_equipment(new_human, /datum/equipment_preset/uscm/engineer_equipped/cryo, TRUE, TRUE)
+		to_chat(new_human, SPAN_ROLE_HEADER("You are an Engineer in the USCM"))
+		to_chat(new_human, SPAN_ROLE_BODY("Your squad is here to assist in the defence of the [SSmapping.configs[GROUND_MAP].map_name]."))
+	else if (medics < max_medics && HAS_FLAG(new_human.client.prefs.toggles_ert, PLAY_MEDIC) && check_timelock(new_human.client, JOB_SQUAD_MEDIC, time_required_for_job))
 		medics++
-		arm_equipment(H, /datum/equipment_preset/uscm/medic_equipped/cryo, TRUE, TRUE)
-		to_chat(H, SPAN_ROLE_HEADER("You are a Hospital Corpsman in the USCM"))
-		to_chat(H, SPAN_ROLE_BODY("Your squad is here to assist in the defence of the [SSmapping.configs[GROUND_MAP].map_name]."))
+		arm_equipment(new_human, /datum/equipment_preset/uscm/medic_equipped/cryo, TRUE, TRUE)
+		to_chat(new_human, SPAN_ROLE_HEADER("You are a Hospital Corpsman in the USCM"))
+		to_chat(new_human, SPAN_ROLE_BODY("Your squad is here to assist in the defence of the [SSmapping.configs[GROUND_MAP].map_name]."))
 	else
-		arm_equipment(H, /datum/equipment_preset/uscm/private_equipped/cryo, TRUE, TRUE)
-		to_chat(H, SPAN_ROLE_HEADER("You are a Rifleman in the USCM"))
-		to_chat(H, SPAN_ROLE_BODY("Your squad is here to assist in the defence of the [SSmapping.configs[GROUND_MAP].map_name]."))
+		arm_equipment(new_human, /datum/equipment_preset/uscm/private_equipped/cryo, TRUE, TRUE)
+		to_chat(new_human, SPAN_ROLE_HEADER("You are a Rifleman in the USCM"))
+		to_chat(new_human, SPAN_ROLE_BODY("Your squad is here to assist in the defence of the [SSmapping.configs[GROUND_MAP].map_name]."))
 
 	sleep(10)
-	to_chat(H, SPAN_BOLD("Objectives: [objectives]"))
+	to_chat(new_human, SPAN_BOLD("Objectives: [objectives]"))
 
 
 /datum/emergency_call/cryo_squad_equipped/platoon

@@ -5,7 +5,7 @@
 	set waitfor = FALSE
 	var/areaname = replacetext(A.name, "\improper", "") //The \improper flickers "ÿ" briefly
 
-	var/text = "[game_time_timestamp("hhmm")] (время в зоне операции [planet_game_time_timestamp("hh:mm:ss")]), [time2text(REALTIMEOFDAY, "DD-MMM-[game_year]")]\n[station_name], [areaname]"
+	var/text = "[game_time_timestamp("hhmm")] (время в зоне операции [planet_game_time_timestamp("hh:mm:ss")]), [time2text(REALTIMEOFDAY, "DD-MMM-[GLOB.game_year]")]\n[station_name], [areaname]"
 
 	show_blurb(targets, duration, text, TRUE)
 
@@ -20,7 +20,7 @@ base = the base the marines are staging from. The ship, Whiskey Outpost etc. Non
 	var/list/exempt_zlevels = SSmapping.levels_by_any_trait(exempt_ztraits)
 
 	var/base_text = "<b>[uppertext(SSticker.mode.round_statistics.round_name)]</b>\n\
-						[game_time_timestamp("hhmm hrs")] (время в зоне операции [planet_game_time_timestamp("hh:mm:ss")]), [uppertext(time2text(REALTIMEOFDAY, "DD-MMM-[game_year]"))]\n\
+						[game_time_timestamp("hhmm hrs")] (время в зоне операции [planet_game_time_timestamp("hh:mm:ss")]), [uppertext(time2text(REALTIMEOFDAY, "DD-MMM-[GLOB.game_year]"))]\n\
 						[SSmapping.configs[GROUND_MAP].map_name]"
 
 	var/list/post_text = list("combat" = "\n[unit]",
@@ -154,5 +154,5 @@ but should see their own spawn message even if the player already dropped as USC
 	animate(T, alpha = 0, time = 0.5 SECONDS)
 	sleep(5)
 	for(var/mob/M as anything in targets)
-		M.client?.screen -= T
+		M.client?.remove_from_screen(T)
 	qdel(T)

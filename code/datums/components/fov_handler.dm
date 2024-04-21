@@ -92,8 +92,8 @@
 	if(!parent_client) //Love client volatility!!
 		return
 	applied_mask = FALSE
-	parent_client.screen -= blocker_mask
-	parent_client.screen -= visual_shadow
+	parent_client.remove_from_screen(blocker_mask)
+	parent_client.remove_from_screen(visual_shadow)
 
 /datum/component/fov_handler/proc/add_mask()
 	var/mob/parent_mob = parent

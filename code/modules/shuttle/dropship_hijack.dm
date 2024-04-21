@@ -115,7 +115,7 @@
 
 	// if the AA site matches target site
 	if(target_ship_section == almayer_aa_cannon.protecting_section)
-		var/list/remaining_crash_sites = almayer_ship_sections.Copy()
+		var/list/remaining_crash_sites = GLOB.almayer_ship_sections.Copy()
 		remaining_crash_sites -= target_ship_section
 		var/new_target_ship_section = pick(remaining_crash_sites)
 		var/turf/target = get_crashsite_turf(new_target_ship_section)
@@ -172,7 +172,7 @@
 	playsound_z(SSmapping.levels_by_any_trait(list(ZTRAIT_MARINE_MAIN_SHIP)), 'sound/effects/dropship_crash.ogg', volume = 75)
 
 /datum/dropship_hijack/almayer/proc/disable_latejoin()
-	enter_allowed = FALSE
+	GLOB.enter_allowed = FALSE
 
 /datum/dropship_hijack/almayer/proc/get_crashsite_turf(ship_section)
 	var/list/turfs = list()

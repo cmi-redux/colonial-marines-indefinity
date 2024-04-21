@@ -320,7 +320,7 @@
 	if(world.time - GLOB.xenomorph_attack_delay > 15 MINUTES)
 		GLOB.xenomorph_attack_delay = GLOB.xenomorph_attack_delay - (world.time - GLOB.xenomorph_attack_delay - 15 MINUTES)
 	var/name = "[MAIN_AI_SYSTEM] Стадия Операции"
-	var/input = "Операция [uppertext(round_statistics.round_name)]\n\n[game_time_timestamp("hhmm hrs")] (время в зоне операции [planet_game_time_timestamp("hh:mm:ss")]), [uppertext(time2text(REALTIMEOFDAY, "DD-MMM-[game_year]"))]\n\n\
+	var/input = "Операция [uppertext(round_statistics.round_name)]\n\n[game_time_timestamp("hhmm hrs")] (время в зоне операции [planet_game_time_timestamp("hh:mm:ss")]), [uppertext(time2text(REALTIMEOFDAY, "DD-MMM-[GLOB.game_year]"))]\n\n\
 				[SSmapping.configs[GROUND_MAP].map_name]\n\n\
 				НАЧАТА\n\n\n\n\
 				Примерное время [duration2text_hour_min_sec(GLOB.ship_hc_delay, "hh:mm:ss")] до получение трансляции Командыванием USCM"

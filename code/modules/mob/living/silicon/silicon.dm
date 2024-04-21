@@ -10,7 +10,6 @@
 	var/speak_exclamation = "declares"
 	var/speak_query = "queries"
 	var/pose //Yes, now AIs can pose too.
-	var/obj/item/device/camera/siliconcam/aiCamera = null //photography
 	var/local_transmit //If set, can only speak to others of the same type within a short range.
 
 	var/med_hud = MOB_HUD_MEDICAL_ADVANCED //Determines the med hud to use
@@ -36,6 +35,7 @@
 	return
 
 /mob/living/silicon/emp_act(severity)
+	. = ..()
 	switch(severity)
 		if(1)
 			src.take_limb_damage(20)
@@ -47,7 +47,6 @@
 
 	to_chat(src, SPAN_DANGER("<B>*BZZZT*</B>"))
 	to_chat(src, SPAN_DANGER("Warning: Electromagnetic pulse detected."))
-	..()
 
 /mob/living/silicon/stun_effect_act(stun_amount, agony_amount)
 	return //immune
@@ -61,13 +60,6 @@
 /mob/living/silicon/apply_effect(effect = 0, effecttype = STUN, blocked = 0)
 	return 0//The only effect that can hit them atm is flashes and they still directly edit so this works for now
 
-/proc/islinked(mob/living/silicon/robot/bot, mob/living/silicon/ai/ai)
-	if(!istype(bot) || !istype(ai))
-		return 0
-	if(bot.connected_ai == ai)
-		return TRUE
-	return FALSE
-
 
 // this function shows health in the Status panel
 /mob/living/silicon/proc/show_system_integrity()
@@ -78,21 +70,22 @@
 
 // this function displays the station time in the status panel
 /mob/living/silicon/proc/show_station_time()
-	stat(null, "Station Time: [game_time_timestamp()]")
+	stat(null, "Station Time: [worldtime2text()]")
 
 
 // this function displays the shuttles ETA in the status panel if the shuttle has been called
 /mob/living/silicon/proc/show_emergency_shuttle_eta()
-	if(SSevacuation)
-		var/eta_status = SSevacuation.get_evac_status_panel_eta()
+	if(SShijack)
+		var/eta_status = SShijack.get_evac_eta()
 		if(eta_status)
-			stat(null, "Evacuation: [eta_status]")
+			stat(null, "Evacuation Goal: [eta_status]")
+
 
 // this function displays the stations manifest in a separate window
 /mob/living/silicon/proc/show_station_manifest()
 	var/dat
 	dat += "<h4>Crew Manifest</h4>"
-	dat += GLOB.data_core.get_manifest(TRUE, faction) // make it monochrome
+	dat += GLOB.data_core.get_manifest(1) // make it monochrome
 	dat += "<br>"
 	src << browse(dat, "window=airoster")
 	onclose(src, "airoster")
@@ -110,7 +103,7 @@
 	return universal_speak || (speaking in src.speech_synthesizer_langs) //need speech synthesizer support to vocalize a language
 
 /mob/living/silicon/add_language(language, can_speak=1)
-	if(..(language) && can_speak)
+	if (..(language) && can_speak)
 		speech_synthesizer_langs.Add(GLOB.all_languages[language])
 		return 1
 
@@ -118,7 +111,7 @@
 	..(rem_language)
 
 	for (var/datum/language/L in speech_synthesizer_langs)
-		if(L.name == rem_language)
+		if (L.name == rem_language)
 			speech_synthesizer_langs -= L
 
 /mob/living/silicon/check_languages()
@@ -129,7 +122,7 @@
 	var/dat = "<b><font size = 5>Known Languages</font></b><br/><br/>"
 
 	for(var/datum/language/L in languages)
-		dat += "<b>[L.name] (:[L.key])</b><br/>Speech Synthesizer: <i>[(L in speech_synthesizer_langs)? client.auto_lang(LANGUAGE_YES):"NOT SUPPORTED"]</i><br/>[L.desc]<br/><br/>"
+		dat += "<b>[L.name] (:[L.key])</b><br/>Speech Synthesizer: <i>[(L in speech_synthesizer_langs)? "YES":"NOT SUPPORTED"]</i><br/>[L.desc]<br/><br/>"
 
 	src << browse(dat, "window=checklanguage")
 	return
@@ -147,12 +140,12 @@
 	var/HUD_nbr = 1
 	switch(hud_choice)
 		if("Medical HUD")
-			H = huds[MOB_HUD_MEDICAL_OBSERVER]
+			H = GLOB.huds[MOB_HUD_MEDICAL_OBSERVER]
 		if("Security HUD")
-			H = huds[MOB_HUD_SECURITY_ADVANCED]
+			H = GLOB.huds[MOB_HUD_SECURITY_ADVANCED]
 			HUD_nbr = 2
 		if("Squad HUD")
-			H = huds[MOB_HUD_FACTION_USCM]
+			H = GLOB.huds[MOB_HUD_FACTION_MARINE]
 			HUD_nbr = 3
 		else
 			return
@@ -192,14 +185,14 @@
 
 	switch(severity)
 		if(0 to EXPLOSION_THRESHOLD_LOW)
-			if(stat != 2)
+			if (stat != 2)
 				apply_damage(30, BRUTE)
 		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
-			if(stat != 2)
+			if (stat != 2)
 				apply_damage(60, BRUTE)
 				apply_damage(60, BURN)
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
-			if(stat != 2)
+			if (stat != 2)
 				apply_damage(100, BRUTE)
 				apply_damage(100, BURN)
 				if(!anchored)

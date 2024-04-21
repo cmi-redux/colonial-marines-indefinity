@@ -401,7 +401,7 @@
 				var/counter = 1
 				while(src.active2.fields[text("com_[]", counter)])
 					counter++
-				src.active2.fields[text("com_[counter]")] = text("Made by [authenticated] ([rank]) on [time2text(world.realtime, "DDD MMM DD hh:mm:ss")], [game_year]<BR>[t1]")
+				src.active2.fields[text("com_[counter]")] = text("Made by [authenticated] ([rank]) on [time2text(world.realtime, "DDD MMM DD hh:mm:ss")], [GLOB.game_year]<BR>[t1]")
 
 			if(href_list["del_c"])
 				if((istype(src.active2, /datum/data/record) && src.active2.fields[text("com_[]", href_list["del_c"])]))
@@ -457,7 +457,7 @@
 					else
 						P.info += "<B>Medical Record Lost!</B><BR>"
 					P.info += "</TT>"
-					P.info += text("<BR><HR><font size = \"1\"><I>This report was printed by [] [].<BR>The [MAIN_SHIP_NAME],[]/[], []</I></font><BR>\n<span class=\"paper_field\"></span>",last_user_rank,last_user_name,time2text(world.timeofday, "MM/DD"),game_year,game_time_timestamp())
+					P.info += text("<BR><HR><font size = \"1\"><I>This report was printed by [] [].<BR>The [MAIN_SHIP_NAME],[]/[], []</I></font><BR>\n<span class=\"paper_field\"></span>",last_user_rank,last_user_name,time2text(world.timeofday, "MM/DD"),GLOB.game_year,game_time_timestamp())
 					src.printing = null
 
 			if(href_list["print_bs"])//Prints latest body scan
@@ -480,7 +480,7 @@
 								break
 							else
 								P.info += "No scan on record."
-					P.info += text("<BR><HR><font size = \"1\"><I>This report was printed by [] [].<BR>The [MAIN_SHIP_NAME],  []/[], []</I></font><BR>\n<span class=\"paper_field\"></span>",last_user_rank,last_user_name,time2text(world.timeofday, "MM/DD"),game_year,game_time_timestamp())
+					P.info += text("<BR><HR><font size = \"1\"><I>This report was printed by [] [].<BR>The [MAIN_SHIP_NAME],  []/[], []</I></font><BR>\n<span class=\"paper_field\"></span>",last_user_rank,last_user_name,time2text(world.timeofday, "MM/DD"),GLOB.game_year,game_time_timestamp())
 					src.printing = null
 
 

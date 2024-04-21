@@ -33,8 +33,8 @@
 		return
 
 	var/tempnumber = rand(1, 999)
-	var/postfix_text = (client.prefs && client.prefs.xeno_postfix) ? ("-"+client.prefs.xeno_postfix) : ""
-	var/prefix_text = (client.prefs && client.prefs.xeno_prefix) ? client.prefs.xeno_prefix : "XX"
+	var/postfix_text = (client.xeno_postfix) ? ("-"+client.xeno_postfix) : ""
+	var/prefix_text = (client.xeno_prefix) ? client.xeno_prefix : "XX"
 	var/xeno_text = "[prefix_text]-[tempnumber][postfix_text]"
 	var/round_start = !SSticker || !SSticker.mode || SSticker.current_state <= GAME_STATE_PREGAME
 
@@ -175,16 +175,6 @@
 				to_chat(src, SPAN_WARNING(replacetext(client.auto_lang(LANGUAGE_LOBBY_NO_LATEJOIN), "###MODE_NAME###", "[SSticker.mode.name]")))
 				return
 
-			if(client.prefs.species != "Human")
-				if(!is_alien_whitelisted(src, client.prefs.species) && CONFIG_GET(flag/usealienwhitelist))
-					to_chat(src, "You are currently not whitelisted to play [client.prefs.species].")
-					return
-
-				var/datum/species/S = GLOB.all_species[client.prefs.species]
-				if(!(S.species_flags & IS_WHITELISTED))
-					to_chat(src, alert("Your current species, [client.prefs.species], is not available for play on the station."))
-					return
-
 			LateChoices()
 
 		if("manifest")
@@ -194,19 +184,9 @@
 			ViewHiveLeaders()
 
 		if("SelectedJob")
-			if(!enter_allowed)
+			if(!GLOB.enter_allowed)
 				to_chat(usr, SPAN_WARNING(client.auto_lang(LANGUAGE_LOBBY_JOIN_LOCK)))
 				return
-
-			if(client.prefs.species != "Human")
-				if(!is_alien_whitelisted(src, client.prefs.species) && CONFIG_GET(flag/usealienwhitelist))
-					to_chat(src, alert("You are currently not whitelisted to play [client.prefs.species]."))
-					return 0
-
-				var/datum/species/S = GLOB.all_species[client.prefs.species]
-				if(!(S.species_flags & IS_WHITELISTED))
-					to_chat(src, alert("Your current species,[client.prefs.species], is not available for play on the station."))
-					return 0
 
 			AttemptLateSpawn(href_list["job_selected"])
 			return
@@ -221,7 +201,7 @@
 	if(SSticker.current_state != GAME_STATE_PLAYING)
 		to_chat(usr, SPAN_WARNING(client.auto_lang(LANGUAGE_LOBBY_ROUND_NO_JOIN)))
 		return
-	if(!enter_allowed)
+	if(!GLOB.enter_allowed)
 		to_chat(usr, SPAN_WARNING(client.auto_lang(LANGUAGE_LOBBY_JOIN_LOCK)))
 		return
 	if(!SSticker.role_authority.assign_role(src, GET_MAPPED_ROLE(player_rank), 1))

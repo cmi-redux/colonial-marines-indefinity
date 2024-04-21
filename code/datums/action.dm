@@ -121,7 +121,7 @@
 /mob/proc/handle_remove_action(datum/action/action)
 	actions?.Remove(action)
 	if(client)
-		client.screen -= action.button
+		client.remove_from_screen(action.button)
 	update_action_buttons()
 
 /mob/living/carbon/human/handle_remove_action(datum/action/action)

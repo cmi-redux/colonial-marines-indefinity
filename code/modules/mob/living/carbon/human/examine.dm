@@ -5,6 +5,10 @@
 	if(user.sdisabilities & DISABILITY_BLIND || user.blinded || user.stat==UNCONSCIOUS)
 		return list(SPAN_NOTICE("Something is there but you can't see it."))
 
+	var/mob/dead/observer/observer
+	if(isobserver(user))
+		observer = user
+
 	if(isxeno(user))
 		var/msg = "<span class='info'>This is "
 
@@ -12,7 +16,7 @@
 			msg += "[icon2html(icon, user)] "
 		msg += "<EM>[src]</EM>!\n"
 
-		if(species && species.species_flags & IS_SYNTHETIC)
+		if(species && species.flags & IS_SYNTHETIC)
 			msg += "<span style='font-weight: bold; color: purple;'>You sense this creature is not organic.\n</span>"
 
 		if(status_flags & XENO_HOST)
@@ -125,7 +129,7 @@
 	if(gloves && !skipgloves)
 		msg += "[t_He] [t_has] [gloves.get_examine_line(user)] [gloves.get_examine_location(src, user, WEAR_HANDS, t_He, t_his, t_him, t_has, t_is)].\n"
 	else if(hands_blood_color)
-		msg += SPAN_WARNING("[t_He] [t_has] [(hands_blood_color != "#030303") ? "blood" : "oil"]-stained hands!\n")
+		msg += SPAN_WARNING("[t_He] [t_has] [(hands_blood_color != COLOR_OIL) ? "blood" : "oil"]-stained hands!\n")
 
 	//belt
 	if(belt)
@@ -135,7 +139,7 @@
 	if(shoes && !skipshoes)
 		msg += "[t_He] [t_is] wearing [shoes.get_examine_line(user)] [shoes.get_examine_location(src, user, WEAR_FEET, t_He, t_his, t_him, t_has, t_is)].\n"
 	else if(feet_blood_color)
-		msg += SPAN_WARNING("[t_He] [t_has] [(feet_blood_color != "#030303") ? "blood" : "oil"]-stained feet!\n")
+		msg += SPAN_WARNING("[t_He] [t_has] [(feet_blood_color != COLOR_OIL) ? "blood" : "oil"]-stained feet!\n")
 
 	//mask
 	if(wear_mask && !skipmask)
@@ -194,7 +198,7 @@
 	var/distance = get_dist(user,src)
 	if(istype(user, /mob/dead/observer) || user.stat == DEAD) // ghosts can see anything
 		distance = 1
-	if(stat || status_flags & FAKEDEATH)
+	if (stat || status_flags & FAKEDEATH)
 		msg += SPAN_WARNING("[t_He] [t_is]n't responding to anything around [t_him] and seems to be asleep.\n")
 		if(stat == DEAD && distance <= 3)
 			msg += SPAN_WARNING("[t_He] does not appear to be breathing.\n")
@@ -233,7 +237,7 @@
 				continue
 			if(temp.status & (LIMB_ROBOT|LIMB_SYNTHSKIN))
 				if(!(temp.brute_dam + temp.burn_dam))
-					if(!(temp.status & LIMB_SYNTHSKIN) && !(species && species.species_flags & IS_SYNTHETIC))
+					if(!(temp.status & LIMB_SYNTHSKIN) && !(species && species.flags & IS_SYNTHETIC))
 						wound_flavor_text["[temp.display_name]"] = SPAN_WARNING("[t_He] has a[temp.status & LIMB_UNCALIBRATED_PROSTHETIC ? " nonfunctional" : ""] robot [temp.display_name]!\n")
 						continue
 				else
@@ -377,56 +381,56 @@
 	if(is_bleeding["right foot"])
 		display_foot_right = 1
 
-	if(display_head)
+	if (display_head)
 		msg += SPAN_WARNING("[t_He] has blood dripping from [t_his] <b>face</b>!\n")
 
-	if(display_chest && display_groin && display_arm_left && display_arm_right && display_hand_left && display_hand_right && display_leg_left && display_leg_right && display_foot_left && display_foot_right)
+	if (display_chest && display_groin && display_arm_left && display_arm_right && display_hand_left && display_hand_right && display_leg_left && display_leg_right && display_foot_left && display_foot_right)
 		msg += SPAN_WARNING("[t_He] has blood soaking through [t_his] clothes from [t_his] <b>entire body</b>!\n")
 	else
-		if(display_chest && display_arm_left && display_arm_right && display_hand_left && display_hand_right)
+		if (display_chest && display_arm_left && display_arm_right && display_hand_left && display_hand_right)
 			msg += SPAN_WARNING("[t_He] has blood soaking through [t_his] clothes from [t_his] <b>upper body</b>!\n")
 		else
-			if(display_chest)
+			if (display_chest)
 				msg += SPAN_WARNING("[t_He] has blood soaking through [t_his] <b>shirt</b>!\n")
-			if(display_arm_left && display_arm_right && display_hand_left && display_hand_left)
+			if (display_arm_left && display_arm_right && display_hand_left && display_hand_left)
 				msg += SPAN_WARNING("[t_He] has blood soaking through [t_his] <b>gloves</b> and <b>sleeves</b>!\n")
 			else
-				if(display_arm_left && display_arm_right)
+				if (display_arm_left && display_arm_right)
 					msg += SPAN_WARNING("[t_He] has blood soaking through [t_his] <b>sleeves</b>!\n")
 				else
-					if(display_arm_left)
+					if (display_arm_left)
 						msg += SPAN_WARNING("[t_He] has blood soaking through [t_his] <b>left sleeve</b>!\n")
-					if(display_arm_right)
+					if (display_arm_right)
 						msg += SPAN_WARNING("[t_He] has blood soaking through [t_his] <b>right sleeve</b>!\n")
-				if(display_hand_left && display_hand_right)
+				if (display_hand_left && display_hand_right)
 					msg += SPAN_WARNING("[t_He] has blood running out from under [t_his] <b>gloves</b>!\n")
 				else
-					if(display_hand_left)
+					if (display_hand_left)
 						msg += SPAN_WARNING("[t_He] has blood running out from under [t_his] <b>left glove</b>!\n")
-					if(display_hand_right)
+					if (display_hand_right)
 						msg += SPAN_WARNING("[t_He] has blood running out from under [t_his] <b>right glove</b>!\n")
 
-		if(display_groin && display_leg_left && display_leg_right && display_foot_left && display_foot_right)
+		if (display_groin && display_leg_left && display_leg_right && display_foot_left && display_foot_right)
 			msg += SPAN_WARNING("[t_He] has blood soaking through [t_his] clothes from [t_his] <b>lower body!</b>\n")
 		else
-			if(display_groin)
+			if (display_groin)
 				msg += SPAN_WARNING("[t_He] has blood dripping from [t_his] <b>groin</b>!\n")
-			if(display_leg_left && display_leg_right && display_foot_left && display_foot_right)
+			if (display_leg_left && display_leg_right && display_foot_left && display_foot_right)
 				msg += SPAN_WARNING("[t_He] has blood soaking through [t_his] <b>pant legs</b> and <b>boots</b>!\n")
 			else
-				if(display_leg_left && display_leg_right)
+				if (display_leg_left && display_leg_right)
 					msg += SPAN_WARNING("[t_He] has blood soaking through [t_his] <b>pant legs</b>!\n")
 				else
-					if(display_leg_left)
+					if (display_leg_left)
 						msg += SPAN_WARNING("[t_He] has blood soaking through [t_his] <b>left pant leg</b>!\n")
-					if(display_leg_right)
+					if (display_leg_right)
 						msg += SPAN_WARNING("[t_He] has blood soaking through [t_his] <b>right pant leg</b>!\n")
-				if(display_foot_left && display_foot_right)
+				if (display_foot_left && display_foot_right)
 					msg += SPAN_WARNING("[t_He] has blood pooling around[t_his] <b>boots</b>!\n")
 				else
-					if(display_foot_left)
+					if (display_foot_left)
 						msg += SPAN_WARNING("[t_He] has blood pooling around [t_his] <b>left boot</b>!\n")
-					if(display_foot_right)
+					if (display_foot_right)
 						msg += SPAN_WARNING("[t_He] has blood pooling around [t_his] <b>right boot</b>!\n")
 
 	if(chestburst == 2)
@@ -435,7 +439,7 @@
 	for(var/implant in get_visible_implants())
 		msg += SPAN_WARNING("<b>[t_He] has \a [implant] sticking out of [t_his] flesh!\n")
 
-	if(hasHUD(user,"security"))
+	if(hasHUD(user,"security") || (observer && observer.HUD_toggled["Security HUD"]))
 		var/perpref
 
 
@@ -450,9 +454,17 @@
 						if(R.fields["id"] == E.fields["id"])
 							criminal = R.fields["criminal"]
 
-			msg += "<span class = 'deptradio'>Criminal status:</span> <a href='?src=\ref[src];criminal=1'>\[[criminal]\]</a>\n"
-			msg += "<span class = 'deptradio'>Security records:</span> <a href='?src=\ref[src];secrecord=1'>\[View\]</a>  <a href='?src=\ref[src];secrecordadd=1'>\[Add comment\]</a>\n"
+			msg += "<span class = 'deptradio'>Criminal status:</span>"
+			if(!observer)
+				msg += "<a href='?src=\ref[src];criminal=1'>\[[criminal]\]</a>\n"
+			else
+				msg += "\[[criminal]\]\n"
 
+			msg += "<span class = 'deptradio'>Security records:</span> <a href='?src=\ref[src];secrecord=1'>\[View\]</a>"
+			if(!observer)
+				msg += " <a href='?src=\ref[src];secrecordadd=1'>\[Add comment\]</a>\n"
+			else
+				msg += "\n"
 	if(hasHUD(user,"medical"))
 		var/cardcolor = holo_card_color
 		if(!cardcolor) cardcolor = "none"
@@ -462,7 +474,7 @@
 		var/datum/data/record/N = null
 		var/me_ref = WEAKREF(src)
 		for(var/datum/data/record/R as anything in GLOB.data_core.medical)
-			if(R.fields["ref"] == me_ref)
+			if (R.fields["ref"] == me_ref)
 				N = R
 				break
 		if(!isnull(N))
@@ -484,7 +496,7 @@
 
 	msg += "</span>"
 
-	if(pose)
+	if (pose)
 		if( findtext(pose,".",length(pose)) == 0 && findtext(pose,"!",length(pose)) == 0 && findtext(pose,"?",length(pose)) == 0 )
 			pose = addtext(pose,".") //Makes sure all emotes end with a period.
 		msg += "\n[t_He] is [pose]"
@@ -515,33 +527,24 @@
 /proc/hasHUD(mob/passed_mob, hudtype)
 	if(istype(passed_mob, /mob/living/carbon/human))
 		var/mob/living/carbon/human/passed_human = passed_mob
-		if(issynth(passed_human))
-			return 1
+		if (issynth(passed_human))
+			return TRUE
 		switch(hudtype)
 			if("security")
 				if(skillcheck(passed_human, SKILL_POLICE, SKILL_POLICE_SKILLED))
-					var/datum/mob_hud/sec_hud = huds[MOB_HUD_SECURITY_ADVANCED]
-					if(locate(passed_mob) in sec_hud.hudusers)
+					var/datum/mob_hud/sec_hud = GLOB.huds[MOB_HUD_SECURITY_ADVANCED]
+					if(sec_hud.hudusers[passed_human])
 						return TRUE
 			if("medical")
 				if(skillcheck(passed_human, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC))
-					var/datum/mob_hud/med_hud = huds[MOB_HUD_MEDICAL_ADVANCED]
-					if(locate(passed_mob) in med_hud.hudusers)
+					var/datum/mob_hud/med_hud = GLOB.huds[MOB_HUD_MEDICAL_ADVANCED]
+					if(med_hud.hudusers[passed_human])
 						return TRUE
 			if("squadleader")
-				var/datum/mob_hud/faction_hud = huds[MOB_HUD_FACTION_USCM]
-				if(passed_human.mind && passed_human.assigned_squad && passed_human.assigned_squad.squad_leader == passed_human && locate(passed_mob) in faction_hud.hudusers)
+				var/datum/mob_hud/faction_hud = GLOB.huds[MOB_HUD_FACTION_MARINE]
+				if(passed_human.mind && passed_human.assigned_squad && passed_human.assigned_squad.squad_leader == passed_human && faction_hud.hudusers[passed_mob])
 					return TRUE
 			else
-				return 0
-	else if(isrobot(passed_mob))
-		var/mob/living/silicon/robot/R = passed_mob
-		switch(hudtype)
-			if("security")
-				return istype(R.module_state_1, /obj/item/robot/sight/hud/sec) || istype(R.module_state_2, /obj/item/robot/sight/hud/sec) || istype(R.module_state_3, /obj/item/robot/sight/hud/sec)
-			if("medical")
-				return istype(R.module_state_1, /obj/item/robot/sight/hud/med) || istype(R.module_state_2, /obj/item/robot/sight/hud/med) || istype(R.module_state_3, /obj/item/robot/sight/hud/med)
-			else
-				return 0
+				return FALSE
 	else
-		return 0
+		return FALSE

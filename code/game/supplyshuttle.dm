@@ -1335,11 +1335,11 @@ var/datum/controller/supply/supply_controller = new()
 	if(tank_unlocked)
 		vehicles += new /datum/vehicle_order/tank
 
-	if(!VehicleElevatorConsole)
-		VehicleElevatorConsole = src
+	if(!GLOB.VehicleElevatorConsole[faction_to_get])
+		GLOB.VehicleElevatorConsole[faction_to_get] = src
 
 /obj/structure/machinery/computer/supplycomp/vehicle/Destroy()
-	VehicleElevatorConsole = null
+	GLOB.VehicleElevatorConsole[faction_to_get] = null
 	return ..()
 
 /obj/structure/machinery/computer/supplycomp/vehicle/attack_hand(mob/living/carbon/human/H as mob)

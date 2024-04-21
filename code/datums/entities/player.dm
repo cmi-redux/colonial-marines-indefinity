@@ -5,6 +5,9 @@
 	var/last_known_ip
 	var/last_known_cid
 
+	var/whitelist_status
+	var/whitelist_flags
+
 	var/last_login
 
 	var/is_permabanned = FALSE
@@ -39,7 +42,6 @@
 	var/list/datum/entity/player_time/playtimes
 	var/datum/player_entity/player_entity
 	var/datum/donator_info/donator_info
-	var/datum/entity/player_whitelist/whitelist
 	var/list/playtime_data
 	var/client/owning_client
 
@@ -57,6 +59,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		"is_permabanned" = DB_FIELDTYPE_INT,
 		"permaban_reason" = DB_FIELDTYPE_STRING_MAX,
 		"permaban_date" = DB_FIELDTYPE_STRING_LARGE,
+		"whitelist_status" = DB_FIELDTYPE_STRING_MAX,
 		"permaban_admin_id" = DB_FIELDTYPE_BIGINT,
 		"is_time_banned" = DB_FIELDTYPE_INT,
 		"time_ban_reason" = DB_FIELDTYPE_STRING_MAX,
@@ -363,6 +366,14 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 
 	discord_link = locate() in DB_VIEW(/datum/view_record/discord_link, DB_COMP("player_id", DB_EQUALS, id))
 
+
+	if(whitelist_status)
+		var/list/whitelists = splittext(whitelist_status, "|")
+
+		for(var/whitelist in whitelists)
+			if(whitelist in GLOB.bitfields["whitelist_status"])
+				whitelist_flags |= GLOB.bitfields["whitelist_status"]["[whitelist]"]
+
 	load_donator_info()
 	setup_statistics()
 
@@ -438,7 +449,6 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	player_data.last_known_ip = address
 	player_data.last_known_cid = computer_id
 	record_login_triplet(player.ckey, address, computer_id)
-	player_data.whitelist = DB_EKEY(/datum/entity/player_whitelist, player_data.id)
 	player_data.whitelist.sync()
 	player_data.sync()
 
@@ -512,6 +522,22 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	// shouldn't be here
 	return FALSE
 
+/datum/entity/player/proc/check_whitelist_status(flag_to_check)
+	if(whitelist_flags & flag_to_check)
+		return TRUE
+	return FALSE
+
+/datum/entity/player/proc/set_whitelist_status(field_to_set)
+	whitelist_flags = field_to_set
+
+	var/list/output = list()
+	for(var/bitfield in GLOB.bitfields["whitelist_status"])
+		if(field_to_set & GLOB.bitfields["whitelist_status"]["[bitfield]"])
+			output += bitfield
+	whitelist_status = output.Join("|")
+
+	save()
+
 /datum/entity_link/player_to_banning_admin
 	parent_entity = /datum/entity/player
 	child_entity = /datum/entity/player
@@ -539,6 +565,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	var/admin
 	var/last_known_cid
 	var/last_known_ip
+	var/whitelist_status
 
 /datum/entity_view_meta/players
 	root_record_type = /datum/entity/player
@@ -555,4 +582,5 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		"admin" = DB_CASE(DB_COMP("is_permabanned", DB_EQUALS, 1), "permabanning_admin.ckey", "banning_admin.ckey"),
 		"last_known_ip",
 		"last_known_cid",
+		"whitelist_status"
 		)

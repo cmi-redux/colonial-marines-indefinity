@@ -1,3 +1,48 @@
+GLOBAL_VAR_INIT(game_year, 2182)
+
+GLOBAL_VAR_INIT(ooc_allowed, TRUE)
+GLOBAL_VAR_INIT(looc_allowed, TRUE)
+GLOBAL_VAR_INIT(dsay_allowed, TRUE)
+GLOBAL_VAR_INIT(dooc_allowed, TRUE)
+GLOBAL_VAR_INIT(dlooc_allowed, FALSE)
+
+GLOBAL_VAR_INIT(enter_allowed, TRUE)
+
+GLOBAL_LIST_EMPTY(admin_log)
+GLOBAL_LIST_EMPTY(asset_log)
+
+// multiplier for watts per tick <> cell storage (eg: 0.02 means if there is a load of 1000 watts, 20 units will be taken from a cell per second)
+//It's a conversion constant. power_used*CELLRATE = charge_provided, or charge_used/CELLRATE = power_provided
+#define CELLRATE 0.006
+
+// Cap for how fast cells charge, as a percentage-per-tick (0.01 means cellcharge is capped to 1% per second)
+#define CHARGELEVEL 0.001
+
+GLOBAL_VAR(VehicleElevatorConsole)
+GLOBAL_VAR(VehicleGearConsole)
+
+//Spawnpoints.
+GLOBAL_LIST_EMPTY(fallen_list)
+/// This is for dogtags placed on crosses- they will show up at the end-round memorial.
+GLOBAL_LIST_EMPTY(fallen_list_cross)
+
+GLOBAL_VAR(join_motd)
+GLOBAL_VAR(current_tms)
+
+// For FTP requests. (i.e. downloading runtime logs.)
+// However it'd be ok to use for accessing attack logs and such too, which are even laggier.
+GLOBAL_VAR_INIT(fileaccess_timer, 0)
+
+GLOBAL_LIST_INIT(almayer_ship_sections, list(
+	"Upper deck Foreship",
+	"Upper deck Midship",
+	"Upper deck Aftship",
+	"Lower deck Foreship",
+	"Lower deck Midship",
+	"Lower deck Aftship"
+))
+
+
 GLOBAL_VAR_INIT(internal_tick_usage, 0.2 * world.tick_lag)
 
 /// Global performance feature toggle flags

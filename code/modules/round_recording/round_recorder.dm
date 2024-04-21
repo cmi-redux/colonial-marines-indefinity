@@ -58,16 +58,16 @@
 
 	if(isxeno(M))
 		// Xeno role = their caste
-		var/mob/living/carbon/xenomorph/X = M
-		player_role = X.caste_type
+		var/mob/living/carbon/xenomorph/xeno = M
+		player_role = xeno.caste_type
 
 		// Xeno name = their caste, pre-/postfix and number (because upgrades changes their name)
 		var/name_prefix = ""
 		var/name_postfix = ""
-		if(X.client)
-			name_prefix = "[X.client.xeno_prefix ? X.client.xeno_prefix : "XX"]-"
-			name_postfix = X.client.xeno_postfix ? ("-" + X.client.xeno_postfix) : ""
-		player_name = "[(X.faction ? X.faction.prefix : "")][player_role] ([name_prefix][X.nicknumber][name_postfix])"
+		if(xeno.client)
+			name_prefix = "[xeno.client.xeno_prefix ? xeno.client.xeno_prefix : "XX"]-"
+			name_postfix = xeno.client.xeno_postfix ? ("-" + xeno.client.xeno_postfix) : ""
+		player_name = "[(xeno.faction ? xeno.faction.prefix : "")][player_role] ([name_prefix][xeno.nicknumber][name_postfix])"
 
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M

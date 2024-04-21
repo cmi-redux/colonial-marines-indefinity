@@ -14,23 +14,23 @@
 	if(!istype(T))
 		return FALSE
 
-	var/mob/living/carbon/human/H = new(T)
-	mind.transfer_to(H, TRUE)
-	GLOB.ert_mobs += H
+	var/mob/living/carbon/human/new_human = new(T)
+	mind.transfer_to(new_human, TRUE)
+	GLOB.ert_mobs += new_human
 
-	if(!leader && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(H.client, list(JOB_WARDEN, JOB_CHIEF_POLICE), time_required_for_job))
-		leader = H
-		arm_equipment(H, /datum/equipment_preset/uscm_ship/uscm_police/riot_mp/riot_cmp, TRUE, TRUE)
-		to_chat(H, SPAN_ROLE_HEADER("You are the leader of the High Command Riot Control!"))
-		to_chat(H, SPAN_ROLE_BODY("Follow any orders directly from High Command!"))
-		to_chat(H, SPAN_ROLE_BODY("You only answer to the Marine Law and the High Command!"))
+	if(!leader && HAS_FLAG(new_human.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(new_human.client, list(JOB_WARDEN, JOB_CHIEF_POLICE), time_required_for_job))
+		leader = new_human
+		arm_equipment(new_human, /datum/equipment_preset/uscm_ship/uscm_police/riot_mp/riot_cmp, TRUE, TRUE)
+		to_chat(new_human, SPAN_ROLE_HEADER("You are the leader of the High Command Riot Control!"))
+		to_chat(new_human, SPAN_ROLE_BODY("Follow any orders directly from High Command!"))
+		to_chat(new_human, SPAN_ROLE_BODY("You only answer to the Marine Law and the High Command!"))
 	else
-		arm_equipment(H, /datum/equipment_preset/uscm_ship/uscm_police/riot_mp, TRUE, TRUE)
-		to_chat(H, SPAN_ROLE_HEADER("You are a member of the High Command Riot Control!"))
-		to_chat(H, SPAN_ROLE_BODY("Follow any orders directly from High Command or your superior!"))
-		to_chat(H, SPAN_ROLE_BODY("You only answer to your superior, the Marine Law and the High Command!"))
+		arm_equipment(new_human, /datum/equipment_preset/uscm_ship/uscm_police/riot_mp, TRUE, TRUE)
+		to_chat(new_human, SPAN_ROLE_HEADER("You are a member of the High Command Riot Control!"))
+		to_chat(new_human, SPAN_ROLE_BODY("Follow any orders directly from High Command or your superior!"))
+		to_chat(new_human, SPAN_ROLE_BODY("You only answer to your superior, the Marine Law and the High Command!"))
 
-	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), H, SPAN_BOLD("Objectives: [objectives]")), 1 SECONDS)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), new_human, SPAN_BOLD("Objectives: [objectives]")), 1 SECONDS)
 
 
 /datum/emergency_call/riot/spawn_items()

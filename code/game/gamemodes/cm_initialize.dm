@@ -106,6 +106,11 @@ Additional game mode variables.
 	surv_starting_num = clamp((readied_players/CONFIG_GET(number/surv_number_divider)), 2, 8) //this doesnt run
 	marine_starting_num = GLOB.player_list.len - xeno_starting_num - surv_starting_num
 
+	for(var/datum/squad/squad as anything in SSticker.role_authority.squads)
+		if(!isnull(squad.min_online_requered) && squad.min_online_requered > marine_starting_num)
+			squad.roundstart = FALSE
+			squad.usable = FALSE
+
 	for(var/role_name in SSticker.role_authority.roles_by_name)
 		var/datum/job/job = SSticker.role_authority.roles_by_name[role_name]
 		if(job.scaled)
@@ -123,7 +128,7 @@ Additional game mode variables.
 	if(!ignore_pred_num)
 		pred_current_num++
 
-/datum/game_mode/proc/get_whitelisted_predators(readied = 1)
+/datum/game_mode/proc/get_whitelisted_predators(readied = TRUE)
 	// Assemble a list of active players who are whitelisted.
 	var/players[] = new
 
@@ -138,7 +143,7 @@ Additional game mode variables.
 		else
 			if(!istype(player,/mob/dead)) continue //Otherwise we just want to grab the ghosts.
 
-		if(player.client.player_data?.whitelist?.whitelist_flags & WHITELIST_PREDATOR)  //Are they whitelisted?
+		if(player?.client.check_whitelist_status(WHITELIST_PREDATOR))  //Are they whitelisted?
 			if(!player.client.prefs)
 				player.client.prefs = new /datum/preferences(player.client) //Somehow they don't have one.
 
@@ -171,10 +176,10 @@ Additional game mode variables.
 			to_chat(pred_candidate, SPAN_WARNING("Something went wrong!"))
 		return
 
-	if(show_warning && alert(pred_candidate, "Confirm joining the hunt. You will join as \a [lowertext(job.get_whitelist_status(pred_candidate.client.player_data?.whitelist?.whitelist_flags, pred_candidate.client))] predator", pred_candidate.client.auto_lang(LANGUAGE_CONFIRM), pred_candidate.client.auto_lang(LANGUAGE_YES), pred_candidate.client.auto_lang(LANGUAGE_NO)) != pred_candidate.client.auto_lang(LANGUAGE_YES))
+	if(show_warning && tgui_alert(pred_candidate, "Confirm joining the hunt. You will join as \a [lowertext(J.get_whitelist_status(pred_candidate.client))] predator", pred_candidate.client.auto_lang(LANGUAGE_CONFIRM), list(pred_candidate.client.auto_lang(LANGUAGE_YES), pred_candidate.client.auto_lang(LANGUAGE_NO)), 10 SECONDS) != pred_candidate.client.auto_lang(LANGUAGE_YES))
 		return
 
-	if(!(pred_candidate.client.player_data?.whitelist?.whitelist_flags & WHITELIST_PREDATOR))
+	if(!(pred_candidate.client.check_whitelist_status(WHITELIST_PREDATOR)))
 		if(show_warning)
 			to_chat(pred_candidate, SPAN_WARNING("You are not whitelisted! You may apply on the forums to be whitelisted as a predator."))
 		return
@@ -189,7 +194,7 @@ Additional game mode variables.
 			to_chat(pred_candidate, SPAN_WARNING("You already were a Yautja! Give someone else a chance."))
 		return
 
-	if(job.get_whitelist_status(pred_candidate.client.player_data?.whitelist?.whitelist_flags, pred_candidate.client) == WHITELIST_NORMAL)
+	if(job.get_whitelist_status(pred_candidate.client) == WHITELIST_NORMAL)
 		var/pred_max = calculate_pred_max
 		if(pred_current_num >= pred_max)
 			if(show_warning)
@@ -931,7 +936,6 @@ Additional game mode variables.
 		joe_candidate.moveToNullspace() //Nullspace it for garbage collection later.
 
 /datum/game_mode/proc/check_joe_late_join(mob/joe_candidate, show_warning = 1)
-
 	if(!joe_candidate.client)
 		return
 
@@ -942,30 +946,34 @@ Additional game mode variables.
 			to_chat(joe_candidate, SPAN_WARNING("Something went wrong!"))
 		return
 
-	if(!(joe_candidate.client.player_data?.whitelist?.whitelist_flags & WHITELIST_JOE))
+	if(!joe_job.check_whitelist_status(joe_candidate))
 		if(show_warning)
 			to_chat(joe_candidate, SPAN_WARNING("You are not whitelisted! You may apply on the forums to be whitelisted as a synth."))
 		return
 
-	if((joe_candidate.ckey in joes) && !MODE_HAS_TOGGLEABLE_FLAG(MODE_BYPASS_JOE))
-		if(show_warning)
-			to_chat(joe_candidate, SPAN_WARNING("You already were a Working Joe this round!"))
-		return
+	if(MODE_HAS_TOGGLEABLE_FLAG(MODE_DISABLE_JOE_RESPAWN) && (joe_candidate.ckey in joes)) // No joe respawns if already a joe before
+		to_chat(joe_candidate, SPAN_WARNING("Working Joe respawns are disabled!"))
+		return FALSE
+
+	var/deathtime = world.time - joe_candidate.timeofdeath
+	if((deathtime < JOE_JOIN_DEAD_TIME && (joe_candidate.ckey in joes)) && !MODE_HAS_TOGGLEABLE_FLAG(MODE_BYPASS_JOE))
+		to_chat(joe_candidate, SPAN_WARNING("You have been dead for [DisplayTimeText(deathtime)]. You need to wait <b>[DisplayTimeText(JOE_JOIN_DEAD_TIME - deathtime)]</b> before rejoining as a Working Joe!"))
+		return FALSE
 
 	// council doesn't count towards this conditional.
-	if(joe_job.get_whitelist_status(joe_candidate.client.player_data?.whitelist?.whitelist_flags, joe_candidate.client) == WHITELIST_NORMAL)
+	if(joe_job.get_whitelist_status(joe_candidate.client) == WHITELIST_NORMAL)
 		var/joe_max = joe_job.total_positions
 		if((joe_job.current_positions >= joe_max) && !MODE_HAS_TOGGLEABLE_FLAG(MODE_BYPASS_JOE))
 			if(show_warning)
 				to_chat(joe_candidate, SPAN_WARNING("Only [joe_max] Working Joes may spawn per round."))
 			return
 
-	if(!enter_allowed && !MODE_HAS_TOGGLEABLE_FLAG(MODE_BYPASS_JOE))
+	if(!GLOB.GLOB.enter_allowed && !MODE_HAS_TOGGLEABLE_FLAG(MODE_BYPASS_JOE))
 		if(show_warning)
 			to_chat(joe_candidate, SPAN_WARNING("There is an administrative lock from entering the game."))
 		return
 
-	if(show_warning && tgui_alert(joe_candidate, "Confirm joining as a Working Joe.", "Confirmation", list("Yes", "No"), 10 SECONDS) != "Yes")
+	if(show_warning && tgui_alert(joe_candidate, "Confirm joining as a Working Joe.", joe_candidate.client.auto_lang(LANGUAGE_CONFIRM), list(joe_candidate.client.auto_lang(LANGUAGE_YES), joe_candidate.client.auto_lang(LANGUAGE_NO)), 10 SECONDS) != joe_candidate.client.auto_lang(LANGUAGE_YES))
 		return
 
 	return TRUE

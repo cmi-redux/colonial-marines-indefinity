@@ -92,13 +92,13 @@
 		return
 	target = ckey(target)
 
-	if(player_data?.whitelist?.whitelist_flags & WHITELIST_COMMANDER_COUNCIL)
+	if(check_whitelist_status(WHITELIST_COMMANDER_COUNCIL))
 		options |= "Commanding Officer"
 		edit_C = TRUE
-	if(player_data?.whitelist?.whitelist_flags & WHITELIST_SYNTHETIC_COUNCIL)
+	if(check_whitelist_status(WHITELIST_SYNTHETIC_COUNCIL))
 		options |= "Synthetic"
 		edit_S = TRUE
-	if(player_data?.whitelist?.whitelist_flags & WHITELIST_YAUTJA_COUNCIL)
+	if(check_whitelist_status(WHITELIST_YAUTJA_COUNCIL))
 		options |= "Yautja"
 		edit_Y = TRUE
 
@@ -111,17 +111,17 @@
 		if("Merit")
 			show_other_record(NOTE_MERIT, choice, target, TRUE)
 		if("Commanding Officer")
-			if(MA || (player_data?.whitelist?.whitelist_flags & WHITELIST_COMMANDER_LEADER))
+			if(MA || check_whitelist_status(WHITELIST_COMMANDER_LEADER))
 				show_other_record(NOTE_COMMANDER, choice, target, TRUE, TRUE)
 			else
 				show_other_record(NOTE_COMMANDER, choice, target, edit_C)
 		if("Synthetic")
-			if(MA || (player_data?.whitelist?.whitelist_flags & WHITELIST_SYNTHETIC_LEADER))
+			if(MA || check_whitelist_status(WHITELIST_SYNTHETIC_LEADER))
 				show_other_record(NOTE_SYNTHETIC, choice, target, TRUE, TRUE)
 			else
 				show_other_record(NOTE_SYNTHETIC, choice, target, edit_S)
 		if("Yautja")
-			if(MA || (player_data?.whitelist?.whitelist_flags & WHITELIST_YAUTJA_LEADER))
+			if(MA || check_whitelist_status(WHITELIST_YAUTJA_LEADER))
 				show_other_record(NOTE_YAUTJA, choice, target, TRUE, TRUE)
 			else
 				show_other_record(NOTE_YAUTJA, choice, target, edit_Y)

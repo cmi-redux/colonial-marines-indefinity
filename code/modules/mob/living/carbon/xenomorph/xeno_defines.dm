@@ -210,3 +210,28 @@
 
 /datum/caste_datum/proc/get_caste_requirement(client/client)
 	return minimum_xeno_playtime - client.get_total_xeno_playtime()
+
+/client/proc/check_whitelist_status(flag_to_check)
+	if((flag_to_check & WHITELIST_MENTOR) && CLIENT_IS_MENTOR(src))
+		return TRUE
+
+	if((flag_to_check & WHITELIST_JOE) && CLIENT_IS_STAFF(src))
+		return TRUE
+
+	if(!player_data)
+		load_player_data()
+
+	if(!player_data)
+		return FALSE
+
+	return player_data.check_whitelist_status(flag_to_check)
+
+/client/proc/check_whitelist_status_list(flags_to_check) /// Logical OR list, not match all.
+	var/success = FALSE
+	if(!player_data)
+		load_player_data()
+	for(var/bitfield in flags_to_check)
+		success = player_data.check_whitelist_status(bitfield)
+		if(success)
+			break
+	return success

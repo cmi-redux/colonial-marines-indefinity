@@ -17,16 +17,16 @@
 	if(!istype(spawn_loc))
 		return //Didn't find a useable spawn point.
 
-	var/mob/living/carbon/human/H = new(spawn_loc)
-	mind.transfer_to(H, TRUE)
-	GLOB.ert_mobs += H
+	var/mob/living/carbon/human/new_human = new(spawn_loc)
+	mind.transfer_to(new_human, TRUE)
+	GLOB.ert_mobs += new_human
 
-	arm_equipment(H, /datum/equipment_preset/other/souto, TRUE, TRUE)
+	arm_equipment(new_human, /datum/equipment_preset/other/souto, TRUE, TRUE)
 
-	to_chat(H, SPAN_ROLE_HEADER("You are Souto Man! You should bring awareness to the Souto brand!"))
-	to_chat(H, SPAN_ROLE_BODY("Your job is to party hard and share Souto. Make sure those marines are never thirsty again!"))
+	to_chat(new_human, SPAN_ROLE_HEADER("You are Souto Man! You should bring awareness to the Souto brand!"))
+	to_chat(new_human, SPAN_ROLE_BODY("Your job is to party hard and share Souto. Make sure those marines are never thirsty again!"))
 
-	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), H, SPAN_BOLD("Objectives: [objectives]")), 1 SECONDS)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), new_human, SPAN_BOLD("Objectives: [objectives]")), 1 SECONDS)
 
 /datum/emergency_call/souto/cryo
 	name = "Souto Man (Cryo)"

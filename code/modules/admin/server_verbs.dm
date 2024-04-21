@@ -126,28 +126,3 @@
 
 	log_admin("[key_name(usr)] changed the ship map to [VM.map_name].")
 	message_admins("[key_name_admin(usr)] changed the ship map to [VM.map_name].")
-
-/datum/admins/proc/handle_whitelists()
-	set category = "Server"
-	set name = "DB: Handle Whitelists"
-
-	if(!check_rights(R_SERVER))
-		return
-
-	var/list/players_to_select = list()
-	var/list/datum/view_record/players/players_view = DB_VIEW(/datum/view_record/players)
-	for(var/datum/view_record/players/player_view in players_view)
-		players_to_select += player_view.ckey
-
-	var/ckey = tgui_input_list(usr, "Select player to change whitelist status", "White List", players_to_select)
-	if(!ckey)
-		return
-
-	var/datum/entity/player/player = get_player_from_key(ckey)
-	var/datum/entity/player_whitelist/whitelist = DB_EKEY(/datum/entity/player_whitelist, player.id)
-	whitelist.sync()
-
-	var/new_whitelist_status = input_bitfield(usr, "Editing [ckey] White List", "whitelist_flags", whitelist.whitelist_flags)
-	if(new_whitelist_status != null)
-		whitelist.whitelist_flags = new_whitelist_status
-		whitelist.save()

@@ -391,7 +391,7 @@
 			pod.launch(get_turf(pick(GLOB.defcon_drop_point[associated_faction])))
 
 	else if(accessing_type & DEFCON_ASSET_DELIVERY_CARGO)
-		var/obj/structure/machinery/computer/supplycomp/vehicle/comp = VehicleElevatorConsole
+		var/obj/structure/machinery/computer/supplycomp/vehicle/comp = GLOB.VehicleElevatorConsole[associated_faction]
 		if(!comp)
 			return
 
@@ -659,7 +659,7 @@
 			pod.launch(get_turf(pick(GLOB.defcon_drop_point[associated_faction])))
 
 	else if(accessing_type & DEFCON_ASSET_DELIVERY_CARGO)
-		var/obj/structure/machinery/computer/supplycomp/vehicle/comp = VehicleElevatorConsole
+		var/obj/structure/machinery/computer/supplycomp/vehicle/comp = GLOB.VehicleElevatorConsole[associated_faction]
 		if(!comp)
 			return
 

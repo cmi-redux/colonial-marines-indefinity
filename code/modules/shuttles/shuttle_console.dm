@@ -266,7 +266,7 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 					return
 
 				// Allow the queen to choose the ship section to crash into
-				var/crash_target = tgui_input_list(usr, "Choose a ship section to target","Hijack", almayer_ship_sections + list("Cancel"))
+				var/crash_target = tgui_input_list(usr, "Choose a ship section to target","Hijack", GLOB.almayer_ship_sections + list("Cancel"))
 				if(crash_target == "Cancel")
 					return
 
@@ -284,7 +284,7 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 
 					// If the AA is protecting the target area, pick any other section to crash into at random
 					if(almayer_aa_cannon.protecting_section == crash_target)
-						var/list/potential_crash_sections = almayer_ship_sections.Copy()
+						var/list/potential_crash_sections = GLOB.almayer_ship_sections.Copy()
 						potential_crash_sections -= almayer_aa_cannon.protecting_section
 						crash_target = pick(potential_crash_sections)
 

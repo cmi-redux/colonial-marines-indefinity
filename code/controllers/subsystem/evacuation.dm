@@ -94,7 +94,7 @@ SUBSYSTEM_DEF(evacuation)
 		ship_evac_time = world.time
 		ship_evacuating = TRUE
 		ship_operation_stage_status = OPERATION_LEAVING_OPERATION_PLACE
-		enter_allowed = FALSE
+		GLOB.enter_allowed = FALSE
 		ai_announcement("Внимание. Чрезвычайная ситуация. Всему персоналу и морпехам немедленно вернуться на корабль, в связи с критической ситуацией начинается немедленный процесс отбытия с зоны операции, посадочные шатлы станут недоступны через [duration2text_hour_min_sec(SHIP_ESCAPE_ESTIMATE_DEPARTURE, "hh:mm:ss")]!", 'sound/AI/evacuate.ogg', logging = ARES_LOG_SECURITY)
 		xeno_message_all("Волна адреналина прокатилась по улью. Существа из плоти пытаются улететь, надо сейчас же попасть на их железный улей! У вас есть всего [duration2text_hour_min_sec(SHIP_ESCAPE_ESTIMATE_DEPARTURE, "hh:mm:ss")] до того как они покинут зону досягаемости.")
 
@@ -116,7 +116,7 @@ SUBSYSTEM_DEF(evacuation)
 	if(ship_operation_stage_status == OPERATION_LEAVING_OPERATION_PLACE)
 		ship_operation_stage_status = OPERATION_ENDING
 		ship_evacuating = FALSE
-		enter_allowed = TRUE
+		GLOB.enter_allowed = TRUE
 		ai_announcement(reason, 'sound/AI/evacuate_cancelled.ogg', logging = ARES_LOG_SECURITY)
 
 		for(var/shuttle_id in shuttles_to_check)
@@ -159,7 +159,7 @@ SUBSYSTEM_DEF(evacuation)
 
 /datum/controller/subsystem/evacuation/proc/initiate_evacuation(force = FALSE) //Begins the evacuation procedure.
 	if(force || ((evac_status == EVACUATION_STATUS_STANDING_BY && !(flags_scuttle & FLAGS_EVACUATION_DENY)) && ship_operation_stage_status < OPERATION_ENDING))
-		enter_allowed = FALSE
+		GLOB.enter_allowed = FALSE
 		evac_time = world.time
 		evac_status = EVACUATION_STATUS_INITIATING
 		ai_announcement("Внимание. Чрезвычайная ситуация. Всему персоналу немедленно покинуть корабль. У вас есть всего [duration2text_hour_min_sec(EVACUATION_ESTIMATE_DEPARTURE, "hh:mm:ss")] до отлета капсул, после чего все вторичные системы выключатся.", 'sound/AI/evacuate.ogg', logging = ARES_LOG_SECURITY)
@@ -174,7 +174,7 @@ SUBSYSTEM_DEF(evacuation)
 
 /datum/controller/subsystem/evacuation/proc/cancel_evacuation() //Cancels the evac procedure. Useful if admins do not want the marines leaving.
 	if(evac_status == EVACUATION_STATUS_INITIATING)
-		enter_allowed = TRUE
+		GLOB.enter_allowed = TRUE
 		evac_time = null
 		evac_status = EVACUATION_STATUS_STANDING_BY
 		ai_announcement("Эвакуация отменена.", 'sound/AI/evacuate_cancelled.ogg', logging = ARES_LOG_SECURITY)
@@ -329,7 +329,7 @@ SUBSYSTEM_DEF(evacuation)
 /datum/controller/subsystem/evacuation/proc/trigger_self_destruct(override)
 	ai_announcement("ОПАСНОСТЬ. ОПАСНОСТЬ. Система самоуничтожения активирована. ОПАСНОСТЬ. ОПАСНОСТЬ. Самоуничтожение выполняется. ОПАСНОСТЬ. ОПАСНОСТЬ.", logging = ARES_LOG_SECURITY)
 	playsound(dest_master, 'sound/machines/Alarm.ogg', 75, 0, 30)
-	enter_allowed = FALSE
+	GLOB.enter_allowed = FALSE
 	SSticker.mode.play_cinematic(cinematic_icons = override ? list("intro_ship", "intro_override", "ship_spared", "summary_spared") : list("intro_ship", "intro_nuke", "ship_destroyed", "summary_destroyed"),cause_data = create_cause_data("самоуничтожения корабля", src), explosion_sound = list('sound/music/round_end/nuclear_detonation1.ogg', 'sound/music/round_end/nuclear_detonation2.ogg'))
 	for(var/shuttle_id in list(DROPSHIP_ALAMO, DROPSHIP_NORMANDY))
 		var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttle_id)

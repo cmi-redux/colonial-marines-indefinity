@@ -34,12 +34,12 @@
 		addtimer(CALLBACK(src, PROC_REF(clear_fullscreen_after_animate), screen), animated, TIMER_CLIENT_TIME)
 	else
 		if(client)
-			client.screen -= screen
+			client.remove_from_screen(screen)
 		qdel(screen)
 
 /mob/proc/clear_fullscreen_after_animate(atom/movable/screen/fullscreen/screen)
 	if(client)
-		client.screen -= screen
+		client.remove_from_screen(screen)
 	qdel(screen)
 
 /mob/proc/clear_fullscreens()
@@ -49,7 +49,7 @@
 /mob/proc/hide_fullscreens()
 	if(client)
 		for(var/category in fullscreens)
-			client.screen -= fullscreens[category]
+			client.remove_from_screen(fullscreens[category])
 
 /mob/proc/reload_fullscreens()
 	if(client)
@@ -58,9 +58,9 @@
 			screen = fullscreens[category]
 			if(screen.should_show_to(src))
 				screen.update_for_view(client.view)
-				client.screen |= screen
+				client.add_to_screen(screen)
 			else
-				client.screen -= screen
+				client.remove_from_screen(screen)
 
 
 /atom/movable/screen/fullscreen

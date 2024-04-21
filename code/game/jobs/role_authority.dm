@@ -153,11 +153,11 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 	//PART II: Setting up our player variables and lists, to see if we have anyone to destribute.
 
 	unassigned_players = list()
-	for(var/mob/new_player/M in GLOB.player_list) //Get all players who are ready.
-		if(!M.ready || M.job)
+	for(var/mob/new_player/player in GLOB.player_list) //Get all players who are ready.
+		if(!player.ready || player.job)
 			continue
 
-		unassigned_players += M
+		unassigned_players += player
 
 	if(!length(unassigned_players)) //If we don't have any players, the round can't start.
 		unassigned_players = null
@@ -189,24 +189,24 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 	var/list/roles_left = assign_roles(roles_for_mode, unassigned_players)
 
 	var/alternate_option_assigned = 0
-	for(var/mob/new_player/M in unassigned_players)
-		switch(M.client.prefs.alternate_option)
+	for(var/mob/new_player/player in unassigned_players)
+		switch(player.client.prefs.alternate_option)
 			if(GET_RANDOM_JOB)
-				roles_left = assign_random_role(M, roles_left) //We want to keep the list between assignments.
+				roles_left = assign_random_role(player, roles_left) //We want to keep the list between assignments.
 				alternate_option_assigned++
 			if(BE_MARINE)
 				for(var/base_role in JOB_SQUAD_NORMAL_LIST)
 					var/datum/job/job = GET_MAPPED_ROLE(base_role)
-					if(assign_role(M, job))
+					if(assign_role(player, job))
 						alternate_option_assigned++
 						break
 
 			if(BE_XENOMORPH)
 				var/datum/job/xenomorph_job = GET_MAPPED_ROLE(JOB_XENOMORPH)
-				assign_role(M, xenomorph_job)
+				assign_role(player, xenomorph_job)
 			if(RETURN_TO_LOBBY)
-				M.ready = 0
-		unassigned_players -= M
+				player.ready = 0
+		unassigned_players -= player
 
 	if(length(unassigned_players))
 		to_world(SPAN_DEBUG("Error setting up jobs, unassigned_players still has players left. Length of: [length(unassigned_players)]."))
@@ -265,8 +265,8 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 			log_debug("Error setting up jobs, no job datum set for: [role_name].")
 			continue
 
-		for(var/M in unassigned_players)
-			var/mob/new_player/NP = M
+		for(var/player in unassigned_players)
+			var/mob/new_player/NP = player
 			if(!(NP.client.prefs.get_job_priority(job.title) == priority))
 				continue //If they don't want the job. //TODO Change the name of the prefs proc?
 
@@ -286,7 +286,7 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 		return assigned
 	return roles_to_iterate
 
-/datum/authority/branch/role/proc/assign_random_role(mob/new_player/M, list/roles_to_iterate) //In case we want to pass on a list.
+/datum/authority/branch/role/proc/assign_random_role(mob/new_player/player, list/roles_to_iterate) //In case we want to pass on a list.
 	. = roles_to_iterate
 	if(length(roles_to_iterate))
 		var/datum/job/job
@@ -303,40 +303,40 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 				log_debug("Error setting up jobs, no job datum set for: [role_name].")
 				continue
 
-			if(assign_role(M, job)) //Check to see if they can actually get it.
+			if(assign_role(player, job)) //Check to see if they can actually get it.
 				if(job.current_positions >= job.spawn_positions) roles_to_iterate -= role_name
 				return roles_to_iterate
 
 	//If they fail the two passes, or no regular roles are available, they become a marine regardless.
 	for(var/base_role in JOB_SQUAD_NORMAL_LIST)
 		var/datum/job/job = GET_MAPPED_ROLE(base_role)
-		if(assign_role(M, job))
+		if(assign_role(player, job))
 			break
 
-/datum/authority/branch/role/proc/assign_role(mob/new_player/M, datum/job/job, latejoin = FALSE)
-	if(ismob(M) && istype(job))
+/datum/authority/branch/role/proc/assign_role(mob/new_player/player, datum/job/job, latejoin = FALSE)
+	if(ismob(player) && istype(job))
 		var/datum/faction/faction = GLOB.faction_datum[roles_by_faction[job.title]]
-		var/check_result = check_role_entry(M, job, faction, latejoin)
+		var/check_result = check_role_entry(player, job, faction, latejoin)
 		if(!check_result)
-			M.job = job.title
+			player.job = job.title
 			job.current_positions++
 			return TRUE
 		else if(latejoin)
-			to_chat(M, "[job.title]: [check_result]")
+			to_chat(player, "[job.title]: [check_result]")
 
-/datum/authority/branch/role/proc/check_role_entry(mob/new_player/M, datum/job/job, datum/faction/faction, latejoin = FALSE)
-	if(jobban_isbanned(M, job.title) || (job.role_ban_alternative && jobban_isbanned(M, job.role_ban_alternative)))
-		return  M.client.auto_lang(LANGUAGE_JS_JOBBANED)
-	if(!job.can_play_role(M.client))
-		return  M.client.auto_lang(LANGUAGE_JS_CANT_PLAY)
-	if(job.flags_startup_parameters & ROLE_WHITELISTED && !(M.client.player_data?.whitelist?.whitelist_flags & job.flags_whitelist))
-		return  M.client.auto_lang(LANGUAGE_JS_WHITELIST)
+/datum/authority/branch/role/proc/check_role_entry(mob/new_player/player, datum/job/job, datum/faction/faction, latejoin = FALSE)
+	if(jobban_isbanned(player, job.title) || (job.role_ban_alternative && jobban_isbanned(player, job.role_ban_alternative)))
+		return  player.client.auto_lang(LANGUAGE_JS_JOBBANED)
+	if(!job.can_play_role(player.client))
+		return  player.client.auto_lang(LANGUAGE_JS_CANT_PLAY)
+	if(!job.check_whitelist_status(player))
+		return  player.client.auto_lang(LANGUAGE_JS_WHITELIST)
 	if(job.total_positions != -1 && job.get_total_positions(latejoin) <= job.current_positions)
-		return  M.client.auto_lang(LANGUAGE_JS_NO_SLOTS_OPEN)
+		return  player.client.auto_lang(LANGUAGE_JS_NO_SLOTS_OPEN)
 	if(latejoin && !job.late_joinable)
-		return  M.client.auto_lang(LANGUAGE_JS_CLOSED)
+		return  player.client.auto_lang(LANGUAGE_JS_CLOSED)
 	if(!SSautobalancer.can_join(faction))
-		return M.client.auto_lang(LANGUAGE_JS_BALANCE_ISSUE)
+		return player.client.auto_lang(LANGUAGE_JS_BALANCE_ISSUE)
 	return FALSE
 
 /datum/authority/branch/role/proc/free_role(datum/job/job, latejoin = 1) //Want to make sure it's a job, and nothing like a MODE or special role.
@@ -399,20 +399,20 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 
 //I'm not entirely sure why this proc exists. //TODO Figure this out.
 /datum/authority/branch/role/proc/reset_roles()
-	for(var/mob/new_player/M in GLOB.new_player_list)
-		M.job = null
+	for(var/mob/new_player/player in GLOB.new_player_list)
+		player.job = null
 
 
-/datum/authority/branch/role/proc/equip_role(mob/living/M, datum/job/job, turf/late_join)
-	if(!istype(M) || !istype(job))
+/datum/authority/branch/role/proc/equip_role(mob/living/player, datum/job/job, turf/late_join)
+	if(!istype(player) || !istype(job))
 		return
 
 	. = TRUE
 
-	if(!ishuman(M))
+	if(!ishuman(player))
 		return
 
-	var/mob/living/carbon/human/human = M
+	var/mob/living/carbon/human/human = player
 
 	var/job_whitelist = job.title
 	var/whitelist_status = job.get_whitelist_status(human.client.player_data?.whitelist?.whitelist_flags, human.client)
@@ -548,58 +548,58 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 	return lowest
 
 /datum/authority/branch/role/proc/get_caste_by_text(name)
-	var/mob/living/carbon/xenomorph/M
+	var/mob/living/carbon/xenomorph/player
 	switch(name) //ADD NEW CASTES HERE!
 		if(XENO_CASTE_LARVA)
-			M = /mob/living/carbon/xenomorph/larva
+			player = /mob/living/carbon/xenomorph/larva
 		if(XENO_CASTE_PREDALIEN_LARVA)
-			M = /mob/living/carbon/xenomorph/larva/predalien
+			player = /mob/living/carbon/xenomorph/larva/predalien
 		if(XENO_CASTE_FACEHUGGER)
-			M = /mob/living/carbon/xenomorph/facehugger
+			player = /mob/living/carbon/xenomorph/facehugger
 		if(XENO_CASTE_LESSER_DRONE)
-			M = /mob/living/carbon/xenomorph/lesser_drone
+			player = /mob/living/carbon/xenomorph/lesser_drone
 		if(XENO_CASTE_RUNNER)
-			M = /mob/living/carbon/xenomorph/runner
+			player = /mob/living/carbon/xenomorph/runner
 		if(XENO_CASTE_DRONE)
-			M = /mob/living/carbon/xenomorph/drone
+			player = /mob/living/carbon/xenomorph/drone
 		if(XENO_CASTE_CARRIER)
-			M = /mob/living/carbon/xenomorph/carrier
+			player = /mob/living/carbon/xenomorph/carrier
 		if(XENO_CASTE_HIVELORD)
-			M = /mob/living/carbon/xenomorph/hivelord
+			player = /mob/living/carbon/xenomorph/hivelord
 		if(XENO_CASTE_BURROWER)
-			M = /mob/living/carbon/xenomorph/burrower
+			player = /mob/living/carbon/xenomorph/burrower
 		if(XENO_CASTE_PRAETORIAN)
-			M = /mob/living/carbon/xenomorph/praetorian
+			player = /mob/living/carbon/xenomorph/praetorian
 		if(XENO_CASTE_RAVAGER)
-			M = /mob/living/carbon/xenomorph/ravager
+			player = /mob/living/carbon/xenomorph/ravager
 		if(XENO_CASTE_SENTINEL)
-			M = /mob/living/carbon/xenomorph/sentinel
+			player = /mob/living/carbon/xenomorph/sentinel
 		if(XENO_CASTE_SPITTER)
-			M = /mob/living/carbon/xenomorph/spitter
+			player = /mob/living/carbon/xenomorph/spitter
 		if(XENO_CASTE_LURKER)
-			M = /mob/living/carbon/xenomorph/lurker
+			player = /mob/living/carbon/xenomorph/lurker
 		if(XENO_CASTE_WARRIOR)
-			M = /mob/living/carbon/xenomorph/warrior
+			player = /mob/living/carbon/xenomorph/warrior
 		if(XENO_CASTE_DEFENDER)
-			M = /mob/living/carbon/xenomorph/defender
+			player = /mob/living/carbon/xenomorph/defender
 		if(XENO_CASTE_QUEEN)
-			M = /mob/living/carbon/xenomorph/queen
+			player = /mob/living/carbon/xenomorph/queen
 		if(XENO_CASTE_CRUSHER)
-			M = /mob/living/carbon/xenomorph/crusher
+			player = /mob/living/carbon/xenomorph/crusher
 		if(XENO_CASTE_BOILER)
-			M = /mob/living/carbon/xenomorph/boiler
+			player = /mob/living/carbon/xenomorph/boiler
 		if(XENO_CASTE_PREDALIEN)
-			M = /mob/living/carbon/xenomorph/predalien
+			player = /mob/living/carbon/xenomorph/predalien
 		if(XENO_CASTE_HELLHOUND)
-			M = /mob/living/carbon/xenomorph/hellhound
-	return M
+			player = /mob/living/carbon/xenomorph/hellhound
+	return player
 
 
 /proc/get_desired_status(desired_status, status_limit)
 	var/found_desired = FALSE
 	var/found_limit = FALSE
 
-	for(var/status in WHITELIST_HIERARCHY)
+	for(var/status in GLOB.whitelist_hierarchy)
 		if(status == desired_status)
 			found_desired = TRUE
 			break
