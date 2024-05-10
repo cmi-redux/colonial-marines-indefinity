@@ -39,11 +39,11 @@
 
 	screen_objects -= screen_object
 	protected_screen_objects -= screen_object
-	client?.remove_from_screen(screen_object)
+	client?.screen -= screen_object
 
 /datum/screen_object_holder/proc/clear()
-	client?.remove_from_screen(screen_objects)
-	client?.remove_from_screen(protected_screen_objects)
+	client?.screen -= screen_objects
+	client?.screen -= protected_screen_objects
 
 	QDEL_LIST(screen_objects)
 	protected_screen_objects.Cut()

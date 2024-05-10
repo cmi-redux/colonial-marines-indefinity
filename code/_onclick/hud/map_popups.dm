@@ -11,49 +11,62 @@
  * A screen object, which acts as a container for turfs and other things
  * you want to show on the map, which you usually attach to "vis_contents".
  */
-/atom/movable/screen
-	name = ""
-	icon = 'icons/mob/hud/screen1.dmi'
-	plane = HUD_PLANE
-	layer = ABOVE_HUD_LAYER
-	animate_movement = SLIDE_STEPS
-// speech_span = SPAN_ROBOT
-	vis_flags = VIS_INHERIT_PLANE
-// appearance_flags = APPEARANCE_UI
-	/// A reference to the object in the slot. Grabs or items, generally.
-	var/obj/master = null
-	/// A reference to the owner HUD, if any.
-	var/datum/hud/hud = null
-	/**
-	 * Map name assigned to this object.
-	 * Automatically set by /client/proc/add_obj_to_map.
-	 */
-	var/assigned_map
-	/**
-	 * Mark this object as garbage-collectible after you clean the map
-	 * it was registered on.
-	 *
-	 * This could probably be changed to be a proc, for conditional removal.
-	 * But for now, this works.
-	 */
-	var/del_on_map_removal = TRUE
-
-	/// If FALSE, this will not be cleared when calling /client/clear_screen()
-	var/clear_with_screen = TRUE
-
-/atom/movable/screen/Destroy()
-	master = null
-	hud = null // Not currently ever used
-	return ..()
-
-/**
- * A screen object, which acts as a container for turfs and other things
- * you want to show on the map, which you usually attach to "vis_contents".
- */
 /atom/movable/screen/map_view
+	name = "screen"
 	// Map view has to be on the lowest plane to enable proper lighting
 	layer = GAME_PLANE
 	plane = GAME_PLANE
+	del_on_map_removal = FALSE
+
+	// Weakrefs of all our hud viewers -> a weakref to the hud datum they last used
+	var/list/datum/weakref/viewers_to_huds = list()
+
+/atom/movable/screen/map_view/Destroy()
+	for(var/datum/weakref/client_ref in viewers_to_huds)
+		var/client/our_client = client_ref.resolve()
+		if(!our_client)
+			continue
+		hide_from(our_client.mob)
+
+	return ..()
+
+/atom/movable/screen/map_view/proc/generate_view(map_key)
+	// Map keys have to start and end with an A-Z character,
+	// and definitely NOT with a square bracket or even a number.
+	// I wasted 6 hours on this. :agony:
+	// -- Stylemistake
+	assigned_map = map_key
+	set_position(1, 1)
+
+/atom/movable/screen/map_view/proc/display_to(mob/show_to)
+	show_to.client.register_map_obj(src)
+	// We need to add planesmasters to the popup, otherwise
+	// blending fucks up massively. Any planesmaster on the main screen does
+	// NOT apply to map popups. If there's ever a way to make planesmasters
+	// omnipresent, then this wouldn't be needed.
+	// We lazy load this because there's no point creating all these if none's gonna see em
+
+	// Store this info in a client -> hud pattern, so ghosts closing the window nukes the right group
+	var/datum/weakref/client_ref = WEAKREF(show_to.client)
+
+	var/datum/weakref/hud_ref = viewers_to_huds[client_ref]
+	var/datum/hud/our_hud = hud_ref?.resolve()
+
+	our_hud.mymob.client.screen += src
+	viewers_to_huds[client_ref] = WEAKREF(show_to.hud_used)
+
+/atom/movable/screen/map_view/proc/hide_from(mob/hide_from)
+	hide_from?.client.clear_map(assigned_map)
+	var/client_ref = WEAKREF(hide_from?.client)
+
+	// Make sure we clear the *right* hud
+	var/datum/weakref/hud_ref = viewers_to_huds[client_ref]
+	viewers_to_huds -= client_ref
+	var/datum/hud/clear_from = hud_ref?.resolve()
+	if(!clear_from)
+		return
+
+	clear_from.mymob.client.screen -= src
 
 /**
  * A generic background object.
@@ -66,10 +79,6 @@
 	icon_state = "clear"
 	layer = GAME_PLANE
 	plane = GAME_PLANE
-
-///le awesome parent type
-/atom/movable/screen/proc/update_icon()
-	return
 
 /**
  * Sets screen_loc of this screen object, in form of point coordinates,
@@ -108,7 +117,7 @@
 	if(!screen_map.Find(screen_obj))
 		screen_map += screen_obj
 	if(!screen.Find(screen_obj))
-		add_to_screen(screen_obj)
+		screen += screen_obj
 
 /**
  * Clears the map of registered screen objects.
@@ -118,11 +127,10 @@
  * anyway. they're effectively qdel'd.
  */
 /client/proc/clear_map(map_name)
-	if(!map_name || !screen_maps[map_name])
+	if(!map_name || !(map_name in screen_maps))
 		return FALSE
 	for(var/atom/movable/screen/screen_obj in screen_maps[map_name])
 		screen_maps[map_name] -= screen_obj
-		remove_from_screen(screen_obj)
 		if(screen_obj.del_on_map_removal)
 			qdel(screen_obj)
 	screen_maps -= map_name

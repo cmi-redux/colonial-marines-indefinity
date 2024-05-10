@@ -291,12 +291,12 @@ var/world_topic_spam_protect_time = world.timeofday
 				SEND_SOUND(client, reboot_sound_ref)
 
 /world/proc/load_motd()
-	GLOB.join_motd = list(CLIENT_LANGUAGE_RUSSIAN = file2text("config/motd_ru.txt"), CLIENT_LANGUAGE_ENGLISH = file2text("config/motd_en.txt"))
+	join_motd = list(CLIENT_LANGUAGE_RUSSIAN = file2text("config/motd_ru.txt"), CLIENT_LANGUAGE_ENGLISH = file2text("config/motd_en.txt"))
 
 /world/proc/load_tm_message()
 	var/datum/getrev/revdata = GLOB.revdata
 	if(revdata.testmerge.len)
-		GLOB.current_tms = revdata.GetTestMergeInfo()
+		current_tms = revdata.GetTestMergeInfo()
 
 /world/proc/update_status()
 	//Note: Hub content is limited to 254 characters, including limited HTML/CSS.

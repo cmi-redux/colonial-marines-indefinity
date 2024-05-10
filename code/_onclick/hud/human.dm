@@ -105,10 +105,10 @@
 	set desc = "This disables or enables the user interface buttons which can be used with hotkeys."
 
 	if(hud_used.hotkey_ui_hidden)
-		client.add_to_screen(hud_used.hotkeybuttons)
+		client.screen += hud_used.hotkeybuttons
 		hud_used.hotkey_ui_hidden = 0
 	else
-		client.remove_from_screen(hud_used.hotkeybuttons)
+		client.screen -= hud_used.hotkeybuttons
 		hud_used.hotkey_ui_hidden = TRUE
 
 /datum/hud/human/hidden_inventory_update(mob/viewer)
@@ -150,23 +150,23 @@
 			screenmob.client.screen += H.head
 	else
 		if(H.shoes)
-			screenmob.client.remove_from_screen(H.shoes)
+			screenmob.client.screen -= H.shoes
 		if(H.gloves)
-			screenmob.client.remove_from_screen(H.gloves)
+			screenmob.client.screen -= H.gloves
 		if(H.wear_r_ear)
-			screenmob.client.remove_from_screen(H.wear_r_ear)
+			screenmob.client.screen -= H.wear_r_ear
 		if(H.wear_l_ear)
-			screenmob.client.remove_from_screen(H.wear_l_ear)
+			screenmob.client.screen -= H.wear_l_ear
 		if(H.glasses)
-			screenmob.client.remove_from_screen(H.glasses)
+			screenmob.client.screen -= H.glasses
 		if(H.w_uniform)
-			screenmob.client.remove_from_screen(H.w_uniform)
+			screenmob.client.screen -= H.w_uniform
 		if(H.wear_suit)
-			screenmob.client.remove_from_screen(H.wear_suit)
+			screenmob.client.screen -= H.wear_suit
 		if(H.wear_mask)
-			screenmob.client.remove_from_screen(H.wear_mask)
+			screenmob.client.screen -= H.wear_mask
 		if(H.head)
-			screenmob.client.remove_from_screen(H.head)
+			screenmob.client.screen -= H.head
 
 /datum/hud/human/persistent_inventory_update(mob/viewer)
 	if(!mymob)
@@ -199,17 +199,17 @@
 				screenmob.client.screen += H.r_store
 		else
 			if(H.s_store)
-				screenmob.client.remove_from_screen(H.s_store)
+				screenmob.client.screen -= H.s_store
 			if(H.wear_id)
-				screenmob.client.remove_from_screen(H.wear_id)
+				screenmob.client.screen -= H.wear_id
 			if(H.belt)
-				screenmob.client.remove_from_screen(H.belt)
+				screenmob.client.screen -= H.belt
 			if(H.back)
-				screenmob.client.remove_from_screen(H.back)
+				screenmob.client.screen -= H.back
 			if(H.l_store)
-				screenmob.client.remove_from_screen(H.l_store)
+				screenmob.client.screen -= H.l_store
 			if(H.r_store)
-				screenmob.client.remove_from_screen(H.r_store)
+				screenmob.client.screen -= H.r_store
 
 	if(hud_version != HUD_STYLE_NOHUD)
 		if(H.r_hand)

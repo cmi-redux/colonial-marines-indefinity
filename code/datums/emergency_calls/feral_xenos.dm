@@ -31,31 +31,31 @@
 	var/mob/current_mob = mind.current
 	var/hive_leader = FALSE
 
-	var/mob/living/carbon/xenomorph/new_xeno
+	var/mob/living/carbon/xenomorph/xenomorph
 	if(!leader)
 		var/picked = pick(/mob/living/carbon/xenomorph/ravager, /mob/living/carbon/xenomorph/praetorian, /mob/living/carbon/xenomorph/crusher)
-		new_xeno = new picked(spawn_loc, null, faction_to_set)
-		leader = new_xeno
+		xenomorph = new picked(spawn_loc, null, faction_to_set)
+		leader = xenomorph
 		hive_leader = TRUE
 
 	else if(medics < max_medics)
 		medics++
 		var/picked = pick(/mob/living/carbon/xenomorph/drone, /mob/living/carbon/xenomorph/hivelord, /mob/living/carbon/xenomorph/burrower)
-		new_xeno = new picked(spawn_loc, null, faction_to_set)
+		xenomorph = new picked(spawn_loc, null, faction_to_set)
 
 	else if(engineers < max_engineers)
 		engineers++
 		var/picked = pick(/mob/living/carbon/xenomorph/warrior, /mob/living/carbon/xenomorph/lurker, /mob/living/carbon/xenomorph/spitter)
-		new_xeno = new picked(spawn_loc, null, faction_to_set)
+		xenomorph = new picked(spawn_loc, null, faction_to_set)
 
 	else
 		var/picked = pick(/mob/living/carbon/xenomorph/drone, /mob/living/carbon/xenomorph/runner, /mob/living/carbon/xenomorph/defender)
-		new_xeno = new picked(spawn_loc, null, faction_to_set)
+		xenomorph = new picked(spawn_loc, null, faction_to_set)
 
-	mind.transfer_to(new_xeno, TRUE)
-	GLOB.ert_mobs += new_xeno
+	mind.transfer_to(xenomorph, TRUE)
+	GLOB.ert_mobs += xenomorph
 	if(hive_leader)
-		faction_to_set.add_hive_leader(new_xeno)
+		faction_to_set.add_hive_leader(xenomorph)
 
 	QDEL_NULL(current_mob)
 

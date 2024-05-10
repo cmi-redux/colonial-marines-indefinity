@@ -269,8 +269,15 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 /client/AllowUpload(filename, filelength)
 	if(filelength > UPLOAD_LIMIT)
 		to_chat(src, "<font color='red'>Error: AllowUpload(): File Upload too large. Upload Limit: [UPLOAD_LIMIT/1024]KiB.</font>")
-		return FALSE
-	return TRUE
+		return 0
+/* //Don't need this at the moment. But it's here if it's needed later.
+	//Helps prevent multiple files being uploaded at once. Or right after eachother.
+	var/time_to_wait = fileaccess_timer - world.time
+	if(time_to_wait > 0)
+		to_chat(src, "<font color='red'>Error: AllowUpload(): Spam prevention. Please wait [round(time_to_wait/10)] seconds.</font>")
+		return 0
+	fileaccess_timer = world.time + FTPDELAY */
+	return 1
 
 
 	///////////
@@ -344,8 +351,13 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	prefs.last_id = computer_id //these are gonna be used for banning
 	fps = prefs.fps
 	language = prefs.client_language
-
-	load_xeno_name()
+	xeno_prefix = prefs.xeno_prefix
+	xeno_postfix = prefs.xeno_postfix
+	xeno_name_ban = prefs.xeno_name_ban
+	if(!xeno_prefix || xeno_name_ban)
+		xeno_prefix = "XX"
+	if(!xeno_postfix || xeno_name_ban)
+		xeno_postfix = ""
 
 	human_name_ban = prefs.human_name_ban
 
@@ -760,19 +772,10 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 			if (!screen_object.clear_with_screen)
 				continue
 
-		remove_from_screen(object)
+		screen -= object
 
 ///opens the particle editor UI for the in_atom object for this client
 /client/proc/open_particle_editor(atom/movable/in_atom)
 	if(admin_holder)
 		admin_holder.particle_test = new /datum/particle_editor(in_atom)
 		admin_holder.particle_test.tgui_interact(mob)
-
-/client/proc/load_xeno_name()
-	xeno_prefix = prefs.xeno_prefix
-	xeno_postfix = prefs.xeno_postfix
-	xeno_name_ban = prefs.xeno_name_ban
-	if(!xeno_prefix || xeno_name_ban)
-		xeno_prefix = "XX"
-	if(!xeno_postfix || xeno_name_ban)
-		xeno_postfix = ""

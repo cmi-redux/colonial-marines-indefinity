@@ -292,7 +292,7 @@
 
 /obj/item/device/motiondetector/proc/clear_pings(mob/user, obj/effect/detector_blip/DB)
 	if(user.client)
-		user.client.remove_from_screen(DB)
+		user.client.screen -= DB
 
 /obj/item/device/motiondetector/m717
 	name = "M717 pocket motion detector"

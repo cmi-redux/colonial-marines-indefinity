@@ -21,7 +21,7 @@
 	C.screen |= (C.parallax_layers)
 	var/atom/movable/screen/plane_master/PM = screenmob.hud_used.plane_masters["[PLANE_SPACE]"]
 	if(screenmob != mymob)
-		C.screen.remove_from_screen(locate(/atom/movable/screen/plane_master/parallax_white) in C.screen)
+		C.screen -= locate(/atom/movable/screen/plane_master/parallax_white) in C.screen
 		C.screen += PM
 	PM.color = list(
 		0, 0, 0, 0,
@@ -35,10 +35,10 @@
 /datum/hud/proc/remove_parallax(mob/viewmob)
 	var/mob/screenmob = viewmob || mymob
 	var/client/C = screenmob.client
-	C.remove_from_screen(C.parallax_layers_cached)
+	C.screen -= (C.parallax_layers_cached)
 	var/atom/movable/screen/plane_master/PM = screenmob.hud_used.plane_masters["[PLANE_SPACE]"]
 	if(screenmob != mymob)
-		C.remove_from_screen(locate(/atom/movable/screen/plane_master/parallax_white) in C.screen)
+		C.screen -= locate(/atom/movable/screen/plane_master/parallax_white) in C.screen
 		C.screen += PM
 	PM.color = initial(PM.color)
 	C.parallax_layers = null

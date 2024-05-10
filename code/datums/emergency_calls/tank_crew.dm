@@ -18,18 +18,18 @@
 
 	if(!istype(spawn_loc)) return //Didn't find a useable spawn point.
 
-	var/mob/living/carbon/human/new_human = new(spawn_loc)
-	mind.transfer_to(new_human, TRUE)
-	GLOB.ert_mobs += new_human
+	var/mob/living/carbon/human/H = new(spawn_loc)
+	mind.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 
 	sleep(5)
-	arm_equipment(new_human, /datum/equipment_preset/uscm/tank/full, TRUE, TRUE)
-	to_chat(new_human, SPAN_ROLE_HEADER("You are a Vehicle Crewman in the USCM"))
-	to_chat(new_human, SPAN_ROLE_BODY("You are here to assist in the defence of the [SSmapping.configs[GROUND_MAP].map_name]. Listen to the chain of command."))
-	to_chat(new_human, SPAN_BOLDWARNING("If you wish to cryo or ghost upon spawning in, you must ahelp and inform staff so you can be replaced."))
+	arm_equipment(H, /datum/equipment_preset/uscm/tank/full, TRUE, TRUE)
+	to_chat(H, SPAN_ROLE_HEADER("You are a Vehicle Crewman in the USCM"))
+	to_chat(H, SPAN_ROLE_BODY("You are here to assist in the defence of the [SSmapping.configs[GROUND_MAP].map_name]. Listen to the chain of command."))
+	to_chat(H, SPAN_BOLDWARNING("If you wish to cryo or ghost upon spawning in, you must ahelp and inform staff so you can be replaced."))
 
 	sleep(10)
-	to_chat(new_human, SPAN_BOLD("Objectives: [objectives]"))
+	to_chat(H, SPAN_BOLD("Objectives: [objectives]"))
 
-	GLOB.data_core.manifest_inject(new_human) //Put people in crew manifest
+	GLOB.data_core.manifest_inject(H) //Put people in crew manifest
 

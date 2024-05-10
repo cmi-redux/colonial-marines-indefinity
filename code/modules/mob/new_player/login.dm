@@ -61,7 +61,7 @@
 		var/author = lobby_authors[displayed_lobby_art]
 		if(author != "Unknown")
 			to_chat(src, SPAN_ROUNDBODY("<hr>[client.auto_lang(LANGUAGE_LOBBY_ART)] [author]<hr>"))
-	if(GLOB.join_motd)
-		to_chat(src, "<div class=\"motd\">[GLOB.join_motd[client.language]]</div>")
-	if(GLOB.current_tms)
-		to_chat(src, SPAN_BOLDANNOUNCE(GLOB.current_tms))
+	if(join_motd)
+		to_chat(src, "<div class=\"motd\">[join_motd[client.language]]</div>")
+	if(current_tms)
+		to_chat(src, SPAN_BOLDANNOUNCE(current_tms))

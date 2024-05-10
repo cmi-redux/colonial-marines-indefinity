@@ -15,13 +15,13 @@
 	if(!istype(T))
 		return FALSE
 
-	var/mob/living/carbon/human/new_human = new(T)
-	mind.transfer_to(new_human, TRUE)
-	GLOB.ert_mobs += new_human
+	var/mob/living/carbon/human/H = new(T)
+	mind.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 
-	arm_equipment(new_human, /datum/equipment_preset/other/zombie, TRUE, TRUE)
+	arm_equipment(H, /datum/equipment_preset/other/zombie, TRUE, TRUE)
 
 	sleep(20)
-	if(new_human && new_human.loc)
-		to_chat(new_human, SPAN_ROLE_HEADER("You are a Zombie!"))
-		to_chat(new_human, SPAN_ROLE_BODY("Spread... Consume... Infect..."))
+	if(H && H.loc)
+		to_chat(H, SPAN_ROLE_HEADER("You are a Zombie!"))
+		to_chat(H, SPAN_ROLE_BODY("Spread... Consume... Infect..."))

@@ -63,16 +63,16 @@ of predators), but can be added to include variant game modes (like humans vs. h
 /datum/game_mode/proc/declare_completion_announce_fallen_soldiers()
 	set waitfor = FALSE
 	sleep(2 SECONDS)
-	GLOB.fallen_list += GLOB.fallen_list_cross
-	if(GLOB.fallen_list.len)
+	fallen_list += fallen_list_cross
+	if(fallen_list.len)
 		var/dat = "<br>"
 		dat += SPAN_ROUNDBODY("На поля сражения...<br>")
 		dat += SPAN_CENTERBOLD("В память о наших погибших солдатах: <br>")
-		for(var/i = 1 to GLOB.fallen_list.len)
-			if(i != GLOB.fallen_list.len)
-				dat += "[GLOB.fallen_list[i]], "
+		for(var/i = 1 to fallen_list.len)
+			if(i != fallen_list.len)
+				dat += "[fallen_list[i]], "
 			else
-				dat += "[GLOB.fallen_list[i]].<br>"
+				dat += "[fallen_list[i]].<br>"
 		to_world("[dat]")
 
 

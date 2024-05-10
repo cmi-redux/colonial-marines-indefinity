@@ -1034,12 +1034,12 @@
 	else if(href_list["makeyautja"])
 		if(!check_rights(R_SPAWN)) return
 
-		if(alert("Are you sure you want to make this person into a yautja? It will delete their old character.","Make Yautja","Yes","No") != "Yes")
+		if(alert("Are you sure you want to make this person into a yautja? It will delete their old character.","Make Yautja",usr.client.auto_lang(LANGUAGE_YES),usr.client.auto_lang(LANGUAGE_NO)) != usr.client.auto_lang(LANGUAGE_YES))
 			return
 
-		var/mob/H = locate(href_list["makeyautja"])
+		var/mob/mob = locate(href_list["makeyautja"])
 
-		if(!istype(H))
+		if(!istype(mob))
 			to_chat(usr, "This can only be used on mobs. How did you even do this?")
 			return
 
@@ -1057,27 +1057,32 @@
 			to_chat(usr, "That is not a valid gender.")
 			return
 
-		var/mob/living/carbon/human/M = new(usr.loc)
-		M.set_species("Yautja")
+		var/mob/living/carbon/human/human = new(usr.loc)
+		human.set_species("Yautja")
 		spawn(0)
-			M.gender = y_gend
-			M.regenerate_icons()
-			message_admins("[key_name(usr)] made [H] into a Yautja, [M.real_name].")
-			if(H.mind)
-				H.mind.transfer_to(M)
+			human.gender = y_gend
+			human.regenerate_icons()
+			message_admins("[key_name(usr)] made [mob] into a Yautja, [human.real_name].")
+			if(mob.mind)
+				mob.mind.transfer_to(human)
 			else
-				M.key = H.key
-				if(M.client) M.client.change_view(GLOB.world_view_size)
+				human.key = mob.key
+				if(human.client) human.client.change_view(world_view_size)
 
-			if(M.skills)
-				qdel(M.skills)
-			M.skills = null //no skill restriction
+			if(human.skills)
+				qdel(human.skills)
+			human.skills = null //no skill restriction
 
-			M.change_real_name(M, y_name)
-			M.name = "Unknown" // Yautja names are not visible for oomans
+			if(is_alien_whitelisted(human,"Yautja Elder"))
+				mob.change_real_name(human, "Elder [y_name]")
+				human.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/yautja/hunter/full(mob), WEAR_JACKET)
+				human.equip_to_slot_or_del(new /obj/item/weapon/twohanded/yautja/glaive(mob), WEAR_L_HAND)
+			else
+				human.change_real_name(human, y_name)
+			human.name = "Unknown"	// Yautja names are not visible for oomans
 
-			if(H)
-				qdel(H) //May have to clear up round-end vars and such....
+			if(mob)
+				qdel(mob) //May have to clear up round-end vars and such....
 
 		return
 

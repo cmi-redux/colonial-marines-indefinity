@@ -49,12 +49,19 @@ var/list/paper_tag_whitelist = list("center","p","div","span","h1","h2","h3","h4
 var/command_name = "Central Command"
 var/station_name = "[MAIN_SHIP_NAME]"
 var/game_version = "Colonial Marines"
+var/game_year = 2182
 
 var/going = 1.0
 var/secret_force_mode = "secret" // if this is anything but "secret", the secret rotation will forceably choose this mode
 
 var/host = null
+var/ooc_allowed = 1
+var/looc_allowed = 1
+var/dsay_allowed = 1
+var/dooc_allowed = 1
+var/dlooc_allowed = 0
 var/abandon_allowed = 1
+var/enter_allowed = 1
 var/locked_conect = 0
 var/shuttle_frozen = 0
 var/shuttle_left = 0
@@ -62,6 +69,19 @@ var/midi_playing = 0
 var/heard_midi = 0
 var/total_silenced = 0
 
+var/list/admin_log = list()
+var/list/asset_log = list()
+
+var/CELLRATE = 0.006 // multiplier for watts per tick <> cell storage (eg: 0.02 means if there is a load of 1000 watts, 20 units will be taken from a cell per second)
+						//It's a conversion constant. power_used*CELLRATE = charge_provided, or charge_used/CELLRATE = power_provided
+var/CHARGELEVEL = 0.001 // Cap for how fast cells charge, as a percentage-per-tick (0.01 means cellcharge is capped to 1% per second)
+
+var/VehicleElevatorConsole
+var/VehicleGearConsole
+
+//Spawnpoints.
+var/list/fallen_list = list()
+var/list/fallen_list_cross = list()
 var/list/combatlog = list()
 var/list/IClog = list()
 var/list/OOClog = list()
@@ -70,6 +90,9 @@ var/list/adminlog = list()
 var/Debug = 0 // global debug switch
 
 var/datum/moduletypes/mods = new()
+
+var/join_motd = null
+var/current_tms
 
 var/list/BorgWireColorToFlag = RandomBorgWires()
 var/list/BorgIndexToFlag
@@ -91,6 +114,11 @@ var/list/AAlarmWireColorToIndex
 #define shuttle_time_in_station 3 MINUTES
 /// 10 minutes to arrive.
 #define shuttle_time_to_arrive 10 MINUTES
+
+
+	// For FTP requests. (i.e. downloading runtime logs.)
+	// However it'd be ok to use for accessing attack logs and such too, which are even laggier.
+var/fileaccess_timer = 0
 
 // Reference list for disposal sort junctions. Filled up by sorting junction's New()
 /var/list/tagger_locations = list()
@@ -120,3 +148,14 @@ var/displayed_lobby_art = -1
 
 // Last global ID that was assigned to a mob (for round recording purposes)
 var/last_mob_gid = 0
+
+// be careful messing with this. the section names are hardcoded here, while defines are used everywhere else
+// see the big commented block for an explanation
+var/list/almayer_ship_sections = list(
+	"Upper deck Foreship",
+	"Upper deck Midship",
+	"Upper deck Aftship",
+	"Lower deck Foreship",
+	"Lower deck Midship",
+	"Lower deck Aftship"
+)

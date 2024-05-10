@@ -63,5 +63,5 @@
 	SSautobalancer.balance_action(src, "login")
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MOB_LOGIN, src)
-	SEND_SIGNAL(client, COMSIG_CLIENT_MOB_LOGGED_IN, src)
+	SEND_SIGNAL(client, COMSIG_CLIENT_MOB_LOGIN, src)
 	SEND_SIGNAL(src, COMSIG_MOB_LOGIN)

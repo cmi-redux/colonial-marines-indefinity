@@ -642,10 +642,10 @@
 	if(user && user.hud_used)
 		if(user.hud_used.inventory_shown)
 			user.hud_used.inventory_shown = 0
-			user.client.remove_from_screen(user.hud_used.toggleable_inventory)
+			user.client.screen -= user.hud_used.toggleable_inventory
 		else
 			user.hud_used.inventory_shown = 1
-			user.client.add_to_screen(user.hud_used.toggleable_inventory)
+			user.client.screen += user.hud_used.toggleable_inventory
 
 		user.hud_used.hidden_inventory_update()
 	return TRUE
@@ -689,11 +689,11 @@
 /atom/movable/screen/ammo/proc/add_hud(mob/living/user, datum/ammo_owner)
 	if(isnull(ammo_owner))
 		CRASH("/atom/movable/screen/ammo/proc/add_hud() has been called from [src] without the required param of ammo_owner")
-	user?.client.add_to_screen(src)
+	user?.client.screen += src
 
 ///wrapper to removing this ammo hud from the users screen
 /atom/movable/screen/ammo/proc/remove_hud(mob/living/user)
-	user?.client?.remove_from_screen(src)
+	user?.client?.screen -= src
 
 ///actually handles upadating the hud
 /atom/movable/screen/ammo/proc/update_hud(mob/living/user, list/ammo_type, rounds)

@@ -17,29 +17,29 @@
 	if(!istype(spawn_loc))
 		return //Didn't find a useable spawn point.
 
-	var/mob/living/carbon/human/new_human = new(spawn_loc)
-	mind.transfer_to(new_human, TRUE)
-	GLOB.ert_mobs += new_human
+	var/mob/living/carbon/human/mob = new(spawn_loc)
+	mind.transfer_to(mob, TRUE)
+	GLOB.ert_mobs += mob
 
-	if(!leader && HAS_FLAG(new_human.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(new_human.client, JOB_SQUAD_LEADER, time_required_for_job))
-		leader = new_human
-		to_chat(new_human, SPAN_ROLE_HEADER("You are a Weyland-Yutani Corporate Security Lead!"))
-		arm_equipment(new_human, /datum/equipment_preset/goon/lead, TRUE, TRUE)
+	if(!leader && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(mob.client, JOB_SQUAD_LEADER, time_required_for_job))
+		leader = mob
+		to_chat(mob, SPAN_ROLE_HEADER("You are a Weyland-Yutani Corporate Security Lead!"))
+		arm_equipment(mob, /datum/equipment_preset/goon/lead, TRUE, TRUE)
 	else
-		to_chat(new_human, SPAN_ROLE_HEADER("You are a Weyland-Yutani Corporate Security Officer!"))
-		arm_equipment(new_human, /datum/equipment_preset/goon/standard, TRUE, TRUE)
+		to_chat(mob, SPAN_ROLE_HEADER("You are a Weyland-Yutani Corporate Security Officer!"))
+		arm_equipment(mob, /datum/equipment_preset/goon/standard, TRUE, TRUE)
 
-	print_backstory(new_human)
+	print_backstory(mob)
 
-	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), new_human, SPAN_BOLD("Objectives:</b> [objectives]")), 1 SECONDS)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), mob, SPAN_BOLD("Objectives:</b> [objectives]")), 1 SECONDS)
 
-/datum/emergency_call/goon/print_backstory(mob/living/carbon/human/new_human)
-	to_chat(new_human, SPAN_BOLD("You were born [pick(75;"in Europe", 15;"in Asia", 10;"on Mars")] to a poor family."))
-	to_chat(new_human, SPAN_BOLD("Joining the ranks of Weyland-Yutani was all you could do to keep yourself and your loved ones fed."))
-	to_chat(new_human, SPAN_BOLD("You have no idea what a xenomorph is."))
-	to_chat(new_human, SPAN_BOLD("You are a simple security officer employed by Weyland-Yutani to guard their outposts and colonies."))
-	to_chat(new_human, SPAN_BOLD("You heard about the original distress signal ages ago, but you have only just gotten permission from corporate to enter the area."))
-	to_chat(new_human, SPAN_BOLD("Ensure no damage is incurred against Weyland-Yutani. Make sure the CL is safe."))
+/datum/emergency_call/goon/print_backstory(mob/living/carbon/human/M)
+	to_chat(M, SPAN_BOLD("You were born [pick(75;"in Europe", 15;"in Asia", 10;"on Mars")] to a poor family."))
+	to_chat(M, SPAN_BOLD("Joining the ranks of Weyland-Yutani was all you could do to keep yourself and your loved ones fed."))
+	to_chat(M, SPAN_BOLD("You have no idea what a xenomorph is."))
+	to_chat(M, SPAN_BOLD("You are a simple security officer employed by Weyland-Yutani to guard their outposts and colonies."))
+	to_chat(M, SPAN_BOLD("You heard about the original distress signal ages ago, but you have only just gotten permission from corporate to enter the area."))
+	to_chat(M, SPAN_BOLD("Ensure no damage is incurred against Weyland-Yutani. Make sure the CL is safe."))
 
 /datum/emergency_call/goon/chem_retrieval
 	name = "Weyland-Yutani Goon (Chemical Investigation Squad)"
@@ -59,46 +59,46 @@
 	objectives += "Assume at least 30 units are located within the department. If they can not make more that should be all. Cooperate with the onboard CL to ensure all who know the complete recipe are kept silenced with a contract of confidentiality. All humans who have ingested the chemical must be brought back dead or alive. Viral scan is required for any humans who is suspected of ingestion. You must not deploy to the colony without explicit permission from PMC Dispatch. The professor may call for PMC back up if things get out of hand."
 	checked_objective = TRUE
 
-/datum/emergency_call/goon/chem_retrieval/create_member(datum/mind/mind, turf/override_spawn_loc)
+/datum/emergency_call/goon/chem_retrieval/create_member(datum/mind/M, turf/override_spawn_loc)
 	var/turf/spawn_loc = override_spawn_loc ? override_spawn_loc : get_spawn_point()
 
 	if(!istype(spawn_loc))
 		return //Didn't find a useable spawn point.
 
-	var/mob/living/carbon/human/new_human = new(spawn_loc)
-	mind.transfer_to(new_human, TRUE)
+	var/mob/living/carbon/human/mob = new(spawn_loc)
+	M.transfer_to(mob, TRUE)
 
-	if(!leader && HAS_FLAG(new_human.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(new_human.client, JOB_SQUAD_LEADER, time_required_for_job))
-		leader = new_human
-		to_chat(new_human, SPAN_ROLE_HEADER("You are a Weyland-Yutani Corporate Security Lead!"))
-		arm_equipment(new_human, /datum/equipment_preset/goon/lead, TRUE, TRUE)
-	else if(medics < max_medics && HAS_FLAG(new_human.client.prefs.toggles_ert, PLAY_MEDIC) && check_timelock(new_human.client, JOB_SQUAD_MEDIC, time_required_for_job))
+	if(!leader && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(mob.client, JOB_SQUAD_LEADER, time_required_for_job))
+		leader = mob
+		to_chat(mob, SPAN_ROLE_HEADER("You are a Weyland-Yutani Corporate Security Lead!"))
+		arm_equipment(mob, /datum/equipment_preset/goon/lead, TRUE, TRUE)
+	else if(medics < max_medics && HAS_FLAG(mob.client.prefs.toggles_ert, PLAY_MEDIC) && check_timelock(mob.client, JOB_SQUAD_MEDIC, time_required_for_job))
 		medics++
-		to_chat(new_human, SPAN_ROLE_HEADER("You are a Weyland-Yutani Corporate Research Consultant!"))
-		arm_equipment(new_human, /datum/equipment_preset/goon/researcher, TRUE, TRUE)
+		to_chat(mob, SPAN_ROLE_HEADER("You are a Weyland-Yutani Corporate Research Consultant!"))
+		arm_equipment(mob, /datum/equipment_preset/goon/researcher, TRUE, TRUE)
 	else
-		to_chat(new_human, SPAN_ROLE_HEADER("You are a Weyland-Yutani Corporate Security Officer!"))
-		arm_equipment(new_human, /datum/equipment_preset/goon/standard, TRUE, TRUE)
+		to_chat(mob, SPAN_ROLE_HEADER("You are a Weyland-Yutani Corporate Security Officer!"))
+		arm_equipment(mob, /datum/equipment_preset/goon/standard, TRUE, TRUE)
 
-	print_backstory(new_human)
+	print_backstory(mob)
 
-	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), new_human, SPAN_BOLD("Objectives:</b> [objectives]")), 1 SECONDS)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), mob, SPAN_BOLD("Objectives:</b> [objectives]")), 1 SECONDS)
 
-/datum/emergency_call/goon/chem_retrieval/print_backstory(mob/living/carbon/human/new_human)
-	if(new_human.job == JOB_WY_GOON_RESEARCHER)
-		to_chat(new_human, SPAN_BOLD("You were born [pick(75;"in Europe", 15;"in Asia", 10;"on Mars")] to a wealthy family."))
-		to_chat(new_human, SPAN_BOLD("Joining the ranks of Weyland-Yutani was the perfect way to further your research goals."))
-		to_chat(new_human, SPAN_BOLD("You have a very in depth understanding of xenomorphs."))
-		to_chat(new_human, SPAN_BOLD("You are a well educated scientist employed by Weyland-Yutani to study various non-humans."))
-		to_chat(new_human, SPAN_BOLD("You heard about the original distress signal ages ago, but you have only just gotten permission from corporate to enter the area."))
-		to_chat(new_human, SPAN_BOLD("Your only goal is to recover the chemical aboard the Almayer. Do whatever you have to do."))
+/datum/emergency_call/goon/chem_retrieval/print_backstory(mob/living/carbon/human/backstory_human)
+	if(backstory_human.job == JOB_WY_GOON_RESEARCHER)
+		to_chat(backstory_human, SPAN_BOLD("You were born [pick(75;"in Europe", 15;"in Asia", 10;"on Mars")] to a wealthy family."))
+		to_chat(backstory_human, SPAN_BOLD("Joining the ranks of Weyland-Yutani was the perfect way to further your research goals."))
+		to_chat(backstory_human, SPAN_BOLD("You have a very in depth understanding of xenomorphs."))
+		to_chat(backstory_human, SPAN_BOLD("You are a well educated scientist employed by Weyland-Yutani to study various non-humans."))
+		to_chat(backstory_human, SPAN_BOLD("You heard about the original distress signal ages ago, but you have only just gotten permission from corporate to enter the area."))
+		to_chat(backstory_human, SPAN_BOLD("Your only goal is to recover the chemical aboard the Almayer. Do whatever you have to do."))
 	else
-		to_chat(new_human, SPAN_BOLD("You were born [pick(75;"in Europe", 15;"in Asia", 10;"on Mars")] to a poor family."))
-		to_chat(new_human, SPAN_BOLD("Joining the ranks of Weyland-Yutani was all you could do to keep yourself and your loved ones fed."))
-		to_chat(new_human, SPAN_BOLD("You have had a basic brief on xenomorphs."))
-		to_chat(new_human, SPAN_BOLD("You are a simple security officer employed by Weyland-Yutani to guard their outposts and colonies."))
-		to_chat(new_human, SPAN_BOLD("You heard about the original distress signal ages ago, but you have only just gotten permission from corporate to enter the area."))
-		to_chat(new_human, SPAN_BOLD("Ensure no damage is incurred against Weyland-Yutani. Make sure the researcher is kept safe and follow their instructions."))
+		to_chat(backstory_human, SPAN_BOLD("You were born [pick(75;"in Europe", 15;"in Asia", 10;"on Mars")] to a poor family."))
+		to_chat(backstory_human, SPAN_BOLD("Joining the ranks of Weyland-Yutani was all you could do to keep yourself and your loved ones fed."))
+		to_chat(backstory_human, SPAN_BOLD("You have had a basic brief on xenomorphs."))
+		to_chat(backstory_human, SPAN_BOLD("You are a simple security officer employed by Weyland-Yutani to guard their outposts and colonies."))
+		to_chat(backstory_human, SPAN_BOLD("You heard about the original distress signal ages ago, but you have only just gotten permission from corporate to enter the area."))
+		to_chat(backstory_human, SPAN_BOLD("Ensure no damage is incurred against Weyland-Yutani. Make sure the researcher is kept safe and follow their instructions."))
 
 /datum/emergency_call/goon/platoon
 	name = "Weyland-Yutani Corporate Security (Platoon)"

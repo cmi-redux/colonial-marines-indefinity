@@ -336,10 +336,3 @@
 
 /datum/job/proc/get_latejoin_turf(mob/living/carbon/human/H)
 	return get_latejoin_spawn(H, H.faction, H.assigned_squad?.name)
-
-/datum/job/proc/check_whitelist_status(mob/user)
-	if(!(flags_startup_parameters & ROLE_WHITELISTED))
-		return TRUE
-
-	if(user.client.check_whitelist_status(flags_whitelist))
-		return TRUE

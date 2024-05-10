@@ -376,7 +376,7 @@
 	playsound('sound/effects/rbmk/meltdown.ogg', 25, 1, 7)
 	visible_message(SPAN_USERDANGER("You hear a horrible metallic hissing."))
 	if(current_fuel_k >= temperature_critical)
-		GLOB.enter_allowed = FALSE
+		enter_allowed = FALSE
 		for(var/shuttle_id in list(DROPSHIP_ALAMO, DROPSHIP_NORMANDY))
 			var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttle_id)
 			var/obj/structure/machinery/computer/shuttle/dropship/flight/console = shuttle.getControlConsole()

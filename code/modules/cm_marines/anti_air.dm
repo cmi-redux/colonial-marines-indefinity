@@ -79,7 +79,7 @@ var/obj/structure/anti_air_cannon/almayer_aa_cannon
 
 	data["sections"] = list()
 
-	for(var/section in GLOB.almayer_ship_sections)
+	for(var/section in almayer_ship_sections)
 		data["sections"] += list(list(
 			"section_id" = section,
 		))
@@ -106,7 +106,7 @@ var/obj/structure/anti_air_cannon/almayer_aa_cannon
 	switch(action)
 		if("protect")
 			almayer_aa_cannon.protecting_section = params["section_id"]
-			if(!(almayer_aa_cannon.protecting_section in GLOB.almayer_ship_sections))
+			if(!(almayer_aa_cannon.protecting_section in almayer_ship_sections))
 				almayer_aa_cannon.protecting_section = ""
 				return
 			message_admins("[key_name(usr)] has set the AA to [html_encode(almayer_aa_cannon.protecting_section)].")

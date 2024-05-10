@@ -19,25 +19,25 @@
 	if(!istype(spawn_loc))
 		return //Didn't find a useable spawn point.
 
-	var/mob/living/carbon/human/new_human = new(spawn_loc)
-	mind.transfer_to(new_human, TRUE)
-	GLOB.ert_mobs += new_human
+	var/mob/living/carbon/human/H = new(spawn_loc)
+	mind.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 
-	if(!leader && HAS_FLAG(new_human.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(new_human.client, JOB_SQUAD_LEADER, time_required_for_job))
-		leader = new_human
-		arm_equipment(new_human, /datum/equipment_preset/dutch/arnie, TRUE, TRUE)
-	else if(heavies < max_heavies && HAS_FLAG(new_human.client.prefs.toggles_ert, PLAY_HEAVY) && check_timelock(new_human.client, JOB_SQUAD_SPECIALIST, time_required_for_job))
+	if(!leader && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_LEADER) && check_timelock(H.client, JOB_SQUAD_LEADER, time_required_for_job))
+		leader = H
+		arm_equipment(H, /datum/equipment_preset/dutch/arnie, TRUE, TRUE)
+	else if(heavies < max_heavies && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_HEAVY) && check_timelock(H.client, JOB_SQUAD_SPECIALIST, time_required_for_job))
 		heavies++
-		arm_equipment(new_human, /datum/equipment_preset/dutch/flamer, TRUE, TRUE)
-	else if(smartgunners < max_smartgunners && HAS_FLAG(new_human.client.prefs.toggles_ert, PLAY_SMARTGUNNER) && check_timelock(new_human.client, JOB_SQUAD_SMARTGUN, time_required_for_job))
+		arm_equipment(H, /datum/equipment_preset/dutch/flamer, TRUE, TRUE)
+	else if(smartgunners < max_smartgunners && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_SMARTGUNNER) && check_timelock(H.client, JOB_SQUAD_SMARTGUN, time_required_for_job))
 		smartgunners++
-		arm_equipment(new_human, /datum/equipment_preset/dutch/minigun, TRUE, TRUE)
-	else if(medics < max_medics && HAS_FLAG(new_human.client.prefs.toggles_ert, PLAY_MEDIC) && check_timelock(new_human.client, JOB_SQUAD_MEDIC, time_required_for_job))
+		arm_equipment(H, /datum/equipment_preset/dutch/minigun, TRUE, TRUE)
+	else if(medics < max_medics && HAS_FLAG(H.client.prefs.toggles_ert, PLAY_MEDIC) && check_timelock(H.client, JOB_SQUAD_MEDIC, time_required_for_job))
 		medics++
-		arm_equipment(new_human, /datum/equipment_preset/dutch/medic, TRUE, TRUE)
+		arm_equipment(H, /datum/equipment_preset/dutch/medic, TRUE, TRUE)
 	else
-		arm_equipment(new_human, /datum/equipment_preset/dutch, TRUE, TRUE)
-	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), new_human, SPAN_BOLD("Objectives: [objectives]")), 1 SECONDS)
+		arm_equipment(H, /datum/equipment_preset/dutch, TRUE, TRUE)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), H, SPAN_BOLD("Objectives: [objectives]")), 1 SECONDS)
 
 /datum/emergency_call/dutch/full_dozen //AWWW YEAH DA FULL DOZEN FO TODAY
 	name = "Dutch's Dozen - Full Strength"

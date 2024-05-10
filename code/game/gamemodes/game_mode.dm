@@ -434,7 +434,7 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 			if(T.z in z_levels)
 				mob.death(cause_data)
 			else
-				mob.client.remove_from_screen(cinematic) //those who managed to escape the z level at last second shouldn't have their view obstructed.
+				mob.client.screen -= cinematic //those who managed to escape the z level at last second shouldn't have their view obstructed.
 
 	flick(cinematic_icons[3], cinematic)
 	cinematic.icon_state = cinematic_icons[4]
@@ -442,5 +442,5 @@ var/global/cas_tracking_id_increment = 0 //this var used to assign unique tracki
 	sleep(2 SECONDS)
 	for(mob in L1 + L2)
 		if(mob && mob.client)
-			mob.client.remove_from_screen(cinematic) //They may have disconnected in the mean time.
+			mob.client.screen -= cinematic //They may have disconnected in the mean time.
 	qdel(cinematic)

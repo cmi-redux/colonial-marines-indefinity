@@ -208,7 +208,7 @@
 	playsound('sound/effects/rbmk/meltdown.ogg', 25, 1, 7)
 	visible_message(SPAN_USERDANGER("You hear a horrible metallic hissing."))
 	cell_explosion(src, 600, 20, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
-	GLOB.enter_allowed = FALSE
+	enter_allowed = FALSE
 	SSticker.mode.play_cinematic(cause_data = create_cause_data("взрыв реактора", src))
 	for(var/shuttle_id in list(DROPSHIP_ALAMO, DROPSHIP_NORMANDY))
 		var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttle_id)

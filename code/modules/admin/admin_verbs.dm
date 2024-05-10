@@ -182,6 +182,7 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/servermode,
 	/datum/admins/proc/override_ground_map,
 	/datum/admins/proc/togglejoin,
+	/datum/admins/proc/handle_whitelists,
 	/client/proc/cmd_admin_delete,		/*delete an instance/object/mob/etc*/
 	/client/proc/cmd_debug_del_all,
 	/client/proc/toggle_cdn,
@@ -334,8 +335,14 @@ var/list/roundstart_mod_verbs = list(
 		add_verb(src, admin_verbs_sounds)
 	if(CLIENT_HAS_RIGHTS(src, R_SPAWN))
 		add_verb(src, admin_verbs_spawn)
-	if(check_whitelist_status(WHITELIST_YAUTJA_LEADER))
-		add_verb(src, GLOB.clan_verbs)
+	if(SSticker.role_authority && (player_data?.whitelist?.whitelist_flags & WHITELIST_YAUTJA_LEADER))
+		add_verb(src, clan_verbs)
+/client/proc/add_admin_whitelists()
+	UNTIL(SSticker.role_authority)
+	if(CLIENT_HAS_RIGHTS(src, R_MENTOR))
+		player_data?.whitelist?.whitelist_flags |= WHITELIST_MENTOR
+	if(CLIENT_IS_STAFF(src))
+		player_data?.whitelist?.whitelist_flags |= WHITELIST_JOE
 
 /client/proc/remove_admin_verbs()
 	remove_verb(src, list(

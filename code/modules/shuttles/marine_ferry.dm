@@ -352,7 +352,7 @@
 
 	var/target_section = crash_target_section
 	if(isnull(target_section))
-		var/list/potential_crash_sections = GLOB.almayer_ship_sections.Copy()
+		var/list/potential_crash_sections = almayer_ship_sections.Copy()
 		potential_crash_sections -= almayer_aa_cannon.protecting_section
 		target_section = pick(potential_crash_sections)
 
@@ -554,7 +554,7 @@
 			colonial_marines.add_current_round_status_to_end_results("Hijack")
 
 /datum/shuttle/ferry/marine/proc/disable_latejoin()
-	GLOB.enter_allowed = FALSE
+	enter_allowed = FALSE
 
 
 /datum/shuttle/ferry/marine/short_jump()

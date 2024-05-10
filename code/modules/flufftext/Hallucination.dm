@@ -85,10 +85,10 @@ Gunshots/explosions/opening doors/less rare audio (done)
 								halitem.icon_state = "flashbang1"
 								halitem.name = "Flashbang"
 						if(client)
-							client.add_to_screen(halitem)
+							client.screen += halitem
 						spawn(rand(100,250))
 							if(client)
-								client.remove_from_screen(halitem)
+								client.screen -= halitem
 							halitem = null
 			if(26 to 40)
 				//Flashes of danger

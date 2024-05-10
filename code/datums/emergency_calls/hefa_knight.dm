@@ -14,9 +14,9 @@
 	if(!istype(spawn_loc))
 		return //Didn't find a useable spawn point.
 
-	var/mob/living/carbon/human/new_human = new(spawn_loc)
-	mind.transfer_to(new_human, TRUE)
-	GLOB.ert_mobs += new_human
+	var/mob/living/carbon/human/H = new(spawn_loc)
+	mind.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 
-	arm_equipment(new_human, /datum/equipment_preset/fun/hefa/melee, FALSE, TRUE)
-	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), new_human, SPAN_BOLD("Objectives: [objectives]")), 1 SECONDS)
+	arm_equipment(H, /datum/equipment_preset/fun/hefa/melee, FALSE, TRUE)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), H, SPAN_BOLD("Objectives: [objectives]")), 1 SECONDS)

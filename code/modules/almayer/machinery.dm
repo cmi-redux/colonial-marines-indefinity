@@ -207,7 +207,7 @@
 		var/obj/item/dogtag/D = I
 		if(D.fallen_names)
 			to_chat(user, SPAN_NOTICE("You add [D] to [src]."))
-			GLOB.fallen_list += D.fallen_names
+			fallen_list += D.fallen_names
 			qdel(D)
 		return TRUE
 	else
@@ -215,13 +215,13 @@
 
 /obj/structure/prop/almayer/ship_memorial/get_examine_text(mob/user)
 	. = ..()
-	if((isobserver(user) || ishuman(user)) && GLOB.fallen_list)
+	if((isobserver(user) || ishuman(user)) && fallen_list)
 		var/faltext = ""
-		for(var/i = 1 to GLOB.fallen_list.len)
-			if(i != GLOB.fallen_list.len)
-				faltext += "[GLOB.fallen_list[i]], "
+		for(var/i = 1 to fallen_list.len)
+			if(i != fallen_list.len)
+				faltext += "[fallen_list[i]], "
 			else
-				faltext += GLOB.fallen_list[i]
+				faltext += fallen_list[i]
 		. += SPAN_NOTICE("To our fallen soldiers: <b>[faltext]</b>.")
 
 /obj/structure/prop/almayer/particle_cannon

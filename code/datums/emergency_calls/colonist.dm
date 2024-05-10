@@ -18,15 +18,15 @@
 	if(!istype(T))
 		return FALSE
 
-	var/mob/living/carbon/human/new_human = new(T)
-	mind.transfer_to(new_human, TRUE)
-	GLOB.ert_mobs += new_human
-	arm_equipment(new_human, preset, TRUE, TRUE)
+	var/mob/living/carbon/human/H = new(T)
+	mind.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
+	arm_equipment(H, preset, TRUE, TRUE)
 
 	sleep(20)
-	if(new_human && new_human.loc)
-		to_chat(new_human, SPAN_ROLE_HEADER("You are a colonist!"))
-		to_chat(new_human, SPAN_ROLE_BODY("You have been put into the game by a staff member. Please follow all staff instructions."))
+	if(H && H.loc)
+		to_chat(H, SPAN_ROLE_HEADER("You are a colonist!"))
+		to_chat(H, SPAN_ROLE_BODY("You have been put into the game by a staff member. Please follow all staff instructions."))
 
 /datum/emergency_call/colonist/engineers
 	name = "Colonists - Engineers"

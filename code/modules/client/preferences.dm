@@ -281,6 +281,10 @@ var/const/MAX_SAVE_SLOTS = 10
 	if(!user || !user.client)
 		return
 
+	var/whitelist_flags = NO_FLAGS
+	if(user.client.player_data?.whitelist)
+		whitelist_flags = user.client.player_data.whitelist.whitelist_flags
+
 	update_preview_icon()
 
 	var/dat = "<style>"
@@ -306,13 +310,13 @@ var/const/MAX_SAVE_SLOTS = 10
 	dat += "<center>"
 	dat += "<a[current_menu == MENU_MARINE ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_MARINE]\"><b>[user.client.auto_lang(LANGUAGE_PREF_SET_HUMAN)]</b></a> - "
 	dat += "<a[current_menu == MENU_XENOMORPH ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_XENOMORPH]\"><b>[user.client.auto_lang(LANGUAGE_PREF_SET_XENO)]</b></a> - "
-	if(owner.check_whitelist_status(WHITELIST_COMMANDER))
+	if(whitelist_flags & WHITELIST_COMMANDER)
 		dat += "<a[current_menu == MENU_CO ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_CO]\"><b>[user.client.auto_lang(LANGUAGE_PREF_SET_COM)]</b></a> - "
-	if(owner.check_whitelist_status(WHITELIST_SYNTHETIC))
+	if(whitelist_flags & WHITELIST_SYNTHETIC)
 		dat += "<a[current_menu == MENU_SYNTHETIC ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_SYNTHETIC]\"><b>[user.client.auto_lang(LANGUAGE_PREF_SET_SYNTH)]</b></a> - "
-	if(owner.check_whitelist_status(WHITELIST_PREDATOR))
+	if(whitelist_flags & WHITELIST_PREDATOR)
 		dat += "<a[current_menu == MENU_YAUTJA ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_YAUTJA]\"><b>[user.client.auto_lang(LANGUAGE_PREF_SET_YAUT)]</b></a> - "
-	if(owner.check_whitelist_status(WHITELIST_MENTOR))
+	if(whitelist_flags & WHITELIST_MENTOR)
 		dat += "<a[current_menu == MENU_MENTOR ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_MENTOR]\"><b>[user.client.auto_lang(LANGUAGE_PREF_SET_MENTOR)]</b></a> - "
 	dat += "<a[current_menu == MENU_SETTINGS ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_SETTINGS]\"><b>[user.client.auto_lang(LANGUAGE_PREF_SETTINGS)]</b></a> - "
 	dat += "<a[current_menu == MENU_SPECIAL ? " class='linkOff'" : ""] href=\"byond://?src=\ref[user];preference=change_menu;menu=[MENU_SPECIAL]\"><b>[user.client.auto_lang(LANGUAGE_PREF_SET_SPECIAL)]</b></a>"
@@ -485,7 +489,7 @@ var/const/MAX_SAVE_SLOTS = 10
 			dat += "\t<a href='?_src_=prefs;preference=job;task=menu'><b>[user.client.auto_lang(LANGUAGE_PREF_ROLE_PREFS)]</b></a>"
 			dat += "</div>"
 		if(MENU_CO)
-			if(owner.check_whitelist_status(WHITELIST_COMMANDER))
+			if(whitelist_flags & WHITELIST_COMMANDER)
 				dat += "<div id='column1'>"
 				dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_COM_SET)]:</u></b></h2>"
 				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_COM_WL)]:</b> <a href='?_src_=prefs;preference=commander_status;task=input'><b>[commander_status]</b></a><br>"
@@ -495,7 +499,7 @@ var/const/MAX_SAVE_SLOTS = 10
 			else
 				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_NO_WL)]</b>"
 		if(MENU_SYNTHETIC)
-			if(owner.check_whitelist_status(WHITELIST_SYNTHETIC))
+			if(whitelist_flags & WHITELIST_SYNTHETIC)
 				dat += "<div id='column1'>"
 				dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_SYNTH_SET)]:</u></b></h2>"
 				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_SYNTH_NAME)]:</b> <a href='?_src_=prefs;preference=synth_name;task=input'><b>[synthetic_name]</b></a><br>"
@@ -505,7 +509,7 @@ var/const/MAX_SAVE_SLOTS = 10
 			else
 				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_NO_WL)]</b>"
 		if(MENU_YAUTJA)
-			if(owner.check_whitelist_status(WHITELIST_PREDATOR))
+			if(whitelist_flags & WHITELIST_PREDATOR)
 				dat += "<div id='column1'>"
 				dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_YAUT_INFO)]:</u></b></h2>"
 				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_YAUT_NAME)]:</b> <a href='?_src_=prefs;preference=pred_name;task=input'><b>[predator_name]</b></a><br>"
@@ -542,7 +546,7 @@ var/const/MAX_SAVE_SLOTS = 10
 			else
 				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_NO_WL)]</b>"
 		if(MENU_MENTOR)
-			if(owner.check_whitelist_status(WHITELIST_MENTOR))
+			if(whitelist_flags & WHITELIST_MENTOR)
 				dat += "<div id='column1'>"
 				dat += "<h2><b><u>[user.client.auto_lang(LANGUAGE_PREF_MENTOR_SET)]:</u></b></h2>"
 				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_SEA)]:</b> nothing<br>"
@@ -643,7 +647,7 @@ var/const/MAX_SAVE_SLOTS = 10
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ERT_ENGI)]:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_ENGINEER]'><b>[toggles_ert & PLAY_ENGINEER ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ERT_SPEC)]:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_HEAVY]'><b>[toggles_ert & PLAY_HEAVY ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ERT_SMART)]:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_SMARTGUNNER]'><b>[toggles_ert & PLAY_SMARTGUNNER ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
-			if(owner.check_whitelist_status(WHITELIST_SYNTHETIC))
+			if(whitelist_flags & WHITELIST_SYNTHETIC)
 				dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ERT_SYNTH)]:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_SYNTH]'><b>[toggles_ert & PLAY_SYNTH ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
 			dat += "<b>[user.client.auto_lang(LANGUAGE_PREF_ERT_MISC)]:</b> <a href='?_src_=prefs;preference=toggles_ert;flag=[PLAY_MISC]'><b>[toggles_ert & PLAY_MISC ? user.client.auto_lang(LANGUAGE_YES) : user.client.auto_lang(LANGUAGE_NO)]</b></a><br>"
 			dat += "</div>"
@@ -693,7 +697,7 @@ var/const/MAX_SAVE_SLOTS = 10
 		if(jobban_isbanned(user, job.title))
 			HTML += "<b><del>[job.disp_title]</del></b></td><td><b>[user.client.auto_lang(LANGUAGE_BANNED)]</b></td></tr>"
 			continue
-		else if(!job.check_whitelist_status(user))
+		else if(job.flags_startup_parameters & ROLE_WHITELISTED && !(user.client.player_data?.whitelist?.whitelist_flags & job.flags_whitelist))
 			HTML += "<b><del>[job.disp_title]</del></b></td><td>[user.client.auto_lang(LANGUAGE_WHITELISTED)]</td></tr>"
 			continue
 		else if(!job.can_play_role(user.client))
@@ -808,7 +812,7 @@ var/const/MAX_SAVE_SLOTS = 10
 		if(jobban_isbanned(user, job.title))
 			HTML += "<b><del>[job.disp_title]</del></b></td><td width='60%'><b>BANNED</b></td></tr>"
 			continue
-		else if(!job.check_whitelist_status(user))
+		else if(job.flags_startup_parameters & ROLE_WHITELISTED && !(user.client.player_data?.whitelist?.whitelist_flags & job.flags_whitelist))
 			HTML += "<b><del>[job.disp_title]</del></b></td><td width='60%'>WHITELISTED</td></tr>"
 			continue
 		else if(!job.can_play_role(user.client))
@@ -976,6 +980,10 @@ var/const/MAX_SAVE_SLOTS = 10
 		pref_job_slots[J.title] = JOB_SLOT_CURRENT_SLOT
 
 /datum/preferences/proc/process_link(mob/user, href_list)
+	var/whitelist_flags = NO_FLAGS
+	if(user.client.player_data?.whitelist)
+		whitelist_flags = user.client.player_data.whitelist.whitelist_flags
+
 	switch(href_list["preference"])
 		if("job")
 			switch(href_list["task"])
@@ -1224,8 +1232,6 @@ var/const/MAX_SAVE_SLOTS = 10
 				if("all")
 					randomize_appearance()
 		if("input")
-			var/datum/entity/player/player = get_player_from_key(user.ckey)
-			var/whitelist_flags = player.whitelist_flags
 			switch(href_list["preference"])
 				if("name")
 					if(human_name_ban)
@@ -1314,12 +1320,12 @@ var/const/MAX_SAVE_SLOTS = 10
 					predator_caster_material = new_pred_caster_mat
 				if("pred_cape_type")
 					var/datum/job/job = GET_MAPPED_ROLE(JOB_PREDATOR)
-					var/whitelist_status = GLOB.clan_ranks_ordered[job.get_whitelist_status(owner)]
+					var/whitelist_status = GLOB.clan_ranks_ordered[job.get_whitelist_status(whitelist_flags, owner)]
 
 					var/list/options = list("None" = "None")
 					for(var/cape_name in GLOB.all_yautja_capes)
 						var/obj/item/clothing/yautja_cape/cape = GLOB.all_yautja_capes[cape_name]
-						if(whitelist_status >= initial(cape.clan_rank_required) || (initial(cape.councillor_override) && (whitelist_flags & (WHITELIST_YAUTJA_COUNCIL))))
+						if(whitelist_status >= initial(cape.clan_rank_required) || (initial(cape.councillor_override) && (whitelist_flags & WHITELIST_YAUTJA_COUNCIL)))
 							options += list(capitalize_first_letters(cape_name) = cape_name)
 
 					var/new_cape = tgui_input_list(user, "Choose your cape type:", "Cape Type", options)
@@ -1351,9 +1357,9 @@ var/const/MAX_SAVE_SLOTS = 10
 				if("commander_status")
 					var/list/options = list("Normal" = WHITELIST_NORMAL)
 
-					if(whitelist_flags & (WHITELIST_COMMANDER_COUNCIL))
+					if(whitelist_flags & WHITELIST_COMMANDER_COUNCIL)
 						options += list("Council" = WHITELIST_COUNCIL)
-					if(whitelist_flags & (WHITELIST_COMMANDER_LEADER|WHITELIST_COMMANDER_COLONEL))
+					if(whitelist_flags & WHITELIST_COMMANDER_LEADER)
 						options += list("Leader" = WHITELIST_LEADER)
 
 					var/new_commander_status = tgui_input_list(user, "Choose your new Commander Whitelist Status.", "Commander Status", options)
@@ -1443,7 +1449,6 @@ var/const/MAX_SAVE_SLOTS = 10
 
 					if(!prefix_length)
 						xeno_prefix = "XX"
-						owner.load_xeno_name()
 					else
 						var/all_ok = TRUE
 						for(var/i=1, i<=length(new_xeno_prefix), i++)
@@ -1455,7 +1460,6 @@ var/const/MAX_SAVE_SLOTS = 10
 									all_ok = FALSE //everything else - won't
 						if(all_ok)
 							xeno_prefix = new_xeno_prefix
-							owner.load_xeno_name()
 						else
 							to_chat(user, "<font color='red'>Invalid Xeno Prefix. Your Prefix can contain either single letter or two letters.</font>")
 
@@ -1487,7 +1491,6 @@ var/const/MAX_SAVE_SLOTS = 10
 
 					else if(!postfix_length)
 						xeno_postfix = ""
-						owner.load_xeno_name()
 					else
 						var/all_ok = TRUE
 						var/first_char = TRUE
@@ -1509,7 +1512,6 @@ var/const/MAX_SAVE_SLOTS = 10
 							first_char = FALSE
 						if(all_ok)
 							xeno_postfix = new_xeno_postfix
-							owner.load_xeno_name()
 						else
 							to_chat(user, "<font color='red'>Invalid Xeno Postfix. Your Postfix can contain single letter and an optional digit after it.</font>")
 

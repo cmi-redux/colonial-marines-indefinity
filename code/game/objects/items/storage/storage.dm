@@ -22,7 +22,7 @@
 	var/atom/movable/screen/storage/storage_start = null //storage UI
 	var/atom/movable/screen/storage/storage_continue = null
 	var/atom/movable/screen/storage/storage_end = null
-	var/datum/item_storage_box/stored_ISB //! This contains what previously was known as stored_start, stored_continue, and stored_end
+	var/datum/item_storage_box/stored_ISB = null // This contains what previously was known as stored_start, stored_continue, and stored_end
 	var/atom/movable/screen/close/closer = null
 	var/foldable = null
 	var/use_sound = "rustle" //sound played when used. null for no sound.
@@ -104,24 +104,25 @@
 				return
 	if(user.s_active)
 		user.s_active.hide_from(user)
-	user.client.remove_from_screen(boxes)
-	user.client.remove_from_screen(storage_start)
-	user.client.remove_from_screen(storage_continue)
-	user.client.remove_from_screen(storage_end)
-	user.client.remove_from_screen(closer)
-	user.client.remove_from_screen(contents)
-	user.client.add_to_screen(closer)
-	user.client.add_to_screen(contents)
+	user.client.screen -= boxes
+	user.client.screen -= storage_start
+	user.client.screen -= storage_continue
+	user.client.screen -= storage_end
+	user.client.screen -= closer
+	user.client.screen -= contents
+	user.client.screen += closer
+	user.client.screen += contents
 
 	if(storage_slots)
-		user.client.add_to_screen(boxes)
+		user.client.screen += boxes
 	else
-		user.client.add_to_screen(storage_start)
-		user.client.add_to_screen(storage_continue)
-		user.client.add_to_screen(storage_end)
+		user.client.screen += storage_start
+		user.client.screen += storage_continue
+		user.client.screen += storage_end
 
 	user.s_active = src
 	add_to_watchers(user)
+	return
 
 /obj/item/storage/proc/add_to_watchers(mob/user)
 	if(!(user in content_watchers))
@@ -136,12 +137,12 @@
 ///Used to hide the storage's inventory screen.
 /obj/item/storage/proc/hide_from(mob/user as mob)
 	if(user.client)
-		user.client.remove_from_screen(src.boxes)
-		user.client.remove_from_screen(storage_start)
-		user.client.remove_from_screen(storage_continue)
-		user.client.remove_from_screen(storage_end)
-		user.client.remove_from_screen(src.closer)
-		user.client.remove_from_screen(src.contents)
+		user.client.screen -= src.boxes
+		user.client.screen -= storage_start
+		user.client.screen -= storage_continue
+		user.client.screen -= storage_end
+		user.client.screen -= src.closer
+		user.client.screen -= src.contents
 	if(user.s_active == src)
 		user.s_active = null
 	del_from_watchers(user)
@@ -188,7 +189,7 @@
 	boxes.screen_loc = "4:16,2:16 to [4+cols]:16,[2+rows]:16"
 
 	if(storage_flags & STORAGE_CONTENT_NUM_DISPLAY)
-		for(var/datum/numbered_display/ND in display_contents)
+		for (var/datum/numbered_display/ND in display_contents)
 			ND.sample_object.mouse_opacity = MOUSE_OPACITY_OPAQUE
 			ND.sample_object.screen_loc = "[cx]:16,[cy]:16"
 			ND.sample_object.maptext = "<font color='white'>[(ND.number > 1)? "[ND.number]" : ""]</font>"
@@ -199,7 +200,7 @@
 				cx = 4
 				cy--
 	else
-		for(var/obj/item/O in contents)
+		for (var/obj/item/O in contents)
 			O.mouse_opacity = MOUSE_OPACITY_OPAQUE //So storage items that start with contents get the opacity trick.
 			O.screen_loc = "[cx]:[16+O.hud_offset],[cy]:16"
 			O.layer = ABOVE_HUD_LAYER
@@ -212,17 +213,16 @@
 	if(storage_flags & STORAGE_SHOW_FULLNESS)
 		boxes.update_fullness(src)
 
-GLOBAL_LIST_EMPTY_TYPED(item_storage_box_cache, /datum/item_storage_box)
+var/list/global/item_storage_box_cache = list()
 
 /datum/item_storage_box
-	var/atom/movable/screen/storage/start
-	var/atom/movable/screen/storage/continued
-	var/atom/movable/screen/storage/end
-	/// The index that indentifies me inside GLOB.item_storage_box_cache
+	var/atom/movable/screen/storage/start = null
+	var/atom/movable/screen/storage/continued = null
+	var/atom/movable/screen/storage/end = null
+	/// The index that indentifies me inside item_storage_box_cache
 	var/index
 
 /datum/item_storage_box/New()
-	. = ..()
 	start = new()
 	start.icon_state = "stored_start"
 	continued = new()
@@ -234,7 +234,7 @@ GLOBAL_LIST_EMPTY_TYPED(item_storage_box_cache, /datum/item_storage_box)
 	QDEL_NULL(start)
 	QDEL_NULL(continued)
 	QDEL_NULL(end)
-	GLOB.item_storage_box_cache -= index
+	item_storage_box_cache[index] = null // Or would it be better to -= src?
 	return ..()
 
 /obj/item/storage/proc/space_orient_objs(list/obj/item/display_contents)
@@ -272,7 +272,7 @@ GLOBAL_LIST_EMPTY_TYPED(item_storage_box_cache, /datum/item_storage_box)
 		click_border_start.Add(startpoint)
 		click_border_end.Add(endpoint)
 
-		if(!GLOB.item_storage_box_cache[isb_index])
+		if(!item_storage_box_cache[isb_index])
 			var/datum/item_storage_box/box = new()
 			var/matrix/M_start = matrix()
 			var/matrix/M_continue = matrix()
@@ -285,9 +285,9 @@ GLOBAL_LIST_EMPTY_TYPED(item_storage_box_cache, /datum/item_storage_box)
 			box.continued.apply_transform(M_continue)
 			box.end.apply_transform(M_end)
 			box.index = isb_index
-			GLOB.item_storage_box_cache[isb_index] = box
+			item_storage_box_cache[isb_index] = box
 
-		var/datum/item_storage_box/ISB = GLOB.item_storage_box_cache[isb_index]
+		var/datum/item_storage_box/ISB = item_storage_box_cache[isb_index]
 		stored_ISB = ISB
 
 		storage_start.overlays += ISB.start
@@ -373,9 +373,9 @@ GLOBAL_LIST_EMPTY_TYPED(item_storage_box_cache, /datum/item_storage_box)
 	if(storage_flags & STORAGE_CONTENT_NUM_DISPLAY)
 		numbered_contents = list()
 		adjusted_contents = 0
-		for(var/obj/item/I in contents)
+		for (var/obj/item/I in contents)
 			var/found = 0
-			for(var/datum/numbered_display/ND in numbered_contents)
+			for (var/datum/numbered_display/ND in numbered_contents)
 				if(ND.sample_object.type == I.type)
 					ND.number++
 					found = 1
@@ -508,7 +508,7 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 	W.on_enter_storage(src)
 	if(user)
 		if(user.client && user.s_active != src)
-			user.client.remove_from_screen(W)
+			user.client.screen -= W
 		add_fingerprint(user)
 		if(!prevent_warning)
 			var/visidist = W.w_class >= 3 ? 3 : 1
@@ -534,7 +534,7 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 /obj/item/storage/proc/_item_removal(obj/item/W as obj, atom/new_location)
 	for(var/mob/M in can_see_content())
 		if(M.client)
-			M.client.remove_from_screen(W)
+			M.client.screen -= W
 
 	if(new_location)
 		if(ismob(new_location))
@@ -559,6 +559,11 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 //This proc is called when you want to place an item into the storage item.
 /obj/item/storage/attackby(obj/item/W as obj, mob/user as mob)
 	..()
+
+	if(isrobot(user))
+		to_chat(user, SPAN_NOTICE(" You're a robot. No."))
+		return //Robots can't interact with storage items.
+
 	return attempt_item_insertion(W, FALSE, user)
 
 /obj/item/storage/equipped(mob/user, slot, silent)
@@ -656,7 +661,7 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 		remove_from_storage(I, T)
 	user.visible_message(SPAN_NOTICE("[user] empties \the [src]."),
 		SPAN_NOTICE("You empty \the [src]."))
-	if(use_sound)
+	if (use_sound)
 		playsound(loc, use_sound, 25, TRUE, 3)
 
 /obj/item/storage/verb/shake_verb()
@@ -676,10 +681,10 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 	if(user.is_mob_incapacitated())
 		return
 
-	if(!isturf(tile) || get_dist(src, tile) > 1)
+	if (!isturf(tile) || get_dist(src, tile) > 1)
 		tile = get_turf(src)
 
-	if(use_sound)
+	if (use_sound)
 		playsound(loc, use_sound, 25, TRUE, 3)
 
 	if(!length(contents))
@@ -841,11 +846,10 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 	return ..()
 
 /obj/item/storage/emp_act(severity)
-	. = ..()
-
 	if(!istype(src.loc, /mob/living))
 		for(var/obj/O in contents)
 			O.emp_act(severity)
+	..()
 
 /obj/item/storage/attack_self(mob/user)
 	..()
@@ -876,7 +880,7 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 
 /obj/item/storage/hear_talk(mob/living/M, msg, verb, datum/language/speaking, italics)
 	// Whatever is stored in /storage/ substypes should ALWAYS be an item
-	for(var/obj/item/I as anything in hearing_items)
+	for (var/obj/item/I as anything in hearing_items)
 		I.hear_talk(M, msg, verb, speaking, italics)
 
 /obj/item/proc/get_storage_cost() //framework for adjusting storage costs
